@@ -8,6 +8,10 @@ const clientRegister = new Schema(
       unique: true,
       required: true,
     },
+    name:{
+      type:String,
+      required:true
+    },
     Password: {
       type: String,
       required: true,
@@ -24,6 +28,14 @@ const clientRegister = new Schema(
       type: String,
       required: true,
     },
+    ProfieImage: {
+      type: String,
+      required: true,
+    },
+    ModelType: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamp: true,
@@ -31,7 +43,7 @@ const clientRegister = new Schema(
 );
 
 const clientRegistration = mongoose.model(
-  "RegisterClientDetails",
+  "RegisterClientJONDetails",
   clientRegister
 );
 

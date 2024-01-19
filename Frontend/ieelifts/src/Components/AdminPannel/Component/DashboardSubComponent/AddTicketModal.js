@@ -343,27 +343,27 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
             <div className="Assign-engg-detail-section">
               <div className="engg-form">
                 <div className="grid-form-container">
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       {/* <SingleSetDropdown/> */}
                       <MultiSelectDropdown />
                     </div>
                   </div>
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       <SingleSetDropdown padding="6px" width="100%" />
                     </div>
                   </div>
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       <MultiSelectDropdown />
                     </div>
                   </div>
 
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       <SingleSetDropdown padding="6px" width="100%" />

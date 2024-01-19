@@ -8,7 +8,11 @@ import FilterDropdown from "./FilterDropdown";
 import { GoPlus } from "react-icons/go";
 import AddTicketModal from "./AddTicketModal";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
 const TicketSection = () => {
+  const dispatch = useDispatch();
   const dropdownRef = useRef(null);
 
   // modal manage states
@@ -27,10 +31,25 @@ const TicketSection = () => {
     checkbox2: false,
   });
 
+  const fetchCallbacks = useSelector((state) => {
+    if (state.slice1 && state.slice1.fetchAllCallbackReducer && state.slice1.fetchAllCallbackReducer.callbacks) {
+      return state.slice1.fetchAllCallbackReducer.callbacks.Callbacks;
+    } else {
+      return [];
+    }
+  });
+ 
+
+  console.log(fetchCallbacks);
+
   const handleTicketFilter = () => {
     console.log("this is handle filter function");
     setShowTicketFilter(!showTicketFilter);
   };
+
+  useEffect(() => {
+    dispatch(fetchAllCallbacksAction());
+  }, [dispatch]);
 
   const closeModal = () => setShowTicketModal(false);
   // const closeModal1 = () => setShowTicketModal1(false);
@@ -101,13 +120,13 @@ const TicketSection = () => {
           <div className="icon-align-div">
             <div className="right-side-icons">
               <span className="filter-top-icon">
-                <div class="search-box">
+                <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
                     className="search-input"
                   />
-                  <a href="/" className="search-btn">
+                  <a href="/" className="search-btn-ticket-section">
                     <i>
                       <CiSearch />
                     </i>
@@ -155,13 +174,6 @@ const TicketSection = () => {
             <table className="task-list-table">
               <thead>
                 <tr>
-                  {/* <th>
-                    <CheckBox
-                      id="toggleAll"
-                      handleCheckboxChange={handleCheckBoxAll}
-                      checked={checkedAll}
-                    />
-                  </th> */}
                   <th>JON</th>
                   <th>NAME</th>
                   <th>NUMBER</th>
@@ -189,35 +201,31 @@ const TicketSection = () => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-                <tr class="selected">
-                  {/* <td>
-                    {" "}
-                    <CheckBox
-                      id="checkbox1"
-                      checked={checkboxStates.checkbox1}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox1")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
+              
+
+                {fetchCallbacks.map((data) => (
+                  <tr className="selected" key={data.callbackId}>
+                  <td>{data.JobOrderNumber}</td>
                   <td>ram kumar</td>
                   <td>9416484863</td>
-                    <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
+                  <td>
+                    <div className="dropdown-address">
+                      <span>ADDRESS ADDRESS</span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
+                      <div className="dropdown-adddress-menu">
+                        <div className="drop-address">
+                          <p>
+                            Address: E 26, Phase 7, Industrial Area, Sector 73,
+                            Sahibzada Ajit Singh Nagar, Punjab 140308
+                          </p>
                         </div>
                       </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
+                    </div>
+                  </td>
+                  <td>{data.Description}</td>
+                  <td>{data.TypeOfIssue}</td>
+                  <td>{data.callbackDate}</td>
+                  <td>{data.callbackTime}</td>
                   <td onClick={() => openModal(1)}>
                     <AssignDropdown customAssign="assignColor" name="Assign" />
                   </td>
@@ -229,125 +237,10 @@ const TicketSection = () => {
                     />
                   )}
                 </tr>
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
+                ))}
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td onClick={() => openModal(2)}>
-                    <AssignDropdown
-                      customAssignName="assignNameColor"
-                      name="Mohan"
-                    />
-                  </td>
-                  {showTicketModal2 && (
-                    <AddTicketModal
-                      closeModal={closeModal2}
-                      showTicketModal={showTicketModal2}
-                      modalNumber={2}
-                    />
-                  )}
-                </tr>
 
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td onClick={() => openModal(3)}>
-                    <AssignDropdown
-                      customResolved="assignResolved"
-                      name="Resolved"
-                    />
-                  </td>
-                  {showTicketModal3 && (
-                    <AddTicketModal
-                      closeModal={closeModal3}
-                      showTicketModal={showTicketModal3}
-                      modalNumber={3}
-                    />
-                  )}
-                </tr>
-
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
-
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td>
-                    <AssignDropdown name="Assign" />
-                  </td>
-                </tr>
-               
               </tbody>
               {/* TABLE BODY ENDS */}
             </table>
@@ -360,3 +253,79 @@ const TicketSection = () => {
 };
 
 export default TicketSection;
+
+{
+  /* <tr className="selected">
+<td>442113</td>
+<td>ram kumar</td>
+<td>9416484863</td>
+<td>
+  <div className="dropdown-address">
+    <span>ADDRESS ADDRESS</span>
+
+    <div className="dropdown-adddress-menu">
+      <div className="drop-address">
+        <p>
+          Address: E 26, Phase 7, Industrial Area, Sector 73,
+          Sahibzada Ajit Singh Nagar, Punjab 140308
+        </p>
+      </div>
+    </div>
+  </div>
+</td>
+<td>DESCRIPTION DESCRIPTION</td>
+<td>Door</td>
+<td>12/10/2020</td>
+<td>12:00PM</td>
+<td onClick={() => openModal(2)}>
+  <AssignDropdown
+    customAssignName="assignNameColor"
+    name="Mohan"
+  />
+</td>
+{showTicketModal2 && (
+  <AddTicketModal
+    closeModal={closeModal2}
+    showTicketModal={showTicketModal2}
+    modalNumber={2}
+  />
+)}
+</tr>
+
+<tr className="selected">
+<td>442113</td>
+<td>ram kumar</td>
+<td>9416484863</td>
+<td>
+  <div className="dropdown-address">
+    <span>ADDRESS ADDRESS</span>
+
+    <div className="dropdown-adddress-menu">
+      <div className="drop-address">
+        <p>
+          Address: E 26, Phase 7, Industrial Area, Sector 73,
+          Sahibzada Ajit Singh Nagar, Punjab 140308
+        </p>
+      </div>
+    </div>
+  </div>
+</td>
+<td>DESCRIPTION DESCRIPTION</td>
+<td>Door</td>
+<td>12/10/2020</td>
+<td>12:00PM</td>
+<td onClick={() => openModal(3)}>
+  <AssignDropdown
+    customResolved="assignResolved"
+    name="Resolved"
+  />
+</td>
+{showTicketModal3 && (
+  <AddTicketModal
+    closeModal={closeModal3}
+    showTicketModal={showTicketModal3}
+    modalNumber={3}
+  />
+)}
+</tr> */
+}

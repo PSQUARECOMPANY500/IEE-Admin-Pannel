@@ -24,7 +24,7 @@ const verifyToken = (userType) => (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, userType === 'engg' ? "engg-secret-key" : "client-secret-key");
-      req.user = decoded.user;
+    req.user = decoded.user;
     next();
   } catch (error) {
     console.error("Error verifying token:", error);

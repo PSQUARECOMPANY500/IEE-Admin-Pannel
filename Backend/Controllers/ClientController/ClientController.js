@@ -3,14 +3,89 @@ const clientRequestCallback = require("../../Modals/ServicesModal/ClinetCallback
 
 const serviceRequest = require("../../Modals/ServicesModal/ClientServicesRequest");
 
+const RegisterClientAsPhoneNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema")
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle Register a client with his { Phone Number }
+module.exports.RegisterClientAsPhoneNumber = async (req,res) =>{
+  try {
+    const {PhoneNumber ,Password} = req.body;
+
+    const ExistingClient = await RegisterClientAsPhoneNumber.findOne({PhoneNumber});
+
+    if(ExistingClient){
+      return res.status(400).json({ error: "This Client PhoneNumber already exists" });
+    } 
+
+    const newClient = await RegisterClientAsPhoneNumber.create({
+      PhoneNumber,
+      Password
+    });
+
+    res.status(201).json({message:"client register successfully", client: newClient})
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 // -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle Login Client as a { phoneNumber }
+module.exports.loginClientwithPhoneNumber = async (req,res) =>{
+  try {
+    const {PhoneNumber ,Password} = req.body;
+
+    const client = await RegisterClientAsPhoneNumber.findOne({PhoneNumber});
+
+    if(!client || client.Password !== Password){
+      return res.status(401).json({message:"Invalid Credentials"})
+    }
+
+    const token = generateToken({ PhoneNumber });
+    res.status(200).json({ message:'You are logged in Successfully',client, token });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+// function to get all the vlient jobOrder number by its PhoneNumber
+
+module.exports.GetAllJobOrderNumberByClientPhoneNumber = async (req,res) =>{
+  try {
+    const { PhoneNumber } = req.params;
+
+    const clientAccount = await RegisterClientDetails.find({PhoneNumber});
+
+    if (clientAccount.length === 0) {
+      return res.status(401).json({ message: "This Phone number is not registered" });
+    }
+    res.status(200).json({
+      message: "Client found",
+      client: clientAccount,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 // [function to Register Client By SuperAdmin] {superadmin : TODO , in future} ,{ add more details also }
-module.exports.RegisterClients = async (req, res) => {
+module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
   try {
     // Extract user data from the request body
-    const { JobOrderNumber, Password, PhoneNumber, Address, DateOfHandover } =
+    const { JobOrderNumber,name, Password, PhoneNumber, Address, DateOfHandover,ProfieImage,ModelType } =
       req.body;
 
     const ExistingClient = await RegisterClientDetails.findOne({
@@ -23,10 +98,13 @@ module.exports.RegisterClients = async (req, res) => {
     // Create a new instance of the model with the user data
     const newClient = await RegisterClientDetails.create({
       JobOrderNumber,
+      name,
       Password,
       PhoneNumber,
       Address,
       DateOfHandover,
+      ProfieImage,
+      ModelType
     });
 
     // save user to the data base
@@ -44,26 +122,26 @@ module.exports.RegisterClients = async (req, res) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to handle login client
-module.exports.loginClient = async (req, res) => {
+//function to handle login client with Job Order Number
+module.exports.loginClientWithJobOrderNumber = async (req, res) => {
   try {
     const { JobOrderNumber, password } = req.body;
+    // console.log(JobOrderNumber);
 
     // firstly check the user is exist or not
     const client = await RegisterClientDetails.findOne({ JobOrderNumber });
 
     if (!client || client.Password !== password) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const token = generateToken({ JobOrderNumber });
-    res.json({ client, token });
+    res.status(200).json({ message:'You are logged in Successfully',client, token });
   } catch (error) {
     console.error("Error logging in client:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle the client request for Imdiate visit
 

@@ -123,7 +123,7 @@ const ServiceScheduledTable = () => {
         {/* TABLE BODY STARTS */}
         {data.map((value)=>(
            <tbody>
-           <tr class="selected">
+           <tr className="selected">
              {/* <td>
                {" "}
                <CheckBox
