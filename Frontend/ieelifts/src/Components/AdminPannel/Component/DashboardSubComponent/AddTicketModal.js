@@ -2,9 +2,65 @@ import React, { useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
-// import ModalDropdown from "./ModalDropdown";
+import ModalDropdown from "./ModalDropdown";
 
-const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
+
+const AddTicketModal = ({
+  closeModal,
+  showTicketModal,
+  modalNumber,
+  callbackId,
+}) => {
+  const dispatch = useDispatch();
+
+  // use use selector to select the user callBack state
+  const userCallBackDetail = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchCallbackDetailWithCallbackIdReducer &&
+      state.AdminRootReducer.fetchCallbackDetailWithCallbackIdReducer
+        .callbackData
+    ) {
+      return state.AdminRootReducer.fetchCallbackDetailWithCallbackIdReducer
+        .callbackData.callback;
+    } else {
+      return [];
+    }
+  });
+  // console.log(userCallBackDetail);
+
+  // us use selector select to select the service engg state
+  const serviceEnggDetail = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchAllClientDetailReducer &&
+      state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+    ) {
+      return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail.ServiceEngg;
+    } else {
+      return [];
+    }
+  });
+  // console.log(serviceEnggDetail);
+
+  // mapping the service engg detail and store it into the variables
+  const serviceEnggDetailObject = serviceEnggDetail.map((serviceEngg) => ({
+    ...serviceEngg,
+  }))
+  // console.log(serviceEnggDetailObject);
+
+
+
+  useEffect(() => {
+    dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
+    dispatch(fetchAllClientDetailAction());
+  }, [dispatch]);
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -12,12 +68,63 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
     };
   }, []);
 
+  // console.log("callbackId", callbackId);
+
+
+//slots logic here starts-------------------------------------------------
+const timeSlots = [
+  {
+    slot:'9:00-10:00'
+  },
+  {
+    slot:'10:00-11:00'
+  },
+  {
+    slot:'11:00-12:00'
+  },
+  {
+    slot:'12:00-13:00'
+  },
+  {
+    slot:'13:00-14:00'
+  },
+  {
+    slot:'14:00-15:00'
+  },
+  {
+    slot:'15:00-16:00'
+  },
+  {
+    slot:'16:00-17:00'
+  },
+    {
+      slot:'17:00-18:00'
+    },
+  ]
+  
+  const slots = timeSlots.map((slot) => ({
+    ...slot,
+  }))
+  // console.log(slots);
+  
+  //slots logic here ends-------------------------------------------------
+
+
   const getDynamicData = () => {
     // Use modalNumber to determine the data dynamically
     if (modalNumber === 1) {
       return {
-        jon: "Some value 1",
-        name: "Preet Pankaj",
+        jon: userCallBackDetail?.JobOrderNumber,
+        name: userCallBackDetail?.clientDetail?.name,
+        number: userCallBackDetail?.clientDetail?.PhoneNumber,
+        Address: userCallBackDetail?.clientDetail?.Address,
+        typeOfIssue: userCallBackDetail?.TypeOfIssue,
+        description: userCallBackDetail?.Description,
+        Date: userCallBackDetail?.createdAt,
+        time: userCallBackDetail?.createdAt,
+        modelType: userCallBackDetail?.clientDetail?.ModelType,
+        EnggDetail: serviceEnggDetailObject,
+        slots:slots,
         class: "col-dynamic",
         inputFiled: false,
       };
@@ -112,7 +219,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="Preet Pankaj"
+                      value={dynamicData.name}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -126,7 +233,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="9416481863"
+                      value={dynamicData.number}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -140,7 +247,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="Address Address Address"
+                      value={dynamicData.Address}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -156,7 +263,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                       <input
                         type="text"
                         name="name"
-                        value="Door not working"
+                        value={dynamicData.typeOfIssue}
                         style={{ border: "none" }}
                       />
                     ) : (
@@ -175,7 +282,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                       <input
                         type="text"
                         name="name"
-                        value="Door not working"
+                        value={dynamicData.description}
                         style={{ border: "none" }}
                       />
                     ) : (
@@ -199,7 +306,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={6} />
+                    <input type="text" name="name" value={0} />
                   </div>
                 </div>
 
@@ -223,7 +330,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={"12/12/23"} />
+                    <input type="text" name="name" value={dynamicData.Date} />
                   </div>
                 </div>
                 <div className="row">
@@ -232,7 +339,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={"01:34"} />
+                    <input type="text" name="name" value={dynamicData.Date} />
                   </div>
                 </div>
               </form>
@@ -243,14 +350,18 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
           <div className="elevator-section">
             <div className="elevator-engg-detail-section">
               <div className="sub-engg-detail-section">
-                <span>ENGINEER DETAILS</span>
+                <span>ELEVATOR DETAILS</span>
 
                 <div className="elevator-detail-row">
                   <div className="col-elevator25">
                     <label>TYPE:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"Hydraulic"} />
+                    <input
+                      type="text"
+                      name="name"
+                      value={dynamicData.modelType}
+                    />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -347,26 +458,30 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       {/* <SingleSetDropdown/> */}
-                      <MultiSelectDropdown />
+                      <MultiSelectDropdown placeholder="Select Enggineers" Details={dynamicData.EnggDetail} />
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
-                      <SingleSetDropdown padding="6px" width="100%" />
+                      <SingleSetDropdown padding="6px" width="100%" placeholder="Allot A Checklist"/>
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
-                      <MultiSelectDropdown />
+                      <MultiSelectDropdown placeholder="Select Slot" slots={slots}/>
                     </div>
                   </div>
 
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
-                      <SingleSetDropdown padding="6px" width="100%" />
+                      {/* <SingleSetDropdown padding="6px" width="100%" placeholder="Select Date"/> */}
+                     <ReactDatePickers className='date-picker-dropdown'/>
+                   
+
+                  
                     </div>
                   </div>
                 </div>

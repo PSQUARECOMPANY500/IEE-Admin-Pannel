@@ -1136,7 +1136,7 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  top: -21%;
+  top: 4%;
   left: -15%;
   transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
@@ -1274,7 +1274,7 @@ footer a:hover {
   left: 75px;
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 31px;
+  margin-bottom: 20px;
 }
 
 .taskmain-info {
@@ -1925,8 +1925,8 @@ tbody tr {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 2;
   width: 100%;
 }
 
@@ -1958,7 +1958,7 @@ tbody tr {
   transform: translate(-50%, -50%) scale(1);
   border-radius: 8px;
   height: auto;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
 }
 
 .upload-photo-secton {
@@ -2009,9 +2009,10 @@ tbody tr {
   border-radius: 4px;
   resize: vertical;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
+  font-family: 'Poppins';
 }
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
@@ -2306,9 +2307,11 @@ tbody tr {
 /* dynamic ticket modal property starts styling */
 .col-dynamic {
   border: none !important;
+  outline: none !important;
 }
 .col-dynamic input[type="text"]:focus {
-  outline: none;
+  outline: none !important;
+  border: none !important;
 }
 
 .shadow-dynamic {
@@ -3112,3 +3115,33 @@ element.style {
 }
 
 /*---------------  mesage box input css ends  ------------------------------ */
+
+
+
+
+
+
+.ui-datepicker{
+  background: white;
+}
+
+.ui-datepicker-header {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.9rem;
+}
+
+.ui-datepicker-prev{
+  order:1
+}
+
+.ui-datepicker-next{
+  order: 3;
+}
+
+.ui-datepicker-title{
+  order: 2;
+}
+.ui-datepicker{
+  position: absolute;
+}

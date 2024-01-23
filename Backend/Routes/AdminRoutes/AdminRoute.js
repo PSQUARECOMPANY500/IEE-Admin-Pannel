@@ -14,6 +14,7 @@ router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
 router.get("/AllClients", adminContoller.getAllClientsData);
 router.get("/AllServiceEngg", adminContoller.getAllServiceEnggData);
+router.get("/getClientCalbackDetailWithClientDetail/:callbackId", adminContoller.getCallbackDetailByCallbackId);
 
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 

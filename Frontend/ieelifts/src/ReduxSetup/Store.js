@@ -2,7 +2,7 @@ import { createStore ,combineReducers, applyMiddleware} from 'redux';
 import {thunk} from 'redux-thunk';
 import  AdminRootReducer  from './RootReducers/AdminRootReducer'
 const rootReducer = combineReducers({
-     slice1:AdminRootReducer    
+     AdminRootReducer:AdminRootReducer    
 })
 
 

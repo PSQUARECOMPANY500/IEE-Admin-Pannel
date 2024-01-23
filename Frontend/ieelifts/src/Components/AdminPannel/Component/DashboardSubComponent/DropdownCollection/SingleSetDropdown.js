@@ -7,7 +7,7 @@ const options = [
   { value: "vanilla", label: "Vanilla" },
 ];
 
-const SingleSetDropdown = ({ width, padding }) => {
+const SingleSetDropdown = ({ width, padding , placeholder}) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleChange = (selected) => {
@@ -55,6 +55,7 @@ const SingleSetDropdown = ({ width, padding }) => {
 
   return (
     <Select
+      placeholder={placeholder}
       options={options}
       styles={customStyles}
       value={selectedOption}

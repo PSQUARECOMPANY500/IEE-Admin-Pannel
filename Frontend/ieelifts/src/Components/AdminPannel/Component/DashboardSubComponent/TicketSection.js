@@ -8,14 +8,26 @@ import FilterDropdown from "./FilterDropdown";
 import { GoPlus } from "react-icons/go";
 import AddTicketModal from "./AddTicketModal";
 
+// import { io } from 'socket.io-client';
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const TicketSection = () => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
+  // const socket = io('http://localhost:8000');
 
-  // modal manage states
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to the server:', socket.id);
+  //     socket.emit('send_message',{message:"hello"})
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   const [showTicketModal, setShowTicketModal] = useState(false);
 
@@ -32,13 +44,24 @@ const TicketSection = () => {
   });
 
   const fetchCallbacks = useSelector((state) => {
-    if (state.slice1 && state.slice1.fetchAllCallbackReducer && state.slice1.fetchAllCallbackReducer.callbacks) {
-      return state.slice1.fetchAllCallbackReducer.callbacks.Callbacks;
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchAllCallbackReducer &&
+      state.AdminRootReducer.fetchAllCallbackReducer.callbacks
+    ) {
+      return state.AdminRootReducer.fetchAllCallbackReducer.callbacks.Callbacks;
     } else {
       return [];
     }
   });
- 
+
+  const limitAddress = (address, limit) => {
+    return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
+  };
+
+  // const handleModalActions = (callbackid) =>{
+  //   console.log("callbackid",callbackid)
+  // }
 
   console.log(fetchCallbacks);
 
@@ -52,9 +75,6 @@ const TicketSection = () => {
   }, [dispatch]);
 
   const closeModal = () => setShowTicketModal(false);
-  // const closeModal1 = () => setShowTicketModal1(false);
-  const closeModal2 = () => setShowTicketModal2(false);
-  const closeModal3 = () => setShowTicketModal3(false);
 
   useEffect(() => {}, [checkboxStates]);
   const handleCheckBoxAll = () => {
@@ -174,6 +194,16 @@ const TicketSection = () => {
             <table className="task-list-table">
               <thead>
                 <tr>
+                  <th>
+                    {" "}
+                    <CheckBox
+                      id="checkbox1"
+                      checked={checkboxStates.checkbox1}
+                      handleCheckboxChange={() =>
+                        handleCheckBoxAll("checkbox1")
+                      }
+                    />
+                  </th>
                   <th>JON</th>
                   <th>NAME</th>
                   <th>NUMBER</th>
@@ -201,46 +231,55 @@ const TicketSection = () => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-              
-
                 {fetchCallbacks.map((data) => (
                   <tr className="selected" key={data.callbackId}>
-                  <td>{data.JobOrderNumber}</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-                    <div className="dropdown-address">
-                      <span>ADDRESS ADDRESS</span>
+                    <td>
+                      {" "}
+                      <CheckBox
+                        id={`checkbox-${data.callbackId}`}
+                        checked={checkboxStates[data.callbackId]}
+                        handleCheckboxChange={() =>
+                          handleCheckBoxSingle(data.callbackId)
+                        }
+                      />
+                    </td>
+                    <td>{data.JobOrderNumber}</td>
+                    <td>{data?.clientDetail?.name}</td>
+                    <td>{data?.clientDetail?.PhoneNumber}</td>
+                    <td>
+                      <div className="dropdown-address">
+                        <span>
+                          {limitAddress(data?.clientDetail?.Address, 20)}
+                        </span>
 
-                      <div className="dropdown-adddress-menu">
-                        <div className="drop-address">
-                          <p>
-                            Address: E 26, Phase 7, Industrial Area, Sector 73,
-                            Sahibzada Ajit Singh Nagar, Punjab 140308
-                          </p>
+                        <div className="dropdown-adddress-menu">
+                          <div className="drop-address">
+                            <p>{data?.clientDetail?.Address}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>{data.Description}</td>
-                  <td>{data.TypeOfIssue}</td>
-                  <td>{data.callbackDate}</td>
-                  <td>{data.callbackTime}</td>
-                  <td onClick={() => openModal(1)}>
-                    <AssignDropdown customAssign="assignColor" name="Assign" />
-                  </td>
-                  {showTicketModal1 && (
-                    <AddTicketModal
-                      closeModal={() => setShowTicketModal1(false)}
-                      showTicketModal={showTicketModal1}
-                      modalNumber={1}
-                    />
-                  )}
-                </tr>
+                    </td>
+                    <td>{data.Description}</td>
+                    <td>{data.TypeOfIssue}</td>
+                    <td>{data.callbackDate}</td>
+                    <td>{data.callbackTime}</td>
+                    <td onClick={() => openModal(1)}>
+                      <AssignDropdown
+                        customAssign="assignColor"
+                        name="Assign"
+                      />
+                    </td>
+                    {showTicketModal1 && (
+                      <AddTicketModal
+                        closeModal={() => setShowTicketModal1(false)}
+                        showTicketModal={showTicketModal1}
+                        modalNumber={1}
+                        // onClick={handleModalActions(data.callbackId)}
+                        callbackId={data.callbackId}
+                      />
+                    )}
+                  </tr>
                 ))}
-
-
-
               </tbody>
               {/* TABLE BODY ENDS */}
             </table>

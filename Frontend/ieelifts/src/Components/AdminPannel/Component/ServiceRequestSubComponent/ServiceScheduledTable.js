@@ -124,14 +124,14 @@ const ServiceScheduledTable = () => {
         {data.map((value)=>(
            <tbody>
            <tr className="selected">
-             {/* <td>
+             <td>
                {" "}
                <CheckBox
                  id="checkbox1"
                  checked={checkboxStates.checkbox1}
                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
                />
-             </td> */}
+             </td>
              <td>442113</td>
              <td>ram kumar</td>
              <td>9416484863</td>

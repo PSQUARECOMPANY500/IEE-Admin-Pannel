@@ -12,8 +12,7 @@ const ServiceEnggData = require("../../Modals/ServiceEngineerModals/ServiceEngin
 
 const ChecklistModal = require("../../Modals/ChecklistModal/ChecklistModal");
 
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 //function to handle insert data in the { checkList }
 module.exports.createCheckList = async (req, res) => {
@@ -58,16 +57,18 @@ module.exports.assignCallbacks = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
-    })
+    });
 
-    const populatedCallback = await ServiceAssigntoEngg
-    .findById(callback._id)
-    .populate('AllotAChecklist')
-    .exec();
+    const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
+      .populate("AllotAChecklist")
+      .exec();
 
     res
       .status(201)
-      .json({ message: "callback Assign Succesfully", callback : populatedCallback});
+      .json({
+        message: "callback Assign Succesfully",
+        callback: populatedCallback,
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
@@ -101,11 +102,9 @@ module.exports.AssignServiceRequests = async (req, res) => {
       ServiceProcess,
     });
 
-    const populatedService = await AssignSecheduleRequest
-    .findById(Request._id)
-    .populate('AllotAChecklist')
-    .exec();
-
+    const populatedService = await AssignSecheduleRequest.findById(Request._id)
+      .populate("AllotAChecklist")
+      .exec();
 
     res.status(201).json({
       message: "service Request Assign Succesfully",
@@ -123,15 +122,64 @@ module.exports.AssignServiceRequests = async (req, res) => {
 module.exports.getAllCallbacks = async (req, res) => {
   try {
     const callBackRequests = await getAllCalbacks.find();
+
+    //fetch extra client detail
+    const clientCallbacksDetails = await Promise.all(
+      callBackRequests.map(async (callback) => {
+        const clientDetail = await clientDetailSchema.findOne({
+          JobOrderNumber: callback.JobOrderNumber,
+        });
+        return {
+          ...callback._doc,
+          clientDetail: clientDetail,
+        };
+      })
+    );
+
     res.status(200).json({
       message: "all callBack fetched Succesfully",
-      Callbacks: callBackRequests,
+      Callbacks: clientCallbacksDetails,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
   }
 };
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Function to handle get Callbackdetail By CallbackId
+module.exports.getCallbackDetailByCallbackId = async (req,res) =>{
+  try {
+      const { callbackId } = req.params;
+
+      const clientCallbacksDetails = await getAllCalbacks.findOne({callbackId});
+
+      if(!clientCallbacksDetails){
+        res.status(404).json({message: "no data found with this callback id"})
+      }
+
+          const clientDetail = await clientDetailSchema.findOne({
+            JobOrderNumber : clientCallbacksDetails.JobOrderNumber,
+          })
+       
+      
+          const callbackClientdetails = {
+            ...clientCallbacksDetails._doc,
+            clientDetail: clientDetail,
+          };
+
+      res.status(200).json({
+        message:"all detal fetched successfully",
+        callback:callbackClientdetails
+      })
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+}
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
