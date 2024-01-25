@@ -1,11 +1,13 @@
-import React from "react";
+import React,{useState} from "react";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-const MultiSelectDropdown = ({placeholder,Details,slots}) => {
+const MultiSelectDropdown = ({placeholder,Details,slots,onSelectionchange}) => {
+
+  const [selectedValue , setSelectedValue] = useState([]);
  
   const enggDetailsData = Details || slots || [];
 
@@ -71,6 +73,14 @@ const MultiSelectDropdown = ({placeholder,Details,slots}) => {
     }),
   };
 
+  const handleChange = (selectedOption) =>{
+  console.log("Bainsdika information : ",selectedOption);
+    onSelectionchange(selectedOption)
+    setSelectedValue(selectedOption)
+    console.log(selectedOption)
+  }
+
+
   return (
     <Select
       placeholder={placeholder}
@@ -79,6 +89,8 @@ const MultiSelectDropdown = ({placeholder,Details,slots}) => {
       isMulti
       options={dynamicOptions}
       styles={customStyles} // Apply the custom styles
+      onChange={handleChange}
+      value={selectedValue}
     />
   );
 };

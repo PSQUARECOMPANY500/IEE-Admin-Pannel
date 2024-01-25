@@ -29,6 +29,9 @@ const TicketSection = () => {
   //   };
   // }, []);
 
+ 
+  const [callbackId, setCallbackId] = useState()
+
   const [showTicketModal, setShowTicketModal] = useState(false);
 
   const [showTicketModal1, setShowTicketModal1] = useState(false);
@@ -59,11 +62,11 @@ const TicketSection = () => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-  // const handleModalActions = (callbackid) =>{
-  //   console.log("callbackid",callbackid)
-  // }
+
 
   console.log(fetchCallbacks);
+
+
 
   const handleTicketFilter = () => {
     console.log("this is handle filter function");
@@ -113,10 +116,12 @@ const TicketSection = () => {
     };
   }, [dropdownRef]);
 
-  const openModal = (modalNumber) => {
+  const openModal = (modalNumber, callbackId) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
+      setCallbackId(callbackId); // Set the callbackId here
       setShowTicketModal1(true);
+
     } else if (modalNumber === 2) {
       setShowTicketModal2(true);
     } else if (modalNumber === 3) {
@@ -179,6 +184,7 @@ const TicketSection = () => {
               </p>
             </div>
             {showTicketModal && (
+              
               <AddTicketModal
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
@@ -231,7 +237,9 @@ const TicketSection = () => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-                {fetchCallbacks.map((data) => (
+                {fetchCallbacks.map((data) => {
+                 const currentCallbackId = data.callbackId;
+                 return(
                   <tr className="selected" key={data.callbackId}>
                     <td>
                       {" "}
@@ -263,23 +271,25 @@ const TicketSection = () => {
                     <td>{data.TypeOfIssue}</td>
                     <td>{data.callbackDate}</td>
                     <td>{data.callbackTime}</td>
-                    <td onClick={() => openModal(1)}>
+                    <td onClick={() => openModal(1, currentCallbackId)}>
                       <AssignDropdown
                         customAssign="assignColor"
                         name="Assign"
                       />
                     </td>
                     {showTicketModal1 && (
+               
                       <AddTicketModal
                         closeModal={() => setShowTicketModal1(false)}
                         showTicketModal={showTicketModal1}
                         modalNumber={1}
-                        // onClick={handleModalActions(data.callbackId)}
-                        callbackId={data.callbackId}
+                        callbackId={callbackId} 
                       />
                     )}
                   </tr>
-                ))}
+                 )
+
+                    })}
               </tbody>
               {/* TABLE BODY ENDS */}
             </table>

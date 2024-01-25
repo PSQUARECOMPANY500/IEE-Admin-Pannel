@@ -1,6 +1,56 @@
 import { GET_ALL_CALLBACK } from '../Actions/AdminActions';
 import { GET_CALLBACK_BY_ID } from '../Actions/AdminActions'
 import { GET_ALL_CLIENT_DETAIL } from '../Actions/AdminActions'
+import { GET_ALL_CHECKLIST } from '../Actions/AdminActions'
+import { GET_ENGG_DETAIL } from '../Actions/AdminActions'
+import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+//fetch assignCallBackByAdminReducer
+
+const intialState5 = {
+    callBackDetail:null
+}
+export const assignCallBackByAdminReducer = (state=intialState5, action) =>{
+    switch(action.type) {
+        case ASSIGN_CALLBACK_BY_ADMIN:
+           return {...state, callBackDetail:action.payload}
+        default:
+            return state   
+    }
+}
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//fetch engg detail reducer
+const intialState4={
+    enggDetail:null
+}
+export const fetchEnggDetailReducer = (state=intialState4, action) =>{
+    switch(action.type) {
+        case GET_ENGG_DETAIL:
+            return {...state,enggDetail:action.payload }
+        default:
+            return state    
+    }
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//fetch checklist Reducer
+const intialState3={
+    checklists:null
+}
+export const fetchChecklistReducer = (state=intialState3, action) =>{
+    switch(action.type) {
+        case GET_ALL_CHECKLIST:
+            return {...state, checklists:action.payload}
+        default:
+            return state
+    }
+}
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------

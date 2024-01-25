@@ -36,16 +36,26 @@ module.exports.RegisterClientAsPhoneNumber = async (req,res) =>{
 //function to handle Login Client as a { phoneNumber }
 module.exports.loginClientwithPhoneNumber = async (req,res) =>{
   try {
-    const {PhoneNumber ,Password} = req.body;
+    const {Number ,password} = req.body;
 
-    const client = await RegisterClientAsPhoneNumber.findOne({PhoneNumber});
+    const client = await RegisterClientAsPhoneNumber.findOne({PhoneNumber:Number});
+    // console.log("nulaa",client)
 
-    if(!client || client.Password !== Password){
+    if(!client || client.Password !== password){
       return res.status(401).json({message:"Invalid Credentials"})
     }
 
-    const token = generateToken({ PhoneNumber });
-    res.status(200).json({ message:'You are logged in Successfully',client, token });
+  const clientJonDetail = await RegisterClientDetails.findOne({PhoneNumber:client.PhoneNumber})
+  
+  const CLientDetailWithPhoneNumber = {
+    ...client._doc,
+    clientJonDetail
+  }
+
+
+
+    const token = generateToken({ Number });
+    res.status(200).json({ message:'You are logged in Successfully',CLientDetailWithPhoneNumber, token });
 
   } catch (error) {
     console.log(error);
@@ -85,7 +95,7 @@ module.exports.GetAllJobOrderNumberByClientPhoneNumber = async (req,res) =>{
 module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
   try {
     // Extract user data from the request body
-    const { JobOrderNumber,name, Password, PhoneNumber, Address, DateOfHandover,ProfieImage,ModelType } =
+    const { JobOrderNumber,name, Password, PhoneNumber, Address, DateOfHandover,ProfileImage,ModelType } =
       req.body;
 
     const ExistingClient = await RegisterClientDetails.findOne({
@@ -103,7 +113,7 @@ module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
       PhoneNumber,
       Address,
       DateOfHandover,
-      ProfieImage,
+      ProfileImage,
       ModelType
     });
 
@@ -125,17 +135,18 @@ module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
 //function to handle login client with Job Order Number
 module.exports.loginClientWithJobOrderNumber = async (req, res) => {
   try {
-    const { JobOrderNumber, password } = req.body;
+    const { Number, password } = req.body;
     // console.log(JobOrderNumber);
 
     // firstly check the user is exist or not
-    const client = await RegisterClientDetails.findOne({ JobOrderNumber });
+    const client = await RegisterClientDetails.findOne({ JobOrderNumber:Number });
+    // console.log('hero',client)
 
     if (!client || client.Password !== password) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    const token = generateToken({ JobOrderNumber });
+    const token = generateToken({ Number });
     res.status(200).json({ message:'You are logged in Successfully',client, token });
   } catch (error) {
     console.error("Error logging in client:", error);

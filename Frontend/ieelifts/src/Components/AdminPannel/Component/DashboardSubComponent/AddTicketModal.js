@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
-import ModalDropdown from "./ModalDropdown";
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+
 
 const AddTicketModal = ({
   closeModal,
@@ -17,6 +21,83 @@ const AddTicketModal = ({
   callbackId,
 }) => {
   const dispatch = useDispatch();
+
+  //  backtrack the engg detail using useState
+
+  //  manage use states for the input fields
+  const [jon, setJon] = useState("");
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [typeOfIssue, setTypeOfIssue] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [modelType, setModelType] = useState("");
+  const [enggDetail, setEnggDetail] = useState([]);
+  const [slot, setSlot] = useState([]);
+  // const [selectedEngg, setSelectedEngg] = useState([]);
+  // const [checklist, setChecklist] = useState("");
+  // const [selectedSlot, setSelectedSlot] = useState("");
+  // const [selectedDate, setSelectedDate] = useState("");
+  // const [comments, setComments] = useState("");
+
+  //handle engg Data change state
+  const [enggJon, setEnggJon] = useState("");
+  const [enggName, setEnggName] = useState("");
+  const [enggPhone, setEnggPhone] = useState("");
+  const [enggAddress, setEnggAddress] = useState("");
+  const [enggLocation, setEnggLocation] = useState("");
+  const [enggRating, setEnggRating] = useState("");
+
+  //slots logic here starts-------------------------------------------------
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+
+  const slots = timeSlots.map((slot) => ({
+    ...slot,
+  }));
+  //slots logic here ends-------------------------------------------------
+
+  //using use selector to select the checklist in check list state
+  const checkList = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchChecklistReducer &&
+      state.AdminRootReducer.fetchChecklistReducer.checklists
+    ) {
+      return state.AdminRootReducer.fetchChecklistReducer.checklists.Checklists;
+    } else {
+      return [];
+    }
+  });
+  // console.log(checkList)
 
   // use use selector to select the user callBack state
   const userCallBackDetail = useSelector((state) => {
@@ -34,32 +115,77 @@ const AddTicketModal = ({
   });
   // console.log(userCallBackDetail);
 
-  // us use selector select to select the service engg state
+  // use use selector select to select the service engg state
   const serviceEnggDetail = useSelector((state) => {
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.fetchAllClientDetailReducer &&
       state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
     ) {
-      return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail.ServiceEngg;
+      return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+        .ServiceEngg;
     } else {
       return [];
     }
   });
   // console.log(serviceEnggDetail);
 
-  // mapping the service engg detail and store it into the variables
+  // mapping the service engg detail and store it into the variable
   const serviceEnggDetailObject = serviceEnggDetail.map((serviceEngg) => ({
     ...serviceEngg,
-  }))
-  // console.log(serviceEnggDetailObject);
+  }));
 
+  //mappping the checklist detail and store it inti the variable
+  const checkListDetail = checkList.map((checklist) => ({
+    ...checklist,
+  }));
 
+  //get eng state by use selector hook
+  const getEnggState = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchEnggDetailReducer &&
+      state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+    ) {
+      return state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+        .enggDetail;
+    }
+  });
+
+  useEffect(() => {
+    setEnggJon(getEnggState?.EnggId);
+    setEnggName(getEnggState?.EnggName);
+    setEnggPhone(getEnggState?.PhoneNumber);
+    setEnggAddress(getEnggState?.EnggAddress);
+  }, [getEnggState]);
+
+  const handleEnggSelectionChange1 = (id) => {
+    return;
+  };
+
+  //handle Engg dropdown List
+  const handleEnggSelectionChange = (selectedOptions) => {
+    dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+  };
 
   useEffect(() => {
     dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
     dispatch(fetchAllClientDetailAction());
+    dispatch(fetchChecklistAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    setJon(userCallBackDetail?.JobOrderNumber || "");
+    setName(userCallBackDetail?.clientDetail?.name || "");
+    setNumber(userCallBackDetail?.clientDetail?.PhoneNumber || "");
+    setAddress(userCallBackDetail?.clientDetail?.Address || "");
+    setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
+    setDescription(userCallBackDetail?.Description || "");
+    setDate(userCallBackDetail?.createdAt || "");
+    setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
+    setEnggDetail(serviceEnggDetailObject || []);
+    setSlot(slots || []);
+  }, [userCallBackDetail]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -68,63 +194,24 @@ const AddTicketModal = ({
     };
   }, []);
 
-  // console.log("callbackId", callbackId);
-
-
-//slots logic here starts-------------------------------------------------
-const timeSlots = [
-  {
-    slot:'9:00-10:00'
-  },
-  {
-    slot:'10:00-11:00'
-  },
-  {
-    slot:'11:00-12:00'
-  },
-  {
-    slot:'12:00-13:00'
-  },
-  {
-    slot:'13:00-14:00'
-  },
-  {
-    slot:'14:00-15:00'
-  },
-  {
-    slot:'15:00-16:00'
-  },
-  {
-    slot:'16:00-17:00'
-  },
-    {
-      slot:'17:00-18:00'
-    },
-  ]
-  
-  const slots = timeSlots.map((slot) => ({
-    ...slot,
-  }))
-  // console.log(slots);
-  
-  //slots logic here ends-------------------------------------------------
 
 
   const getDynamicData = () => {
     // Use modalNumber to determine the data dynamically
     if (modalNumber === 1) {
       return {
-        jon: userCallBackDetail?.JobOrderNumber,
-        name: userCallBackDetail?.clientDetail?.name,
-        number: userCallBackDetail?.clientDetail?.PhoneNumber,
-        Address: userCallBackDetail?.clientDetail?.Address,
-        typeOfIssue: userCallBackDetail?.TypeOfIssue,
-        description: userCallBackDetail?.Description,
-        Date: userCallBackDetail?.createdAt,
-        time: userCallBackDetail?.createdAt,
-        modelType: userCallBackDetail?.clientDetail?.ModelType,
-        EnggDetail: serviceEnggDetailObject,
-        slots:slots,
+        jon: jon,
+        name: name,
+        number: number,
+        Address: address,
+        typeOfIssue: typeOfIssue,
+        description: description,
+        Date: date,
+        time: date,
+        modelType: modelType,
+        EnggDetail: enggDetail,
+        slots: slot,
+        checkList: checkListDetail,
         class: "col-dynamic",
         inputFiled: false,
       };
@@ -382,70 +469,106 @@ const timeSlots = [
                 </div>
               </div>
 
+              {/*engg detail div start here------------------------------------------------------------------------------  */}
               <div className="sub-engg-detail-section">
                 <div style={{ marginTop: "10px" }}>
                   <p>ENGINEER DETAILS</p>
 
                   <div className="engg-photo-section">
                     <div>
-                      <img
-                        style={{ width: "90px", height: "90px" }}
-                        src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
-                        alt="lift"
-                      />
+                      {enggJon ? (
+                        <img
+                          style={{ width: "90px", height: "90px" }}
+                          src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+                          alt="lift"
+                        />
+                      ) : (
+                        <SkeltonLoader width="90px" height="90px" />
+                      )}
                     </div>
-                    <div style={{ width: "60%" }}>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input type="text" name="name" value={"2022100"} />
+
+                    <div style={{ width: "50%" }}>
+                      {enggJon ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input type="text" name="name" value={enggJon} />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input
-                            type="text"
-                            name="name"
-                            value={"Arjun Rawat"}
-                          />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {enggJon ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input type="text" name="name" value={enggName} />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input type="text" name="name" value={"9898989898"} />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {enggJon ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input type="text" name="name" value={enggPhone} />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input
-                            type="text"
-                            name="name"
-                            value={"Address, Address"}
-                          />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {enggJon ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input
+                              type="text"
+                              name="name"
+                              value={enggAddress}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
                     </div>
                   </div>
 
                   <div>
-                    <div
-                      className="elevator-detail-row"
-                      style={{ marginTop: "10px" }}
-                    >
-                      <div className="col-elevator25" style={{ width: "30%" }}>
-                        <label>LOCATION:</label>
+                    {enggJon ? (
+                      <div
+                        className="elevator-detail-row"
+                        style={{ marginTop: "10px" }}
+                      >
+                        <div
+                          className="col-elevator25"
+                          style={{ width: "30%" }}
+                        >
+                          <label>LOCATION:</label>
+                        </div>
+                        <div className="col-elevator75">
+                          <input type="text" name="name" value={enggLocation} />
+                        </div>
                       </div>
-                      <div className="col-elevator75">
-                        <input type="text" name="name" value={"Punchkula"} />
+                    ) : (
+                      <SkeltonLoader width="100px" height="10px" />
+                    )}
+
+                    {enggJon ? (
+                      <div className="elevator-detail-row">
+                        <div
+                          className="col-elevator25"
+                          style={{ width: "30%" }}
+                        >
+                          <label>RATING:</label>
+                        </div>
+                        <div className="col-elevator75">
+                          <input type="text" name="name" value={enggRating} />
+                        </div>
                       </div>
-                    </div>
-                    <div className="elevator-detail-row">
-                      <div className="col-elevator25" style={{ width: "30%" }}>
-                        <label>RATING:</label>
-                      </div>
-                      <div className="col-elevator75">
-                        <input type="text" name="name" value={"4.2"} />
-                      </div>
-                    </div>
+                    ) : (
+                      <SkeltonLoader width="100px" height="10px" />
+                    )}
                   </div>
                 </div>
               </div>
@@ -458,19 +581,32 @@ const timeSlots = [
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       {/* <SingleSetDropdown/> */}
-                      <MultiSelectDropdown placeholder="Select Enggineers" Details={dynamicData.EnggDetail} />
+                      <MultiSelectDropdown
+                        placeholder="Select Enggineers"
+                        Details={dynamicData.EnggDetail}
+                        onSelectionchange={handleEnggSelectionChange}
+                      />
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
-                      <SingleSetDropdown padding="6px" width="100%" placeholder="Allot A Checklist"/>
+                      <SingleSetDropdown
+                        padding="6px"
+                        width="100%"
+                        placeholder="Allot A Checklist"
+                        Details={dynamicData.checkList}
+                      />
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
-                      <MultiSelectDropdown placeholder="Select Slot" slots={slots}/>
+                      <MultiSelectDropdown
+                        placeholder="Select Slot"
+                        slots={slots}
+                        onSelectionchange={handleEnggSelectionChange1}
+                      />
                     </div>
                   </div>
 
@@ -478,10 +614,9 @@ const timeSlots = [
                     <div className="col75">
                       {/* <ModalDropdown></ModalDropdown> */}
                       {/* <SingleSetDropdown padding="6px" width="100%" placeholder="Select Date"/> */}
-                     <ReactDatePickers className='date-picker-dropdown'/>
-                   
-
-                  
+                      <div className="data-pic">
+                        <ReactDatePickers className="date-picker-dropdown" />
+                      </div>
                     </div>
                   </div>
                 </div>

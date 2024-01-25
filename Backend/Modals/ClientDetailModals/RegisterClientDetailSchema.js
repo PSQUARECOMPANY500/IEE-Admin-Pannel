@@ -28,7 +28,7 @@ const clientRegister = new Schema(
       type: String,
       required: true,
     },
-    ProfieImage: {
+    ProfileImage: {
       type: String,
       required: true,
     },

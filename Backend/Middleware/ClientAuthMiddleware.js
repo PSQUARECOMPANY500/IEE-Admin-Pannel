@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 // Function to generate a JWT token
 const generateToken = (user) => {
-  return jwt.sign({ user }, "client-secret-key", { expiresIn: "1h" });
+  return jwt.sign({ user }, "client-secret-key", { expiresIn: "1h"});
 };
 
 // Middleware to verify the user's JWT token
