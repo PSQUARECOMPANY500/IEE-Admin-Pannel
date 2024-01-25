@@ -111,7 +111,7 @@ const Sidebar = ({ children }) => {
       icon: <MdOutlineAirlineSeatReclineNormal />,
     },
     {
-      Path: "/afgd",
+      Path: "/Memberships",
       name: "Memberships",
       icon: <MdOutlineCardMembership />,
     },
@@ -136,6 +136,9 @@ const Sidebar = ({ children }) => {
         break;
       case "/Requests":
         setTopBarHeading("Service Requests");
+        break;
+      case "/Memberships":
+        setTopBarHeading("Memberships");
         break;
       // Add more cases for other pages
       default:
