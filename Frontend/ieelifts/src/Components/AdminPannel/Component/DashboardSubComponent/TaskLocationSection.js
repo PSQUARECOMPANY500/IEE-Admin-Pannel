@@ -3,13 +3,19 @@ import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import { LiaStarSolid } from "react-icons/lia";
 import FilterDropdown from "./FilterDropdown";
+import KanbanSection from "./KanbanSection";
 
-const TaskLocationSection = () => {
+const TaskLocationSection = ( props) => {
   const dropdownRef = useRef(null);
 
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  
+
+  const handlekanban = ()=>{
+    props.setKanban(!props.kanban)
+  }
 
   const toggleTickets = () => {
     console.log("toogletickets");
@@ -45,13 +51,14 @@ const TaskLocationSection = () => {
   }, [dropdownRef]);
 
   return (
-    <div className="parent-full-div">
-      <div className="child-div">
-        <div className="tasks-section">
+    <div className={"parent-full-div"}>
+      <div className={props.kanban?"child-div":"child-div-on-kanban"}>
+        <div className={props.kanban?"tasks-section":"tasks-section-on-kanban "}>
           <div className="task-top-section">
             <p>Tasks</p>
 
-            <div className="switch-button">
+            <div className="switch-button ">
+              <span className="ticket-service-flex">
               <p
                 className={
                   ticket ? "switch-button-hover" : "switch-button-without-hover"
@@ -70,9 +77,11 @@ const TaskLocationSection = () => {
               >
                 Service
               </p>
+              </span>
+
             </div>
 
-            <div className="sub-components">
+            {props.kanban?<div className="sub-components">
               <p className="filter-icon" onClick={handleFilter}>
                 <LuSettings2 />
                 {""}
@@ -82,10 +91,12 @@ const TaskLocationSection = () => {
                   <FilterDropdown />
                 </div>
               )}
-            </div>
+            </div>:null}
+
+
           </div>
 
-          <div className="task-description-section">
+          {props.kanban?<div className="task-description-section">
             {/* swap conditions start here */}
             {ticket && (
               <>
@@ -322,10 +333,10 @@ const TaskLocationSection = () => {
                 </div>
               </>
             )}
-          </div>
+          </div>:null}
         </div>
 
-        <div className="Report-section">
+        {props.kanban?<div className="Report-section">
           <div className="task-top-section">
             <p>Report</p>
           </div>
@@ -337,11 +348,14 @@ const TaskLocationSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>:null}
 
-        <div className="location-section">
+        <div className={props.kanban?"location-section":"kanban-Click-section"}>
           <div className="task-top-section">
             <p>Location</p>
+            <div  onClick={handlekanban} className="kanban-button-location">
+            <span >KANBAN</span>
+          </div>
           </div>
           <div className="report-description-section">
             <div className="more-descriptive">
@@ -356,7 +370,11 @@ const TaskLocationSection = () => {
             </div>
           </div>
         </div>
+        <div  onClick={handlekanban}  className={props.kanban?"kanban-Click-section":"kanban-button"}>
+            <p className="kanban-cursor">KANBAN</p>
+          </div>
       </div>
+      {props.kanban?null:<KanbanSection ticket={ticket} services={services}/>}
     </div>
   );
 };
