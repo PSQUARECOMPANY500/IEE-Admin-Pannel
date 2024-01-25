@@ -3,7 +3,8 @@
 import React from "react";
 import MembershipSubCard from "./MembershipSubCard";
 
-const MembershipCard = ({ DemoData }) => {
+const MembershipCard = ({ DemoData,order }) => {
+  const numRows = order === 1 ? 5 : 1;
   const titleClass =
     DemoData.dataType === "Warrenty"
       ? "membership_card_title_warrenty"

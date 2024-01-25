@@ -292,11 +292,11 @@ const Membership = () => {
   return (
     <>
       <div className="main-container">
-        <div className="membershipCards">
-          <MembershipCard DemoData={warrentyDemoData} />
-          <MembershipCard DemoData={platinumDemoData} />
-          <MembershipCard DemoData={goldDemoData} />
-          <MembershipCard DemoData={silverDemoData} />
+        <div className="membershipCards membershipCards_expand">
+          <MembershipCard DemoData={warrentyDemoData} order={1} />
+          <MembershipCard DemoData={platinumDemoData} order={2} />
+          <MembershipCard DemoData={goldDemoData} order={3} />
+          <MembershipCard DemoData={silverDemoData} order={4} />
         </div>
       </div>
     </>
