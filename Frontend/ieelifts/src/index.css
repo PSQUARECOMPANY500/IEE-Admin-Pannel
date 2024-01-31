@@ -38,12 +38,13 @@ code {
   /* min-height: 30vh; */
   background-color: #ffffff;
   padding: 2%;
-  margin: 0.49rem;
+  margin: 1rem;
   border-radius: 0.8rem;
-  box-shadow: 0px 0px 5px #ffffff;
   border: 1px solid #ffffff;
-  transition: all 0.3s ease;
+  box-shadow: 0px 0px 5px #ffffff;
   overflow-y: hidden;
+  /* width: 100%; */
+  transition: border 0.6s ease;
 }
 
 .membership_card_warrenty:hover {
@@ -59,7 +60,7 @@ code {
 }
 
 .membership_card_silver:hover {
-  border: 1px solid #8e8e8e;
+  border: 1px solid #b7b7b7;
 }
 
 .membership_card_warrenty_shadow {
@@ -75,7 +76,7 @@ code {
 }
 
 .membership_card_silver_shadow {
-  box-shadow: 0px 0px 5px #8e8e8e;
+  box-shadow: 0px 0px 5px #b7b7b7;
 }
 
 .membership_card_topbar {
@@ -140,7 +141,7 @@ code {
 }
 
 .membership_card_counts_silver {
-  background-color: #8e8e8e;
+  background-color: #b7b7b7;
 }
 
 .membership_card_stats {
@@ -219,8 +220,8 @@ code {
 }
 
 .membership_card_scrollable_silver:hover::-webkit-scrollbar-thumb {
-  background-color: #8e8e8e;
-  border: 1px solid #8e8e8e;
+  background-color: #b7b7b7;
+  border: 1px solid #b7b7b7;
 }
 
 .membership_card_scrollable_expired:hover::-webkit-scrollbar-thumb {
@@ -252,7 +253,7 @@ code {
 }
 
 .membership_card_data_display_expiring_border_silver {
-  border: 1px solid #8e8e8e;
+  border: 1px solid #b7b7b7;
 }
 
 .membership_card_data_display {
@@ -291,7 +292,7 @@ code {
   background-color: #f8ac1d;
 }
 .membership_card_data_display_expiring_silver {
-  background-color: #8e8e8e;
+  background-color: #b7b7b7;
 }
 
 .membership_card_data_display_expired {
@@ -365,16 +366,109 @@ code {
 /* <-------------------------------media query for membership card ends-----------------------------------> */
 
 /* <------------------------------ membership card expanding css --------------------------------------->*/
-/* 
+
 .membershipCards_expand {
+  display: grid;
   grid-template-columns: 77% 20%;
   gap: 2%;
+  align-items: center;
 }
 
-.membership_card_expand{
-  grid-template-rows: repeat(5, 1fr);
-  height: 500vh;
+/* .animation {
 } */
+
+.membership_card_expand {
+  animation: expandAnimation 1.5s ease-in-out forwards;
+  margin: 0rem;
+  grid-column: span 1;
+  grid-row: span 4;
+  height: 48rem;
+}
+
+.membership_card_expand_non {
+  animation: expandAnimationReverse 1.5s ease-in-out forwards;
+}
+
+.membership_card_counts_expand {
+  color: #ffffff;
+  padding: 1% 1.5%;
+  border-radius: 50%;
+}
+
+@keyframes expandAnimation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes expandAnimationReverse {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.after_expansion_labels {
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  font-size: smaller;
+  color: #444444;
+}
+
+.after_expansion_labels_expired {
+  color: #c10000;
+}
+
+.membership_card_topbar_non_expand {
+  padding-bottom: 3%;
+}
+
+.membership_card_topbar_expand {
+  border: none;
+}
+
+/* ---------------------total revenue css  ----------------------------------- */
+
+.total_revenue_outer {
+  border: 1px solid #ffffff;
+  color: #444444;
+}
+
+.total_revenue_outer_border {
+  border: 1px solid #444444;
+}
+
+.total_revenue_outer_shadow {
+  box-shadow: 0px 0px 5px #444444;
+}
+
+.total_revenue {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.total_revenue_heading {
+  font-size: larger;
+  border-bottom: 1px solid #e5e5e5;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 5%;
+}
+
+.total_revenue_amount {
+  margin-top: 5%;
+  font-size: xx-large;
+}
+
+/* ---------------------total revenue css ends ----------------------------------- */
 
 /* <------------------------------ membership card expanding css ends --------------------------------------->*/
 
