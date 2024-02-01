@@ -23,9 +23,12 @@ body::-webkit-scrollbar-thumb {
 .main-container {
   width: 100%;
   background: #fff9ef;
+  position: relative; 
 }
+
+
 .container {
-  display: flex;
+  display: flex; 
 }
 
 main {
@@ -1270,13 +1273,16 @@ footer a:hover {
 /* dashboard carosel css ends */
 
 /* taskLocationsection css starts */
+
 .parent-full-div {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
-  margin-top: 30px;
-  background: #ffffff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #c1c1c180;
+    border-radius: 4px;
+    margin-top: 50px;
+    padding-top: 5px;
+    background: #ffffff;
 }
+
 
 .child-div {
   display: flex;
@@ -1288,17 +1294,41 @@ footer a:hover {
 .tasks-section {
   width: 40%;
 }
+
+.tasks-section-on-kanban {
+  width: 56%;
+  animation: move-words 0.4s linear forwards;
+  transition: 0.3s ;
+}
+
+@keyframes move-words {
+  0% {
+    left: 40%;
+  }
+  100% {
+    left: 100%; 
+  }
+
+}
+
+.kanban-cursor{
+  cursor: pointer;
+}
+
 .Report-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 .location-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 
 .task-top-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  z-index: -1;
 }
 
 .sub-components {
@@ -1306,6 +1336,7 @@ footer a:hover {
   justify-content: center;
   align-items: center;
   gap: 0px;
+  animation: changeKanban 1.5s ease forwards;
 }
 
 .task-description-section {
@@ -1317,6 +1348,7 @@ footer a:hover {
   height: 320px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  animation: changeText 0.7s linear forwards;
 }
 /* set scroll behaviour  */
 
@@ -1369,8 +1401,8 @@ footer a:hover {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
+  MARGIN-TOP: -6px;
 }
-
 .task-top-section p {
   color: #191919;
   font-size: 20px;
@@ -1433,16 +1465,53 @@ footer a:hover {
   gap: 3px;
   width: 100%;
 }
+.kanban-button {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #F8AC1D;
+  background: #F8AC1D;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto; 
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+.kanban-button-location:hover{
+  background: #F8AC1D;
+}
+.kanban-button-location {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #F8AC1D;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto; 
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
+.kanban-Click-section{
+display: none;
+}
 
 .switch-button {
   display: flex;
+}
+.ticket-service-flex{
+  display: flex;
+  
 }
 
 .switch-button p {
   padding: 4px 24px;
   border-radius: 5px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+ 
   cursor: pointer;
   color: #f8ac1d;
   font-weight: 500;
@@ -3099,7 +3168,172 @@ element.style {
 
 /*---------------  mesage box input css ends  ------------------------------ */
 
+/* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
 
+.kanban-section{
+  height: 83vh;
+  display: flex;
+  animation: changeKanban 1.5s ease forwards;
+}
+@keyframes changeKanban{
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    
+  }
+}
+
+.Unresolved-section,
+.Assigned-section,
+.Completed-section {
+  flex-grow: 1;
+  overflow: auto; 
+  display: flex ;
+  flex-direction: column;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  margin-top: 1%;
+  margin-bottom: 5%;
+ 
+}
+
+
+.Unresolved{
+  color: #C10000;
+  font-size: 1.125rem;
+  text-align: center;
+  animation: changeText 0.7s linear forwards;
+}
+
+@keyframes changeText {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Assigned{
+  color: #F8AC1D;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.Completed{
+  color: #389300;
+  font-size: 1.125rem;
+  text-align: center;
+  
+}
+.unresolved-data-item{
+background: #FFFAFA 0% 0% no-repeat padding-box;
+box-shadow: 0px 0px 5px #C100004D;
+border: 1px solid #C100004D;
+border-radius: 10px;
+opacity: 1;
+padding-top: 3%;
+padding-bottom: 3%;
+padding-left: 11%;
+padding-right: 11%;
+margin-top: 5%;
+margin-bottom: 5%;
+margin-right: 2%;
+
+}
+
+.data-section{
+  display: flex;
+  justify-content:space-between;
+}
+
+
+
+.assigned-data-item{
+background: #FFFDF8 0% 0% no-repeat padding-box;
+box-shadow: 0px 0px 5px #F8AC1D4D;
+border: 1px solid #F8AC1D4D;
+border-radius: 10px;
+opacity: 1;
+padding-top: 3%;
+padding-bottom: 3%;
+padding-left: 11%;
+padding-right: 11%;
+margin-top: 5%;
+margin-bottom: 5%;
+margin-right: 2%;
+}
+
+
+
+
+.completed-data-item{
+background: #F9FFF5 0% 0% no-repeat padding-box;
+box-shadow: 0px 0px 5px #3893004D;
+border: 1px solid #3893004D;
+border-radius: 10px;
+opacity: 1;
+padding-top: 3%;
+padding-bottom: 3%;
+padding-left: 11%;
+padding-right: 11%;
+margin-top: 5%;
+margin-bottom: 5%;
+margin-right: 2%;
+}
+.data-label{
+  font-size:  0.875rem;
+  font: bold;
+  font-weight:500;
+}
+.data-value{
+   font-size:  0.875rem;
+}
+
+.kanban-Unresolved-section-scroll,
+.kanban-Assigned-section-scroll,
+.kanban-Completed-section-scroll{
+  margin-top: 1rem;
+  gap: 1rem;
+  overflow-x:hidden ;
+  scroll-behavior: smooth;
+
+}
+/* set scroll behaviour  */
+
+.kanban-Unresolved-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #C100004D; /* Change the color to your desired hover color */
+}
+.kanban-Assigned-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #F8AC1D4D; /* Change the color to your desired hover color */
+}
+.kanban-Completed-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #3893004D; /* Change the color to your desired hover color */
+}
+.kanban-Unresolved-section-scroll::-webkit-scrollbar,
+.kanban-Assigned-section-scroll::-webkit-scrollbar,
+.kanban-Completed-section-scroll::-webkit-scrollbar{
+  width: 2px; /* width of the entire scrollbar */
+}
+
+.kanban-Unresolved-section-scroll::-webkit-scrollbar-track,
+.kanban-Assigned-section-scroll::-webkit-scrollbar-track,
+.kanban-Completed-section-scroll::-webkit-scrollbar-track{ /* width of the entire scrollbar */
+    margin-top: 23px;
+    margin-bottom: 23px;
+}
+.unresolved-data-item:hover {
+  box-shadow: 0px 0px 10px #C100004D;
+}
+.assigned-data-item:hover {
+  box-shadow: 0px 0px 10px #F8AC1D4D;
+}
+.completed-data-item:hover {
+  box-shadow: 0px 0px 10px #3893004D;
+}
+/* ------------------------KANBAN-SECTION ENDS------------------------------------ */
 
 
 
