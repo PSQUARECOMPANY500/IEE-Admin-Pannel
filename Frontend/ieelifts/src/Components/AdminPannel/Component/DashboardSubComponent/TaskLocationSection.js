@@ -1,20 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,forwardRef } from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import { LiaStarSolid } from "react-icons/lia";
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 
-const TaskLocationSection = ( props) => {
+
+const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
 
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  
+
 
   const handlekanban = ()=>{
-    props.setKanban(!props.kanban)
+    props.handleKanbanToggle();
   }
 
   const toggleTickets = () => {
@@ -49,10 +50,9 @@ const TaskLocationSection = ( props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
-
   return (
-    <div className={"parent-full-div"}>
-      <div className={props.kanban?"child-div":"child-div-on-kanban"}>
+    <div className={"parent-full-div"} ref={ref} >
+      <div className={"child-div"}>
         <div className={props.kanban?"tasks-section":"tasks-section-on-kanban "}>
           <div className="task-top-section">
             <p>Tasks</p>
@@ -374,9 +374,9 @@ const TaskLocationSection = ( props) => {
             <p className="kanban-cursor">KANBAN</p>
           </div>
       </div>
-      {props.kanban?null:<KanbanSection ticket={ticket} services={services}/>}
+      {!props.kanban&&<KanbanSection ticket={ticket} services={services}/>}
     </div>
   );
-};
+});
 
 export default TaskLocationSection;

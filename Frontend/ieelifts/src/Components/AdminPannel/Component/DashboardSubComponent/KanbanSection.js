@@ -83,7 +83,6 @@ const KanbanSection = (props) => {
             </div>
         ));
     };
-
     return (
         <div className='kanban-section'>
             <div className='Unresolved-section'>

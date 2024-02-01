@@ -23,23 +23,12 @@ body::-webkit-scrollbar-thumb {
 .main-container {
   width: 100%;
   background: #fff9ef;
+  position: relative; 
 }
 
-.main-container-animation{
-  animation: move-main-section 0.54s linear forwards;
-  scroll-behavior: smooth;
-}
-@keyframes move-main-section {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-27vh);
-  }
-}
 
 .container {
-  display: flex;
+  display: flex; 
 }
 
 main {
@@ -1285,15 +1274,15 @@ footer a:hover {
 
 /* taskLocationsection css starts */
 
-
-
 .parent-full-div {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
-  margin-top: 30px;
-  background: #ffffff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #c1c1c180;
+    border-radius: 4px;
+    margin-top: 50px;
+    padding-top: 5px;
+    background: #ffffff;
 }
+
 
 .child-div {
   display: flex;
@@ -1301,30 +1290,15 @@ footer a:hover {
   padding: 10px;
   gap: 10px;
 }
-.child-div-on-kanban{
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  gap: 10px;
- 
-}
-
 
 .tasks-section {
   width: 40%;
 }
 
 .tasks-section-on-kanban {
-  width: 45%;
-  position: relative;
-}
-
-.tasks-section-on-kanban span {
-  position: absolute;
+  width: 56%;
   animation: move-words 0.4s linear forwards;
   transition: 0.3s ;
-  margin: 0;
-  
 }
 
 @keyframes move-words {
@@ -1334,22 +1308,27 @@ footer a:hover {
   100% {
     left: 100%; 
   }
+
 }
+
 .kanban-cursor{
   cursor: pointer;
 }
 
 .Report-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 .location-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 
 .task-top-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  z-index: -1;
 }
 
 .sub-components {
@@ -1357,6 +1336,7 @@ footer a:hover {
   justify-content: center;
   align-items: center;
   gap: 0px;
+  animation: changeKanban 1.5s ease forwards;
 }
 
 .task-description-section {
@@ -1368,6 +1348,7 @@ footer a:hover {
   height: 320px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  animation: changeText 0.7s linear forwards;
 }
 /* set scroll behaviour  */
 
@@ -1420,8 +1401,8 @@ footer a:hover {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
+  MARGIN-TOP: -6px;
 }
-
 .task-top-section p {
   color: #191919;
   font-size: 20px;
@@ -1522,6 +1503,7 @@ display: none;
 }
 .ticket-service-flex{
   display: flex;
+  
 }
 
 .switch-button p {
@@ -3187,10 +3169,22 @@ element.style {
 /*---------------  mesage box input css ends  ------------------------------ */
 
 /* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
+
 .kanban-section{
   height: 83vh;
   display: flex;
+  animation: changeKanban 1.5s ease forwards;
 }
+@keyframes changeKanban{
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    
+  }
+}
+
 .Unresolved-section,
 .Assigned-section,
 .Completed-section {
@@ -3203,14 +3197,37 @@ element.style {
   margin-top: 1%;
   margin-bottom: 5%;
  
-  
 }
+
+
 .Unresolved{
   color: #C10000;
   font-size: 1.125rem;
   text-align: center;
+  animation: changeText 0.7s linear forwards;
 }
 
+@keyframes changeText {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Assigned{
+  color: #F8AC1D;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.Completed{
+  color: #389300;
+  font-size: 1.125rem;
+  text-align: center;
+  
+}
 .unresolved-data-item{
 background: #FFFAFA 0% 0% no-repeat padding-box;
 box-shadow: 0px 0px 5px #C100004D;
@@ -3233,11 +3250,7 @@ margin-right: 2%;
 }
 
 
-.Assigned{
-  color: #F8AC1D;
-  font-size: 1.125rem;
-  text-align: center;
-}
+
 .assigned-data-item{
 background: #FFFDF8 0% 0% no-repeat padding-box;
 box-shadow: 0px 0px 5px #F8AC1D4D;
@@ -3254,12 +3267,7 @@ margin-right: 2%;
 }
 
 
-.Completed{
-  color: #389300;
-  font-size: 1.125rem;
-  text-align: center;
-  
-}
+
 
 .completed-data-item{
 background: #F9FFF5 0% 0% no-repeat padding-box;
