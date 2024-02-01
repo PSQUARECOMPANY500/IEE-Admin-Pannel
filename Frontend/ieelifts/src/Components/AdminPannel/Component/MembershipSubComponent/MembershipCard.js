@@ -2,6 +2,7 @@
 
 import React from "react";
 import MembershipSubCard from "./MembershipSubCard";
+import MembershipCardDetails from "./MembershipCardDetails";
 
 const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
   const titleClass =
@@ -58,7 +59,7 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
       <div
         className={`membership_card ${borderClass} ${shadowClass}  ${
           order === 1 && setClick
-            ? "membership_card_expand "
+            ? "membership_card_expand animation"
             : setClick && "membership_card_expand_non"
         } `}
         style={{
@@ -98,7 +99,15 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
                 <p>{DemoData.count}</p>
               </div>
             </div>
-
+            <div
+              style={
+                order === 1 && setClick
+                  ? { marginTop: "1rem" }
+                  : { display: "none" }
+              }
+            >
+              <MembershipCardDetails/>
+            </div>
             <div
               style={
                 order !== 1 && setClick
@@ -171,13 +180,7 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
         )}
 
         {DemoData === "" && setClick && (
-          <div
-            // style={{ order: order }}
-            // onDoubleClick={() => {
-            //   itemClick();
-            // }}
-            className={` total_revenue_outer`}
-          >
+          <div className={` total_revenue_outer animation`}>
             <div className="total_revenue">
               <p className="total_revenue_heading">Total Revenue</p>
               <p className="total_revenue_amount">&#8377; 15000000</p>

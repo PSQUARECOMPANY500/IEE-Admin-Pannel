@@ -47,9 +47,11 @@ const MembershipSubCard = ({ data, dataType }) => {
           <p className="membership_card_data_address">{data.address}</p>
         </div>
       </div>
-      <div className={`membership_card_data_display_hover ${cardClass}`}>
-        <p>{data.number}</p>
-      </div>
+      <a  href={`tel:${data.number}`}>
+        <div className={`membership_card_data_display_hover ${cardClass}`}>
+          <p>{data.number}</p>
+        </div>
+      </a>
     </div>
   );
 };
