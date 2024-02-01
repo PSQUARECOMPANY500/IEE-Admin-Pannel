@@ -46,7 +46,7 @@ main {
   transition: all 0.5s;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-  rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
   z-index: 2;
   justify-content: center;
@@ -167,9 +167,6 @@ main {
   color: #f8ac1d;
   transition: all 0.5s;
 }
-
-
-
 
 .icon,
 .link_text {
@@ -671,7 +668,6 @@ footer a:hover {
   }
 }
 
-
 /* croser arrow controllers start */
 
 .carosel-controoler-button1 {
@@ -735,11 +731,9 @@ footer a:hover {
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-.slick-slide:hover{
+.slick-slide:hover {
   box-shadow: rgba(248, 172, 29, 0.5) 0px 0px 5px;
 }
-
-
 
 .slick-slider .slick-track {
   /* gap: 20px !important; */
@@ -2934,11 +2928,10 @@ element.style {
   max-height: 27rem;
 }
 
-.activeNotification{
+.activeNotification {
   border-bottom: 2px solid;
   padding-bottom: 5px;
   color: #f8ac1d;
-
 }
 
 .child-notification-div {
@@ -3070,10 +3063,10 @@ element.style {
 
 /*---------------  mesage box input css starts  ------------------------------ */
 
-.slick-prev, .slick-next{
+.slick-prev,
+.slick-next {
   display: none !important;
 }
-
 
 .message-box-crouser {
   margin: -2px 0px;
@@ -3158,7 +3151,7 @@ element.style {
   align-items: center;
 }
 
- /* .sendmessage-icon {
+/* .sendmessage-icon {
   margin: 0px 0px -2px 3px;
 }
 
@@ -3167,7 +3160,6 @@ element.style {
 } */
 
 /*---------------  mesage box input css ends  ------------------------------ */
-
 /* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
 
 .kanban-section{
@@ -3334,33 +3326,3 @@ margin-right: 2%;
   box-shadow: 0px 0px 10px #3893004D;
 }
 /* ------------------------KANBAN-SECTION ENDS------------------------------------ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
