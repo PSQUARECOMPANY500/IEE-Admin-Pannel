@@ -12,10 +12,12 @@ import AddTicketModal from "./AddTicketModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import AddTicketModal1 from "./AddTicketModal1";
 
 const TicketSection = () => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
+
   // const socket = io('http://localhost:8000');
 
   // useEffect(() => {
@@ -29,8 +31,10 @@ const TicketSection = () => {
   //   };
   // }, []);
 
- 
-  const [callbackId, setCallbackId] = useState()
+  const [callbackId, setCallbackId] = useState();
+  const [enggId,setEnggId] = useState();
+  const [isAssigned,setIsAssigned] = useState();
+
 
   const [showTicketModal, setShowTicketModal] = useState(false);
 
@@ -62,21 +66,19 @@ const TicketSection = () => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-
-
-  console.log(fetchCallbacks);
-
-
-
   const handleTicketFilter = () => {
-    console.log("this is handle filter function");
     setShowTicketFilter(!showTicketFilter);
   };
+  //............................................................{amit}...................
+  const [renderTicket, setRenderTicket] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchAllCallbacksAction());
-  }, [dispatch]);
+    setTimeout(() => {
+      dispatch(fetchAllCallbacksAction());
+    }, 1000);
+  }, [renderTicket]);
 
+  //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);
 
   useEffect(() => {}, [checkboxStates]);
@@ -116,12 +118,14 @@ const TicketSection = () => {
     };
   }, [dropdownRef]);
 
-  const openModal = (modalNumber, callbackId) => {
+  const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
-      setCallbackId(callbackId); // Set the callbackId here
+      setCallbackId(callbackIdOnModel); // Set the callbackId here
+      setEnggId(EngId)
+      setIsAssigned(isAssigned)
+      // console.log("callbackId............")
       setShowTicketModal1(true);
-
     } else if (modalNumber === 2) {
       setShowTicketModal2(true);
     } else if (modalNumber === 3) {
@@ -184,11 +188,11 @@ const TicketSection = () => {
               </p>
             </div>
             {showTicketModal && (
-              
-              <AddTicketModal
+              <AddTicketModal1
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 modalNumber={0}
+                setRenderTicket={setRenderTicket}
               />
             )}
           </div>
@@ -237,60 +241,72 @@ const TicketSection = () => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-                {fetchCallbacks.map((data) => {
-                 const currentCallbackId = data.callbackId;
-                 return(
-                  <tr className="selected" key={data.callbackId}>
-                    <td>
-                      {" "}
-                      <CheckBox
-                        id={`checkbox-${data.callbackId}`}
-                        checked={checkboxStates[data.callbackId]}
-                        handleCheckboxChange={() =>
-                          handleCheckBoxSingle(data.callbackId)
-                        }
-                      />
-                    </td>
-                    <td>{data.JobOrderNumber}</td>
-                    <td>{data?.clientDetail?.name}</td>
-                    <td>{data?.clientDetail?.PhoneNumber}</td>
-                    <td>
-                      <div className="dropdown-address">
-                        <span>
-                          {limitAddress(data?.clientDetail?.Address, 20)}
-                        </span>
+                {fetchCallbacks.map((data, index) => {
+                  // console.log("mast ram",data)
+                  const currentCallbackId = data.callbackId;
+                  const EngName = data.AssignedEng?.name;
+                  const EngId = data.AssignedEng?.id;
+                  const isAssigned = data.isAssigned;
+                  return (
+                    <tr className="selected" key={index}>
+                      <td>
+                        {" "}
+                        <CheckBox
+                          id={`checkbox-${data.callbackId}`}
+                          checked={checkboxStates[data.callbackId]}
+                          handleCheckboxChange={() =>
+                            handleCheckBoxSingle(data.callbackId)
+                          }
+                        />
+                      </td>
+                      <td>{data.JobOrderNumber}</td>
+                      <td>{data?.clientDetail?.name}</td>
+                      <td>{data?.clientDetail?.PhoneNumber}</td>
+                      <td>
+                        <div className="dropdown-address">
+                          <span>
+                            {limitAddress(data?.clientDetail?.Address, 20)}
+                          </span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                            <p>{data?.clientDetail?.Address}</p>
+                          <div className="dropdown-adddress-menu">
+                            <div className="drop-address">
+                              <p>{data?.clientDetail?.Address}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td>{data.Description}</td>
-                    <td>{data.TypeOfIssue}</td>
-                    <td>{data.callbackDate}</td>
-                    <td>{data.callbackTime}</td>
-                    <td onClick={() => openModal(1, currentCallbackId)}>
-                      <AssignDropdown
-                        customAssign="assignColor"
-                        name="Assign"
-                      />
-                    </td>
-                    {showTicketModal1 && (
-               
-                      <AddTicketModal
-                        closeModal={() => setShowTicketModal1(false)}
-                        showTicketModal={showTicketModal1}
-                        modalNumber={1}
-                        callbackId={callbackId} 
-                      />
-                    )}
-                  </tr>
-                 )
-
-                    })}
+                      </td>
+                      <td>{data.Description}</td>
+                      <td>{data.TypeOfIssue}</td>
+                      <td>{data.callbackDate}</td>
+                      <td>{data.callbackTime}</td>
+                      <td onClick={() => openModal(1, currentCallbackId,EngId,isAssigned)}>
+                        {isAssigned ? (
+                          <AssignDropdown
+                          customAssignName="assignNameColor"
+                          name={EngName}
+                          isAssigned={isAssigned}
+                        />
+                        ) : (
+                          <AssignDropdown
+                            customAssign="assignColor"
+                            name="Assign"
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
+              {showTicketModal1 && (
+                <AddTicketModal
+                  closeModal={() => setShowTicketModal1(false)}
+                  showTicketModal={showTicketModal1}
+                  callbackId={callbackId}
+                  setRenderTicket={setRenderTicket}
+                  enggId={enggId}
+                  isAssigned={isAssigned}
+                />
+              )}
               {/* TABLE BODY ENDS */}
             </table>
           </div>

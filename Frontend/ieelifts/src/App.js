@@ -5,7 +5,6 @@ import Sidebar from "./Components/CommonComponenets/Sidebar/Sidebar";
 import Dashboard from "./Components/AdminPannel/Component/MainMenu/Dashboard";
 import Request from "./Components/AdminPannel/Component/MainMenu/Request";
 
-
 function App() {
   return (
     <>
@@ -14,8 +13,7 @@ function App() {
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Requests" element={<Request />} />
         </Routes>
-        </Sidebar>
-     
+      </Sidebar>
     </>
   );
 }

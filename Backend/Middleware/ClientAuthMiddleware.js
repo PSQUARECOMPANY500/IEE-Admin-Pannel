@@ -20,6 +20,7 @@ const verifyToken = (userType) => (req, res, next) => {
   // Remove the "Bearer " prefix
   if (token.startsWith("Bearer ")) {
     token = token.slice(7);
+    console.log("Token gotton from the client :  ",token)
   }
 
   try {

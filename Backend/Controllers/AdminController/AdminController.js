@@ -276,3 +276,40 @@ module.exports.getAllServiceEnggData = async (req, res) => {
     res.status(500).json({ error: "intenal server error" });
   }
 };
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+module.exports.getAssignCallbackByCallbackId = async (req,res) => {
+  try {
+      const {callbackId} = req.params;
+
+      const callbackDetail = await ServiceAssigntoEngg.findOne({callbackId});
+      if (!callbackDetail) {
+        return res.status(404).json({ error: "Callback not found" });
+      }
+
+      const serviceEnggDetail = await ServiceEnggData.findOne({EnggId:callbackDetail.ServiceEnggId});
+      if (!serviceEnggDetail) {
+        return res.status(404).json({ error: "Service Engineer details not found" });
+      }
+      const checkList = await ChecklistModal.findOne({ _id: callbackDetail.AllotAChecklist });
+
+      if (!checkList) {
+        return res.status(404).json({ error: "Checklist not found" });
+      }
+      const callbackdetails = {
+        ...callbackDetail._doc,
+        serviceEnggDetail: serviceEnggDetail,
+        checkList:checkList
+      };
+
+      res.status(200).json({callbackdetails:callbackdetails})
+    
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+}

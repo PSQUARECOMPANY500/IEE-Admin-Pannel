@@ -6,7 +6,8 @@ import { FaChevronRight } from "react-icons/fa";
 
 
 
-const ReactDatePickers = () => {
+const ReactDatePickers = ({isAssigned,fetchedDate}) => {
+  
   const daysContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
@@ -139,7 +140,7 @@ const ReactDatePickers = () => {
       <input
         type="text"
         id="dateInput"
-        placeholder="Select a date"
+        placeholder={isAssigned?fetchedDate:"Select a date"}
         ref={dateInputRef}
         onClick={handleDateInputClick}
       />

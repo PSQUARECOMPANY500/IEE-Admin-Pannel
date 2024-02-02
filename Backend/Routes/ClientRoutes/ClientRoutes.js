@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
 
@@ -12,7 +13,9 @@ router.post("/loginWithPhone",clientController.loginClientwithPhoneNumber);
 router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 
-router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks);
+/* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
+router.put("/updateCallbacks", clientController.updateCallbacks);
+router.post("/requestCallbacks", clientController.RequestCallbacks);
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
 
 // ------------------------all get Requests ----------------------------------------
@@ -21,7 +24,7 @@ router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientCont
 router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
 
 router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
-
-
+//-------------------------verify--------------------------------------------------
+router.get("/verifyclient",clientController.verifyClient);
 
 module.exports = router;

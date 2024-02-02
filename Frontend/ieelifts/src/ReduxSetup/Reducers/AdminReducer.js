@@ -5,6 +5,8 @@ import { GET_ALL_CHECKLIST } from '../Actions/AdminActions'
 import { GET_ENGG_DETAIL } from '../Actions/AdminActions'
 import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
 
+import { GET_ASSIGN_CALLBACK_DETAILS } from '../Actions/AdminActions';
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -64,8 +66,8 @@ export const fetchAllCallbackReducer = (state=intialState, action) =>{
             return { ...state, callbacks:action.payload};
             default:
                 return state
-            }
-        }
+    }
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -107,5 +109,21 @@ export const fetchAllClientDetailReducer = (state = intialState2 , action) => {
             }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//function to fetch AssignCallbacks
 
-// --------------------------------------------------------------------------------------------------------------------------------------------------
+const initialAssign = {
+    assignDetails:null
+}
+export const fetchAssignCallbacksDetailsReducer = (state = initialAssign , action)=>{
+    switch(action.type){
+        case GET_ASSIGN_CALLBACK_DETAILS:
+            return{
+                ...state,
+                assignDetails:action.payload
+            }
+            default:
+                return state;
+            
+    }
+}

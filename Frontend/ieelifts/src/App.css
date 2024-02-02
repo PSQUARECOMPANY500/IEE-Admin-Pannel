@@ -1925,7 +1925,17 @@ tbody tr {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  width: 100%;
+}
+.modal-wrapper1{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.5);
   z-index: 2;
   width: 100%;
 }
@@ -1943,6 +1953,7 @@ tbody tr {
   background: white;
   z-index: 2;
 }
+
 
 .cross-icon {
   right: 17px;
@@ -1994,7 +2005,7 @@ tbody tr {
 .col75 input[type="text"] {
   width: 80%;
   padding: 8px;
-  /* border: 1px solid #c1c1c1; */
+  border: none;
   border-radius: 4px;
   resize: vertical;
   font-size: 14px;

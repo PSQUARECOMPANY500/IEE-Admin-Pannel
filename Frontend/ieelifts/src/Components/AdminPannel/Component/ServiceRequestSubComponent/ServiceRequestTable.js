@@ -90,13 +90,13 @@ const ServiceRequestTable = () => {
       <table className="task-list-table">
         <thead>
           <tr>
-            {/* <th>
+            <th>
               <CheckBox
                 id="toggleAll"
                 handleCheckboxChange={handleCheckBoxAll}
                 checked={checkedAll}
               />
-            </th> */}
+            </th>
             <th>JON</th>
             <th>NAME</th>
             <th>NUMBER</th>
@@ -131,14 +131,14 @@ const ServiceRequestTable = () => {
         {data.map((value)=>(
            <tbody>
            <tr className="selected">
-             {/* <td>
+             <td>
                {" "}
                <CheckBox
                  id="checkbox1"
                  checked={checkboxStates.checkbox1}
                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
                />
-             </td> */}
+             </td>
              <td>0000000000</td>
              <td>ram kumar</td>
              <td>9416484863</td>

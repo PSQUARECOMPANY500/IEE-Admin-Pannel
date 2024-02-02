@@ -3,13 +3,13 @@ import Select from "react-select";
 
 
 
-const SingleSetDropdown = ({ width, padding , placeholder, Details}) => {
+const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChange}) => {
 
   const selectedValue = Details || []
 
   const options = selectedValue.map((details) => ({
     value:details._id , label:details.checklistName
-  })) 
+  }))
    
     
 
@@ -19,8 +19,8 @@ const SingleSetDropdown = ({ width, padding , placeholder, Details}) => {
   const handleChange = (selected) => {
     console.log("Selected abhinav :", selected);
     setSelectedOption(selected);
+    onStateChange(selected)
   };
-
 
 
   const customStyles = {

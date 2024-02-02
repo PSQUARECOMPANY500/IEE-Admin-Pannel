@@ -165,6 +165,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       callbackTime,
       TypeOfIssue,
       Description,
+      AssignedEng
     } = req.body;
 
     const newCallback = await clientRequestCallback.create({
@@ -174,6 +175,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       callbackTime,
       TypeOfIssue,
       Description,
+      AssignedEng
     });
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -184,6 +186,35 @@ module.exports.RequestCallbacks = async (req, res) => {
     res.status(500).json({ error: "Error for creating callback" });
   }
 };
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to update callbackRequest {amit}
+
+module.exports.updateCallbacks = async (req, res) => {
+  try {
+    const { callbackId, name, enggJon } = req.body;
+    const updatedCallback = await clientRequestCallback.findOneAndUpdate(
+      { callbackId },
+      { isAssigned: true, AssignedEng: { name, id: enggJon } }, 
+      { new: true }
+    );
+
+    if (updatedCallback) {
+      res.json({ message: "Callback updated successfully", data: updatedCallback });
+    } else {
+      res.status(404).json({ error: "Callback not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error updating callback" });
+  }
+};
+
+
+    
+
+    
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle the client service request for Imdiate visit
@@ -274,7 +305,6 @@ module.exports.getAllClientCallbacks = async (req, res) => {
 module.exports.getAllClientServices = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
-
     const clientService = await serviceRequest.find({ JobOrderNumber });
 
     if (!clientService || clientService.length === 0) {
@@ -290,5 +320,34 @@ module.exports.getAllClientServices = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+//...............................api to verify token ...............................
+const jwt = require('jsonwebtoken');
+
+module.exports.verifyClient = (req, res) => {
+  let token = req.header("Authorization");
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized - No token provided" });
+  }
+
+  // Remove the "Bearer " prefix
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7);
+  }
+
+  try {
+    const secretKey = "client-secret-key";
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded.user;
+    res.status(200).json({ success: true, message: "Token verified successfully", user: decoded.user });
+  } catch (error) {
+    console.error("Error verifying token:", error);
+    res.status(401).json({ success: false, message: "Unauthorized - Invalid token", error: error.message });
   }
 };

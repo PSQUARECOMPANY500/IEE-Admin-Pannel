@@ -39,6 +39,10 @@ const Services = new Schema(
       type: Boolean,
       default: false,
     },
+    AssignedEng:{
+      name: String,
+      id:String,
+    }
   },
   {
     timestamps: true,

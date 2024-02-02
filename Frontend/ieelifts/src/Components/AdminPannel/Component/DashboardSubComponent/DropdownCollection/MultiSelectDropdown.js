@@ -5,13 +5,11 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-const MultiSelectDropdown = ({placeholder,Details,slots,onSelectionchange}) => {
+const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName}) => {
 
   const [selectedValue , setSelectedValue] = useState([]);
  
   const enggDetailsData = Details || slots || [];
-
-  // console.log(enggDetailsData);
 
   const dynamicOptions = enggDetailsData.map((engg) => ({
     value: engg.EnggId || engg.slot,
@@ -74,10 +72,9 @@ const MultiSelectDropdown = ({placeholder,Details,slots,onSelectionchange}) => {
   };
 
   const handleChange = (selectedOption) =>{
-  console.log("Bainsdika information : ",selectedOption);
-    onSelectionchange(selectedOption)
-    setSelectedValue(selectedOption)
-    console.log(selectedOption)
+ /*  console.log("dropdoen information : ",selectedOption); */
+  setSelectedValue(selectedOption)
+  handleEnggSelectionChange(selectedOption)
   }
 
 
