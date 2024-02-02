@@ -17,6 +17,8 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 router.put("/updateCallbacks", clientController.updateCallbacks);
 router.post("/requestCallbacks", clientController.RequestCallbacks);
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
+router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+//router.post("/engineerRating",clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------
 router.get("/clientDetail/:JobOrderNumber", verifyToken('client') ,clientController.getClientDetail);
@@ -26,5 +28,7 @@ router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientContr
 router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
 //-------------------------verify--------------------------------------------------
 router.get("/verifyclient",clientController.verifyClient);
+
+//-------------------------rating{amit}---------------------------------------------
 
 module.exports = router;

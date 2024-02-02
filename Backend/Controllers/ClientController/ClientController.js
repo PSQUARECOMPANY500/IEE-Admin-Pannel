@@ -4,6 +4,7 @@ const clientRequestCallback = require("../../Modals/ServicesModal/ClinetCallback
 const serviceRequest = require("../../Modals/ServicesModal/ClientServicesRequest");
 
 const RegisterClientAsPhoneNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema")
+const engineerRating = require("../../Modals/Rating/Rating")
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
@@ -351,3 +352,65 @@ module.exports.verifyClient = (req, res) => {
     res.status(401).json({ success: false, message: "Unauthorized - Invalid token", error: error.message });
   }
 };
+
+//...............................Rating {amit} ...............................
+
+module.exports.Rating = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      ServiceEnggId,
+      Rating,
+      Description,
+      Questions: { Question1, Question2, Question3, Question4, Question5 },
+    } = req.body;
+
+    const newRequest = await engineerRating.create({
+      JobOrderNumber,
+      ServiceEnggId,
+      Rating,
+      Description,
+      Questions: {
+        Question1,
+        Question2,
+        Question3,
+        Question4,
+        Question5,
+      },
+    });
+    res.status(201).json({ message: "Engineer rated successfully", success: true, newRequest });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+/* module.exports.imediateServiceRequest = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      RequestId,
+      RequestDate,
+      RequestTime,
+      TypeOfIssue,
+      Description,
+    } = req.body;
+
+    const newRequest = await serviceRequest.create({
+      JobOrderNumber,
+      RequestId,
+      RequestDate,
+      RequestTime,
+      TypeOfIssue,
+      Description,
+    });
+    res.status(201).json({
+      message: "Client raised imidiate Request ticket successfully",
+      imidiateRequest: newRequest,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error for creating service Request" });
+  }
+}; */
