@@ -23,9 +23,12 @@ body::-webkit-scrollbar-thumb {
 .main-container {
   width: 100%;
   background: #fff9ef;
+  position: relative; 
 }
+
+
 .container {
-  display: flex;
+  display: flex; 
 }
 
 main {
@@ -43,6 +46,7 @@ main {
   transition: all 0.5s;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
   z-index: 2;
@@ -1288,13 +1292,16 @@ footer a:hover {
 /* dashboard carosel css ends */
 
 /* taskLocationsection css starts */
+
 .parent-full-div {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
-  margin-top: 30px;
-  background: #ffffff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #c1c1c180;
+    border-radius: 4px;
+    margin-top: 50px;
+    padding-top: 5px;
+    background: #ffffff;
 }
+
 
 .child-div {
   display: flex;
@@ -1306,17 +1313,41 @@ footer a:hover {
 .tasks-section {
   width: 40%;
 }
+
+.tasks-section-on-kanban {
+  width: 56%;
+  animation: move-words 0.4s linear forwards;
+  transition: 0.3s ;
+}
+
+@keyframes move-words {
+  0% {
+    left: 40%;
+  }
+  100% {
+    left: 100%; 
+  }
+
+}
+
+.kanban-cursor{
+  cursor: pointer;
+}
+
 .Report-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 .location-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 
 .task-top-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  z-index: -1;
 }
 
 .sub-components {
@@ -1324,6 +1355,7 @@ footer a:hover {
   justify-content: center;
   align-items: center;
   gap: 0px;
+  animation: changeKanban 1.5s ease forwards;
 }
 
 .task-description-section {
@@ -1335,6 +1367,7 @@ footer a:hover {
   height: 320px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  animation: changeText 0.7s linear forwards;
 }
 /* set scroll behaviour  */
 
@@ -1387,8 +1420,8 @@ footer a:hover {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
+  MARGIN-TOP: -6px;
 }
-
 .task-top-section p {
   color: #191919;
   font-size: 20px;
@@ -1451,16 +1484,53 @@ footer a:hover {
   gap: 3px;
   width: 100%;
 }
+.kanban-button {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #F8AC1D;
+  background: #F8AC1D;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto; 
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+.kanban-button-location:hover{
+  background: #F8AC1D;
+}
+.kanban-button-location {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #F8AC1D;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto; 
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
+.kanban-Click-section{
+display: none;
+}
 
 .switch-button {
   display: flex;
+}
+.ticket-service-flex{
+  display: flex;
+  
 }
 
 .switch-button p {
   padding: 4px 24px;
   border-radius: 5px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+ 
   cursor: pointer;
   color: #f8ac1d;
   font-weight: 500;
@@ -3127,6 +3197,14 @@ element.style {
   align-items: center;
 }
 
+ /* .sendmessage-icon {
+  margin: 0px 0px -2px 3px;
+}
+
+.sendvoice-icon {
+  margin: 0px 0px -2px 3px;
+} */
+
 /*---------------  mesage box input css ends  ------------------------------ */
 
 
@@ -3142,116 +3220,6 @@ element.style {
 
 
 
-.calendar-box {
-  text-align: center;
-  /* padding: 0px; */
-  /* border: 1px solid #ccc; */
-  /* border-radius: 10px; */
-  /* background-color: white; */
-  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-  width: 94%;
-
-  
-}
-
-.calendar-title {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.calendar {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 37%;
-  position: absolute;
-  z-index: 1;
-  display: none;
-  top: 43% !important;
-  left: 53% !important;
-  height: 86%;
-}
-
-.header {
-  background-color: #FFFFFF;
-  color: #343434;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  border-bottom: 1px solid #C1C1C180;
-}
-
-#prevBtn, #nextBtn {
-  background: none;
-  border: none;
-  color: #343434;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-#monthYear {
-  font-size: 16px; 
-  /* date font */
-  font-weight: 500;
-}
-
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 12px;
-  padding: 10px 16px;
-}
-
-.day {
-  padding: 5px;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  color: black;
-}
-
-.day:hover{
-  background: #F8AC1D;
-  border-radius: 50%;
-}
-
-.day.current {
-  /* background-color: #FEF3DE; */
-  color: #F8AC1D;
-  border-radius: 50%;
-}
-.day.current:hover {
-  background-color: white;
-}
-
-.day.selected {
-  background-color: #FEF3DE;
-  color: #F8AC1D;
-  border-radius: 50%;
-}
-
-#dateInput {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
-  border-radius: 5px;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
-  font-family: 'Poppins';
-  color: #444444;
-}
-
-#dateInput:hover{
-  box-shadow: 0px 0px 5px #F8AC1D80;
-  border: none;
-}
 
 
 
@@ -3269,30 +3237,4 @@ element.style {
 
 
 
-
-
-
-
-
-
-
-
-.cover-image-skeleton {
-  background: linear-gradient(90deg, #EEEEEE 25%, #DEDEDE 50%, #EEEEEE 75%);
-  background-size: 200% 100%;
-  animation: loading 2s infinite ease-in-out;
-  border-radius: 5px;
-  position: relative;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-@keyframes loading {
-  0% {
-      background-position: 200% 0;
-  }
-  100% {
-      background-position: -200% 0;
-  }
-}
 
