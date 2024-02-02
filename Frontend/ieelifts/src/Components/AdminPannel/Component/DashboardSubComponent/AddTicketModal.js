@@ -1,73 +1,250 @@
-import React, { useEffect } from "react";
+  //................................{amit}....................................
+import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
-// import ModalDropdown from "./ModalDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
+import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+
+const AddTicketModal = ({
+  closeModal,
+  showTicketModal,
+  callbackId,
+  setRenderTicket,
+  enggId,
+  isAssigned
+}) => {
+  const dispatch = useDispatch();
+
+  //  manage use states for the input fields
+  const [jon, setJon] = useState("");
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [typeOfIssue, setTypeOfIssue] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [modelType, setModelType] = useState("");
+
+  const [engDetails, setEngDetails] = useState({
+    enggJon: "",
+    enggName: "",
+    enggPhone: "",
+    enggAddress: "",
+    enggLocation: "",
+    enggRating: "",
+  });
+
+  const [ClickListOnSelect, setClickListOnSelect] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [message, setMessage] = useState("");
+  const [fetchedDate,setfetchedDate] = useState("")
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+
+  //slots logic here ends-------------------------------------------------
+  // use use selector select to select the service engg state
+  const  serviceEnggDetail = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchAllClientDetailReducer &&
+      state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+    ) {
+      return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+        .ServiceEngg;
+    } else {
+      return;
+    }
+  });
+
+  //using use selector to select the checklist in check list state
+  const checkList = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchChecklistReducer &&
+      state.AdminRootReducer.fetchChecklistReducer.checklists
+    ) {
+      return state.AdminRootReducer.fetchChecklistReducer.checklists.Checklists;
+    } else {
+      return;
+    }
+  });
+
+  // use use selector to select the user callBack state
+
+  const userCallBackDetail = useSelector((state) => {
+    return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
+      ?.callbackData?.callback;
+  });
+
+  //get eng state by use selector hook
+
+  const getEnggState = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchEnggDetailReducer &&
+      state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+    ) {
+      return state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+        .enggDetail;
+    }
+    return;
+  });
+
+  const getAssignedCallbackDetails = useSelector((state)=>{
+    return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
+  })
+
+
   useEffect(() => {
+    if(isAssigned){
+      dispatch(fetchEnggDetailAction(enggId));
+      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+      dispatch(fetchAllClientDetailAction());
+      dispatch(fetchChecklistAction());
+      dispatch(requestAssignCallbackDetail(callbackId))
+    }
+    else{
+      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
+      dispatch(fetchAllClientDetailAction());
+      dispatch(fetchChecklistAction());
+    }
+  
+    return () => {
+      dispatch(fetchEnggDetailAction());
+    };
+  }, []);
+
+
+  useEffect(() => {
+    //no problem
+    if (getEnggState) {
+      setEngDetails({
+        enggJon: getEnggState.EnggId,
+        enggName: getEnggState.EnggName,
+        enggPhone: getEnggState.PhoneNumber,
+        enggAddress: getEnggState.EnggAddress,
+      });
+    }
+  }, [getEnggState]);
+
+  useEffect(() => {
+    setJon(userCallBackDetail?.JobOrderNumber || "");
+    setName(userCallBackDetail?.clientDetail?.name || "");
+    setNumber(userCallBackDetail?.clientDetail?.PhoneNumber || "");
+    setAddress(userCallBackDetail?.clientDetail?.Address || "");
+    setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
+    setDescription(userCallBackDetail?.Description || "");
+    setDate(userCallBackDetail?.createdAt || "");
+    setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
+  }, [userCallBackDetail]);
+
+  useEffect(() => {
+    //no problem
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
 
-  const getDynamicData = () => {
-    // Use modalNumber to determine the data dynamically
-    if (modalNumber === 1) {
-      return {
-        jon: "Some value 1",
-        name: "Preet Pankaj",
-        class: "col-dynamic",
-        inputFiled: false,
-      };
-    } else if (modalNumber === 2) {
-      return {
-        jon: "Some value 2",
-        name: "Another Name",
-        class: "col-dynamic",
-        inputFiled: false,
-      };
-    } else if (modalNumber === 3) {
-      return {
-        jon: "Some value 3",
-        name: "Yet Another Name",
-        class: "col-dynamic",
-        inputFiled: false,
-      };
-    } else if (modalNumber === 0) {
-      return {
-        jon: "365365",
-        name: "Yet Another Name",
-        class: "shadow-dynamic",
-      };
-    } else if (modalNumber === 4) {
-      return {
-        jon: "0000000",
-        name: "ths is my name",
-        class: "col-dynamic",
-        class2: "dynamic-background",
-        inputFiled: false,
-      };
-    } else if (modalNumber === 5) {
-      return {
-        jon: "1010101010",
-        name: "ths is my second name",
-        class: "col-dynamic",
-        class2: "dynamic-background",
-        inputFiled: false,
-      };
+  useEffect(()=>{
+ 
+    if(getAssignedCallbackDetails?.callbackdetails){
+      setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
+      setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
+      setMessage(getAssignedCallbackDetails.callbackdetails.Message);
+      const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
+      setfetchedDate(dateAsString)
+    }
+  
+  },[getAssignedCallbackDetails])
+
+
+  const handleEnggSelectionChange = (selectedOptions) => {
+    dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+  };
+
+  const handleEnggSelectionChange1 = (id) => {
+    setSelectedSlot(id[0]?.value);
+  };
+
+  const handleSingleSetDropdown = (selectedOptions) => {
+    setClickListOnSelect(selectedOptions);
+  };
+
+  const handleElevatorSectionDetails = () => {
+    if (
+      engDetails.enggJon &&
+      ClickListOnSelect &&
+      selectedSlot &&
+      date &&
+      message
+    ) {
+      const dateObject = new Date(date);
+
+      const formattedDate = `${dateObject.getDate()}/${
+        dateObject.getMonth() + 1
+      }/${dateObject.getFullYear()}`;
+
+      dispatch(
+        assignCallBackByAdminAction(
+          engDetails?.enggJon,
+          number,
+          callbackId,
+          ClickListOnSelect.value,
+          selectedSlot,
+          formattedDate,
+          message,
+          engDetails?.enggName,
+          engDetails.enggJon
+        )
+      );
+
+      setRenderTicket((prev) => !prev);
+      closeModal();
+    } else {
+      console.log("not valid input");
     }
   };
 
-  const dynamicData = getDynamicData();
-
   return (
     <>
-      <div
-        className={`modal-wrapper ${dynamicData.class2}`}
-        onClick={closeModal}
-      ></div>
+      <div className={`modal-wrapper`} onClick={closeModal}></div>
 
       <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
         <div className="cross-icon" onClick={closeModal}>
@@ -93,12 +270,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input
-                      className={`${dynamicData.class}`}
-                      type="text"
-                      name="name"
-                      value={dynamicData.jon}
-                    />
+                    <input className={``} type="text" name="name" value={jon} />
                   </div>
                 </div>
                 {/* one row ends */}
@@ -112,7 +284,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="Preet Pankaj"
+                      value={name}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -126,7 +298,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="9416481863"
+                      value={number}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -140,7 +312,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                     <input
                       type="text"
                       name="name"
-                      value="Address Address Address"
+                      value={address}
                       style={{ border: "none" }}
                     />
                   </div>
@@ -152,16 +324,12 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    {dynamicData.inputFiled === false ? (
-                      <input
-                        type="text"
-                        name="name"
-                        value="Door not working"
-                        style={{ border: "none" }}
-                      />
-                    ) : (
-                      <SingleSetDropdown padding="8px" width="85%" />
-                    )}
+                    <input
+                      type="text"
+                      name="name"
+                      value={typeOfIssue}
+                      style={{ border: "none" }}
+                    />
                   </div>
                 </div>
 
@@ -171,20 +339,12 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    {dynamicData.inputFiled === false ? (
-                      <input
-                        type="text"
-                        name="name"
-                        value="Door not working"
-                        style={{ border: "none" }}
-                      />
-                    ) : (
-                      <textarea
-                        id="subject"
-                        name="subject"
-                        style={{ height: "50px", resize: "none" }}
-                      ></textarea>
-                    )}
+                    <input
+                      type="text"
+                      name="name"
+                      value={description}
+                      style={{ border: "none" }}
+                    />
                   </div>
                 </div>
               </form>
@@ -199,7 +359,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={6} />
+                    <input type="text" name="name" value={0} />
                   </div>
                 </div>
 
@@ -223,7 +383,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={"12/12/23"} />
+                    <input type="text" name="name" value={date} />
                   </div>
                 </div>
                 <div className="row">
@@ -232,7 +392,7 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={"01:34"} />
+                    <input type="text" name="name" value={date} />
                   </div>
                 </div>
               </form>
@@ -243,14 +403,14 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
           <div className="elevator-section">
             <div className="elevator-engg-detail-section">
               <div className="sub-engg-detail-section">
-                <span>ENGINEER DETAILS</span>
+                <span>ELEVATOR DETAILS</span>
 
                 <div className="elevator-detail-row">
                   <div className="col-elevator25">
                     <label>TYPE:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"Hydraulic"} />
+                    <input type="text" name="name" value={modelType} />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -271,70 +431,126 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                 </div>
               </div>
 
+              {/*engg detail div start here------------------------------------------------------------------------------  */}
               <div className="sub-engg-detail-section">
                 <div style={{ marginTop: "10px" }}>
                   <p>ENGINEER DETAILS</p>
 
                   <div className="engg-photo-section">
                     <div>
-                      <img
-                        style={{ width: "90px", height: "90px" }}
-                        src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
-                        alt="lift"
-                      />
+                      {getEnggState  ? (
+                        <img
+                          style={{ width: "90px", height: "90px" }}
+                          src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+                          alt="lift"
+                        />
+                      ) : (
+                        <SkeltonLoader width="90px" height="90px" />
+                      )}
                     </div>
-                    <div style={{ width: "60%" }}>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input type="text" name="name" value={"2022100"} />
+
+                    <div style={{ width: "50%" }}>
+                      {getEnggState  ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input
+                              type="text"
+                              name="name"
+                              value={engDetails.enggJon}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input
-                            type="text"
-                            name="name"
-                            value={"Arjun Rawat"}
-                          />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {getEnggState  ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input
+                              type="text"
+                              name="name"
+                              value={engDetails.enggName}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input type="text" name="name" value={"9898989898"} />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {getEnggState  ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input
+                              type="text"
+                              name="name"
+                              value={engDetails.enggPhone}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="elevator-detail-row">
-                        <div className="col-elevator75">
-                          <input
-                            type="text"
-                            name="name"
-                            value={"Address, Address"}
-                          />
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
+
+                      {getEnggState  ? (
+                        <div className="elevator-detail-row">
+                          <div className="col-elevator75">
+                            <input
+                              type="text"
+                              name="name"
+                              value={engDetails.enggAddress}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        <SkeltonLoader width="80px" height="10px" />
+                      )}
                     </div>
                   </div>
 
                   <div>
-                    <div
-                      className="elevator-detail-row"
-                      style={{ marginTop: "10px" }}
-                    >
-                      <div className="col-elevator25" style={{ width: "30%" }}>
-                        <label>LOCATION:</label>
+                    {getEnggState  ? (
+                      <div
+                        className="elevator-detail-row"
+                        style={{ marginTop: "10px" }}
+                      >
+                        <div
+                          className="col-elevator25"
+                          style={{ width: "30%" }}
+                        >
+                          <label>LOCATION:</label>
+                        </div>
+                        <div className="col-elevator75">
+                          <input
+                            type="text"
+                            name="name"
+                            value={engDetails.enggLocation}
+                          />
+                        </div>
                       </div>
-                      <div className="col-elevator75">
-                        <input type="text" name="name" value={"Punchkula"} />
+                    ) : (
+                      <SkeltonLoader width="100px" height="10px" />
+                    )}
+
+                    {getEnggState ? (
+                      <div className="elevator-detail-row">
+                        <div
+                          className="col-elevator25"
+                          style={{ width: "30%" }}
+                        >
+                          <label>RATING:</label>
+                        </div>
+                        <div className="col-elevator75">
+                          <input
+                            type="text"
+                            name="name"
+                            value={engDetails.enggRating}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="elevator-detail-row">
-                      <div className="col-elevator25" style={{ width: "30%" }}>
-                        <label>RATING:</label>
-                      </div>
-                      <div className="col-elevator75">
-                        <input type="text" name="name" value={"4.2"} />
-                      </div>
-                    </div>
+                    ) : (
+                      <SkeltonLoader width="100px" height="10px" />
+                    )}
                   </div>
                 </div>
               </div>
@@ -343,30 +559,45 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
             <div className="Assign-engg-detail-section">
               <div className="engg-form">
                 <div className="grid-form-container">
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      {/* <SingleSetDropdown/> */}
-                      <MultiSelectDropdown />
+                      
+                      <MultiSelectDropdown
+                      placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                        Details={serviceEnggDetail}
+                        handleEnggSelectionChange={handleEnggSelectionChange}
+                        
+                      />
                     </div>
                   </div>
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      <SingleSetDropdown padding="6px" width="100%" />
+                      <SingleSetDropdown
+                        padding="6px"
+                        width="100%"
+                        placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
+                        Details={checkList}
+                        onStateChange={handleSingleSetDropdown}
+                      />
                     </div>
                   </div>
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      <MultiSelectDropdown />
+                  
+                      <MultiSelectDropdown
+                      placeholder={isAssigned?selectedSlot:"Select Slot"}
+                        slots={timeSlots}
+                        handleEnggSelectionChange={handleEnggSelectionChange1}
+                      />
                     </div>
                   </div>
 
-                  <div class="sm-box sm-box--2">
+                  <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      <SingleSetDropdown padding="6px" width="100%" />
+                  
+                      <div className="data-pic">
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -380,6 +611,10 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
                       marginLeft: "10%",
                       resize: "none",
                     }}
+                    placeholder={isAssigned?message:"message"}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
                   ></textarea>
                 </div>
               </div>
@@ -388,8 +623,13 @@ const AddTicketModal = ({ closeModal, showTicketModal, modalNumber }) => {
 
           <div className="footer-section">
             <div className="buttons">
-              <button className="edit-button">Edit</button>
-              <button className="assign-button">Assign</button>
+              <button className="edit-button" >Edit</button>
+              <button
+                className="assign-button"
+                onClick={handleElevatorSectionDetails}
+              >
+                Assign
+              </button>
             </div>
           </div>
         </div>

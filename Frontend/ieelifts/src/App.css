@@ -47,6 +47,7 @@ main {
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
   z-index: 2;
   justify-content: center;
@@ -569,6 +570,24 @@ span::after {
   transition: 0.4s ease;
   font-size: 24px;
 }
+.search-btn-ticket-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background: #fffdfd;
+  padding: 8px 2px 4px 1px;
+  /* padding-top: 7px; */
+  border-radius: 4%;
+  float: left;
+  color: #343434;
+  transition: 0.4s ease;
+  font-size: 22px;
+  /* font-weight: 800; */
+  margin-top: 0px;
+  height: 24px;
+  width: 26px;
+}
 .search-box {
   display: flex;
 }
@@ -585,6 +604,12 @@ span::after {
   background: #fff;
 }
 .search-input:focus + .search-btn {
+  background: #fff;
+}
+.search-box:hover > .search-btn-ticket-section {
+  background: #fff;
+}
+.search-input:focus + .search-btn-ticket-section {
   background: #fff;
 }
 
@@ -1115,7 +1140,7 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  top: -21%;
+  top: 4%;
   left: -15%;
   transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
@@ -1253,7 +1278,7 @@ footer a:hover {
   left: 75px;
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 31px;
+  margin-bottom: 20px;
 }
 
 .taskmain-info {
@@ -1698,7 +1723,8 @@ tbody tr {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: end;
+  width: 143px;
 }
 .task-list-table {
   width: 100%;
@@ -1724,8 +1750,9 @@ tbody tr {
 .sub-components-ticket-filter {
   box-shadow: none;
   padding: 0px 0px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
   border-radius: 6px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
 
 .task-list-table th {
@@ -1968,8 +1995,18 @@ tbody tr {
   right: 0;
   bottom: 0;
   top: 0;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  width: 100%;
+}
+.modal-wrapper1{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 2;
   width: 100%;
 }
 
@@ -1987,6 +2024,7 @@ tbody tr {
   z-index: 2;
 }
 
+
 .cross-icon {
   right: 17px;
   position: absolute;
@@ -2001,6 +2039,7 @@ tbody tr {
   transform: translate(-50%, -50%) scale(1);
   border-radius: 8px;
   height: auto;
+  box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
 }
 
 .upload-photo-secton {
@@ -2036,7 +2075,7 @@ tbody tr {
 .col75 input[type="text"] {
   width: 80%;
   padding: 8px;
-  /* border: 1px solid #c1c1c1; */
+  border: none;
   border-radius: 4px;
   resize: vertical;
   font-size: 14px;
@@ -2051,9 +2090,10 @@ tbody tr {
   border-radius: 4px;
   resize: vertical;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
+  font-family: 'Poppins';
 }
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
@@ -2183,6 +2223,7 @@ tbody tr {
   border-radius: 6px;
   padding: 20px 0px;
   background: #fff9ef;
+  position: relative;
 }
 .grid-form-container .sm-box .col75 select {
   width: 100%;
@@ -2193,6 +2234,7 @@ tbody tr {
 
 .col-elevator75 input {
   border: none;
+  font-family: poppins;
 }
 .col-elevator75 input[type="text"]:focus {
   outline: none;
@@ -2348,9 +2390,11 @@ tbody tr {
 /* dynamic ticket modal property starts styling */
 .col-dynamic {
   border: none !important;
+  outline: none !important;
 }
 .col-dynamic input[type="text"]:focus {
-  outline: none;
+  outline: none !important;
+  border: none !important;
 }
 
 .shadow-dynamic {
@@ -2787,7 +2831,7 @@ element.style {
   position: absolute;
   z-index: 9999999;
   background: #ffffff;
-  margin-top: -1px;
+  margin-top: -3px;
   margin-left: -15.1rem;
 }
 .messagebox-heading {
@@ -3080,7 +3124,7 @@ element.style {
 }
 
 .text-area-message-whatsapp {
-  width: 99%;
+  width: 97%;
   outline: none;
   border: none;
   border-radius: 10px;
@@ -3090,7 +3134,9 @@ element.style {
   font-size: 0.8rem;
   font-weight: 500;
   color: #444444;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+   */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 /* .text-area-message-whatsapp:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d; 
@@ -3136,7 +3182,7 @@ element.style {
   padding: 8px;
   position: relative;
   width: 94%;
-  margin-top: -17px;
+  margin-top: -15px;
   /* border-top: 1px solid #C1C1C180; */
   /* z-index: 0; */
 }
@@ -3151,7 +3197,7 @@ element.style {
   align-items: center;
 }
 
-/* .sendmessage-icon {
+ /* .sendmessage-icon {
   margin: 0px 0px -2px 3px;
 }
 
@@ -3160,169 +3206,35 @@ element.style {
 } */
 
 /*---------------  mesage box input css ends  ------------------------------ */
-/* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
-
-.kanban-section{
-  height: 83vh;
-  display: flex;
-  animation: changeKanban 1.5s ease forwards;
-}
-@keyframes changeKanban{
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-    
-  }
-}
-
-.Unresolved-section,
-.Assigned-section,
-.Completed-section {
-  flex-grow: 1;
-  overflow: auto; 
-  display: flex ;
-  flex-direction: column;
-  margin-left: 1.5%;
-  margin-right: 1.5%;
-  margin-top: 1%;
-  margin-bottom: 5%;
- 
-}
-
-
-.Unresolved{
-  color: #C10000;
-  font-size: 1.125rem;
-  text-align: center;
-  animation: changeText 0.7s linear forwards;
-}
-
-@keyframes changeText {
-  from {
-    opacity: 0.5;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.Assigned{
-  color: #F8AC1D;
-  font-size: 1.125rem;
-  text-align: center;
-}
-
-.Completed{
-  color: #389300;
-  font-size: 1.125rem;
-  text-align: center;
-  
-}
-.unresolved-data-item{
-background: #FFFAFA 0% 0% no-repeat padding-box;
-box-shadow: 0px 0px 5px #C100004D;
-border: 1px solid #C100004D;
-border-radius: 10px;
-opacity: 1;
-padding-top: 3%;
-padding-bottom: 3%;
-padding-left: 11%;
-padding-right: 11%;
-margin-top: 5%;
-margin-bottom: 5%;
-margin-right: 2%;
-
-}
-
-.data-section{
-  display: flex;
-  justify-content:space-between;
-}
-
-
-
-.assigned-data-item{
-background: #FFFDF8 0% 0% no-repeat padding-box;
-box-shadow: 0px 0px 5px #F8AC1D4D;
-border: 1px solid #F8AC1D4D;
-border-radius: 10px;
-opacity: 1;
-padding-top: 3%;
-padding-bottom: 3%;
-padding-left: 11%;
-padding-right: 11%;
-margin-top: 5%;
-margin-bottom: 5%;
-margin-right: 2%;
-}
 
 
 
 
-.completed-data-item{
-background: #F9FFF5 0% 0% no-repeat padding-box;
-box-shadow: 0px 0px 5px #3893004D;
-border: 1px solid #3893004D;
-border-radius: 10px;
-opacity: 1;
-padding-top: 3%;
-padding-bottom: 3%;
-padding-left: 11%;
-padding-right: 11%;
-margin-top: 5%;
-margin-bottom: 5%;
-margin-right: 2%;
-}
-.data-label{
-  font-size:  0.875rem;
-  font: bold;
-  font-weight:500;
-}
-.data-value{
-   font-size:  0.875rem;
-}
 
-.kanban-Unresolved-section-scroll,
-.kanban-Assigned-section-scroll,
-.kanban-Completed-section-scroll{
-  margin-top: 1rem;
-  gap: 1rem;
-  overflow-x:hidden ;
-  scroll-behavior: smooth;
 
-}
-/* set scroll behaviour  */
 
-.kanban-Unresolved-section-scroll:hover::-webkit-scrollbar-thumb {
-  border: 1px solid #C100004D; /* Change the color to your desired hover color */
-}
-.kanban-Assigned-section-scroll:hover::-webkit-scrollbar-thumb {
-  border: 1px solid #F8AC1D4D; /* Change the color to your desired hover color */
-}
-.kanban-Completed-section-scroll:hover::-webkit-scrollbar-thumb {
-  border: 1px solid #3893004D; /* Change the color to your desired hover color */
-}
-.kanban-Unresolved-section-scroll::-webkit-scrollbar,
-.kanban-Assigned-section-scroll::-webkit-scrollbar,
-.kanban-Completed-section-scroll::-webkit-scrollbar{
-  width: 2px; /* width of the entire scrollbar */
-}
 
-.kanban-Unresolved-section-scroll::-webkit-scrollbar-track,
-.kanban-Assigned-section-scroll::-webkit-scrollbar-track,
-.kanban-Completed-section-scroll::-webkit-scrollbar-track{ /* width of the entire scrollbar */
-    margin-top: 23px;
-    margin-bottom: 23px;
-}
-.unresolved-data-item:hover {
-  box-shadow: 0px 0px 10px #C100004D;
-}
-.assigned-data-item:hover {
-  box-shadow: 0px 0px 10px #F8AC1D4D;
-}
-.completed-data-item:hover {
-  box-shadow: 0px 0px 10px #3893004D;
-}
-/* ------------------------KANBAN-SECTION ENDS------------------------------------ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

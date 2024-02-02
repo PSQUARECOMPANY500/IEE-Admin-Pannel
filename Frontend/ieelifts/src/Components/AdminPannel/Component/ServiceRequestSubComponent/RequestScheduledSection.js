@@ -86,7 +86,7 @@ const RequestScheduledSection = () => {
           <div className="icon-align-div">
             <div className="right-side-icons">
               <span className="filter-top-icon">
-                <div class="search-box">
+                <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
