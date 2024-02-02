@@ -11,6 +11,7 @@ import {
 
 const Membership = () => {
   const [setClick, click] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
   const [cards, setCards] = useState([
     { DemoData: warrentyDemoData, order: 1, toggleOrder: 2, id: 1 },
     { DemoData: platinumDemoData, order: 2, toggleOrder: 1, id: 2 },
@@ -60,6 +61,7 @@ const Membership = () => {
       return card;
     });
     setCards(updatedCards);
+    setClickCount(0);
     click(!setClick);
   };
 
@@ -74,9 +76,10 @@ const Membership = () => {
           DemoData={cards[0].DemoData}
           order={cards[0].order}
           setClick={setClick}
+          clickCount={clickCount}
           itemClick={() => {
-            click(false);
             handleDoubleClick(1);
+            setClickCount(1);
             click(true);
           }}
         />
@@ -84,40 +87,44 @@ const Membership = () => {
           DemoData={cards[1].DemoData}
           order={cards[1].order}
           setClick={setClick}
+          clickCount={clickCount}
           itemClick={() => {
-            click(false);
             handleDoubleClick(2);
             click(true);
+            setClickCount(1);
           }}
         />
         <MembershipCard
           DemoData={cards[2].DemoData}
           order={cards[2].order}
+          clickCount={clickCount}
           setClick={setClick}
           itemClick={() => {
-            click(false);
             handleDoubleClick(3);
             click(true);
+            setClickCount(1);
           }}
         />
         <MembershipCard
           DemoData={cards[3].DemoData}
+          clickCount={clickCount}
           order={cards[3].order}
           setClick={setClick}
           itemClick={() => {
-            click(false);
             handleDoubleClick(4);
+            setClickCount(1);
             click(true);
           }}
         />
         {setClick && (
           <MembershipCard
+            clickCount={clickCount}
             DemoData={cards[4].DemoData}
             order={cards[4].order}
             setClick={setClick}
             itemClick={() => {
-              click(false);
               handleDoubleClick(5);
+              setClickCount(1);
               click(true);
             }}
           />

@@ -12,6 +12,7 @@ body {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  z-index: 0;
 }
 
 code {
@@ -32,7 +33,8 @@ code {
   justify-content: center;
   align-content: center;
   margin-top: 5.5rem;
-  
+  transform: translateY(0); /* Initial transform value */
+  transition: all 0.6s ease;
 }
 
 .membership_card {
@@ -373,11 +375,7 @@ code {
   grid-template-columns: 77% 20%;
   gap: 2%;
   align-items: center;
-  transition: all 1s ease;
 }
-
-/* .animation {
-} */
 
 .membership_card_expand {
   margin: 0rem;
@@ -387,11 +385,24 @@ code {
   transition: border 1s ease;
 }
 
-.animation{
-  animation: expandAnimation 1s ease-in-out forwards;  
+.animation {
+  animation: expandAnimation 2s ease-in-out forwards;
+}
+
+.animationExpand {
+  animation: expandAnimationExpansion 0.6s ease-in-out forwards;
 }
 
 @keyframes expandAnimation {
+  from {
+    transform: translateY(3rem);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes expandAnimationExpansion {
   from {
     opacity: 0.6;
   }
@@ -405,7 +416,6 @@ code {
   padding: 1% 1.5%;
   border-radius: 50%;
 }
-
 
 .after_expansion_labels {
   text-transform: uppercase;
@@ -423,9 +433,9 @@ code {
   padding-bottom: 3%;
 }
 
-.membership_card_expand_non:hover{
+.membership_card_expand_non:hover {
   transform: translateX(-5%);
-  transition: all 0.6s ease;
+  transition: all 0.3s ease;
 }
 
 .membership_card_topbar_expand {

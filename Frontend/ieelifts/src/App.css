@@ -23,12 +23,11 @@ body::-webkit-scrollbar-thumb {
 .main-container {
   width: 100%;
   background: #fff9ef;
-  position: relative; 
+  position: relative;
 }
 
-
 .container {
-  display: flex; 
+  display: flex;
 }
 
 main {
@@ -654,7 +653,6 @@ footer a:hover {
   top: 5.7rem;
   position: relative;
   cursor: pointer;
-  z-index: 1;
   font-size: 1.5rem;
   color: #343434;
 }
@@ -696,10 +694,12 @@ footer a:hover {
 
 .carosel-controoler-button1 {
   position: relative;
+  z-index: 1;
   left: -8px;
 }
 .carosel-controoler-button2 {
   position: relative;
+  z-index: 1;
   right: -8px;
 }
 
@@ -1292,15 +1292,19 @@ footer a:hover {
 
 /* taskLocationsection css starts */
 
-.parent-full-div {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border: 1px solid #c1c1c180;
-    border-radius: 4px;
-    margin-top: 50px;
-    padding-top: 5px;
-    background: #ffffff;
+.parent-full-div{
+  z-index: 0;
 }
 
+.parent-full-div {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border: 1px solid #c1c1c180;
+  border-radius: 4px;
+  margin-top: 50px;
+  padding-top: 5px;
+  background: #ffffff;
+  z-index: -1;
+}
 
 .child-div {
   display: flex;
@@ -1316,7 +1320,7 @@ footer a:hover {
 .tasks-section-on-kanban {
   width: 56%;
   animation: move-words 0.4s linear forwards;
-  transition: 0.3s ;
+  transition: 0.3s;
 }
 
 @keyframes move-words {
@@ -1324,12 +1328,11 @@ footer a:hover {
     left: 40%;
   }
   100% {
-    left: 100%; 
+    left: 100%;
   }
-
 }
 
-.kanban-cursor{
+.kanban-cursor {
   cursor: pointer;
 }
 
@@ -1354,6 +1357,7 @@ footer a:hover {
   justify-content: center;
   align-items: center;
   gap: 0px;
+  z-index: 1;
   animation: changeKanban 1.5s ease forwards;
 }
 
@@ -1419,7 +1423,7 @@ footer a:hover {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
-  MARGIN-TOP: -6px;
+  margin-top: -6px;
 }
 .task-top-section p {
   color: #191919;
@@ -1487,41 +1491,40 @@ footer a:hover {
   padding: 4px 24px;
   height: 25px;
   border-radius: 5px;
-  border: 1px solid #F8AC1D;
-  background: #F8AC1D;
+  border: 1px solid #f8ac1d;
+  background: #f8ac1d;
   cursor: pointer;
   color: #444444;
   font-size: 16px;
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: 5px;
   margin-bottom: 2px;
 }
-.kanban-button-location:hover{
-  background: #F8AC1D;
+.kanban-button-location:hover {
+  background: #f8ac1d;
 }
 .kanban-button-location {
   padding: 4px 24px;
   height: 25px;
   border-radius: 5px;
-  border: 1px solid #F8AC1D;
+  border: 1px solid #f8ac1d;
   cursor: pointer;
   color: #444444;
   font-size: 16px;
-  margin-left: auto; 
+  margin-left: auto;
   margin-right: 5px;
   margin-bottom: 2px;
 }
 
-.kanban-Click-section{
-display: none;
+.kanban-Click-section {
+  display: none;
 }
 
 .switch-button {
   display: flex;
 }
-.ticket-service-flex{
+.ticket-service-flex {
   display: flex;
-  
 }
 
 .switch-button p {
@@ -1529,7 +1532,7 @@ display: none;
   border-radius: 5px;
   align-items: center;
   justify-content: space-between;
- 
+
   cursor: pointer;
   color: #f8ac1d;
   font-weight: 500;
@@ -1884,6 +1887,7 @@ tbody tr {
 }
 .dropdown-content {
   position: absolute;
+  z-index: 1;
   margin-top: 14.2rem;
   margin-left: 124px;
   background: rgb(253, 253, 253);
@@ -2701,6 +2705,11 @@ element.style {
   color: #343434;
 }
 
+.parent-div{
+  z-index: 2;
+  position: relative;
+}
+
 .parent-div-task-request {
   height: 33rem;
   overflow-x: hidden;
@@ -2963,7 +2972,6 @@ element.style {
   border-radius: 10px;
   width: 350px;
   position: absolute;
-  z-index: 9999999;
   background: #ffffff;
   margin-top: 3rem;
   margin-left: -19rem;
@@ -3205,35 +3213,159 @@ element.style {
 } */
 
 /*---------------  mesage box input css ends  ------------------------------ */
+/* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
 
+.kanban-section {
+  height: 83vh;
+  display: flex;
+  animation: changeKanban 1.5s ease forwards;
+}
+@keyframes changeKanban {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
+.Unresolved-section,
+.Assigned-section,
+.Completed-section {
+  flex-grow: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  margin-top: 1%;
+  margin-bottom: 5%;
+}
 
+.Unresolved {
+  color: #c10000;
+  font-size: 1.125rem;
+  text-align: center;
+  animation: changeText 0.7s linear forwards;
+}
 
+@keyframes changeText {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
+.Assigned {
+  color: #f8ac1d;
+  font-size: 1.125rem;
+  text-align: center;
+}
 
+.Completed {
+  color: #389300;
+  font-size: 1.125rem;
+  text-align: center;
+}
+.unresolved-data-item {
+  background: #fffafa 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #c100004d;
+  border: 1px solid #c100004d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
 
+.data-section {
+  display: flex;
+  justify-content: space-between;
+}
 
+.assigned-data-item {
+  background: #fffdf8 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #f8ac1d4d;
+  border: 1px solid #f8ac1d4d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
 
+.completed-data-item {
+  background: #f9fff5 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #3893004d;
+  border: 1px solid #3893004d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
+.data-label {
+  font-size: 0.875rem;
+  font: bold;
+  font-weight: 500;
+}
+.data-value {
+  font-size: 0.875rem;
+}
 
+.kanban-Unresolved-section-scroll,
+.kanban-Assigned-section-scroll,
+.kanban-Completed-section-scroll {
+  margin-top: 1rem;
+  gap: 1rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+/* set scroll behaviour  */
 
+.kanban-Unresolved-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #c100004d; /* Change the color to your desired hover color */
+}
+.kanban-Assigned-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #f8ac1d4d; /* Change the color to your desired hover color */
+}
+.kanban-Completed-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #3893004d; /* Change the color to your desired hover color */
+}
+.kanban-Unresolved-section-scroll::-webkit-scrollbar,
+.kanban-Assigned-section-scroll::-webkit-scrollbar,
+.kanban-Completed-section-scroll::-webkit-scrollbar {
+  width: 2px; /* width of the entire scrollbar */
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.kanban-Unresolved-section-scroll::-webkit-scrollbar-track,
+.kanban-Assigned-section-scroll::-webkit-scrollbar-track,
+.kanban-Completed-section-scroll::-webkit-scrollbar-track {
+  /* width of the entire scrollbar */
+  margin-top: 23px;
+  margin-bottom: 23px;
+}
+.unresolved-data-item:hover {
+  box-shadow: 0px 0px 10px #c100004d;
+}
+.assigned-data-item:hover {
+  box-shadow: 0px 0px 10px #f8ac1d4d;
+}
+.completed-data-item:hover {
+  box-shadow: 0px 0px 10px #3893004d;
+}
+/* ------------------------KANBAN-SECTION ENDS------------------------------------ */
