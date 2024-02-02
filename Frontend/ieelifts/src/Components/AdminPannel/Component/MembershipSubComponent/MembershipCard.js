@@ -4,7 +4,13 @@ import React from "react";
 import MembershipSubCard from "./MembershipSubCard";
 import MembershipCardDetails from "./MembershipCardDetails";
 
-const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
+const MembershipCard = ({
+  DemoData,
+  order,
+  setClick,
+  itemClick,
+  clickCount,
+}) => {
   const titleClass =
     DemoData.dataType === "Warrenty"
       ? "membership_card_title_warrenty"
@@ -59,14 +65,21 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
       <div
         className={`membership_card ${borderClass} ${shadowClass}  ${
           order === 1 && setClick
-            ? "membership_card_expand animation"
+            ? "membership_card_expand "
             : setClick && "membership_card_expand_non"
         } `}
         style={{
           order: order,
           padding: order !== 1 && setClick ? "3% 6% 6% 6%" : undefined,
         }}
-        onDoubleClick={(e) => itemClick()}
+        onClick={(e) => {
+          clickCount === 1 && itemClick();
+        }}
+        onDoubleClick={(e) => {
+          if (clickCount !== 1) {
+            itemClick();
+          }
+        }}
       >
         {DemoData !== "" && (
           <>
@@ -75,9 +88,12 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
                 setClick
                   ? order !== 1
                     ? "membership_card_topbar_non_expand "
-                    : "membership_card_topbar_expand"
+                    : ` membership_card_topbar_expand  ${
+                        clickCount !== 1 ? "animation" : "animationExpand"
+                      }
+                    `
                   : ""
-              } `}
+              }`}
             >
               <div className="membership_card_topbar_left">
                 <p className={`membership_card_title ${titleClass}`}>
@@ -99,15 +115,22 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
                 <p>{DemoData.count}</p>
               </div>
             </div>
+
             <div
               style={
                 order === 1 && setClick
                   ? { marginTop: "1rem" }
                   : { display: "none" }
               }
+              className={
+                order === 1 && setClick && clickCount !== 1
+                  ? "animation"
+                  : "animationExpand"
+              }
             >
-              <MembershipCardDetails/>
+              <MembershipCardDetails />
             </div>
+
             <div
               style={
                 order !== 1 && setClick
@@ -180,7 +203,11 @@ const MembershipCard = ({ DemoData, order, setClick, itemClick }) => {
         )}
 
         {DemoData === "" && setClick && (
-          <div className={` total_revenue_outer animation`}>
+          <div
+            className={`total_revenue_outer ${
+              order === 1 && clickCount === 1 ? "animationExpand" : ""
+            }`}
+          >
             <div className="total_revenue">
               <p className="total_revenue_heading">Total Revenue</p>
               <p className="total_revenue_amount">&#8377; 15000000</p>
