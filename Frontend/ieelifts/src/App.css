@@ -568,6 +568,24 @@ span::after {
   transition: 0.4s ease;
   font-size: 24px;
 }
+.search-btn-ticket-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background: #fffdfd;
+  padding: 8px 2px 4px 1px;
+  /* padding-top: 7px; */
+  border-radius: 4%;
+  float: left;
+  color: #343434;
+  transition: 0.4s ease;
+  font-size: 22px;
+  /* font-weight: 800; */
+  margin-top: 0px;
+  height: 24px;
+  width: 26px;
+}
 .search-box {
   display: flex;
 }
@@ -584,6 +602,12 @@ span::after {
   background: #fff;
 }
 .search-input:focus + .search-btn {
+  background: #fff;
+}
+.search-box:hover > .search-btn-ticket-section {
+  background: #fff;
+}
+.search-input:focus + .search-btn-ticket-section {
   background: #fff;
 }
 
@@ -1115,7 +1139,7 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  top: -21%;
+  top: 4%;
   left: -15%;
   transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
@@ -1253,7 +1277,7 @@ footer a:hover {
   left: 75px;
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 31px;
+  margin-bottom: 20px;
 }
 
 .taskmain-info {
@@ -1701,7 +1725,8 @@ tbody tr {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: end;
+  width: 143px;
 }
 .task-list-table {
   width: 100%;
@@ -1727,8 +1752,9 @@ tbody tr {
 .sub-components-ticket-filter {
   box-shadow: none;
   padding: 0px 0px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
   border-radius: 6px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
 
 .task-list-table th {
@@ -1972,8 +1998,18 @@ tbody tr {
   right: 0;
   bottom: 0;
   top: 0;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 2;
+  width: 100%;
+}
+.modal-wrapper1{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 2;
   width: 100%;
 }
 
@@ -1991,6 +2027,7 @@ tbody tr {
   z-index: 2;
 }
 
+
 .cross-icon {
   right: 17px;
   position: absolute;
@@ -2005,6 +2042,7 @@ tbody tr {
   transform: translate(-50%, -50%) scale(1);
   border-radius: 8px;
   height: auto;
+  box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
 }
 
 .upload-photo-secton {
@@ -2040,7 +2078,7 @@ tbody tr {
 .col75 input[type="text"] {
   width: 80%;
   padding: 8px;
-  /* border: 1px solid #c1c1c1; */
+  border: none;
   border-radius: 4px;
   resize: vertical;
   font-size: 14px;
@@ -2055,9 +2093,10 @@ tbody tr {
   border-radius: 4px;
   resize: vertical;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
+  font-family: 'Poppins';
 }
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
@@ -2187,6 +2226,7 @@ tbody tr {
   border-radius: 6px;
   padding: 20px 0px;
   background: #fff9ef;
+  position: relative;
 }
 .grid-form-container .sm-box .col75 select {
   width: 100%;
@@ -2197,6 +2237,7 @@ tbody tr {
 
 .col-elevator75 input {
   border: none;
+  font-family: poppins;
 }
 .col-elevator75 input[type="text"]:focus {
   outline: none;
@@ -2352,9 +2393,11 @@ tbody tr {
 /* dynamic ticket modal property starts styling */
 .col-dynamic {
   border: none !important;
+  outline: none !important;
 }
 .col-dynamic input[type="text"]:focus {
-  outline: none;
+  outline: none !important;
+  border: none !important;
 }
 
 .shadow-dynamic {
@@ -2796,7 +2839,7 @@ element.style {
   position: absolute;
   z-index: 9999999;
   background: #ffffff;
-  margin-top: -1px;
+  margin-top: -3px;
   margin-left: -15.1rem;
 }
 .messagebox-heading {
@@ -3088,7 +3131,7 @@ element.style {
 }
 
 .text-area-message-whatsapp {
-  width: 99%;
+  width: 97%;
   outline: none;
   border: none;
   border-radius: 10px;
@@ -3098,7 +3141,9 @@ element.style {
   font-size: 0.8rem;
   font-weight: 500;
   color: #444444;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+   */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 /* .text-area-message-whatsapp:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d; 
@@ -3144,7 +3189,7 @@ element.style {
   padding: 8px;
   position: relative;
   width: 94%;
-  margin-top: -17px;
+  margin-top: -15px;
   /* border-top: 1px solid #C1C1C180; */
   /* z-index: 0; */
 }
@@ -3159,7 +3204,7 @@ element.style {
   align-items: center;
 }
 
-/* .sendmessage-icon {
+ /* .sendmessage-icon {
   margin: 0px 0px -2px 3px;
 }
 

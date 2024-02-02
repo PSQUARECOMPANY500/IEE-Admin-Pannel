@@ -3,6 +3,8 @@ import { IoIosCall } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { IoMdSend } from "react-icons/io";
 import { MdSend } from "react-icons/md";
+import { MdAddCall } from "react-icons/md";
+
 
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
@@ -52,10 +54,7 @@ const MessageBox = ({ onClose }) => {
           <div className="pro-heading"></div>
           <div className="featured-icon">
             <div>
-              <IoIosCall />
-            </div>
-            <div>
-              <HiVideoCamera />
+            <MdAddCall />
             </div>
             <div>
               <RxCross2 onClick={onClose} />

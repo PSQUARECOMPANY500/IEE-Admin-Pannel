@@ -12,8 +12,37 @@ const ServiceEnggData = require("../../Modals/ServiceEngineerModals/ServiceEngin
 
 const ChecklistModal = require("../../Modals/ChecklistModal/ChecklistModal");
 
-const mongoose = require('mongoose');
+const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
+const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
+
+const mongoose = require("mongoose");
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+module.exports.getEnggDetail = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const enggDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
+
+    if (!enggDetail) {
+      return res.status(404).json({
+        message: "No services Engg found for the specified Service Engineer ID",
+      });
+    }
+
+    res.status(200).json({
+      message: "servicesc Engg retrieved by ID successfully",
+      enggDetail,
+    });
+  } catch (error) {
+    console.error("Error creating engg detail:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to handle insert data in the { checkList }
 module.exports.createCheckList = async (req, res) => {
@@ -30,6 +59,22 @@ module.exports.createCheckList = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating checklist:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//fucntion to get the checklist
+module.exports.getAllChecklist = async (req, res) => {
+  try {
+    const checklist = await ChecklistModal.find({});
+
+    res
+      .status(200)
+      .json({ message: "fetch checklist sucessfully", Checklists: checklist });
+  } catch (error) {
+    console.error("Error while getting checklist:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -58,16 +103,16 @@ module.exports.assignCallbacks = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
-    })
+    });
 
-    const populatedCallback = await ServiceAssigntoEngg
-    .findById(callback._id)
-    .populate('AllotAChecklist')
-    .exec();
+    const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
+      .populate("AllotAChecklist")
+      .exec();
 
-    res
-      .status(201)
-      .json({ message: "callback Assign Succesfully", callback : populatedCallback});
+    res.status(201).json({
+      message: "callback Assign Succesfully",
+      callback: populatedCallback,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
@@ -101,11 +146,9 @@ module.exports.AssignServiceRequests = async (req, res) => {
       ServiceProcess,
     });
 
-    const populatedService = await AssignSecheduleRequest
-    .findById(Request._id)
-    .populate('AllotAChecklist')
-    .exec();
-
+    const populatedService = await AssignSecheduleRequest.findById(Request._id)
+      .populate("AllotAChecklist")
+      .exec();
 
     res.status(201).json({
       message: "service Request Assign Succesfully",
@@ -123,9 +166,58 @@ module.exports.AssignServiceRequests = async (req, res) => {
 module.exports.getAllCallbacks = async (req, res) => {
   try {
     const callBackRequests = await getAllCalbacks.find();
+
+    //fetch extra client detail
+    const clientCallbacksDetails = await Promise.all(
+      callBackRequests.map(async (callback) => {
+        const clientDetail = await clientDetailSchema.findOne({
+          JobOrderNumber: callback.JobOrderNumber,
+        });
+        return {
+          ...callback._doc,
+          clientDetail: clientDetail,
+        };
+      })
+    );
+
     res.status(200).json({
       message: "all callBack fetched Succesfully",
-      Callbacks: callBackRequests,
+      Callbacks: clientCallbacksDetails,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Function to handle get Callbackdetail By CallbackId
+module.exports.getCallbackDetailByCallbackId = async (req, res) => {
+  try {
+    const { callbackId } = req.params;
+
+    const clientCallbacksDetails = await getAllCalbacks.findOne({ callbackId });
+
+    // console.log("HE",clientCallbacksDetails)
+
+    if (!clientCallbacksDetails) {
+      res.status(404).json({ message: "no data found with this callback id" });
+    }
+
+    const clientDetail = await clientDetailSchema.findOne({
+      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
+    });
+    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+
+    const callbackClientdetails = {
+      ...clientCallbacksDetails._doc,
+      clientDetail: clientDetail,
+    };
+
+    res.status(200).json({
+      message: "all detal fetched successfully",
+      callback: callbackClientdetails,
     });
   } catch (error) {
     console.log(error);
@@ -178,6 +270,84 @@ module.exports.getAllServiceEnggData = async (req, res) => {
       message: "all  ServiceEngg fetched Succesfully",
       ServiceEngg: serviceEngg,
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// function to handle getAssign Callback By CallbackId
+module.exports.getAssignCallbackByCallbackId = async (req, res) => {
+  try {
+    const { callbackId } = req.params;
+
+    const callbackDetail = await ServiceAssigntoEngg.findOne({ callbackId });
+    if (!callbackDetail) {
+      return res.status(404).json({ error: "Callback not found" });
+    }
+
+    const serviceEnggDetail = await ServiceEnggData.findOne({
+      EnggId: callbackDetail.ServiceEnggId,
+    });
+    if (!serviceEnggDetail) {
+      return res
+        .status(404)
+        .json({ error: "Service Engineer details not found" });
+    }
+    const checkList = await ChecklistModal.findOne({
+      _id: callbackDetail.AllotAChecklist,
+    });
+
+    if (!checkList) {
+      return res.status(404).json({ error: "Checklist not found" });
+    }
+    const callbackdetails = {
+      ...callbackDetail._doc,
+      serviceEnggDetail: serviceEnggDetail,
+      checkList: checkList,
+    };
+
+    res.status(200).json({ callbackdetails: callbackdetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle create client memenership
+
+module.exports.createClientMemebership = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      MemebershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    } = req.body;
+
+    const MemberShipDetails = await AssignMemeberships.create({
+      JobOrderNumber,
+      MemebershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    });
+
+    res
+      .status(201)
+      .json({ message: "memebership created successfully", MemberShipDetails});
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });

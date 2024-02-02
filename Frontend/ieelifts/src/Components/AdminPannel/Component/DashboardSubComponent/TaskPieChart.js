@@ -110,8 +110,8 @@ const TaskChart = () => {
   };
 
   return (
-    <ResponsiveContainer width={160} height={118}>
-      <PieChart>
+    // <ResponsiveContainer >
+      <PieChart width={160} height={118}>
       {/* width={400} height={400} */}
         <Pie
           activeIndex={activeIndex}
@@ -127,12 +127,10 @@ const TaskChart = () => {
           startAngle={90} // Adjust the start angle (90 degrees for the top position)
           endAngle={-270} // Adjust the end angle (-270 degrees for one complete clockwise rotation)
           clockwise={true}
-          // paddingAngle={0}
-          // minAngle={45}
           legendType='circle'
         />
       </PieChart>
-    </ResponsiveContainer>
+    // </ResponsiveContainer>
   );
 };
 

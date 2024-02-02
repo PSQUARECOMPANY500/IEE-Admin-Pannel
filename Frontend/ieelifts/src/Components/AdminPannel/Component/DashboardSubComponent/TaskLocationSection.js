@@ -110,7 +110,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     border: "1px solid #F8AC1D",
                     boxShadow:" 0px 0px 5px #F8AC1D80"
                   }}>
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -150,7 +150,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     border: "1px solid #F8AC1D",
                     // boxShadow:" 0px 0px 5px #F8AC1D80"
                   }}>
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -185,7 +185,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }}
                 >
                   <div className="detail">
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -216,7 +216,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }}
                 >
                   <div className="detail">
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -247,7 +247,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }}
                 >
                   <div className="detail">
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -278,7 +278,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }}
                 >
                   <div className="detail">
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -309,7 +309,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }}
                 >
                   <div className="detail">
-                    <table class="customer-table1">
+                    <table className="customer-table1">
                       <tbody>
                         <tr>
                           <th>NAME :</th>
@@ -362,9 +362,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.1483230038793!2d76.6936452761033!3d30.714230386525795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fee5703d374e5%3A0xda2704bd4dce4210!2sIEE%20LIFTS!5e0!3m2!1sen!2sin!4v1703161333396!5m2!1sen!2sin"
                 style={{ width: "100%", height: "320px" , border:'none', borderRadius: '8px' }}
-                allowfullscreen=""
+                allowFullScreen=""
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerPolicy="no-referrer-when-downgrade"
                 title="map"
               ></iframe>
             </div>

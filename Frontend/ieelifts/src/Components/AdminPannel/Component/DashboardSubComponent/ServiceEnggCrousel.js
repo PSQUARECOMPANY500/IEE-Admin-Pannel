@@ -171,9 +171,9 @@ const ServiceEnggCrousel = () => {
 
             <div className="main-head-div">
               <div className="skill-box">
-                <div class="dots2">
-                  <span class="dot-progress"></span>
-                  <span class="dot-progress2"></span>
+                <div className="dots2">
+                  <span className="dot-progress"></span>
+                  <span className="dot-progress2"></span>
                 </div>
                 <div className="skill-bar">
                   <span className="skill-per reactjs">
