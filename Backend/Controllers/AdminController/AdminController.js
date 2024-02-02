@@ -12,19 +12,20 @@ const ServiceEnggData = require("../../Modals/ServiceEngineerModals/ServiceEngin
 
 const ChecklistModal = require("../../Modals/ChecklistModal/ChecklistModal");
 
-const ServiceEnggBasicSchema = require('../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema')
+const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
+
+const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-module.exports.getEnggDetail = async (req,res) =>{
+module.exports.getEnggDetail = async (req, res) => {
   try {
     const { EnggId } = req.params;
 
-    const enggDetail = await ServiceEnggBasicSchema.findOne({EnggId});
+    const enggDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
 
-    
     if (!enggDetail) {
       return res.status(404).json({
         message: "No services Engg found for the specified Service Engineer ID",
@@ -39,11 +40,9 @@ module.exports.getEnggDetail = async (req,res) =>{
     console.error("Error creating engg detail:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 //function to handle insert data in the { checkList }
 module.exports.createCheckList = async (req, res) => {
@@ -277,39 +276,80 @@ module.exports.getAllServiceEnggData = async (req, res) => {
   }
 };
 
-
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-module.exports.getAssignCallbackByCallbackId = async (req,res) => {
+// function to handle getAssign Callback By CallbackId
+module.exports.getAssignCallbackByCallbackId = async (req, res) => {
   try {
-      const {callbackId} = req.params;
+    const { callbackId } = req.params;
 
-      const callbackDetail = await ServiceAssigntoEngg.findOne({callbackId});
-      if (!callbackDetail) {
-        return res.status(404).json({ error: "Callback not found" });
-      }
+    const callbackDetail = await ServiceAssigntoEngg.findOne({ callbackId });
+    if (!callbackDetail) {
+      return res.status(404).json({ error: "Callback not found" });
+    }
 
-      const serviceEnggDetail = await ServiceEnggData.findOne({EnggId:callbackDetail.ServiceEnggId});
-      if (!serviceEnggDetail) {
-        return res.status(404).json({ error: "Service Engineer details not found" });
-      }
-      const checkList = await ChecklistModal.findOne({ _id: callbackDetail.AllotAChecklist });
+    const serviceEnggDetail = await ServiceEnggData.findOne({
+      EnggId: callbackDetail.ServiceEnggId,
+    });
+    if (!serviceEnggDetail) {
+      return res
+        .status(404)
+        .json({ error: "Service Engineer details not found" });
+    }
+    const checkList = await ChecklistModal.findOne({
+      _id: callbackDetail.AllotAChecklist,
+    });
 
-      if (!checkList) {
-        return res.status(404).json({ error: "Checklist not found" });
-      }
-      const callbackdetails = {
-        ...callbackDetail._doc,
-        serviceEnggDetail: serviceEnggDetail,
-        checkList:checkList
-      };
+    if (!checkList) {
+      return res.status(404).json({ error: "Checklist not found" });
+    }
+    const callbackdetails = {
+      ...callbackDetail._doc,
+      serviceEnggDetail: serviceEnggDetail,
+      checkList: checkList,
+    };
 
-      res.status(200).json({callbackdetails:callbackdetails})
-    
-
+    res.status(200).json({ callbackdetails: callbackdetails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
   }
-}
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle create client memenership
+
+module.exports.createClientMemebership = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      MemebershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    } = req.body;
+
+    const MemberShipDetails = await AssignMemeberships.create({
+      JobOrderNumber,
+      MemebershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    });
+
+    res
+      .status(201)
+      .json({ message: "memebership created successfully", MemberShipDetails});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};

@@ -9,6 +9,8 @@ const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller
 router.post("/assigncallback", adminContoller.assignCallbacks);
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
+router.post("/createMembership", adminContoller.createClientMemebership)
+
 //------------------------------ All get requests -------------------------------------------------
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
