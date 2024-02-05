@@ -89,13 +89,13 @@ const ServiceScheduledTable = () => {
       <table className="task-list-table">
         <thead>
           <tr>
-            {/* <th>
+            <th>
               <CheckBox
                 id="toggleAll"
                 handleCheckboxChange={handleCheckBoxAll}
                 checked={checkedAll}
               />
-            </th> */}
+            </th>
             <th>JON</th>
             <th>NAME</th>
             <th>NUMBER</th>
