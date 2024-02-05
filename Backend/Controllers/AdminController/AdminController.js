@@ -336,7 +336,7 @@ module.exports.createClientMemebership = async (req, res) => {
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
       MemebershipType,
-      StartDate,
+      StartDate: new Date(StartDate),
       Duration,
       Discount,
       PricePaid,
@@ -347,9 +347,119 @@ module.exports.createClientMemebership = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "memebership created successfully", MemberShipDetails});
+      .json({ message: "memebership created successfully", MemberShipDetails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
   }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to get the membership data
+module.exports.getClientMemebership = async (req, res) => {
+  try {
+    const membershipData = await AssignMemeberships.find();
+
+    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
+    const calculations = {};
+
+    membershipTypes.forEach((type) => {
+      const filteredData = filterMembershipByType(membershipData, type);
+      calculations[type] = calculateData(filteredData);
+    });
+
+    res.status(201).json({ success: true, ...calculations });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+//function used to calculate the data of meberships
+// const calculateData = (data) => {
+//   const result = data.reduce(
+//     (acc, member) => {
+//       const pricePaid = parseFloat(member.PricePaid) || 0; // Convert to a number or default to 0
+//       acc.totalRevenue += pricePaid;
+//       acc.count++;
+
+//       return acc;
+//     },
+//     { totalRevenue: 0, count: 0 }
+//   );
+
+//   return result;
+// };
+// const calculateData = (data) => {
+//   let totalRevenue = 0;
+//   let count = 0;
+//   let expData = {};
+
+//   for (const d of data) {
+//     totalRevenue += parseFloat(d.PricePaid);
+//     count++;
+//     // console.log(d.StartDate);
+//     const startDate = new Date(d.StartDate);
+//     const durationInMonths = Number(d.Duration);
+//     const endDate = new Date(
+//       startDate.setMonth(startDate.getMonth() + durationInMonths)
+//     );
+
+//     // Calculate the difference in milliseconds
+//     const timeDifference = endDate - Date.now();
+
+//     // Convert milliseconds to days
+//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+//     if(daysLeft<=30){
+//       if(daysLeft<=0){
+//         data.isExpired =true;
+//         data.save();
+//       }
+//     }
+//     expData.push({data.JobOrderNumber,data.isExpired})
+//   }
+
+//   return { totalRevenue, count,expData };
+// };
+
+const calculateData = (data) => {
+  let totalRevenue = 0;
+  let count = 0;
+  let expData = [];
+
+  for (const d of data) {
+    totalRevenue += parseFloat(d.PricePaid);
+
+    const startDate = new Date(d.StartDate);
+    const durationInMonths = Number(d.Duration);
+    const endDate = new Date(
+      startDate.setMonth(startDate.getMonth() + durationInMonths)
+    );
+
+    const timeDifference = endDate - Date.now();
+
+    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (daysLeft <= 30) {
+      if (daysLeft <= 0) {
+        d.isExpired = true;
+        d.save();
+      }
+      expData.push({
+        JobOrderNumber: d.JobOrderNumber,
+        isExpired: d.isExpired,
+      });
+    }
+    if (!d.isExpired && !d.isDisable && !d.isRenewed) {
+      count++;
+    }
+  }
+
+  return { totalRevenue, count, expData };
+};
+
+// to filter the memberships
+const filterMembershipByType = (data, type) => {
+  return data.filter((member) => member.MemebershipType === type);
 };
