@@ -11,6 +11,7 @@ export const GET_ENGG_DETAIL = "GET_ENGG_DETAIL";
 export const CLEAR_TABLE_DATA = "CLEAR_TABLE_DATA";
 export const ASSIGN_CALLBACK_BY_ADMIN = "ASSIGN_CALLBACK_BY_ADMIN";
 export const GET_ASSIGN_CALLBACK_DETAILS="GET_ASSIGN_CALLBACK_DETAILS";
+export const GET_ALL_SERVICE_REQUEST="GET_ALL_SERVICE_REQUEST";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -107,6 +108,23 @@ export const fetchAllCallbacksAction = () => {
       // console.log(response)
       dispatch({
         type: GET_ALL_CALLBACK,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching callback", error);
+    }
+  };
+};
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Admin actions to handle get All the fetch All Service Requests Action
+export const fetchAllServiceRequestsAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/Allservices`);
+      // console.log(response)
+      dispatch({
+        type: GET_ALL_SERVICE_REQUEST,
         payload: response.data,
       });
     } catch (error) {
