@@ -192,6 +192,38 @@ module.exports.getAllCallbacks = async (req, res) => {
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//function to get all the Requests
+module.exports.getAllRequests = async (req, res) => {
+  try {
+    const serviceRequests = await getAllServiceRequest.find();
+
+    const clientRequestDetail = await Promise.all(
+      serviceRequests.map(async (Requests) => {
+        const clientDetail = await clientDetailSchema.findOne({
+          JobOrderNumber:Requests.JobOrderNumber
+        })
+        return {
+          ...Requests._doc,
+          clientDetail: clientDetail
+        }
+      })
+    )
+
+
+    res.status(200).json({
+      message: "all services Requests fetched Succesfully",
+      ServiceRequest: clientRequestDetail,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 //Function to handle get Callbackdetail By CallbackId
 module.exports.getCallbackDetailByCallbackId = async (req, res) => {
   try {
@@ -226,22 +258,6 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//function to get all the Requests
-module.exports.getAllRequests = async (req, res) => {
-  try {
-    const serviceRequests = await getAllServiceRequest.find();
-    res.status(200).json({
-      message: "all  Requests fetched Succesfully",
-      Services: serviceRequests,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "intenal server error" });
-  }
-};
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // get All Clients
 
 //function to handle GetAllClients infromation

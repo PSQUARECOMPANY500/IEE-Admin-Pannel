@@ -5,10 +5,29 @@ import { GET_ALL_CHECKLIST } from '../Actions/AdminActions'
 import { GET_ENGG_DETAIL } from '../Actions/AdminActions'
 import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
 
+import { GET_ALL_SERVICE_REQUEST } from '../Actions/AdminActions'
 import { GET_ASSIGN_CALLBACK_DETAILS } from '../Actions/AdminActions';
 
 
+//fetch fetchAllServiceRequestsReducers
+
+const intialState6 = {
+    serviceRequestDetail:null
+}
+export const fetchAllServiceRequestsReducers = (state=intialState6, action) =>{
+    switch(action.type) {
+        case GET_ALL_SERVICE_REQUEST:
+           return {...state, serviceRequestDetail:action.payload}
+        default:
+            return state   
+    }
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 //fetch assignCallBackByAdminReducer
 
