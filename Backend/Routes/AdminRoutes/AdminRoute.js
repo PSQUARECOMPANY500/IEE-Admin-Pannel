@@ -23,6 +23,7 @@ router.get("/getCheckList", adminContoller.getAllChecklist)
 router.get("/getEnggDetailById/:EnggId",adminContoller.getEnggDetail )
 
 router.get("/getAssignCallbackDetail/:callbackId", adminContoller.getAssignCallbackByCallbackId)
+router.get("/getBookedDates", adminContoller.getBookedDates)
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 
