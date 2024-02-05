@@ -34,6 +34,7 @@ const ServiceRequestTable = () => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
+  const [RequestId,setRequestId] = useState();
   
   const getRequestDetail = useSelector((state) => {
     if(state.AdminRootReducer && state.AdminRootReducer.fetchAllServiceRequestsReducers && state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail){
@@ -108,10 +109,11 @@ const ServiceRequestTable = () => {
     };
   }, [dropdownRef,showTicketFilter]);
 
-  const openModal = (modalNumber) => {
+  const openModal = (modalNumber,requestId) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 4) {
       setShowTicketModal4(true);
+      setRequestId(requestId)
     }
   };
 
@@ -186,11 +188,11 @@ const ServiceRequestTable = () => {
              </td>
 
 
-             <td>SERVICE E1</td>
+             <td>{value?.TypeOfIssue}</td>
              <td>GOLD</td>
-             <td>12/10/2020</td>
-             <td>12:00PM</td>
-             <td onClick={() => openModal(4)}>
+             <td>{value?.RequestDate}</td>
+             <td>{value?.RequestTime}</td>
+             <td onClick={() => openModal(4,value?.RequestId)}>
                <AssignDropdown customAssign="assignColor" name="Assign" />
              </td>
             
@@ -202,7 +204,9 @@ const ServiceRequestTable = () => {
                <ServiceRequestModal
                  closeModal={() => setShowTicketModal4(false)}
                  showTicketModal={showTicketModal4}
-                 modalNumber={4}
+                //  modalNumber={4}
+                RequestId={RequestId}
+
                />
              )}
        

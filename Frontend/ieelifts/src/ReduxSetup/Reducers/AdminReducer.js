@@ -7,8 +7,33 @@ import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
 
 import { GET_ALL_SERVICE_REQUEST } from '../Actions/AdminActions'
 import { GET_ASSIGN_CALLBACK_DETAILS } from '../Actions/AdminActions';
+import { GET_REQUEST_DETAIL_BY_REQUEST_ID } from '../Actions/AdminActions';
 
 
+
+
+
+
+
+//fetch to handle get request by request Id
+
+const intialState7 = {
+    serviceRequest:null
+}
+export const getRequestDetailByRequestIdReducer = (state=intialState7, action) =>{
+    switch(action.type) {
+        case GET_REQUEST_DETAIL_BY_REQUEST_ID:
+           return {...state, serviceRequest:action.payload}
+        default:
+            return state   
+    }
+}
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 //fetch fetchAllServiceRequestsReducers
 
 const intialState6 = {

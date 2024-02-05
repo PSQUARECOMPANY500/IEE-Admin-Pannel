@@ -12,7 +12,33 @@ export const CLEAR_TABLE_DATA = "CLEAR_TABLE_DATA";
 export const ASSIGN_CALLBACK_BY_ADMIN = "ASSIGN_CALLBACK_BY_ADMIN";
 export const GET_ASSIGN_CALLBACK_DETAILS="GET_ASSIGN_CALLBACK_DETAILS";
 export const GET_ALL_SERVICE_REQUEST="GET_ALL_SERVICE_REQUEST";
+export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_ID"
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//action to handle get request by request Id
+
+export const getRequestDetailByRequestIdAction = (RequestId) =>{
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getRequestDetailByRequestid/${RequestId}`)
+
+      dispatch({
+        type:GET_REQUEST_DETAIL_BY_REQUEST_ID,
+        payload:response.data
+      })
+
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
+  }
+}
+
+
+
+
+
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle callBack Assign BY Admin
@@ -48,7 +74,9 @@ export const assignCallBackByAdminAction = (ServiceEnggId,JobOrderNumber,callbac
       })
 
       
-    } catch (error) {}
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
   };
 };
 

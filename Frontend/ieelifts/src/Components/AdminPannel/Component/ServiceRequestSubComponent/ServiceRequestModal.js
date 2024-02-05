@@ -8,8 +8,8 @@
   import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
-  import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
-  import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+  // import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+  // import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
   
   import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -18,11 +18,14 @@
     closeModal,
     showTicketModal,
     callbackId,
+    RequestId,
     setRenderTicket,
     enggId,
     isAssigned
   }) => {
     const dispatch = useDispatch();
+
+    console.log(RequestId)
   
     //  manage use states for the input fields
     const [jon, setJon] = useState("");
@@ -134,13 +137,13 @@
     useEffect(() => {
       if(isAssigned){
         dispatch(fetchEnggDetailAction(enggId));
-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+        // dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
-        dispatch(requestAssignCallbackDetail(callbackId))
+        // dispatch(requestAssignCallbackDetail(callbackId))
       }
       else{
-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
+        // dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
       }
@@ -221,19 +224,19 @@
           dateObject.getMonth() + 1
         }/${dateObject.getFullYear()}`;
   
-        dispatch(
-          assignCallBackByAdminAction(
-            engDetails?.enggJon,
-            number,
-            callbackId,
-            ClickListOnSelect.value,
-            selectedSlot,
-            formattedDate,
-            message,
-            engDetails?.enggName,
-            engDetails.enggJon
-          )
-        );
+        // dispatch(
+        //   assignCallBackByAdminAction(
+        //     engDetails?.enggJon,
+        //     number,
+        //     callbackId,
+        //     ClickListOnSelect.value,
+        //     selectedSlot,
+        //     formattedDate,
+        //     message,
+        //     engDetails?.enggName,
+        //     engDetails.enggJon
+        //   )
+        // );
   
         setRenderTicket((prev) => !prev);
         closeModal();

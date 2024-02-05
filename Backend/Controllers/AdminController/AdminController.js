@@ -258,6 +258,38 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Function to handle get Request detail By RequestId
+module.exports.getRequestDetailByRequestId = async (req, res) => {
+  try {
+    const { RequestId } = req.params;
+
+    const clientRequestDetails = await getAllServiceRequest.findOne({ RequestId });
+    // console.log("clientRequestDetails",clientRequestDetails)
+    if (!clientRequestDetails) {
+      res.status(404).json({ message: "no data found with this Request id" });
+    }
+
+    const clientDetail = await clientDetailSchema.findOne({
+      JobOrderNumber: clientRequestDetails.JobOrderNumber,
+    });
+    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+
+    const RequestClientdetails = {
+      ...clientRequestDetails._doc,
+      clientDetail: clientDetail,
+    };
+
+    res.status(200).json({
+      message: "all detal fetched successfully",
+      request: RequestClientdetails,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // get All Clients
 
 //function to handle GetAllClients infromation

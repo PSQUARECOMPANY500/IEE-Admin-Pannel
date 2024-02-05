@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const { v4: uuidv4 } = require('uuid'); // Import uuid library
 const Schema = mongoose.Schema;
+
 
 const Services = new Schema(
   {
@@ -9,6 +11,7 @@ const Services = new Schema(
     },
     RequestId: {
       type: String,
+      default: uuidv4, // Use uuid to generate a unique identifier
       required: true,
       unique: true,
     },
