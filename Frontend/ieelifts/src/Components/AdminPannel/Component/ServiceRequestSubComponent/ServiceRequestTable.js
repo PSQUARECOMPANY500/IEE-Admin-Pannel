@@ -3,7 +3,13 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
-import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
+import AddTicketModal1 from "../DashboardSubComponent/AddTicketModal1";
+import ServiceScheduledTable from "./ServiceScheduledTable";
+import ServiceRequestModal from "./ServiceRequestModal";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions"
+
 
 const data = [
   {
@@ -26,9 +32,22 @@ const data = [
 
 const ServiceRequestTable = () => {
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
+  
+  const getRequestDetail = useSelector((state) => {
+    if(state.AdminRootReducer && state.AdminRootReducer.fetchAllServiceRequestsReducers && state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail){
+      return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest
+    }
+    else{
+      return null;
+    }
+  } );
+  console.log(getRequestDetail);
+  
+  
+  
   // modal manage states
-
   const [showTicketModal4, setShowTicketModal4] = useState(false);
 
   const [showTicketFilter, setShowTicketFilter] = useState(false);
@@ -38,6 +57,17 @@ const ServiceRequestTable = () => {
     checkbox1: false,
     checkbox2: false,
   });
+
+
+  //use effect for dispatching ations
+  useEffect(() => {
+    dispatch(fetchAllServiceRequestsAction())
+  },[dispatch])
+  
+  //linit address logic
+  const limitAddress = (address, limit) => {
+    return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
+  };
 
   useEffect(() => {}, [checkboxStates]);
   const handleCheckBoxAll = () => {
@@ -128,8 +158,8 @@ const ServiceRequestTable = () => {
 
 
         {/* TABLE BODY STARTS */}
-        {data.map((value)=>(
-           <tbody>
+        {getRequestDetail?.map((value)=>(
+           <tbody key={value._id}>
            <tr className="selected">
              <td>
                {" "}
@@ -139,17 +169,17 @@ const ServiceRequestTable = () => {
                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
                />
              </td>
-             <td>0000000000</td>
-             <td>ram kumar</td>
-             <td>9416484863</td>
+             <td>{value.JobOrderNumber}</td>
+             <td>{value?.clientDetail?.name}</td>
+             <td>{value?.clientDetail?.PhoneNumber}</td>
 
              <td>
              <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
+                        <span>{limitAddress(value?.clientDetail?.Address,15)}</span>
 
                         <div className="dropdown-adddress-menu">
                           <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
+                         <p>{value?.clientDetail?.Address}</p> 
                           </div>
                         </div>
                       </div>
@@ -163,16 +193,18 @@ const ServiceRequestTable = () => {
              <td onClick={() => openModal(4)}>
                <AssignDropdown customAssign="assignColor" name="Assign" />
              </td>
-             {showTicketModal4 && (
-               <AddTicketModal
+            
+           </tr>
+         </tbody>
+        ))}
+
+{showTicketModal4 && (
+               <ServiceRequestModal
                  closeModal={() => setShowTicketModal4(false)}
                  showTicketModal={showTicketModal4}
                  modalNumber={4}
                />
              )}
-           </tr>
-         </tbody>
-        ))}
        
         {/* TABLE BODY ENDS */}
 

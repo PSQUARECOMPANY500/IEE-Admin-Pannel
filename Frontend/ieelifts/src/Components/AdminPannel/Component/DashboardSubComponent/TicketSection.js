@@ -265,7 +265,7 @@ const TicketSection = () => {
                       <td>
                         <div className="dropdown-address">
                           <span>
-                            {limitAddress(data?.clientDetail?.Address, 20)}
+                            {limitAddress(data?.clientDetail?.Address,15)}
                           </span>
 
                           <div className="dropdown-adddress-menu">
