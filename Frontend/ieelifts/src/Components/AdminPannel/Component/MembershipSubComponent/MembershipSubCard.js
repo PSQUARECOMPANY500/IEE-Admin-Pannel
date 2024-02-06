@@ -40,18 +40,18 @@ const MembershipSubCard = ({ data, dataType }) => {
           <p className={`membership_card_data_jon_title ${jonTitleColor}`}>
             Jon
           </p>
-          <p>{data.jon}</p>
+          <p>{data.JobOrderNumber}</p>
         </div>
-        <div className="membership_card_data_info">
+        {/* <div className="membership_card_data_info">
           <p>{data.name}</p>
           <p className="membership_card_data_address">{data.address}</p>
-        </div>
+        </div> */}
       </div>
-      <a  href={`tel:${data.number}`}>
+      {/* <a  href={`tel:${data.number}`}>
         <div className={`membership_card_data_display_hover ${cardClass}`}>
           <p>{data.number}</p>
         </div>
-      </a>
+      </a> */}
     </div>
   );
 };

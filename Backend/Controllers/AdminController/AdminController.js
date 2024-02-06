@@ -376,53 +376,6 @@ module.exports.getClientMemebership = async (req, res) => {
 };
 
 //function used to calculate the data of meberships
-// const calculateData = (data) => {
-//   const result = data.reduce(
-//     (acc, member) => {
-//       const pricePaid = parseFloat(member.PricePaid) || 0; // Convert to a number or default to 0
-//       acc.totalRevenue += pricePaid;
-//       acc.count++;
-
-//       return acc;
-//     },
-//     { totalRevenue: 0, count: 0 }
-//   );
-
-//   return result;
-// };
-// const calculateData = (data) => {
-//   let totalRevenue = 0;
-//   let count = 0;
-//   let expData = {};
-
-//   for (const d of data) {
-//     totalRevenue += parseFloat(d.PricePaid);
-//     count++;
-//     // console.log(d.StartDate);
-//     const startDate = new Date(d.StartDate);
-//     const durationInMonths = Number(d.Duration);
-//     const endDate = new Date(
-//       startDate.setMonth(startDate.getMonth() + durationInMonths)
-//     );
-
-//     // Calculate the difference in milliseconds
-//     const timeDifference = endDate - Date.now();
-
-//     // Convert milliseconds to days
-//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-//     if(daysLeft<=30){
-//       if(daysLeft<=0){
-//         data.isExpired =true;
-//         data.save();
-//       }
-//     }
-//     expData.push({data.JobOrderNumber,data.isExpired})
-//   }
-
-//   return { totalRevenue, count,expData };
-// };
-
 const calculateData = (data) => {
   let totalRevenue = 0;
   let count = 0;
@@ -462,4 +415,50 @@ const calculateData = (data) => {
 // to filter the memberships
 const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MemebershipType === type);
+};
+
+// Function to get client data on membership Limited page
+module.exports.showClientLimitedDetails = async (req, res) => {
+  try {
+    const JobOrderNumbers = req.body.JobOrderNumber;
+    const clientData = [];
+
+    await Promise.all(
+      JobOrderNumbers.map(async (JON) => {
+        const data = await clientDetailSchema.findOne({ JobOrderNumber: JON });
+        clientData.push({
+          name: data.name,
+          PhoneNumber: data.PhoneNumber,
+          Address: data.Address,
+        });
+      })
+    );
+
+    res.status(201).json({ success: true, clientData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+// Get client Details
+module.exports.getClientDetail = async (req, res) => {
+  try {
+    const { JON } = req.params;
+    console.log(JON);
+    const client = await clientDetailSchema.findOne({ JobOrderNumber: JON });
+
+    if (!client) {
+      return res.status(404).json({
+        message: "No Client found for the Job OrderNumber",
+      });
+    }
+    res.status(200).json({
+      message: "Client found",
+      client: client,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };

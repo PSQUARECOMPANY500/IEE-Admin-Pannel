@@ -1,22 +1,57 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MembershipCard from "../MembershipSubComponent/MembershipCard";
-import {
-  warrentyDemoData,
-  goldDemoData,
-  platinumDemoData,
-  silverDemoData,
-} from "../MembershipSubComponent/MemvbershipDemoData";
+import { requestGetMemberShipDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Membership = () => {
+  const dispatch = useDispatch();
   const [setClick, click] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+
+  useEffect(() => {
+    dispatch(requestGetMemberShipDataAction());
+  }, []);
+
+  const membershipJon = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.requestGetMemberShipDataActionReducer
+    ) {
+      return state?.AdminRootReducer?.requestGetMemberShipDataActionReducer;
+    } else {
+      return null;
+    }
+  });
+
+  console.log("nullll", membershipJon);
+
   const [cards, setCards] = useState([
-    { DemoData: warrentyDemoData, order: 1, toggleOrder: 2, id: 1 },
-    { DemoData: platinumDemoData, order: 2, toggleOrder: 1, id: 2 },
-    { DemoData: goldDemoData, order: 3, toggleOrder: 1, id: 3 },
-    { DemoData: silverDemoData, order: 4, toggleOrder: 1, id: 4 },
+    {
+      DemoData: { dataType: "Warrenty", Data: membershipJon?.membershipDetail?.warrenty },
+      order: 1,
+      toggleOrder: 2,
+      id: 1,
+    },
+    {
+      DemoData: { dataType: "Platinum", Data:  membershipJon?.membershipDetail?.platinum },
+      order: 2,
+      toggleOrder: 1,
+      id: 2,
+    },
+    {
+      DemoData: { dataType: "Gold", Data:  membershipJon?.membershipDetail?.gold },
+      order: 3,
+      toggleOrder: 1,
+      id: 3,
+    },
+    {
+      DemoData: { dataType: "Silver", Data:  membershipJon?.membershipDetail?.silver },
+      order: 4,
+      toggleOrder: 1,
+      id: 4,
+    },
     { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
   ]);
 
@@ -61,7 +96,11 @@ const Membership = () => {
       return card;
     });
     setCards(updatedCards);
-    setClickCount(0);
+    if (clickCount === 1) {
+      setClickCount(0);
+    } else {
+      setClickCount(1);
+    }
     click(!setClick);
   };
 

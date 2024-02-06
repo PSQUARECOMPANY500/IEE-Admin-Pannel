@@ -30,6 +30,15 @@ router.get(
   "/getAssignCallbackDetail/:callbackId",
   adminContoller.getAssignCallbackByCallbackId
 );
+router.get(
+  "/getClientId/:JON",
+  adminContoller.getClientDetail
+);
+
+router.get(
+  "/getClientMemberShipDataLimited",
+  adminContoller.showClientLimitedDetails
+);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);

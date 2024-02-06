@@ -209,7 +209,9 @@ const Sidebar = ({ children }) => {
               <div
                 className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
                 style={{ width: isOpen ? "8px" : "0px" }}
-                onClick={handleToggleClick}
+                onClick={() => {
+                  !toogleOpen ? toogleMenue() : handleToggleClick();
+                }}
               >
                 <div className="wrapper">
                   <div className="menu-bar menu-bar-top"></div>
