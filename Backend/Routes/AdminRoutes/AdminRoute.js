@@ -10,9 +10,9 @@ router.post("/assigncallback", adminContoller.assignCallbacks);
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
+router.get("/getMembership", adminContoller.getClientMemebership);
 
 //------------------------------ All get requests -------------------------------------------------
-router.get("/getMembership", adminContoller.getClientMemebership);
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
