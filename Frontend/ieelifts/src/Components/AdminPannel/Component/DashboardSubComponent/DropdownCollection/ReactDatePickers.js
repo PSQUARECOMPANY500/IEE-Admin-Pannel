@@ -6,8 +6,8 @@ import { FaChevronRight } from "react-icons/fa";
 
 
 
-const ReactDatePickers = ({isAssigned,fetchedDate}) => {
-  
+const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) => {
+
   const daysContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
@@ -17,7 +17,7 @@ const ReactDatePickers = ({isAssigned,fetchedDate}) => {
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-
+  //console.log(selectedDate);
   const handleDayClick = (day) => {
     const newSelectedDate = new Date(
       currentDate.getFullYear(),
@@ -25,6 +25,7 @@ const ReactDatePickers = ({isAssigned,fetchedDate}) => {
       day
     );
     setSelectedDate(newSelectedDate);
+    OnDateChange(newSelectedDate)
     dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-US");
     calendarRef.current.style.display = "none";
     renderCalendar();
@@ -110,8 +111,8 @@ const ReactDatePickers = ({isAssigned,fetchedDate}) => {
 
   const handleDocumentClick = (event) => {
     if (
-      !dateInputRef.current.contains(event.target) &&
-      !calendarRef.current.contains(event.target)
+      !dateInputRef?.current?.contains(event.target) &&
+      !calendarRef?.current?.contains(event.target)
     ) {
       calendarRef.current.style.display = "none";
     }
@@ -140,25 +141,26 @@ const ReactDatePickers = ({isAssigned,fetchedDate}) => {
       <input
         type="text"
         id="dateInput"
-        placeholder={isAssigned?fetchedDate:"Select a date"}
+        placeholder={isAssigned ? fetchedDate : "Select a date"}
         ref={dateInputRef}
-        onClick={handleDateInputClick}
+        onClick={ handleDateInputClick}
+        readOnly={isAssigned } // Disable input when isAssigned is true
       />
-      <div className="calendar" id="calendar" ref={calendarRef}>
+      {<div className="calendar" id="calendar" ref={calendarRef}>
         <div className="header">
           <button id="prevBtn" onClick={handlePrevClick}>
-          <FaChevronLeft />
+            <FaChevronLeft />
 
           </button>
           <h2 id="monthYear" ref={monthYearRef}>
             Month Year
           </h2>
           <button id="nextBtn" onClick={handleNextClick}>
-          <FaChevronRight />
+            <FaChevronRight />
           </button>
         </div>
         <div className="days" id="daysContainer" ref={daysContainerRef}></div>
-      </div>
+      </div>}
     </div>
   );
 };

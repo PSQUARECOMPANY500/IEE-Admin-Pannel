@@ -81,6 +81,7 @@ module.exports.getAllChecklist = async (req, res) => {
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle   (assign callbacks to Engg)----------------------------------------------------------------------------------------------------------------
+
 module.exports.assignCallbacks = async (req, res) => {
   try {
     const {
@@ -94,30 +95,54 @@ module.exports.assignCallbacks = async (req, res) => {
       ServiceProcess,
     } = req.body;
 
-    const callback = await ServiceAssigntoEngg.create({
-      ServiceEnggId,
-      JobOrderNumber,
-      callbackId,
-      AllotAChecklist,
-      Slot,
-      Date,
-      Message,
-      ServiceProcess,
-    });
+    let callback;
+
+    // Check if the callbackId already exists
+    const existingCallback = await ServiceAssigntoEngg.findOne({ callbackId });
+
+    if (existingCallback) {
+      // Update existing data
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        { callbackId },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        { new: true } // Return the updated document
+      );
+    } else {
+      // Create a new entry
+      callback = await ServiceAssigntoEngg.create({
+        ServiceEnggId,
+        JobOrderNumber,
+        callbackId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      });
+    }
 
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
 
     res.status(201).json({
-      message: "callback Assign Succesfully",
+      message: "Callback assigned successfully",
       callback: populatedCallback,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "intenal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

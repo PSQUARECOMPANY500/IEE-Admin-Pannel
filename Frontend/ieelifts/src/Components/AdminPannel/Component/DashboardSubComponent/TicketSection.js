@@ -247,6 +247,7 @@ const TicketSection = () => {
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;
+              
                   return (
                     <tr className="selected" key={index}>
                       <td>
