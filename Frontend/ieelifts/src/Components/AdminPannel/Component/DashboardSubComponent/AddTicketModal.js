@@ -24,7 +24,7 @@ const AddTicketModal = ({
 }) => {
   const dispatch = useDispatch();
   
-console.log("render")
+
   //  manage use states for the input fields
   const [jon, setJon] = useState("");
   const [name, setName] = useState("");
