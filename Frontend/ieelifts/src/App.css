@@ -2008,18 +2008,18 @@ thead th {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.05);
-  z-index: 2;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 4;
   width: 100%;
 }
-.modal-wrapper1{
+.modal-wrapper1 {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 4;
   width: 100%;
 }
 
@@ -2034,9 +2034,8 @@ thead th {
   width: 80%;
   height: 80%;
   background: white;
-  z-index: 2;
+  z-index: 4;
 }
-
 
 .cross-icon {
   right: 17px;

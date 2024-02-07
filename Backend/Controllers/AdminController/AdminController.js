@@ -364,6 +364,45 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
   }
 };
 
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle get Assign service request By ServiceId
+module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
+  try {
+    const { RequestId } = req.params;
+
+    const RequestDetail = await AssignSecheduleRequest.findOne({ RequestId });
+    if (!RequestDetail) {
+      return res.status(404).json({ error: "Request not found" });
+    }
+
+    const serviceEnggDetail = await ServiceEnggData.findOne({
+      EnggId: RequestDetail.ServiceEnggId,
+    });
+    if (!serviceEnggDetail) {
+      return res
+        .status(404)
+        .json({ error: "Service Engineer details not found" });
+    }
+    const checkList = await ChecklistModal.findOne({
+      _id: RequestDetail.AllotAChecklist,
+    });
+
+    if (!checkList) {
+      return res.status(404).json({ error: "Checklist not found" });
+    }
+    const callbackdetails = {
+      ...RequestDetail._doc,
+      serviceEnggDetail: serviceEnggDetail,
+      checkList: checkList,
+    };
+
+    res.status(200).json({ ServiceRequestdetails: callbackdetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle create client memenership
 
