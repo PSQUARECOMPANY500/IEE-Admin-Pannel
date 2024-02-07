@@ -1,15 +1,22 @@
   //................................{preet}....................................
   import React, { useEffect, useState } from "react";
+  import toast, { Toaster } from 'react-hot-toast';
+
   import { RxCross2 } from "react-icons/rx";
   import SingleSetDropdown from "../DashboardSubComponent/DropdownCollection/SingleSetDropdown";
   import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/MultiSelectDropdown";
   import { useDispatch, useSelector } from "react-redux";
   import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+  import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+
+  import { getRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
   // import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
   // import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+  import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
   
   import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -17,13 +24,14 @@
   const ServiceRequestModal = ({
     closeModal,
     showTicketModal,
-    callbackId,
     RequestId,
     setRenderTicket,
     enggId,
     isAssigned
   }) => {
     const dispatch = useDispatch();
+
+    console.log(isAssigned)
 
     console.log(RequestId)
   
@@ -46,7 +54,11 @@
       enggRating: "",
     });
   
+
     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
+
+    console.log(ClickListOnSelect)
+
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
     const [fetchedDate,setfetchedDate] = useState("")
@@ -108,15 +120,21 @@
       }
     });
   
-    // use use selector to select the user callBack state
-  
-    const userCallBackDetail = useSelector((state) => {
-      return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
-        ?.callbackData?.callback;
+    // use use selector to select the user Request state
+    const getUserRequestDetail = useSelector((state) => {
+      if(state.AdminRootReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest){
+        return state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest.request
+      }else{
+        return null
+      }
     });
+
+    //console.log("getUserRequestDetail =>",getUserRequestDetail)
+
+
   
+    
     //get eng state by use selector hook
-  
     const getEnggState = useSelector((state) => {
       if (
         state.AdminRootReducer &&
@@ -128,22 +146,27 @@
       }
       return;
     });
-  
+  /* 
     const getAssignedCallbackDetails = useSelector((state)=>{
-      return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
+      return state?.AdminRootReducer;
     })
+
+    console.log('testing', getAssignedCallbackDetails) */
+
+    const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
   
   
     useEffect(() => {
       if(isAssigned){
+        console.log("1");
         dispatch(fetchEnggDetailAction(enggId));
-        // dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+        dispatch(getRequestDetailByRequestIdAction(RequestId))
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
-        // dispatch(requestAssignCallbackDetail(callbackId))
+        dispatch(assignServiceRequestDetailByRequestIdAction(RequestId));
       }
       else{
-        // dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
+        dispatch(getRequestDetailByRequestIdAction(RequestId));
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
       }
@@ -167,15 +190,15 @@
     }, [getEnggState]);
   
     useEffect(() => {
-      setJon(userCallBackDetail?.JobOrderNumber || "");
-      setName(userCallBackDetail?.clientDetail?.name || "");
-      setNumber(userCallBackDetail?.clientDetail?.PhoneNumber || "");
-      setAddress(userCallBackDetail?.clientDetail?.Address || "");
-      setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
-      setDescription(userCallBackDetail?.Description || "");
-      setDate(userCallBackDetail?.createdAt || "");
-      setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
-    }, [userCallBackDetail]);
+      setJon(getUserRequestDetail?.JobOrderNumber || "");
+      setName(getUserRequestDetail?.clientDetail?.name || "");
+      setNumber(getUserRequestDetail?.clientDetail?.PhoneNumber || "");
+      setAddress(getUserRequestDetail?.clientDetail?.Address || "");
+      setTypeOfIssue(getUserRequestDetail?.TypeOfIssue || "");
+      setDescription(getUserRequestDetail?.Description || "");
+      setDate(getUserRequestDetail?.createdAt || "");
+      setModelType(getUserRequestDetail?.clientDetail?.ModelType || "");
+    }, [getUserRequestDetail]);
   
     useEffect(() => {
       //no problem
@@ -187,15 +210,15 @@
   
     useEffect(()=>{
    
-      if(getAssignedCallbackDetails?.callbackdetails){
-        setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
-        setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
-        setMessage(getAssignedCallbackDetails.callbackdetails.Message);
-        const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
+      if(getAssignRequestdetail){
+        setClickListOnSelect(getAssignRequestdetail?.checkList?.checklistName);
+        setSelectedSlot(getAssignRequestdetail?.Slot);
+        setMessage(getAssignRequestdetail?.Message);
+        const dateAsString = getAssignRequestdetail?.Date.toString();
         setfetchedDate(dateAsString)
       }
     
-    },[getAssignedCallbackDetails])
+    },[getAssignRequestdetail])
   
   
     const handleEnggSelectionChange = (selectedOptions) => {
@@ -210,7 +233,7 @@
       setClickListOnSelect(selectedOptions);
     };
   
-    const handleElevatorSectionDetails = () => {
+    const handleAssignRequest = () => {
       if (
         engDetails.enggJon &&
         ClickListOnSelect &&
@@ -223,25 +246,12 @@
         const formattedDate = `${dateObject.getDate()}/${
           dateObject.getMonth() + 1
         }/${dateObject.getFullYear()}`;
-  
-        // dispatch(
-        //   assignCallBackByAdminAction(
-        //     engDetails?.enggJon,
-        //     number,
-        //     callbackId,
-        //     ClickListOnSelect.value,
-        //     selectedSlot,
-        //     formattedDate,
-        //     message,
-        //     engDetails?.enggName,
-        //     engDetails.enggJon
-        //   )
-        // );
-  
+
+        dispatch(assignserviceRequestByAdmin(engDetails?.enggJon,jon,RequestId,ClickListOnSelect.value,selectedSlot,formattedDate,message,engDetails?.enggName,engDetails.enggJon))
         setRenderTicket((prev) => !prev);
         closeModal();
       } else {
-        console.log("not valid input");
+        toast.error("Please fill all the fields")
       }
     };
   
@@ -629,7 +639,7 @@
                 <button className="edit-button" >Edit</button>
                 <button
                   className="assign-button"
-                  onClick={handleElevatorSectionDetails}
+                  onClick={handleAssignRequest}
                 >
                   Assign
                 </button>

@@ -1,6 +1,9 @@
 import axios from "axios";
 import config from "../../config";
 
+import { toast } from 'react-hot-toast';
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
 export const GET_ALL_CALLBACK = "GET_ALL_CALLBACK";
@@ -12,10 +15,86 @@ export const CLEAR_TABLE_DATA = "CLEAR_TABLE_DATA";
 export const ASSIGN_CALLBACK_BY_ADMIN = "ASSIGN_CALLBACK_BY_ADMIN";
 export const GET_ASSIGN_CALLBACK_DETAILS="GET_ASSIGN_CALLBACK_DETAILS";
 export const GET_ALL_SERVICE_REQUEST="GET_ALL_SERVICE_REQUEST";
-export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_ID"
+export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_ID";
+
+export const ASSIGN_SERVICE_REQUEST_BY_ADMIN = "ASSIGN_SERVICE_REQUEST_BY_ADMIN";
+
+export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID = "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//action to handle get Assign service Request detail By Request Id
 
+export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
+  console.log("2");
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`);
+      console.log(response.data)
+      dispatch({
+        type:GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID,
+        payload:response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error); 
+      
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Action to handle Assign service Request by admin
+
+export const assignserviceRequestByAdmin = (ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon) => {
+  return async (dispatch) => {
+    try {
+      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
+      const response = await axios.post(`${config.apiUrl}/admin/assignRequest`,
+      {
+        ServiceEnggId,
+        JobOrderNumber,
+        RequestId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+      }
+    );
+
+    const responseData = await axios.put(`${config.apiUrl}/client/updateServiceRequest`,
+    {
+      RequestId,
+      name,
+      enggJon,
+    }
+  );
+
+  console.log(response)
+  console.log(responseData)
+
+  dispatch({
+    type:ASSIGN_SERVICE_REQUEST_BY_ADMIN,
+    payload:response.data
+  })
+
+  toast.success('Assign Request successfully'); 
+
+    } catch (error) {
+      console.log("error while fetching Eng_details", error); 
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //action to handle get request by request Id
 
 export const getRequestDetailByRequestIdAction = (RequestId) =>{
@@ -33,11 +112,6 @@ export const getRequestDetailByRequestIdAction = (RequestId) =>{
     }
   }
 }
-
-
-
-
-
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,10 +145,10 @@ export const assignCallBackByAdminAction = (ServiceEnggId,JobOrderNumber,callbac
         type:ASSIGN_CALLBACK_BY_ADMIN,
         payload:response.data
       })
-
-      
+      toast.success('Assign callback successfully'); 
     } catch (error) {
       console.log("error while fetching Eng_details", error);
+      // toast.success('no notification');
     }
   };
 };
@@ -91,7 +165,7 @@ export const  fetchEnggDetailAction = (EnggId) => {
           payload: null,
         });
       }else{
-        //console.log("EngId ",EnggId);
+        console.log("EngId ",EnggId);
         const response = await axios.get(
           `${config.apiUrl}/admin/getEnggDetailById/${EnggId}`
         );
