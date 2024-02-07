@@ -222,7 +222,6 @@ const AddTicketModal = ({
     setengDate(formattedDate);
   }
 
-  console.log("rokk",engDetails?.enggJon,"-",jon,"-",callbackId,"-",ClickListOnSelect,"-",selectedSlot,"-",engDate,"-",message,"-",engDetails?.enggName,"-",engDetails.enggJon)
   
   const handleElevatorSectionDetails = () => {
     if (
@@ -232,9 +231,6 @@ const AddTicketModal = ({
       date &&
       message
     ) {
-      
-      console.log(engDetails?.enggJon,"-",jon,"-",callbackId,"-",ClickListOnSelect.label,"-",selectedSlot,"-",engDate,"-",message,"-",engDetails?.enggName,"-",engDetails.enggJon)
-
       dispatch(
         assignCallBackByAdminAction(
           engDetails?.enggJon,
