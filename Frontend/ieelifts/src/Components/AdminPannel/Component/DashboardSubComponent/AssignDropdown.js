@@ -8,11 +8,6 @@ const AssignDropdown = (props) => {
     return name?.slice(0,limit)+(name?.length>limit?"..." :"");
   };
 
-<<<<<<< HEAD
-=======
-  const enggname = props.name;
-  console.log(enggname)
->>>>>>> parent of 7586e1d (request section api integration)
 
   return (
     <div className={`status-section-button ${props.customAssign} ${props.customAssignName} ${props.customResolved }`}>
