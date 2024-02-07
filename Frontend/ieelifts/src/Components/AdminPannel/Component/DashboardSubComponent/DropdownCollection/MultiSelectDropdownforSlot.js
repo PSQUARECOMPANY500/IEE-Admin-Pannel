@@ -5,9 +5,10 @@ import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName,editchange}) => {
+const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName}) => {
 
   const [selectedValue , setSelectedValue] = useState([]);
+  //console.log("render")
  
   const enggDetailsData = Details || slots || [];
 
@@ -79,18 +80,16 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
 
 
   return (
-    <Select
+  <Select
     placeholder={placeholder}
     closeMenuOnSelect={false}
-    components={animatedComponents}
-    isMulti
     options={dynamicOptions}
-    styles={customStyles}
+    styles={customStyles} // Apply the custom styles
     onChange={handleChange}
     value={selectedValue}
-    isDisabled={editchange ? false : isAssigned}
-/>
-
+    isDisabled={isAssigned?true:false}
+  />
+    
   );
 };
 

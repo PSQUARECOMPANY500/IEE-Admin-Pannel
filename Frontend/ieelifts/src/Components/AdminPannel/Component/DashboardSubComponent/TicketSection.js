@@ -13,6 +13,7 @@ import AddTicketModal from "./AddTicketModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import AddTicketModal1 from "./AddTicketModal1";
+import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 
 const TicketSection = () => {
   const dispatch = useDispatch();
@@ -188,10 +189,9 @@ const TicketSection = () => {
               </p>
             </div>
             {showTicketModal && (
-              <AddTicketModal1
+              <AddTicketOnCallRequest
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
-                modalNumber={0}
                 setRenderTicket={setRenderTicket}
               />
             )}
@@ -247,6 +247,7 @@ const TicketSection = () => {
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;
+              
                   return (
                     <tr className="selected" key={index}>
                       <td>
@@ -318,79 +319,3 @@ const TicketSection = () => {
 };
 
 export default TicketSection;
-
-{
-  /* <tr className="selected">
-<td>442113</td>
-<td>ram kumar</td>
-<td>9416484863</td>
-<td>
-  <div className="dropdown-address">
-    <span>ADDRESS ADDRESS</span>
-
-    <div className="dropdown-adddress-menu">
-      <div className="drop-address">
-        <p>
-          Address: E 26, Phase 7, Industrial Area, Sector 73,
-          Sahibzada Ajit Singh Nagar, Punjab 140308
-        </p>
-      </div>
-    </div>
-  </div>
-</td>
-<td>DESCRIPTION DESCRIPTION</td>
-<td>Door</td>
-<td>12/10/2020</td>
-<td>12:00PM</td>
-<td onClick={() => openModal(2)}>
-  <AssignDropdown
-    customAssignName="assignNameColor"
-    name="Mohan"
-  />
-</td>
-{showTicketModal2 && (
-  <AddTicketModal
-    closeModal={closeModal2}
-    showTicketModal={showTicketModal2}
-    modalNumber={2}
-  />
-)}
-</tr>
-
-<tr className="selected">
-<td>442113</td>
-<td>ram kumar</td>
-<td>9416484863</td>
-<td>
-  <div className="dropdown-address">
-    <span>ADDRESS ADDRESS</span>
-
-    <div className="dropdown-adddress-menu">
-      <div className="drop-address">
-        <p>
-          Address: E 26, Phase 7, Industrial Area, Sector 73,
-          Sahibzada Ajit Singh Nagar, Punjab 140308
-        </p>
-      </div>
-    </div>
-  </div>
-</td>
-<td>DESCRIPTION DESCRIPTION</td>
-<td>Door</td>
-<td>12/10/2020</td>
-<td>12:00PM</td>
-<td onClick={() => openModal(3)}>
-  <AssignDropdown
-    customResolved="assignResolved"
-    name="Resolved"
-  />
-</td>
-{showTicketModal3 && (
-  <AddTicketModal
-    closeModal={closeModal3}
-    showTicketModal={showTicketModal3}
-    modalNumber={3}
-  />
-)}
-</tr> */
-}
