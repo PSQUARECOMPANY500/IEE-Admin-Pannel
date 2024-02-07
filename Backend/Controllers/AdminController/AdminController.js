@@ -80,8 +80,7 @@ module.exports.getAllChecklist = async (req, res) => {
 };
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to handle   (assign callbacks to Engg)----------------------------------------------------------------------------------------------------------------
-
+//function to handle   (assign callbacks to Engg)
 module.exports.assignCallbacks = async (req, res) => {
   try {
     const {
@@ -95,54 +94,30 @@ module.exports.assignCallbacks = async (req, res) => {
       ServiceProcess,
     } = req.body;
 
-    let callback;
-
-    // Check if the callbackId already exists
-    const existingCallback = await ServiceAssigntoEngg.findOne({ callbackId });
-
-    if (existingCallback) {
-      // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate(
-        { callbackId },
-        {
-          ServiceEnggId,
-          JobOrderNumber,
-          AllotAChecklist,
-          Slot,
-          Date,
-          Message,
-          ServiceProcess,
-        },
-        { new: true } // Return the updated document
-      );
-    } else {
-      // Create a new entry
-      callback = await ServiceAssigntoEngg.create({
-        ServiceEnggId,
-        JobOrderNumber,
-        callbackId,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-        ServiceProcess,
-      });
-    }
+    const callback = await ServiceAssigntoEngg.create({
+      ServiceEnggId,
+      JobOrderNumber,
+      callbackId,
+      AllotAChecklist,
+      Slot,
+      Date,
+      Message,
+      ServiceProcess,
+    });
 
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
 
     res.status(201).json({
-      message: "Callback assigned successfully",
+      message: "callback Assign Succesfully",
       callback: populatedCallback,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "intenal server error" });
   }
 };
-
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -283,6 +258,38 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Function to handle get Request detail By RequestId
+module.exports.getRequestDetailByRequestId = async (req, res) => {
+  try {
+    const { RequestId } = req.params;
+
+    const clientRequestDetails = await getAllServiceRequest.findOne({ RequestId });
+    // console.log("clientRequestDetails",clientRequestDetails)
+    if (!clientRequestDetails) {
+      res.status(404).json({ message: "no data found with this Request id" });
+    }
+
+    const clientDetail = await clientDetailSchema.findOne({
+      JobOrderNumber: clientRequestDetails.JobOrderNumber,
+    });
+    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+
+    const RequestClientdetails = {
+      ...clientRequestDetails._doc,
+      clientDetail: clientDetail,
+    };
+
+    res.status(200).json({
+      message: "all detal fetched successfully",
+      request: RequestClientdetails,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // get All Clients
 
 //function to handle GetAllClients infromation
@@ -357,6 +364,45 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
   }
 };
 
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle get Assign service request By ServiceId
+module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
+  try {
+    const { RequestId } = req.params;
+
+    const RequestDetail = await AssignSecheduleRequest.findOne({ RequestId });
+    if (!RequestDetail) {
+      return res.status(404).json({ error: "Request not found" });
+    }
+
+    const serviceEnggDetail = await ServiceEnggData.findOne({
+      EnggId: RequestDetail.ServiceEnggId,
+    });
+    if (!serviceEnggDetail) {
+      return res
+        .status(404)
+        .json({ error: "Service Engineer details not found" });
+    }
+    const checkList = await ChecklistModal.findOne({
+      _id: RequestDetail.AllotAChecklist,
+    });
+
+    if (!checkList) {
+      return res.status(404).json({ error: "Checklist not found" });
+    }
+    const callbackdetails = {
+      ...RequestDetail._doc,
+      serviceEnggDetail: serviceEnggDetail,
+      checkList: checkList,
+    };
+
+    res.status(200).json({ details: callbackdetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle create client memenership
 
@@ -377,7 +423,7 @@ module.exports.createClientMemebership = async (req, res) => {
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
       MemebershipType,
-      StartDate,
+      StartDate: new Date(StartDate),
       Duration,
       Discount,
       PricePaid,
@@ -388,11 +434,121 @@ module.exports.createClientMemebership = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "memebership created successfully", MemberShipDetails});
+      .json({ message: "memebership created successfully", MemberShipDetails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
   }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to get the membership data
+module.exports.getClientMemebership = async (req, res) => {
+  try {
+    const membershipData = await AssignMemeberships.find();
+
+    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
+    const calculations = {};
+
+    membershipTypes.forEach((type) => {
+      const filteredData = filterMembershipByType(membershipData, type);
+      calculations[type] = calculateData(filteredData);
+    });
+
+    res.status(201).json({ success: true, ...calculations });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+//function used to calculate the data of meberships
+// const calculateData = (data) => {
+//   const result = data.reduce(
+//     (acc, member) => {
+//       const pricePaid = parseFloat(member.PricePaid) || 0; // Convert to a number or default to 0
+//       acc.totalRevenue += pricePaid;
+//       acc.count++;
+
+//       return acc;
+//     },
+//     { totalRevenue: 0, count: 0 }
+//   );
+
+//   return result;
+// };
+// const calculateData = (data) => {
+//   let totalRevenue = 0;
+//   let count = 0;
+//   let expData = {};
+
+//   for (const d of data) {
+//     totalRevenue += parseFloat(d.PricePaid);
+//     count++;
+//     // console.log(d.StartDate);
+//     const startDate = new Date(d.StartDate);
+//     const durationInMonths = Number(d.Duration);
+//     const endDate = new Date(
+//       startDate.setMonth(startDate.getMonth() + durationInMonths)
+//     );
+
+//     // Calculate the difference in milliseconds
+//     const timeDifference = endDate - Date.now();
+
+//     // Convert milliseconds to days
+//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+//     if(daysLeft<=30){
+//       if(daysLeft<=0){
+//         data.isExpired =true;
+//         data.save();
+//       }
+//     }
+//     expData.push({data.JobOrderNumber,data.isExpired})
+//   }
+
+//   return { totalRevenue, count,expData };
+// };
+
+const calculateData = (data) => {
+  let totalRevenue = 0;
+  let count = 0;
+  let expData = [];
+
+  for (const d of data) {
+    totalRevenue += parseFloat(d.PricePaid);
+
+    const startDate = new Date(d.StartDate);
+    const durationInMonths = Number(d.Duration);
+    const endDate = new Date(
+      startDate.setMonth(startDate.getMonth() + durationInMonths)
+    );
+
+    const timeDifference = endDate - Date.now();
+
+    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+    if (daysLeft <= 30) {
+      if (daysLeft <= 0) {
+        d.isExpired = true;
+        d.save();
+      }
+      expData.push({
+        JobOrderNumber: d.JobOrderNumber,
+        isExpired: d.isExpired,
+      });
+    }
+    if (!d.isExpired && !d.isDisable && !d.isRenewed) {
+      count++;
+    }
+  }
+
+  return { totalRevenue, count, expData };
+};
+
+// to filter the memberships
+const filterMembershipByType = (data, type) => {
+  return data.filter((member) => member.MemebershipType === type);
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
