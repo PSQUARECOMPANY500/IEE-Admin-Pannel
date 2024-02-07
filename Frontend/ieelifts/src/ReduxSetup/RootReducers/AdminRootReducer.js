@@ -11,7 +11,11 @@ import { fetchAllServiceRequestsReducers } from '../Reducers/AdminReducer';
 import { getRequestDetailByRequestIdReducer } from '../Reducers/AdminReducer';
 import { assignServiceRequestDetailByRequestIdAction } from '../Reducers/AdminReducer';
 
+import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
+
+
 const AdminRootReducer = combineReducers({
+    fetchClientDetailsByJon:fetchClientDetailsByJon,
     fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
     fetchAllCallbackReducer:fetchAllCallbackReducer,
     fetchCallbackDetailWithCallbackIdReducer:fetchCallbackDetailWithCallbackIdReducer,

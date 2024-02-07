@@ -396,7 +396,7 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
       checkList: checkList,
     };
 
-    res.status(200).json({ ServiceRequestdetails: callbackdetails });
+    res.status(200).json({ details: callbackdetails });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "intenal server error" });
@@ -550,3 +550,73 @@ const calculateData = (data) => {
 const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MemebershipType === type);
 };
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//function to get all booked dates {amit-features}
+
+module.exports.getBookedDates = async(req,res)=>{
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+  
+  try{
+    const data = await ServiceAssigntoEngg.find();
+
+    const groupedDates = {};
+
+  data.forEach(entry => {
+    if (!groupedDates[entry.Date]) {
+      groupedDates[entry.Date] = {
+        slots:[],
+        isSlotAvailable:true,
+      };
+    }
+    groupedDates[entry.Date].slots.push(entry.Slot);
+  });
+
+  Object.keys(groupedDates).forEach((date)=>{
+    const slotLength = groupedDates[date].slots.length;
+    const allSlots = timeSlots.length;
+
+    if(allSlots === slotLength){
+      groupedDates[date].isSlotAvailable = false;
+    }
+  })
+
+  res.json(groupedDates);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error:"Internal server Error", 
+      "message":error.message
+    });
+  }
+
+}

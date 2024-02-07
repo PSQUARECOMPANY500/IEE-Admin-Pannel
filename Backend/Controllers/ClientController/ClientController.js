@@ -377,6 +377,7 @@ module.exports.Rating = async (req, res) => {
     const {
       JobOrderNumber,
       ServiceEnggId,
+      callBackId,
       Rating,
       Description,
       Questions: { Question1, Question2, Question3, Question4, Question5 },
@@ -385,6 +386,7 @@ module.exports.Rating = async (req, res) => {
     const newRequest = await engineerRating.create({
       JobOrderNumber,
       ServiceEnggId,
+      callBackId,
       Rating,
       Description,
       Questions: {
@@ -475,3 +477,4 @@ module.exports.Rating = async (req, res) => {
     res.status(500).json({ error: "Error for creating service Request" });
   }
 }; */
+}

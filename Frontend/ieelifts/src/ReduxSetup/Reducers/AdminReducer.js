@@ -123,6 +123,7 @@ const intialState = {
 export const fetchAllCallbackReducer = (state=intialState, action) =>{
     switch (action.type) {
         case GET_ALL_CALLBACK:
+        
             return { ...state, callbacks:action.payload};
             default:
                 return state
@@ -158,7 +159,9 @@ const intialState2 = {
 }
 
 export const fetchAllClientDetailReducer = (state = intialState2 , action) => {
+    
     switch(action.type){
+        
         case GET_ALL_CLIENT_DETAIL:
             return{
                 ...state,

@@ -15,12 +15,15 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
 router.post("/requestCallbacks", clientController.RequestCallbacks);
+/* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
+router.put("/updateCallbacks", clientController.updateCallbacks);
+/* router.post("/requestCallbacks", verifyToken('client') , clientController.RequestCallbacks); */
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
-router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
 //router.post("/engineerRating",clientController.Rating)
 
-// ------------------------all get Requests ----------------------------------------------------4
-router.get("/clientDetail/:JobOrderNumber", verifyToken('client') ,clientController.getClientDetail);
+// ------------------------all get Requests ----------------------------------------
+router.get("/clientDetail/:JobOrderNumber", verifyToken('client'), clientController.getClientDetail);
 router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientController.getAllClientCallbacks);
 router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
 
@@ -35,5 +38,7 @@ router.get("/verifyclient",clientController.verifyClient);
 // ------------------------all Put Requests ----------------------------------------------------
 router.put("/updateCallbacks", clientController.updateCallbacks);
 router.put("/updateServiceRequest", clientController.updateServiceRequest);
+router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
 
 module.exports = router;

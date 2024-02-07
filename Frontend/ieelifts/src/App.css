@@ -2008,8 +2008,8 @@ thead th {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 4;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
   width: 100%;
 }
 .modal-wrapper1 {
@@ -2267,15 +2267,7 @@ thead th {
   margin-top: 10px;
 }
 
-.edit-button {
-  padding: 12px 50px;
-  border-radius: 5px;
-  border: 1px solid #f8ac1d;
-  background: white;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-}
+
 .assign-button {
   padding: 12px 50px;
   border-radius: 5px;

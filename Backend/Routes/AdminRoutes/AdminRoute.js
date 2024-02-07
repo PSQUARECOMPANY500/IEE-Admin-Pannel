@@ -3,7 +3,7 @@ const router = express.Router();
 
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
-
+const ClientController = require("../../Controllers/ClientController/ClientController")
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -35,6 +35,8 @@ router.get(
 );
 
 router.get('/getAssignRequestDetail/:RequestId', adminContoller.getAssignServiceRequestByServiceRequestId)
+router.get("/getBookedDates", adminContoller.getBookedDates)
+router.get("/clientDetail/:JobOrderNumber",ClientController.getClientDetail);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
