@@ -579,7 +579,7 @@ const AddTicketModal = ({
                     <div className="col75">
                       
                       <MultiSelectDropdown
-                      placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
                         Details={serviceEnggDetail}
                         handleEnggSelectionChange={handleEnggSelectionChange}
                         isAssigned={isAssigned}
