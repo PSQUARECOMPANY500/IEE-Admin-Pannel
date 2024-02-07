@@ -13,15 +13,16 @@ router.post("/loginWithPhone",clientController.loginClientwithPhoneNumber);
 router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 
-/* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
-router.put("/updateCallbacks", clientController.updateCallbacks);
 router.post("/requestCallbacks", clientController.RequestCallbacks);
+/* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
+router.put("/updateCallbacks", clientController.updateCallbacks);
+/* router.post("/requestCallbacks", verifyToken('client') , clientController.RequestCallbacks); */
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
-router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
 //router.post("/engineerRating",clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------
-router.get("/clientDetail/:JobOrderNumber", verifyToken('client') ,clientController.getClientDetail);
+router.get("/clientDetail/:JobOrderNumber", verifyToken('client'), clientController.getClientDetail);
 router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientController.getAllClientCallbacks);
 router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
 
@@ -30,5 +31,7 @@ router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController
 router.get("/verifyclient",clientController.verifyClient);
 
 //-------------------------rating{amit}---------------------------------------------
+router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
 
 module.exports = router;

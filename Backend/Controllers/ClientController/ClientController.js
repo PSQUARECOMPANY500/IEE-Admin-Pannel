@@ -360,6 +360,7 @@ module.exports.Rating = async (req, res) => {
     const {
       JobOrderNumber,
       ServiceEnggId,
+      callBackId,
       Rating,
       Description,
       Questions: { Question1, Question2, Question3, Question4, Question5 },
@@ -368,6 +369,7 @@ module.exports.Rating = async (req, res) => {
     const newRequest = await engineerRating.create({
       JobOrderNumber,
       ServiceEnggId,
+      callBackId,
       Rating,
       Description,
       Questions: {
@@ -384,33 +386,3 @@ module.exports.Rating = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-/* module.exports.imediateServiceRequest = async (req, res) => {
-  try {
-    const {
-      JobOrderNumber,
-      RequestId,
-      RequestDate,
-      RequestTime,
-      TypeOfIssue,
-      Description,
-    } = req.body;
-
-    const newRequest = await serviceRequest.create({
-      JobOrderNumber,
-      RequestId,
-      RequestDate,
-      RequestTime,
-      TypeOfIssue,
-      Description,
-    });
-    res.status(201).json({
-      message: "Client raised imidiate Request ticket successfully",
-      imidiateRequest: newRequest,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error for creating service Request" });
-  }
-}; */

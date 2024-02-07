@@ -20,7 +20,7 @@ export const GET_ALL_SERVICE_REQUEST="GET_ALL_SERVICE_REQUEST";
 export const assignCallBackByAdminAction = (ServiceEnggId,JobOrderNumber,callbackId,AllotAChecklist,Slot,Date,Message,name,enggJon) => {
   return async (dispatch) => {
     try {
-      //console.log("in assigncallbacks",callbackId)
+
       const response = await axios.post(`${config.apiUrl}/admin/assigncallback`,
         {
           ServiceEnggId,
@@ -33,22 +33,23 @@ export const assignCallBackByAdminAction = (ServiceEnggId,JobOrderNumber,callbac
         }
       );
 
-       const responcedata = await axios.put(`${config.apiUrl}/client/updateCallbacks`,
+        await axios.put(`${config.apiUrl}/client/updateCallbacks`,
           {
             callbackId,
             name,
             enggJon,
           },
         );
-        console.log(responcedata);
-        console.log(response);
+  
       dispatch({
         type:ASSIGN_CALLBACK_BY_ADMIN,
         payload:response.data
       })
 
       
-    } catch (error) {}
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
   };
 };
 
@@ -193,3 +194,4 @@ export const requestAssignCallbackDetail = (callbackId)=>{
   }
   
 }
+

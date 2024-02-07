@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/* import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
@@ -136,11 +136,6 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
       )
     );
 
-    /* console.log("this is the check for eng", engDetails)
-    console.log("this is the check for clickset",ClickListOnSelect)
-    console.log("this is the check for slot",selectedSlot)
-    console.log("this is the check for date",formattedDate)
-    console.log("this is the check for message",message) */
   }else{
     console.log("not valid input")
   }
@@ -274,7 +269,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
 
             <div className="client-information-section">
               <form className="client-form">
-                {/* one row strats */}
+
                 <div className="row">
                   <div className="col25">
                     <label>JON:</label>
@@ -289,7 +284,6 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
                     />
                   </div>
                 </div>
-                {/* one row ends */}
 
                 <div className="row">
                   <div className="col25">
@@ -371,7 +365,6 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
               </form>
             </div>
 
-            {/* membership-information-section section starts */}
             <div className="membership-information-section">
               <form className="client-form2">
                 <div className="row">
@@ -419,7 +412,6 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
               </form>
             </div>
           </div>
-          {/* membership-information-section section ends */}
 
           <div className="elevator-section">
             <div className="elevator-engg-detail-section">
@@ -526,8 +518,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
                 <div className="grid-form-container">
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      {/* <SingleSetDropdown/> */}
+
                       <MultiSelectDropdown
                         placeholder="Select Enggineers"
                         Details={serviceEnggDetailObject}
@@ -537,7 +528,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
+
                      <SingleSetDropdown
                         padding="6px"
                         width="100%"
@@ -549,7 +540,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
+
                       <MultiSelectDropdown
                         placeholder="Select Slot"
                         slots={slots}
@@ -560,8 +551,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
 
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {/* <ModalDropdown></ModalDropdown> */}
-                      {/* <SingleSetDropdown padding="6px" width="100%" placeholder="Select Date"/> */}
+
                       <div className="data-pic">
                         <ReactDatePickers className="date-picker-dropdown" />
                       </div>
@@ -598,7 +588,7 @@ const AddTicketModal1 = ({ closeModal, showTicketModal, modalNumber,setRenderTic
   );
 };
 
-export default AddTicketModal1;
+export default AddTicketModal1;*/
 
 {/* <div className="Assign-engg-detail-section">
               <div className="engg-form">
