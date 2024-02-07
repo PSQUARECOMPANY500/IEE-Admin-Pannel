@@ -6,7 +6,7 @@ const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
 
 const clientController = require("../../Controllers/ClientController/ClientController");
 
-//-------------------------------- all post requests ------------------------------
+//-------------------------------- all post requests ------------------------------------
 router.post("/RegisterClientsAsJON", clientController.RegisterClientsAsJobOrderNumber);
 router.post("/RegisterClientAsPhone", clientController.RegisterClientAsPhoneNumber)
 router.post("/loginWithPhone",clientController.loginClientwithPhoneNumber);
@@ -14,7 +14,6 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
-router.put("/updateCallbacks", clientController.updateCallbacks);
 router.post("/requestCallbacks", clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
@@ -29,7 +28,7 @@ router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientCont
 router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
 
 router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
-//-------------------------verify--------------------------------------------------
+//-------------------------verify-----------------------------------------------------
 router.get("/verifyclient",clientController.verifyClient);
 
 //-------------------------rating{amit}--------------------------------------------------
