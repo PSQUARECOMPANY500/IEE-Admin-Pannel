@@ -8,42 +8,46 @@ import ServiceScheduledTable from "./ServiceScheduledTable";
 import ServiceRequestModal from "./ServiceRequestModal";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions"
+
+
+const data = [
+  {
+    JON:563553
+  },
+  {
+    JON:563553
+  },
+  {
+    JON:563553
+  },
+  {
+    JON:563553
+  },
+  {
+    JON:563553
+  },
+]
+
 
 const ServiceRequestTable = () => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
-  const [RequestId, setRequestId] = useState();
-
-  const [enggId, setEnggId] = useState();
-  const [isAssigned, setIsAssigned] = useState();
-
-  console.log(isAssigned);
-
-  const [renderTicket, setRenderTicket] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(fetchAllServiceRequestsAction());
-    }, 1000);
-  }, [renderTicket]);
-
+  const [RequestId,setRequestId] = useState();
+  
   const getRequestDetail = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.fetchAllServiceRequestsReducers &&
-      state.AdminRootReducer.fetchAllServiceRequestsReducers
-        .serviceRequestDetail
-    ) {
-      return state.AdminRootReducer.fetchAllServiceRequestsReducers
-        .serviceRequestDetail.ServiceRequest;
-    } else {
+    if(state.AdminRootReducer && state.AdminRootReducer.fetchAllServiceRequestsReducers && state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail){
+      return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest
+    }
+    else{
       return null;
     }
-  });
-  console.log("getRequestDetail", getRequestDetail);
-
+  } );
+  console.log(getRequestDetail);
+  
+  
+  
   // modal manage states
   const [showTicketModal4, setShowTicketModal4] = useState(false);
 
@@ -55,11 +59,12 @@ const ServiceRequestTable = () => {
     checkbox2: false,
   });
 
+
   //use effect for dispatching ations
   useEffect(() => {
-    dispatch(fetchAllServiceRequestsAction());
-  }, [dispatch]);
-
+    dispatch(fetchAllServiceRequestsAction())
+  },[dispatch])
+  
   //linit address logic
   const limitAddress = (address, limit) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
@@ -92,7 +97,8 @@ const ServiceRequestTable = () => {
         !event.target.classList.contains("filter-icon")
       ) {
         setShowTicketFilter(false);
-        console.log(showTicketFilter);
+        console.log(showTicketFilter)
+
       }
     };
 
@@ -101,15 +107,13 @@ const ServiceRequestTable = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef, showTicketFilter]);
+  }, [dropdownRef,showTicketFilter]);
 
-  const openModal = (modalNumber, requestId,isAssignedValue,enngID) => {
+  const openModal = (modalNumber,requestId) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 4) {
       setShowTicketModal4(true);
-      setRequestId(requestId);
-      setIsAssigned(isAssignedValue);
-      setEnggId(enngID);
+      setRequestId(requestId)
     }
   };
 
@@ -136,14 +140,11 @@ const ServiceRequestTable = () => {
               </div>
             </th>
             <th>TYPE</th>
-            <th>
-              {" "}
-              <div>
+            <th> <div>
                 <span>MEMBERSHIP</span>
                 <HiChevronUpDown />
                 <span></span>
-              </div>
-            </th>
+              </div></th>
             <th>DATE</th>
             <th>TIME</th>
             <th>
@@ -157,77 +158,62 @@ const ServiceRequestTable = () => {
           </tr>
         </thead>
 
+
         {/* TABLE BODY STARTS */}
-        {getRequestDetail?.map((value) => {
-          
-          const isAssignedValue = value?.isAssigned;
-          const enngID = value?.AssignedEng?.id;
-          const name = value?.AssignedEng?.name;
-          
-          return (
-            <tbody key={value._id}>
-              <tr className="selected">
-                <td>
-                  {" "}
-                  <CheckBox
-                    id="checkbox1"
-                    checked={checkboxStates.checkbox1}
-                    handleCheckboxChange={() =>
-                      handleCheckBoxSingle("checkbox1")
-                    }
-                  />
-                </td>
-                <td>{value.JobOrderNumber}</td>
-                <td>{value?.clientDetail?.name}</td>
-                <td>{value?.clientDetail?.PhoneNumber}</td>
+        {getRequestDetail?.map((value)=>(
+           <tbody key={value._id}>
+           <tr className="selected">
+             <td>
+               {" "}
+               <CheckBox
+                 id="checkbox1"
+                 checked={checkboxStates.checkbox1}
+                 handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
+               />
+             </td>
+             <td>{value.JobOrderNumber}</td>
+             <td>{value?.clientDetail?.name}</td>
+             <td>{value?.clientDetail?.PhoneNumber}</td>
 
-                <td>
-                  <div className="dropdown-address">
-                    <span>
-                      {limitAddress(value?.clientDetail?.Address, 15)}
-                    </span>
+             <td>
+             <div className="dropdown-address">
+                        <span>{limitAddress(value?.clientDetail?.Address,15)}</span>
 
-                    <div className="dropdown-adddress-menu">
-                      <div className="drop-address">
-                        <p>{value?.clientDetail?.Address}</p>
+                        <div className="dropdown-adddress-menu">
+                          <div className="drop-address">
+                         <p>{value?.clientDetail?.Address}</p> 
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
+             </td>
 
-                <td>{value?.TypeOfIssue}</td>
-                <td>GOLD</td>
-                <td>{value?.RequestDate}</td>
-                <td>{value?.RequestTime}</td>
 
-                <td onClick={() => openModal(4,value?.RequestId,isAssignedValue,enngID)}>
-                  {isAssignedValue ? (
-                    <AssignDropdown
-                      customAssignName="assignNameColor"
-                      name={name}
-                      isAssigned={isAssigned}
-                    />
-                  ) : (
-                    <AssignDropdown customAssign="assignColor" name="Assign" />
-                  )}
-                </td>
-              </tr>
-            </tbody>
-          );
-        })}
+             <td>{value?.TypeOfIssue}</td>
+             <td>GOLD</td>
+             <td>{value?.RequestDate}</td>
+             <td>{value?.RequestTime}</td>
+             <td onClick={() => openModal(4,value?.RequestId)}>
+               <AssignDropdown customAssign="assignColor" name="Assign" />
+             </td>
+            
+           </tr>
+         </tbody>
+        ))}
 
-        {showTicketModal4 && (
-          <ServiceRequestModal
-            closeModal={() => setShowTicketModal4(false)}
-            showTicketModal={showTicketModal4}
-            RequestId={RequestId}
-            setRenderTicket={setRenderTicket}
-            enggId={enggId}
-            isAssigned={isAssigned}
-          />
-        )}
+{showTicketModal4 && (
+               <ServiceRequestModal
+                 closeModal={() => setShowTicketModal4(false)}
+                 showTicketModal={showTicketModal4}
+                //  modalNumber={4}
+                RequestId={RequestId}
 
+               />
+             )}
+       
         {/* TABLE BODY ENDS */}
+
+
+
       </table>
     </div>
   );

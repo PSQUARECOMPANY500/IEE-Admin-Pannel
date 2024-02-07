@@ -209,32 +209,15 @@ module.exports.updateCallbacks = async (req, res) => {
     res.status(500).json({ error: "Error updating callback" });
   }
 };
+
+
+    
+
+    
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//function tio update service request {Preet}
-module.exports.updateServiceRequest = async (req,res) =>{
- try {
-    const {RequestId,name,enggJon} = req.body;
-
-    const updateServiceRequest = await serviceRequest.findOneAndUpdate(
-      {RequestId}, {isAssigned:true, AssignedEng:{name, id:enggJon} },
-      {new: true}
-    )
-
-    if(updateServiceRequest) {
-      res.json({ message: "service Request updated successfully", service: updateServiceRequest });
-    }else{
-      res.status(404).json({ error: "service Request not found" });
-    }
-
- } catch (error) {
-  console.log(error);
-  res.status(500).json({ error: "Error updating service request" });
- }
-}
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 //function to handle the client service request for Imdiate visit
 
 module.exports.imediateServiceRequest = async (req, res) => {
@@ -342,7 +325,7 @@ module.exports.getAllClientServices = async (req, res) => {
 };
 
 
-//.............................................api to verify token ...........................................................
+//...............................api to verify token ...............................
 const jwt = require('jsonwebtoken');
 
 module.exports.verifyClient = (req, res) => {
@@ -370,7 +353,7 @@ module.exports.verifyClient = (req, res) => {
   }
 };
 
-//...............................................................Rating {amit} .............................................................
+//...............................Rating {amit} ...............................
 
 module.exports.Rating = async (req, res) => {
   try {
@@ -403,50 +386,6 @@ module.exports.Rating = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//controller for handle create Reference by admin
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* module.exports.imediateServiceRequest = async (req, res) => {
