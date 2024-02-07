@@ -9,7 +9,11 @@ import { assignCallBackByAdminReducer } from "../Reducers/AdminReducer"
 import { fetchAssignCallbacksDetailsReducer } from '../Reducers/AdminReducer';
 import { fetchAllServiceRequestsReducers } from '../Reducers/AdminReducer';
 
+import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
+
+
 const AdminRootReducer = combineReducers({
+    fetchClientDetailsByJon:fetchClientDetailsByJon,
     fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
     fetchAllCallbackReducer:fetchAllCallbackReducer,
     fetchCallbackDetailWithCallbackIdReducer:fetchCallbackDetailWithCallbackIdReducer,
@@ -17,7 +21,8 @@ const AdminRootReducer = combineReducers({
     fetchChecklistReducer:fetchChecklistReducer,
     fetchEnggDetailReducer:fetchEnggDetailReducer,
     assignCallBackByAdminReducer:assignCallBackByAdminReducer,
-    fetchAllServiceRequestsReducers:fetchAllServiceRequestsReducers
+    fetchAllServiceRequestsReducers:fetchAllServiceRequestsReducers,
+
 })
 
 export default AdminRootReducer;

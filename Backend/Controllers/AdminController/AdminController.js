@@ -80,7 +80,8 @@ module.exports.getAllChecklist = async (req, res) => {
 };
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to handle   (assign callbacks to Engg)
+//function to handle   (assign callbacks to Engg)----------------------------------------------------------------------------------------------------------------
+
 module.exports.assignCallbacks = async (req, res) => {
   try {
     const {
@@ -94,30 +95,54 @@ module.exports.assignCallbacks = async (req, res) => {
       ServiceProcess,
     } = req.body;
 
-    const callback = await ServiceAssigntoEngg.create({
-      ServiceEnggId,
-      JobOrderNumber,
-      callbackId,
-      AllotAChecklist,
-      Slot,
-      Date,
-      Message,
-      ServiceProcess,
-    });
+    let callback;
+
+    // Check if the callbackId already exists
+    const existingCallback = await ServiceAssigntoEngg.findOne({ callbackId });
+
+    if (existingCallback) {
+      // Update existing data
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        { callbackId },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        { new: true } // Return the updated document
+      );
+    } else {
+      // Create a new entry
+      callback = await ServiceAssigntoEngg.create({
+        ServiceEnggId,
+        JobOrderNumber,
+        callbackId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      });
+    }
 
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
 
     res.status(201).json({
-      message: "callback Assign Succesfully",
+      message: "Callback assigned successfully",
       callback: populatedCallback,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "intenal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -369,3 +394,73 @@ module.exports.createClientMemebership = async (req, res) => {
     res.status(500).json({ error: "intenal server error" });
   }
 };
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//function to get all booked dates {amit-features}
+
+module.exports.getBookedDates = async(req,res)=>{
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+  
+  try{
+    const data = await ServiceAssigntoEngg.find();
+
+    const groupedDates = {};
+
+  data.forEach(entry => {
+    if (!groupedDates[entry.Date]) {
+      groupedDates[entry.Date] = {
+        slots:[],
+        isSlotAvailable:true,
+      };
+    }
+    groupedDates[entry.Date].slots.push(entry.Slot);
+  });
+
+  Object.keys(groupedDates).forEach((date)=>{
+    const slotLength = groupedDates[date].slots.length;
+    const allSlots = timeSlots.length;
+
+    if(allSlots === slotLength){
+      groupedDates[date].isSlotAvailable = false;
+    }
+  })
+
+  res.json(groupedDates);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error:"Internal server Error", 
+      "message":error.message
+    });
+  }
+
+}
