@@ -17,8 +17,11 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 router.post("/requestCallbacks", clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
-/* router.post("/requestCallbacks", verifyToken('client') , clientController.RequestCallbacks); */
-router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
+
+/* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
+router.post("/imediateServiceRequest",clientController.imediateServiceRequest);
+
+router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 

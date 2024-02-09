@@ -8,7 +8,6 @@ const AssignDropdown = (props) => {
   };
 
   const enggname = props.name;
-  console.log(enggname)
 
   return (
     <div className={`status-section-button ${props.customAssign} ${props.customAssignName} ${props.customResolved }`}>
