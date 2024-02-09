@@ -7,8 +7,69 @@ import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
 
 import { GET_ALL_SERVICE_REQUEST } from '../Actions/AdminActions'
 import { GET_ASSIGN_CALLBACK_DETAILS } from '../Actions/AdminActions';
+import { GET_REQUEST_DETAIL_BY_REQUEST_ID } from '../Actions/AdminActions';
+import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from '../Actions/AdminActions';
+
+import { GET_ALL_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
 
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+const initialState9 = {
+    serviceRequest:null
+}
+
+export const getAllAssignServiceRequestReducer = (state=initialState9, action) => {
+    switch(action.type) {
+        case GET_ALL_ASSIGN_SERVICE_REQUEST :
+            return {...state, serviceRequest:action.payload}
+            default:
+                return state
+    }
+}
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+const intialState8 = {
+    assignServiceRequestdetail:null
+}
+
+export const assignServiceRequestDetailByRequestIdAction = (state=intialState8, action) => {
+    // console.log("3");
+
+    switch(action.type) {
+        case GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID:
+            return {...state, assignServiceRequestdetail:action.payload }
+            default:
+                return state
+    }
+}
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+//fetch to handle get request by request Id
+
+const intialState7 = {
+    serviceRequest:null
+}
+export const getRequestDetailByRequestIdReducer = (state=intialState7, action) =>{
+    switch(action.type) {
+        case GET_REQUEST_DETAIL_BY_REQUEST_ID:
+           return {...state, serviceRequest:action.payload}
+        default:
+            return state   
+    }
+}
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 //fetch fetchAllServiceRequestsReducers
 
 const intialState6 = {

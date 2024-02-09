@@ -47,7 +47,7 @@ main {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
-  z-index: 2;
+  z-index: 4;
   justify-content: center;
   align-items: baseline;
 }
@@ -470,7 +470,7 @@ span::after {
   padding: 15px 16px;
   margin-top: 0px;
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
   /* gap: 65%; */
 }
@@ -1728,9 +1728,19 @@ tbody tr {
   justify-content: end;
   width: 143px;
 }
-.task-list-table {
-  width: 100%;
+
+table {
+  width: 100%;;
 }
+
+thead th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Add your other styles as needed */
 
 .ticket-section-heading {
   font-size: 1.2rem;
@@ -1999,17 +2009,17 @@ tbody tr {
   bottom: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 4;
   width: 100%;
 }
-.modal-wrapper1{
+.modal-wrapper1 {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 4;
   width: 100%;
 }
 
@@ -2024,9 +2034,8 @@ tbody tr {
   width: 80%;
   height: 80%;
   background: white;
-  z-index: 2;
+  z-index: 4;
 }
-
 
 .cross-icon {
   right: 17px;

@@ -11,8 +11,11 @@
   import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/ClientActions"; 
   import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
+  import toast from 'react-hot-toast';
   
-  
+  import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+  import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
+
   import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
   
@@ -20,6 +23,7 @@
     closeModal,
     showTicketModal,
     setRenderTicket,
+    requestSection,
   }) => {
     const dispatch = useDispatch();
   
@@ -229,7 +233,24 @@
 
 
     const handleElevatorSectionDetails = async() => {
-  
+      if (requestSection){
+        dispatch(requestServiceRequestByAdmin(jon,date,time,typeOfIssue.label,dtext)).then((RequestId)=>{
+          if(engDetails.enggJon &&ClickListOnSelect &&selectedSlot &&date &&message){
+              dispatch(assignserviceRequestByAdmin(
+               engDetails?.enggJon,
+                jon,
+                RequestId,
+                ClickListOnSelect.value,
+                selectedSlot,
+                engDate,
+                message,
+                engDetails?.enggName,
+                engDetails.enggJon
+                ))
+          } 
+        })
+      }
+      else{
       dispatch(requestCallBackByAdmin(jon,date,time,typeOfIssue.label,dtext)).then(callbackId=>{
         if (engDetails.enggJon &&ClickListOnSelect &&selectedSlot &&date &&message) {
         
@@ -247,9 +268,11 @@
              )
            );
          } else {
+          toast.error("Please fill all the fields")
            console.log("not valid input");
          }
       })
+       }
       setRenderTicket((prev) => !prev);
       closeModal();
     }

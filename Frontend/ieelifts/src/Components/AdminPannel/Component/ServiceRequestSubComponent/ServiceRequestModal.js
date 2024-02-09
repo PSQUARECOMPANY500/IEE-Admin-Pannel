@@ -1,28 +1,71 @@
   //................................{preet}....................................
   import React, { useEffect, useState } from "react";
+  import toast, { Toaster } from 'react-hot-toast';
+
   import { RxCross2 } from "react-icons/rx";
   import SingleSetDropdown from "../DashboardSubComponent/DropdownCollection/SingleSetDropdown";
   import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/MultiSelectDropdown";
   import { useDispatch, useSelector } from "react-redux";
   import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+  import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+
+  import { getRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
-  import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
-  import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+  // import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+  // import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+  import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
   
   import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
   
+
+   
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+
   const ServiceRequestModal = ({
     closeModal,
     showTicketModal,
-    callbackId,
+    RequestId,
     setRenderTicket,
     enggId,
     isAssigned
   }) => {
     const dispatch = useDispatch();
+
+    //console.log(isAssigned)
+
+    //console.log(RequestId)
   
     //  manage use states for the input fields
     const [jon, setJon] = useState("");
@@ -33,6 +76,8 @@
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [modelType, setModelType] = useState("");
+    const [engDate , setengDate]=useState("")
+
   
     const [engDetails, setEngDetails] = useState({
       enggJon: "",
@@ -43,39 +88,15 @@
       enggRating: "",
     });
   
+
     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
+
+    //console.log(ClickListOnSelect)
+
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
     const [fetchedDate,setfetchedDate] = useState("")
-    const timeSlots = [
-      {
-        slot: "9:00-10:00",
-      },
-      {
-        slot: "10:00-11:00",
-      },
-      {
-        slot: "11:00-12:00",
-      },
-      {
-        slot: "12:00-13:00",
-      },
-      {
-        slot: "13:00-14:00",
-      },
-      {
-        slot: "14:00-15:00",
-      },
-      {
-        slot: "15:00-16:00",
-      },
-      {
-        slot: "16:00-17:00",
-      },
-      {
-        slot: "17:00-18:00",
-      },
-    ];
+ 
   
     //slots logic here ends-------------------------------------------------
     // use use selector select to select the service engg state
@@ -105,15 +126,21 @@
       }
     });
   
-    // use use selector to select the user callBack state
-  
-    const userCallBackDetail = useSelector((state) => {
-      return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
-        ?.callbackData?.callback;
+    // use use selector to select the user Request state
+    const getUserRequestDetail = useSelector((state) => {
+      if(state.AdminRootReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest){
+        return state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest.request
+      }else{
+        return null
+      }
     });
+
+    //console.log("getUserRequestDetail =>",getUserRequestDetail)
+
+
   
+    
     //get eng state by use selector hook
-  
     const getEnggState = useSelector((state) => {
       if (
         state.AdminRootReducer &&
@@ -125,22 +152,27 @@
       }
       return;
     });
-  
+  /* 
     const getAssignedCallbackDetails = useSelector((state)=>{
-      return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
+      return state?.AdminRootReducer;
     })
+
+    console.log('testing', getAssignedCallbackDetails) */
+
+    const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
   
   
     useEffect(() => {
       if(isAssigned){
+        //console.log("1");
         dispatch(fetchEnggDetailAction(enggId));
-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+        dispatch(getRequestDetailByRequestIdAction(RequestId))
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
-        dispatch(requestAssignCallbackDetail(callbackId))
+        dispatch(assignServiceRequestDetailByRequestIdAction(RequestId));
       }
       else{
-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
+        dispatch(getRequestDetailByRequestIdAction(RequestId));
         dispatch(fetchAllClientDetailAction());
         dispatch(fetchChecklistAction());
       }
@@ -164,15 +196,15 @@
     }, [getEnggState]);
   
     useEffect(() => {
-      setJon(userCallBackDetail?.JobOrderNumber || "");
-      setName(userCallBackDetail?.clientDetail?.name || "");
-      setNumber(userCallBackDetail?.clientDetail?.PhoneNumber || "");
-      setAddress(userCallBackDetail?.clientDetail?.Address || "");
-      setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
-      setDescription(userCallBackDetail?.Description || "");
-      setDate(userCallBackDetail?.createdAt || "");
-      setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
-    }, [userCallBackDetail]);
+      setJon(getUserRequestDetail?.JobOrderNumber || "");
+      setName(getUserRequestDetail?.clientDetail?.name || "");
+      setNumber(getUserRequestDetail?.clientDetail?.PhoneNumber || "");
+      setAddress(getUserRequestDetail?.clientDetail?.Address || "");
+      setTypeOfIssue(getUserRequestDetail?.TypeOfIssue || "");
+      setDescription(getUserRequestDetail?.Description || "");
+      setDate(getUserRequestDetail?.createdAt || "");
+      setModelType(getUserRequestDetail?.clientDetail?.ModelType || "");
+    }, [getUserRequestDetail]);
   
     useEffect(() => {
       //no problem
@@ -184,17 +216,23 @@
   
     useEffect(()=>{
    
-      if(getAssignedCallbackDetails?.callbackdetails){
-        setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
-        setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
-        setMessage(getAssignedCallbackDetails.callbackdetails.Message);
-        const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
+      if(getAssignRequestdetail){
+        setClickListOnSelect(getAssignRequestdetail?.checkList?.checklistName);
+        setSelectedSlot(getAssignRequestdetail?.Slot);
+        setMessage(getAssignRequestdetail?.Message);
+        const dateAsString = getAssignRequestdetail?.Date.toString();
         setfetchedDate(dateAsString)
       }
     
-    },[getAssignedCallbackDetails])
+    },[getAssignRequestdetail])
   
-  
+    
+    const handleAssignDateChange = (selectedOption)=>{
+      const formattedDate = selectedOption.toLocaleDateString('en-GB');
+      setengDate(formattedDate);
+    }
+
+    
     const handleEnggSelectionChange = (selectedOptions) => {
       dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
     };
@@ -207,7 +245,7 @@
       setClickListOnSelect(selectedOptions);
     };
   
-    const handleElevatorSectionDetails = () => {
+    const handleAssignRequest = () => {
       if (
         engDetails.enggJon &&
         ClickListOnSelect &&
@@ -215,32 +253,34 @@
         date &&
         message
       ) {
-        const dateObject = new Date(date);
-  
-        const formattedDate = `${dateObject.getDate()}/${
-          dateObject.getMonth() + 1
-        }/${dateObject.getFullYear()}`;
-  
+
         dispatch(
-          assignCallBackByAdminAction(
+          assignserviceRequestByAdmin(
             engDetails?.enggJon,
-            number,
-            callbackId,
+            jon,
+            RequestId,
             ClickListOnSelect.value,
             selectedSlot,
-            formattedDate,
+            engDate,
             message,
             engDetails?.enggName,
             engDetails.enggJon
-          )
+            )
         );
-  
+
         setRenderTicket((prev) => !prev);
         closeModal();
       } else {
-        console.log("not valid input");
+        toast.error("Please fill all the fields")
       }
     };
+
+//-------------------------------------------OnClick Edit-------------------------------------------------
+  const [editchange,setEditChange] = useState(false);
+
+  const handleEditSection=()=>{
+    setEditChange(!editchange)
+  }
   
     return (
       <>
@@ -563,32 +603,39 @@
                       <div className="col75">
                         
                         <MultiSelectDropdown
-                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
-                          Details={serviceEnggDetail}
-                          handleEnggSelectionChange={handleEnggSelectionChange}
-                          
-                        />
+                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                        Details={serviceEnggDetail}
+                        handleEnggSelectionChange={handleEnggSelectionChange}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
                         <SingleSetDropdown
-                          padding="6px"
-                          width="100%"
-                          placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
-                          Details={checkList}
-                          onStateChange={handleSingleSetDropdown}
-                        />
+                        padding="6px"
+                        width="100%"
+                        placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
+                        Details={checkList}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        onStateChange={handleSingleSetDropdown}
+                      />
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
                     
                         <MultiSelectDropdown
-                        placeholder={isAssigned?selectedSlot:"Select Slot"}
-                          slots={timeSlots}
-                          handleEnggSelectionChange={handleEnggSelectionChange1}
-                        />
+                      placeholder={isAssigned?selectedSlot:"Select Slot"}
+                        slots={timeSlots}
+                        handleEnggSelectionChange={handleEnggSelectionChange1}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />
                       </div>
                     </div>
   
@@ -596,7 +643,7 @@
                       <div className="col75">
                     
                         <div className="data-pic">
-                          <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} />
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
                         </div>
                       </div>
                     </div>
@@ -611,10 +658,11 @@
                         marginLeft: "10%",
                         resize: "none",
                       }}
-                      placeholder={isAssigned?message:"message"}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                      }}
+                      readOnly={editchange ? false : isAssigned}
+                    placeholder={isAssigned?message:"message"}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
                     ></textarea>
                   </div>
                 </div>
@@ -623,10 +671,10 @@
   
             <div className="footer-section">
               <div className="buttons">
-                <button className="edit-button" >Edit</button>
+                <button className={`edit-button ${editchange&&`edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
                 <button
                   className="assign-button"
-                  onClick={handleElevatorSectionDetails}
+                  onClick={handleAssignRequest}
                 >
                   Assign
                 </button>

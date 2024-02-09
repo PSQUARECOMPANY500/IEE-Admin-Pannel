@@ -7,22 +7,21 @@ import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
 
 const data = [
   {
-    JON:563553
+    JON: 563553,
   },
   {
-    JON:563553
+    JON: 563553,
   },
   {
-    JON:563553
+    JON: 563553,
   },
   {
-    JON:563553
+    JON: 563553,
   },
   {
-    JON:563553
+    JON: 563553,
   },
-]
-
+];
 
 const ServiceScheduledTable = () => {
   const dropdownRef = useRef(null);
@@ -66,7 +65,7 @@ const ServiceScheduledTable = () => {
         !event.target.classList.contains("filter-icon")
       ) {
         setShowTicketFilter(false);
-        console.log(showTicketFilter)
+        console.log(showTicketFilter);
       }
     };
 
@@ -75,7 +74,7 @@ const ServiceScheduledTable = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dropdownRef,showTicketFilter]);
+  }, [dropdownRef, showTicketFilter]);
 
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -89,13 +88,13 @@ const ServiceScheduledTable = () => {
       <table className="task-list-table">
         <thead>
           <tr>
-            {/* <th>
+            <th>
               <CheckBox
                 id="toggleAll"
                 handleCheckboxChange={handleCheckBoxAll}
                 checked={checkedAll}
               />
-            </th> */}
+            </th>
             <th>JON</th>
             <th>NAME</th>
             <th>NUMBER</th>
@@ -119,58 +118,55 @@ const ServiceScheduledTable = () => {
           </tr>
         </thead>
 
-
         {/* TABLE BODY STARTS */}
-        {data.map((value)=>(
-           <tbody>
-           <tr className="selected">
-             <td>
-               {" "}
-               <CheckBox
-                 id="checkbox1"
-                 checked={checkboxStates.checkbox1}
-                 handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
-               />
-             </td>
-             <td>442113</td>
-             <td>ram kumar</td>
-             <td>9416484863</td>
-             <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
+        {data.map((value) => (
+          <tbody>
+            <tr className="selected">
+              <td>
+                {" "}
+                <CheckBox
+                  id="checkbox1"
+                  checked={checkboxStates.checkbox1}
+                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
+                />
+              </td>
+              <td>442113</td>
+              <td>ram kumar</td>
+              <td>9416484863</td>
+              <td>
+                <div className="dropdown-address">
+                  <span>ADDRESS ADDRESS</span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-             <td>SERVICE E1</td>
-             <td>GOLD</td>
-               <td onClick={() => openModal(5)}>
-               <AssignDropdown customAssign="assignColor" name="Assign" />
-             </td>
-             {showTicketModal5 && (
-               <AddTicketModal
-                 closeModal={() => setShowTicketModal5(false)}
-                 showTicketModal={showTicketModal5}
-                 modalNumber={5}
-               />
-             )}
-           </tr>
-         </tbody>
+                  <div className="dropdown-adddress-menu">
+                    <div className="drop-address">
+                      <p>
+                        Address: E 26, Phase 7, Industrial Area, Sector 73,
+                        Sahibzada Ajit Singh Nagar, Punjab 140308
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>SERVICE E1</td>
+              <td>GOLD</td>
+              <td onClick={() => openModal(5)}>
+                <AssignDropdown customAssign="assignColor" name="Assign" />
+              </td>
+              {showTicketModal5 && (
+                <AddTicketModal
+                  closeModal={() => setShowTicketModal5(false)}
+                  showTicketModal={showTicketModal5}
+                  modalNumber={5}
+                />
+              )}
+            </tr>
+          </tbody>
         ))}
-       
+
         {/* TABLE BODY ENDS */}
-
-
-
       </table>
     </div>
   );
 };
 
 export default ServiceScheduledTable;
-
-
