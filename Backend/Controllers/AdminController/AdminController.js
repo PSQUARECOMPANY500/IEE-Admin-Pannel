@@ -19,7 +19,57 @@ const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSch
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle get ALL Aassign service request by admin from the assignserviceRequestTable
 
+module.exports.getAllAssignServiceRequest = async (req, res) => {
+  try {
+    const assignServicerequest = await AssignSecheduleRequest.find();
+
+    // Get all unique JobOrderNumbers and AllotAChecklist ids
+    const jobOrderNumbers = assignServicerequest.map(request => request.JobOrderNumber);
+    const allotAChecklistIds = assignServicerequest.map(request => request.AllotAChecklist);
+    const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
+    const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
+
+    // Fetch client details for each unique JobOrderNumber
+    const clientDetails = await clientDetailSchema.find({ JobOrderNumber: { $in: uniqueJobOrderNumbers } });
+
+    // Fetch checklist details for each unique AllotAChecklist id
+    const checklistDetails = await ChecklistModal.find({ _id: { $in: uniqueAllotAChecklistIds } });
+
+    // Create a map for quick access to client and checklist details
+    const clientMap = {};
+    clientDetails.forEach(client => {
+      clientMap[client.JobOrderNumber] = client;
+    });
+
+    const checklistMap = {};
+    checklistDetails.forEach(checklist => {
+      checklistMap[checklist._id] = checklist;
+    });
+
+    // Combine assign service requests with client and checklist details
+    const clientdetailsEmbeded = assignServicerequest.map(request => ({
+      ...request._doc,
+      clientDetail: clientMap[request.JobOrderNumber] || null,
+      checklistDetail: checklistMap[request.AllotAChecklist] || null
+    }));
+
+    res.status(200).json({
+      message: "Fetch All Assign Service Request successfully",
+      clientdetailsEmbeded,
+    });  
+  } catch (error) {
+    console.error("Error creating engg detail:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle get all engg Detail by Id
 module.exports.getEnggDetail = async (req, res) => {
   try {
     const { EnggId } = req.params;
@@ -240,7 +290,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    console.log("HE",clientCallbacksDetails.JobOrderNumber)
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,

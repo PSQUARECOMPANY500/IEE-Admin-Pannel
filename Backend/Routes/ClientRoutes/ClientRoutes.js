@@ -20,6 +20,8 @@ router.put("/updateCallbacks", clientController.updateCallbacks);
 /* router.post("/requestCallbacks", verifyToken('client') , clientController.RequestCallbacks); */
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
 
+router.post("/createReferal", verifyToken('client'), clientController.referalUser);
+
 //router.post("/engineerRating",clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------

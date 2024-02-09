@@ -20,12 +20,34 @@ export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_I
 export const ASSIGN_SERVICE_REQUEST_BY_ADMIN = "ASSIGN_SERVICE_REQUEST_BY_ADMIN";
 
 export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID = "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
+
+export const GET_ALL_ASSIGN_SERVICE_REQUEST = "GET_ALL_ASSIGN_SERVICE_REQUEST";
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//function to handle get all assignRequests
+
+export const getAllAssignServiceRequestAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getAllAssignServices`);
+      dispatch({
+        type:GET_ALL_ASSIGN_SERVICE_REQUEST,
+        payload:response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error); 
+    }
+  }
+}
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //action to handle get Assign service Request detail By Request Id
 
 export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
-  console.log("2");
+  // console.log("2");
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`);
@@ -35,22 +57,10 @@ export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
         payload:response.data
       })
     } catch (error) {
-      console.log("error while fetching Eng_details", error); 
-      
+      console.log("error while fetching Eng_details", error);   
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle Assign service Request by admin
 

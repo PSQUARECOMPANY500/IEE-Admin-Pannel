@@ -164,6 +164,12 @@ const ServiceRequestTable = () => {
           const enngID = value?.AssignedEng?.id;
           const name = value?.AssignedEng?.name;
           
+                    
+          // Check if isAssigned is true, if not, don't render the row
+          if (isAssignedValue) {
+            return null;
+          }
+
           return (
             <tbody key={value._id}>
               <tr className="selected">
