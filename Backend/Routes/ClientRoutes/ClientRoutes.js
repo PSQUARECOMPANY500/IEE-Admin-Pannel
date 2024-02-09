@@ -23,6 +23,8 @@ router.post("/imediateServiceRequest",clientController.imediateServiceRequest);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 
+router.post("/createReferal", verifyToken('client'), clientController.referalUser);
+
 //router.post("/engineerRating",clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------

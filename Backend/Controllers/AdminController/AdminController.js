@@ -183,12 +183,12 @@ module.exports.assignCallbacks = async (req, res) => {
       .exec();
 
     res.status(201).json({
-      message: "Callback assigned successfully",
+      message: "callback Assign Succesfully",
       callback: populatedCallback,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "intenal server error" });
   }
 };
 

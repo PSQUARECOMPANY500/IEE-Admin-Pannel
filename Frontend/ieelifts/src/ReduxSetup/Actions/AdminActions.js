@@ -29,7 +29,6 @@ export const GET_ALL_ASSIGN_SERVICE_REQUEST = "GET_ALL_ASSIGN_SERVICE_REQUEST";
 
 export const getAllAssignServiceRequestAction = () => {
   return async (dispatch) => {
-    //console.log("getAllAssignServiceRequestAction")
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getAllAssignServices`);
       dispatch({
@@ -52,7 +51,6 @@ export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`);
-      //console.log(response.data)
       dispatch({
         type:GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID,
         payload:response.data
@@ -88,10 +86,6 @@ export const assignserviceRequestByAdmin = (ServiceEnggId,JobOrderNumber,Request
       enggJon,
     }
   );
-
-  //console.log(response)
-  //console.log(responseData)
-
   dispatch({
     type:ASSIGN_SERVICE_REQUEST_BY_ADMIN,
     payload:response.data
@@ -176,7 +170,7 @@ export const  fetchEnggDetailAction = (EnggId) => {
           payload: null,
         });
       }else{
-        //console.log("EngId ",EnggId);
+        console.log("EngId ",EnggId);
         const response = await axios.get(
           `${config.apiUrl}/admin/getEnggDetailById/${EnggId}`
         );

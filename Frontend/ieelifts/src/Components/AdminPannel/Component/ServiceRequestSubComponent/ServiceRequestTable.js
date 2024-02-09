@@ -10,7 +10,9 @@ import ServiceRequestModal from "./ServiceRequestModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
+
 const ServiceRequestTable = ({setRenderTicket2}) => {
+
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -19,7 +21,6 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
 
-  //console.log(isAssigned);
 
   const [renderTicket, setRenderTicket] = useState(true);
 

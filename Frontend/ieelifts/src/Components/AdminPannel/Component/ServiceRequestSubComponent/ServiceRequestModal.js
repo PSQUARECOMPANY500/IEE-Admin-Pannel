@@ -62,10 +62,6 @@
     isAssigned
   }) => {
     const dispatch = useDispatch();
-
-    //console.log(isAssigned)
-
-    //console.log(RequestId)
   
     //  manage use states for the input fields
     const [jon, setJon] = useState("");
@@ -90,9 +86,6 @@
   
 
     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
-
-    //console.log(ClickListOnSelect)
-
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
     const [fetchedDate,setfetchedDate] = useState("")
@@ -164,7 +157,6 @@
   
     useEffect(() => {
       if(isAssigned){
-        //console.log("1");
         dispatch(fetchEnggDetailAction(enggId));
         dispatch(getRequestDetailByRequestIdAction(RequestId))
         dispatch(fetchAllClientDetailAction());
@@ -225,8 +217,6 @@
       }
     
     },[getAssignRequestdetail])
-  
-    
     const handleAssignDateChange = (selectedOption)=>{
       const formattedDate = selectedOption.toLocaleDateString('en-GB');
       setengDate(formattedDate);
@@ -267,7 +257,6 @@
             engDetails.enggJon
             )
         );
-
         setRenderTicket((prev) => !prev);
         closeModal();
       } else {

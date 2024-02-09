@@ -64,7 +64,6 @@ const getAssignRequests = useSelector((state)=> {
     return []
   }
 } );
-//console.log(";;;" ,getAssignRequests)
 
 
 useEffect(()=>{
@@ -98,8 +97,7 @@ const requestDetail = getAssignRequests?.map((value) => ({
     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
   ]
 }))
- 
-//console.log(".0.00.00", requestDetail)
+
 
 const data = [...requestDetail];
 // console.log(".0.00.00", data)
@@ -178,7 +176,7 @@ const data = [...requestDetail];
                  // console.log("value inside tha map", value)
                   const requestId = value.requestId;
                   const EnggId = value.EnggId;
-                  //console.log("-.-.-.-.-.-",EnggId)
+
                   
                   return(
                     <div
@@ -251,6 +249,7 @@ const data = [...requestDetail];
                         showTicketModal={showTicketModal5}
                         RequestId={RequestId}
                         setRenderTicket={setRenderTicket}
+
                         enggId={enggId}
                         isAssigned={true}
                       />
