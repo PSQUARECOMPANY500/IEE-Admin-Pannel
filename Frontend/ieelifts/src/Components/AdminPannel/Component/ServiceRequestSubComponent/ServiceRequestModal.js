@@ -21,6 +21,38 @@
   import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
   
+
+   
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
+  ];
+
   const ServiceRequestModal = ({
     closeModal,
     showTicketModal,
@@ -44,6 +76,8 @@
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [modelType, setModelType] = useState("");
+    const [engDate , setengDate]=useState("")
+
   
     const [engDetails, setEngDetails] = useState({
       enggJon: "",
@@ -62,35 +96,7 @@
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
     const [fetchedDate,setfetchedDate] = useState("")
-    const timeSlots = [
-      {
-        slot: "9:00-10:00",
-      },
-      {
-        slot: "10:00-11:00",
-      },
-      {
-        slot: "11:00-12:00",
-      },
-      {
-        slot: "12:00-13:00",
-      },
-      {
-        slot: "13:00-14:00",
-      },
-      {
-        slot: "14:00-15:00",
-      },
-      {
-        slot: "15:00-16:00",
-      },
-      {
-        slot: "16:00-17:00",
-      },
-      {
-        slot: "17:00-18:00",
-      },
-    ];
+ 
   
     //slots logic here ends-------------------------------------------------
     // use use selector select to select the service engg state
@@ -220,7 +226,12 @@
     
     },[getAssignRequestdetail])
   
-  
+    const handleAssignDateChange = (selectedOption)=>{
+      const formattedDate = selectedOption.toLocaleDateString('en-GB');
+      setengDate(formattedDate);
+    }
+
+    
     const handleEnggSelectionChange = (selectedOptions) => {
       dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
     };
@@ -247,7 +258,7 @@
           dateObject.getMonth() + 1
         }/${dateObject.getFullYear()}`;
 
-        dispatch(assignserviceRequestByAdmin(engDetails?.enggJon,jon,RequestId,ClickListOnSelect.value,selectedSlot,formattedDate,message,engDetails?.enggName,engDetails.enggJon))
+        dispatch(assignserviceRequestByAdmin(engDetails?.enggJon,jon,RequestId,ClickListOnSelect.value,selectedSlot,engDate,message,engDetails?.enggName,engDetails.enggJon))
         setRenderTicket((prev) => !prev);
         closeModal();
       } else {
@@ -609,7 +620,7 @@
                       <div className="col75">
                     
                         <div className="data-pic">
-                          <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} />
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
                         </div>
                       </div>
                     </div>

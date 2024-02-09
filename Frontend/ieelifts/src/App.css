@@ -2009,7 +2009,7 @@ thead th {
   bottom: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 4;
   width: 100%;
 }
 .modal-wrapper1 {
