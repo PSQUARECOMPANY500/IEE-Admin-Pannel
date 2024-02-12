@@ -195,6 +195,7 @@ const TicketSection = () => {
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}
+                requestSection={false}
               />
             )}
           </div>

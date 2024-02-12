@@ -51,3 +51,29 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
 
 }
 }
+
+//-----------------------------------------------------------------------------------------------------------
+//function to fetch all the RequestId by admin
+export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description) => {
+  return async()=>{
+      try {
+        console.log(JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description)
+        if(JobOrderNumber&&RequestDate&&RequestTime&&TypeOfIssue&&Description){
+          const response = await axios.post(`${config.apiUrl}/client/imediateServiceRequest`,
+          {
+            JobOrderNumber,
+            RequestDate,
+            RequestTime,
+            TypeOfIssue,
+            Description,
+          }
+        );
+        const newCallbackData = response?.data?.imidiateRequest?.RequestId;
+        console.log("this is the new requestId",newCallbackData);
+        return newCallbackData;
+        }
+      }catch (error) {
+        console.log("error while fetching data", error);
+      }
+}
+}

@@ -62,10 +62,6 @@
     isAssigned
   }) => {
     const dispatch = useDispatch();
-
-    console.log(isAssigned)
-
-    console.log(RequestId)
   
     //  manage use states for the input fields
     const [jon, setJon] = useState("");
@@ -90,9 +86,6 @@
   
 
     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
-
-    console.log(ClickListOnSelect)
-
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
     const [fetchedDate,setfetchedDate] = useState("")
@@ -164,7 +157,6 @@
   
     useEffect(() => {
       if(isAssigned){
-        console.log("1");
         dispatch(fetchEnggDetailAction(enggId));
         dispatch(getRequestDetailByRequestIdAction(RequestId))
         dispatch(fetchAllClientDetailAction());
@@ -225,7 +217,6 @@
       }
     
     },[getAssignRequestdetail])
-  
     const handleAssignDateChange = (selectedOption)=>{
       const formattedDate = selectedOption.toLocaleDateString('en-GB');
       setengDate(formattedDate);
@@ -252,19 +243,33 @@
         date &&
         message
       ) {
-        const dateObject = new Date(date);
-  
-        const formattedDate = `${dateObject.getDate()}/${
-          dateObject.getMonth() + 1
-        }/${dateObject.getFullYear()}`;
 
-        dispatch(assignserviceRequestByAdmin(engDetails?.enggJon,jon,RequestId,ClickListOnSelect.value,selectedSlot,engDate,message,engDetails?.enggName,engDetails.enggJon))
+        dispatch(
+          assignserviceRequestByAdmin(
+            engDetails?.enggJon,
+            jon,
+            RequestId,
+            ClickListOnSelect.value,
+            selectedSlot,
+            engDate,
+            message,
+            engDetails?.enggName,
+            engDetails.enggJon
+            )
+        );
         setRenderTicket((prev) => !prev);
         closeModal();
       } else {
         toast.error("Please fill all the fields")
       }
     };
+
+//-------------------------------------------OnClick Edit-------------------------------------------------
+  const [editchange,setEditChange] = useState(false);
+
+  const handleEditSection=()=>{
+    setEditChange(!editchange)
+  }
   
     return (
       <>
@@ -587,32 +592,39 @@
                       <div className="col75">
                         
                         <MultiSelectDropdown
-                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
-                          Details={serviceEnggDetail}
-                          handleEnggSelectionChange={handleEnggSelectionChange}
-                          
-                        />
+                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                        Details={serviceEnggDetail}
+                        handleEnggSelectionChange={handleEnggSelectionChange}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
                         <SingleSetDropdown
-                          padding="6px"
-                          width="100%"
-                          placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
-                          Details={checkList}
-                          onStateChange={handleSingleSetDropdown}
-                        />
+                        padding="6px"
+                        width="100%"
+                        placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
+                        Details={checkList}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        onStateChange={handleSingleSetDropdown}
+                      />
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
                     
                         <MultiSelectDropdown
-                        placeholder={isAssigned?selectedSlot:"Select Slot"}
-                          slots={timeSlots}
-                          handleEnggSelectionChange={handleEnggSelectionChange1}
-                        />
+                      placeholder={isAssigned?selectedSlot:"Select Slot"}
+                        slots={timeSlots}
+                        handleEnggSelectionChange={handleEnggSelectionChange1}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />
                       </div>
                     </div>
   
@@ -635,10 +647,11 @@
                         marginLeft: "10%",
                         resize: "none",
                       }}
-                      placeholder={isAssigned?message:"message"}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                      }}
+                      readOnly={editchange ? false : isAssigned}
+                    placeholder={isAssigned?message:"message"}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                    }}
                     ></textarea>
                   </div>
                 </div>
@@ -647,7 +660,7 @@
   
             <div className="footer-section">
               <div className="buttons">
-                <button className="edit-button" >Edit</button>
+                <button className={`edit-button ${editchange&&`edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
                 <button
                   className="assign-button"
                   onClick={handleAssignRequest}

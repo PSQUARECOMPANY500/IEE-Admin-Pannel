@@ -203,7 +203,7 @@ const AddTicketModal = ({
 
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    console.log(selectedOptions[0]?.value)
+    //console.log(selectedOptions[0]?.value)
     dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
   };
 

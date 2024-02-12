@@ -1,0 +1,3006 @@
+diff --git a/Backend/.env b/Backend/.env
+index b197d01..19bc41a 100644
+--- a/Backend/.env
++++ b/Backend/.env
+@@ -1,2 +1,3 @@
+ PORT = 8000
+-MONGO_DB_URL = mongodb://localhost:27017/
+\ No newline at end of file
++# MONGO_DB_URL = mongodb://localhost:27017/  
++MONGO_DB_URL =  mongodb+srv://amitx13:Amitkvs981@cluster0.ettltuj.mongodb.net/
+\ No newline at end of file
+diff --git a/Backend/Controllers/AdminController/AdminController.js b/Backend/Controllers/AdminController/AdminController.js
+index ae05825..458398b 100644
+--- a/Backend/Controllers/AdminController/AdminController.js
++++ b/Backend/Controllers/AdminController/AdminController.js
+@@ -19,7 +19,57 @@ const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSch
+ const mongoose = require("mongoose");
+ 
+ // --------------------------------------------------------------------------------------------------------------------------------------------------------------
++//function to handle get ALL Aassign service request by admin from the assignserviceRequestTable
+ 
++module.exports.getAllAssignServiceRequest = async (req, res) => {
++  try {
++    const assignServicerequest = await AssignSecheduleRequest.find();
++
++    // Get all unique JobOrderNumbers and AllotAChecklist ids
++    const jobOrderNumbers = assignServicerequest.map(request => request.JobOrderNumber);
++    const allotAChecklistIds = assignServicerequest.map(request => request.AllotAChecklist);
++    const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
++    const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
++
++    // Fetch client details for each unique JobOrderNumber
++    const clientDetails = await clientDetailSchema.find({ JobOrderNumber: { $in: uniqueJobOrderNumbers } });
++
++    // Fetch checklist details for each unique AllotAChecklist id
++    const checklistDetails = await ChecklistModal.find({ _id: { $in: uniqueAllotAChecklistIds } });
++
++    // Create a map for quick access to client and checklist details
++    const clientMap = {};
++    clientDetails.forEach(client => {
++      clientMap[client.JobOrderNumber] = client;
++    });
++
++    const checklistMap = {};
++    checklistDetails.forEach(checklist => {
++      checklistMap[checklist._id] = checklist;
++    });
++
++    // Combine assign service requests with client and checklist details
++    const clientdetailsEmbeded = assignServicerequest.map(request => ({
++      ...request._doc,
++      clientDetail: clientMap[request.JobOrderNumber] || null,
++      checklistDetail: checklistMap[request.AllotAChecklist] || null
++    }));
++
++    res.status(200).json({
++      message: "Fetch All Assign Service Request successfully",
++      clientdetailsEmbeded,
++    });  
++  } catch (error) {
++    console.error("Error creating engg detail:", error);
++    res.status(500).json({ error: "Internal server error" });
++  }
++};
++
++
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------------------
++// function to handle get all engg Detail by Id
+ module.exports.getEnggDetail = async (req, res) => {
+   try {
+     const { EnggId } = req.params;
+@@ -80,8 +130,7 @@ module.exports.getAllChecklist = async (req, res) => {
+ };
+ 
+ // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+-//function to handle   (assign callbacks to Engg)----------------------------------------------------------------------------------------------------------------
+-
++//function to handle   (assign callbacks to Engg)
+ module.exports.assignCallbacks = async (req, res) => {
+   try {
+     const {
+@@ -115,7 +164,7 @@ module.exports.assignCallbacks = async (req, res) => {
+         },
+         { new: true } // Return the updated document
+       );
+-    } else {
++    }else {
+       // Create a new entry
+       callback = await ServiceAssigntoEngg.create({
+         ServiceEnggId,
+@@ -143,7 +192,6 @@ module.exports.assignCallbacks = async (req, res) => {
+   }
+ };
+ 
+-
+ // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ //function to assign requests from the client
+@@ -160,16 +208,36 @@ module.exports.AssignServiceRequests = async (req, res) => {
+       ServiceProcess,
+     } = req.body;
+ 
+-    const Request = await AssignSecheduleRequest.create({
+-      ServiceEnggId,
+-      JobOrderNumber,
+-      RequestId,
+-      AllotAChecklist,
+-      Slot,
+-      Date,
+-      Message,
+-      ServiceProcess,
+-    });
++    let callback;
++
++    const existingCallback = await AssignSecheduleRequest.findOne({ RequestId });
++
++    if (existingCallback) {
++      callback = await AssignSecheduleRequest.findOneAndUpdate(
++        { RequestId },
++        {
++          ServiceEnggId,
++          JobOrderNumber,
++          AllotAChecklist,
++          Slot,
++          Date,
++          Message,
++          ServiceProcess,
++        },
++        { new: true } 
++      );
++    }else {
++      callback = await AssignSecheduleRequest.create({
++        ServiceEnggId,
++        JobOrderNumber,
++        RequestId,
++        AllotAChecklist,
++        Slot,
++        Date,
++        Message,
++        ServiceProcess,
++      });
++    }
+ 
+     const populatedService = await AssignSecheduleRequest.findById(Request._id)
+       .populate("AllotAChecklist")
+@@ -265,7 +333,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
+     const clientDetail = await clientDetailSchema.findOne({
+       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
+     });
+-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
++    console.log("HE",clientCallbacksDetails.JobOrderNumber)
+ 
+     const callbackClientdetails = {
+       ...clientCallbacksDetails._doc,
+@@ -282,6 +350,38 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
+   }
+ };
+ 
++// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
++//Function to handle get Request detail By RequestId
++module.exports.getRequestDetailByRequestId = async (req, res) => {
++  try {
++    const { RequestId } = req.params;
++
++    const clientRequestDetails = await getAllServiceRequest.findOne({ RequestId });
++    // console.log("clientRequestDetails",clientRequestDetails)
++    if (!clientRequestDetails) {
++      res.status(404).json({ message: "no data found with this Request id" });
++    }
++
++    const clientDetail = await clientDetailSchema.findOne({
++      JobOrderNumber: clientRequestDetails.JobOrderNumber,
++    });
++    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
++
++    const RequestClientdetails = {
++      ...clientRequestDetails._doc,
++      clientDetail: clientDetail,
++    };
++
++    res.status(200).json({
++      message: "all detal fetched successfully",
++      request: RequestClientdetails,
++    });
++  } catch (error) {
++    console.log(error);
++    res.status(500).json({ error: "intenal server error" });
++  }
++};
++
+ // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ // get All Clients
+ 
+@@ -357,6 +457,45 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
+   }
+ };
+ 
++// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
++// function to handle get Assign service request By ServiceId
++module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
++  try {
++    const { RequestId } = req.params;
++
++    const RequestDetail = await AssignSecheduleRequest.findOne({ RequestId });
++    if (!RequestDetail) {
++      return res.status(404).json({ error: "Request not found" });
++    }
++
++    const serviceEnggDetail = await ServiceEnggData.findOne({
++      EnggId: RequestDetail.ServiceEnggId,
++    });
++    if (!serviceEnggDetail) {
++      return res
++        .status(404)
++        .json({ error: "Service Engineer details not found" });
++    }
++    const checkList = await ChecklistModal.findOne({
++      _id: RequestDetail.AllotAChecklist,
++    });
++
++    if (!checkList) {
++      return res.status(404).json({ error: "Checklist not found" });
++    }
++    const callbackdetails = {
++      ...RequestDetail._doc,
++      serviceEnggDetail: serviceEnggDetail,
++      checkList: checkList,
++    };
++
++    res.status(200).json({ details: callbackdetails });
++  } catch (error) {
++    console.log(error);
++    res.status(500).json({ error: "intenal server error" });
++  }
++};
++
+ // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ // function to handle create client memenership
+ 
+@@ -377,7 +516,7 @@ module.exports.createClientMemebership = async (req, res) => {
+     const MemberShipDetails = await AssignMemeberships.create({
+       JobOrderNumber,
+       MemebershipType,
+-      StartDate,
++      StartDate: new Date(StartDate),
+       Duration,
+       Discount,
+       PricePaid,
+@@ -388,13 +527,123 @@ module.exports.createClientMemebership = async (req, res) => {
+ 
+     res
+       .status(201)
+-      .json({ message: "memebership created successfully", MemberShipDetails});
++      .json({ message: "memebership created successfully", MemberShipDetails });
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: "intenal server error" });
+   }
+ };
+ 
++// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
++// function to get the membership data
++module.exports.getClientMemebership = async (req, res) => {
++  try {
++    const membershipData = await AssignMemeberships.find();
++
++    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
++    const calculations = {};
++
++    membershipTypes.forEach((type) => {
++      const filteredData = filterMembershipByType(membershipData, type);
++      calculations[type] = calculateData(filteredData);
++    });
++
++    res.status(201).json({ success: true, ...calculations });
++  } catch (error) {
++    console.error(error);
++    res.status(500).json({ error: "internal server error" });
++  }
++};
++
++//function used to calculate the data of meberships
++// const calculateData = (data) => {
++//   const result = data.reduce(
++//     (acc, member) => {
++//       const pricePaid = parseFloat(member.PricePaid) || 0; // Convert to a number or default to 0
++//       acc.totalRevenue += pricePaid;
++//       acc.count++;
++
++//       return acc;
++//     },
++//     { totalRevenue: 0, count: 0 }
++//   );
++
++//   return result;
++// };
++// const calculateData = (data) => {
++//   let totalRevenue = 0;
++//   let count = 0;
++//   let expData = {};
++
++//   for (const d of data) {
++//     totalRevenue += parseFloat(d.PricePaid);
++//     count++;
++//     // console.log(d.StartDate);
++//     const startDate = new Date(d.StartDate);
++//     const durationInMonths = Number(d.Duration);
++//     const endDate = new Date(
++//       startDate.setMonth(startDate.getMonth() + durationInMonths)
++//     );
++
++//     // Calculate the difference in milliseconds
++//     const timeDifference = endDate - Date.now();
++
++//     // Convert milliseconds to days
++//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
++
++//     if(daysLeft<=30){
++//       if(daysLeft<=0){
++//         data.isExpired =true;
++//         data.save();
++//       }
++//     }
++//     expData.push({data.JobOrderNumber,data.isExpired})
++//   }
++
++//   return { totalRevenue, count,expData };
++// };
++
++const calculateData = (data) => {
++  let totalRevenue = 0;
++  let count = 0;
++  let expData = [];
++
++  for (const d of data) {
++    totalRevenue += parseFloat(d.PricePaid);
++
++    const startDate = new Date(d.StartDate);
++    const durationInMonths = Number(d.Duration);
++    const endDate = new Date(
++      startDate.setMonth(startDate.getMonth() + durationInMonths)
++    );
++
++    const timeDifference = endDate - Date.now();
++
++    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
++
++    if (daysLeft <= 30) {
++      if (daysLeft <= 0) {
++        d.isExpired = true;
++        d.save();
++      }
++      expData.push({
++        JobOrderNumber: d.JobOrderNumber,
++        isExpired: d.isExpired,
++      });
++    }
++    if (!d.isExpired && !d.isDisable && !d.isRenewed) {
++      count++;
++    }
++  }
++
++  return { totalRevenue, count, expData };
++};
++
++// to filter the memberships
++const filterMembershipByType = (data, type) => {
++  return data.filter((member) => member.MemebershipType === type);
++};
++
+ //-------------------------------------------------------------------------------------------------------------------------------------------------
+ //function to get all booked dates {amit-features}
+ 
+diff --git a/Backend/Controllers/ClientController/ClientController.js b/Backend/Controllers/ClientController/ClientController.js
+index 425c8cf..06b9758 100644
+--- a/Backend/Controllers/ClientController/ClientController.js
++++ b/Backend/Controllers/ClientController/ClientController.js
+@@ -3,101 +3,167 @@ const clientRequestCallback = require("../../Modals/ServicesModal/ClinetCallback
+ 
+ const serviceRequest = require("../../Modals/ServicesModal/ClientServicesRequest");
+ 
+-const RegisterClientAsPhoneNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema")
+-const engineerRating = require("../../Modals/Rating/Rating")
++const RegisterClientAsPhoneNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema");
++const engineerRating = require("../../Modals/Rating/Rating");
++
++const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
+ 
+ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
+ 
++
++
++//--------------------------------------------------------------------------------------------------------------------------------------------------
++//function to hadle getReferal By JobOrderNumber (to-do)
++//--------------------------------------------------------------------------------------------------------------------------------------------------
++//functio to hadle get all Referals for admin (to-do)
++
++
++
++
++
++
++
++//--------------------------------------------------------------------------------------------------------------------------------------------------
++//function to handle create the Client Referal API
++
++module.exports.referalUser = async (req, res) => {
++  try {
++    const { jobOrderNumber, Name, Number, City, Hot } = req.body;
++
++    const checkReferal = await RegisterClientDetails.findOne({PhoneNumber:Number});
++     if (checkReferal) {
++      return res.status(400).json({ message: "Lift is already installed on this number" });
++    }
++
++    const Referal = await ReferalSchema.create({
++      jobOrderNumber,
++      Name,
++      Number,
++      City,
++      Hot,
++    });
++    res
++      .status(201)
++      .json({
++        message: "Referal Created successfully",
++        Referal,
++      });
++  } catch (error) {
++    console.log(error);
++    res.status(500).json({ error: "Internal server error" });
++  }
++};
++
+ //------------------------------------------------------------------------------------------------------------------------------------------------------
+ //function to handle Register a client with his { Phone Number }
+-module.exports.RegisterClientAsPhoneNumber = async (req,res) =>{
++module.exports.RegisterClientAsPhoneNumber = async (req, res) => {
+   try {
+-    const {PhoneNumber ,Password} = req.body;
++    const { PhoneNumber, Password } = req.body;
+ 
+-    const ExistingClient = await RegisterClientAsPhoneNumber.findOne({PhoneNumber});
++    const ExistingClient = await RegisterClientAsPhoneNumber.findOne({
++      PhoneNumber,
++    });
+ 
+-    if(ExistingClient){
+-      return res.status(400).json({ error: "This Client PhoneNumber already exists" });
+-    } 
++    if (ExistingClient) {
++      return res
++        .status(400)
++        .json({ error: "This Client PhoneNumber already exists" });
++    }
+ 
+     const newClient = await RegisterClientAsPhoneNumber.create({
+       PhoneNumber,
+-      Password
++      Password,
+     });
+ 
+-    res.status(201).json({message:"client register successfully", client: newClient})
++    res
++      .status(201)
++      .json({ message: "client register successfully", client: newClient });
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: "Internal server error" });
+   }
+-}
++};
+ 
+ // -----------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ //function to handle Login Client as a { phoneNumber }
+-module.exports.loginClientwithPhoneNumber = async (req,res) =>{
++module.exports.loginClientwithPhoneNumber = async (req, res) => {
+   try {
+-    const {Number ,password} = req.body;
++    const { Number, password } = req.body;
+ 
+-    const client = await RegisterClientAsPhoneNumber.findOne({PhoneNumber:Number});
++    const client = await RegisterClientAsPhoneNumber.findOne({
++      PhoneNumber: Number,
++    });
+     // console.log("nulaa",client)
+ 
+-    if(!client || client.Password !== password){
+-      return res.status(401).json({message:"Invalid Credentials"})
++    if (!client || client.Password !== password) {
++      return res.status(401).json({ message: "Invalid Credentials" });
+     }
+ 
+-  const clientJonDetail = await RegisterClientDetails.findOne({PhoneNumber:client.PhoneNumber})
+-  
+-  const CLientDetailWithPhoneNumber = {
+-    ...client._doc,
+-    clientJonDetail
+-  }
+-
++    const clientJonDetail = await RegisterClientDetails.findOne({
++      PhoneNumber: client.PhoneNumber,
++    });
+ 
++    const CLientDetailWithPhoneNumber = {
++      ...client._doc,
++      clientJonDetail,
++    };
+ 
+     const token = generateToken({ Number });
+-    res.status(200).json({ message:'You are logged in Successfully',CLientDetailWithPhoneNumber, token });
+-
++    res
++      .status(200)
++      .json({
++        message: "You are logged in Successfully",
++        CLientDetailWithPhoneNumber,
++        token,
++      });
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: "Internal server error" });
+   }
+-}
++};
+ 
+ // -----------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ // function to get all the vlient jobOrder number by its PhoneNumber
+ 
+-module.exports.GetAllJobOrderNumberByClientPhoneNumber = async (req,res) =>{
++module.exports.GetAllJobOrderNumberByClientPhoneNumber = async (req, res) => {
+   try {
+     const { PhoneNumber } = req.params;
+ 
+-    const clientAccount = await RegisterClientDetails.find({PhoneNumber});
++    const clientAccount = await RegisterClientDetails.find({ PhoneNumber });
+ 
+     if (clientAccount.length === 0) {
+-      return res.status(401).json({ message: "This Phone number is not registered" });
++      return res
++        .status(401)
++        .json({ message: "This Phone number is not registered" });
+     }
+     res.status(200).json({
+       message: "Client found",
+       client: clientAccount,
+     });
+-
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: "Internal server error" });
+   }
+-}
+-
++};
+ 
+ // -----------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+-
+ // [function to Register Client By SuperAdmin] {superadmin : TODO , in future} ,{ add more details also }
+ module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
+   try {
+     // Extract user data from the request body
+-    const { JobOrderNumber,name, Password, PhoneNumber, Address, DateOfHandover,ProfileImage,ModelType } =
+-      req.body;
++    const {
++      JobOrderNumber,
++      name,
++      Password,
++      PhoneNumber,
++      Address,
++      DateOfHandover,
++      ProfileImage,
++      ModelType,
++    } = req.body;
+ 
+     const ExistingClient = await RegisterClientDetails.findOne({
+       JobOrderNumber,
+@@ -115,7 +181,7 @@ module.exports.RegisterClientsAsJobOrderNumber = async (req, res) => {
+       Address,
+       DateOfHandover,
+       ProfileImage,
+-      ModelType
++      ModelType,
+     });
+ 
+     // save user to the data base
+@@ -140,7 +206,9 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
+     // console.log(JobOrderNumber);
+ 
+     // firstly check the user is exist or not
+-    const client = await RegisterClientDetails.findOne({ JobOrderNumber:Number });
++    const client = await RegisterClientDetails.findOne({
++      JobOrderNumber: Number,
++    });
+     // console.log('hero',client)
+ 
+     if (!client || client.Password !== password) {
+@@ -148,7 +216,9 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
+     }
+ 
+     const token = generateToken({ Number });
+-    res.status(200).json({ message:'You are logged in Successfully',client, token });
++    res
++      .status(200)
++      .json({ message: "You are logged in Successfully", client, token });
+   } catch (error) {
+     console.error("Error logging in client:", error);
+     res.status(500).json({ message: "Internal Server Error" });
+@@ -166,7 +236,7 @@ module.exports.RequestCallbacks = async (req, res) => {
+       callbackTime,
+       TypeOfIssue,
+       Description,
+-      AssignedEng
++      AssignedEng,
+     } = req.body;
+ 
+     const newCallback = await clientRequestCallback.create({
+@@ -176,7 +246,7 @@ module.exports.RequestCallbacks = async (req, res) => {
+       callbackTime,
+       TypeOfIssue,
+       Description,
+-      AssignedEng
++      AssignedEng,
+     });
+     res.status(201).json({
+       message: "Client raised ticket for a callback successfully",
+@@ -195,12 +265,15 @@ module.exports.updateCallbacks = async (req, res) => {
+     const { callbackId, name, enggJon } = req.body;
+     const updatedCallback = await clientRequestCallback.findOneAndUpdate(
+       { callbackId },
+-      { isAssigned: true, AssignedEng: { name, id: enggJon } }, 
++      { isAssigned: true, AssignedEng: { name, id: enggJon } },
+       { new: true }
+     );
+ 
+     if (updatedCallback) {
+-      res.json({ message: "Callback updated successfully", data: updatedCallback });
++      res.json({
++        message: "Callback updated successfully",
++        data: updatedCallback,
++      });
+     } else {
+       res.status(404).json({ error: "Callback not found" });
+     }
+@@ -209,15 +282,34 @@ module.exports.updateCallbacks = async (req, res) => {
+     res.status(500).json({ error: "Error updating callback" });
+   }
+ };
++//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
++//function tio update service request {Preet}
++module.exports.updateServiceRequest = async (req, res) => {
++  try {
++    const { RequestId, name, enggJon } = req.body;
+ 
+-    
+-
+-    
+-
+-//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
++    const updateServiceRequest = await serviceRequest.findOneAndUpdate(
++      { RequestId },
++      { isAssigned: true, AssignedEng: { name, id: enggJon } },
++      { new: true }
++    );
+ 
++    if (updateServiceRequest) {
++      res.json({
++        message: "service Request updated successfully",
++        service: updateServiceRequest,
++      });
++    } else {
++      res.status(404).json({ error: "service Request not found" });
++    }
++  } catch (error) {
++    console.log(error);
++    res.status(500).json({ error: "Error updating service request" });
++  }
++};
+ // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
++
+ //function to handle the client service request for Imdiate visit
+ 
+ module.exports.imediateServiceRequest = async (req, res) => {
+@@ -324,9 +416,8 @@ module.exports.getAllClientServices = async (req, res) => {
+   }
+ };
+ 
+-
+-//...............................api to verify token ...............................
+-const jwt = require('jsonwebtoken');
++//.............................................api to verify token ...........................................................
++const jwt = require("jsonwebtoken");
+ 
+ module.exports.verifyClient = (req, res) => {
+   let token = req.header("Authorization");
+@@ -346,14 +437,26 @@ module.exports.verifyClient = (req, res) => {
+     const secretKey = "client-secret-key";
+     const decoded = jwt.verify(token, secretKey);
+     req.user = decoded.user;
+-    res.status(200).json({ success: true, message: "Token verified successfully", user: decoded.user });
++    res
++      .status(200)
++      .json({
++        success: true,
++        message: "Token verified successfully",
++        user: decoded.user,
++      });
+   } catch (error) {
+     console.error("Error verifying token:", error);
+-    res.status(401).json({ success: false, message: "Unauthorized - Invalid token", error: error.message });
++    res
++      .status(401)
++      .json({
++        success: false,
++        message: "Unauthorized - Invalid token",
++        error: error.message,
++      });
+   }
+ };
+ 
+-//...............................Rating {amit} ...............................
++//...............................................................Rating {amit} .............................................................
+ 
+ module.exports.Rating = async (req, res) => {
+   try {
+@@ -380,9 +483,48 @@ module.exports.Rating = async (req, res) => {
+         Question5,
+       },
+     });
+-    res.status(201).json({ message: "Engineer rated successfully", success: true, newRequest });
++    res
++      .status(201)
++      .json({
++        message: "Engineer rated successfully",
++        success: true,
++        newRequest,
++      });
+   } catch (error) {
+     console.log(error);
+     res.status(500).json({ error: "Internal server error" });
+   }
+-};
+\ No newline at end of file
++};
++
++// -----------------------------------------------------------------------------------------------------------------------------------------------------------
++
++//controller for handle create Reference by admin
++
++/* module.exports.imediateServiceRequest = async (req, res) => {
++  try {
++    const {
++      JobOrderNumber,
++      RequestId,
++      RequestDate,
++      RequestTime,
++      TypeOfIssue,
++      Description,
++    } = req.body;
++
++    const newRequest = await serviceRequest.create({
++      JobOrderNumber,
++      RequestId,
++      RequestDate,
++      RequestTime,
++      TypeOfIssue,
++      Description,
++    });
++    res.status(201).json({
++      message: "Client raised imidiate Request ticket successfully",
++      imidiateRequest: newRequest,
++    });
++  } catch (error) {
++    console.log(error);
++    res.status(500).json({ error: "Error for creating service Request" });
++  }
++}; */
+diff --git a/Backend/Middleware/ClientAuthMiddleware.js b/Backend/Middleware/ClientAuthMiddleware.js
+index 8cb962f..8f01769 100644
+--- a/Backend/Middleware/ClientAuthMiddleware.js
++++ b/Backend/Middleware/ClientAuthMiddleware.js
+@@ -20,7 +20,7 @@ const verifyToken = (userType) => (req, res, next) => {
+   // Remove the "Bearer " prefix
+   if (token.startsWith("Bearer ")) {
+     token = token.slice(7);
+-    console.log("Token gotton from the client :  ",token)
++    // console.log("Token gotton from the client :  ",token)
+   }
+ 
+   try {
+diff --git a/Backend/Modals/ClientDetailModals/ClientReferalSchema.js b/Backend/Modals/ClientDetailModals/ClientReferalSchema.js
+new file mode 100644
+index 0000000..5909eca
+--- /dev/null
++++ b/Backend/Modals/ClientDetailModals/ClientReferalSchema.js
+@@ -0,0 +1,34 @@
++const mongoose = require('mongoose');
++const Schema = mongoose.Schema;
++
++const ClientReferals = new Schema({
++    jobOrderNumber:{ //send the jobOrderNumber for Referal
++        type:String,
++        required:true
++    },
++    Name:{
++        type:String,
++        required:true
++    },
++    Number:{
++        type:Number,
++        required:true
++    },
++    City:{
++        type:String,
++        required:true
++    }, 
++    Hot:{
++        type:Number,
++        required:true
++    },
++    isApproved:{
++        type: Boolean,
++        required: true,
++        default: false,
++    }
++})
++
++const Referal = mongoose.model('Referals',ClientReferals);
++
++module.exports = Referal;
+\ No newline at end of file
+diff --git a/Backend/Modals/MemebershipModal/MembershipsSchema.js b/Backend/Modals/MemebershipModal/MembershipsSchema.js
+index 43c3320..e26cb22 100644
+--- a/Backend/Modals/MemebershipModal/MembershipsSchema.js
++++ b/Backend/Modals/MemebershipModal/MembershipsSchema.js
+@@ -14,7 +14,7 @@ const memebership = new Schema(
+       required: true,
+     },
+     StartDate: {
+-      type: String,
++      type: Date,
+       required: true,
+     },
+     Duration: {
+@@ -50,6 +50,6 @@ const memebership = new Schema(
+   }
+ );
+ 
+-const AssignMemeberships = mongoose.model("Memeberships", memebership);
++const AssignMemeberships = mongoose.model("Memberships", memebership);
+ 
+ module.exports = AssignMemeberships;
+diff --git a/Backend/Modals/ServiceEngineerModals/AssignServiceRequest.js b/Backend/Modals/ServiceEngineerModals/AssignServiceRequest.js
+index e2c1096..2a3b28d 100644
+--- a/Backend/Modals/ServiceEngineerModals/AssignServiceRequest.js
++++ b/Backend/Modals/ServiceEngineerModals/AssignServiceRequest.js
+@@ -16,10 +16,6 @@ const AssignRequest = new Schema(
+       type: String,
+       required: true,
+     },
+-    // AllotAChecklist: {
+-    //   type: String,
+-    //   required: true,
+-    // },
+     AllotAChecklist: {
+       type: mongoose.Schema.Types.ObjectId,
+       ref: "Checklist",
+diff --git a/Backend/Modals/ServicesModal/ClientServicesRequest.js b/Backend/Modals/ServicesModal/ClientServicesRequest.js
+index d3755f2..1d8bdaf 100644
+--- a/Backend/Modals/ServicesModal/ClientServicesRequest.js
++++ b/Backend/Modals/ServicesModal/ClientServicesRequest.js
+@@ -1,6 +1,8 @@
+ const mongoose = require("mongoose");
++const { v4: uuidv4 } = require('uuid'); // Import uuid library
+ const Schema = mongoose.Schema;
+ 
++
+ const Services = new Schema(
+   {
+     JobOrderNumber: {
+@@ -9,6 +11,7 @@ const Services = new Schema(
+     },
+     RequestId: {
+       type: String,
++      default: uuidv4, // Use uuid to generate a unique identifier
+       required: true,
+       unique: true,
+     },
+@@ -36,6 +39,10 @@ const Services = new Schema(
+       type: Boolean,
+       default: false,
+     },
++    AssignedEng:{
++      name: String,
++      id:String,
++    }
+   },
+   {
+     timestamps: true,
+diff --git a/Backend/Routes/AdminRoutes/AdminRoute.js b/Backend/Routes/AdminRoutes/AdminRoute.js
+index d8993ff..bf6368d 100644
+--- a/Backend/Routes/AdminRoutes/AdminRoute.js
++++ b/Backend/Routes/AdminRoutes/AdminRoute.js
+@@ -9,27 +9,38 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
+ router.post("/assigncallback", adminContoller.assignCallbacks);
+ router.post("/assignRequest", adminContoller.AssignServiceRequests);
+ 
+-router.post("/createMembership", adminContoller.createClientMemebership)
++router.post("/createMembership", adminContoller.createClientMemebership);
+ 
+ //------------------------------ All get requests -------------------------------------------------
++router.get("/getMembership", adminContoller.getClientMemebership);
+ 
+ router.get("/Allcallbacks", adminContoller.getAllCallbacks);
+ router.get("/Allservices", adminContoller.getAllRequests);
+ router.get("/AllClients", adminContoller.getAllClientsData);
+ router.get("/AllServiceEngg", adminContoller.getAllServiceEnggData);
+-router.get("/getClientCalbackDetailWithClientDetail/:callbackId", adminContoller.getCallbackDetailByCallbackId);
+-router.get("/getCheckList", adminContoller.getAllChecklist)
++router.get(
++  "/getClientCalbackDetailWithClientDetail/:callbackId",
++  adminContoller.getCallbackDetailByCallbackId
++);
++router.get("/getCheckList", adminContoller.getAllChecklist);
+ 
+-router.get("/getEnggDetailById/:EnggId",adminContoller.getEnggDetail )
++router.get("/getEnggDetailById/:EnggId", adminContoller.getEnggDetail);
+ 
+ router.get("/getAssignCallbackDetail/:callbackId", adminContoller.getAssignCallbackByCallbackId)
+-router.get("/getBookedDates", adminContoller.getBookedDates)
+-router.get("/clientDetail/:JobOrderNumber",ClientController.getClientDetail);
+-//-------------------------------Handle-CheckList-Routes ------------------------------------------
+ 
++router.get('/getRequestDetailByRequestid/:RequestId',adminContoller.getRequestDetailByRequestId)
++router.get(
++  "/getAssignCallbackDetail/:callbackId",
++  adminContoller.getAssignCallbackByCallbackId
++);
+ 
++router.get('/getAssignRequestDetail/:RequestId', adminContoller.getAssignServiceRequestByServiceRequestId)
++router.get("/getBookedDates", adminContoller.getBookedDates)
++router.get("/clientDetail/:JobOrderNumber",ClientController.getClientDetail);
+ 
++router.get('/getAllAssignServices', adminContoller.getAllAssignServiceRequest);
++//-------------------------------Handle-CheckList-Routes ------------------------------------------
+ 
+-router.post('/checklist',adminContoller.createCheckList)
++router.post("/checklist", adminContoller.createCheckList);
+ 
+ module.exports = router;
+diff --git a/Backend/Routes/ClientRoutes/ClientRoutes.js b/Backend/Routes/ClientRoutes/ClientRoutes.js
+index 52dd391..0ade72f 100644
+--- a/Backend/Routes/ClientRoutes/ClientRoutes.js
++++ b/Backend/Routes/ClientRoutes/ClientRoutes.js
+@@ -6,18 +6,22 @@ const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
+ 
+ const clientController = require("../../Controllers/ClientController/ClientController");
+ 
+-//-------------------------------- all post requests ------------------------------
++//-------------------------------- all post requests ------------------------------------
+ router.post("/RegisterClientsAsJON", clientController.RegisterClientsAsJobOrderNumber);
+ router.post("/RegisterClientAsPhone", clientController.RegisterClientAsPhoneNumber)
+ router.post("/loginWithPhone",clientController.loginClientwithPhoneNumber);
+ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
+ 
+ 
++/* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
+ router.post("/requestCallbacks", clientController.RequestCallbacks);
+ /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
+ router.put("/updateCallbacks", clientController.updateCallbacks);
+-/* router.post("/requestCallbacks", verifyToken('client') , clientController.RequestCallbacks); */
+-router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
++
++/* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
++router.post("/imediateServiceRequest",clientController.imediateServiceRequest);
++
++router.post("/createReferal", verifyToken('client'), clientController.referalUser);
+ 
+ //router.post("/engineerRating",clientController.Rating)
+ 
+@@ -27,10 +31,16 @@ router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientCont
+ router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
+ 
+ router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
+-//-------------------------verify--------------------------------------------------
++//-------------------------verify-----------------------------------------------------
+ router.get("/verifyclient",clientController.verifyClient);
+ 
+-//-------------------------rating{amit}---------------------------------------------
++//-------------------------rating{amit}--------------------------------------------------
++
++
++
++// ------------------------all Put Requests ----------------------------------------------------
++router.put("/updateCallbacks", clientController.updateCallbacks);
++router.put("/updateServiceRequest", clientController.updateServiceRequest);
+ router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+ 
+ 
+diff --git a/Frontend/ieelifts/package-lock.json b/Frontend/ieelifts/package-lock.json
+index e0a5828..ce23034 100644
+--- a/Frontend/ieelifts/package-lock.json
++++ b/Frontend/ieelifts/package-lock.json
+@@ -20,6 +20,7 @@
+         "react-content-loader": "^6.2.1",
+         "react-date-picker": "^10.6.0",
+         "react-dom": "^18.2.0",
++        "react-hot-toast": "^2.4.1",
+         "react-icons": "^4.12.0",
+         "react-loading-skeleton": "^3.3.1",
+         "react-multi-carousel": "^2.8.4",
+@@ -9386,6 +9387,14 @@
+         "url": "https://github.com/sponsors/sindresorhus"
+       }
+     },
++    "node_modules/goober": {
++      "version": "2.1.14",
++      "resolved": "https://registry.npmjs.org/goober/-/goober-2.1.14.tgz",
++      "integrity": "sha512-4UpC0NdGyAFqLNPnhCT2iHpza2q+RAY3GV85a/mRPdzyPQMsj0KmMMuetdIkzWRbJ+Hgau1EZztq8ImmiMGhsg==",
++      "peerDependencies": {
++        "csstype": "^3.0.10"
++      }
++    },
+     "node_modules/gopd": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/gopd/-/gopd-1.0.1.tgz",
+@@ -15477,6 +15486,21 @@
+         }
+       }
+     },
++    "node_modules/react-hot-toast": {
++      "version": "2.4.1",
++      "resolved": "https://registry.npmjs.org/react-hot-toast/-/react-hot-toast-2.4.1.tgz",
++      "integrity": "sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==",
++      "dependencies": {
++        "goober": "^2.1.10"
++      },
++      "engines": {
++        "node": ">=10"
++      },
++      "peerDependencies": {
++        "react": ">=16",
++        "react-dom": ">=16"
++      }
++    },
+     "node_modules/react-icons": {
+       "version": "4.12.0",
+       "resolved": "https://registry.npmjs.org/react-icons/-/react-icons-4.12.0.tgz",
+diff --git a/Frontend/ieelifts/package.json b/Frontend/ieelifts/package.json
+index e455ac0..4a320ed 100644
+--- a/Frontend/ieelifts/package.json
++++ b/Frontend/ieelifts/package.json
+@@ -15,6 +15,7 @@
+     "react-content-loader": "^6.2.1",
+     "react-date-picker": "^10.6.0",
+     "react-dom": "^18.2.0",
++    "react-hot-toast": "^2.4.1",
+     "react-icons": "^4.12.0",
+     "react-loading-skeleton": "^3.3.1",
+     "react-multi-carousel": "^2.8.4",
+diff --git a/Frontend/ieelifts/src/App.css b/Frontend/ieelifts/src/App.css
+index 43878fb..2806760 100644
+--- a/Frontend/ieelifts/src/App.css
++++ b/Frontend/ieelifts/src/App.css
+@@ -47,7 +47,7 @@ main {
+   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+   display: flex;
+-  z-index: 2;
++  z-index: 4;
+   justify-content: center;
+   align-items: baseline;
+ }
+@@ -470,7 +470,7 @@ span::after {
+   padding: 15px 16px;
+   margin-top: 0px;
+   position: fixed;
+-  z-index: 2;
++  z-index: 3;
+   box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
+   /* gap: 65%; */
+ }
+@@ -1728,10 +1728,20 @@ tbody tr {
+   justify-content: end;
+   width: 143px;
+ }
+-.task-list-table {
+-  width: 100%;
++
++table {
++  width: 100%;;
++}
++
++thead th {
++  background-color: #f2f2f2;
++  position: sticky;
++  top: 0;
++  z-index: 2;
+ }
+ 
++/* Add your other styles as needed */
++
+ .ticket-section-heading {
+   font-size: 1.2rem;
+   font-weight: 600;
+@@ -1999,17 +2009,17 @@ tbody tr {
+   bottom: 0;
+   top: 0;
+   background: rgba(0, 0, 0, 0.5);
+-  z-index: 2;
++  z-index: 4;
+   width: 100%;
+ }
+-.modal-wrapper1{
++.modal-wrapper1 {
+   position: fixed;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   top: 0;
+-  background: rgba(0, 0, 0, 0.5);
+-  z-index: 2;
++  background: rgba(0, 0, 0, 0.3);
++  z-index: 4;
+   width: 100%;
+ }
+ 
+@@ -2024,10 +2034,9 @@ tbody tr {
+   width: 80%;
+   height: 80%;
+   background: white;
+-  z-index: 2;
++  z-index: 4;
+ }
+ 
+-
+ .cross-icon {
+   right: 17px;
+   position: absolute;
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketModal.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketModal.js
+index 1c21151..d2c7668 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketModal.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketModal.js
+@@ -1,5 +1,7 @@
+   //................................{amit}....................................
+ import React, { useEffect, useState } from "react";
++import toast, { Toaster } from 'react-hot-toast';
++
+ import { RxCross2 } from "react-icons/rx";
+ import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
+ import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
+@@ -23,7 +25,6 @@ const AddTicketModal = ({
+   isAssigned
+ }) => {
+   const dispatch = useDispatch();
+-  
+ 
+   //  manage use states for the input fields
+   const [jon, setJon] = useState("");
+@@ -202,7 +203,7 @@ const AddTicketModal = ({
+ 
+ 
+   const handleEnggSelectionChange = (selectedOptions) => {
+-    console.log(selectedOptions[0]?.value)
++    //console.log(selectedOptions[0]?.value)
+     dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+   };
+ 
+@@ -247,8 +248,9 @@ const AddTicketModal = ({
+       closeModal();
+     } else {
+       console.log("not valid input");
+-    }
+-  };
++      toast.error("Please fill all the fields")
++      }
++     };
+ //-------------------------------------------OnClick Edit-------------------------------------------------
+   const [editchange,setEditChange] = useState(false);
+ 
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketOnCallRequest.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketOnCallRequest.js
+index d15b85e..c674c7b 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketOnCallRequest.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AddTicketOnCallRequest.js
+@@ -11,8 +11,11 @@
+   import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+   import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/ClientActions"; 
+   import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
++  import toast from 'react-hot-toast';
+   
+-  
++  import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
++  import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
++
+   import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
+   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+   
+@@ -20,6 +23,7 @@
+     closeModal,
+     showTicketModal,
+     setRenderTicket,
++    requestSection,
+   }) => {
+     const dispatch = useDispatch();
+   
+@@ -229,7 +233,24 @@
+ 
+ 
+     const handleElevatorSectionDetails = async() => {
+-  
++      if (requestSection){
++        dispatch(requestServiceRequestByAdmin(jon,date,time,typeOfIssue.label,dtext)).then((RequestId)=>{
++          if(engDetails.enggJon &&ClickListOnSelect &&selectedSlot &&date &&message){
++              dispatch(assignserviceRequestByAdmin(
++               engDetails?.enggJon,
++                jon,
++                RequestId,
++                ClickListOnSelect.value,
++                selectedSlot,
++                engDate,
++                message,
++                engDetails?.enggName,
++                engDetails.enggJon
++                ))
++          } 
++        })
++      }
++      else{
+       dispatch(requestCallBackByAdmin(jon,date,time,typeOfIssue.label,dtext)).then(callbackId=>{
+         if (engDetails.enggJon &&ClickListOnSelect &&selectedSlot &&date &&message) {
+         
+@@ -247,9 +268,11 @@
+              )
+            );
+          } else {
++          toast.error("Please fill all the fields")
+            console.log("not valid input");
+          }
+       })
++       }
+       setRenderTicket((prev) => !prev);
+       closeModal();
+     }
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AssignDropdown.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AssignDropdown.js
+index 0e1938b..8c22b99 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AssignDropdown.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/AssignDropdown.js
+@@ -2,12 +2,13 @@ import React from 'react'
+ import { HiOutlineChevronUpDown } from "react-icons/hi2";
+ 
+ const AssignDropdown = (props) => {
+-
+-
++ 
+   const limitName = (name, limit) => {
+     return name?.slice(0,limit)+(name?.length>limit?"..." :"");
+   };
+ 
++  const enggname = props.name;
++  //console.log(enggname)
+ 
+   return (
+     <div className={`status-section-button ${props.customAssign} ${props.customAssignName} ${props.customResolved }`}>
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/DropdownCollection/MultiSelectDropdownforSlot.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/DropdownCollection/MultiSelectDropdownforSlot.js
+deleted file mode 100644
+index 9d0ae9c..0000000
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/DropdownCollection/MultiSelectDropdownforSlot.js
++++ /dev/null
+@@ -1,96 +0,0 @@
+-import React,{useState} from "react";
+-
+-import Select from "react-select";
+-import makeAnimated from "react-select/animated";
+-
+-const animatedComponents = makeAnimated();
+-
+-const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName}) => {
+-
+-  const [selectedValue , setSelectedValue] = useState([]);
+-  //console.log("render")
+- 
+-  const enggDetailsData = Details || slots || [];
+-
+-  const dynamicOptions = enggDetailsData.map((engg) => ({
+-    value: engg.EnggId || engg.slot,
+-    label: engg.EnggName || engg.slot, 
+-  }));
+-
+-  // Custom styles for the dropdown
+-  const customStyles = {
+-    control: (provided, state) => ({
+-      ...provided,
+-      backgroundColor: state.isFocused ? "white" : "white",
+-      boxShadow: state.isFocused
+-        ? "none"
+-        : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
+-
+-      border: state.isFocused ? "1px solid #F8AC1D80" : "none",
+-
+-      borderRadius: "5px",
+-      fontSize: "17px", // Font size of the control
+-      ":hover": {
+-        // border:'1px solid #F8AC1D',
+-        boxShadow: "0px 0px 5px #F8AC1D80",
+-        border: "none",
+-      },
+-    }),
+-    menu: (provided) => ({
+-      ...provided,
+-      backgroundColor: "#ffffff",
+-      padding: "8px",
+-    }),
+-    option: (provided, state) => ({
+-      ...provided,
+-      backgroundColor: state.isSelected ? "#FFFFFF" : "#FFFFFF",
+-      color: state.isSelected ? "white" : "black",
+-      fontSize: "14px",
+-      ":hover": {
+-        backgroundColor: "#FEF3DE", // Background color of the remove icon on click
+-        color: "#F8AC1D", // Text color of the remove icon on click
+-        borderRadius: "5px",
+-      },
+-    }),
+-    multiValue: (provided) => ({
+-      ...provided,
+-      backgroundColor: "#FEF3DE", // Background color of tags
+-      borderRadius: "15px",
+-    }),
+-    multiValueLabel: (provided) => ({
+-      ...provided,
+-      color: "#F8AC1D", // Text color of tags
+-    }),
+-    multiValueRemove: (provided, state) => ({
+-      ...provided,
+-      color: state.isHovered ? "white" : "#F8AC1D", // Text color of the remove icon
+-      backgroundColor: state.isHovered ? "#F8AC1D" : "transparent", // Background color of the remove icon on hover
+-      ":hover": {
+-        backgroundColor: "#FEF3DE", // Background color of the remove icon on click
+-        color: "#F8AC1D", // Text color of the remove icon on click
+-      },
+-    }),
+-  };
+-
+-  const handleChange = (selectedOption) =>{
+- /*  console.log("dropdoen information : ",selectedOption); */
+-  setSelectedValue(selectedOption)
+-  handleEnggSelectionChange(selectedOption)
+-  }
+-
+-
+-  return (
+-  <Select
+-    placeholder={placeholder}
+-    closeMenuOnSelect={false}
+-    options={dynamicOptions}
+-    styles={customStyles} // Apply the custom styles
+-    onChange={handleChange}
+-    value={selectedValue}
+-    isDisabled={isAssigned?true:false}
+-  />
+-    
+-  );
+-};
+-
+-export default MultiSelectDropdown;
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/TicketSection.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/TicketSection.js
+index 72c1938..2d66c9f 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/TicketSection.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/DashboardSubComponent/TicketSection.js
+@@ -193,6 +193,7 @@ const TicketSection = () => {
+                 closeModal={closeModal}
+                 showTicketModal={showTicketModal}
+                 setRenderTicket={setRenderTicket}
++                requestSection={false}
+               />
+             )}
+           </div>
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/MainMenu/Request.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/MainMenu/Request.js
+index 3134777..c0f74e9 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/MainMenu/Request.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/MainMenu/Request.js
+@@ -1,5 +1,5 @@
+ import React from "react";
+-import { useState } from "react";
++import { useState, useEffect} from "react";
+ import Calendar from "react-calendar";
+ import "react-calendar/dist/Calendar.css";
+ 
+@@ -7,168 +7,106 @@ import { FaAngleLeft } from "react-icons/fa";
+ import { FaAngleRight } from "react-icons/fa";
+ import { HiOutlineDotsVertical } from "react-icons/hi";
+ import RequestScheduledSection from "../ServiceRequestSubComponent/RequestScheduledSection";
++import ServiceRequestModal from "../ServiceRequestSubComponent/ServiceRequestModal";
++
++import { useSelector, useDispatch } from "react-redux";
++
++import { getAllAssignServiceRequestAction } from '../../../../ReduxSetup/Actions/AdminActions'
++
++
+ 
+-const data = [
+-  {
+-    name: "Arjun Rawat1",
+-    date: "2024-01-04", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat2",
+-    date: "2024-01-04", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat3",
+-    date: "2024-01-02", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat4",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat5",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat6",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat7",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat8",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat9",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat10",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat11",
+-    date: "2024-01-02", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat12",
+-    date: "2024-01-04", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat13",
+-    date: "2024-01-04", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-  {
+-    name: "Arjun Rawat14",
+-    date: "2024-01-01", // Date in the format YYYY-MM-DD
+-    time: "09:00 AM",
+-    jobNumber: "2022199",
+-    jobType: "SAFETY AUDIT",
+-    profilePics: [
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+-    ],
+-  },
+-];
+ 
+ const Request = () => {
++  const dispatch = useDispatch();
++
+   const [date, setDate] = useState(new Date());
+   const [animationDirection, setAnimationDirection] = useState(null);
+ 
++
++  const [showTicketModal5, setShowTicketModal5] = useState(false);
++
++  const [RequestId, setRequestId] = useState();
++  const [enggId, setEnggId] = useState();
++
++
++
++
++  const openModal = (modalNumber,requestId,EnggId) => {
++    // Use the appropriate modal number to open the corresponding modal
++    if (modalNumber === 5) {
++      setShowTicketModal5(true);
++      setRequestId(requestId);
++      setEnggId(EnggId);
++  };
++}
++
++
++// const getRequestDetail = useSelector((state) => {
++//   if (
++//     state.AdminRootReducer &&
++//     state.AdminRootReducer.fetchAllServiceRequestsReducers &&
++//     state.AdminRootReducer.fetchAllServiceRequestsReducers
++//       .serviceRequestDetail
++//   ) {
++//     return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest;
++//   } else {
++//     return [];
++//   }
++// });
++// console.log("getRequestDetail", getRequestDetail);
++
++
++
++const getAssignRequests = useSelector((state)=> {
++  if(state.AdminRootReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest){
++    return state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest.clientdetailsEmbeded
++  }else{
++    return []
++  }
++} );
++//console.log(";;;" ,getAssignRequests)
++
++
++useEffect(()=>{
++  dispatch(getAllAssignServiceRequestAction())
++},[dispatch])
++
++
++// Function to format date from "DD/MM/YYYY" to "YYYY-MM-DD"
++const formatDate = (dateString) => {
++  const parts = dateString.split('/');
++  if (parts.length === 3) {
++    const [day, month, year] = parts;
++    return `${year}-${month}-${day}`;
++  }
++  return dateString; // return as is if format is incorrect
++};
++
++
++
++const requestDetail = getAssignRequests?.map((value) => ({
++
++  EnggId:value?.ServiceEnggId,
++  requestId:value?.RequestId,
++  name: value?.clientDetail?.name,
++  date: formatDate(value?.Date), // Convert date format
++  time: value?.Slot,
++  jobNumber: value?.JobOrderNumber,
++  jobType: value?.checklistDetail?.checklistName,
++  profilePics: [
++    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
++    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
++  ]
++}))
++ 
++//console.log(".0.00.00", requestDetail)
++
++const data = [...requestDetail];
++// console.log(".0.00.00", data)
++
++
++
++
+   const onChange = (newDate) => {
+     setDate(newDate);
+     setAnimationDirection("slideToTop");
+@@ -192,16 +130,24 @@ const Request = () => {
+     onChange(newDate);
+ 
+     if (days < 0) {
+-      console.log("date is less then zero");
++      // console.log("date is less then zero");
+       setAnimationDirection("slideLeftToRight");
+     } else if (days > 0) {
+-      console.log("date is greater then zero");
++      // console.log("date is greater then zero");
+       setAnimationDirection("slideRightToLeft");
+     } else {
+-      console.log("equal value");
++      // console.log("equal value");
+       setAnimationDirection("slideToTop");
+     }
+   };
++  const [renderTicket, setRenderTicket] = useState(true);  //to referesh
++
++  useEffect(() => {
++    setTimeout(() => {
++      console.log("renderTicket", renderTicket);
++      dispatch(getAllAssignServiceRequestAction());
++    }, 1000);
++  }, [renderTicket]); 
+ 
+   return (
+     <>
+@@ -228,7 +174,13 @@ const Request = () => {
+                 </div>
+ 
+                 <div className="parent-div-task-request">
+-                  {filterDataByDate().map((value) => (
++                  {filterDataByDate().map((value) => {
++                 // console.log("value inside tha map", value)
++                  const requestId = value.requestId;
++                  const EnggId = value.EnggId;
++                  //console.log("-.-.-.-.-.-",EnggId)
++                  
++                  return(
+                     <div
+                       className="animation-all"
+                       style={{ animationName: animationDirection }}
+@@ -239,18 +191,18 @@ const Request = () => {
+                         <div className="service-assign">
+                           <div className="date-time">
+                             <span>TIME</span>
+-                            <p>09:00 AM</p>
++                            <p>{value?.time}</p>
+                           </div>
+ 
+                           <div className="name-3dots">
+                             <div className="name-jon">
+-                              <p>{value.name}</p>
++                              <p>{value?.name}</p>
+                               <div className="jon-type">
+                                 <p>
+                                   <span style={{ fontWeight: "500" }}>JON</span>
+-                                  :2022199
++                                  :{value?.jobNumber}
+                                 </p>
+-                                <p>SAFET AUDIT</p>
++                                <p>{value?.jobType}</p>
+                               </div>
+                             </div>
+ 
+@@ -279,8 +231,10 @@ const Request = () => {
+                                   />
+                                 </div>
+                               </div>
+-                              <div className="dots3">
++                              <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
++
+                                 <HiOutlineDotsVertical />
++
+                               </div>
+                             </div>
+                           </div>
+@@ -289,7 +243,18 @@ const Request = () => {
+ 
+                       {/* one slot ends from here */}
+                     </div>
+-                  ))}
++                  )})}
++
++                  {showTicketModal5 && (
++                    <ServiceRequestModal
++                        closeModal={() => setShowTicketModal5(false)}
++                        showTicketModal={showTicketModal5}
++                        RequestId={RequestId}
++                        setRenderTicket={setRenderTicket}
++                        enggId={enggId}
++                        isAssigned={true}
++                      />
++                    )}
+                 </div>
+               </div>
+             </div>
+@@ -297,7 +262,7 @@ const Request = () => {
+         </div>
+ 
+         <div>
+-          <RequestScheduledSection />
++          <RequestScheduledSection  setRenderTicket={setRenderTicket}/>
+         </div>
+       </div>
+     </>
+@@ -305,3 +270,24 @@ const Request = () => {
+ };
+ 
+ export default Request;
++
++
++
++
++
++
++
++
++
++// {
++//   name: "Arjun Rawat1",
++//   date: "2024-01-04", // Date in the format YYYY-MM-DD
++//   time: "09:00 AM",
++//   jobNumber: "2022199",
++//   jobType: "SAFETY AUDIT",
++//   profilePics: [
++//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
++//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
++//   ],
++// },
++
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/RequestScheduledSection.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/RequestScheduledSection.js
+index ace0846..309070c 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/RequestScheduledSection.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/RequestScheduledSection.js
+@@ -4,13 +4,13 @@ import { CiSearch } from "react-icons/ci";
+ import { LuSettings2 } from "react-icons/lu";
+ import FilterDropdown from "../DashboardSubComponent/FilterDropdown";
+ import { GoPlus } from "react-icons/go";
+-import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
++import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequest";
+ import ServiceRequestTable from "./ServiceRequestTable";
+ import ServiceScheduledTable from "./ServiceScheduledTable";
+ 
+-const RequestScheduledSection = () => {
+-  const dropdownRef = useRef(null);
+ 
++const RequestScheduledSection = ({setRenderTicket}) => {
++  const dropdownRef = useRef(null);
+   // modal manage states
+ 
+   const [showTicketModal, setShowTicketModal] = useState(false);
+@@ -20,7 +20,6 @@ const RequestScheduledSection = () => {
+     useState(true);
+ 
+   const handleTicketFilter = () => {
+-    console.log("this is handle filter function");
+     setShowTicketFilter(!showTicketFilter);
+   };
+ 
+@@ -44,6 +43,8 @@ const RequestScheduledSection = () => {
+     };
+   }, [dropdownRef]);
+ 
++ 
++
+   const openModal = (modalNumber) => {
+     // Use the appropriate modal number to open the corresponding modal
+     if (modalNumber === 0) setShowTicketModal(true);
+@@ -125,10 +126,11 @@ const RequestScheduledSection = () => {
+               </p>
+             </div>
+             {showTicketModal && (
+-              <AddTicketModal
++              <AddTicketOnCallRequest
+                 closeModal={closeModal}
+                 showTicketModal={showTicketModal}
+-                modalNumber={0}
++                setRenderTicket={setRenderTicket}
++                requestSection={true}
+               />
+             )}
+           </div>
+@@ -138,7 +140,7 @@ const RequestScheduledSection = () => {
+           {/* table start here */}
+ 
+           {handleRequestScheduledTable ? (
+-            <ServiceRequestTable />
++            <ServiceRequestTable setRenderTicket2={setRenderTicket}/>
+           ) : (
+             <ServiceScheduledTable />
+           )}
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestModal.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestModal.js
+index a55e197..f93ca34 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestModal.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestModal.js
+@@ -1,28 +1,71 @@
+   //................................{preet}....................................
+   import React, { useEffect, useState } from "react";
++  import toast, { Toaster } from 'react-hot-toast';
++
+   import { RxCross2 } from "react-icons/rx";
+   import SingleSetDropdown from "../DashboardSubComponent/DropdownCollection/SingleSetDropdown";
+   import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/MultiSelectDropdown";
+   import { useDispatch, useSelector } from "react-redux";
+   import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
++
++  import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
++
++  import { getRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+   import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+   import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
+   import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+-  import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+-  import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
++  // import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
++  // import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
++  import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+   
+   import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
+   import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+   
++
++   
++  const timeSlots = [
++    {
++      slot: "9:00-10:00",
++    },
++    {
++      slot: "10:00-11:00",
++    },
++    {
++      slot: "11:00-12:00",
++    },
++    {
++      slot: "12:00-13:00",
++    },
++    {
++      slot: "13:00-14:00",
++    },
++    {
++      slot: "14:00-15:00",
++    },
++    {
++      slot: "15:00-16:00",
++    },
++    {
++      slot: "16:00-17:00",
++    },
++    {
++      slot: "17:00-18:00",
++    },
++  ];
++
+   const ServiceRequestModal = ({
+     closeModal,
+     showTicketModal,
+-    callbackId,
++    RequestId,
+     setRenderTicket,
+     enggId,
+     isAssigned
+   }) => {
+     const dispatch = useDispatch();
++
++    //console.log(isAssigned)
++
++    //console.log(RequestId)
+   
+     //  manage use states for the input fields
+     const [jon, setJon] = useState("");
+@@ -33,6 +76,8 @@
+     const [description, setDescription] = useState("");
+     const [date, setDate] = useState("");
+     const [modelType, setModelType] = useState("");
++    const [engDate , setengDate]=useState("")
++
+   
+     const [engDetails, setEngDetails] = useState({
+       enggJon: "",
+@@ -43,39 +88,15 @@
+       enggRating: "",
+     });
+   
++
+     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
++
++    //console.log(ClickListOnSelect)
++
+     const [selectedSlot, setSelectedSlot] = useState(null);
+     const [message, setMessage] = useState("");
+     const [fetchedDate,setfetchedDate] = useState("")
+-    const timeSlots = [
+-      {
+-        slot: "9:00-10:00",
+-      },
+-      {
+-        slot: "10:00-11:00",
+-      },
+-      {
+-        slot: "11:00-12:00",
+-      },
+-      {
+-        slot: "12:00-13:00",
+-      },
+-      {
+-        slot: "13:00-14:00",
+-      },
+-      {
+-        slot: "14:00-15:00",
+-      },
+-      {
+-        slot: "15:00-16:00",
+-      },
+-      {
+-        slot: "16:00-17:00",
+-      },
+-      {
+-        slot: "17:00-18:00",
+-      },
+-    ];
++ 
+   
+     //slots logic here ends-------------------------------------------------
+     // use use selector select to select the service engg state
+@@ -105,15 +126,21 @@
+       }
+     });
+   
+-    // use use selector to select the user callBack state
+-  
+-    const userCallBackDetail = useSelector((state) => {
+-      return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
+-        ?.callbackData?.callback;
++    // use use selector to select the user Request state
++    const getUserRequestDetail = useSelector((state) => {
++      if(state.AdminRootReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer && state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest){
++        return state.AdminRootReducer.getRequestDetailByRequestIdReducer.serviceRequest.request
++      }else{
++        return null
++      }
+     });
++
++    //console.log("getUserRequestDetail =>",getUserRequestDetail)
++
++
+   
++    
+     //get eng state by use selector hook
+-  
+     const getEnggState = useSelector((state) => {
+       if (
+         state.AdminRootReducer &&
+@@ -125,22 +152,27 @@
+       }
+       return;
+     });
+-  
++  /* 
+     const getAssignedCallbackDetails = useSelector((state)=>{
+-      return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
++      return state?.AdminRootReducer;
+     })
++
++    console.log('testing', getAssignedCallbackDetails) */
++
++    const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
+   
+   
+     useEffect(() => {
+       if(isAssigned){
++        //console.log("1");
+         dispatch(fetchEnggDetailAction(enggId));
+-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
++        dispatch(getRequestDetailByRequestIdAction(RequestId))
+         dispatch(fetchAllClientDetailAction());
+         dispatch(fetchChecklistAction());
+-        dispatch(requestAssignCallbackDetail(callbackId))
++        dispatch(assignServiceRequestDetailByRequestIdAction(RequestId));
+       }
+       else{
+-        dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
++        dispatch(getRequestDetailByRequestIdAction(RequestId));
+         dispatch(fetchAllClientDetailAction());
+         dispatch(fetchChecklistAction());
+       }
+@@ -164,15 +196,15 @@
+     }, [getEnggState]);
+   
+     useEffect(() => {
+-      setJon(userCallBackDetail?.JobOrderNumber || "");
+-      setName(userCallBackDetail?.clientDetail?.name || "");
+-      setNumber(userCallBackDetail?.clientDetail?.PhoneNumber || "");
+-      setAddress(userCallBackDetail?.clientDetail?.Address || "");
+-      setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
+-      setDescription(userCallBackDetail?.Description || "");
+-      setDate(userCallBackDetail?.createdAt || "");
+-      setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
+-    }, [userCallBackDetail]);
++      setJon(getUserRequestDetail?.JobOrderNumber || "");
++      setName(getUserRequestDetail?.clientDetail?.name || "");
++      setNumber(getUserRequestDetail?.clientDetail?.PhoneNumber || "");
++      setAddress(getUserRequestDetail?.clientDetail?.Address || "");
++      setTypeOfIssue(getUserRequestDetail?.TypeOfIssue || "");
++      setDescription(getUserRequestDetail?.Description || "");
++      setDate(getUserRequestDetail?.createdAt || "");
++      setModelType(getUserRequestDetail?.clientDetail?.ModelType || "");
++    }, [getUserRequestDetail]);
+   
+     useEffect(() => {
+       //no problem
+@@ -184,17 +216,23 @@
+   
+     useEffect(()=>{
+    
+-      if(getAssignedCallbackDetails?.callbackdetails){
+-        setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
+-        setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
+-        setMessage(getAssignedCallbackDetails.callbackdetails.Message);
+-        const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
++      if(getAssignRequestdetail){
++        setClickListOnSelect(getAssignRequestdetail?.checkList?.checklistName);
++        setSelectedSlot(getAssignRequestdetail?.Slot);
++        setMessage(getAssignRequestdetail?.Message);
++        const dateAsString = getAssignRequestdetail?.Date.toString();
+         setfetchedDate(dateAsString)
+       }
+     
+-    },[getAssignedCallbackDetails])
+-  
++    },[getAssignRequestdetail])
+   
++    
++    const handleAssignDateChange = (selectedOption)=>{
++      const formattedDate = selectedOption.toLocaleDateString('en-GB');
++      setengDate(formattedDate);
++    }
++
++    
+     const handleEnggSelectionChange = (selectedOptions) => {
+       dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+     };
+@@ -207,7 +245,7 @@
+       setClickListOnSelect(selectedOptions);
+     };
+   
+-    const handleElevatorSectionDetails = () => {
++    const handleAssignRequest = () => {
+       if (
+         engDetails.enggJon &&
+         ClickListOnSelect &&
+@@ -215,32 +253,34 @@
+         date &&
+         message
+       ) {
+-        const dateObject = new Date(date);
+-  
+-        const formattedDate = `${dateObject.getDate()}/${
+-          dateObject.getMonth() + 1
+-        }/${dateObject.getFullYear()}`;
+-  
++
+         dispatch(
+-          assignCallBackByAdminAction(
++          assignserviceRequestByAdmin(
+             engDetails?.enggJon,
+-            number,
+-            callbackId,
++            jon,
++            RequestId,
+             ClickListOnSelect.value,
+             selectedSlot,
+-            formattedDate,
++            engDate,
+             message,
+             engDetails?.enggName,
+             engDetails.enggJon
+-          )
++            )
+         );
+-  
++
+         setRenderTicket((prev) => !prev);
+         closeModal();
+       } else {
+-        console.log("not valid input");
++        toast.error("Please fill all the fields")
+       }
+     };
++
++//-------------------------------------------OnClick Edit-------------------------------------------------
++  const [editchange,setEditChange] = useState(false);
++
++  const handleEditSection=()=>{
++    setEditChange(!editchange)
++  }
+   
+     return (
+       <>
+@@ -563,32 +603,39 @@
+                       <div className="col75">
+                         
+                         <MultiSelectDropdown
+-                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+-                          Details={serviceEnggDetail}
+-                          handleEnggSelectionChange={handleEnggSelectionChange}
+-                          
+-                        />
++                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
++                        Details={serviceEnggDetail}
++                        handleEnggSelectionChange={handleEnggSelectionChange}
++                        isAssigned={isAssigned}
++                        editchange={editchange}
++                        enggName={engDetails.enggName}
++                      />
+                       </div>
+                     </div>
+                     <div className="sm-box sm-box--2">
+                       <div className="col75">
+                         <SingleSetDropdown
+-                          padding="6px"
+-                          width="100%"
+-                          placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
+-                          Details={checkList}
+-                          onStateChange={handleSingleSetDropdown}
+-                        />
++                        padding="6px"
++                        width="100%"
++                        placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
++                        Details={checkList}
++                        isAssigned={isAssigned}
++                        editchange={editchange}
++                        onStateChange={handleSingleSetDropdown}
++                      />
+                       </div>
+                     </div>
+                     <div className="sm-box sm-box--2">
+                       <div className="col75">
+                     
+                         <MultiSelectDropdown
+-                        placeholder={isAssigned?selectedSlot:"Select Slot"}
+-                          slots={timeSlots}
+-                          handleEnggSelectionChange={handleEnggSelectionChange1}
+-                        />
++                      placeholder={isAssigned?selectedSlot:"Select Slot"}
++                        slots={timeSlots}
++                        handleEnggSelectionChange={handleEnggSelectionChange1}
++                        isAssigned={isAssigned}
++                        editchange={editchange}
++                        enggName={engDetails.enggName}
++                      />
+                       </div>
+                     </div>
+   
+@@ -596,7 +643,7 @@
+                       <div className="col75">
+                     
+                         <div className="data-pic">
+-                          <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} />
++                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
+                         </div>
+                       </div>
+                     </div>
+@@ -611,10 +658,11 @@
+                         marginLeft: "10%",
+                         resize: "none",
+                       }}
+-                      placeholder={isAssigned?message:"message"}
+-                      onChange={(e) => {
+-                        setMessage(e.target.value);
+-                      }}
++                      readOnly={editchange ? false : isAssigned}
++                    placeholder={isAssigned?message:"message"}
++                    onChange={(e) => {
++                      setMessage(e.target.value);
++                    }}
+                     ></textarea>
+                   </div>
+                 </div>
+@@ -623,10 +671,10 @@
+   
+             <div className="footer-section">
+               <div className="buttons">
+-                <button className="edit-button" >Edit</button>
++                <button className={`edit-button ${editchange&&`edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
+                 <button
+                   className="assign-button"
+-                  onClick={handleElevatorSectionDetails}
++                  onClick={handleAssignRequest}
+                 >
+                   Assign
+                 </button>
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestTable.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestTable.js
+index 9fa6dab..2136151 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestTable.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceRequestTable.js
+@@ -8,45 +8,43 @@ import ServiceScheduledTable from "./ServiceScheduledTable";
+ import ServiceRequestModal from "./ServiceRequestModal";
+ 
+ import { useDispatch, useSelector } from "react-redux";
+-import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions"
+-
+-
+-const data = [
+-  {
+-    JON:563553
+-  },
+-  {
+-    JON:563553
+-  },
+-  {
+-    JON:563553
+-  },
+-  {
+-    JON:563553
+-  },
+-  {
+-    JON:563553
+-  },
+-]
+-
+-
+-const ServiceRequestTable = () => {
++import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
++
++const ServiceRequestTable = ({setRenderTicket2}) => {
+   const dropdownRef = useRef(null);
+   const dispatch = useDispatch();
+ 
+-  
++  const [RequestId, setRequestId] = useState();
++
++  const [enggId, setEnggId] = useState();
++  const [isAssigned, setIsAssigned] = useState();
++
++  //console.log(isAssigned);
++
++  const [renderTicket, setRenderTicket] = useState(true);
++
++  useEffect(() => {
++    setTimeout(() => {
++      setRenderTicket2((prev)=>!prev);
++      dispatch(fetchAllServiceRequestsAction());
++    }, 1000);
++  }, [renderTicket]);
++
+   const getRequestDetail = useSelector((state) => {
+-    if(state.AdminRootReducer && state.AdminRootReducer.fetchAllServiceRequestsReducers && state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail){
+-      return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest
+-    }
+-    else{
++    if (
++      state.AdminRootReducer &&
++      state.AdminRootReducer.fetchAllServiceRequestsReducers &&
++      state.AdminRootReducer.fetchAllServiceRequestsReducers
++        .serviceRequestDetail
++    ) {
++      return state.AdminRootReducer.fetchAllServiceRequestsReducers
++        .serviceRequestDetail.ServiceRequest;
++    } else {
+       return null;
+     }
+-  } );
+-  console.log(getRequestDetail);
+-  
+-  
+-  
++  });
++  console.log("getRequestDetail", getRequestDetail);
++
+   // modal manage states
+   const [showTicketModal4, setShowTicketModal4] = useState(false);
+ 
+@@ -58,12 +56,11 @@ const ServiceRequestTable = () => {
+     checkbox2: false,
+   });
+ 
+-
+   //use effect for dispatching ations
+   useEffect(() => {
+-    dispatch(fetchAllServiceRequestsAction())
+-  },[dispatch])
+-  
++    dispatch(fetchAllServiceRequestsAction());
++  }, [dispatch]);
++
+   //linit address logic
+   const limitAddress = (address, limit) => {
+     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
+@@ -96,8 +93,7 @@ const ServiceRequestTable = () => {
+         !event.target.classList.contains("filter-icon")
+       ) {
+         setShowTicketFilter(false);
+-        console.log(showTicketFilter)
+-
++        console.log(showTicketFilter);
+       }
+     };
+ 
+@@ -106,12 +102,15 @@ const ServiceRequestTable = () => {
+     return () => {
+       document.removeEventListener("mousedown", handleClickOutside);
+     };
+-  }, [dropdownRef,showTicketFilter]);
++  }, [dropdownRef, showTicketFilter]);
+ 
+-  const openModal = (modalNumber) => {
++  const openModal = (modalNumber, requestId,isAssignedValue,enngID) => {
+     // Use the appropriate modal number to open the corresponding modal
+     if (modalNumber === 4) {
+       setShowTicketModal4(true);
++      setRequestId(requestId);
++      setIsAssigned(isAssignedValue);
++      setEnggId(enngID);
+     }
+   };
+ 
+@@ -138,11 +137,14 @@ const ServiceRequestTable = () => {
+               </div>
+             </th>
+             <th>TYPE</th>
+-            <th> <div>
++            <th>
++              {" "}
++              <div>
+                 <span>MEMBERSHIP</span>
+                 <HiChevronUpDown />
+                 <span></span>
+-              </div></th>
++              </div>
++            </th>
+             <th>DATE</th>
+             <th>TIME</th>
+             <th>
+@@ -156,60 +158,83 @@ const ServiceRequestTable = () => {
+           </tr>
+         </thead>
+ 
+-
+         {/* TABLE BODY STARTS */}
+-        {getRequestDetail?.map((value)=>(
+-           <tbody key={value._id}>
+-           <tr className="selected">
+-             <td>
+-               {" "}
+-               <CheckBox
+-                 id="checkbox1"
+-                 checked={checkboxStates.checkbox1}
+-                 handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
+-               />
+-             </td>
+-             <td>{value.JobOrderNumber}</td>
+-             <td>{value?.clientDetail?.name}</td>
+-             <td>{value?.clientDetail?.PhoneNumber}</td>
+-
+-             <td>
+-             <div className="dropdown-address">
+-                        <span>{limitAddress(value?.clientDetail?.Address,15)}</span>
+-
+-                        <div className="dropdown-adddress-menu">
+-                          <div className="drop-address">
+-                         <p>{value?.clientDetail?.Address}</p> 
+-                          </div>
+-                        </div>
++        {getRequestDetail?.map((value) => {
++          
++          const isAssignedValue = value?.isAssigned;
++          const enngID = value?.AssignedEng?.id;
++          const name = value?.AssignedEng?.name;
++          
++                    
++          // Check if isAssigned is true, if not, don't render the row
++          if (isAssignedValue) {
++            return null;
++          }
++
++          return (
++            <tbody key={value._id}>
++              <tr className="selected">
++                <td>
++                  {" "}
++                  <CheckBox
++                    id="checkbox1"
++                    checked={checkboxStates.checkbox1}
++                    handleCheckboxChange={() =>
++                      handleCheckBoxSingle("checkbox1")
++                    }
++                  />
++                </td>
++                <td>{value.JobOrderNumber}</td>
++                <td>{value?.clientDetail?.name}</td>
++                <td>{value?.clientDetail?.PhoneNumber}</td>
++
++                <td>
++                  <div className="dropdown-address">
++                    <span>
++                      {limitAddress(value?.clientDetail?.Address, 15)}
++                    </span>
++
++                    <div className="dropdown-adddress-menu">
++                      <div className="drop-address">
++                        <p>{value?.clientDetail?.Address}</p>
+                       </div>
+-             </td>
+-
+-
+-             <td>SERVICE E1</td>
+-             <td>GOLD</td>
+-             <td>12/10/2020</td>
+-             <td>12:00PM</td>
+-             <td onClick={() => openModal(4)}>
+-               <AssignDropdown customAssign="assignColor" name="Assign" />
+-             </td>
+-            
+-           </tr>
+-         </tbody>
+-        ))}
+-
+-{showTicketModal4 && (
+-               <ServiceRequestModal
+-                 closeModal={() => setShowTicketModal4(false)}
+-                 showTicketModal={showTicketModal4}
+-                 modalNumber={4}
+-               />
+-             )}
+-       
+-        {/* TABLE BODY ENDS */}
+-
+-
++                    </div>
++                  </div>
++                </td>
++
++                <td>{value?.TypeOfIssue}</td>
++                <td>GOLD</td>
++                <td>{value?.RequestDate}</td>
++                <td>{value?.RequestTime}</td>
++
++                <td onClick={() => openModal(4,value?.RequestId,isAssignedValue,enngID)}>
++                  {isAssignedValue ? (
++                    <AssignDropdown
++                      customAssignName="assignNameColor"
++                      name={name}
++                      isAssigned={isAssigned}
++                    />
++                  ) : (
++                    <AssignDropdown customAssign="assignColor" name="Assign" />
++                  )}
++                </td>
++              </tr>
++            </tbody>
++          );
++        })}
++
++        {showTicketModal4 && (
++          <ServiceRequestModal
++            closeModal={() => setShowTicketModal4(false)}
++            showTicketModal={showTicketModal4}
++            RequestId={RequestId}
++            setRenderTicket={setRenderTicket}
++            enggId={enggId}
++            isAssigned={isAssigned}
++          />
++        )}
+ 
++        {/* TABLE BODY ENDS */}
+       </table>
+     </div>
+   );
+diff --git a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceScheduledTable.js b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceScheduledTable.js
+index b5ab203..98d8e1d 100644
+--- a/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceScheduledTable.js
++++ b/Frontend/ieelifts/src/Components/AdminPannel/Component/ServiceRequestSubComponent/ServiceScheduledTable.js
+@@ -7,22 +7,21 @@ import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
+ 
+ const data = [
+   {
+-    JON:563553
++    JON: 563553,
+   },
+   {
+-    JON:563553
++    JON: 563553,
+   },
+   {
+-    JON:563553
++    JON: 563553,
+   },
+   {
+-    JON:563553
++    JON: 563553,
+   },
+   {
+-    JON:563553
++    JON: 563553,
+   },
+-]
+-
++];
+ 
+ const ServiceScheduledTable = () => {
+   const dropdownRef = useRef(null);
+@@ -66,7 +65,7 @@ const ServiceScheduledTable = () => {
+         !event.target.classList.contains("filter-icon")
+       ) {
+         setShowTicketFilter(false);
+-        console.log(showTicketFilter)
++        console.log(showTicketFilter);
+       }
+     };
+ 
+@@ -75,7 +74,7 @@ const ServiceScheduledTable = () => {
+     return () => {
+       document.removeEventListener("mousedown", handleClickOutside);
+     };
+-  }, [dropdownRef,showTicketFilter]);
++  }, [dropdownRef, showTicketFilter]);
+ 
+   const openModal = (modalNumber) => {
+     // Use the appropriate modal number to open the corresponding modal
+@@ -89,13 +88,13 @@ const ServiceScheduledTable = () => {
+       <table className="task-list-table">
+         <thead>
+           <tr>
+-            {/* <th>
++            <th>
+               <CheckBox
+                 id="toggleAll"
+                 handleCheckboxChange={handleCheckBoxAll}
+                 checked={checkedAll}
+               />
+-            </th> */}
++            </th>
+             <th>JON</th>
+             <th>NAME</th>
+             <th>NUMBER</th>
+@@ -119,58 +118,55 @@ const ServiceScheduledTable = () => {
+           </tr>
+         </thead>
+ 
+-
+         {/* TABLE BODY STARTS */}
+-        {data.map((value)=>(
+-           <tbody>
+-           <tr className="selected">
+-             <td>
+-               {" "}
+-               <CheckBox
+-                 id="checkbox1"
+-                 checked={checkboxStates.checkbox1}
+-                 handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
+-               />
+-             </td>
+-             <td>442113</td>
+-             <td>ram kumar</td>
+-             <td>9416484863</td>
+-             <td>
+-             <div className="dropdown-address">
+-                        <span>ADDRESS ADDRESS</span>
+-
+-                        <div className="dropdown-adddress-menu">
+-                          <div className="drop-address">
+-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
+-                          </div>
+-                        </div>
+-                      </div>
+-             </td>
+-             <td>SERVICE E1</td>
+-             <td>GOLD</td>
+-               <td onClick={() => openModal(5)}>
+-               <AssignDropdown customAssign="assignColor" name="Assign" />
+-             </td>
+-             {showTicketModal5 && (
+-               <AddTicketModal
+-                 closeModal={() => setShowTicketModal5(false)}
+-                 showTicketModal={showTicketModal5}
+-                 modalNumber={5}
+-               />
+-             )}
+-           </tr>
+-         </tbody>
++        {data.map((value) => (
++          <tbody>
++            <tr className="selected">
++              <td>
++                {" "}
++                <CheckBox
++                  id="checkbox1"
++                  checked={checkboxStates.checkbox1}
++                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
++                />
++              </td>
++              <td>442113</td>
++              <td>ram kumar</td>
++              <td>9416484863</td>
++              <td>
++                <div className="dropdown-address">
++                  <span>ADDRESS ADDRESS</span>
++
++                  <div className="dropdown-adddress-menu">
++                    <div className="drop-address">
++                      <p>
++                        Address: E 26, Phase 7, Industrial Area, Sector 73,
++                        Sahibzada Ajit Singh Nagar, Punjab 140308
++                      </p>
++                    </div>
++                  </div>
++                </div>
++              </td>
++              <td>SERVICE E1</td>
++              <td>GOLD</td>
++              <td onClick={() => openModal(5)}>
++                <AssignDropdown customAssign="assignColor" name="Assign" />
++              </td>
++              {showTicketModal5 && (
++                <AddTicketModal
++                  closeModal={() => setShowTicketModal5(false)}
++                  showTicketModal={showTicketModal5}
++                  modalNumber={5}
++                />
++              )}
++            </tr>
++          </tbody>
+         ))}
+-       
+-        {/* TABLE BODY ENDS */}
+-
+-
+ 
++        {/* TABLE BODY ENDS */}
+       </table>
+     </div>
+   );
+ };
+ 
+ export default ServiceScheduledTable;
+-
+-
+diff --git a/Frontend/ieelifts/src/ReduxSetup/Actions/AdminActions.js b/Frontend/ieelifts/src/ReduxSetup/Actions/AdminActions.js
+index 79d8c34..64a1d1c 100644
+--- a/Frontend/ieelifts/src/ReduxSetup/Actions/AdminActions.js
++++ b/Frontend/ieelifts/src/ReduxSetup/Actions/AdminActions.js
+@@ -1,6 +1,9 @@
+ import axios from "axios";
+ import config from "../../config";
+ 
++import { toast } from 'react-hot-toast';
++
++
+ // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+ // all the type constants
+ export const GET_ALL_CALLBACK = "GET_ALL_CALLBACK";
+@@ -12,7 +15,115 @@ export const CLEAR_TABLE_DATA = "CLEAR_TABLE_DATA";
+ export const ASSIGN_CALLBACK_BY_ADMIN = "ASSIGN_CALLBACK_BY_ADMIN";
+ export const GET_ASSIGN_CALLBACK_DETAILS="GET_ASSIGN_CALLBACK_DETAILS";
+ export const GET_ALL_SERVICE_REQUEST="GET_ALL_SERVICE_REQUEST";
++export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_ID";
++
++export const ASSIGN_SERVICE_REQUEST_BY_ADMIN = "ASSIGN_SERVICE_REQUEST_BY_ADMIN";
++
++export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID = "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
++
++export const GET_ALL_ASSIGN_SERVICE_REQUEST = "GET_ALL_ASSIGN_SERVICE_REQUEST";
++// --------------------------------------------------------------------------------------------------------------------------------------------------------------
++
++
++//function to handle get all assignRequests
++
++export const getAllAssignServiceRequestAction = () => {
++  return async (dispatch) => {
++    //console.log("getAllAssignServiceRequestAction")
++    try {
++      const response = await axios.get(`${config.apiUrl}/admin/getAllAssignServices`);
++      dispatch({
++        type:GET_ALL_ASSIGN_SERVICE_REQUEST,
++        payload:response.data
++      })
++    } catch (error) {
++      console.log("error while fetching Eng_details", error); 
++    }
++  }
++}
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------------------
++
++//action to handle get Assign service Request detail By Request Id
++
++export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
++  // console.log("2");
++  return async (dispatch) => {
++    try {
++      const response = await axios.get(`${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`);
++      //console.log(response.data)
++      dispatch({
++        type:GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID,
++        payload:response.data
++      })
++    } catch (error) {
++      console.log("error while fetching Eng_details", error);   
++    }
++  }
++}
+ // --------------------------------------------------------------------------------------------------------------------------------------------------------------
++//Action to handle Assign service Request by admin
++
++export const assignserviceRequestByAdmin = (ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon) => {
++  return async (dispatch) => {
++    try {
++      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
++      const response = await axios.post(`${config.apiUrl}/admin/assignRequest`,
++      {
++        ServiceEnggId,
++        JobOrderNumber,
++        RequestId,
++        AllotAChecklist,
++        Slot,
++        Date,
++        Message,
++      }
++    );
++
++    const responseData = await axios.put(`${config.apiUrl}/client/updateServiceRequest`,
++    {
++      RequestId,
++      name,
++      enggJon,
++    }
++  );
++
++  //console.log(response)
++  //console.log(responseData)
++
++  dispatch({
++    type:ASSIGN_SERVICE_REQUEST_BY_ADMIN,
++    payload:response.data
++  })
++
++  toast.success('Assign Request successfully'); 
++
++    } catch (error) {
++      console.log("error while fetching Eng_details", error); 
++    }
++  }
++}
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------------------
++//action to handle get request by request Id
++
++export const getRequestDetailByRequestIdAction = (RequestId) =>{
++  return async (dispatch) => {
++    try {
++      const response = await axios.get(`${config.apiUrl}/admin/getRequestDetailByRequestid/${RequestId}`)
++
++      dispatch({
++        type:GET_REQUEST_DETAIL_BY_REQUEST_ID,
++        payload:response.data
++      })
++
++    } catch (error) {
++      console.log("error while fetching Eng_details", error);
++    }
++  }
++}
++
+ 
+ // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+ //Action to handle callBack Assign BY Admin
+@@ -45,10 +156,10 @@ export const assignCallBackByAdminAction = (ServiceEnggId,JobOrderNumber,callbac
+         type:ASSIGN_CALLBACK_BY_ADMIN,
+         payload:response.data
+       })
+-
+-      
++      toast.success('Assign callback successfully'); 
+     } catch (error) {
+       console.log("error while fetching Eng_details", error);
++      // toast.success('no notification');
+     }
+   };
+ };
+@@ -180,7 +291,7 @@ export const requestAssignCallbackDetail = (callbackId)=>{
+   return async(dispatch)=>{
+    try{
+     const response = await axios.get(`${config.apiUrl}/admin/getAssignCallbackDetail/${callbackId}`);
+-    console.log("assign_responce",response.data);
++    //console.log("assign_responce",response.data);
+ 
+     dispatch({
+       type: GET_ASSIGN_CALLBACK_DETAILS,
+diff --git a/Frontend/ieelifts/src/ReduxSetup/Actions/ClientActions.js b/Frontend/ieelifts/src/ReduxSetup/Actions/ClientActions.js
+index e31da33..696f1fc 100644
+--- a/Frontend/ieelifts/src/ReduxSetup/Actions/ClientActions.js
++++ b/Frontend/ieelifts/src/ReduxSetup/Actions/ClientActions.js
+@@ -51,3 +51,29 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
+ 
+ }
+ }
++
++//-----------------------------------------------------------------------------------------------------------
++//function to fetch all the RequestId by admin
++export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description) => {
++  return async()=>{
++      try {
++        console.log(JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description)
++        if(JobOrderNumber&&RequestDate&&RequestTime&&TypeOfIssue&&Description){
++          const response = await axios.post(`${config.apiUrl}/client/imediateServiceRequest`,
++          {
++            JobOrderNumber,
++            RequestDate,
++            RequestTime,
++            TypeOfIssue,
++            Description,
++          }
++        );
++        const newCallbackData = response?.data?.imidiateRequest?.RequestId;
++        console.log("this is the new requestId",newCallbackData);
++        return newCallbackData;
++        }
++      }catch (error) {
++        console.log("error while fetching data", error);
++      }
++}
++}
+\ No newline at end of file
+diff --git a/Frontend/ieelifts/src/ReduxSetup/Reducers/AdminReducer.js b/Frontend/ieelifts/src/ReduxSetup/Reducers/AdminReducer.js
+index 2627372..b4f450a 100644
+--- a/Frontend/ieelifts/src/ReduxSetup/Reducers/AdminReducer.js
++++ b/Frontend/ieelifts/src/ReduxSetup/Reducers/AdminReducer.js
+@@ -7,8 +7,69 @@ import { ASSIGN_CALLBACK_BY_ADMIN } from '../Actions/AdminActions'
+ 
+ import { GET_ALL_SERVICE_REQUEST } from '../Actions/AdminActions'
+ import { GET_ASSIGN_CALLBACK_DETAILS } from '../Actions/AdminActions';
++import { GET_REQUEST_DETAIL_BY_REQUEST_ID } from '../Actions/AdminActions';
++import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from '../Actions/AdminActions';
+ 
++import { GET_ALL_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
+ 
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------
++const initialState9 = {
++    serviceRequest:null
++}
++
++export const getAllAssignServiceRequestReducer = (state=initialState9, action) => {
++    switch(action.type) {
++        case GET_ALL_ASSIGN_SERVICE_REQUEST :
++            return {...state, serviceRequest:action.payload}
++            default:
++                return state
++    }
++}
++
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------
++
++const intialState8 = {
++    assignServiceRequestdetail:null
++}
++
++export const assignServiceRequestDetailByRequestIdAction = (state=intialState8, action) => {
++    // console.log("3");
++
++    switch(action.type) {
++        case GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID:
++            return {...state, assignServiceRequestdetail:action.payload }
++            default:
++                return state
++    }
++}
++
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------
++
++//fetch to handle get request by request Id
++
++const intialState7 = {
++    serviceRequest:null
++}
++export const getRequestDetailByRequestIdReducer = (state=intialState7, action) =>{
++    switch(action.type) {
++        case GET_REQUEST_DETAIL_BY_REQUEST_ID:
++           return {...state, serviceRequest:action.payload}
++        default:
++            return state   
++    }
++}
++
++
++
++
++
++// --------------------------------------------------------------------------------------------------------------------------------------------------
+ //fetch fetchAllServiceRequestsReducers
+ 
+ const intialState6 = {
+diff --git a/Frontend/ieelifts/src/ReduxSetup/RootReducers/AdminRootReducer.js b/Frontend/ieelifts/src/ReduxSetup/RootReducers/AdminRootReducer.js
+index 1f8191f..9d08658 100644
+--- a/Frontend/ieelifts/src/ReduxSetup/RootReducers/AdminRootReducer.js
++++ b/Frontend/ieelifts/src/ReduxSetup/RootReducers/AdminRootReducer.js
+@@ -8,6 +8,9 @@ import { fetchEnggDetailReducer } from "../Reducers/AdminReducer"
+ import { assignCallBackByAdminReducer } from "../Reducers/AdminReducer"
+ import { fetchAssignCallbacksDetailsReducer } from '../Reducers/AdminReducer';
+ import { fetchAllServiceRequestsReducers } from '../Reducers/AdminReducer';
++import { getRequestDetailByRequestIdReducer } from '../Reducers/AdminReducer';
++import { assignServiceRequestDetailByRequestIdAction } from '../Reducers/AdminReducer';
++import { getAllAssignServiceRequestReducer } from '../Reducers/AdminReducer';
+ 
+ import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
+ 
+@@ -22,6 +25,9 @@ const AdminRootReducer = combineReducers({
+     fetchEnggDetailReducer:fetchEnggDetailReducer,
+     assignCallBackByAdminReducer:assignCallBackByAdminReducer,
+     fetchAllServiceRequestsReducers:fetchAllServiceRequestsReducers,
++    getRequestDetailByRequestIdReducer:getRequestDetailByRequestIdReducer,
++    assignServiceRequestDetailByRequestIdAction:assignServiceRequestDetailByRequestIdAction,
++    getAllAssignServiceRequestReducer:getAllAssignServiceRequestReducer
+ 
+ })
+ 
+diff --git a/Frontend/ieelifts/src/index.js b/Frontend/ieelifts/src/index.js
+index e401d2a..fc381a6 100644
+--- a/Frontend/ieelifts/src/index.js
++++ b/Frontend/ieelifts/src/index.js
+@@ -5,18 +5,18 @@ import App from "./App";
+ import "./TicketSection.css"
+ import reportWebVitals from "./reportWebVitals";
+ import { BrowserRouter } from "react-router-dom";
++import toast, { Toaster } from 'react-hot-toast';
+ 
+ import { Provider } from 'react-redux'; // Import Provider from react-redux
+ import store from "./ReduxSetup/Store";
+ 
+ const root = ReactDOM.createRoot(document.getElementById("root"));
+ root.render(
+-  // <React.StrictMode>
+     <BrowserRouter>
+       <Provider store={store}>
+         <App />
++        <Toaster />
+       </Provider>
+     </BrowserRouter>
+-//  </React.StrictMode>
+ ); 
+ reportWebVitals();

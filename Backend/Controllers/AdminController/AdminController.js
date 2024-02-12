@@ -213,16 +213,39 @@ module.exports.assignCallbacks = async (req, res) => {
       ServiceProcess,
     } = req.body;
 
-    const callback = await ServiceAssigntoEngg.create({
-      ServiceEnggId,
-      JobOrderNumber,
-      callbackId,
-      AllotAChecklist,
-      Slot,
-      Date,
-      Message,
-      ServiceProcess,
-    });
+    let callback;
+
+    // Check if the callbackId already exists
+    const existingCallback = await ServiceAssigntoEngg.findOne({ callbackId });
+
+    if (existingCallback) {
+      // Update existing data
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        { callbackId },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        { new: true } // Return the updated document
+      );
+    }else {
+      // Create a new entry
+      callback = await ServiceAssigntoEngg.create({
+        ServiceEnggId,
+        JobOrderNumber,
+        callbackId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      });
+    }
 
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
@@ -254,16 +277,36 @@ module.exports.AssignServiceRequests = async (req, res) => {
       ServiceProcess,
     } = req.body;
 
-    const Request = await AssignSecheduleRequest.create({
-      ServiceEnggId,
-      JobOrderNumber,
-      RequestId,
-      AllotAChecklist,
-      Slot,
-      Date,
-      Message,
-      ServiceProcess,
-    });
+    let callback;
+
+    const existingCallback = await AssignSecheduleRequest.findOne({ RequestId });
+
+    if (existingCallback) {
+      callback = await AssignSecheduleRequest.findOneAndUpdate(
+        { RequestId },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        { new: true } 
+      );
+    }else {
+      callback = await AssignSecheduleRequest.create({
+        ServiceEnggId,
+        JobOrderNumber,
+        RequestId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      });
+    }
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")
