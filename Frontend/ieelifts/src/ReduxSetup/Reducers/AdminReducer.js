@@ -22,10 +22,10 @@ import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
 
 
 
-const intialState13 = {
+const intialState14 = {
   membershipDetail: null,
 };
-export const requestLimitedClientDataReducer = (state = intialState13, action) => {
+export const requestLimitedClientDataReducer = (state = intialState14, action) => {
   switch (action.type) {
     case GET_LIMITED_CLIENT_DATA:
       return { ...state, membershipDetail: action.payload };
@@ -34,11 +34,11 @@ export const requestLimitedClientDataReducer = (state = intialState13, action) =
   }
 };
 
-const intialState12 = {
+const intialState13 = {
   membershipDetail: null,
 };
 export const requestGetMemberShipDataActionReducer = (
-  state = intialState12,
+  state = intialState13,
   action
 ) => {
   switch (action.type) {
@@ -48,7 +48,24 @@ export const requestGetMemberShipDataActionReducer = (
       return state;
   }
 };
+import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//reducer to handle get Current Date Assign Service Request
+const initialState12 ={
+    currentDateServiceRequest: null
+}
+
+export const getCurrentDateAssignServiceRequestReducer = (state=initialState12, action) => {
+    switch(action.type) {
+        case GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST :
+            return {...state, currentDateServiceRequest:action.payload}
+            default:
+                return state
+    }
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 

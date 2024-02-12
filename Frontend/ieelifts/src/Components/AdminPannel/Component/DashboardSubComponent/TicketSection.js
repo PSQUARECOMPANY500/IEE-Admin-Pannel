@@ -77,9 +77,9 @@ const TicketSection = () => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchAllCallbacksAction());
-      dispatch(ticketSectionRenderAction());
     }, 1000);
-  }, [renderTicket]);
+  }, [renderTicket,dispatch]);
+
 
   //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);

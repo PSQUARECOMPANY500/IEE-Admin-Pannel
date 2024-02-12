@@ -35,6 +35,16 @@ router.get(
   adminContoller.getClientDetail
 );
 
+router.get('/getAllAssignServices', adminContoller.getAllAssignServiceRequest);
+
+router.get('/getAllReferals',adminContoller.getAllreferals)
+
+router.get('/getAllAssignCallback', adminContoller.getAllAssignCallbacks);
+
+router.get('/getCurrentDateAssignCallback', adminContoller.getCurrentDateAssignCallback);
+
+router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
+
 router.post(
   "/getClientMemberShipDataLimited",
   adminContoller.showClientLimitedDetails
