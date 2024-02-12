@@ -1,4 +1,4 @@
-import { combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 
 import { fetchAllCallbackReducer } from "../Reducers/AdminReducer"
 import { fetchCallbackDetailWithCallbackIdReducer } from "../Reducers/AdminReducer"
@@ -14,27 +14,30 @@ import { getAllAssignServiceRequestReducer } from '../Reducers/AdminReducer';
 import { getAllAssignCallbackRequestReducer } from '../Reducers/AdminReducer';
 import { getCurrentDateAssignCalbackAction } from '../Reducers/AdminReducer';
 import { ticketSectionRenderReducer } from '../Reducers/AdminReducer';
-
+import { requestGetMemberShipDataActionReducer } from '../Reducers/AdminReducer';
+import { requestLimitedClientDataReducer } from '../Reducers/AdminReducer';
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
 
 
 const AdminRootReducer = combineReducers({
-    fetchClientDetailsByJon:fetchClientDetailsByJon,
-    fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
-    fetchAllCallbackReducer:fetchAllCallbackReducer,
-    fetchCallbackDetailWithCallbackIdReducer:fetchCallbackDetailWithCallbackIdReducer,
-    fetchAllClientDetailReducer:fetchAllClientDetailReducer,
-    fetchChecklistReducer:fetchChecklistReducer,
-    fetchEnggDetailReducer:fetchEnggDetailReducer,
-    assignCallBackByAdminReducer:assignCallBackByAdminReducer,
-    fetchAllServiceRequestsReducers:fetchAllServiceRequestsReducers,
-    getRequestDetailByRequestIdReducer:getRequestDetailByRequestIdReducer,
-    assignServiceRequestDetailByRequestIdAction:assignServiceRequestDetailByRequestIdAction,
-    getAllAssignServiceRequestReducer:getAllAssignServiceRequestReducer,
-    getAllAssignCallbackRequestReducer:getAllAssignCallbackRequestReducer,
-    getCurrentDateAssignCalbackAction:getCurrentDateAssignCalbackAction,
-    ticketSectionRenderReducer:ticketSectionRenderReducer
+    fetchClientDetailsByJon: fetchClientDetailsByJon,
+    fetchAssignCallbacksDetailsReducer: fetchAssignCallbacksDetailsReducer,
+    fetchAllCallbackReducer: fetchAllCallbackReducer,
+    fetchCallbackDetailWithCallbackIdReducer: fetchCallbackDetailWithCallbackIdReducer,
+    fetchAllClientDetailReducer: fetchAllClientDetailReducer,
+    fetchChecklistReducer: fetchChecklistReducer,
+    fetchEnggDetailReducer: fetchEnggDetailReducer,
+    assignCallBackByAdminReducer: assignCallBackByAdminReducer,
+    fetchAllServiceRequestsReducers: fetchAllServiceRequestsReducers,
+    getRequestDetailByRequestIdReducer: getRequestDetailByRequestIdReducer,
+    assignServiceRequestDetailByRequestIdAction: assignServiceRequestDetailByRequestIdAction,
+    getAllAssignServiceRequestReducer: getAllAssignServiceRequestReducer,
+    getAllAssignCallbackRequestReducer: getAllAssignCallbackRequestReducer,
+    getCurrentDateAssignCalbackAction: getCurrentDateAssignCalbackAction,
+    ticketSectionRenderReducer: ticketSectionRenderReducer,
+    requestGetMemberShipDataActionReducer: requestGetMemberShipDataActionReducer,
+    requestLimitedClientDataReducer: requestLimitedClientDataReducer
 
 })
 
-export default AdminRootReducer;
+export default AdminRootReducer; import { combineReducers } from 'redux';

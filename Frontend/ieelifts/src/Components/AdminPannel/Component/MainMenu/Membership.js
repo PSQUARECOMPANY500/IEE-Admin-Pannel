@@ -1,22 +1,78 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MembershipCard from "../MembershipSubComponent/MembershipCard";
-import {
-  warrentyDemoData,
-  goldDemoData,
-  platinumDemoData,
-  silverDemoData,
-} from "../MembershipSubComponent/MemvbershipDemoData";
+import { requestGetMemberShipDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
+import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const Membership = () => {
+  const dispatch = useDispatch();
   const [setClick, click] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+
+  useEffect(() => {
+    dispatch(requestGetMemberShipDataAction());
+  }, [dispatch]);
+
+  const membershipJon = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.requestGetMemberShipDataActionReducer
+    ) {
+      return state?.AdminRootReducer?.requestGetMemberShipDataActionReducer;
+    } else {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.silver?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.gold?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.platinum?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.warrenty?.expData));
+  }, [dispatch, membershipJon]);
+
+  const membershipData = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.requestLimitedClientDataReducer
+    ) {
+      return state?.AdminRootReducer?.requestLimitedClientDataReducer;
+    } else {
+      return null;
+    }
+  });
+
+  console.log(membershipData, "membershipData");
+
+  // console.log(membershipJon, "membershipJon");
+
   const [cards, setCards] = useState([
-    { DemoData: warrentyDemoData, order: 1, toggleOrder: 2, id: 1 },
-    { DemoData: platinumDemoData, order: 2, toggleOrder: 1, id: 2 },
-    { DemoData: goldDemoData, order: 3, toggleOrder: 1, id: 3 },
-    { DemoData: silverDemoData, order: 4, toggleOrder: 1, id: 4 },
+    {
+      DemoData: { dataType: "Warrenty", Data: membershipJon?.membershipDetail?.warrenty },
+      order: 1,
+      toggleOrder: 2,
+      id: 1,
+    },
+    {
+      DemoData: { dataType: "Platinum", Data: membershipJon?.membershipDetail?.platinum },
+      order: 2,
+      toggleOrder: 1,
+      id: 2,
+    },
+    {
+      DemoData: { dataType: "Gold", Data: membershipJon?.membershipDetail?.gold },
+      order: 3,
+      toggleOrder: 1,
+      id: 3,
+    },
+    {
+      DemoData: { dataType: "Silver", Data: membershipJon?.membershipDetail?.silver },
+      order: 4,
+      toggleOrder: 1,
+      id: 4,
+    },
     { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
   ]);
 
@@ -61,16 +117,19 @@ const Membership = () => {
       return card;
     });
     setCards(updatedCards);
-    setClickCount(0);
+    if (clickCount === 1) {
+      setClickCount(0);
+    } else {
+      setClickCount(1);
+    }
     click(!setClick);
   };
 
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${
-          setClick ? `membershipCards_expand ` : ""
-        } `}
+        className={`membershipCards ${setClick ? `membershipCards_expand ` : ""
+          } `}
       >
         <MembershipCard
           DemoData={cards[0].DemoData}
