@@ -12,7 +12,9 @@ const Membership = () => {
   const [clickCount, setClickCount] = useState(0);
 
   useEffect(() => {
+    
     dispatch(requestGetMemberShipDataAction());
+
   }, [dispatch]);
 
   const membershipJon = useSelector((state) => {
