@@ -22,8 +22,58 @@ export const ASSIGN_SERVICE_REQUEST_BY_ADMIN = "ASSIGN_SERVICE_REQUEST_BY_ADMIN"
 export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID = "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
 
 export const GET_ALL_ASSIGN_SERVICE_REQUEST = "GET_ALL_ASSIGN_SERVICE_REQUEST";
+
+export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
+
+export const GET_CURRENT_DATE_ASSIGN_CALLBACK = "GET_CURRENT_DATE_ASSIGN_CALLBACK";
+
+export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//function to handle get Current date assign callbacks
+
+export const getCurrentDateAssignCalbackAction = () => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignCallback`);
+          dispatch({
+            type:GET_CURRENT_DATE_ASSIGN_CALLBACK,
+            payload:response.data
+          })
+        } catch (error) {
+          console.log("error while fetching Eng_details", error); 
+        }  
+    }
+}
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle getAllAssignCallback Request ("not is use may be use in future also")
+
+export const getAllAssignCallbackRequestAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getAllAssignCallback`);
+
+      dispatch({
+        type:GET_ALL_ASSIGN_CALLBACK,
+        payload: response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error); 
+    }
+  }
+}
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to handle get all assignRequests
 
@@ -295,8 +345,30 @@ export const requestAssignCallbackDetail = (callbackId)=>{
   }catch (error) {
       console.log("error while fetching data", error);
     }
-
-  }
-  
+  }  
 }
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//action performed for rendering the components
+
+export const ticketSectionRenderAction = () => {
+return async (dispatch) => {
+  try {
+    dispatch({ type: TICKET_COMPONENT_RENDERED})  
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+}
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 

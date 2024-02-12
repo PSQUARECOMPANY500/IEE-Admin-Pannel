@@ -12,6 +12,7 @@ import AddTicketModal from "./AddTicketModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import AddTicketModal1 from "./AddTicketModal1";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 
@@ -76,6 +77,7 @@ const TicketSection = () => {
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchAllCallbacksAction());
+      dispatch(ticketSectionRenderAction());
     }, 1000);
   }, [renderTicket]);
 

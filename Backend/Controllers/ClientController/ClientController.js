@@ -14,14 +14,25 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-//functio to hadle get all Referals for admin (to-do)
+
+module.exports.getAllReferalByJobOrderNumber = async (req,res) => {
+  try {
+    const { jobOrderNumber } = req.params;
+
+    const clientReferal = await ReferalSchema.find({jobOrderNumber});
+
+    if(!clientReferal || clientReferal.length === 0){
+      return res.status(400).json({message:"No referal found on this JobOrderNumber"})
+    }
+
+    return res.status(200).json({message:"Referal Found", clientReferal})
 
 
-
-
-
-
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle create the Client Referal API

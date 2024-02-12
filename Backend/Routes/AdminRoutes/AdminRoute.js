@@ -39,6 +39,13 @@ router.get("/getBookedDates", adminContoller.getBookedDates)
 router.get("/clientDetail/:JobOrderNumber",ClientController.getClientDetail);
 
 router.get('/getAllAssignServices', adminContoller.getAllAssignServiceRequest);
+
+router.get('/getAllReferals',adminContoller.getAllreferals)
+
+router.get('/getAllAssignCallback', adminContoller.getAllAssignCallbacks);
+
+router.get('/getCurrentDateAssignCallback', adminContoller.getCurrentDateAssignCallback);
+
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
