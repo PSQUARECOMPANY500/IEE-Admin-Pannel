@@ -14,7 +14,7 @@ const memebership = new Schema(
       required: true,
     },
     StartDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     Duration: {
@@ -50,6 +50,6 @@ const memebership = new Schema(
   }
 );
 
-const AssignMemeberships = mongoose.model("Memeberships", memebership);
+const AssignMemeberships = mongoose.model("Memberships", memebership);
 
 module.exports = AssignMemeberships;

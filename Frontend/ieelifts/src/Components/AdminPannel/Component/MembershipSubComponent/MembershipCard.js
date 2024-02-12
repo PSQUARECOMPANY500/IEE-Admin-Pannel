@@ -97,13 +97,13 @@ const MembershipCard = ({
             >
               <div className="membership_card_topbar_left">
                 <p className={`membership_card_title ${titleClass}`}>
-                  {DemoData.dataType}
+                  {DemoData?.dataType}
                 </p>
                 <p
                   className="membership_card_revenue"
                   style={setClick ? { display: "none" } : {}}
                 >
-                  Revenue: {DemoData.revenue}
+                  Revenue: {DemoData?.Data?.totalRevenue}
                 </p>
               </div>
               <div
@@ -112,7 +112,7 @@ const MembershipCard = ({
                   padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
                 }}
               >
-                <p>{DemoData.count}</p>
+                <p>{DemoData?.Data?.count}</p>
               </div>
             </div>
 
@@ -140,15 +140,17 @@ const MembershipCard = ({
             >
               <div className="after_expansion_labels">
                 <span>Revenue:</span>
-                <span>{DemoData.revenue}</span>
+                <span>{DemoData?.Data?.totalRevenue}</span>
               </div>
               <div className="after_expansion_labels">
                 <span>Expiring Soon:</span>
-                <span>{DemoData.expiringCount}</span>
+                {/* <span>{DemoData.Data.expiringCount}</span> */}
+                <span>35</span>
               </div>
               <div className="after_expansion_labels after_expansion_labels_expired">
                 <span>Expired:</span>
-                <span>{DemoData.expiredCount}</span>
+                <span>35</span>
+                {/* <span>{DemoData.expiredCount}</span> */}
               </div>
             </div>
 
@@ -159,19 +161,19 @@ const MembershipCard = ({
               <div className="membership_card_expiring">
                 <div className="membership_card_expiring-title">
                   <p>Expiring Soon</p>
-                  <p>{DemoData.expiringCount}</p>
+                  {/* <p>{DemoData.expiringCount}</p> */}
                 </div>
                 <div
                   className={`membership_card_scrollable ${scrollbar} ${
                     setClick ? "membership_card_stats_expand_height" : ""
                   }`}
                 >
-                  {DemoData.data.map((data, index) => {
+                  {DemoData?.Data?.expData.map((data, index) => {
                     return !data.isExpired ? (
                       <MembershipSubCard
                         data={data}
                         key={index}
-                        dataType={DemoData.dataType}
+                        dataType={DemoData?.dataType}
                       />
                     ) : null;
                   })}
@@ -180,19 +182,19 @@ const MembershipCard = ({
               <div className="membership_card_expiring ">
                 <div className="membership_card_expiring-title membership_card_expired-title">
                   <p>Expired</p>
-                  <p>{DemoData.expiredCount}</p>
+                  {/* <p>{DemoData.expiredCount}</p> */}
                 </div>
                 <div
                   className={`membership_card_scrollable membership_card_scrollable_expired ${
                     setClick ? "membership_card_stats_expand_height" : ""
                   }`}
                 >
-                  {DemoData.data.map((data, index) => {
+                  {DemoData?.Data?.expData.map((data, index) => {
                     return data.isExpired ? (
                       <MembershipSubCard
                         data={data}
                         key={index}
-                        dataType={DemoData.dataType}
+                        dataType={DemoData?.dataType}
                       />
                     ) : null;
                   })}
