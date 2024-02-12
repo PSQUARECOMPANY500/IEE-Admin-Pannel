@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import MembershipCard from "../MembershipSubComponent/MembershipCard";
 import { requestGetMemberShipDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
+import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const Membership = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Membership = () => {
 
   useEffect(() => {
     dispatch(requestGetMemberShipDataAction());
-  }, []);
+  }, [dispatch]);
 
   const membershipJon = useSelector((state) => {
     if (
@@ -25,7 +26,27 @@ const Membership = () => {
     }
   });
 
-  console.log("nullll", membershipJon);
+  useEffect(() => {
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.silver?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.gold?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.platinum?.expData));
+    dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.warrenty?.expData));
+  }, [dispatch, membershipJon]);
+
+  const membershipData = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.requestLimitedClientDataReducer
+    ) {
+      return state?.AdminRootReducer?.requestLimitedClientDataReducer;
+    } else {
+      return null;
+    }
+  });
+
+  console.log(membershipData, "membershipData");
+
+  // console.log(membershipJon, "membershipJon");
 
   const [cards, setCards] = useState([
     {
@@ -35,19 +56,19 @@ const Membership = () => {
       id: 1,
     },
     {
-      DemoData: { dataType: "Platinum", Data:  membershipJon?.membershipDetail?.platinum },
+      DemoData: { dataType: "Platinum", Data: membershipJon?.membershipDetail?.platinum },
       order: 2,
       toggleOrder: 1,
       id: 2,
     },
     {
-      DemoData: { dataType: "Gold", Data:  membershipJon?.membershipDetail?.gold },
+      DemoData: { dataType: "Gold", Data: membershipJon?.membershipDetail?.gold },
       order: 3,
       toggleOrder: 1,
       id: 3,
     },
     {
-      DemoData: { dataType: "Silver", Data:  membershipJon?.membershipDetail?.silver },
+      DemoData: { dataType: "Silver", Data: membershipJon?.membershipDetail?.silver },
       order: 4,
       toggleOrder: 1,
       id: 4,
@@ -107,9 +128,8 @@ const Membership = () => {
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${
-          setClick ? `membershipCards_expand ` : ""
-        } `}
+        className={`membershipCards ${setClick ? `membershipCards_expand ` : ""
+          } `}
       >
         <MembershipCard
           DemoData={cards[0].DemoData}

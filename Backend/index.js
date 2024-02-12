@@ -17,7 +17,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Specify your frontend URL
+    origin: "http://127.0.0.1:3000", // Specify your frontend URL
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
@@ -40,7 +40,7 @@ app.use("/admin", AdminRoutes);
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect(process.env.MONGO_DB_URL);
+  await mongoose.connect("mongodb://127.0.0.1:27017/");
   console.log("Database connected successfully");
 }
 

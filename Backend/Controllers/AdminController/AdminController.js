@@ -781,3 +781,119 @@ module.exports.getBookedDates = async(req,res)=>{
   }
 
 }
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle create client memenership
+
+module.exports.createClientMemebership = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      MemebershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    } = req.body;
+
+    const MemberShipDetails = await AssignMemeberships.create({
+      JobOrderNumber,
+      MemebershipType,
+      StartDate: new Date(StartDate),
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    });
+
+    res
+      .status(201)
+      .json({ message: "memebership created successfully", MemberShipDetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "intenal server error" });
+  }
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to get the membership data
+module.exports.getClientMemebership = async (req, res) => {
+  try {
+    const membershipData = await AssignMemeberships.find();
+
+    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
+    const calculations = {};
+
+    membershipTypes.forEach((type) => {
+      const filteredData = filterMembershipByType(membershipData, type);
+      calculations[type] = calculateData(filteredData);
+    });
+
+    res.status(201).json({ success: true, ...calculations });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+//function used to calculate the data of meberships
+
+
+// to filter the memberships
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Function to get client data on membership Limited page
+const qs = require('querystring');
+module.exports.showClientLimitedDetails = async (req, res) => {
+  try {
+    const  JobOrderNumbers  = req.body.JobOrderNumber;
+    const clientData = [];
+    console.log(JobOrderNumbers, "JobOrderNumbers");
+    
+    
+    await Promise.all(
+      JobOrderNumbers.map(async (JON) => {
+        const data = await clientDetailSchema.findOne({ JobOrderNumber: JON.JobOrderNumber });
+        clientData.push({
+          JobOrderNumber: JON.JobOrderNumber,
+          isExpired: JON.isExpired,
+          name: data.name,
+          PhoneNumber: data.PhoneNumber, 
+          Address: data.Address,
+        });
+      })
+      );
+      console.log(clientData, "clientData");
+    res.status(201).json({ success: true, clientData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+// Get client Details
+module.exports.getClientDetail = async (req, res) => {
+  try {
+    const { JON } = req.params;
+    console.log(JON);
+    const client = await clientDetailSchema.findOne({ JobOrderNumber: JON });
+
+    if (!client) {
+      return res.status(404).json({
+        message: "No Client found for the Job OrderNumber",
+      });
+    }
+    res.status(200).json({
+      message: "Client found",
+      client: client,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
