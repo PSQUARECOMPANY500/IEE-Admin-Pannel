@@ -205,7 +205,7 @@ const TicketSection = () => {
           {/* table start here */}
           <div className="task-list">
             <table className="task-list-table">
-              <thead>
+              <thead className="task-head-list">
                 <tr>
                   <th>
                     {" "}
