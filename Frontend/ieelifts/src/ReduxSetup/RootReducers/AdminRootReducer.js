@@ -7,10 +7,19 @@ import { fetchChecklistReducer } from "../Reducers/AdminReducer"
 import { fetchEnggDetailReducer } from "../Reducers/AdminReducer"
 import { assignCallBackByAdminReducer } from "../Reducers/AdminReducer"
 import { fetchAssignCallbacksDetailsReducer } from '../Reducers/AdminReducer';
-import { requestGetMemberShipDataActionReducer } from '../Reducers/AdminReducer';
-import { requestLimitedClientData } from '../Reducers/AdminReducer';
+import { fetchAllServiceRequestsReducers } from '../Reducers/AdminReducer';
+import { getRequestDetailByRequestIdReducer } from '../Reducers/AdminReducer';
+import { assignServiceRequestDetailByRequestIdAction } from '../Reducers/AdminReducer';
+import { getAllAssignServiceRequestReducer } from '../Reducers/AdminReducer';
+import { getAllAssignCallbackRequestReducer } from '../Reducers/AdminReducer';
+import { getCurrentDateAssignCalbackAction } from '../Reducers/AdminReducer';
+import { ticketSectionRenderReducer } from '../Reducers/AdminReducer';
+
+import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
+
 
 const AdminRootReducer = combineReducers({
+    fetchClientDetailsByJon:fetchClientDetailsByJon,
     fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
     fetchAllCallbackReducer:fetchAllCallbackReducer,
     fetchCallbackDetailWithCallbackIdReducer:fetchCallbackDetailWithCallbackIdReducer,
@@ -18,8 +27,14 @@ const AdminRootReducer = combineReducers({
     fetchChecklistReducer:fetchChecklistReducer,
     fetchEnggDetailReducer:fetchEnggDetailReducer,
     assignCallBackByAdminReducer:assignCallBackByAdminReducer,
-    requestGetMemberShipDataActionReducer:requestGetMemberShipDataActionReducer,
-    requestLimitedClientData:requestLimitedClientData
+    fetchAllServiceRequestsReducers:fetchAllServiceRequestsReducers,
+    getRequestDetailByRequestIdReducer:getRequestDetailByRequestIdReducer,
+    assignServiceRequestDetailByRequestIdAction:assignServiceRequestDetailByRequestIdAction,
+    getAllAssignServiceRequestReducer:getAllAssignServiceRequestReducer,
+    getAllAssignCallbackRequestReducer:getAllAssignCallbackRequestReducer,
+    getCurrentDateAssignCalbackAction:getCurrentDateAssignCalbackAction,
+    ticketSectionRenderReducer:ticketSectionRenderReducer
+
 })
 
 export default AdminRootReducer;
