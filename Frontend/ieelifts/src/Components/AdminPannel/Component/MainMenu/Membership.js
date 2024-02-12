@@ -31,7 +31,7 @@ const Membership = () => {
     dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.gold?.expData));
     dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.platinum?.expData));
     dispatch(requestLimitedClientDataAction(membershipJon?.membershipDetail?.warrenty?.expData));
-  }, [dispatch,membershipJon]);
+  }, [dispatch, membershipJon]);
 
   const membershipData = useSelector((state) => {
     if (
