@@ -41,11 +41,10 @@ module.exports.RegisterServiceEngg = async (req, res) => {
       AverageRating,
     });
     // Respond with the saved user data
-    res
-      .status(201)
-      .json({ message: "service Engg Register Succesfully", user: newUser });
+    res.status(201).json({ message: "service Engg Register Succesfully", user: newUser });
   } catch (error) {
     // Check for duplicate key error (unique constraint violation)
+    //console.log(error)
     if (error.code === 11000) {
       res.status(400).json({ error: "Duplicate key error" });
     } else {
@@ -153,6 +152,7 @@ module.exports.getEnggDetail = async (req,res) =>{
     });
 
   } catch (error) {
-    
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 }

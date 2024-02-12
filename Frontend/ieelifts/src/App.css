@@ -23,7 +23,9 @@ body::-webkit-scrollbar-thumb {
 .main-container {
   width: 100%;
   background: #fff9ef;
+  position: relative;
 }
+
 .container {
   display: flex;
 }
@@ -43,9 +45,9 @@ main {
   transition: all 0.5s;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-  rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
-  z-index: 2;
+  z-index: 4;
   justify-content: center;
   align-items: baseline;
 }
@@ -164,9 +166,6 @@ main {
   color: #f8ac1d;
   transition: all 0.5s;
 }
-
-
-
 
 .icon,
 .link_text {
@@ -471,7 +470,7 @@ span::after {
   padding: 15px 16px;
   margin-top: 0px;
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
   /* gap: 65%; */
 }
@@ -569,6 +568,24 @@ span::after {
   transition: 0.4s ease;
   font-size: 24px;
 }
+.search-btn-ticket-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background: #fffdfd;
+  padding: 8px 2px 4px 1px;
+  /* padding-top: 7px; */
+  border-radius: 4%;
+  float: left;
+  color: #343434;
+  transition: 0.4s ease;
+  font-size: 22px;
+  /* font-weight: 800; */
+  margin-top: 0px;
+  height: 24px;
+  width: 26px;
+}
 .search-box {
   display: flex;
 }
@@ -585,6 +602,12 @@ span::after {
   background: #fff;
 }
 .search-input:focus + .search-btn {
+  background: #fff;
+}
+.search-box:hover > .search-btn-ticket-section {
+  background: #fff;
+}
+.search-input:focus + .search-btn-ticket-section {
   background: #fff;
 }
 
@@ -630,7 +653,6 @@ footer a:hover {
   top: 5.7rem;
   position: relative;
   cursor: pointer;
-  z-index: 1;
   font-size: 1.5rem;
   color: #343434;
 }
@@ -668,15 +690,16 @@ footer a:hover {
   }
 }
 
-
 /* croser arrow controllers start */
 
 .carosel-controoler-button1 {
   position: relative;
+  z-index: 1;
   left: -8px;
 }
 .carosel-controoler-button2 {
   position: relative;
+  z-index: 1;
   right: -8px;
 }
 
@@ -732,11 +755,9 @@ footer a:hover {
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-.slick-slide:hover{
+.slick-slide:hover {
   box-shadow: rgba(248, 172, 29, 0.5) 0px 0px 5px;
 }
-
-
 
 .slick-slider .slick-track {
   /* gap: 20px !important; */
@@ -1118,7 +1139,7 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  top: -21%;
+  top: 4%;
   left: -15%;
   transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
@@ -1256,7 +1277,7 @@ footer a:hover {
   left: 75px;
   font-size: 22px;
   font-weight: 700;
-  margin-bottom: 31px;
+  margin-bottom: 20px;
 }
 
 .taskmain-info {
@@ -1270,12 +1291,19 @@ footer a:hover {
 /* dashboard carosel css ends */
 
 /* taskLocationsection css starts */
+
+.parent-full-div{
+  z-index: 0;
+}
+
 .parent-full-div {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
   border-radius: 4px;
-  margin-top: 30px;
+  margin-top: 50px;
+  padding-top: 5px;
   background: #ffffff;
+  z-index: -1;
 }
 
 .child-div {
@@ -1288,17 +1316,40 @@ footer a:hover {
 .tasks-section {
   width: 40%;
 }
+
+.tasks-section-on-kanban {
+  width: 56%;
+  animation: move-words 0.4s linear forwards;
+  transition: 0.3s;
+}
+
+@keyframes move-words {
+  0% {
+    left: 40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.kanban-cursor {
+  cursor: pointer;
+}
+
 .Report-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 .location-section {
   width: 30%;
+  animation: changeText 1s linear forwards;
 }
 
 .task-top-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  z-index: -1;
 }
 
 .sub-components {
@@ -1306,6 +1357,8 @@ footer a:hover {
   justify-content: center;
   align-items: center;
   gap: 0px;
+  z-index: 1;
+  animation: changeKanban 1.5s ease forwards;
 }
 
 .task-description-section {
@@ -1317,6 +1370,7 @@ footer a:hover {
   height: 320px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  animation: changeText 0.7s linear forwards;
 }
 /* set scroll behaviour  */
 
@@ -1369,8 +1423,8 @@ footer a:hover {
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
+  margin-top: -6px;
 }
-
 .task-top-section p {
   color: #191919;
   font-size: 20px;
@@ -1433,8 +1487,43 @@ footer a:hover {
   gap: 3px;
   width: 100%;
 }
+.kanban-button {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #f8ac1d;
+  background: #f8ac1d;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto;
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+.kanban-button-location:hover {
+  background: #f8ac1d;
+}
+.kanban-button-location {
+  padding: 4px 24px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid #f8ac1d;
+  cursor: pointer;
+  color: #444444;
+  font-size: 16px;
+  margin-left: auto;
+  margin-right: 5px;
+  margin-bottom: 2px;
+}
+
+.kanban-Click-section {
+  display: none;
+}
 
 .switch-button {
+  display: flex;
+}
+.ticket-service-flex {
   display: flex;
 }
 
@@ -1442,7 +1531,8 @@ footer a:hover {
   padding: 4px 24px;
   border-radius: 5px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+
   cursor: pointer;
   color: #f8ac1d;
   font-weight: 500;
@@ -1635,11 +1725,22 @@ tbody tr {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: flex-end;
+  justify-content: end;
+  width: 143px;
 }
-.task-list-table {
-  width: 100%;
+
+table {
+  width: 100%;;
 }
+
+thead th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* Add your other styles as needed */
 
 .ticket-section-heading {
   font-size: 1.2rem;
@@ -1661,8 +1762,9 @@ tbody tr {
 .sub-components-ticket-filter {
   box-shadow: none;
   padding: 0px 0px;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
   border-radius: 6px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
 
 .task-list-table th {
@@ -1795,6 +1897,7 @@ tbody tr {
 }
 .dropdown-content {
   position: absolute;
+  z-index: 1;
   margin-top: 14.2rem;
   margin-left: 124px;
   background: rgb(253, 253, 253);
@@ -1906,7 +2009,17 @@ tbody tr {
   bottom: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 4;
+  width: 100%;
+}
+.modal-wrapper1 {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 4;
   width: 100%;
 }
 
@@ -1921,7 +2034,7 @@ tbody tr {
   width: 80%;
   height: 80%;
   background: white;
-  z-index: 2;
+  z-index: 4;
 }
 
 .cross-icon {
@@ -1938,6 +2051,7 @@ tbody tr {
   transform: translate(-50%, -50%) scale(1);
   border-radius: 8px;
   height: auto;
+  box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
 }
 
 .upload-photo-secton {
@@ -1973,7 +2087,7 @@ tbody tr {
 .col75 input[type="text"] {
   width: 80%;
   padding: 8px;
-  /* border: 1px solid #c1c1c1; */
+  border: none;
   border-radius: 4px;
   resize: vertical;
   font-size: 14px;
@@ -1988,9 +2102,10 @@ tbody tr {
   border-radius: 4px;
   resize: vertical;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
+  font-family: 'Poppins';
 }
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
@@ -2120,6 +2235,7 @@ tbody tr {
   border-radius: 6px;
   padding: 20px 0px;
   background: #fff9ef;
+  position: relative;
 }
 .grid-form-container .sm-box .col75 select {
   width: 100%;
@@ -2130,6 +2246,7 @@ tbody tr {
 
 .col-elevator75 input {
   border: none;
+  font-family: poppins;
 }
 .col-elevator75 input[type="text"]:focus {
   outline: none;
@@ -2150,15 +2267,7 @@ tbody tr {
   margin-top: 10px;
 }
 
-.edit-button {
-  padding: 12px 50px;
-  border-radius: 5px;
-  border: 1px solid #f8ac1d;
-  background: white;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-}
+
 .assign-button {
   padding: 12px 50px;
   border-radius: 5px;
@@ -2285,9 +2394,11 @@ tbody tr {
 /* dynamic ticket modal property starts styling */
 .col-dynamic {
   border: none !important;
+  outline: none !important;
 }
 .col-dynamic input[type="text"]:focus {
-  outline: none;
+  outline: none !important;
+  border: none !important;
 }
 
 .shadow-dynamic {
@@ -2595,6 +2706,11 @@ element.style {
   color: #343434;
 }
 
+.parent-div{
+  z-index: 2;
+  position: relative;
+}
+
 .parent-div-task-request {
   height: 33rem;
   overflow-x: hidden;
@@ -2724,7 +2840,7 @@ element.style {
   position: absolute;
   z-index: 9999999;
   background: #ffffff;
-  margin-top: -1px;
+  margin-top: -3px;
   margin-left: -15.1rem;
 }
 .messagebox-heading {
@@ -2857,7 +2973,6 @@ element.style {
   border-radius: 10px;
   width: 350px;
   position: absolute;
-  z-index: 9999999;
   background: #ffffff;
   margin-top: 3rem;
   margin-left: -19rem;
@@ -2865,11 +2980,10 @@ element.style {
   max-height: 27rem;
 }
 
-.activeNotification{
+.activeNotification {
   border-bottom: 2px solid;
   padding-bottom: 5px;
   color: #f8ac1d;
-
 }
 
 .child-notification-div {
@@ -3001,10 +3115,10 @@ element.style {
 
 /*---------------  mesage box input css starts  ------------------------------ */
 
-.slick-prev, .slick-next{
+.slick-prev,
+.slick-next {
   display: none !important;
 }
-
 
 .message-box-crouser {
   margin: -2px 0px;
@@ -3018,7 +3132,7 @@ element.style {
 }
 
 .text-area-message-whatsapp {
-  width: 99%;
+  width: 97%;
   outline: none;
   border: none;
   border-radius: 10px;
@@ -3028,7 +3142,9 @@ element.style {
   font-size: 0.8rem;
   font-weight: 500;
   color: #444444;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 1px 4px 1px;
+   */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 /* .text-area-message-whatsapp:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d; 
@@ -3074,7 +3190,7 @@ element.style {
   padding: 8px;
   position: relative;
   width: 94%;
-  margin-top: -17px;
+  margin-top: -15px;
   /* border-top: 1px solid #C1C1C180; */
   /* z-index: 0; */
 }
@@ -3098,15 +3214,304 @@ element.style {
 } */
 
 /*---------------  mesage box input css ends  ------------------------------ */
+/* -------------------------KANBAN-SECTION STARTS {BY-AMIT}------------------------------- */
+
+.kanban-section {
+  height: 83vh;
+  display: flex;
+  animation: changeKanban 1.5s ease forwards;
+}
+@keyframes changeKanban {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Unresolved-section,
+.Assigned-section,
+.Completed-section {
+  flex-grow: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+  margin-top: 1%;
+  margin-bottom: 5%;
+}
+
+.Unresolved {
+  color: #c10000;
+  font-size: 1.125rem;
+  text-align: center;
+  animation: changeText 0.7s linear forwards;
+}
+
+@keyframes changeText {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.Assigned {
+  color: #f8ac1d;
+  font-size: 1.125rem;
+  text-align: center;
+}
+
+.Completed {
+  color: #389300;
+  font-size: 1.125rem;
+  text-align: center;
+}
+.unresolved-data-item {
+  background: #fffafa 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #c100004d;
+  border: 1px solid #c100004d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
+
+.data-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.assigned-data-item {
+  background: #fffdf8 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #f8ac1d4d;
+  border: 1px solid #f8ac1d4d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
+
+.completed-data-item {
+  background: #f9fff5 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #3893004d;
+  border: 1px solid #3893004d;
+  border-radius: 10px;
+  opacity: 1;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  padding-left: 11%;
+  padding-right: 11%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  margin-right: 2%;
+}
+.data-label {
+  font-size: 0.875rem;
+  font: bold;
+  font-weight: 500;
+}
+.data-value {
+  font-size: 0.875rem;
+}
+
+.kanban-Unresolved-section-scroll,
+.kanban-Assigned-section-scroll,
+.kanban-Completed-section-scroll {
+  margin-top: 1rem;
+  gap: 1rem;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+/* set scroll behaviour  */
+
+.kanban-Unresolved-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #c100004d; /* Change the color to your desired hover color */
+}
+.kanban-Assigned-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #f8ac1d4d; /* Change the color to your desired hover color */
+}
+.kanban-Completed-section-scroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #3893004d; /* Change the color to your desired hover color */
+}
+.kanban-Unresolved-section-scroll::-webkit-scrollbar,
+.kanban-Assigned-section-scroll::-webkit-scrollbar,
+.kanban-Completed-section-scroll::-webkit-scrollbar {
+  width: 2px; /* width of the entire scrollbar */
+}
+
+.kanban-Unresolved-section-scroll::-webkit-scrollbar-track,
+.kanban-Assigned-section-scroll::-webkit-scrollbar-track,
+.kanban-Completed-section-scroll::-webkit-scrollbar-track {
+  /* width of the entire scrollbar */
+  margin-top: 23px;
+  margin-bottom: 23px;
+}
+.unresolved-data-item:hover {
+  box-shadow: 0px 0px 10px #c100004d;
+}
+.assigned-data-item:hover {
+  box-shadow: 0px 0px 10px #f8ac1d4d;
+}
+.completed-data-item:hover {
+  box-shadow: 0px 0px 10px #3893004d;
+}
+/* ------------------------KANBAN-SECTION ENDS------------------------------------ */
+
+
+/* -------------------------------- custom calender css starts ------------------------------------------ */
+
+.calendar-box {
+  text-align: center;
+  width: 94%;
+}
+
+.ui-datepicker-header,
+.calendar-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.calendar {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 37%;
+  position: absolute;
+  z-index: 1;
+  display: none;
+  top: 43% !important;
+  left: 53% !important;
+  height: 86%;
+}
+
+.header {
+  background-color: #FFFFFF;
+  color: #343434;
+  display: flex;
+  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom: 1px solid #C1C1C180;
+}
+
+#prevBtn, #nextBtn {
+  background: none;
+  border: none;
+  color: #343434;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#monthYear {
+  font-size: 16px; 
+  /* date font */
+  font-weight: 500;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  padding: 10px 16px;
+}
+
+.day {
+  padding: 5px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: black;
+}
+
+.day:hover{
+  background: #F8AC1D;
+  border-radius: 50%;
+}
+
+.ui-datepicker-prev{
+  order:1}
+.day.current {
+  /* background-color: #FEF3DE; */
+  color: #F8AC1D;
+  border-radius: 50%;
+}
+.day.current:hover {
+  background-color: white;
+}
+
+.ui-datepicker-next{
+  order: 3}
+.day.selected {
+  background-color: #FEF3DE;
+  color: #F8AC1D;
+  border-radius: 50%;
+}
+
+.ui-datepicker-title{
+  order: 2}
+#dateInput {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  font-family: 'Poppins';
+  color: #444444;
+}
+.ui-datepicker{
+  position: absolute;
+}
+
+#dateInput:hover{
+  box-shadow: 0px 0px 5px #F8AC1D80;
+  border: none;
+}
+
+/* -------------------------------- custom calender css ends ------------------------------------------ */
 
 
 
 
+.cover-image-skeleton {
+  background: linear-gradient(90deg, #EEEEEE 25%, #DEDEDE 50%, #EEEEEE 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite ease-in-out;
+  border-radius: 5px;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+}
 
-
-
-
-
+@keyframes loading {
+  0% {
+      background-position: 200% 0;
+  }
+  100% {
+      background-position: -200% 0;
+  }
+}
 
 
 

@@ -111,7 +111,7 @@ const Sidebar = ({ children }) => {
       icon: <MdOutlineAirlineSeatReclineNormal />,
     },
     {
-      Path: "/afgd",
+      Path: "/Memberships",
       name: "Memberships",
       icon: <MdOutlineCardMembership />,
     },
@@ -136,6 +136,9 @@ const Sidebar = ({ children }) => {
         break;
       case "/Requests":
         setTopBarHeading("Service Requests");
+        break;
+      case "/Memberships":
+        setTopBarHeading("Memberships");
         break;
       // Add more cases for other pages
       default:
@@ -285,7 +288,7 @@ const Sidebar = ({ children }) => {
           >
             {/* MAIN MENUE items goes here starts */}
             <div className="main-menue" onClick={menuUpDown}>
-              <label for="touch" className="main-menu-style">
+              <label htmlFor="touch" className="main-menu-style">
                 <span
                   className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
                 >
@@ -321,9 +324,10 @@ const Sidebar = ({ children }) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                    ClassName={
-                      location.pathname === item.Path ? "active-link" : ""
-                    }
+                    // ClassName={
+                    //   location.pathname === item.Path ? "active-link" : ""
+                    // }
+                    // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div
@@ -343,7 +347,7 @@ const Sidebar = ({ children }) => {
 
             <div className="main-menue" onClick={menuUpDown2}>
               <div className="seprate-line"></div>
-              <label for="touch2" className="main-menu-style">
+              <label htmlFor="touch2" className="main-menu-style">
                 <span
                   className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
                 >
@@ -374,7 +378,7 @@ const Sidebar = ({ children }) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                    activeClassName="active"
+                    activeclassname="active"
                   >
                     <div className="icon">{item.icon}</div>
                     <div

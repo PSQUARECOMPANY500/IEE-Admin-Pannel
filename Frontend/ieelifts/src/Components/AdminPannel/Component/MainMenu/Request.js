@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -7,167 +7,103 @@ import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import RequestScheduledSection from "../ServiceRequestSubComponent/RequestScheduledSection";
+import ServiceRequestModal from "../ServiceRequestSubComponent/ServiceRequestModal";
 
-const data = [
-  {
-    name: "Arjun Rawat1",
-    date: "2024-01-04", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat2",
-    date: "2024-01-04", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat3",
-    date: "2024-01-02", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat4",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat5",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat6",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat7",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat8",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat9",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat10",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat11",
-    date: "2024-01-02", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat12",
-    date: "2024-01-04", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat13",
-    date: "2024-01-04", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-  {
-    name: "Arjun Rawat14",
-    date: "2024-01-01", // Date in the format YYYY-MM-DD
-    time: "09:00 AM",
-    jobNumber: "2022199",
-    jobType: "SAFETY AUDIT",
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
-  },
-];
+import { useSelector, useDispatch } from "react-redux";
+
+import { getAllAssignServiceRequestAction } from '../../../../ReduxSetup/Actions/AdminActions'
+
+
+
 
 const Request = () => {
+  const dispatch = useDispatch();
+
   const [date, setDate] = useState(new Date());
   const [animationDirection, setAnimationDirection] = useState(null);
+
+
+  const [showTicketModal5, setShowTicketModal5] = useState(false);
+
+  const [RequestId, setRequestId] = useState();
+  const [enggId, setEnggId] = useState();
+
+
+
+
+  const openModal = (modalNumber,requestId,EnggId) => {
+    // Use the appropriate modal number to open the corresponding modal
+    if (modalNumber === 5) {
+      setShowTicketModal5(true);
+      setRequestId(requestId);
+      setEnggId(EnggId);
+  };
+}
+
+
+// const getRequestDetail = useSelector((state) => {
+//   if (
+//     state.AdminRootReducer &&
+//     state.AdminRootReducer.fetchAllServiceRequestsReducers &&
+//     state.AdminRootReducer.fetchAllServiceRequestsReducers
+//       .serviceRequestDetail
+//   ) {
+//     return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest;
+//   } else {
+//     return [];
+//   }
+// });
+// console.log("getRequestDetail", getRequestDetail);
+
+
+
+const getAssignRequests = useSelector((state)=> {
+  if(state.AdminRootReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest){
+    return state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest.clientdetailsEmbeded
+  }else{
+    return []
+  }
+} );
+
+
+useEffect(()=>{
+  dispatch(getAllAssignServiceRequestAction())
+},[dispatch])
+
+
+// Function to format date from "DD/MM/YYYY" to "YYYY-MM-DD"
+const formatDate = (dateString) => {
+  const parts = dateString.split('/');
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${year}-${month}-${day}`;
+  }
+  return dateString; // return as is if format is incorrect
+};
+
+
+
+const requestDetail = getAssignRequests?.map((value) => ({
+
+  EnggId:value?.ServiceEnggId,
+  requestId:value?.RequestId,
+  name: value?.clientDetail?.name,
+  date: formatDate(value?.Date), // Convert date format
+  time: value?.Slot,
+  jobNumber: value?.JobOrderNumber,
+  jobType: value?.checklistDetail?.checklistName,
+  profilePics: [
+    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+  ]
+}))
+
+
+const data = [...requestDetail];
+// console.log(".0.00.00", data)
+
+
+
 
   const onChange = (newDate) => {
     setDate(newDate);
@@ -192,16 +128,24 @@ const Request = () => {
     onChange(newDate);
 
     if (days < 0) {
-      console.log("date is less then zero");
+      // console.log("date is less then zero");
       setAnimationDirection("slideLeftToRight");
     } else if (days > 0) {
-      console.log("date is greater then zero");
+      // console.log("date is greater then zero");
       setAnimationDirection("slideRightToLeft");
     } else {
-      console.log("equal value");
+      // console.log("equal value");
       setAnimationDirection("slideToTop");
     }
   };
+  const [renderTicket, setRenderTicket] = useState(true);  //to referesh
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("renderTicket", renderTicket);
+      dispatch(getAllAssignServiceRequestAction());
+    }, 1000);
+  }, [renderTicket]); 
 
   return (
     <>
@@ -228,7 +172,13 @@ const Request = () => {
                 </div>
 
                 <div className="parent-div-task-request">
-                  {filterDataByDate().map((value) => (
+                  {filterDataByDate().map((value) => {
+                 // console.log("value inside tha map", value)
+                  const requestId = value.requestId;
+                  const EnggId = value.EnggId;
+
+                  
+                  return(
                     <div
                       className="animation-all"
                       style={{ animationName: animationDirection }}
@@ -239,18 +189,18 @@ const Request = () => {
                         <div className="service-assign">
                           <div className="date-time">
                             <span>TIME</span>
-                            <p>09:00 AM</p>
+                            <p>{value?.time}</p>
                           </div>
 
                           <div className="name-3dots">
                             <div className="name-jon">
-                              <p>{value.name}</p>
+                              <p>{value?.name}</p>
                               <div className="jon-type">
                                 <p>
                                   <span style={{ fontWeight: "500" }}>JON</span>
-                                  :2022199
+                                  :{value?.jobNumber}
                                 </p>
-                                <p>SAFET AUDIT</p>
+                                <p>{value?.jobType}</p>
                               </div>
                             </div>
 
@@ -279,8 +229,10 @@ const Request = () => {
                                   />
                                 </div>
                               </div>
-                              <div className="dots3">
+                              <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
+
                                 <HiOutlineDotsVertical />
+
                               </div>
                             </div>
                           </div>
@@ -289,7 +241,19 @@ const Request = () => {
 
                       {/* one slot ends from here */}
                     </div>
-                  ))}
+                  )})}
+
+                  {showTicketModal5 && (
+                    <ServiceRequestModal
+                        closeModal={() => setShowTicketModal5(false)}
+                        showTicketModal={showTicketModal5}
+                        RequestId={RequestId}
+                        setRenderTicket={setRenderTicket}
+
+                        enggId={enggId}
+                        isAssigned={true}
+                      />
+                    )}
                 </div>
               </div>
             </div>
@@ -297,7 +261,7 @@ const Request = () => {
         </div>
 
         <div>
-          <RequestScheduledSection />
+          <RequestScheduledSection  setRenderTicket={setRenderTicket}/>
         </div>
       </div>
     </>
@@ -305,3 +269,24 @@ const Request = () => {
 };
 
 export default Request;
+
+
+
+
+
+
+
+
+
+// {
+//   name: "Arjun Rawat1",
+//   date: "2024-01-04", // Date in the format YYYY-MM-DD
+//   time: "09:00 AM",
+//   jobNumber: "2022199",
+//   jobType: "SAFETY AUDIT",
+//   profilePics: [
+//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+//   ],
+// },
+

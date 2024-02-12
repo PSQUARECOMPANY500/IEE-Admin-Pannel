@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import Select from "react-select";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
 
-const SingleSetDropdown = ({ width, padding }) => {
+
+const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChange,isAssigned,editchange}) => {
+
+  const selectedValue = Details || []
+
+  const options = selectedValue.map((details) => ({
+    value:details._id , label:details.checklistName
+  }))
+   
+    
+
+
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleChange = (selected) => {
-    console.log("Selected abhinav :", selected);
+    //console.log("Selected abhinav :", selected);
     setSelectedOption(selected);
+    onStateChange(selected)
   };
-
 
 
   const customStyles = {
@@ -55,10 +61,12 @@ const SingleSetDropdown = ({ width, padding }) => {
 
   return (
     <Select
+      placeholder={placeholder}
       options={options}
       styles={customStyles}
       value={selectedOption}
       onChange={handleChange}
+      isDisabled={editchange ? false : isAssigned}
     />
   );
 };

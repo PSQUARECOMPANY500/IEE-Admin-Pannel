@@ -4,13 +4,13 @@ import { CiSearch } from "react-icons/ci";
 import { LuSettings2 } from "react-icons/lu";
 import FilterDropdown from "../DashboardSubComponent/FilterDropdown";
 import { GoPlus } from "react-icons/go";
-import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
+import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequest";
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
 
-const RequestScheduledSection = () => {
-  const dropdownRef = useRef(null);
 
+const RequestScheduledSection = ({setRenderTicket}) => {
+  const dropdownRef = useRef(null);
   // modal manage states
 
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -20,7 +20,6 @@ const RequestScheduledSection = () => {
     useState(true);
 
   const handleTicketFilter = () => {
-    console.log("this is handle filter function");
     setShowTicketFilter(!showTicketFilter);
   };
 
@@ -43,6 +42,8 @@ const RequestScheduledSection = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+ 
 
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -86,7 +87,7 @@ const RequestScheduledSection = () => {
           <div className="icon-align-div">
             <div className="right-side-icons">
               <span className="filter-top-icon">
-                <div class="search-box">
+                <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
@@ -125,10 +126,11 @@ const RequestScheduledSection = () => {
               </p>
             </div>
             {showTicketModal && (
-              <AddTicketModal
+              <AddTicketOnCallRequest
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
-                modalNumber={0}
+                setRenderTicket={setRenderTicket}
+                requestSection={true}
               />
             )}
           </div>
@@ -138,7 +140,7 @@ const RequestScheduledSection = () => {
           {/* table start here */}
 
           {handleRequestScheduledTable ? (
-            <ServiceRequestTable />
+            <ServiceRequestTable setRenderTicket2={setRenderTicket}/>
           ) : (
             <ServiceScheduledTable />
           )}

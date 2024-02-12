@@ -26,7 +26,7 @@ const TopBar = (props) => {
 
       <div className="right-side-icons">
         <span className="top-icon">
-          <div class="search-box">
+          <div className="search-box">
             <input
               type="text"
               placeholder="Search anything"

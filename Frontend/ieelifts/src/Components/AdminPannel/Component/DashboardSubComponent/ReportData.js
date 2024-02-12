@@ -2,7 +2,7 @@ import React from "react";
 
 const ReportData = () => {
   return (
-        <table class="customer-table">
+        <table className="customer-table">
           <tbody>
             <tr>
               <th>NAME :</th>

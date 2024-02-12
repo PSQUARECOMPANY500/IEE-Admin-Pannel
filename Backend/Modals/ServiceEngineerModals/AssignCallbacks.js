@@ -16,10 +16,6 @@ const AssignService = new Schema(
       type: String,
       required: true,
     },
-    // AllotAChecklist: {
-    //   type: String,
-    //   required: true,
-    // },
     AllotAChecklist: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Checklist",
