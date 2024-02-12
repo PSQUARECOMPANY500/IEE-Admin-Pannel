@@ -16,9 +16,80 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
+
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle get AssignCallbackDetail of current date
+module.exports.getCurrentDateAssignCallback = async (req, res) => {
+  try {
+    const currentDate = new Date().toLocaleDateString("en-GB");
+    const currentDetailCallback = await ServiceAssigntoEngg.find({ Date: currentDate });
+
+    if(currentDetailCallback.length === 0){
+      return res.status(400).json({message:"no callback for today's"})
+    }
+
+    const callbackWithDetails = await Promise.all(currentDetailCallback.map(async (item) => {
+      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
+      const clientdetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+
+      // Extract only specific fields from enggDetail and clientDetail
+      const enggName = enggDetail ? enggDetail.EnggName : null;
+      const clientName = clientdetail ? clientdetail.name : null;
+
+      return { ...item._doc,enggName,clientName }
+    }))
+    return res.status(200).json({ callbackWithDetails });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle getAllAssignCallbacks (as used in ticket section)
+
+module.exports.getAllAssignCallbacks = async (req,res) => {
+  try {
+    const allAssignCallbacks = await ServiceAssigntoEngg.find({});
+    if(!allAssignCallbacks || allAssignCallbacks.length === 0 ){
+      return res.status(400).json({message:"No callback"})
+    }
+    return res.status(200).json({ allAssignCallbacks });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+//functio to handle get all Referals for admin
+module.exports.getAllreferals = async (req,res) => {
+  try {
+    const allReferals = await ReferalSchema.find({});
+     return res.status(200).json({message:"All referals fetched Successfully",Referals:allReferals})
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+
 //function to handle get ALL Aassign service request by admin from the assignserviceRequestTable
 
 module.exports.getAllAssignServiceRequest = async (req, res) => {
@@ -64,8 +135,6 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------

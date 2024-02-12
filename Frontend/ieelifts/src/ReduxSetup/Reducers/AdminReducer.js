@@ -12,9 +12,52 @@ import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from '../Actions/Adm
 
 import { GET_ALL_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
+import { GET_ALL_ASSIGN_CALLBACK } from '../Actions/AdminActions';
+
+import { GET_CURRENT_DATE_ASSIGN_CALLBACK } from '../Actions/AdminActions';
+
+import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions';
+
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
+
+//reducer to handel ge tCurrent Date Assign CalbackAction
+
+const intialState11 ={
+    currentDateCallback: null
+}
+
+export const getCurrentDateAssignCalbackAction = (state=intialState11, action) => {
+    switch(action.type) {
+        case GET_CURRENT_DATE_ASSIGN_CALLBACK :
+        return {...state, currentDateCallback:action.payload}
+        default:
+            return state
+    }
+}
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//Reducer to handle get All assign Callback requests.
+const intialState10 = {
+    assignCallback: null
+}
+
+export const getAllAssignCallbackRequestReducer = (state=intialState10, action) => {
+    switch(action.type) {
+        case GET_ALL_ASSIGN_CALLBACK :
+            return {...state, assignCallback:action.payload}
+            default:
+                return state
+    }
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//Reducer to handle get All Assign Service Request Reducer
+
 const initialState9 = {
     serviceRequest:null
 }
@@ -31,6 +74,7 @@ export const getAllAssignServiceRequestReducer = (state=initialState9, action) =
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
+//Reducer to handle assign Service Request Detail By RequestId
 
 const intialState8 = {
     assignServiceRequestdetail:null
@@ -70,7 +114,7 @@ export const getRequestDetailByRequestIdReducer = (state=intialState7, action) =
 
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
-//fetch fetchAllServiceRequestsReducers
+//Reducer fetchAllServiceRequestsReducers
 
 const intialState6 = {
     serviceRequestDetail:null
@@ -90,7 +134,7 @@ export const fetchAllServiceRequestsReducers = (state=intialState6, action) =>{
 
 
 
-//fetch assignCallBackByAdminReducer
+//Reducer assignCallBackByAdminReducer
 
 const intialState5 = {
     callBackDetail:null
@@ -210,3 +254,32 @@ export const fetchAssignCallbacksDetailsReducer = (state = initialAssign , actio
             
     }
 }
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+const intialStateRender = {
+    isComponentRendered: false,
+}
+
+export const ticketSectionRenderReducer = (state=intialStateRender, action) => {
+    switch(action.type) {
+        case TICKET_COMPONENT_RENDERED :
+            return {...state,isComponentRendered:true}
+            default:
+                return state
+    }
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+

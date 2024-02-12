@@ -21,6 +21,7 @@ router.put("/updateCallbacks", clientController.updateCallbacks);
 router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
+router.get("/getClientReferalByJobOrderNumber/:jobOrderNumber", verifyToken('client'), clientController.getAllReferalByJobOrderNumber);
 
 //router.post("/engineerRating",clientController.Rating)
 
