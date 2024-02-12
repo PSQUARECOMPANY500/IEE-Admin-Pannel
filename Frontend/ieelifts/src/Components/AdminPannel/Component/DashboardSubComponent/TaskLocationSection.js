@@ -37,7 +37,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
 //   })
 //   console.log(filteredData)
   const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
-  console.log("*",renderComopnent)
+  // console.log("*",renderComopnent)
+
+
+  const currentDateServiceRequest = useSelector((state)=> state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer);
+  console.log("*-----*",currentDateServiceRequest);
+
 
   const currentDateCallback = useSelector((state) => {
     if (state.AdminRootReducer && state.AdminRootReducer.getCurrentDateAssignCalbackAction && state.AdminRootReducer.getCurrentDateAssignCalbackAction.currentDateCallback){
@@ -46,7 +51,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return null
     }
   } );
-  console.log(currentDateCallback)
+  // console.log(currentDateCallback)
 
 
   const handlekanban = ()=>{
@@ -72,15 +77,16 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setShowFilter(!showFilter);
   };
 
-
-  useEffect(() => {
-    // dispatch(getAllAssignCallbackRequestAction())
   
-      dispatch(getCurrentDateAssignCalbackAction())
- 
+  useEffect(() => {
+    if(renderComopnent){
+      dispatch(getCurrentDateAssignCalbackAction());
+    }
+    dispatch(getCurrentDateAssignCalbackAction());
+      // dispatch(getAllAssignCallbackRequestAction())
+    }, [dispatch,renderComopnent]);
 
-  },[dispatch])
-
+    
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -199,10 +205,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             <tr>
                               <th>NAME :</th>
                               <td>{value.clientName}</td>
+                              {/* <td>{value.clientName.toUpperCase()}</td> */}
                             </tr>
                             <tr>
                               <th>ENGINEER :</th>
-                              <td>{value.enggName}</td>
+                              {/* <td>{value.enggName}</td> */}
+                              <td>{value.enggName.toUpperCase()}</td>
                             </tr>
                             <tr>
                               <th>START TIME :</th>
@@ -217,11 +225,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </div>
                     </div>
                 )))}
-            
-
-
-
-
               </>
             )}
 
@@ -258,7 +261,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   </div>
                 </div>
 
-                <div
+                {/* <div
                   className="more-descriptive"
                   onClick={passData}
                   style={{
@@ -287,8 +290,39 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> */}
 
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+{/* 
                 <div
                   className="more-descriptive"
                   onClick={passData}
@@ -318,9 +352,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> */}
 
-                <div
+                {/* <div
                   className="more-descriptive"
                   onClick={passData}
                   style={{
@@ -349,38 +383,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
-
-                <div
-                  className="more-descriptive"
-                  onClick={passData}
-                  style={{
-                    background: "#ffffff",
-                  }}
-                >
-                  <div className="detail">
-                    <table className="customer-table1">
-                      <tbody>
-                        <tr>
-                          <th>NAME :</th>
-                          <td>ARJUN service</td>
-                        </tr>
-                        <tr>
-                          <th>JON :</th>
-                          <td>565454</td>
-                        </tr>
-                        <tr>
-                          <th>ADDRESS :</th>
-                          <td>ADDRESS ADDRESS</td>
-                        </tr>
-                        <tr>
-                          <th>TYPE :</th>
-                          <td>DOOR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>:null}

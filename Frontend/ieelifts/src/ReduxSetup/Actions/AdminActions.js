@@ -28,6 +28,27 @@ export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
 export const GET_CURRENT_DATE_ASSIGN_CALLBACK = "GET_CURRENT_DATE_ASSIGN_CALLBACK";
 
 export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED";
+
+export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle get Current Date Assign Service Request 
+export const getCurrentDateAssignServiceRequestAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignServiceRequest`)
+      dispatch({
+        type:GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST,
+        payload:response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
+  }
+}
+
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to handle get Current date assign callbacks

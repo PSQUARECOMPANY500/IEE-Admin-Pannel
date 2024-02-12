@@ -21,6 +21,36 @@ const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSche
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle get current date Assign Service Detail
+module.exports.getCurrentDateAssignServiceRequest = async (req,res) => {
+  try {
+    const currentDate = new Date().toLocaleDateString('en-GB')
+    const currentDetailServiceRequest = await AssignSecheduleRequest.find({Date: currentDate});
+
+    if(currentDetailServiceRequest.length === 0){
+      return res.status(400).json({message:"no Service Request for today's"})
+    }
+
+    const serviceRequestDetail = await Promise.all(currentDetailServiceRequest.map(async (item) => {
+      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
+      const clientDetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+
+      //extract only specific field
+
+      const enggName = enggDetail ? enggDetail.EnggName : null;
+      const clientName = clientDetail ? clientDetail.name : null;
+      
+      return {...item._doc,enggName,clientName}
+    }))
+    return res.status(200).json({ serviceRequestDetail });
+
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
@@ -47,12 +77,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
-
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 

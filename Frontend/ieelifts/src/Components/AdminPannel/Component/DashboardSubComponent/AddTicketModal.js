@@ -12,6 +12,7 @@ import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminAction
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -243,6 +244,8 @@ const AddTicketModal = ({
           engDetails.enggJon
         )
       );
+      dispatch(ticketSectionRenderAction());
+
 
       setRenderTicket((prev) => !prev);
       closeModal();

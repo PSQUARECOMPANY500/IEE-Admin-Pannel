@@ -18,7 +18,24 @@ import { GET_CURRENT_DATE_ASSIGN_CALLBACK } from '../Actions/AdminActions';
 
 import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions';
 
+import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//reducer to handle get Current Date Assign Service Request
+const initialState12 ={
+    currentDateServiceRequest: null
+}
+
+export const getCurrentDateAssignServiceRequestReducer = (state=initialState12, action) => {
+    switch(action.type) {
+        case GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST :
+            return {...state, currentDateServiceRequest:action.payload}
+            default:
+                return state
+    }
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 

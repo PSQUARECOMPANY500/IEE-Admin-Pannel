@@ -46,6 +46,8 @@ router.get('/getAllAssignCallback', adminContoller.getAllAssignCallbacks);
 
 router.get('/getCurrentDateAssignCallback', adminContoller.getCurrentDateAssignCallback);
 
+router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
+
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
