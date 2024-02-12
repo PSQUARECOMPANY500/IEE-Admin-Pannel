@@ -1,5 +1,7 @@
   //................................{amit}....................................
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
+
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
@@ -10,6 +12,7 @@ import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminAction
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
+import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -32,7 +35,9 @@ const AddTicketModal = ({
   const [typeOfIssue, setTypeOfIssue] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
+  const [time,setTime]= useState("")
   const [modelType, setModelType] = useState("");
+  const [engDate , setengDate]=useState("")
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -77,6 +82,7 @@ const AddTicketModal = ({
     },
   ];
 
+ 
   //slots logic here ends-------------------------------------------------
   // use use selector select to select the service engg state
   const  serviceEnggDetail = useSelector((state) => {
@@ -170,7 +176,9 @@ const AddTicketModal = ({
     setAddress(userCallBackDetail?.clientDetail?.Address || "");
     setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
     setDescription(userCallBackDetail?.Description || "");
-    setDate(userCallBackDetail?.createdAt || "");
+    setDate(userCallBackDetail?.callbackDate|| "");
+    setTime(userCallBackDetail?.callbackTime|| "");
+   
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
@@ -196,6 +204,7 @@ const AddTicketModal = ({
 
 
   const handleEnggSelectionChange = (selectedOptions) => {
+    //console.log(selectedOptions[0]?.value)
     dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
   };
 
@@ -207,6 +216,13 @@ const AddTicketModal = ({
     setClickListOnSelect(selectedOptions);
   };
 
+
+  const handleAssignDateChange = (selectedOption)=>{
+    const formattedDate = selectedOption.toLocaleDateString('en-GB');
+    setengDate(formattedDate);
+  }
+
+  
   const handleElevatorSectionDetails = () => {
     if (
       engDetails.enggJon &&
@@ -215,32 +231,35 @@ const AddTicketModal = ({
       date &&
       message
     ) {
-      const dateObject = new Date(date);
-
-      const formattedDate = `${dateObject.getDate()}/${
-        dateObject.getMonth() + 1
-      }/${dateObject.getFullYear()}`;
-
       dispatch(
         assignCallBackByAdminAction(
           engDetails?.enggJon,
-          number,
+          jon,
           callbackId,
           ClickListOnSelect.value,
           selectedSlot,
-          formattedDate,
+          engDate,
           message,
           engDetails?.enggName,
           engDetails.enggJon
         )
       );
+      dispatch(ticketSectionRenderAction());
+
 
       setRenderTicket((prev) => !prev);
       closeModal();
     } else {
       console.log("not valid input");
-    }
-  };
+      toast.error("Please fill all the fields")
+      }
+     };
+//-------------------------------------------OnClick Edit-------------------------------------------------
+  const [editchange,setEditChange] = useState(false);
+
+  const handleEditSection=()=>{
+    setEditChange(!editchange)
+  }
 
   return (
     <>
@@ -392,7 +411,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={date} />
+                    <input type="text" name="name" value={time} />
                   </div>
                 </div>
               </form>
@@ -563,10 +582,12 @@ const AddTicketModal = ({
                     <div className="col75">
                       
                       <MultiSelectDropdown
-                      placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
                         Details={serviceEnggDetail}
                         handleEnggSelectionChange={handleEnggSelectionChange}
-                        
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
                       />
                     </div>
                   </div>
@@ -577,6 +598,8 @@ const AddTicketModal = ({
                         width="100%"
                         placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
                         Details={checkList}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
                         onStateChange={handleSingleSetDropdown}
                       />
                     </div>
@@ -588,6 +611,9 @@ const AddTicketModal = ({
                       placeholder={isAssigned?selectedSlot:"Select Slot"}
                         slots={timeSlots}
                         handleEnggSelectionChange={handleEnggSelectionChange1}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
                       />
                     </div>
                   </div>
@@ -596,7 +622,7 @@ const AddTicketModal = ({
                     <div className="col75">
                   
                       <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} />
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
                       </div>
                     </div>
                   </div>
@@ -610,7 +636,9 @@ const AddTicketModal = ({
                       width: "78%",
                       marginLeft: "10%",
                       resize: "none",
+                      color:"black",
                     }}
+                    readOnly={editchange ? false : isAssigned}
                     placeholder={isAssigned?message:"message"}
                     onChange={(e) => {
                       setMessage(e.target.value);
@@ -623,7 +651,7 @@ const AddTicketModal = ({
 
           <div className="footer-section">
             <div className="buttons">
-              <button className="edit-button" >Edit</button>
+              <button className={`edit-button ${editchange&&`edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
               <button
                 className="assign-button"
                 onClick={handleElevatorSectionDetails}

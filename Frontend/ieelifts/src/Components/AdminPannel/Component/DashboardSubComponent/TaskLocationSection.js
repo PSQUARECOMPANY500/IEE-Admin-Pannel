@@ -1,17 +1,57 @@
 import React, { useState, useRef, useEffect,forwardRef } from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
-import { LiaStarSolid } from "react-icons/lia";
+import { LiaStarSolid } from "react-icons/lia"; // use in future (don't delete Please)
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
+
+import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
+import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions"
+
+import { useDispatch, useSelector } from "react-redux"
 
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
+  const dispatch = useDispatch();
 
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+
+
+//   const clientCallBackTickets = useSelector((state) => { if( state.AdminRootReducer && state.AdminRootReducer.getAllAssignCallbackRequestReducer && state.AdminRootReducer.getAllAssignCallbackRequestReducer.assignCallback){
+//     return state.AdminRootReducer.getAllAssignCallbackRequestReducer.assignCallback.allAssignCallbacks
+//   }else{
+//     return null
+//   }}
+// );
+//   console.log(clientCallBackTickets)
+
+//   const currentDate = new Date().toLocaleDateString("en-GB");
+//   console.log(currentDate)
+
+//   const filteredData = clientCallBackTickets?.filter((item) => {
+//     const itemDate = item.Date;
+//     return itemDate === currentDate;
+//   })
+//   console.log(filteredData)
+  const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
+  // console.log("*",renderComopnent)
+
+
+  const currentDateServiceRequest = useSelector((state)=> state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer);
+  console.log("*-----*",currentDateServiceRequest);
+
+
+  const currentDateCallback = useSelector((state) => {
+    if (state.AdminRootReducer && state.AdminRootReducer.getCurrentDateAssignCalbackAction && state.AdminRootReducer.getCurrentDateAssignCalbackAction.currentDateCallback){
+      return state.AdminRootReducer.getCurrentDateAssignCalbackAction.currentDateCallback.callbackWithDetails
+    }else{
+      return null
+    }
+  } );
+  // console.log(currentDateCallback)
 
 
   const handlekanban = ()=>{
@@ -36,6 +76,17 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const handleFilter = () => {
     setShowFilter(!showFilter);
   };
+
+  
+  useEffect(() => {
+    if(renderComopnent){
+      dispatch(getCurrentDateAssignCalbackAction());
+    }
+    dispatch(getCurrentDateAssignCalbackAction());
+      // dispatch(getAllAssignCallbackRequestAction())
+    }, [dispatch,renderComopnent]);
+
+    
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -97,10 +148,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
           </div>
 
           {props.kanban?<div className="task-description-section">
+            {/* -----------------------  araised ticker data here starts ------------------------------------- */}
             {/* swap conditions start here */}
             {ticket && (
               <>
-                <div
+                {/* <div
                   className="more-descriptive"
                   onClick={passData}
                 
@@ -114,7 +166,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       <tbody>
                         <tr>
                           <th>NAME :</th>
-                          <td>ARJUN service</td>
+                          <td>Preet service</td>
                         </tr>
                         <tr>
                           <th>ENGINEER :</th>
@@ -137,41 +189,42 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> */}
 
-                <div
-                  className="more-descriptive"
-                  onClick={passData}
-                  style={{
-                    background: "#ffffff",
-                  }}
-                >
-                  <div className="detail" style={{
-                    border: "1px solid #F8AC1D",
-                    // boxShadow:" 0px 0px 5px #F8AC1D80"
-                  }}>
-                    <table className="customer-table1">
-                      <tbody>
-                        <tr>
-                          <th>NAME :</th>
-                          <td>ARJUN service</td>
-                        </tr>
-                        <tr>
-                          <th>JON :</th>
-                          <td>565454</td>
-                        </tr>
-                        <tr>
-                          <th>ADDRESS :</th>
-                          <td>ADDRESS ADDRESS</td>
-                        </tr>
-                        <tr>
-                          <th>TYPE :</th>
-                          <td>DOOR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                {currentDateCallback?.map((value => (
+                      <div
+                      className="more-descriptive"
+                      onClick={passData}
+                      style={{
+                        background: "#ffffff",
+                      }}>
+                      <div className="detail" style={{
+                      }}>
+                        <table className="customer-table1">
+                          <tbody>
+                            <tr>
+                              <th>NAME :</th>
+                              <td>{value.clientName}</td>
+                              {/* <td>{value.clientName.toUpperCase()}</td> */}
+                            </tr>
+                            <tr>
+                              <th>ENGINEER :</th>
+                              {/* <td>{value.enggName}</td> */}
+                              <td>{value.enggName.toUpperCase()}</td>
+                            </tr>
+                            <tr>
+                              <th>START TIME :</th>
+                              <td>{value.Slot.split('-')[0]}</td>
+                            </tr>
+                            <tr>
+                              <th>END TIME :</th>
+                              <td>{value.Slot.split('-')[1]}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                )))}
               </>
             )}
 
@@ -189,7 +242,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       <tbody>
                         <tr>
                           <th>NAME :</th>
-                          <td>ARJUN service</td>
+                          <td>Pankaj service</td>
                         </tr>
                         <tr>
                           <th>JON :</th>
@@ -208,6 +261,68 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   </div>
                 </div>
 
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+{/* 
                 <div
                   className="more-descriptive"
                   onClick={passData}
@@ -237,9 +352,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
+                </div> */}
 
-                <div
+                {/* <div
                   className="more-descriptive"
                   onClick={passData}
                   style={{
@@ -268,69 +383,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                       </tbody>
                     </table>
                   </div>
-                </div>
-
-                <div
-                  className="more-descriptive"
-                  onClick={passData}
-                  style={{
-                    background: "#ffffff",
-                  }}
-                >
-                  <div className="detail">
-                    <table className="customer-table1">
-                      <tbody>
-                        <tr>
-                          <th>NAME :</th>
-                          <td>ARJUN service</td>
-                        </tr>
-                        <tr>
-                          <th>JON :</th>
-                          <td>565454</td>
-                        </tr>
-                        <tr>
-                          <th>ADDRESS :</th>
-                          <td>ADDRESS ADDRESS</td>
-                        </tr>
-                        <tr>
-                          <th>TYPE :</th>
-                          <td>DOOR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <div
-                  className="more-descriptive"
-                  onClick={passData}
-                  style={{
-                    background: "#ffffff",
-                  }}
-                >
-                  <div className="detail">
-                    <table className="customer-table1">
-                      <tbody>
-                        <tr>
-                          <th>NAME :</th>
-                          <td>ARJUN service</td>
-                        </tr>
-                        <tr>
-                          <th>JON :</th>
-                          <td>565454</td>
-                        </tr>
-                        <tr>
-                          <th>ADDRESS :</th>
-                          <td>ADDRESS ADDRESS</td>
-                        </tr>
-                        <tr>
-                          <th>TYPE :</th>
-                          <td>DOOR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                </div> */}
               </>
             )}
           </div>:null}
