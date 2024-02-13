@@ -16,61 +16,77 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
-const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
 
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
-module.exports.getCurrentDateAssignServiceRequest = async (req,res) => {
+module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = new Date().toLocaleDateString('en-GB')
-    const currentDetailServiceRequest = await AssignSecheduleRequest.find({Date: currentDate});
+    const currentDate = new Date().toLocaleDateString("en-GB");
+    const currentDetailServiceRequest = await AssignSecheduleRequest.find({
+      Date: currentDate,
+    });
 
-    if(currentDetailServiceRequest.length === 0){
-      return res.status(400).json({message:"no Service Request for today's"})
+    if (currentDetailServiceRequest.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "no Service Request for today's" });
     }
 
-    const serviceRequestDetail = await Promise.all(currentDetailServiceRequest.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
-      const clientDetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+    const serviceRequestDetail = await Promise.all(
+      currentDetailServiceRequest.map(async (item) => {
+        const enggDetail = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        });
+        const clientDetail = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
 
-      //extract only specific field
+        //extract only specific field
 
-      const enggName = enggDetail ? enggDetail.EnggName : null;
-      const clientName = clientDetail ? clientDetail.name : null;
-      
-      return {...item._doc,enggName,clientName}
-    }))
+        const enggName = enggDetail ? enggDetail.EnggName : null;
+        const clientName = clientDetail ? clientDetail.name : null;
+
+        return { ...item._doc, enggName, clientName };
+      })
+    );
     return res.status(200).json({ serviceRequestDetail });
-
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
-}
-
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
     const currentDate = new Date().toLocaleDateString("en-GB");
-    const currentDetailCallback = await ServiceAssigntoEngg.find({ Date: currentDate });
+    const currentDetailCallback = await ServiceAssigntoEngg.find({
+      Date: currentDate,
+    });
 
-    if(currentDetailCallback.length === 0){
-      return res.status(400).json({message:"no callback for today's"})
+    if (currentDetailCallback.length === 0) {
+      return res.status(400).json({ message: "no callback for today's" });
     }
 
-    const callbackWithDetails = await Promise.all(currentDetailCallback.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
-      const clientdetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+    const callbackWithDetails = await Promise.all(
+      currentDetailCallback.map(async (item) => {
+        const enggDetail = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        });
+        const clientdetail = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
 
-      // Extract only specific fields from enggDetail and clientDetail
-      const enggName = enggDetail ? enggDetail.EnggName : null;
-      const clientName = clientdetail ? clientdetail.name : null;
+        // Extract only specific fields from enggDetail and clientDetail
+        const enggName = enggDetail ? enggDetail.EnggName : null;
+        const clientName = clientdetail ? clientdetail.name : null;
 
-      return { ...item._doc,enggName,clientName }
-    }))
+        return { ...item._doc, enggName, clientName };
+      })
+    );
     return res.status(200).json({ callbackWithDetails });
   } catch (error) {
     console.error("Error:", error);
@@ -82,37 +98,33 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
 
 //function to handle getAllAssignCallbacks (as used in ticket section)
 
-module.exports.getAllAssignCallbacks = async (req,res) => {
+module.exports.getAllAssignCallbacks = async (req, res) => {
   try {
     const allAssignCallbacks = await ServiceAssigntoEngg.find({});
-    if(!allAssignCallbacks || allAssignCallbacks.length === 0 ){
-      return res.status(400).json({message:"No callback"})
+    if (!allAssignCallbacks || allAssignCallbacks.length === 0) {
+      return res.status(400).json({ message: "No callback" });
     }
     return res.status(200).json({ allAssignCallbacks });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
-
-
-
-
+};
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 //functio to handle get all Referals for admin
-module.exports.getAllreferals = async (req,res) => {
+module.exports.getAllreferals = async (req, res) => {
   try {
     const allReferals = await ReferalSchema.find({});
-     return res.status(200).json({message:"All referals fetched Successfully",Referals:allReferals})
+    return res.status(200).json({
+      message: "All referals fetched Successfully",
+      Referals: allReferals,
+    });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
-
-
-
+};
 
 //function to handle get ALL Aassign service request by admin from the assignserviceRequestTable
 
@@ -121,45 +133,52 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     const assignServicerequest = await AssignSecheduleRequest.find();
 
     // Get all unique JobOrderNumbers and AllotAChecklist ids
-    const jobOrderNumbers = assignServicerequest.map(request => request.JobOrderNumber);
-    const allotAChecklistIds = assignServicerequest.map(request => request.AllotAChecklist);
+    const jobOrderNumbers = assignServicerequest.map(
+      (request) => request.JobOrderNumber
+    );
+    const allotAChecklistIds = assignServicerequest.map(
+      (request) => request.AllotAChecklist
+    );
     const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
     const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
 
     // Fetch client details for each unique JobOrderNumber
-    const clientDetails = await clientDetailSchema.find({ JobOrderNumber: { $in: uniqueJobOrderNumbers } });
+    const clientDetails = await clientDetailSchema.find({
+      JobOrderNumber: { $in: uniqueJobOrderNumbers },
+    });
 
     // Fetch checklist details for each unique AllotAChecklist id
-    const checklistDetails = await ChecklistModal.find({ _id: { $in: uniqueAllotAChecklistIds } });
+    const checklistDetails = await ChecklistModal.find({
+      _id: { $in: uniqueAllotAChecklistIds },
+    });
 
     // Create a map for quick access to client and checklist details
     const clientMap = {};
-    clientDetails.forEach(client => {
+    clientDetails.forEach((client) => {
       clientMap[client.JobOrderNumber] = client;
     });
 
     const checklistMap = {};
-    checklistDetails.forEach(checklist => {
+    checklistDetails.forEach((checklist) => {
       checklistMap[checklist._id] = checklist;
     });
 
     // Combine assign service requests with client and checklist details
-    const clientdetailsEmbeded = assignServicerequest.map(request => ({
+    const clientdetailsEmbeded = assignServicerequest.map((request) => ({
       ...request._doc,
       clientDetail: clientMap[request.JobOrderNumber] || null,
-      checklistDetail: checklistMap[request.AllotAChecklist] || null
+      checklistDetail: checklistMap[request.AllotAChecklist] || null,
     }));
 
     res.status(200).json({
       message: "Fetch All Assign Service Request successfully",
       clientdetailsEmbeded,
-    });  
+    });
   } catch (error) {
     console.error("Error creating engg detail:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle get all engg Detail by Id
@@ -257,7 +276,7 @@ module.exports.assignCallbacks = async (req, res) => {
         },
         { new: true } // Return the updated document
       );
-    }else {
+    } else {
       // Create a new entry
       callback = await ServiceAssigntoEngg.create({
         ServiceEnggId,
@@ -303,7 +322,9 @@ module.exports.AssignServiceRequests = async (req, res) => {
 
     let callback;
 
-    const existingCallback = await AssignSecheduleRequest.findOne({ RequestId });
+    const existingCallback = await AssignSecheduleRequest.findOne({
+      RequestId,
+    });
 
     if (existingCallback) {
       callback = await AssignSecheduleRequest.findOneAndUpdate(
@@ -317,9 +338,9 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Message,
           ServiceProcess,
         },
-        { new: true } 
+        { new: true }
       );
-    }else {
+    } else {
       callback = await AssignSecheduleRequest.create({
         ServiceEnggId,
         JobOrderNumber,
@@ -386,15 +407,14 @@ module.exports.getAllRequests = async (req, res) => {
     const clientRequestDetail = await Promise.all(
       serviceRequests.map(async (Requests) => {
         const clientDetail = await clientDetailSchema.findOne({
-          JobOrderNumber:Requests.JobOrderNumber
-        })
+          JobOrderNumber: Requests.JobOrderNumber,
+        });
         return {
           ...Requests._doc,
-          clientDetail: clientDetail
-        }
+          clientDetail: clientDetail,
+        };
       })
-    )
-
+    );
 
     res.status(200).json({
       message: "all services Requests fetched Succesfully",
@@ -407,8 +427,6 @@ module.exports.getAllRequests = async (req, res) => {
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 //Function to handle get Callbackdetail By CallbackId
 module.exports.getCallbackDetailByCallbackId = async (req, res) => {
@@ -426,7 +444,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
-    console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    console.log("HE", clientCallbacksDetails.JobOrderNumber);
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
@@ -449,7 +467,9 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
   try {
     const { RequestId } = req.params;
 
-    const clientRequestDetails = await getAllServiceRequest.findOne({ RequestId });
+    const clientRequestDetails = await getAllServiceRequest.findOne({
+      RequestId,
+    });
     // console.log("clientRequestDetails",clientRequestDetails)
     if (!clientRequestDetails) {
       res.status(404).json({ message: "no data found with this Request id" });
@@ -589,6 +609,7 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
   }
 };
 
+// {armaan-dev}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle create client memenership
 
@@ -606,10 +627,17 @@ module.exports.createClientMemebership = async (req, res) => {
       isDisable,
     } = req.body;
 
+    const startDate = new Date(StartDate);
+    const durationInMonths = Number(Duration);
+    const EndDate = new Date(
+      startDate.setMonth(startDate.getMonth() + durationInMonths)
+    );
+
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
       MemebershipType,
       StartDate: new Date(StartDate),
+      EndDate,
       Duration,
       Discount,
       PricePaid,
@@ -627,119 +655,98 @@ module.exports.createClientMemebership = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to get the membership data
-module.exports.getClientMemebership = async (req, res) => {
+// ---------------------------------------------------------------------
+// {armaan-dev}
+// ---------------------------------------------------------------------
+// {armaan-dev}
+
+module.exports.getClientMembership = async (req, res) => {
   try {
+    const { dataType, wanted, page, pageSize } = req.query;
     const membershipData = await AssignMemeberships.find();
+    const filteredData = filterMembershipByType(membershipData, dataType);
+    const skip = (page - 1) * pageSize;
+    let clientData, totalExpiredPages, totalExpiringPages;
 
-    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
-    const calculations = {};
-
-    membershipTypes.forEach((type) => {
-      const filteredData = filterMembershipByType(membershipData, type);
-      calculations[type] = calculateData(filteredData);
-    });
-
-    res.status(201).json({ success: true, ...calculations });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "internal server error" });
-  }
-};
-
-//function used to calculate the data of meberships
-const calculateData = (data) => {
-  let totalRevenue = 0;
-  let count = 0;
-  let expData = [];
-
-  for (const d of data) {
-    totalRevenue += parseFloat(d.PricePaid);
-
-    const startDate = new Date(d.StartDate);
-    const durationInMonths = Number(d.Duration);
-    const endDate = new Date(
-      startDate.setMonth(startDate.getMonth() + durationInMonths)
-    );
-
-    const timeDifference = endDate - Date.now();
-
-    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-    if (daysLeft <= 30) {
-      if (daysLeft <= 0) {
-        d.isExpired = true;
-        d.save();
-      }
-      expData.push({
-        JobOrderNumber: d.JobOrderNumber,
-        isExpired: d.isExpired,
-      });
+    switch (wanted) {
+      case "expired":
+        const expiredData = await calculateExpired(filteredData);
+        totalExpiredPages = Math.ceil(expiredData.length / pageSize);
+        const sortedExpiredData = expiredData.sort(
+          (a, b) => b.EndDate - a.EndDate
+        );
+        clientData = sortedExpiredData.slice(skip, skip + pageSize);
+        break;
+      case "expiring":
+        const expiringData = await calculateExpiring(filteredData);
+        totalExpiringPages = Math.ceil(expiringData.length / pageSize);
+        const sortedExpiringData = expiringData.sort(
+          (a, b) => b.EndDate - a.EndDate
+        );
+        clientData = sortedExpiringData.slice(skip, skip + pageSize);
+        break;
+      default:
+        return res
+          .status(404)
+          .json({ success: false, message: "Incorrect params" });
     }
-    if (!d.isExpired && !d.isDisable && !d.isRenewed) {
-      count++;
-    }
-  }
 
-  return { totalRevenue, count, expData };
-};
-
-// to filter the memberships
-const filterMembershipByType = (data, type) => {
-  return data.filter((member) => member.MemebershipType === type);
-};
-
-// Function to get client data on membership Limited page
-module.exports.showClientLimitedDetails = async (req, res) => {
-  try {
-    const JobOrderNumbers = req.body.JobOrderNumber;
-    const clientData = [];
-
-    await Promise.all(
-      JobOrderNumbers.map(async (JON) => {
-        const data = await clientDetailSchema.findOne({ JobOrderNumber: JON });
-        clientData.push({
-          name: data.name,
-          PhoneNumber: data.PhoneNumber,
-          Address: data.Address,
-        });
-      })
-    );
-
-    res.status(201).json({ success: true, clientData });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "internal server error" });
-  }
-};
-
-// Get client Details
-module.exports.getClientDetail = async (req, res) => {
-  try {
-    const { JON } = req.params;
-    console.log(JON);
-    const client = await clientDetailSchema.findOne({ JobOrderNumber: JON });
-
-    if (!client) {
-      return res.status(404).json({
-        message: "No Client found for the Job OrderNumber",
-      });
-    }
-    res.status(200).json({
-      message: "Client found",
-      client: client,
+    const clientDetails = await sentClientData(clientData);
+    return res.status(201).json({
+      totalPages: wanted === "expired" ? totalExpiredPages : totalExpiringPages,
+      clientData: clientDetails,
+      count: clientData.length,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
+const sentClientData = async (data) => {
+  const clientDetailPromises = data.map(async (item) => {
+    const clientData = await clientDetailSchema.findOne({
+      JobOrderNumber: item.JobOrderNumber,
+    });
+    return {
+      JobOrderNumber: clientData.JobOrderNumber,
+      name: clientData.name,
+      address: clientData.Address,
+      number: clientData.PhoneNumber,
+    };
+  });
+
+  return Promise.all(clientDetailPromises);
+};
+
+const calculateExpiring = async (filteredData) => {
+  const expiringData = await Promise.all(
+    filteredData.map(async (data) => {
+      const timeDifference = data.EndDate - Date.now();
+      const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      if (daysLeft > 0 && daysLeft <= 30) {
+        return data;
+      }
+    })
+  );
+  return expiringData.filter(Boolean);
+};
+
+const calculateExpired = async (filteredData) => {
+  const expiredData = filteredData.filter((data) => data.EndDate < Date.now());
+  return expiredData;
+};
+
+const filterMembershipByType = (data, type) => {
+  return data.filter((member) => member.MemebershipType === type);
+};
+
+// {armaan-dev}
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------
 //function to get all booked dates {amit-features}
 
-module.exports.getBookedDates = async(req,res)=>{
+module.exports.getBookedDates = async (req, res) => {
   const timeSlots = [
     {
       slot: "9:00-10:00",
@@ -769,142 +776,88 @@ module.exports.getBookedDates = async(req,res)=>{
       slot: "17:00-18:00",
     },
   ];
-  
-  try{
+
+  try {
     const data = await ServiceAssigntoEngg.find();
 
     const groupedDates = {};
 
-  data.forEach(entry => {
-    if (!groupedDates[entry.Date]) {
-      groupedDates[entry.Date] = {
-        slots:[],
-        isSlotAvailable:true,
-      };
-    }
-    groupedDates[entry.Date].slots.push(entry.Slot);
-  });
+    data.forEach((entry) => {
+      if (!groupedDates[entry.Date]) {
+        groupedDates[entry.Date] = {
+          slots: [],
+          isSlotAvailable: true,
+        };
+      }
+      groupedDates[entry.Date].slots.push(entry.Slot);
+    });
 
-  Object.keys(groupedDates).forEach((date)=>{
-    const slotLength = groupedDates[date].slots.length;
-    const allSlots = timeSlots.length;
+    Object.keys(groupedDates).forEach((date) => {
+      const slotLength = groupedDates[date].slots.length;
+      const allSlots = timeSlots.length;
 
-    if(allSlots === slotLength){
-      groupedDates[date].isSlotAvailable = false;
-    }
-  })
+      if (allSlots === slotLength) {
+        groupedDates[date].isSlotAvailable = false;
+      }
+    });
 
-  res.json(groupedDates);
-
+    res.json(groupedDates);
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error:"Internal server Error", 
-      "message":error.message
+      error: "Internal server Error",
+      message: error.message,
     });
-  }
-
-}
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to handle create client memenership
-
-module.exports.createClientMemebership = async (req, res) => {
-  try {
-    const {
-      JobOrderNumber,
-      MemebershipType,
-      StartDate,
-      Duration,
-      Discount,
-      PricePaid,
-      isRenewed,
-      isExpired,
-      isDisable,
-    } = req.body;
-
-    const MemberShipDetails = await AssignMemeberships.create({
-      JobOrderNumber,
-      MemebershipType,
-      StartDate: new Date(StartDate),
-      Duration,
-      Discount,
-      PricePaid,
-      isRenewed,
-      isExpired,
-      isDisable,
-    });
-
-    res
-      .status(201)
-      .json({ message: "memebership created successfully", MemberShipDetails });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "intenal server error" });
   }
 };
-
+// {armaan-dev}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to get the membership data
-module.exports.getClientMemebership = async (req, res) => {
+// Function to get membership data
+module.exports.getMembershipDetails = async (req, res) => {
   try {
-    const membershipData = await AssignMemeberships.find();
+    const memberShipDetails = await AssignMemeberships.find();
+    const dataTypes = ["warrenty", "platinum", "silver", "gold"];
 
-    const membershipTypes = ["warrenty", "platinum", "gold", "silver"];
-    const calculations = {};
-
-    membershipTypes.forEach((type) => {
-      const filteredData = filterMembershipByType(membershipData, type);
-      calculations[type] = calculateData(filteredData);
-    });
-
-    res.status(201).json({ success: true, ...calculations });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "internal server error" });
-  }
-};
-
-//function used to calculate the data of meberships
-
-
-// to filter the memberships
-
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// Function to get client data on membership Limited page
-const qs = require('querystring');
-module.exports.showClientLimitedDetails = async (req, res) => {
-  try {
-    const  JobOrderNumbers  = req.body.JobOrderNumber;
-    const clientData = [];
-    console.log(JobOrderNumbers, "JobOrderNumbers");
-    
-    
-    await Promise.all(
-      JobOrderNumbers.map(async (JON) => {
-        const data = await clientDetailSchema.findOne({ JobOrderNumber: JON.JobOrderNumber });
-        clientData.push({
-          JobOrderNumber: JON.JobOrderNumber,
-          isExpired: JON.isExpired,
-          name: data.name,
-          PhoneNumber: data.PhoneNumber, 
-          Address: data.Address,
-        });
+    const responseData = await Promise.all(
+      dataTypes.map(async (type) => {
+        const filteredData = filterMembershipByType(memberShipDetails, type);
+        return { dataType: type, details: calculateData(filteredData) };
       })
-      );
-      console.log(clientData, "clientData");
-    res.status(201).json({ success: true, clientData });
+    );
+
+    // Send responseData or do whatever you need with it
+    res.status(200).json({ success: true, data: responseData });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
+};
+
+const calculateData = (data) => {
+  let totalRevenue = 0;
+  let count = 0;
+
+  for (const d of data) {
+    totalRevenue += parseFloat(d.PricePaid);
+
+    // Check if membership is active based on start and end dates, and other conditions
+    if (
+      d.EndDate > Date.now() &&
+      d.StartDate <= Date.now() &&
+      !d.isDisable &&
+      !d.isRenewed
+    ) {
+      count++;
+    }
+  }
+
+  return { totalRevenue, count };
 };
 
 // Get client Details
 module.exports.getClientDetail = async (req, res) => {
   try {
     const { JON } = req.params;
-    console.log(JON);
     const client = await clientDetailSchema.findOne({ JobOrderNumber: JON });
 
     if (!client) {
@@ -921,3 +874,5 @@ module.exports.getClientDetail = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+// {armaan-dev}
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

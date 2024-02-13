@@ -10,7 +10,7 @@ router.post("/assigncallback", adminContoller.assignCallbacks);
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
-router.get("/getMembership", adminContoller.getClientMemebership);
+router.get("/getMembership", adminContoller.getClientMembership);
 
 //------------------------------ All get requests -------------------------------------------------
 
@@ -30,24 +30,27 @@ router.get(
   "/getAssignCallbackDetail/:callbackId",
   adminContoller.getAssignCallbackByCallbackId
 );
+router.get("/getClientId/:JON", adminContoller.getClientDetail);
+
+router.get("/getAllAssignServices", adminContoller.getAllAssignServiceRequest);
+
+router.get("/getAllReferals", adminContoller.getAllreferals);
+
+router.get("/getAllAssignCallback", adminContoller.getAllAssignCallbacks);
+
 router.get(
-  "/getClientId/:JON",
-  adminContoller.getClientDetail
+  "/getCurrentDateAssignCallback",
+  adminContoller.getCurrentDateAssignCallback
 );
 
-router.get('/getAllAssignServices', adminContoller.getAllAssignServiceRequest);
+router.get(
+  "/getCurrentDateAssignServiceRequest",
+  adminContoller.getCurrentDateAssignServiceRequest
+);
 
-router.get('/getAllReferals',adminContoller.getAllreferals)
-
-router.get('/getAllAssignCallback', adminContoller.getAllAssignCallbacks);
-
-router.get('/getCurrentDateAssignCallback', adminContoller.getCurrentDateAssignCallback);
-
-router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
-
-router.post(
-  "/getClientMemberShipDataLimited",
-  adminContoller.showClientLimitedDetails
+router.get(
+  "/getMembershipDetails",
+  adminContoller.getMembershipDetails
 );
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
