@@ -2,6 +2,8 @@
 
 import React from "react";
 import MembershipCardDetails from "./MembershipCardDetails";
+import MembershipExpiring from "./MembershipExpiring";
+import MembershipExpired from "./MembershipExpired";
 // import { useDispatch, useSelector } from "react-redux";
 
 const MembershipCard = ({
@@ -40,7 +42,6 @@ const MembershipCard = ({
       ? "membership_card_silver_shadow"
       : "total_revenue_outer_shadow";
 
-  
   const cardColor =
     DemoData.dataType === "Warrenty"
       ? "membership_card_counts_warrenty"
@@ -93,7 +94,10 @@ const MembershipCard = ({
                   className="membership_card_revenue"
                   style={setClick ? { display: "none" } : {}}
                 >
-                  Revenue: {DemoData?.Data?.details?.totalRevenue}
+                  Revenue
+                  {DemoData?.Data?.details?.totalRevenue !== undefined
+                    ? `: ₹${DemoData?.Data?.details?.totalRevenue}`
+                    : " --"}
                 </p>
               </div>
               <div
@@ -130,7 +134,7 @@ const MembershipCard = ({
             >
               <div className="after_expansion_labels">
                 <span>Revenue:</span>
-                <span>{DemoData?.Data?.details?.totalRevenue}</span>
+                <span>{DemoData?.Data?.details?.totalRevenue || "--"}</span>
               </div>
               <div className="after_expansion_labels">
                 <span>Expiring Soon:</span>
@@ -148,28 +152,8 @@ const MembershipCard = ({
               className={`membership_card_stats `}
               style={setClick ? { display: "none" } : {}}
             >
-             
-              <div className="membership_card_expiring ">
-                <div className="membership_card_expiring-title membership_card_expired-title">
-                  <p>Expired</p>
-                  {/* <p>{DemoData.expiredCount}</p>  */}
-                </div>
-                <div
-                  className={`membership_card_scrollable membership_card_scrollable_expired ${
-                    setClick ? "membership_card_stats_expand_height" : ""
-                  }`}
-                >
-                  {/* {DemoData?.Data?.expData.map((data, index) => {
-                    return data.isExpired ? (
-                      <MembershipSubCard
-                        data={data}
-                        key={index}
-                        dataType={DemoData?.dataType}
-                      />
-                    ) : null;
-                  })} */}
-                </div>
-              </div>
+              <MembershipExpiring DemoData={DemoData} setClick={setClick} />
+              <MembershipExpired DemoData={DemoData} setClick={setClick} />
             </div>
           </>
         )}

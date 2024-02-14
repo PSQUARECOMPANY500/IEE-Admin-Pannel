@@ -3,11 +3,12 @@ import React, { useEffect, useLayoutEffect } from "react";
 import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
-const MembershipExpiring = ({ DemoData, setClick }) => {
+
+const MembershipExpired = ({ setClick, DemoData }) => {
   const type = DemoData?.dataType?.toLowerCase();
   const dispatch = useDispatch();
   useLayoutEffect(() => {
-    requestLimitedClientDataAction(dispatch, type, "expiring", 1, 10);
+    requestLimitedClientDataAction(dispatch, type, "expired", 1, 10);
   }, []);
   const memberShipDetails = useSelector((state) => {
     if (
@@ -15,31 +16,20 @@ const MembershipExpiring = ({ DemoData, setClick }) => {
       state.AdminRootReducer.requestLimitedClientDataReducer
     ) {
       return state?.AdminRootReducer?.requestLimitedClientDataReducer
-        ?.membershipDetail?.expiring?.[type];
+        ?.membershipDetail?.expired?.[type];
     } else {
       return null;
     }
   });
 
-  const scrollbar =
-    DemoData.dataType === "Warrenty"
-      ? "membership_card_scrollable_warrenty"
-      : DemoData.dataType === "Platinum"
-      ? "membership_card_scrollable_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_scrollable_gold"
-      : DemoData.dataType === "Silver"
-      ? "membership_card_scrollable_silver"
-      : "total_revenue_outer_border";
-
   return (
-    <div className="membership_card_expiring">
-      <div className="membership_card_expiring-title">
-        <p>Expiring Soon</p>
-        {memberShipDetails && <p>{memberShipDetails.count}</p>}
+    <div className="membership_card_expiring ">
+      <div className="membership_card_expiring-title membership_card_expired-title">
+        <p>Expired</p>
+        {memberShipDetails ? <p>{memberShipDetails?.count}</p> : null}
       </div>
       <div
-        className={`membership_card_scrollable ${scrollbar} ${
+        className={`membership_card_scrollable membership_card_scrollable_expired ${
           setClick ? "membership_card_stats_expand_height" : ""
         }`}
       >
@@ -47,6 +37,7 @@ const MembershipExpiring = ({ DemoData, setClick }) => {
           return data && !data.isExpired ? (
             <MembershipSubCard
               data={data}
+              isExpired={true}
               key={index}
               dataType={DemoData?.dataType}
             />
@@ -57,4 +48,4 @@ const MembershipExpiring = ({ DemoData, setClick }) => {
   );
 };
 
-export default MembershipExpiring;
+export default MembershipExpired;

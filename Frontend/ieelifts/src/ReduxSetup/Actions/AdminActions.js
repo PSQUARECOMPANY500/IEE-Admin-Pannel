@@ -3,6 +3,7 @@ import config from "../../config";
 
 import { toast } from "react-hot-toast";
 
+//  ---------------------
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
 export const GET_ALL_CALLBACK = "GET_ALL_CALLBACK";
@@ -33,6 +34,8 @@ export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
 export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED";
 export const GET_MEMBERSHIP_DATA = "GET_MEMBERSHIP_DATA";
 export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
+export const GET_LIMITED_CLIENT_DATA_EXPIRED =
+  "GET_LIMITED_CLIENT_DATA_EXPIRED";
 
 export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST =
   "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
@@ -420,21 +423,34 @@ export const requestGetMemberShipDataAction = () => {
   };
 };
 
-export const requestLimitedClientDataAction = (JobOrderNumber) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post(
-        `${config.apiUrl}/admin/getClientMemberShipDataLimited`,
-        {
-          JobOrderNumber: JobOrderNumber,
-        }
-      );
+export const requestLimitedClientDataAction = async (
+  dispatch,
+  dataType,
+  wanted,
+  page,
+  pageSize
+) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getMembership`, {
+      params: {
+        dataType,
+        wanted,
+        page,
+        pageSize,
+      },
+    });
+    if (wanted === "expiring") {
       dispatch({
         type: GET_LIMITED_CLIENT_DATA,
         payload: response.data,
       });
-    } catch (error) {
-      console.log("error while fetching data", error);
+    } else {
+      dispatch({
+        type: GET_LIMITED_CLIENT_DATA_EXPIRED,
+        payload: response.data,
+      });
     }
-  };
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
 };

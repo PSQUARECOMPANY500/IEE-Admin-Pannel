@@ -693,9 +693,12 @@ module.exports.getClientMembership = async (req, res) => {
 
     const clientDetails = await sentClientData(clientData);
     return res.status(201).json({
-      totalPages: wanted === "expired" ? totalExpiredPages : totalExpiringPages,
-      clientData: clientDetails,
-      count: clientData.length,
+      [dataType]: {
+        totalPages:
+          wanted === "expired" ? totalExpiredPages : totalExpiringPages,
+        clientData: clientDetails,
+        count: clientData.length,
+      },
     });
   } catch (error) {
     console.error(error);

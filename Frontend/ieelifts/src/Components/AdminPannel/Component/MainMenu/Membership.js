@@ -25,7 +25,7 @@ const Membership = () => {
     }
   });
 
-  console.log(membershipJon, "membershipJon");
+  // console.log(membershipJon, "membershipJon");
 
   const [cards, setCards] = useState([
     {
@@ -123,50 +123,24 @@ const Membership = () => {
           setClick ? `membershipCards_expand ` : ""
         } `}
       >
-        <MembershipCard
-          DemoData={cards[0].DemoData}
-          order={cards[0].order}
-          setClick={setClick}
-          clickCount={clickCount}
-          itemClick={() => {
-            handleDoubleClick(1);
-            setClickCount(1);
-            click(true);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[1].DemoData}
-          order={cards[1].order}
-          setClick={setClick}
-          clickCount={clickCount}
-          itemClick={() => {
-            handleDoubleClick(2);
-            click(true);
-            setClickCount(1);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[2].DemoData}
-          order={cards[2].order}
-          clickCount={clickCount}
-          setClick={setClick}
-          itemClick={() => {
-            handleDoubleClick(3);
-            click(true);
-            setClickCount(1);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[3].DemoData}
-          clickCount={clickCount}
-          order={cards[3].order}
-          setClick={setClick}
-          itemClick={() => {
-            handleDoubleClick(4);
-            setClickCount(1);
-            click(true);
-          }}
-        />
+        {cards.map((items, index) => {
+          if (index === cards.length - 1) return;
+
+          return (
+            <MembershipCard
+              key={index}
+              DemoData={items.DemoData}
+              order={items.order}
+              setClick={setClick}
+              clickCount={clickCount}
+              itemClick={() => {
+                handleDoubleClick(index + 1);
+                setClickCount(1);
+                click(true);
+              }}
+            />
+          );
+        })}
         {setClick && (
           <MembershipCard
             clickCount={clickCount}
