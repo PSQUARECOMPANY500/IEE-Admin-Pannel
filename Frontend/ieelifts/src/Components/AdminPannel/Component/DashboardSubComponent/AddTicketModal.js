@@ -221,10 +221,7 @@ const AddTicketModal = ({
       slot: "01:30-03:30",
     },
     {
-      slot: "03:30-04:30",
-    },
-    {
-      slot: "04:30-05:30",
+      slot: "03:30-05:30",
     },
   ];
   const bookedDateForEngg = useSelector((state) => {

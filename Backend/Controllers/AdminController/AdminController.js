@@ -842,28 +842,11 @@ module.exports.getBookedDates = async(req,res)=>{
 }
 
 //....................................................................................................................................................................
-/* module.exports.getEngAssignSlotsDetails = async(req,res)=>{
-  try{
-    const {EngId} = req.body;
-    const currentDate = new Date().toLocaleDateString('en-GB')
-    const response = await ServiceAssigntoEngg.find({EngId});
-    const response2 = await AssignSecheduleRequest.find({EngId});
-    console.log("res1",response)
-    console.log("res2",response2)
-    res.send(currentDate)
-
-  }catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error:"Internal server Error", 
-      "message":error.message
-    });
-  }
-} */
+// This is the api for fetching Eng details acc to current Date
 
 module.exports.getEngAssignSlotsDetails = async (req, res) => {
   try {
-    const {ServiceEnggId} = req.body;
+    const { ServiceEnggId } = req.body;
     const currentDate = new Date().toLocaleDateString('en-GB');
 
     // Fetch data from both tables concurrently using Promise.all
@@ -871,10 +854,15 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
       ServiceAssigntoEngg.find({ ServiceEnggId }),
       AssignSecheduleRequest.find({ ServiceEnggId })
     ]);
-    // Combine the results if needed
+
+    // Filter data based on the current date
+    const filteredServiceAssignments = serviceAssignments.filter(item => item.Date === currentDate);
+    const filteredScheduleRequests = scheduleRequests.filter(item => item.Date === currentDate);
+
+    // Combine the filtered results
     const finalData = {
-      serviceAssignments,
-      scheduleRequests,
+      serviceAssignments: filteredServiceAssignments,
+      scheduleRequests: filteredScheduleRequests,
       currentDate
     };
 
