@@ -43,10 +43,12 @@ router.get(
   adminContoller.getCurrentDateAssignCallback
 );
 
-router.get(
-  "/getCurrentDateAssignServiceRequest",
-  adminContoller.getCurrentDateAssignServiceRequest
-);
+router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
+
+
+router.get('/getAvailbaleEng', adminContoller.getBookedSlotsForParticularEngg);
+
+router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
 
 router.get(
   "/getMembershipDetails",

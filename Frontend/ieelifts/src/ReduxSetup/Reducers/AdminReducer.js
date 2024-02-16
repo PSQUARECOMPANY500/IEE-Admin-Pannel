@@ -15,7 +15,8 @@ import { GET_ALL_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_ALL_ASSIGN_CALLBACK } from "../Actions/AdminActions";
 
 import { GET_CURRENT_DATE_ASSIGN_CALLBACK } from "../Actions/AdminActions";
-
+import { GET_BOOKED_DATES_FOR_ENGGS } from "../Actions/AdminActions";
+import { GET_ENGG_BASIC_DATA_FOR_CROUSER } from "../Actions/AdminActions";
 import { TICKET_COMPONENT_RENDERED } from "../Actions/AdminActions";
 import { GET_MEMBERSHIP_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
@@ -23,7 +24,7 @@ import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
 
 import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
 
-const initialState14 = {
+const initialState16 = {
   membershipDetail: {
     expiring: {},
     expired: {},
@@ -31,7 +32,7 @@ const initialState14 = {
 };
 
 export const requestLimitedClientDataReducer = (
-  state = initialState14,
+  state = initialState16,
   action
 ) => {
   switch (action.type) {
@@ -80,16 +81,51 @@ export const requestLimitedClientDataReducer = (
 //   }
 // };
 
-const intialState13 = {
+const intialState15 = {
   membershipDetail: null,
 };
 export const requestGetMemberShipDataActionReducer = (
-  state = intialState13,
+  state = intialState15,
   action
 ) => {
   switch (action.type) {
     case GET_MEMBERSHIP_DATA:
       return { ...state, membershipDetail: action.payload };
+    default:
+      return state;
+  }
+};
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle get Engg Basic data in the Engg crouser
+const intialState14 = {
+  EnggBasicDetailForCrouser: null,
+};
+
+export const getEnggBasicDataForCrouserReducer = (
+  state = intialState14,
+  action
+) => {
+  switch (action.type) {
+    case GET_ENGG_BASIC_DATA_FOR_CROUSER:
+      return { ...state, EnggBasicDetailForCrouser: action.payload };
+    default:
+      return state;
+  }
+};
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+// function get Booked Slots for Enggs Reducer
+const initialState13 = {
+  bookedDatesEngg: null,
+};
+export const getBookedSlotsforEnggsReducer = (
+  state = initialState13,
+  action
+) => {
+  switch (action.type) {
+    case GET_BOOKED_DATES_FOR_ENGGS:
+      return { ...state, bookedDatesEngg: action.payload };
     default:
       return state;
   }

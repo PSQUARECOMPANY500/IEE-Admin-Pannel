@@ -16,9 +16,90 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
-const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
+
+const EnggRating = require("../../Modals/Rating/Rating")
 
 const mongoose = require("mongoose");
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle 
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle Engg Crouser Data on dashboard only   ServiceEnggId, ServiceEnggName, ServiceEnggPic ,averageRating
+
+module.exports.getEnggCrouserData = async (req,res) => {
+  try {
+    const EnggDetail = await ServiceEnggData.find({});
+    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
+      const enggRating = await EnggRating.find({ServiceEnggId:item.EnggId})
+      const ratingsCount = enggRating.length;
+      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
+      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+      return {
+        ServiceEnggId: item.EnggId,
+        ServiceEnggName: item.EnggName,
+        ServiceEnggPic: item.EnggPhoto,
+        averageRating,
+      };
+    }))
+    res.status(200).json({ BasicDetailForCrouser: BasicDetail });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to get the booked slots for the particular Engg...
+
+module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
+  try {
+    const { Date } = req.query;
+
+    const assignCallbackDate = await ServiceAssigntoEngg.find({ Date });
+    const assignRequestDate = await AssignSecheduleRequest.find({ Date });
+
+    const combinedData = [...assignCallbackDate, ...assignRequestDate];
+
+    // Grouping slots by ServiceEnggId
+    const slotsByEnggId = {};
+    combinedData.forEach((entry) => {
+      if (!slotsByEnggId[entry.ServiceEnggId]) {
+        slotsByEnggId[entry.ServiceEnggId] = [];
+      }
+      slotsByEnggId[entry.ServiceEnggId].push(...entry.Slot);
+    });
+
+    // Converting object into array of objects
+    const result = await Promise.all(Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
+      const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId:ServiceEnggId});
+      return {
+        ServiceEnggId,
+        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown", 
+        slots: slotsByEnggId[ServiceEnggId],
+      }
+    
+    }));
+
+    res.status(200).json({ BookedSlots: result });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
@@ -444,7 +525,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
-    console.log("HE", clientCallbacksDetails.JobOrderNumber);
+    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,

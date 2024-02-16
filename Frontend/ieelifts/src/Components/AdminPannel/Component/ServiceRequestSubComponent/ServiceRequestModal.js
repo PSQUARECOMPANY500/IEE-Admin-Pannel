@@ -6,7 +6,7 @@
   import SingleSetDropdown from "../DashboardSubComponent/DropdownCollection/SingleSetDropdown";
   import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/MultiSelectDropdown";
   import { useDispatch, useSelector } from "react-redux";
-  import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
+  // import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
   import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
 
@@ -14,6 +14,7 @@
   import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+  import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
   // import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
   // import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
   import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -23,35 +24,6 @@
   
 
    
-  const timeSlots = [
-    {
-      slot: "9:00-10:00",
-    },
-    {
-      slot: "10:00-11:00",
-    },
-    {
-      slot: "11:00-12:00",
-    },
-    {
-      slot: "12:00-13:00",
-    },
-    {
-      slot: "13:00-14:00",
-    },
-    {
-      slot: "14:00-15:00",
-    },
-    {
-      slot: "15:00-16:00",
-    },
-    {
-      slot: "16:00-17:00",
-    },
-    {
-      slot: "17:00-18:00",
-    },
-  ];
 
   const ServiceRequestModal = ({
     closeModal,
@@ -62,7 +34,9 @@
     isAssigned
   }) => {
     const dispatch = useDispatch();
-  
+
+    const [selectedEnggId, setSelectedEnggId] = useState([]);
+
     //  manage use states for the input fields
     const [jon, setJon] = useState("");
     const [name, setName] = useState("");
@@ -217,18 +191,22 @@
       }
     
     },[getAssignRequestdetail])
+
     const handleAssignDateChange = (selectedOption)=>{
       const formattedDate = selectedOption.toLocaleDateString('en-GB');
       setengDate(formattedDate);
+      dispatch(getBookedSlotsforEnggsAction(formattedDate));
+
     }
 
     
     const handleEnggSelectionChange = (selectedOptions) => {
-      dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+      setSelectedEnggId(selectedOptions)// selected Engg id console
+      dispatch(fetchEnggDetailAction(selectedOptions));
     };
   
-    const handleEnggSelectionChange1 = (id) => {
-      setSelectedSlot(id[0]?.value);
+    const handleEnggSelectionChange1 = (value) => {
+      setSelectedSlot(value);
     };
   
     const handleSingleSetDropdown = (selectedOptions) => {
@@ -236,6 +214,7 @@
     };
   
     const handleAssignRequest = () => {
+      let dateOnAssign;
       if (
         engDetails.enggJon &&
         ClickListOnSelect &&
@@ -243,7 +222,12 @@
         date &&
         message
       ) {
-
+        if(engDate===""){
+        dateOnAssign = fetchedDate;
+        }
+        else{
+        dateOnAssign = engDate;
+        }
         dispatch(
           assignserviceRequestByAdmin(
             engDetails?.enggJon,
@@ -251,7 +235,7 @@
             RequestId,
             ClickListOnSelect.value,
             selectedSlot,
-            engDate,
+            dateOnAssign,
             message,
             engDetails?.enggName,
             engDetails.enggJon
@@ -263,6 +247,43 @@
         toast.error("Please fill all the fields")
       }
     };
+
+
+    const timeSlots = [
+      {
+        slot: "9:00-11:00",
+      },
+      {
+        slot: "11:00-01:00",
+      },
+      {
+        slot: "01:30-03:30",
+      },
+      {
+        slot: "03:30-04:30",
+      },
+      {
+        slot: "04:30-05:30",
+      },
+    ];
+    const bookedDateForEngg = useSelector((state) => {
+      if(state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg){
+        return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
+      }else{
+        return null
+    }
+    });
+    // console.log('bookedDateForEngg',bookedDateForEngg)
+  
+    const filteredSlots = timeSlots.filter(slot => {
+      const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
+      // console.log("bookedengg",engg)
+      const bookedSlots = engg ? engg.slots : [];
+      return !bookedSlots.includes(slot.slot);
+    });
+    // console.log("filteredSlots",filteredSlots)  
+
+    
 
 //-------------------------------------------OnClick Edit-------------------------------------------------
   const [editchange,setEditChange] = useState(false);
@@ -590,20 +611,49 @@
                   <div className="grid-form-container">
                     <div className="sm-box sm-box--2">
                       <div className="col75">
-                        
-                        <MultiSelectDropdown
+                
+                          <div className="data-pic">
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div className="sm-box sm-box--2">
+                      <div className="col75">
+                                
+                       {engDate || isAssigned ? (<MultiSelectDropdown
                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
                         Details={serviceEnggDetail}
                         handleEnggSelectionChange={handleEnggSelectionChange}
                         isAssigned={isAssigned}
                         editchange={editchange}
                         enggName={engDetails.enggName}
-                      />
+                      />) : (<MultiSelectDropdown
+                        placeholder="Please Select Date First"
+                       />)} 
+                        
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
-                        <SingleSetDropdown
+                    
+                      {engDetails.enggName || isAssigned ? (<MultiSelectDropdown
+                        placeholder={isAssigned?selectedSlot?.join(" | "):"Select Slot"}
+                        slots={filteredSlots}
+                        handleEnggSelectionChange={handleEnggSelectionChange1}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />) : (<MultiSelectDropdown
+                        placeholder="Please Select Engg First"
+                       />) }
+                      </div>
+                    </div>
+  
+                    <div className="sm-box sm-box--2">
+                      <div className="col75">
+                    
+                      <SingleSetDropdown
                         padding="6px"
                         width="100%"
                         placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
@@ -614,35 +664,13 @@
                       />
                       </div>
                     </div>
-                    <div className="sm-box sm-box--2">
-                      <div className="col75">
-                    
-                        <MultiSelectDropdown
-                      placeholder={isAssigned?selectedSlot:"Select Slot"}
-                        slots={timeSlots}
-                        handleEnggSelectionChange={handleEnggSelectionChange1}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />
-                      </div>
-                    </div>
-  
-                    <div className="sm-box sm-box--2">
-                      <div className="col75">
-                    
-                        <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <div className="col75">
                     <textarea
                       id="subject"
                       name="subject"
                       style={{
-                        height: "90px",
+                        height: "200px",
                         width: "78%",
                         marginLeft: "10%",
                         resize: "none",

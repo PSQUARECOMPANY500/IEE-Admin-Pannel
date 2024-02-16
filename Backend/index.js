@@ -40,7 +40,7 @@ app.use("/admin", AdminRoutes);
 main().catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/");
+  await mongoose.connect("mongodb+srv://psqrco:psquare@ieelifts.pkgmk5k.mongodb.net/");
   console.log("Database connected successfully");
 }
 

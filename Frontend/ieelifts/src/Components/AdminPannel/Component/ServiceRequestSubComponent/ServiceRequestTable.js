@@ -44,7 +44,7 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
       return null;
     }
   });
-  console.log("getRequestDetail", getRequestDetail);
+  // console.log("getRequestDetail", getRequestDetail);
 
   // modal manage states
   const [showTicketModal4, setShowTicketModal4] = useState(false);

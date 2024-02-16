@@ -6,6 +6,7 @@ import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 
 import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
+import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
 import { useDispatch, useSelector } from "react-redux"
@@ -36,22 +37,28 @@ const TaskLocationSection = forwardRef((props, ref) => {
 //     return itemDate === currentDate;
 //   })
 //   console.log(filteredData)
+
+
   const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
   // console.log("*",renderComopnent)
 
+//get current date service request
+  const currentDateServiceRequest = useSelector((state)=> {
+    if(state.AdminRootReducer && state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer && state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer.currentDateServiceRequest){
+      return state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer.currentDateServiceRequest.serviceRequestDetail
+    }else{
+      return null
+    }});
+  // console.log("*-----*",currentDateServiceRequest);
 
-  const currentDateServiceRequest = useSelector((state)=> state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer);
-  console.log("-----",currentDateServiceRequest);
-
-
+//get current date callback
   const currentDateCallback = useSelector((state) => {
     if (state.AdminRootReducer && state.AdminRootReducer.getCurrentDateAssignCalbackAction && state.AdminRootReducer.getCurrentDateAssignCalbackAction.currentDateCallback){
       return state.AdminRootReducer.getCurrentDateAssignCalbackAction.currentDateCallback.callbackWithDetails
     }else{
       return null
-    }
-  } );
-  // console.log(currentDateCallback)
+    }});
+  // console.log("*======*",currentDateCallback)
 
 
   const handlekanban = ()=>{
@@ -83,6 +90,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       dispatch(getCurrentDateAssignCalbackAction());
     }
     dispatch(getCurrentDateAssignCalbackAction());
+    dispatch(getCurrentDateAssignServiceRequestAction());
       // dispatch(getAllAssignCallbackRequestAction())
     }, [dispatch,renderComopnent]);
 
@@ -101,6 +109,15 @@ const TaskLocationSection = forwardRef((props, ref) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+
+  const extractStartTime = (slots) => {
+    return slots[0].split('-')[0];
+  }
+  const  extractEndTime = (slots) => {
+    return slots[slots.length - 1].split('-')[1];
+  }
+
   return (
     <div className={"parent-full-div"} ref={ref} >
       <div className={"child-div"}>
@@ -204,21 +221,19 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <tbody>
                             <tr>
                               <th>NAME :</th>
-                              <td>{value.clientName}</td>
-                              {/* <td>{value.clientName.toUpperCase()}</td> */}
+                              <td>{value.clientName.toUpperCase()}</td>
                             </tr>
                             <tr>
                               <th>ENGINEER :</th>
-                              {/* <td>{value.enggName}</td> */}
                               <td>{value.enggName.toUpperCase()}</td>
                             </tr>
                             <tr>
                               <th>START TIME :</th>
-                              <td>{value.Slot.split('-')[0]}</td>
+                              <td>{extractStartTime(value.Slot)}</td>
                             </tr>
                             <tr>
                               <th>END TIME :</th>
-                              <td>{value.Slot.split('-')[1]}</td>
+                              <td>{extractEndTime(value.Slot)}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -230,36 +245,39 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
             {services && (
               <>
-                <div
-                  className="more-descriptive"
-                  onClick={passData}
-                  style={{
-                    background: "#ffffff",
-                  }}
-                >
-                  <div className="detail">
-                    <table className="customer-table1">
-                      <tbody>
-                        <tr>
-                          <th>NAME :</th>
-                          <td>Pankaj service</td>
-                        </tr>
-                        <tr>
-                          <th>JON :</th>
-                          <td>565454</td>
-                        </tr>
-                        <tr>
-                          <th>ADDRESS :</th>
-                          <td>ADDRESS ADDRESS</td>
-                        </tr>
-                        <tr>
-                          <th>TYPE :</th>
-                          <td>DOOR</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              {currentDateServiceRequest?.map((serviceData) => (
+                 <div
+                 className="more-descriptive"
+                 onClick={passData}
+                 style={{
+                   background: "#ffffff",
+                 }}
+               >
+                 <div className="detail">
+                   <table className="customer-table1">
+                     <tbody>
+                       <tr>
+                         <th>NAME :</th>
+                         <td>{serviceData.clientName.toUpperCase()}</td>
+                       </tr>
+                       <tr>
+                         <th>ENGINEER :</th>
+                         <td>{serviceData.enggName.toUpperCase()}</td>
+                       </tr>
+                       <tr>
+                         <th>START TIME :</th>
+                         <td>{extractStartTime(serviceData.Slot)}</td>
+                       </tr>
+                       <tr>
+                         <th>END TIME :</th>
+                         <td>{extractEndTime(serviceData.Slot)}</td>
+                       </tr>
+                     </tbody>
+                   </table>
+                 </div>
+               </div>
+              ))}
+               
 
                 {/* <div
                   className="more-descriptive"

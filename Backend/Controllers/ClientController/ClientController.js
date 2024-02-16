@@ -463,16 +463,21 @@ module.exports.Rating = async (req, res) => {
     const {
       JobOrderNumber,
       ServiceEnggId,
-      callBackId,
+      ServiceId,
       Rating,
       Description,
       Questions: { Question1, Question2, Question3, Question4, Question5 },
     } = req.body;
 
+    const serviceIdForRating = await engineerRating.findOne({ServiceId});
+    if(serviceIdForRating){
+      return  res.status(400).json({ message: "Rating is Already Done on This Id" });
+    }
+
     const newRequest = await engineerRating.create({
       JobOrderNumber,
       ServiceEnggId,
-      callBackId,
+      ServiceId,
       Rating,
       Description,
       Questions: {

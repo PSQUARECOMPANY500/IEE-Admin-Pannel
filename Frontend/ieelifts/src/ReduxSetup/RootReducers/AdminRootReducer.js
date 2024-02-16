@@ -14,9 +14,11 @@ import { getAllAssignServiceRequestReducer } from "../Reducers/AdminReducer";
 import { getAllAssignCallbackRequestReducer } from "../Reducers/AdminReducer";
 import { getCurrentDateAssignCalbackAction } from "../Reducers/AdminReducer";
 import { ticketSectionRenderReducer } from "../Reducers/AdminReducer";
+import { getCurrentDateAssignServiceRequestReducer } from "../Reducers/AdminReducer";
+import { getBookedSlotsforEnggsReducer } from "../Reducers/AdminReducer";
+import { getEnggBasicDataForCrouserReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
-import { getCurrentDateAssignServiceRequestReducer } from "../Reducers/AdminReducer";
 import { fetchClientDetailsByJon } from "../Reducers/ClientReducer";
 
 const AdminRootReducer = combineReducers({
@@ -39,6 +41,8 @@ const AdminRootReducer = combineReducers({
   ticketSectionRenderReducer: ticketSectionRenderReducer,
   getCurrentDateAssignServiceRequestReducer:
     getCurrentDateAssignServiceRequestReducer,
+  getBookedSlotsforEnggsReducer: getBookedSlotsforEnggsReducer,
+  getEnggBasicDataForCrouserReducer: getEnggBasicDataForCrouserReducer,
   requestGetMemberShipDataActionReducer: requestGetMemberShipDataActionReducer,
   requestLimitedClientDataReducer: requestLimitedClientDataReducer,
 });

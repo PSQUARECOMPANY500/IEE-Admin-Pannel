@@ -6,14 +6,11 @@ const Services = new Schema(
     JobOrderNumber: {
         type: String,
         required: true,
-        unique:true,
     },
-
     ServiceEnggId: {
         type: String,
-        required: true,
     },
-    callBackId:{
+    ServiceId:{
         type:String,
         require:true,
         unique:true,
@@ -46,9 +43,8 @@ const Services = new Schema(
         Question5:{
             type:Boolean,
             require:true,
-        },
-    }
-    
+        }, 
+    }   
 }
 )
 

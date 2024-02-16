@@ -37,8 +37,52 @@ export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
 
-export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST =
-  "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
+export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
+
+export const GET_BOOKED_DATES_FOR_ENGGS = "GET_BOOKED_DATES_FOR_ENGGS";
+
+export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER";
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle get Engg Basic data in the Engg crouser
+
+export const getEnggBasicDataForCrouserAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getEnggCrouserData`)
+      dispatch({
+        type:GET_ENGG_BASIC_DATA_FOR_CROUSER,
+        payload:response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
+  }
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle getBooked slots for enggs.
+
+export const getBookedSlotsforEnggsAction = (date) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getAvailbaleEng/?Date=${date}`);
+      dispatch({
+        type:GET_BOOKED_DATES_FOR_ENGGS,
+        payload:response.data
+      })
+    } catch (error) {
+      console.log("error while fetching Eng_details", error);
+    }
+  }
+}
+
+
+
+
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to handle get Current Date Assign Service Request

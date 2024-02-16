@@ -29,10 +29,6 @@ const EnggBasicDetail = new Schema(
       type: String,
       unique: true,
     },
-    AverageRating: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,

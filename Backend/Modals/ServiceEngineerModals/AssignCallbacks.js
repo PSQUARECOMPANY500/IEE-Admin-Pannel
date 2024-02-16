@@ -22,7 +22,7 @@ const AssignService = new Schema(
       required: true,
     },
     Slot: {
-      type: String,
+      type: [String],
       required: true,
     },
     Date: {
