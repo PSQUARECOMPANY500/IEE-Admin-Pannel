@@ -13,9 +13,11 @@ import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActio
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
 import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+// import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModal = ({
   closeModal,
@@ -26,6 +28,9 @@ const AddTicketModal = ({
   isAssigned
 }) => {
   const dispatch = useDispatch();
+
+  const [selectedEnggId, setSelectedEnggId] = useState([]);
+  // console.log('selectedEnggId',selectedEnggId[0])
 
   //  manage use states for the input fields
   const [jon, setJon] = useState("");
@@ -39,6 +44,8 @@ const AddTicketModal = ({
   const [modelType, setModelType] = useState("");
   const [engDate , setengDate]=useState("")
 
+  // console.log('engDate', engDate)
+
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
     enggName: "",
@@ -48,39 +55,15 @@ const AddTicketModal = ({
     enggRating: "",
   });
 
+  // console.log("2-----",engDetails.enggName)
+
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
   const [fetchedDate,setfetchedDate] = useState("")
-  const timeSlots = [
-    {
-      slot: "9:00-10:00",
-    },
-    {
-      slot: "10:00-11:00",
-    },
-    {
-      slot: "11:00-12:00",
-    },
-    {
-      slot: "12:00-13:00",
-    },
-    {
-      slot: "13:00-14:00",
-    },
-    {
-      slot: "14:00-15:00",
-    },
-    {
-      slot: "15:00-16:00",
-    },
-    {
-      slot: "16:00-17:00",
-    },
-    {
-      slot: "17:00-18:00",
-    },
-  ];
+ 
+   
+ 
 
  
   //slots logic here ends-------------------------------------------------
@@ -204,26 +187,67 @@ const AddTicketModal = ({
 
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    //console.log(selectedOptions[0]?.value)
-    dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+    // console.log(selectedOptions[0])
+    // console.log(selectedOptions);
+    setSelectedEnggId(selectedOptions)// selected Engg id console
+    dispatch(fetchEnggDetailAction(selectedOptions));
   };
 
-  const handleEnggSelectionChange1 = (id) => {
-    setSelectedSlot(id[0]?.value);
+  const handleEnggSelectionChange1 = (value) => {
+   setSelectedSlot(value);
   };
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
+    console.log(selectedOptions)
   };
 
 
   const handleAssignDateChange = (selectedOption)=>{
     const formattedDate = selectedOption.toLocaleDateString('en-GB');
     setengDate(formattedDate);
+    // console.log(formattedDate)
+    dispatch(getBookedSlotsforEnggsAction(formattedDate));
   }
 
+  const timeSlots = [
+    {
+      slot: "9:00-11:00",
+    },
+    {
+      slot: "11:00-01:00",
+    },
+    {
+      slot: "01:30-03:30",
+    },
+    {
+      slot: "03:30-04:30",
+    },
+    {
+      slot: "04:30-05:30",
+    },
+  ];
+  const bookedDateForEngg = useSelector((state) => {
+    if(state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg){
+      return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
+    }else{
+      return null
+  }
+  });
+  // console.log('bookedDateForEngg',bookedDateForEngg)
+
+  const filteredSlots = timeSlots.filter(slot => {
+    const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
+    // console.log("bookedengg",engg)
+    const bookedSlots = engg ? engg.slots : [];
+    return !bookedSlots.includes(slot.slot);
+  });
+  // console.log("filteredSlots",filteredSlots)
+
   
+
   const handleElevatorSectionDetails = () => {
+    let dateOnAssign;
     if (
       engDetails.enggJon &&
       ClickListOnSelect &&
@@ -231,6 +255,12 @@ const AddTicketModal = ({
       date &&
       message
     ) {
+      if(engDate===""){
+        dateOnAssign = fetchedDate;
+      }
+      else{
+        dateOnAssign = engDate;
+      }
       dispatch(
         assignCallBackByAdminAction(
           engDetails?.enggJon,
@@ -238,7 +268,7 @@ const AddTicketModal = ({
           callbackId,
           ClickListOnSelect.value,
           selectedSlot,
-          engDate,
+          dateOnAssign,
           message,
           engDetails?.enggName,
           engDetails.enggJon
@@ -581,19 +611,51 @@ const AddTicketModal = ({
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       
-                      <MultiSelectDropdown
-                       placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
-                        Details={serviceEnggDetail}
-                        handleEnggSelectionChange={handleEnggSelectionChange}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />
+                
+                  
+                  <div className="data-pic">
+                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
+                      </div>
+
+                     
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      <SingleSetDropdown
+                    {engDate || isAssigned ? (<MultiSelectDropdown
+                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
+                         Details={serviceEnggDetail}
+                         handleEnggSelectionChange={handleEnggSelectionChange}
+                         isAssigned={isAssigned}
+                         editchange={editchange}
+                         enggName={engDetails.enggName}
+                       />) : (<MultiSelectDropdown
+                        placeholder="Please Select Date First"
+                       />)}
+                      
+                    </div>
+                  </div>
+                  <div className="sm-box sm-box--2">
+                    <div className="col75">
+                  {engDetails.enggName || isAssigned ? ( <MultiSelectDropdown
+                        placeholder={isAssigned?selectedSlot?.join(" | "):"Select Slot"}
+                        slots={filteredSlots}
+                        handleEnggSelectionChange={handleEnggSelectionChange1}
+                        isAssigned={isAssigned}
+                        editchange={editchange}
+                        enggName={engDetails.enggName}
+                      />) : (<MultiSelectDropdown
+                        placeholder="Please Select Engg First"
+                       />)}
+                     
+
+                    </div>
+                  </div>
+
+                  <div className="sm-box sm-box--2">
+                    <div className="col75">
+                  
+                    <SingleSetDropdown
                         padding="6px"
                         width="100%"
                         placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
@@ -602,28 +664,7 @@ const AddTicketModal = ({
                         editchange={editchange}
                         onStateChange={handleSingleSetDropdown}
                       />
-                    </div>
-                  </div>
-                  <div className="sm-box sm-box--2">
-                    <div className="col75">
-                  
-                      <MultiSelectDropdown
-                      placeholder={isAssigned?selectedSlot:"Select Slot"}
-                        slots={timeSlots}
-                        handleEnggSelectionChange={handleEnggSelectionChange1}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />
-                    </div>
-                  </div>
 
-                  <div className="sm-box sm-box--2">
-                    <div className="col75">
-                  
-                      <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -632,8 +673,8 @@ const AddTicketModal = ({
                     id="subject"
                     name="subject"
                     style={{
-                      height: "90px",
-                      width: "78%",
+                      height: "200px",
+                      width: "80%",
                       marginLeft: "10%",
                       resize: "none",
                       color:"black",

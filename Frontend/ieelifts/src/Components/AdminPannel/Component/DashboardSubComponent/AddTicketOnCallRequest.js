@@ -11,6 +11,8 @@
   import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
   import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/ClientActions"; 
   import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
+  import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions"; 
+
   import toast from 'react-hot-toast';
   
   import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -26,7 +28,10 @@
     requestSection,
   }) => {
     const dispatch = useDispatch();
-  
+    
+    const [selectedEnggId, setSelectedEnggId] = useState([]);
+
+
     //  callback-request-state
     const [jon, setJon] = useState(""); //call-api-using-jon
 
@@ -57,35 +62,43 @@
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [message, setMessage] = useState("");
 
-    const timeSlots = [
+  
+  const timeSlots = [
       {
-        slot: "9:00-10:00",
+        slot: "9:00-11:00",
       },
       {
-        slot: "10:00-11:00",
+        slot: "11:00-01:00",
       },
       {
-        slot: "11:00-12:00",
+        slot: "01:30-03:30",
       },
       {
-        slot: "12:00-13:00",
+        slot: "03:30-04:30",
       },
       {
-        slot: "13:00-14:00",
-      },
-      {
-        slot: "14:00-15:00",
-      },
-      {
-        slot: "15:00-16:00",
-      },
-      {
-        slot: "16:00-17:00",
-      },
-      {
-        slot: "17:00-18:00",
-      },
+        slot: "04:30-05:30",
+      }
     ];
+    const bookedDateForEngg = useSelector((state) => {
+      if(state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg){
+        return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
+      }else{
+        return null
+    }
+    });
+    // console.log('bookedDateForEngg',bookedDateForEngg)
+
+    const filteredSlots = timeSlots.filter(slot => {
+      const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
+      // console.log("bookedengg",engg)
+      const bookedSlots = engg ? engg.slots : [];
+      return !bookedSlots.includes(slot.slot);
+    });
+    // console.log("filteredSlots",filteredSlots)
+
+
+
 
     //-------------------------------------------------
     // use use selector select to select the service engg state
@@ -210,11 +223,12 @@
       }, []);
   
     const handleEnggSelectionChange = (selectedOptions) => {
-      dispatch(fetchEnggDetailAction(selectedOptions[0]?.value));
+      setSelectedEnggId(selectedOptions)// selected Engg id 
+      dispatch(fetchEnggDetailAction(selectedOptions));
     };
   
-    const handleEnggSelectionChange1 = (id) => {
-      setSelectedSlot(id[0]?.value);
+    const handleEnggSelectionChange1 = (value) => {
+      setSelectedSlot(value);
     };
   
     const handleSingleSetDropdown = (selectedOptions) => {
@@ -228,6 +242,9 @@
     const handleAssignDateChange = (selectedOption)=>{
       const formattedDate = selectedOption.toLocaleDateString('en-GB');
       setengDate(formattedDate);
+
+      dispatch(getBookedSlotsforEnggsAction(formattedDate));
+
       
     }
 
@@ -257,7 +274,7 @@
           dispatch(
              assignCallBackByAdminAction(
                engDetails?.enggJon,
-               engDetails?.enggPhone,
+               jon,
                callbackId,
                ClickListOnSelect.value,
                selectedSlot,
@@ -631,18 +648,42 @@
                   <div className="grid-form-container">
                     <div className="sm-box sm-box--2">
                       <div className="col75">
-                        
-                        <MultiSelectDropdown
-                        placeholder={"Select Enggineers"}
-                          Details={serviceEnggDetail}
-                          handleEnggSelectionChange={handleEnggSelectionChange}
-                          
-                        />
+                      <div className="data-pic">
+                          <ReactDatePickers className="date-picker-dropdown" OnDateChange={handleAssignDateChange}/>
+                        </div>
+                       
                       </div>
                     </div>
                     <div className="sm-box sm-box--2">
                       <div className="col75">
-                        <SingleSetDropdown
+
+                      {engDate ? (<MultiSelectDropdown
+                        placeholder={"Select Enggineers"}
+                          Details={serviceEnggDetail}
+                          handleEnggSelectionChange={handleEnggSelectionChange}
+                          />) : (<MultiSelectDropdown
+                            placeholder="Please Select Date First"
+                           />) }
+                        
+                      </div>
+                    </div>
+                    <div className="sm-box sm-box--2">
+                      <div className="col75">
+                    
+                        {engDetails.enggName ? (<MultiSelectDropdown
+                        placeholder={"Select Slot"}
+                          slots={filteredSlots}
+                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                        />) : ( (<MultiSelectDropdown
+                          placeholder="Please Select Engg First"
+                         />))}
+                      </div>
+                    </div>
+  
+                    <div className="sm-box sm-box--2">
+                      <div className="col75">
+                    
+                      <SingleSetDropdown
                           padding="6px"
                           width="100%"
                           placeholder={"Allot A Checklist"}
@@ -651,32 +692,13 @@
                         />
                       </div>
                     </div>
-                    <div className="sm-box sm-box--2">
-                      <div className="col75">
-                    
-                        <MultiSelectDropdown
-                        placeholder={"Select Slot"}
-                          slots={timeSlots}
-                          handleEnggSelectionChange={handleEnggSelectionChange1}
-                        />
-                      </div>
-                    </div>
-  
-                    <div className="sm-box sm-box--2">
-                      <div className="col75">
-                    
-                        <div className="data-pic">
-                          <ReactDatePickers className="date-picker-dropdown" OnDateChange={handleAssignDateChange}/>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                   <div className="col75">
                     <textarea
                       id="subject"
                       name="subject"
                       style={{
-                        height: "90px",
+                        height: "200px",
                         width: "78%",
                         marginLeft: "10%",
                         resize: "none",

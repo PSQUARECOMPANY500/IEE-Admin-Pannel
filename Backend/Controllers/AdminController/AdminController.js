@@ -18,7 +18,88 @@ const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSch
 
 const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
 
+const EnggRating = require("../../Modals/Rating/Rating")
+
 const mongoose = require("mongoose");
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle 
+
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+// function to handle Engg Crouser Data on dashboard only   ServiceEnggId, ServiceEnggName, ServiceEnggPic ,averageRating
+
+module.exports.getEnggCrouserData = async (req,res) => {
+  try {
+    const EnggDetail = await ServiceEnggData.find({});
+    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
+      const enggRating = await EnggRating.find({ServiceEnggId:item.EnggId})
+      const ratingsCount = enggRating.length;
+      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
+      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+      return {
+        ServiceEnggId: item.EnggId,
+        ServiceEnggName: item.EnggName,
+        ServiceEnggPic: item.EnggPhoto,
+        averageRating,
+      };
+    }))
+    res.status(200).json({ BasicDetailForCrouser: BasicDetail });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to get the booked slots for the particular Engg...
+
+module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
+  try {
+    const { Date } = req.query;
+
+    const assignCallbackDate = await ServiceAssigntoEngg.find({ Date });
+    const assignRequestDate = await AssignSecheduleRequest.find({ Date });
+
+    const combinedData = [...assignCallbackDate, ...assignRequestDate];
+
+    // Grouping slots by ServiceEnggId
+    const slotsByEnggId = {};
+    combinedData.forEach((entry) => {
+      if (!slotsByEnggId[entry.ServiceEnggId]) {
+        slotsByEnggId[entry.ServiceEnggId] = [];
+      }
+      slotsByEnggId[entry.ServiceEnggId].push(...entry.Slot);
+    });
+
+    // Converting object into array of objects
+    const result = await Promise.all(Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
+      const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId:ServiceEnggId});
+      return {
+        ServiceEnggId,
+        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown", 
+        slots: slotsByEnggId[ServiceEnggId],
+      }
+    
+    }));
+
+    res.status(200).json({ BookedSlots: result });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
@@ -426,7 +507,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
-    console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
@@ -648,53 +729,6 @@ module.exports.getClientMemebership = async (req, res) => {
   }
 };
 
-//function used to calculate the data of meberships
-// const calculateData = (data) => {
-//   const result = data.reduce(
-//     (acc, member) => {
-//       const pricePaid = parseFloat(member.PricePaid) || 0; // Convert to a number or default to 0
-//       acc.totalRevenue += pricePaid;
-//       acc.count++;
-
-//       return acc;
-//     },
-//     { totalRevenue: 0, count: 0 }
-//   );
-
-//   return result;
-// };
-// const calculateData = (data) => {
-//   let totalRevenue = 0;
-//   let count = 0;
-//   let expData = {};
-
-//   for (const d of data) {
-//     totalRevenue += parseFloat(d.PricePaid);
-//     count++;
-//     // console.log(d.StartDate);
-//     const startDate = new Date(d.StartDate);
-//     const durationInMonths = Number(d.Duration);
-//     const endDate = new Date(
-//       startDate.setMonth(startDate.getMonth() + durationInMonths)
-//     );
-
-//     // Calculate the difference in milliseconds
-//     const timeDifference = endDate - Date.now();
-
-//     // Convert milliseconds to days
-//     const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-//     if(daysLeft<=30){
-//       if(daysLeft<=0){
-//         data.isExpired =true;
-//         data.save();
-//       }
-//     }
-//     expData.push({data.JobOrderNumber,data.isExpired})
-//   }
-
-//   return { totalRevenue, count,expData };
-// };
 
 const calculateData = (data) => {
   let totalRevenue = 0;
