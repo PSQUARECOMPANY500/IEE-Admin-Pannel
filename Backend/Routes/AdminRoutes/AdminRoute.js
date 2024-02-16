@@ -63,6 +63,7 @@ router.post("/checklist", adminContoller.createCheckList);
 
 router.get('/getRequestDetailByRequestid/:RequestId',adminContoller.getRequestDetailByRequestId)
 router.get("/clientDetail/:JobOrderNumber",ClientController.getClientDetail);
+router.get('/getAssignRequestDetail/:RequestId', adminContoller.getAssignServiceRequestByServiceRequestId)
 
 
 
