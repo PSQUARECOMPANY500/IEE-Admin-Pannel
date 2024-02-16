@@ -667,7 +667,6 @@ module.exports.getClientMembership = async (req, res) => {
     const filteredData = filterMembershipByType(membershipData, dataType);
     const skip = (page - 1) * pageSize;
     let clientData, totalExpiredPages, totalExpiringPages;
-
     switch (wanted) {
       case "expired":
         const expiredData = await calculateExpired(filteredData);
@@ -697,7 +696,6 @@ module.exports.getClientMembership = async (req, res) => {
         totalPages:
           wanted === "expired" ? totalExpiredPages : totalExpiringPages,
         clientData: clientDetails,
-        count: clientData.length,
       },
     });
   } catch (error) {
@@ -735,8 +733,9 @@ const calculateExpiring = async (filteredData) => {
   return expiringData.filter(Boolean);
 };
 
-const calculateExpired = async (filteredData) => {
+const calculateExpired = (filteredData) => {
   const expiredData = filteredData.filter((data) => data.EndDate < Date.now());
+  // console.log(expiredData);
   return expiredData;
 };
 
@@ -820,11 +819,15 @@ module.exports.getMembershipDetails = async (req, res) => {
   try {
     const memberShipDetails = await AssignMemeberships.find();
     const dataTypes = ["warrenty", "platinum", "silver", "gold"];
-
+ 
     const responseData = await Promise.all(
       dataTypes.map(async (type) => {
         const filteredData = filterMembershipByType(memberShipDetails, type);
-        return { dataType: type, details: calculateData(filteredData) };
+        const data = await calculateData(filteredData)
+        return {
+          dataType: type,
+          details: data,
+        };
       })
     );
 
@@ -836,13 +839,14 @@ module.exports.getMembershipDetails = async (req, res) => {
   }
 };
 
-const calculateData = (data) => {
+const calculateData = async (data) => {
   let totalRevenue = 0;
   let count = 0;
 
+  const expiredCount = await calculateExpired(data);
+  const expiringCount = await calculateExpiring(data);
   for (const d of data) {
     totalRevenue += parseFloat(d.PricePaid);
-
     // Check if membership is active based on start and end dates, and other conditions
     if (
       d.EndDate > Date.now() &&
@@ -854,7 +858,12 @@ const calculateData = (data) => {
     }
   }
 
-  return { totalRevenue, count };
+  return {
+    totalRevenue,
+    count,
+    expiredCount: expiredCount.length,
+    expiringCount: expiringCount.length,
+  };
 };
 
 // Get client Details

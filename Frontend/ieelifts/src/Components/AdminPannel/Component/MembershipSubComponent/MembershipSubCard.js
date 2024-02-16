@@ -3,9 +3,6 @@
 import React from "react";
 
 const MembershipSubCard = ({ data, dataType, isExpired }) => {
-  // console.log(data, "data");
-  // console.log(key, "key");
-  // console.log(dataType, "dataType");
   const cardClass = isExpired
     ? "membership_card_data_display_expired"
     : dataType === "Warrenty"

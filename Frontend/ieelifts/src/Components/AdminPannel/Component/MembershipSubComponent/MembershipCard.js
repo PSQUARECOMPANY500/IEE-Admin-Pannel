@@ -134,17 +134,30 @@ const MembershipCard = ({
             >
               <div className="after_expansion_labels">
                 <span>Revenue:</span>
-                <span>{DemoData?.Data?.details?.totalRevenue || "--"}</span>
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.totalRevenue !== undefined
+                    ? `${DemoData?.Data?.details?.totalRevenue}`
+                    : " --"}
+                </span>
               </div>
               <div className="after_expansion_labels">
                 <span>Expiring Soon:</span>
-                {/* <span>{DemoData.Data.expiringCount}</span> */}
-                <span>35</span>
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.expiringCount !== undefined
+                    ? `${DemoData?.Data?.details?.expiringCount}`
+                    : " --"}
+                </span>
               </div>
               <div className="after_expansion_labels after_expansion_labels_expired">
                 <span>Expired:</span>
-                <span>35</span>
-                {/* <span>{DemoData.expiredCount}</span> */}
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.expiredCount !== undefined
+                    ? `${DemoData?.Data?.details?.expiredCount}`
+                    : " --"}
+                </span>
               </div>
             </div>
 
@@ -152,8 +165,16 @@ const MembershipCard = ({
               className={`membership_card_stats `}
               style={setClick ? { display: "none" } : {}}
             >
-              <MembershipExpiring DemoData={DemoData} setClick={setClick} />
-              <MembershipExpired DemoData={DemoData} setClick={setClick} />
+              <MembershipExpiring
+                DemoData={DemoData}
+                setClick={setClick}
+                count={DemoData?.Data?.details?.expiringCount}
+              />
+              <MembershipExpired
+                DemoData={DemoData}
+                setClick={setClick}
+                count={DemoData?.Data?.details?.expiredCount}
+              />
             </div>
           </>
         )}

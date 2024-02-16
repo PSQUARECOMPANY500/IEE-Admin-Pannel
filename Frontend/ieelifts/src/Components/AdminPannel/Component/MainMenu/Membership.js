@@ -25,8 +25,6 @@ const Membership = () => {
     }
   });
 
-  // console.log(membershipJon, "membershipJon");
-
   const [cards, setCards] = useState([
     {
       DemoData: {
