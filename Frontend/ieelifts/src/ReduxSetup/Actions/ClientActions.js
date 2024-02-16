@@ -17,8 +17,7 @@ export const requestCallBackByAdmin = (JobOrderNumber,callbackDate,callbackTime,
             Description,
           }
         );
-        const newCallbackData = response?.data?.Requests?.
-        callbackId;
+        const newCallbackData = response?.data?.Requests?.callbackId;
         return newCallbackData;
         }
       }catch (error) {

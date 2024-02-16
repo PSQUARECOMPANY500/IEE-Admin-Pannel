@@ -24,46 +24,58 @@ const Membership = () => {
       return null;
     }
   });
+  const [cards, setCards] = useState([]);
 
-  const [cards, setCards] = useState([
-    {
-      DemoData: {
-        dataType: "Warrenty",
-        Data: membershipJon?.membershipDetail?.data[0],
-      },
-      order: 1,
-      toggleOrder: 2,
-      id: 1,
-    },
-    {
-      DemoData: {
-        dataType: "Platinum",
-        Data: membershipJon?.membershipDetail?.data[1],
-      },
-      order: 2,
-      toggleOrder: 1,
-      id: 2,
-    },
-    {
-      DemoData: {
-        dataType: "Gold",
-        Data: membershipJon?.membershipDetail?.data[3],
-      },
-      order: 3,
-      toggleOrder: 1,
-      id: 3,
-    },
-    {
-      DemoData: {
-        dataType: "Silver",
-        Data: membershipJon?.membershipDetail?.data[2],
-      },
-      order: 4,
-      toggleOrder: 1,
-      id: 4,
-    },
-    { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
-  ]);
+  useEffect(() => {
+    if (
+      membershipJon &&
+      membershipJon.membershipDetail &&
+      membershipJon.membershipDetail.data
+    ) {
+      setCards([
+        {
+          DemoData: {
+            dataType: "Warrenty",
+            Data: membershipJon.membershipDetail.data[0],
+          },
+          order: 1,
+          toggleOrder: 2,
+          id: 1,
+        },
+        {
+          DemoData: {
+            dataType: "Platinum",
+            Data: membershipJon.membershipDetail.data[1],
+          },
+          order: 2,
+          toggleOrder: 1,
+          id: 2,
+        },
+        {
+          DemoData: {
+            dataType: "Gold",
+            Data: membershipJon.membershipDetail.data[3],
+          },
+          order: 3,
+          toggleOrder: 1,
+          id: 3,
+        },
+        {
+          DemoData: {
+            dataType: "Silver",
+            Data: membershipJon.membershipDetail.data[2],
+          },
+          order: 4,
+          toggleOrder: 1,
+          id: 4,
+        },
+        { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
+      ]);
+    } else {
+      // Reset cards to an empty array if membershipJon is not available
+      setCards([]);
+    }
+  }, [membershipJon]);
 
   const handleDoubleClick = (id) => {
     const clickedIndex = cards.findIndex((card) => card.id === id);
@@ -121,24 +133,25 @@ const Membership = () => {
           setClick ? `membershipCards_expand ` : ""
         } `}
       >
-        {cards.map((items, index) => {
-          if (index === cards.length - 1) return;
+        {cards &&
+          cards.map((items, index) => {
+            if (index === cards.length - 1) return null;
 
-          return (
-            <MembershipCard
-              key={index}
-              DemoData={items.DemoData}
-              order={items.order}
-              setClick={setClick}
-              clickCount={clickCount}
-              itemClick={() => {
-                handleDoubleClick(index + 1);
-                setClickCount(1);
-                click(true);
-              }}
-            />
-          );
-        })}
+            return (
+              <MembershipCard
+                key={index}
+                DemoData={items.DemoData}
+                order={items.order}
+                setClick={setClick}
+                clickCount={clickCount}
+                itemClick={() => {
+                  handleDoubleClick(index + 1);
+                  setClickCount(1);
+                  click(true);
+                }}
+              />
+            );
+          })}
         {setClick && (
           <MembershipCard
             clickCount={clickCount}
