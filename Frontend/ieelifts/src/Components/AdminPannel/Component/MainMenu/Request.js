@@ -142,7 +142,7 @@ const data = [...requestDetail];
 
   useEffect(() => {
     setTimeout(() => {
-      console.log("renderTicket", renderTicket);
+      // console.log("renderTicket", renderTicket);
       dispatch(getAllAssignServiceRequestAction());
     }, 1000);
   }, [renderTicket]); 
@@ -173,10 +173,76 @@ const data = [...requestDetail];
 
                 <div className="parent-div-task-request">
                   {filterDataByDate().map((value) => {
-                 // console.log("value inside tha map", value)
                   const requestId = value.requestId;
                   const EnggId = value.EnggId;
 
+                  if (value.time.length > 1) {
+                    // Create a copy for each slot time
+                    return value.time.map((time) => (
+                      <div
+                      className="animation-all"
+                      style={{ animationName: animationDirection }}
+                    >
+                      {/* one slot start from here */}
+
+                      <div className="request-task-detail">
+                        <div className="service-assign">
+                          <div className="date-time">
+                            <span>TIME</span>
+                            <p>{time}</p>
+                          </div>
+
+                          <div className="name-3dots">
+                            <div className="name-jon">
+                              <p>{value?.name}</p>
+                              <div className="jon-type">
+                                <p>
+                                  <span style={{ fontWeight: "500" }}>JON</span>
+                                  :{value?.jobNumber}
+                                </p>
+                                <p>{value?.jobType}</p>
+                              </div>
+                            </div>
+
+                            <div className="pic-3dots">
+                              <div
+                                className="pic"
+                                style={{
+                                  paddingTop: "2px",
+                                  display: "flex",
+                                }}
+                              >
+                                <div className="image-border-collapse">
+                                  <img
+                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                    width={40}
+                                    className="profile-pic"
+                                    alt="img"
+                                  />
+                                </div>
+                                <div className="image-border-collapse2">
+                                  <img
+                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                    width={40}
+                                    className="profile-pic"
+                                    alt="img"
+                                  />
+                                </div>
+                              </div>
+                              <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
+
+                                <HiOutlineDotsVertical />
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* one slot ends from here */}
+                    </div>
+                    ));
+                  }
                   
                   return(
                     <div
@@ -249,7 +315,6 @@ const data = [...requestDetail];
                         showTicketModal={showTicketModal5}
                         RequestId={RequestId}
                         setRenderTicket={setRenderTicket}
-
                         enggId={enggId}
                         isAssigned={true}
                       />

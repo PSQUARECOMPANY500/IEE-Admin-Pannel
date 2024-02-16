@@ -8,9 +8,13 @@ import MessageBox from "./MessageBox";
 
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux"
+
+import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
 const ServiceEnggCrousel = () => {
-  const [len, setLen] = useState(data.length);
+  const dispatch = useDispatch();
+  
   const sliderRef = useRef(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -20,8 +24,21 @@ const ServiceEnggCrousel = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
-    setLen(data.length);
+    dispatch(getEnggBasicDataForCrouserAction());
   }, []);
+
+  //-------------------------------------------------------------------------------------------------------------------------------
+  const getBasicData = useSelector((state) => {
+    if (state.AdminRootReducer && state.AdminRootReducer.getEnggBasicDataForCrouserReducer && state.AdminRootReducer.getEnggBasicDataForCrouserReducer.EnggBasicDetailForCrouser){
+      return state.AdminRootReducer.getEnggBasicDataForCrouserReducer.EnggBasicDetailForCrouser.BasicDetailForCrouser
+  }else{
+    return null
+  }});
+  // console.log('getBasicData--**--',getBasicData)
+  //-------------------------------------------------------------------------------------------------------------------------------
+
+  const len = getBasicData?.length;
+  // console.log("::::",len);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -127,23 +144,24 @@ const ServiceEnggCrousel = () => {
         {...settings}
         beforeChange={handleBeforeChange}
       >
-        {data.map((item, index) => (
+        {getBasicData?.map((item, index) => (
           <div className="main-crouser" key={index}>
             <div className="second-carusel">
               <div className="basic-info">
                 <img
-                  src="https://ieelifts.com/wp-content/uploads/2023/08/03-972x1024.jpg"
+                  src={item.ServiceEnggPic}
                   alt="img"
                   style={{
                     height: "50px",
                     width: "50px",
                     borderRadius: "100%",
+                    objectFit:"cover"
                   }}
                 />
                 <div className="engg-profile">
-                  <span>{item.name}</span>
+                  <span>{item.ServiceEnggName}</span>
                   <span className="star-icon">
-                    4.3 <LiaStarSolid style={{ color: "#F8AC1D" }} />
+                  {item.averageRating}<LiaStarSolid style={{ color: "#F8AC1D" }} />
                   </span>
                 </div>
               </div>
@@ -229,10 +247,9 @@ const ServiceEnggCrousel = () => {
               </div>
 
               <div className="dropdown3">
-                {/* <div className="pie-chart-detail"> */}
+             
                 <TaskChart />
-                {/* </div> */}
-
+            
                 <div
                   className="dropdown-menu"
                   style={{ left: len - 1 === index ? "-165px" : "-12%" }}

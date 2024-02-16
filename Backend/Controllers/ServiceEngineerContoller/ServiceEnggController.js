@@ -17,8 +17,7 @@ module.exports.RegisterServiceEngg = async (req, res) => {
       EnggName,
       PhoneNumber,
       EnggAddress,
-      EnggPhoto,
-      AverageRating,
+      EnggPhoto
     } = req.body;
 
     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
@@ -38,7 +37,6 @@ module.exports.RegisterServiceEngg = async (req, res) => {
       PhoneNumber,
       EnggAddress,
       EnggPhoto,
-      AverageRating,
     });
     // Respond with the saved user data
     res.status(201).json({ message: "service Engg Register Succesfully", user: newUser });
@@ -156,3 +154,5 @@ module.exports.getEnggDetail = async (req,res) =>{
     res.status(500).json({ error: "Internal server error" });
   }
 }
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------

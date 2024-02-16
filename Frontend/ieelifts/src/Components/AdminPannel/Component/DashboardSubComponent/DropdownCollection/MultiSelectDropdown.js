@@ -8,6 +8,8 @@ const animatedComponents = makeAnimated();
 const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName,editchange}) => {
 
   const [selectedValue , setSelectedValue] = useState([]);
+
+  // console.log("multi slots",selectedValue)
  
   const enggDetailsData = Details || slots || [];
 
@@ -72,9 +74,10 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
   };
 
   const handleChange = (selectedOption) =>{
- /*  console.log("dropdoen information : ",selectedOption); */
+ console.log("dropdoen information : ",selectedOption); 
+ const selectedValues = selectedOption.map(option => option.value)
   setSelectedValue(selectedOption)
-  handleEnggSelectionChange(selectedOption)
+  handleEnggSelectionChange(selectedValues)
   }
 
 

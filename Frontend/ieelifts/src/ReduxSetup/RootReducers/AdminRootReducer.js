@@ -15,6 +15,8 @@ import { getAllAssignCallbackRequestReducer } from '../Reducers/AdminReducer';
 import { getCurrentDateAssignCalbackAction } from '../Reducers/AdminReducer';
 import { ticketSectionRenderReducer } from '../Reducers/AdminReducer';
 import { getCurrentDateAssignServiceRequestReducer } from '../Reducers/AdminReducer';
+import { getBookedSlotsforEnggsReducer } from '../Reducers/AdminReducer';
+import { getEnggBasicDataForCrouserReducer } from '../Reducers/AdminReducer';
 
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
 
@@ -35,7 +37,9 @@ const AdminRootReducer = combineReducers({
     getAllAssignCallbackRequestReducer:getAllAssignCallbackRequestReducer,
     getCurrentDateAssignCalbackAction:getCurrentDateAssignCalbackAction,
     ticketSectionRenderReducer:ticketSectionRenderReducer,
-    getCurrentDateAssignServiceRequestReducer:getCurrentDateAssignServiceRequestReducer
+    getCurrentDateAssignServiceRequestReducer:getCurrentDateAssignServiceRequestReducer,
+    getBookedSlotsforEnggsReducer:getBookedSlotsforEnggsReducer,
+    getEnggBasicDataForCrouserReducer:getEnggBasicDataForCrouserReducer
 
 })
 

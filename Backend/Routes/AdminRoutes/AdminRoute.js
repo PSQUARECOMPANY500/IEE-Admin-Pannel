@@ -48,6 +48,11 @@ router.get('/getCurrentDateAssignCallback', adminContoller.getCurrentDateAssignC
 
 router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
 
+
+router.get('/getAvailbaleEng', adminContoller.getBookedSlotsForParticularEngg);
+
+router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
+
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
