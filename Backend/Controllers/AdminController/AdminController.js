@@ -840,3 +840,51 @@ module.exports.getBookedDates = async(req,res)=>{
   }
 
 }
+
+//....................................................................................................................................................................
+/* module.exports.getEngAssignSlotsDetails = async(req,res)=>{
+  try{
+    const {EngId} = req.body;
+    const currentDate = new Date().toLocaleDateString('en-GB')
+    const response = await ServiceAssigntoEngg.find({EngId});
+    const response2 = await AssignSecheduleRequest.find({EngId});
+    console.log("res1",response)
+    console.log("res2",response2)
+    res.send(currentDate)
+
+  }catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error:"Internal server Error", 
+      "message":error.message
+    });
+  }
+} */
+
+module.exports.getEngAssignSlotsDetails = async (req, res) => {
+  try {
+    const {ServiceEnggId} = req.body;
+    const currentDate = new Date().toLocaleDateString('en-GB');
+
+    // Fetch data from both tables concurrently using Promise.all
+    const [serviceAssignments, scheduleRequests] = await Promise.all([
+      ServiceAssigntoEngg.find({ ServiceEnggId }),
+      AssignSecheduleRequest.find({ ServiceEnggId })
+    ]);
+    // Combine the results if needed
+    const finalData = {
+      serviceAssignments,
+      scheduleRequests,
+      currentDate
+    };
+
+    // Send the final data as the response
+    res.send(finalData);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message
+    });
+  }
+};
