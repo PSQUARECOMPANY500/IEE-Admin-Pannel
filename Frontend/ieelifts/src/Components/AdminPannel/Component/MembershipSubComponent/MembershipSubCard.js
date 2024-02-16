@@ -33,6 +33,10 @@ const MembershipSubCard = ({ data, dataType, isExpired }) => {
     ? "membership_card_data_jon_title_gold"
     : "membership_card_data_jon_title_silver";
 
+    const truncatedAddress = data?.address && data.address.length > 30
+    ? data.address.slice(0, 30) + "..." // Show first 30 characters and add ellipsis
+    : data?.address; 
+
   return (
     <div className={`membership_card_data_expire ${cardClassBorder} `}>
       <div className="membership_card_data_display">
@@ -44,7 +48,7 @@ const MembershipSubCard = ({ data, dataType, isExpired }) => {
         </div>
         <div className="membership_card_data_info">
           <p>{data?.name}</p>
-          <p className="membership_card_data_address">{data?.address}</p>
+          <p className="membership_card_data_address">{truncatedAddress}</p>
         </div>
       </div>
       <div className={`membership_card_data_display_hover ${cardClass}`}>
