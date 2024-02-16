@@ -28,6 +28,7 @@
     "recharts": "^2.10.3",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
+    "reselect": "^5.1.0",
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.4",
     "v-calendar": "^2.4.2",

@@ -17,6 +17,9 @@ const memebership = new Schema(
       type: Date,
       required: true,
     },
+    EndDate: {
+      type: Date,
+    },
     Duration: {
       type: String,
       required: true,
@@ -30,11 +33,6 @@ const memebership = new Schema(
       required: true,
     },
     isRenewed: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    isExpired: {
       type: Boolean,
       required: true,
       default: false,

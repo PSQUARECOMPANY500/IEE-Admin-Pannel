@@ -2,8 +2,8 @@
 
 import React from "react";
 
-const MembershipSubCard = ({ data, dataType }) => {
-  const cardClass = data.isExpired
+const MembershipSubCard = ({ data, dataType, isExpired }) => {
+  const cardClass = isExpired
     ? "membership_card_data_display_expired"
     : dataType === "Warrenty"
     ? "membership_card_data_display_expiring"
@@ -13,7 +13,7 @@ const MembershipSubCard = ({ data, dataType }) => {
     ? "membership_card_data_display_expiring_gold"
     : "membership_card_data_display_expiring_silver";
 
-  const cardClassBorder = data.isExpired
+  const cardClassBorder = isExpired
     ? "membership_card_data_display_expired_border"
     : dataType === "Warrenty"
     ? "membership_card_data_display_expiring_border"
@@ -23,7 +23,7 @@ const MembershipSubCard = ({ data, dataType }) => {
     ? "membership_card_data_display_expiring_border_gold"
     : "membership_card_data_display_expiring_border_silver";
 
-  const jonTitleColor = data.isExpired
+  const jonTitleColor = isExpired
     ? "membership_card_data_jon_title_expiry"
     : dataType === "Warrenty"
     ? "membership_card_data_jon_title_warrenty"
@@ -33,6 +33,10 @@ const MembershipSubCard = ({ data, dataType }) => {
     ? "membership_card_data_jon_title_gold"
     : "membership_card_data_jon_title_silver";
 
+    const truncatedAddress = data?.address && data.address.length > 30
+    ? data.address.slice(0, 30) + "..." // Show first 30 characters and add ellipsis
+    : data?.address; 
+
   return (
     <div className={`membership_card_data_expire ${cardClassBorder} `}>
       <div className="membership_card_data_display">
@@ -40,18 +44,16 @@ const MembershipSubCard = ({ data, dataType }) => {
           <p className={`membership_card_data_jon_title ${jonTitleColor}`}>
             Jon
           </p>
-          <p>{data.jon}</p>
+          <p>{data?.JobOrderNumber}</p>
         </div>
         <div className="membership_card_data_info">
-          <p>{data.name}</p>
-          <p className="membership_card_data_address">{data.address}</p>
+          <p>{data?.name}</p>
+          <p className="membership_card_data_address">{truncatedAddress}</p>
         </div>
       </div>
-      <a  href={`tel:${data.number}`}>
-        <div className={`membership_card_data_display_hover ${cardClass}`}>
-          <p>{data.number}</p>
-        </div>
-      </a>
+      <div className={`membership_card_data_display_hover ${cardClass}`}>
+        <p>{data?.number}</p>
+      </div>
     </div>
   );
 };

@@ -1732,6 +1732,29 @@ tbody tr {
 table {
   width: 100%;;
 }
+thead{
+
+  border-radius: 10%;
+}
+
+thead th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+ th:first-child {
+  border-top-left-radius: 8%;
+  border-bottom-left-radius: 8%;
+}
+
+th:last-child {
+  border-top-right-radius: 8%;
+  border-bottom-right-radius: 8%;
+}
+
+/* Add your other styles as needed */
 
 thead th {
   background-color: #f2f2f2;
@@ -1803,7 +1826,7 @@ thead th {
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   padding: 10px; /* Adjust padding as needed */
 
-  border-radius: 10px;
+  border-radius: 10%;
 }
 
 /* check box css code starts here */

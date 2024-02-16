@@ -1,8 +1,10 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
 import React from "react";
-import MembershipSubCard from "./MembershipSubCard";
 import MembershipCardDetails from "./MembershipCardDetails";
+import MembershipExpiring from "./MembershipExpiring";
+import MembershipExpired from "./MembershipExpired";
+// import { useDispatch, useSelector } from "react-redux";
 
 const MembershipCard = ({
   DemoData,
@@ -39,17 +41,6 @@ const MembershipCard = ({
       : DemoData.dataType === "Silver"
       ? "membership_card_silver_shadow"
       : "total_revenue_outer_shadow";
-
-  const scrollbar =
-    DemoData.dataType === "Warrenty"
-      ? "membership_card_scrollable_warrenty"
-      : DemoData.dataType === "Platinum"
-      ? "membership_card_scrollable_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_scrollable_gold"
-      : DemoData.dataType === "Silver"
-      ? "membership_card_scrollable_silver"
-      : "total_revenue_outer_border";
 
   const cardColor =
     DemoData.dataType === "Warrenty"
@@ -97,13 +88,16 @@ const MembershipCard = ({
             >
               <div className="membership_card_topbar_left">
                 <p className={`membership_card_title ${titleClass}`}>
-                  {DemoData.dataType}
+                  {DemoData?.dataType}
                 </p>
                 <p
                   className="membership_card_revenue"
                   style={setClick ? { display: "none" } : {}}
                 >
-                  Revenue: {DemoData.revenue}
+                  Revenue
+                  {DemoData?.Data?.details?.totalRevenue !== undefined
+                    ? `: ₹${DemoData?.Data?.details?.totalRevenue}`
+                    : " --"}
                 </p>
               </div>
               <div
@@ -112,7 +106,7 @@ const MembershipCard = ({
                   padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
                 }}
               >
-                <p>{DemoData.count}</p>
+                <p>{DemoData?.Data?.details?.count}</p>
               </div>
             </div>
 
@@ -140,15 +134,30 @@ const MembershipCard = ({
             >
               <div className="after_expansion_labels">
                 <span>Revenue:</span>
-                <span>{DemoData.revenue}</span>
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.totalRevenue !== undefined
+                    ? `${DemoData?.Data?.details?.totalRevenue}`
+                    : " --"}
+                </span>
               </div>
               <div className="after_expansion_labels">
                 <span>Expiring Soon:</span>
-                <span>{DemoData.expiringCount}</span>
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.expiringCount !== undefined
+                    ? `${DemoData?.Data?.details?.expiringCount}`
+                    : " --"}
+                </span>
               </div>
               <div className="after_expansion_labels after_expansion_labels_expired">
                 <span>Expired:</span>
-                <span>{DemoData.expiredCount}</span>
+                <span>
+                  {" "}
+                  {DemoData?.Data?.details?.expiredCount !== undefined
+                    ? `${DemoData?.Data?.details?.expiredCount}`
+                    : " --"}
+                </span>
               </div>
             </div>
 
@@ -156,48 +165,16 @@ const MembershipCard = ({
               className={`membership_card_stats `}
               style={setClick ? { display: "none" } : {}}
             >
-              <div className="membership_card_expiring">
-                <div className="membership_card_expiring-title">
-                  <p>Expiring Soon</p>
-                  <p>{DemoData.expiringCount}</p>
-                </div>
-                <div
-                  className={`membership_card_scrollable ${scrollbar} ${
-                    setClick ? "membership_card_stats_expand_height" : ""
-                  }`}
-                >
-                  {DemoData.data.map((data, index) => {
-                    return !data.isExpired ? (
-                      <MembershipSubCard
-                        data={data}
-                        key={index}
-                        dataType={DemoData.dataType}
-                      />
-                    ) : null;
-                  })}
-                </div>
-              </div>
-              <div className="membership_card_expiring ">
-                <div className="membership_card_expiring-title membership_card_expired-title">
-                  <p>Expired</p>
-                  <p>{DemoData.expiredCount}</p>
-                </div>
-                <div
-                  className={`membership_card_scrollable membership_card_scrollable_expired ${
-                    setClick ? "membership_card_stats_expand_height" : ""
-                  }`}
-                >
-                  {DemoData.data.map((data, index) => {
-                    return data.isExpired ? (
-                      <MembershipSubCard
-                        data={data}
-                        key={index}
-                        dataType={DemoData.dataType}
-                      />
-                    ) : null;
-                  })}
-                </div>
-              </div>
+              <MembershipExpiring
+                DemoData={DemoData}
+                setClick={setClick}
+                count={DemoData?.Data?.details?.expiringCount}
+              />
+              <MembershipExpired
+                DemoData={DemoData}
+                setClick={setClick}
+                count={DemoData?.Data?.details?.expiredCount}
+              />
             </div>
           </>
         )}
