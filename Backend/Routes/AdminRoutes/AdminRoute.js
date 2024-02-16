@@ -4,6 +4,7 @@ const router = express.Router();
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 
+const ClientController = require("../../Controllers/ClientController/ClientController");
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -43,19 +44,28 @@ router.get(
   adminContoller.getCurrentDateAssignCallback
 );
 
-router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateAssignServiceRequest);
-
-
-router.get('/getAvailbaleEng', adminContoller.getBookedSlotsForParticularEngg);
-
-router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
-
 router.get(
-  "/getMembershipDetails",
-  adminContoller.getMembershipDetails
+  "/getCurrentDateAssignServiceRequest",
+  adminContoller.getCurrentDateAssignServiceRequest
 );
+
+router.get("/getAvailbaleEng", adminContoller.getBookedSlotsForParticularEngg);
+
+router.get("/getEnggCrouserData", adminContoller.getEnggCrouserData);
+
+router.get("/getMembershipDetails", adminContoller.getMembershipDetails);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
+
+router.get(
+  "/getRequestDetailByRequestid/:RequestId",
+  adminContoller.getRequestDetailByRequestId
+);
+router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
+router.get(
+  "/getAssignRequestDetail/:RequestId",
+  adminContoller.getAssignServiceRequestByServiceRequestId
+);
 
 module.exports = router;

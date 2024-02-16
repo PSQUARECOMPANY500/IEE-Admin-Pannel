@@ -3,7 +3,7 @@ import React, { useLayoutEffect, useEffect, useRef, useState } from "react";
 import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import {createSelector} from "reselect"
+import { createSelector } from "reselect";
 
 const MembershipExpiring = ({ DemoData, setClick, count }) => {
   const selectAdminRootReducer = (state) => state.AdminRootReducer;
@@ -35,13 +35,14 @@ const MembershipExpiring = ({ DemoData, setClick, count }) => {
   useEffect(() => {
     if (memberShipDetails && memberShipDetails.clientData) {
       setPageData((prevData) => {
-        const newData = memberShipDetails.clientData.filter(
-          (data) =>
+        const newData = memberShipDetails.clientData.filter((data) => {
+          return (
             !data.isExpired &&
             !prevData.some(
               (prev) => prev.JobOrderNumber === data.JobOrderNumber
             )
-        );
+          );
+        });
         return [...prevData, ...newData];
       });
     }
