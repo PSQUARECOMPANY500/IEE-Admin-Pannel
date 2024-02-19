@@ -253,6 +253,7 @@
       if (requestSection){
         dispatch(requestServiceRequestByAdmin(jon,date,time,typeOfIssue.label,dtext)).then((RequestId)=>{
           if(engDetails.enggJon &&ClickListOnSelect &&selectedSlot &&date &&message){
+            console.log("1");
               dispatch(assignserviceRequestByAdmin(
                engDetails?.enggJon,
                 jon,
