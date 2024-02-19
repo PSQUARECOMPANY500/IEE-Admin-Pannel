@@ -840,3 +840,39 @@ module.exports.getBookedDates = async(req,res)=>{
   }
 
 }
+
+//....................................................................................................................................................................
+// This is the api for fetching Eng details acc to current Date
+
+module.exports.getEngAssignSlotsDetails = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.body;
+    const currentDate = new Date().toLocaleDateString('en-GB');
+
+    // Fetch data from both tables concurrently using Promise.all
+    const [serviceAssignments, scheduleRequests] = await Promise.all([
+      ServiceAssigntoEngg.find({ ServiceEnggId }),
+      AssignSecheduleRequest.find({ ServiceEnggId })
+    ]);
+
+    // Filter data based on the current date
+    const filteredServiceAssignments = serviceAssignments.filter(item => item.Date === currentDate);
+    const filteredScheduleRequests = scheduleRequests.filter(item => item.Date === currentDate);
+
+    // Combine the filtered results
+    const finalData = {
+      serviceAssignments: filteredServiceAssignments,
+      scheduleRequests: filteredScheduleRequests,
+      currentDate
+    };
+
+    // Send the final data as the response
+    res.send(finalData);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message
+    });
+  }
+};

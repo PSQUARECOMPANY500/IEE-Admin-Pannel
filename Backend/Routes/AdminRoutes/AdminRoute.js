@@ -53,6 +53,8 @@ router.get('/getAvailbaleEng', adminContoller.getBookedSlotsForParticularEngg);
 
 router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
 
+router.get('/getEngAssignSlotsDetails',adminContoller.getEngAssignSlotsDetails);
+
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
