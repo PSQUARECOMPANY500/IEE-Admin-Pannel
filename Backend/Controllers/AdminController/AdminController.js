@@ -16,46 +16,51 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
-const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
 
-const EnggRating = require("../../Modals/Rating/Rating")
+const EnggRating = require("../../Modals/Rating/Rating");
+
+const ClientCalls = require("../../Modals/ClientDetailModals/ClientCallsSchema");
 
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to handle 
-
-
-
-
+//function to handle
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle Engg Crouser Data on dashboard only   ServiceEnggId, ServiceEnggName, ServiceEnggPic ,averageRating
 
-module.exports.getEnggCrouserData = async (req,res) => {
+module.exports.getEnggCrouserData = async (req, res) => {
   try {
     const EnggDetail = await ServiceEnggData.find({});
-    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({ServiceEnggId:item.EnggId})
-      const ratingsCount = enggRating.length;
-      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
-      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
-      return {
-        ServiceEnggId: item.EnggId,
-        ServiceEnggName: item.EnggName,
-        ServiceEnggPic: item.EnggPhoto,
-        averageRating,
-      };
-    }))
+    const BasicDetail = await Promise.all(
+      EnggDetail.map(async (item) => {
+        const enggRating = await EnggRating.find({
+          ServiceEnggId: item.EnggId,
+        });
+        const ratingsCount = enggRating.length;
+        const ratingsSum = enggRating.reduce(
+          (sum, rating) => sum + rating.Rating,
+          0
+        );
+        const averageRating =
+          ratingsCount > 0
+            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
+            : 0;
+        return {
+          ServiceEnggId: item.EnggId,
+          ServiceEnggName: item.EnggName,
+          ServiceEnggPic: item.EnggPhoto,
+          averageRating,
+        };
+      })
+    );
     res.status(200).json({ BasicDetailForCrouser: BasicDetail });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
-
-
-
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to get the booked slots for the particular Engg...
@@ -79,27 +84,25 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
     });
 
     // Converting object into array of objects
-    const result = await Promise.all(Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
-      const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId:ServiceEnggId});
-      return {
-        ServiceEnggId,
-        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown", 
-        slots: slotsByEnggId[ServiceEnggId],
-      }
-    
-    }));
+    const result = await Promise.all(
+      Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
+        const enggDetails = await ServiceEnggBasicSchema.findOne({
+          EnggId: ServiceEnggId,
+        });
+        return {
+          ServiceEnggId,
+          ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
+          slots: slotsByEnggId[ServiceEnggId],
+        };
+      })
+    );
 
     res.status(200).json({ BookedSlots: result });
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
@@ -900,11 +903,11 @@ module.exports.getMembershipDetails = async (req, res) => {
   try {
     const memberShipDetails = await AssignMemeberships.find();
     const dataTypes = ["warrenty", "platinum", "silver", "gold"];
- 
+
     const responseData = await Promise.all(
       dataTypes.map(async (type) => {
         const filteredData = filterMembershipByType(memberShipDetails, type);
-        const data = await calculateData(filteredData)
+        const data = await calculateData(filteredData);
         return {
           dataType: type,
           details: data,
@@ -970,30 +973,33 @@ module.exports.getClientDetail = async (req, res) => {
 // {armaan-dev}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 //....................................................................................................................................................................
 // This is the api for fetching Eng details acc to current Date
 
 module.exports.getEngAssignSlotsDetails = async (req, res) => {
   try {
     const { ServiceEnggId } = req.body;
-    const currentDate = new Date().toLocaleDateString('en-GB');
+    const currentDate = new Date().toLocaleDateString("en-GB");
 
     // Fetch data from both tables concurrently using Promise.all
     const [serviceAssignments, scheduleRequests] = await Promise.all([
       ServiceAssigntoEngg.find({ ServiceEnggId }),
-      AssignSecheduleRequest.find({ ServiceEnggId })
+      AssignSecheduleRequest.find({ ServiceEnggId }),
     ]);
 
     // Filter data based on the current date
-    const filteredServiceAssignments = serviceAssignments.filter(item => item.Date === currentDate);
-    const filteredScheduleRequests = scheduleRequests.filter(item => item.Date === currentDate);
+    const filteredServiceAssignments = serviceAssignments.filter(
+      (item) => item.Date === currentDate
+    );
+    const filteredScheduleRequests = scheduleRequests.filter(
+      (item) => item.Date === currentDate
+    );
 
     // Combine the filtered results
     const finalData = {
       serviceAssignments: filteredServiceAssignments,
       scheduleRequests: filteredScheduleRequests,
-      currentDate
+      currentDate,
     };
 
     // Send the final data as the response
@@ -1002,7 +1008,31 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error",
-      message: error.message
+      message: error.message,
+    });
+  }
+};
+
+// -----------------------------------------------------------------------
+// {armaan-dev}
+
+module.exports.createClientCallDetails = async (req, res) => {
+  try {
+    const { jobOrderNumber, callType, description, callDate, duration } =
+      req.body;
+    const clientCall = await ClientCalls.create({
+      jobOrderNumber,
+      callType,
+      description,
+      callDate,
+      duration,
+    });
+    res.status(200).json({ success: true, clientCall });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
     });
   }
 };
