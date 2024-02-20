@@ -51,13 +51,24 @@ const MembershipCard = ({
       ? "membership_card_counts_gold"
       : "membership_card_counts_silver";
 
+  const hoverShadow =
+    DemoData.dataType === "Warrenty"
+      ? "membership_card_warrenty_hover"
+      : DemoData.dataType === "Platinum"
+      ? "membership_card_platinum_hover"
+      : DemoData.dataType === "Gold"
+      ? "membership_card_gold_hover"
+      : "membership_card_silver_hover";
+
   return (
     <>
       <div
-        className={`membership_card ${borderClass} ${shadowClass}  ${
+        className={`membership_card   ${
           order === 1 && setClick
-            ? "membership_card_expand "
-            : setClick && "membership_card_expand_non"
+            ? `membership_card_expand ${borderClass} `
+            : setClick
+            ? `membership_card_expand_non ${hoverShadow}`
+            : `${shadowClass}`
         } `}
         style={{
           order: order,
@@ -101,11 +112,14 @@ const MembershipCard = ({
                 </p>
               </div>
               <div
-                className={`membership_card_counts ${cardColor}`}
+                className={`membership_card_counts ${cardColor} ${
+                  setClick && "membership_card_counts_expand"
+                } ${order === 1 && "membership_card_counts_expanded"}`}
                 style={{
                   padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
                 }}
               >
+                {/* <p>125</p> */}
                 <p>{DemoData?.Data?.details?.count}</p>
               </div>
             </div>

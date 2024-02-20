@@ -14,6 +14,10 @@ const ClientCalls = new Schema({
     type: String,
     required: true,
   },
+  discountOffered: {
+    type: String,
+    required: true,
+  },
   callDate: {
     type: String,
     required: true,

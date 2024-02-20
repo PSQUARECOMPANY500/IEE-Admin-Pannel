@@ -9,12 +9,12 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
-
 router.post("/createMembership", adminContoller.createClientMemebership);
-router.get("/getMembership", adminContoller.getClientMembership);
+router.post("/createCall", adminContoller.createClientCallDetails);
 
 //------------------------------ All get requests -------------------------------------------------
 
+router.get("/getMembership", adminContoller.getClientMembership);
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
 router.get("/AllClients", adminContoller.getAllClientsData);
@@ -55,7 +55,10 @@ router.get("/getEnggCrouserData", adminContoller.getEnggCrouserData);
 
 router.get("/getMembershipDetails", adminContoller.getMembershipDetails);
 
-router.get('/getEngAssignSlotsDetails',adminContoller.getEngAssignSlotsDetails);
+router.get(
+  "/getEngAssignSlotsDetails",
+  adminContoller.getEngAssignSlotsDetails
+);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);
@@ -71,6 +74,5 @@ router.get(
 );
 
 // --------------------------------------------------------------------------
-
 
 module.exports = router;

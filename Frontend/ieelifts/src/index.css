@@ -44,42 +44,67 @@ code {
   margin: 1rem;
   border-radius: 0.8rem;
   border: 1px solid #ffffff;
-  box-shadow: 0px 0px 5px #ffffff;
+  box-shadow: 2px 4px 10px #99886b66;
   overflow-y: hidden;
   /* width: 100%; */
-  transition: border 0.6s ease;
+  transition: box-shadow 0.3s ease;
+  scale: 1;
 }
 
-.membership_card_warrenty:hover {
-  border: 1px solid #0f351d;
+.membership_card:hover .membership_card_counts {
+  box-shadow: none;
 }
 
-.membership_card_platinum:hover {
-  border: 1px solid #ff7f00;
-}
-
-.membership_card_gold:hover {
-  border: 1px solid #f8ac1d;
-}
-
-.membership_card_silver:hover {
-  border: 1px solid #b7b7b7;
-}
-
-.membership_card_warrenty_shadow {
+.membership_card_warrenty {
   box-shadow: 0px 0px 5px #0f351d;
 }
 
-.membership_card_platinum_shadow {
+.membership_card_platinum {
   box-shadow: 0px 0px 5px #ff7f00;
 }
 
-.membership_card_gold_shadow {
+.membership_card_gold {
+  box-shadow: 0px 0px 5px #ff7f00;
+}
+
+.membership_card_silver {
+  box-shadow: 0px 0px 5px #b7b7b7;
+}
+
+.membership_card_warrenty_hover:hover {
+  box-shadow: 0px 0px 5px #0f351d;
+}
+
+.membership_card_platinum_hover:hover {
+  box-shadow: 0px 0px 5px #ff7f00;
+}
+
+.membership_card_gold_hover:hover {
   box-shadow: 0px 0px 5px #f8ac1d;
 }
 
-.membership_card_silver_shadow {
+.membership_card_silver_hover:hover {
   box-shadow: 0px 0px 5px #b7b7b7;
+}
+
+.membership_card_warrenty_shadow:hover {
+  box-shadow: 0px 0px 5px #0f351d;
+  scale: 0.99;
+}
+
+.membership_card_platinum_shadow:hover {
+  box-shadow: 0px 0px 5px #ff7f00;
+  scale: 0.99;
+}
+
+.membership_card_gold_shadow:hover {
+  box-shadow: 0px 0px 5px #f8ac1d;
+  scale: 0.99;
+}
+
+.membership_card_silver_shadow:hover {
+  box-shadow: 0px 0px 5px #b7b7b7;
+  scale: 0.99;
 }
 
 .membership_card_topbar {
@@ -127,8 +152,23 @@ code {
 
 .membership_card_counts {
   color: #ffffff;
-  padding: 1% 1.5%;
+  /* padding: 1.5% 2.2%; */
+  width: 2.7rem;
+  height: 2.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: smaller;
+  box-shadow: inset 1px 2px 3px #00000029;
   border-radius: 50%;
+}
+.membership_card_counts_expand {
+  width: 1.7rem;
+  height: 1.9rem;
+}
+
+.membership_card_counts_expanded {
+  box-shadow: none;
 }
 
 .membership_card_counts_warrenty {

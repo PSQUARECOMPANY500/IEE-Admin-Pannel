@@ -1018,16 +1018,23 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 
 module.exports.createClientCallDetails = async (req, res) => {
   try {
-    const { jobOrderNumber, callType, description, callDate, duration } =
-      req.body;
+    const {
+      jobOrderNumber,
+      callType,
+      description,
+      discountOffered,
+      callDate,
+      duration,
+    } = req.body;
     const clientCall = await ClientCalls.create({
       jobOrderNumber,
       callType,
       description,
+      discountOffered,
       callDate,
       duration,
     });
-    res.status(200).json({ success: true, clientCall });
+    res.status(201).json({ success: true, clientCall });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1036,3 +1043,44 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
+
+module.exports.getClientCalls = async (req, res) => {
+  try {
+    const { callType, jobOrderNumber } = req.query;
+    const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
+
+    res.status(201).json({ success: true, clientCallData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
+    });
+  }
+};
+
+module.exports.getClientData = async (req, res) => {
+  try {
+    const { jobOrderNumber } = req.query;
+    const clientDetails = await clientDetailSchema.find({ jobOrderNumber });
+
+    const responseData = {
+      name: clientDetails.name,
+      jobOrderNumber,
+      number: clientDetails.PhoneNumber,
+      address: clientDetails.Address,
+      profileImage: clientDetails.ProfileImage,
+      DOH: clientDetails.DateOfHandover,
+    };
+    res.status(201).json({ success: true, responseData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
+    });
+  }
+};
+
+// -----------------------------------------------------------------------
+// {armaan-dev}
