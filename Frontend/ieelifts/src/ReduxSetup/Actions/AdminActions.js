@@ -35,6 +35,7 @@ export const GET_BOOKED_DATES_FOR_ENGGS = "GET_BOOKED_DATES_FOR_ENGGS";
 
 export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER";
 
+export const GET_ENG_ASSIGN_SLOTS = "GET_ENG_ASSIGN_SLOTS";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
@@ -43,6 +44,7 @@ export const getEnggBasicDataForCrouserAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getEnggCrouserData`)
+      //console.log(response,"response from eng crousal")
       dispatch({
         type:GET_ENGG_BASIC_DATA_FOR_CROUSER,
         payload:response.data
@@ -286,7 +288,7 @@ export const  fetchEnggDetailAction = (EnggId) => {
           payload: null,
         });
       }else{
-        console.log("EngId ",EnggId);
+        //console.log("EngId ",EnggId);
         const response = await axios.get(
           `${config.apiUrl}/admin/getEnggDetailById/${EnggId}`
         );
@@ -436,5 +438,3 @@ return async (dispatch) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-

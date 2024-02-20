@@ -16,7 +16,7 @@ import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminA
 import AddTicketModal1 from "./AddTicketModal1";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 
-const TicketSection = () => {
+const TicketSection = ({setTicketUpdate}) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
 
@@ -195,6 +195,7 @@ const TicketSection = () => {
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}
+                setTicketUpdate={setTicketUpdate}
                 requestSection={false}
               />
             )}

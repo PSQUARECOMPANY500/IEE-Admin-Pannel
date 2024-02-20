@@ -22,6 +22,7 @@ import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
 
 
 const AdminRootReducer = combineReducers({
+    
     fetchClientDetailsByJon:fetchClientDetailsByJon,
     fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
     fetchAllCallbackReducer:fetchAllCallbackReducer,
