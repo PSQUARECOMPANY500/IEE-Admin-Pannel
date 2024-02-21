@@ -248,7 +248,7 @@ const ServiceEnggCrousel = () => {
 
               <div className="dropdown3">
              
-                <TaskChart />
+                <TaskChart completedTasks={12} totalTasks={12}/>
             
                 <div
                   className="dropdown-menu"
@@ -256,7 +256,7 @@ const ServiceEnggCrousel = () => {
                 >
                   <div className="drop-parent">
                     <p className="tasks-heading">Tasks</p>
-
+                 
                     <div className="task-main-div">
                       <div className="dot-name">
                         <div className="task-dot"></div>
