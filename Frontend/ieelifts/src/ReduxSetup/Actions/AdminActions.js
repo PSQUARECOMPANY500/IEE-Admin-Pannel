@@ -27,7 +27,7 @@ export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
 
 export const GET_CURRENT_DATE_ASSIGN_CALLBACK = "GET_CURRENT_DATE_ASSIGN_CALLBACK";
 
-export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED";
+/* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 
 export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
 
@@ -103,7 +103,9 @@ export const getCurrentDateAssignServiceRequestAction = () => {
 export const getCurrentDateAssignCalbackAction = () => {
     return async (dispatch) => {
       try {
+        //console.log("USEeFFECT CALLED PART 2")
         const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignCallback`);
+        //console.log("response",response);
           dispatch({
             type:GET_CURRENT_DATE_ASSIGN_CALLBACK,
             payload:response.data
@@ -425,7 +427,7 @@ export const requestAssignCallbackDetail = (callbackId)=>{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //action performed for rendering the components
-
+/* 
 export const ticketSectionRenderAction = () => {
 return async (dispatch) => {
   try {
@@ -434,7 +436,7 @@ return async (dispatch) => {
     console.log("error while fetching data", error);
   }
 }
-}
+} */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

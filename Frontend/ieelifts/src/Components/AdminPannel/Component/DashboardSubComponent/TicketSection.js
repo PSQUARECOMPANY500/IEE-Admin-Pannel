@@ -12,11 +12,9 @@ import AddTicketModal from "./AddTicketModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import AddTicketModal1 from "./AddTicketModal1";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 
-const TicketSection = ({setTicketUpdate}) => {
+const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
 
@@ -34,8 +32,8 @@ const TicketSection = ({setTicketUpdate}) => {
   // }, []);
 
   const [callbackId, setCallbackId] = useState();
-  const [enggId,setEnggId] = useState();
-  const [isAssigned,setIsAssigned] = useState();
+  const [enggId, setEnggId] = useState();
+  const [isAssigned, setIsAssigned] = useState();
 
 
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -63,28 +61,68 @@ const TicketSection = ({setTicketUpdate}) => {
       return [];
     }
   });
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
+  const [searchText, setSearchText] = useState("");
+  const [filteredCD, setfilteredCD] = useState([]);
+  const [allCD, setallCD] = useState([]);
 
+  useEffect(() => {
+    setfilteredCD(fetchCallbacks)
+    setallCD(fetchCallbacks)
+  }, [fetchCallbacks])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
   const limitAddress = (address, limit) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
-
   const handleTicketFilter = () => {
     setShowTicketFilter(!showTicketFilter);
   };
   //............................................................{amit}...................
   const [renderTicket, setRenderTicket] = useState(true);
-
   useEffect(() => {
     setTimeout(() => {
       dispatch(fetchAllCallbacksAction());
     }, 1000);
-  }, [renderTicket,dispatch]);
-
-
+  }, [renderTicket, dispatch]);
   //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);
-
-  useEffect(() => {}, [checkboxStates]);
+  useEffect(() => { }, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -95,14 +133,12 @@ const TicketSection = ({setTicketUpdate}) => {
       return updatedStates;
     });
   };
-
   const handleCheckBoxSingle = (checkboxId) => {
     setCheckboxStates((prevStates) => ({
       ...prevStates,
       [checkboxId]: !prevStates[checkboxId],
     }));
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -120,7 +156,6 @@ const TicketSection = ({setTicketUpdate}) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
-
   const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
@@ -137,7 +172,6 @@ const TicketSection = ({setTicketUpdate}) => {
       setShowTicketModal(true);
     }
   };
-
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -148,6 +182,7 @@ const TicketSection = ({setTicketUpdate}) => {
             <span> TAT 3 HOURS</span>
             <span> )</span>
           </div>
+          {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
             <div className="right-side-icons">
@@ -157,15 +192,21 @@ const TicketSection = ({setTicketUpdate}) => {
                     type="text"
                     placeholder="Search anything"
                     className="search-input"
+                    onChange={(e)=>{
+                      setSearchText(e.target.value);
+                    }}
                   />
-                  <a href="/" className="search-btn-ticket-section">
+                  <button className="search-btn-ticket-section">
                     <i>
                       <CiSearch />
                     </i>
-                  </a>
+                  </button>
                 </div>
               </span>
             </div>
+
+            {/* ............................................................ax13-search...................................................... */}
+
 
             <div className="sub-components-ticket-filter">
               <p className="filter-icon" onClick={handleTicketFilter}>
@@ -245,22 +286,22 @@ const TicketSection = ({setTicketUpdate}) => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-                {fetchCallbacks.map((data, index) => {
+                {filteredCD.map((data, index) => {
                   // console.log("mast ram",data)
                   const currentCallbackId = data.callbackId;
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;
-              
+
                   return (
                     <tr className="selected" key={index}>
                       <td>
                         {" "}
                         <CheckBox
-                          id={`checkbox-${data.callbackId}`}
-                          checked={checkboxStates[data.callbackId]}
+                          id="checkbox1"
+                          checked={checkboxStates.checkbox1}
                           handleCheckboxChange={() =>
-                            handleCheckBoxSingle(data.callbackId)
+                            handleCheckBoxSingle("checkbox1")
                           }
                         />
                       </td>
@@ -270,7 +311,7 @@ const TicketSection = ({setTicketUpdate}) => {
                       <td>
                         <div className="dropdown-address">
                           <span>
-                            {limitAddress(data?.clientDetail?.Address,15)}
+                            {limitAddress(data?.clientDetail?.Address, 15)}
                           </span>
 
                           <div className="dropdown-adddress-menu">
@@ -284,13 +325,13 @@ const TicketSection = ({setTicketUpdate}) => {
                       <td>{data.TypeOfIssue}</td>
                       <td>{data.callbackDate}</td>
                       <td>{data.callbackTime}</td>
-                      <td onClick={() => openModal(1, currentCallbackId,EngId,isAssigned)}>
+                      <td onClick={() => openModal(1, currentCallbackId, EngId, isAssigned)}>
                         {isAssigned ? (
                           <AssignDropdown
-                          customAssignName="assignNameColor"
-                          name={EngName}
-                          isAssigned={isAssigned}
-                        />
+                            customAssignName="assignNameColor"
+                            name={EngName}
+                            isAssigned={isAssigned}
+                          />
                         ) : (
                           <AssignDropdown
                             customAssign="assignColor"
@@ -308,6 +349,7 @@ const TicketSection = ({setTicketUpdate}) => {
                   showTicketModal={showTicketModal1}
                   callbackId={callbackId}
                   setRenderTicket={setRenderTicket}
+                  setTicketUpdate={setTicketUpdate}
                   enggId={enggId}
                   isAssigned={isAssigned}
                 />

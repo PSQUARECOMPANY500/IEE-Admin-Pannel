@@ -5,7 +5,7 @@ import { LiaStarSolid } from "react-icons/lia"; // use in future (don't delete P
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 
-import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
+//import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
 import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-
+  console.log("ticketUpdate",props.ticketUpdate)
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -39,7 +39,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 //   console.log(filteredData)
 
 
-  const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
+  //const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
   // console.log("*",renderComopnent)
 
 //get current date service request
@@ -86,13 +86,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   
   useEffect(() => {
-    if(renderComopnent){
+    setTimeout(()=>{
       dispatch(getCurrentDateAssignCalbackAction());
-    }
-    dispatch(getCurrentDateAssignCalbackAction());
-    dispatch(getCurrentDateAssignServiceRequestAction());
-      // dispatch(getAllAssignCallbackRequestAction())
-    }, [dispatch,renderComopnent]);
+      dispatch(getCurrentDateAssignServiceRequestAction());
+      //console.log("USEeFFECT CALLED")
+    },1500)
+    }, [dispatch,props.ticketUpdate]);
 
     
 

@@ -30,7 +30,7 @@ const Dashboard = () => {
         <div className={`container`}></div>
         <div style={{ width: "100%", marginTop: "6%" }}>
           <ServiceEnggCrousel ticketUpdate={ticketUpdate}/>
-          <TaskLocationSection ref={ref} handleKanbanToggle={handleKanbanToggle} kanban={kanban} />
+          <TaskLocationSection ref={ref} ticketUpdate={ticketUpdate} handleKanbanToggle={handleKanbanToggle} kanban={kanban} />
           {kanban && <TicketSection setTicketUpdate={setTicketUpdate} />}
         </div>
       </div>
