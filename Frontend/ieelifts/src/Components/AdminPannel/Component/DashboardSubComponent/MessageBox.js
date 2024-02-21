@@ -1,16 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
-import { IoIosCall } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
-import { IoMdSend } from "react-icons/io";
 import { MdSend } from "react-icons/md";
 import { MdAddCall } from "react-icons/md";
 
 
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
-import { HiVideoCamera } from "react-icons/hi2";
 
-const MessageBox = ({ onClose }) => {
+const MessageBox = ({ onClose,EnggId }) => {
+
+  console.log("reet",EnggId);
+
   const [file, setFile] = useState(false);
   const fileInputField = useRef(null);
   const handleFileChange = (e) => {
