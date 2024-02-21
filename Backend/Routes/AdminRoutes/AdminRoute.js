@@ -11,6 +11,8 @@ router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
 
+router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
+
 //------------------------------ All get requests -------------------------------------------------
 router.get("/getMembership", adminContoller.getClientMemebership);
 

@@ -16,9 +16,11 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
-const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema")
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
 
-const EnggRating = require("../../Modals/Rating/Rating")
+const EnggRating = require("../../Modals/Rating/Rating");
+
+const serviceAdmin = require("../../Modals/ServiceAdminModel/ServiceAdminSchema");
 
 const mongoose = require("mongoose");
 
@@ -72,6 +74,7 @@ module.exports.getEnggCrouserData = async (req, res) => {
       });
 
       return {
+        EnggObjId:item._id,
         ServiceEnggId: item.EnggId,
         ServiceEnggName: item.EnggName,
         ServiceEnggPic: item.EnggPhoto,
@@ -877,4 +880,127 @@ module.exports.getBookedDates = async (req, res) => {
 }
 
 //....................................................................................................................................................................
-// This is the api for fetching Eng details acc to current Date
+// This is the api for fetching Eng details acc to current Date for engg crousel
+
+// module.exports.getEngAssignSlotsDetails = async (req, res) => {
+//   try {
+//     const { ServiceEnggId } = req.body;
+//     const currentDate = new Date().toLocaleDateString('en-GB');
+
+//     // Fetch data from both tables concurrently using Promise.all
+//     const [serviceAssignments, scheduleRequests] = await Promise.all([
+//       ServiceAssigntoEngg.find({ ServiceEnggId }),
+//       AssignSecheduleRequest.find({ ServiceEnggId })
+//     ]);
+//     // Filter data based on the current date
+//     const filteredServiceAssignments = serviceAssignments.filter(item => item.Date === currentDate);
+//       const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
+//         const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
+//         return { ...assignment._doc, ClientName: client?.name };
+//       }))
+
+    
+//     const filteredScheduleRequests = scheduleRequests.filter(item => item.Date === currentDate);
+//       const filteredScheduleRequestssWithClientName = await Promise.all(filteredScheduleRequests.map(async (assignment) => {
+//         const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
+//         return { ...assignment._doc, ClientName: client?.name };
+//       }));
+
+//     // Combine the filtered results
+//     const finalData = {
+//       serviceAssignments: filteredServiceAssignmentsWithClientName,
+//       scheduleRequests: filteredScheduleRequestssWithClientName,
+//       currentDate
+//     };
+
+//     // Send the final data as the response
+//     res.status(200).json({currentateData:finalData});
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       error: "Internal server Error",
+//       message: error.message
+//     });
+//   }
+// };
+
+
+const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
+  const clients = await clientDetailSchema.find({ JobOrderNumber: { $in: jobOrderNumbers } });
+  return clients.reduce((map, client) => {
+    map[client.JobOrderNumber] = client.name;
+    return map;
+  }, {});
+};
+
+module.exports.getEngAssignSlotsDetails = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.body;
+    const currentDate = new Date().toLocaleDateString('en-GB');
+
+    // Fetch data from both tables concurrently using Promise.all
+    const [serviceAssignments, scheduleRequests] = await Promise.all([
+      ServiceAssigntoEngg.find({ ServiceEnggId, Date: currentDate }),
+      AssignSecheduleRequest.find({ ServiceEnggId, Date: currentDate })
+    ]);
+
+    const jobOrderNumbers = [
+      ...new Set([
+        ...serviceAssignments.map(assignment => assignment.JobOrderNumber),
+        ...scheduleRequests.map(request => request.JobOrderNumber)
+      ])
+    ];
+
+    const clientDetailsMap = await getClientDetailsByJobOrderNumbers(jobOrderNumbers);
+
+    const finalData = {
+      serviceAssignments: serviceAssignments.map(assignment => ({
+        ...assignment._doc,
+        ClientName: clientDetailsMap[assignment.JobOrderNumber]
+      })),
+      scheduleRequests: scheduleRequests.map(request => ({
+        ...request._doc,
+        ClientName: clientDetailsMap[request.JobOrderNumber]
+      })),
+      currentDate
+    };
+
+    // Send the final data as the response
+    res.status(200).json({ currentateData: finalData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message
+    });
+  }
+};
+
+
+
+
+//....................................................................................................................................................................
+
+ module.exports.createServiceAdmin = async (req,res) => {
+  try {
+    const {AdminName,Password,Phone,Role,AdminId} = req.body;
+
+    const newData = await serviceAdmin.create({
+      AdminName,
+      Password,
+      Phone,
+      Role,
+      AdminId
+    })
+
+    return res.status(201).json({newData});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({error: "Internal server Error", message: error.message})
+ }
+}
+
+
+
+//....................................................................................................................................................................

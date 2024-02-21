@@ -9,6 +9,7 @@ const cors = require("cors");
 const serviceEnggRoutes = require("./Routes/ServiceEngineerRoutes/ServiceEnggRoute");
 const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
+const chatRoute = require("./Routes/ChatRoute/ChatRoute");
 
 require("dotenv").config();
 
@@ -36,6 +37,10 @@ app.use("/client", clientRoutes);
 
 //---------------AdminRoutes-----------
 app.use("/admin", AdminRoutes);
+
+
+//------------chatRoute-------------
+app.use("/chat", chatRoute)
 
 main().catch((err) => console.log(err));
 
