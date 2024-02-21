@@ -27,7 +27,7 @@ export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
 
 export const GET_CURRENT_DATE_ASSIGN_CALLBACK = "GET_CURRENT_DATE_ASSIGN_CALLBACK";
 
-export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED";
+/* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 
 export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
 
@@ -35,6 +35,7 @@ export const GET_BOOKED_DATES_FOR_ENGGS = "GET_BOOKED_DATES_FOR_ENGGS";
 
 export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER";
 
+export const GET_ENG_ASSIGN_SLOTS = "GET_ENG_ASSIGN_SLOTS";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
@@ -43,6 +44,7 @@ export const getEnggBasicDataForCrouserAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getEnggCrouserData`)
+      //console.log(response,"response from eng crousal")
       dispatch({
         type:GET_ENGG_BASIC_DATA_FOR_CROUSER,
         payload:response.data
@@ -101,7 +103,9 @@ export const getCurrentDateAssignServiceRequestAction = () => {
 export const getCurrentDateAssignCalbackAction = () => {
     return async (dispatch) => {
       try {
+        //console.log("USEeFFECT CALLED PART 2")
         const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignCallback`);
+        //console.log("response",response);
           dispatch({
             type:GET_CURRENT_DATE_ASSIGN_CALLBACK,
             payload:response.data
@@ -286,7 +290,7 @@ export const  fetchEnggDetailAction = (EnggId) => {
           payload: null,
         });
       }else{
-        console.log("EngId ",EnggId);
+        //console.log("EngId ",EnggId);
         const response = await axios.get(
           `${config.apiUrl}/admin/getEnggDetailById/${EnggId}`
         );
@@ -423,7 +427,7 @@ export const requestAssignCallbackDetail = (callbackId)=>{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //action performed for rendering the components
-
+/* 
 export const ticketSectionRenderAction = () => {
 return async (dispatch) => {
   try {
@@ -432,9 +436,7 @@ return async (dispatch) => {
     console.log("error while fetching data", error);
   }
 }
-}
+} */
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
 const data = [
@@ -6,11 +6,14 @@ const data = [
   { name: "2", value: 500 ,fill: "#F8AC1D"},
   { name: "3", value: 500 ,fill: "#F8AC1D"},
   { name: "4", value: 500 ,fill: "#F8AC1D"},
-  { name: "5", value: 500 ,fill: "#F8AC1D"},
-  { name: "6", value: 500 ,fill: "#F8AC1D"},
 ];
 
+
+
+
+
 const renderActiveShape = (props) => {
+  
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -34,7 +37,7 @@ const renderActiveShape = (props) => {
   const ex = mx + (cos >= 0 ? 1 : -1) * 22;
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
-
+ // console.log(value)
   return (
     <g>
       <text
@@ -45,7 +48,7 @@ const renderActiveShape = (props) => {
         fill={"#444444"}
         style={{ fontSize: "40px", fontWeight: "700" }}
       >
-        {payload.name}/{data.length}
+        {"1"}/{data.length}
       </text>
       <Sector
         cx={cx}
@@ -102,13 +105,16 @@ const renderActiveShape = (props) => {
   );
 };
 
-const TaskChart = () => {
+const TaskChart = ({item}) => {
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const [chartdata,setChartData] = useState("")
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
   };
-
+  useEffect(()=>{
+    setChartData(item)
+  },[item])
+//console.log(chartdata)
   return (
     // <ResponsiveContainer >
       <PieChart width={160} height={118}>

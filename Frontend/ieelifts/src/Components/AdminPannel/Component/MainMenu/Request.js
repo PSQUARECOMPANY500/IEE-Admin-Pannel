@@ -175,7 +175,7 @@ const data = [...requestDetail];
                   {filterDataByDate().map((value) => {
                   const requestId = value.requestId;
                   const EnggId = value.EnggId;
-
+                  const slottime = value?.time[0]
                   if (value.time.length > 1) {
                     // Create a copy for each slot time
                     return value.time.map((time) => (
@@ -189,7 +189,7 @@ const data = [...requestDetail];
                         <div className="service-assign">
                           <div className="date-time">
                             <span>TIME</span>
-                            <p>{time}</p>
+                            <p>{time.split("-")[0]}</p>
                           </div>
 
                           <div className="name-3dots">
@@ -242,8 +242,8 @@ const data = [...requestDetail];
                       {/* one slot ends from here */}
                     </div>
                     ));
-                  }
-                  
+                  }/* typeof slottime === 'string' ? slottime.split("-")[0] : slottime */
+                  else{
                   return(
                     <div
                       className="animation-all"
@@ -255,7 +255,7 @@ const data = [...requestDetail];
                         <div className="service-assign">
                           <div className="date-time">
                             <span>TIME</span>
-                            <p>{value?.time}</p>
+                            <p>{typeof slottime === 'string' ? slottime.split("-")[0] : slottime}</p>
                           </div>
 
                           <div className="name-3dots">
@@ -286,14 +286,14 @@ const data = [...requestDetail];
                                     alt="img"
                                   />
                                 </div>
-                                <div className="image-border-collapse2">
+                                {/* <div className="image-border-collapse2">
                                   <img
                                     src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
                                     width={40}
                                     className="profile-pic"
                                     alt="img"
                                   />
-                                </div>
+                                </div> */}
                               </div>
                               <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
 
@@ -307,7 +307,8 @@ const data = [...requestDetail];
 
                       {/* one slot ends from here */}
                     </div>
-                  )})}
+                  )
+}})}
 
                   {showTicketModal5 && (
                     <ServiceRequestModal

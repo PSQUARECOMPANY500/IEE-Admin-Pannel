@@ -26,6 +26,7 @@
     showTicketModal,
     setRenderTicket,
     requestSection,
+    setTicketUpdate
   }) => {
     const dispatch = useDispatch();
     
@@ -74,11 +75,8 @@
         slot: "01:30-03:30",
       },
       {
-        slot: "03:30-04:30",
+        slot: "03:30-05:30",
       },
-      {
-        slot: "04:30-05:30",
-      }
     ];
     const bookedDateForEngg = useSelector((state) => {
       if(state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg){
@@ -291,6 +289,9 @@
       })
        }
       setRenderTicket((prev) => !prev);
+      if(setTicketUpdate){
+        setTicketUpdate((prev) => !prev);
+      }
       closeModal();
     }
 

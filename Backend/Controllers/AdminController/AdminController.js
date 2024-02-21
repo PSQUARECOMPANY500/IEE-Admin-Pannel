@@ -34,31 +34,66 @@ const mongoose = require("mongoose");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle Engg Crouser Data on dashboard only   ServiceEnggId, ServiceEnggName, ServiceEnggPic ,averageRating
 
-module.exports.getEnggCrouserData = async (req,res) => {
+module.exports.getEnggCrouserData = async (req, res) => {
   try {
     const EnggDetail = await ServiceEnggData.find({});
+    const currentDate = new Date();
+
     const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({ServiceEnggId:item.EnggId})
+      const enggRating = await EnggRating.find({ ServiceEnggId: item.EnggId });
       const ratingsCount = enggRating.length;
       const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
       const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+
+      const ServiceEnggId = item.EnggId;
+
+      const serviceAssignments = await ServiceAssigntoEngg.find({ ServiceEnggId });
+      const assignScheduleRequests = await AssignSecheduleRequest.find({ ServiceEnggId });
+
+      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
+        ServiceEnggId: data.ServiceEnggId,
+        JobOrderNumber: data.JobOrderNumber,
+        Slot: data.Slot,
+        Date: data.Date,
+        TaskStatus: data.ServiceProcess,
+      }));
+
+      const filteredServiceAssignments = mainDetails.filter(item => {
+        return item.Date === currentDate.toLocaleDateString('en-GB');
+      });
+
+      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
+        const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
+        return { ...assignment, ClientName: client?.name, ClientNumber: client?.PhoneNumber, ClientAddress: client?.Address };
+      }));
+
+      filteredServiceAssignmentsWithClientName.sort((a, b) => {
+        const timeA = convertTimeToSortableFormat(a.Slot[0]);
+        const timeB = convertTimeToSortableFormat(b.Slot[0]);
+        return timeA - timeB;
+      });
+
       return {
         EnggObjId:item._id,
         ServiceEnggId: item.EnggId,
         ServiceEnggName: item.EnggName,
         ServiceEnggPic: item.EnggPhoto,
         averageRating,
+        filteredServiceAssignmentsWithClientName
       };
-    }))
-    res.status(200).json({ BasicDetailForCrouser: BasicDetail });
+    }));
+
+    res.status(200).json({ BasicDetailForCrouser: BasicDetail.filter(item => !item.error) });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
   }
 }
 
-
-
+function convertTimeToSortableFormat(time) {
+  const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
+  return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to get the booked slots for the particular Engg...
@@ -83,13 +118,13 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 
     // Converting object into array of objects
     const result = await Promise.all(Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
-      const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId:ServiceEnggId});
+      const enggDetails = await ServiceEnggBasicSchema.findOne({ EnggId: ServiceEnggId });
       return {
         ServiceEnggId,
-        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown", 
+        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
         slots: slotsByEnggId[ServiceEnggId],
       }
-    
+
     }));
 
     res.status(200).json({ BookedSlots: result });
@@ -106,25 +141,25 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
-module.exports.getCurrentDateAssignServiceRequest = async (req,res) => {
+module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
     const currentDate = new Date().toLocaleDateString('en-GB')
-    const currentDetailServiceRequest = await AssignSecheduleRequest.find({Date: currentDate});
+    const currentDetailServiceRequest = await AssignSecheduleRequest.find({ Date: currentDate });
 
-    if(currentDetailServiceRequest.length === 0){
-      return res.status(400).json({message:"no Service Request for today's"})
+    if (currentDetailServiceRequest.length === 0) {
+      return res.status(400).json({ message: "no Service Request for today's" })
     }
 
     const serviceRequestDetail = await Promise.all(currentDetailServiceRequest.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
-      const clientDetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+      const enggDetail = await ServiceEnggData.findOne({ EnggId: item.ServiceEnggId })
+      const clientDetail = await clientDetailSchema.findOne({ JobOrderNumber: item.JobOrderNumber })
 
       //extract only specific field
 
       const enggName = enggDetail ? enggDetail.EnggName : null;
       const clientName = clientDetail ? clientDetail.name : null;
-      
-      return {...item._doc,enggName,clientName}
+
+      return { ...item._doc, enggName, clientName }
     }))
     return res.status(200).json({ serviceRequestDetail });
 
@@ -141,19 +176,19 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     const currentDate = new Date().toLocaleDateString("en-GB");
     const currentDetailCallback = await ServiceAssigntoEngg.find({ Date: currentDate });
 
-    if(currentDetailCallback.length === 0){
-      return res.status(400).json({message:"no callback for today's"})
+    if (currentDetailCallback.length === 0) {
+      return res.status(400).json({ message: "no callback for today's" })
     }
 
     const callbackWithDetails = await Promise.all(currentDetailCallback.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({EnggId:item.ServiceEnggId})
-      const clientdetail = await clientDetailSchema.findOne({JobOrderNumber:item.JobOrderNumber})
+      const enggDetail = await ServiceEnggData.findOne({ EnggId: item.ServiceEnggId })
+      const clientdetail = await clientDetailSchema.findOne({ JobOrderNumber: item.JobOrderNumber })
 
       // Extract only specific fields from enggDetail and clientDetail
       const enggName = enggDetail ? enggDetail.EnggName : null;
       const clientName = clientdetail ? clientdetail.name : null;
 
-      return { ...item._doc,enggName,clientName }
+      return { ...item._doc, enggName, clientName }
     }))
     return res.status(200).json({ callbackWithDetails });
   } catch (error) {
@@ -166,11 +201,11 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
 
 //function to handle getAllAssignCallbacks (as used in ticket section)
 
-module.exports.getAllAssignCallbacks = async (req,res) => {
+module.exports.getAllAssignCallbacks = async (req, res) => {
   try {
     const allAssignCallbacks = await ServiceAssigntoEngg.find({});
-    if(!allAssignCallbacks || allAssignCallbacks.length === 0 ){
-      return res.status(400).json({message:"No callback"})
+    if (!allAssignCallbacks || allAssignCallbacks.length === 0) {
+      return res.status(400).json({ message: "No callback" })
     }
     return res.status(200).json({ allAssignCallbacks });
   } catch (error) {
@@ -185,10 +220,10 @@ module.exports.getAllAssignCallbacks = async (req,res) => {
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 //functio to handle get all Referals for admin
-module.exports.getAllreferals = async (req,res) => {
+module.exports.getAllreferals = async (req, res) => {
   try {
     const allReferals = await ReferalSchema.find({});
-     return res.status(200).json({message:"All referals fetched Successfully",Referals:allReferals})
+    return res.status(200).json({ message: "All referals fetched Successfully", Referals: allReferals })
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal server error" });
@@ -237,7 +272,7 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     res.status(200).json({
       message: "Fetch All Assign Service Request successfully",
       clientdetailsEmbeded,
-    });  
+    });
   } catch (error) {
     console.error("Error creating engg detail:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -341,7 +376,7 @@ module.exports.assignCallbacks = async (req, res) => {
         },
         { new: true } // Return the updated document
       );
-    }else {
+    } else {
       // Create a new entry
       callback = await ServiceAssigntoEngg.create({
         ServiceEnggId,
@@ -401,9 +436,9 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Message,
           ServiceProcess,
         },
-        { new: true } 
+        { new: true }
       );
-    }else {
+    } else {
       callback = await AssignSecheduleRequest.create({
         ServiceEnggId,
         JobOrderNumber,
@@ -470,7 +505,7 @@ module.exports.getAllRequests = async (req, res) => {
     const clientRequestDetail = await Promise.all(
       serviceRequests.map(async (Requests) => {
         const clientDetail = await clientDetailSchema.findOne({
-          JobOrderNumber:Requests.JobOrderNumber
+          JobOrderNumber: Requests.JobOrderNumber
         })
         return {
           ...Requests._doc,
@@ -777,7 +812,7 @@ const filterMembershipByType = (data, type) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //function to get all booked dates {amit-features}
 
-module.exports.getBookedDates = async(req,res)=>{
+module.exports.getBookedDates = async (req, res) => {
   const timeSlots = [
     {
       slot: "9:00-10:00",
@@ -807,38 +842,38 @@ module.exports.getBookedDates = async(req,res)=>{
       slot: "17:00-18:00",
     },
   ];
-  
-  try{
+
+  try {
     const data = await ServiceAssigntoEngg.find();
 
     const groupedDates = {};
 
-  data.forEach(entry => {
-    if (!groupedDates[entry.Date]) {
-      groupedDates[entry.Date] = {
-        slots:[],
-        isSlotAvailable:true,
-      };
-    }
-    groupedDates[entry.Date].slots.push(entry.Slot);
-  });
+    data.forEach(entry => {
+      if (!groupedDates[entry.Date]) {
+        groupedDates[entry.Date] = {
+          slots: [],
+          isSlotAvailable: true,
+        };
+      }
+      groupedDates[entry.Date].slots.push(entry.Slot);
+    });
 
-  Object.keys(groupedDates).forEach((date)=>{
-    const slotLength = groupedDates[date].slots.length;
-    const allSlots = timeSlots.length;
+    Object.keys(groupedDates).forEach((date) => {
+      const slotLength = groupedDates[date].slots.length;
+      const allSlots = timeSlots.length;
 
-    if(allSlots === slotLength){
-      groupedDates[date].isSlotAvailable = false;
-    }
-  })
+      if (allSlots === slotLength) {
+        groupedDates[date].isSlotAvailable = false;
+      }
+    })
 
-  res.json(groupedDates);
+    res.json(groupedDates);
 
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error:"Internal server Error", 
-      "message":error.message
+      error: "Internal server Error",
+      "message": error.message
     });
   }
 
