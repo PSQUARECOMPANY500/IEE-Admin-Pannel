@@ -289,7 +289,9 @@
       })
        }
       setRenderTicket((prev) => !prev);
-      setTicketUpdate((prev) => !prev);
+      if(setTicketUpdate){
+        setTicketUpdate((prev) => !prev);
+      }
       closeModal();
     }
 
