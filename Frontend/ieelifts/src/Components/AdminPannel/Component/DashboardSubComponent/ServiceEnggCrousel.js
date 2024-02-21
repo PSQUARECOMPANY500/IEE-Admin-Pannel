@@ -145,6 +145,7 @@ const ServiceEnggCrousel = () => {
         beforeChange={handleBeforeChange}
       >
         {getBasicData?.map((item, index) => (
+          // console.log(item),
           <div className="main-crouser" key={index}>
             <div className="second-carusel">
               <div className="basic-info">
@@ -180,7 +181,8 @@ const ServiceEnggCrousel = () => {
                     }}
                     className="engg-message"
                   >
-                    <MessageBox onClose={handleMessageBoxClose} />
+                    {/* this is message box component (message-------box------chat----- window-------)*/}
+                    <MessageBox onClose={handleMessageBoxClose} EnggId={item?.EnggObjId}/>  
                   </div>
                 )}
               </div>
