@@ -13,13 +13,13 @@ import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from '../Actions/Adm
 import { GET_ALL_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 import { GET_ALL_ASSIGN_CALLBACK } from '../Actions/AdminActions';
 import { GET_CURRENT_DATE_ASSIGN_CALLBACK } from '../Actions/AdminActions';
-import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions';
+/* import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions'; */
 import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
 import { GET_BOOKED_DATES_FOR_ENGGS } from '../Actions/AdminActions';
 import { GET_ENGG_BASIC_DATA_FOR_CROUSER } from '../Actions/AdminActions';
 
-
+import { GET_ENG_ASSIGN_SLOTS } from '../Actions/AdminActions';
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
@@ -307,7 +307,7 @@ export const fetchAssignCallbacksDetailsReducer = (state = initialAssign , actio
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-
+/* 
 const intialStateRender = {
     isComponentRendered: false,
 }
@@ -321,11 +321,8 @@ export const ticketSectionRenderReducer = (state=intialStateRender, action) => {
     }
 }
 
-
+ */
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 

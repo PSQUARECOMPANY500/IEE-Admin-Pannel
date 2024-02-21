@@ -569,6 +569,7 @@ span::after {
   font-size: 24px;
 }
 .search-btn-ticket-section {
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -583,7 +584,7 @@ span::after {
   font-size: 22px;
   /* font-weight: 800; */
   margin-top: 0px;
-  height: 24px;
+  height: 38px;
   width: 26px;
 }
 .search-box {
@@ -3513,15 +3514,41 @@ element.style {
   }
 }
 
+.task-dot-on-complete {
+  height: 8px;
+  width: 8px;
+  background-color: #46A70A;
+  border-radius: 50%;
+}
+
+.skill-box .skill-bar-ontask {
+  height: 2px;
+  width: 84%;
+  border-radius: 6px;
+  margin-bottom: 40px;
+  background: rgba(0, 0, 0, 0.1);
+}
 
 
+.skill-box .skill-per-ontask {
+  position: relative;
+  display: block;
+  height: 100%;
+  /* manupulate the pointer on the progress bar */
+  width: 98%;
+  border-radius: 6px;
+  background: #c1c1c1;
+  animation: progress 0.4s ease-in-out forwards;
+  opacity: 0;
+}
 
 
-
-
-
-
-
+.tasks-heading-on-no-task{
+  position: relative;
+  top: 11px;
+  left: 15px;
+  margin-bottom: 20px;
+}
 
 
 

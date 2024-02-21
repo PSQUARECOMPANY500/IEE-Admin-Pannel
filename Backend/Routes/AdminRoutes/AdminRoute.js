@@ -11,6 +11,8 @@ router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
 
+router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
+
 //------------------------------ All get requests -------------------------------------------------
 router.get("/getMembership", adminContoller.getClientMemebership);
 
@@ -52,8 +54,6 @@ router.get('/getCurrentDateAssignServiceRequest', adminContoller.getCurrentDateA
 router.get('/getAvailbaleEng', adminContoller.getBookedSlotsForParticularEngg);
 
 router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
-
-router.get('/getEngAssignSlotsDetails',adminContoller.getEngAssignSlotsDetails);
 
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
