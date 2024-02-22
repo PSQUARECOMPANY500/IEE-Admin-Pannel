@@ -1081,6 +1081,7 @@ footer a:hover {
   width: 15%;
   margin-top: 16px;
   position: relative;
+ 
 }
 .dropdown-menu {
   width: 166px;
@@ -1147,7 +1148,7 @@ footer a:hover {
   visibility: visible;
   top: 4%;
   left: -15%;
-  transition: all 0.5s, background 2s 0.5s linear;
+  /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   width: 225px;
   height: auto;
@@ -1292,7 +1293,7 @@ width: 100%;
 .tasks-heading {
   position: relative;
   top: 11px;
-  left: 75px;
+  left: 50px;
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -2891,14 +2892,31 @@ element.style {
   cursor: pointer;
 }
 
+.sender-side{
+  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:end;
+
+
+
+  
+}
+.reciver-side{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:start; 
+}
 .reciver-message,
 .sender-message {
-  width: 50%;
+max-width: 70%;
   background: #c1c1c180;
   color: #343434;
-  border-radius: 10px;
-  padding: 9px 0px;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 0.9rem;
   text-wrap: wrap;
   line-height: 1.1;
   text-align: center;
@@ -2907,13 +2925,20 @@ element.style {
 .sender-message {
   color: #f8ac1d;
   background: #fef3de;
-  margin-left: 8.4rem;
-  margin-top: 0.2rem;
-}
-.reciver-side {
-  padding: 10px 6px;
+  /* margin-left: 8.4rem; */
+  margin-top: 0.5rem;
+  margin-right: 0.3rem;
+  word-wrap:break-word
 }
 
+.reciver-message{
+  color:#000;
+  background: #aca6a6;
+  /* margin-left: 8.4rem; */
+  margin-top: 0.5rem;
+  margin-left: 0.3rem;
+  word-wrap:break-word
+}
 .send-data {
   display: flex;
   flex-direction: row;
@@ -2958,6 +2983,18 @@ element.style {
 .message-body {
   height: 21rem;
   overflow-x: scroll;
+
+
+}
+
+.loader{
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+justify-content: center;
+align-items: center;
+  
 }
 
 /* set scroll behaviour  */
@@ -3147,6 +3184,7 @@ element.style {
   bottom: 15px;
   max-height: 10rem;
   width: 70%;
+
 }
 
 .text-area-message-whatsapp {

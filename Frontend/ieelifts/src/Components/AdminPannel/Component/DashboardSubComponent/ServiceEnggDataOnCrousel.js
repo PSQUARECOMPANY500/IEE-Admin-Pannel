@@ -181,7 +181,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           <TaskChart completedTasks={2} totalTasks={4}/>
           <div
             className="dropdown-menu"
-            style={{ left: len - 1 === index ? "-165px" : "-12%" }}
+            style={{ left: len - 1 === index ? "-165px" : "-302%" }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
