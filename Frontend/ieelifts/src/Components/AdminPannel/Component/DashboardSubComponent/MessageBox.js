@@ -1,4 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect,
+  useLayoutEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { MdSend } from "react-icons/md";
 import { MdAddCall } from "react-icons/md";
@@ -7,45 +8,52 @@ import { MdAddCall } from "react-icons/md";
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 
 
 
-const MessageBox = ({ onClose,EnggId }) => {
+const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
 
-  // console.log("clicked EnggId",EnggId);
+
 
   const [messageData, setMessageData] = useState();
- 
-  // console.log(messageData)
-
-
+  const messageBodyRef = useRef(null);
   const [file, setFile] = useState(false);
   const fileInputField = useRef(null);
+  const textareaRef = useRef();
+  const [textareaHeight, setTextareaHeight] = useState();
+  const [swapIcon, setSwapIcon] = useState(true);
+
+  const scroll = () => {
+    if (messageBodyRef.current) {
+      messageBodyRef.current.scrollTop = messageBodyRef.current.scrollHeight;
+    }
+  };
+
+
+
+
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0].name);
   };
 
-  const textareaRef = useRef(null);
-  const [textareaHeight, setTextareaHeight] = useState();
-  const [swapIcon, setSwapIcon] = useState(true);
 
   useEffect(() => {
     setHeight(textareaRef.current);
+
   }, []);
 
 
- 
-
 
   const chatCreated = useSelector((state) => {
-    if(state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat){
+    if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
       return state.ChatRootReducer.createChatReducer.createChat.FullChat
-    }else{
+    } else {
       return null
     }
   });
@@ -53,23 +61,37 @@ const MessageBox = ({ onClose,EnggId }) => {
 
 
   const getMessages = useSelector((state) => {
-    if(state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message){
+
+scroll();
+    if (state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message) {
+   
       return state.ChatRootReducer.getSenderMessagesReducer.message.chats
-    }else{
+
+    } else {
       return null
     }
   })
-  console.log("all messages",getMessages)
+  console.log("all messages", getMessages, scroll)
 
 
+  useEffect(() => {
+    dispatch(createChatActions(EnggId, '65d49276f60a227274baf8e1')); //todo - in future the id is dynamic as come from login user
+   
 
-  useEffect(()=>{
-    dispatch(createChatActions(EnggId,'65d49276f60a227274baf8e1')) //todo - in future the id is dynamic as come from login user
-    console.log("dooon",chatCreated?._id)
-    if (chatCreated?._id) {
-      dispatch(getSenderMessagesAction(chatCreated._id));
-    }
-  },[dispatch,chatCreated?._id])
+    setTimeout(() => {
+      if (chatCreated?._id) {
+        dispatch(getSenderMessagesAction(chatCreated._id));
+      }
+    }, 400)
+    // Cleanup function
+    return () => {
+      if (chatCreated?._id) {
+        dispatch(getSenderMessagesAction()); // Clear sender messages when unmounting
+        dispatch(createChatActions())
+      }
+    };
+  }, [dispatch, chatCreated?._id]);
+
 
 
 
@@ -91,21 +113,39 @@ const MessageBox = ({ onClose,EnggId }) => {
   };
 
   const handleInput = () => {
+
     setHeight(textareaRef.current);
     setSwapIcon(!textareaRef.current.value.trim());
   };
 
 
 
-  const handleSendMessage = () =>{
-    dispatch(sendChatMessageAction('65d49276f60a227274baf8e1',messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
+  const handleSendMessage = () => {
+    dispatch(sendChatMessageAction('65d49276f60a227274baf8e1', messageData, chatCreated?._id)); //todo - in future the id is dynamic as come from login user
     setMessageData('');
-    setTimeout(()=>{
+ 
+
+    if (textareaRef.current) {
+      textareaRef.current.value = '';
+      handleInput();
+
+    }
+
+
+
+    setTimeout(() => {
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction(chatCreated._id));
       }
-    },400)
+
+    }, 400)
+
   }
+
+  useLayoutEffect(() => {
+    scroll(); 
+  }, [getMessages]);
+
 
   return (
     <div className="message-parent-div">
@@ -114,61 +154,40 @@ const MessageBox = ({ onClose,EnggId }) => {
           <div className="pro-heading"></div>
           <div className="featured-icon">
             <div>
-            <MdAddCall />
+              <MdAddCall />
             </div>
             <div>
               <RxCross2 onClick={onClose} />
+
             </div>
           </div>
         </div>
 
-        <div className="message-body">
+        <div className="message-body" ref={messageBodyRef}>
+          {getMessages?.length > 0 ? (
 
-              {getMessages?.map((item) => {
-                console.log("message item map", item.Content);
-        return (
-          <div className="sender-side" key={item._id}>
-            <div className="sender-message">
-              <p>{item.Content}</p>
-            </div>
-          </div>
-        );
-      })}
-        
-        
-{/*           
+            getMessages.map((item) => {
+              // console.log("message item map", item.Content);
+              return (
+                <div className="sender-side" key={item._id}>
+                  <div className="sender-message">
+                    <p>{item.Content}</p>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
 
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div> */}
-          
-          {/* <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div>
-          <div className="reciver-side">
+            <div className="loader">Loading...</div>
+          )}
+
+
+          {/* <div className="reciver-side">
             <div className="reciver-message">
               <p>how are you b </p>
             </div>
-          </div>
-          <div className="reciver-side">
-            <div className="reciver-message">
-              <p>how are you b fjkwnefnwe fwefh whe fp f </p>
-            </div>
-          </div>
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div>
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div> */}
+          </div>   */}
+
 
           {file.length > 0 && (
             <div className="sender-side">
@@ -186,11 +205,11 @@ const MessageBox = ({ onClose,EnggId }) => {
             placeholder="Enter message"
             ref={textareaRef}
             onInput={handleInput}
-            style={{ resize: "none", height: `${textareaHeight}px` ,fontFamily:"Poppins"}}
+            style={{ resize: "none", height: '10px', fontFamily: "Poppins" }}
             className="text-area-message-whatsapp"
             rows="4"
             cols="50"
-            onChange={(e)=> setMessageData(e.target.value)}
+            onChange={(e) => setMessageData(e.target.value)}
             value={messageData}
           />
         </div>
@@ -212,10 +231,10 @@ const MessageBox = ({ onClose,EnggId }) => {
               <MdOutlineAttachFile />
             </div>
           </div>
-          
-            <p className="send-messsage" onClick={handleSendMessage}>
-            {swapIcon ? (<MdOutlineMic />) : ( <MdSend />) }
-            </p>
+
+          <p className="send-messsage" onClick={handleSendMessage}>
+            {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
+          </p>
         </div>
       </div>
     </div>
