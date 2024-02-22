@@ -20,6 +20,23 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
     setShowMessage(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (MessageBoxRef.current && !MessageBoxRef.current.contains(event.target)) {
+        setShowMessage(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [MessageBoxRef]);
+
+
+
+
   // You can simplify this function
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
@@ -68,7 +85,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
               }}
               className="engg-message"
             >
-              <MessageBox onClose={handleMessageBoxClose} />
+              <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
             </div>
           )}
         </div>
