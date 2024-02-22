@@ -116,7 +116,7 @@ const Sidebar = ({ children }) => {
       icon: <MdOutlineCardMembership />,
     },
     {
-      Path: "/fgsd",
+      Path: "/Engeeniers",
       name: "Engeeniers",
       icon: <MdEngineering />,
     },
@@ -140,6 +140,9 @@ const Sidebar = ({ children }) => {
       case "/Memberships":
         setTopBarHeading("Memberships");
         break;
+        case "/Engeeniers":
+          setTopBarHeading("Engeeniers");
+          break;
       // Add more cases for other pages
       default:
         setTopBarHeading("Default Heading");
