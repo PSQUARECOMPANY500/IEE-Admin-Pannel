@@ -7,9 +7,21 @@ import { MdAddCall } from "react-icons/md";
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 
-const MessageBox = ({ onClose,EnggId }) => {
+import { useDispatch , useSelector } from "react-redux";
+import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
+import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
+import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 
-  console.log("reet",EnggId);
+
+
+const MessageBox = ({ onClose,EnggId }) => {
+  const dispatch = useDispatch();
+
+  // console.log("clicked EnggId",EnggId);
+
+  const [messageData, setMessageData] = useState();
+ 
+  // console.log(messageData)
 
   const [file, setFile] = useState(false);
   const fileInputField = useRef(null);
@@ -24,6 +36,41 @@ const MessageBox = ({ onClose,EnggId }) => {
   useEffect(() => {
     setHeight(textareaRef.current);
   }, []);
+
+
+ 
+
+
+  const chatCreated = useSelector((state) => {
+    if(state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat){
+      return state.ChatRootReducer.createChatReducer.createChat.FullChat
+    }else{
+      return null
+    }
+  });
+  console.log("chat created", chatCreated?._id)
+
+
+  const getMessages = useSelector((state) => {
+    if(state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message){
+      return state.ChatRootReducer.getSenderMessagesReducer.message.chats
+    }else{
+      return null
+    }
+  })
+  console.log("all messages",getMessages)
+
+
+
+  useEffect(()=>{
+    dispatch(createChatActions(EnggId,'65d49276f60a227274baf8e1')) //todo - in future the id is dynamic as come from login user
+    console.log("dooon",chatCreated?._id)
+    if (chatCreated?._id) {
+      dispatch(getSenderMessagesAction(chatCreated._id));
+    }
+  },[dispatch,chatCreated?._id])
+
+
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -47,6 +94,13 @@ const MessageBox = ({ onClose,EnggId }) => {
     setSwapIcon(!textareaRef.current.value.trim());
   };
 
+
+
+  const handleSendMessage = () =>{
+    dispatch(sendChatMessageAction('65d49276f60a227274baf8e1',messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
+    setMessageData('');
+  }
+
   return (
     <div className="message-parent-div">
       <div className="message-child-div">
@@ -63,12 +117,28 @@ const MessageBox = ({ onClose,EnggId }) => {
         </div>
 
         <div className="message-body">
-          <div className="reciver-side">
-            <div className="reciver-message">
-              <p>how are you b jhsfb dcvw cu wu c wuov wuo </p>
+
+              {getMessages?.map((item) => {
+                console.log("message item map", item.Content);
+        return (
+          <div className="sender-side" key={item._id}>
+            <div className="sender-message">
+              <p>{item.Content}</p>
             </div>
           </div>
+        );
+      })}
+        
+        
+{/*           
+
           <div className="sender-side">
+            <div className="sender-message">
+              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
+            </div>
+          </div> */}
+          
+          {/* <div className="sender-side">
             <div className="sender-message">
               <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
             </div>
@@ -92,7 +162,7 @@ const MessageBox = ({ onClose,EnggId }) => {
             <div className="sender-message">
               <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
             </div>
-          </div>
+          </div> */}
 
           {file.length > 0 && (
             <div className="sender-side">
@@ -114,6 +184,8 @@ const MessageBox = ({ onClose,EnggId }) => {
             className="text-area-message-whatsapp"
             rows="4"
             cols="50"
+            onChange={(e)=> setMessageData(e.target.value)}
+            value={messageData}
           />
         </div>
 
@@ -135,7 +207,7 @@ const MessageBox = ({ onClose,EnggId }) => {
             </div>
           </div>
           
-            <p className="send-messsage">
+            <p className="send-messsage" onClick={handleSendMessage}>
             {swapIcon ? (<MdOutlineMic />) : ( <MdSend />) }
             </p>
         </div>
