@@ -100,6 +100,11 @@ const MessageBox = ({ onClose,EnggId }) => {
   const handleSendMessage = () =>{
     dispatch(sendChatMessageAction('65d49276f60a227274baf8e1',messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
     setMessageData('');
+    setTimeout(()=>{
+      if (chatCreated?._id) {
+        dispatch(getSenderMessagesAction(chatCreated._id));
+      }
+    },400)
   }
 
   return (
