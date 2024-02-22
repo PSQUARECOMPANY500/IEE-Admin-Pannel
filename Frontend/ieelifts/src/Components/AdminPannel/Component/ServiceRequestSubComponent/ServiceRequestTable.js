@@ -9,9 +9,9 @@ import ServiceRequestModal from "./ServiceRequestModal";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-
-const ServiceRequestTable = ({setRenderTicket2}) => {
+const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
 
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setRenderTicket2((prev)=>!prev);
+      setRenderTicket2((prev) => !prev);
       dispatch(fetchAllServiceRequestsAction());
     }, 1000);
   }, [renderTicket]);
@@ -67,7 +67,7 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-  useEffect(() => {}, [checkboxStates]);
+  useEffect(() => { }, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -105,7 +105,7 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
     };
   }, [dropdownRef, showTicketFilter]);
 
-  const openModal = (modalNumber, requestId,isAssignedValue,enngID) => {
+  const openModal = (modalNumber, requestId, isAssignedValue, enngID) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 4) {
       setShowTicketModal4(true);
@@ -114,6 +114,56 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
       setEnggId(enngID);
     }
   };
+
+  const [filteredCD, setFilteredCD] = useState([]);
+  const [allCD, setallCD] = useState([]);
+  const [timer, setTimer] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    setFilteredCD(getRequestDetail)
+    setallCD(getRequestDetail)
+  }, [getRequestDetail])
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    const newTimer = setTimeout(() => {
+      if (searchText) {
+        const data = filtersearch(searchText, allCD);
+        setFilteredCD(data);
+      } else {
+        setFilteredCD(allCD);
+      }
+      setIsSearching(false); // Set isSearching to false after search completes
+    }, 700);
+
+    setTimer(newTimer);
+    setIsSearching(true); // Set isSearching to true when search is initiated
+
+    return () => {
+      clearTimeout(newTimer);
+    };
+  }, [searchText, allCD]);
+
+
+  function filtersearch(inputValue, searchRestaurant) {
+    const filteredResults = searchRestaurant.filter((data) => {
+      if (
+        data.clientDetail.name.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.JobOrderNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.PhoneNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.Address.toLowerCase().includes(inputValue.toLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    return filteredResults;
+  }
+
 
   return (
     <div className="task-list">
@@ -160,13 +210,47 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
         </thead>
 
         {/* TABLE BODY STARTS */}
-        {getRequestDetail?.map((value) => {
-          
+        <>
+                {isSearching ? (
+                  <>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                  <td colSpan="10">
+                    <SkeltonLoader
+                      width={"80vw"}
+                      height={"38px"}
+                      marginTop={"8px"}
+                      marginBottom={"0px"}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                <td colSpan="10">
+                  <SkeltonLoader
+                    width={"80vw"}
+                    height={"38px"}
+                    marginTop={"8px"}
+                    marginBottom={"0px"}
+                  />
+                </td>
+              </tr>
+              </>
+                ) : (filteredCD?.map((value) => {
+
           const isAssignedValue = value?.isAssigned;
           const enngID = value?.AssignedEng?.id;
           const name = value?.AssignedEng?.name;
-          
-                    
+
+
           // Check if isAssigned is true, if not, don't render the row
           if (isAssignedValue) {
             return null;
@@ -208,7 +292,7 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
                 <td>{value?.RequestDate}</td>
                 <td>{value?.RequestTime}</td>
 
-                <td onClick={() => openModal(4,value?.RequestId,isAssignedValue,enngID)}>
+                <td onClick={() => openModal(4, value?.RequestId, isAssignedValue, enngID)}>
                   {isAssignedValue ? (
                     <AssignDropdown
                       customAssignName="assignNameColor"
@@ -222,7 +306,9 @@ const ServiceRequestTable = ({setRenderTicket2}) => {
               </tr>
             </tbody>
           );
-        })}
+        }))
+      }
+      </>
 
         {showTicketModal4 && (
           <ServiceRequestModal

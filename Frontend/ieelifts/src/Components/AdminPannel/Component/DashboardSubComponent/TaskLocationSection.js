@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-  console.log("ticketUpdate",props.ticketUpdate)
+  //console.log("ticketUpdate",props.ticketUpdate)
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
