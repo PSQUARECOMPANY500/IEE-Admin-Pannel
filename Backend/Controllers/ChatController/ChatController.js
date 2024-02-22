@@ -20,7 +20,8 @@ module.exports.CreateChat = async (req,res) => {
         })
 
         if(isChat.length > 0){
-          return res.send(isChat[0])
+        //   return res.send(isChat[0])
+          return res.status(200).json({FullChat:isChat[0]})
         }else{
             var chatData = {
                 ChatName:"sender",
