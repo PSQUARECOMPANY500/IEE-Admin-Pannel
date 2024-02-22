@@ -104,7 +104,10 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                     <div className="upper-sec">
                       <p>{renderArray[0].ClientName}</p>
                       <p>Service E1</p>
-                      <span className="horizontal-row"></span>
+             <div className="horizontal-row-container">
+                         <span className="horizontal-row"></span>
+             </div>
+           
                     </div>
                     <div className="lower-sec">
                     <p style={{ display:"flex" }}>
@@ -133,7 +136,9 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                     <div className="upper-sec">
                       <p>{renderArray[1].ClientName}</p>
                       <p>Service E1</p>
-                      <span className="horizontal-row"></span>
+                      <div className="horizontal-row-container">
+                         <span className="horizontal-row"></span>
+             </div>
                     </div>
                     <div className="lower-sec">
                     <p style={{ display:"flex" }}>
@@ -156,7 +161,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
             </div>}
 
         <div className="dropdown3">
-          <TaskChart item={item}/>
+          <TaskChart completedTasks={2} totalTasks={4}/>
           <div
             className="dropdown-menu"
             style={{ left: len - 1 === index ? "-165px" : "-12%" }}
