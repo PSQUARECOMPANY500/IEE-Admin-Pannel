@@ -57,6 +57,11 @@ const RequestScheduledSection = ({setRenderTicket}) => {
     setHandleRequestScheduledTable(false);
   };
 
+ //.................................................................ax13-search-func-starts----------------------------------------------------------
+ const [searchText, setSearchText] = useState("");
+
+ //.................................................................ax13-search-func-starts----------------------------------------------------------
+
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -88,16 +93,23 @@ const RequestScheduledSection = ({setRenderTicket}) => {
             <div className="right-side-icons">
               <span className="filter-top-icon">
                 <div className="search-box">
-                  <input
+                <input
                     type="text"
                     placeholder="Search anything"
                     className="search-input"
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
                   />
-                  <a href="/" className="search-btn">
+                  <button className="search-btn-ticket-section"/*  onClick={() => {
+                    const data = filtersearch(searchText, allCD)
+                    setFilteredCD(data);
+                  }} */ >
                     <i>
                       <CiSearch />
                     </i>
-                  </a>
+
+                  </button>
                 </div>
               </span>
             </div>
@@ -140,9 +152,9 @@ const RequestScheduledSection = ({setRenderTicket}) => {
           {/* table start here */}
 
           {handleRequestScheduledTable ? (
-            <ServiceRequestTable setRenderTicket2={setRenderTicket}/>
+            <ServiceRequestTable setRenderTicket2={setRenderTicket} searchText={searchText}/>
           ) : (
-            <ServiceScheduledTable />
+            <ServiceScheduledTable searchText={searchText}/>
           )}
 
           {/* table end here */}

@@ -26,7 +26,7 @@ const AddTicketModal = ({
   setRenderTicket,
   enggId,
   isAssigned,
-  setTicketUpdate
+  setTicketUpdate,
 }) => {
   const dispatch = useDispatch();
 
