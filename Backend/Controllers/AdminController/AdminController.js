@@ -1026,6 +1026,7 @@ module.exports.createClientCallDetails = async (req, res) => {
       callDate,
       duration,
     } = req.body;
+
     const clientCall = await ClientCalls.create({
       jobOrderNumber,
       callType,
@@ -1073,6 +1074,24 @@ module.exports.getClientData = async (req, res) => {
       DOH: clientDetails.DateOfHandover,
     };
     res.status(201).json({ success: true, responseData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
+    });
+  }
+};
+
+module.exports.getMembershipHistory = async (req, res) => {
+  try {
+    const { jobOrderNumber } = req.query;
+
+    const membershipHistory = await AssignMemeberships.find({
+      JobOrderNumber: jobOrderNumber,
+    });
+
+    res.status(201).json({ success: true, membershipHistory });
   } catch (error) {
     console.log(error);
     res.status(500).json({

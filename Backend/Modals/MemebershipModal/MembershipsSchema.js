@@ -32,6 +32,21 @@ const memebership = new Schema(
       type: String,
       required: true,
     },
+    callbacksCount: {
+      type: Number,
+    },
+    serviecsCount: {
+      type: Number,
+    },
+    sparePartsSoldCount: {
+      type: Number,
+    },
+    SOScallsCount: {
+      type: Number,
+    },
+    revenue: {
+      type: Number,
+    },
     isRenewed: {
       type: Boolean,
       required: true,

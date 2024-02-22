@@ -136,7 +136,11 @@ const MembershipCard = ({
                   : "animationExpand"
               }
             >
-              <MembershipCardDetails />
+              <MembershipCardDetails
+                DemoData={DemoData}
+                expiredCount={DemoData?.Data?.details?.expiredCount}
+                expiringCount={DemoData?.Data?.details?.expiringCount}
+              />
             </div>
 
             <div
@@ -181,7 +185,6 @@ const MembershipCard = ({
             >
               <MembershipExpiring
                 DemoData={DemoData}
-                setClick={setClick}
                 count={DemoData?.Data?.details?.expiringCount}
               />
               <MembershipExpired

@@ -95,7 +95,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const MembershipExpired = ({ setClick, DemoData, count }) => {
+const MembershipExpired = ({ DemoData, count }) => {
   // Selectors using Reselect
   const selectAdminRootReducer = (state) => state.AdminRootReducer;
   const selectRequestLimitedClientDataReducer = createSelector(
@@ -165,14 +165,13 @@ const MembershipExpired = ({ setClick, DemoData, count }) => {
         {memberShipDetails ? <p>{count}</p> : null}
       </div>
       <div
-        className={`membership_card_scrollable membership_card_scrollable_expired ${
-          setClick ? "membership_card_stats_expand_height" : ""
-        }`}
+        className={`membership_card_scrollable membership_card_scrollable_expired`}
         ref={ref}
       >
         {pageData.map((data, index) => (
           <MembershipSubCard
             data={data}
+            isToShowNumber={count ? true : false}
             isExpired={true}
             key={index}
             dataType={DemoData?.dataType}

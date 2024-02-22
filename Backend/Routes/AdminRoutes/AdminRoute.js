@@ -59,6 +59,10 @@ router.get(
   "/getEngAssignSlotsDetails",
   adminContoller.getEngAssignSlotsDetails
 );
+
+router.get("/getMembershipHistory", adminContoller.getMembershipHistory);
+
+router.get("/getClientCalls", adminContoller.getClientCalls);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);

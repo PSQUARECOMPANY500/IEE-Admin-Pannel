@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const MembershipSubCard = ({ data, dataType, isExpired }) => {
+const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
   const cardClass = isExpired
     ? "membership_card_data_display_expired"
     : dataType === "Warrenty"
@@ -33,9 +33,10 @@ const MembershipSubCard = ({ data, dataType, isExpired }) => {
     ? "membership_card_data_jon_title_gold"
     : "membership_card_data_jon_title_silver";
 
-    const truncatedAddress = data?.address && data.address.length > 30
-    ? data.address.slice(0, 30) + "..." // Show first 30 characters and add ellipsis
-    : data?.address; 
+  const truncatedAddress =
+    data?.address && data.address.length > 30
+      ? data.address.slice(0, 30) + "..." // Show first 30 characters and add ellipsis
+      : data?.address;
 
   return (
     <div className={`membership_card_data_expire ${cardClassBorder} `}>
@@ -51,9 +52,11 @@ const MembershipSubCard = ({ data, dataType, isExpired }) => {
           <p className="membership_card_data_address">{truncatedAddress}</p>
         </div>
       </div>
-      <div className={`membership_card_data_display_hover ${cardClass}`}>
-        <p>{data?.number}</p>
-      </div>
+      {isToShowNumber && (
+        <div className={`membership_card_data_display_hover ${cardClass}`}>
+          <p>{data?.number}</p>
+        </div>
+      )}
     </div>
   );
 };

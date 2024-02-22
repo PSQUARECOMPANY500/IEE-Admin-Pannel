@@ -199,6 +199,11 @@ code {
 
 .membership_card_expiring {
   width: 47%;
+  height: 17rem;
+}
+.membership_card_expiring_expanded {
+  width: 30%;
+  height: 17rem;
 }
 
 .membership_card_expiring-title {
@@ -388,7 +393,10 @@ code {
 /* <-------------------------------media query for membership card ---------------------------------------> */
 @media (max-width: 1920px) {
   .membership_card_scrollable {
-    height: 13rem;
+    height: 15rem;
+  }
+  .membership_card_scrollable_expanded {
+    height: 39rem;
   }
   .membership_card_data_display {
     gap: 4%;
@@ -520,5 +528,65 @@ code {
 /* ---------------------total revenue css ends ----------------------------------- */
 
 /* <------------------------------ membership card expanding css ends --------------------------------------->*/
+
+/* <------------------------------ membership card expanded css start ---------------------------------------->*/
+
+.expandedMembershipheading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.headingCenter {
+  border-bottom: 2px solid #e5e5e5;
+  display: flex;
+  justify-content: center;
+  gap: 01rem;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  padding-bottom: 0.7rem;
+}
+
+/* --------------------------------------------- client details css -------------------------------------------- */
+
+.clientDetailContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  width: 45%;
+  color: #444444;
+  margin-top: 2rem;
+}
+
+.clientName {
+  font-size: large;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.clientDetail {
+  margin-top: 0.8rem;
+}
+
+.history{
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 0.9rem;
+  background-color: #FF7F001A;
+  border: 1px solid #FF7F00;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
+}
+
+/* --------------------------------------------- client details css ends --------------------------------------- */
+
+/* <------------------------------ membership card expanded css ends ---------------------------------------->*/
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
