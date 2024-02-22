@@ -6,6 +6,7 @@ const serviceAssigtoEngg = require("../../Modals/ServiceEngineerModals/AssignSer
 
 const { generateEnggToken } = require('../../Middleware/ServiceEnggAuthMiddleware')
 
+const EnggLocationModel = require("../../Modals/LocationModel/EnggLocationSchema");
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -53,19 +54,19 @@ module.exports.RegisterServiceEngg = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //function to handle serviceEngg Login
-module.exports.loginEngg =  async (req,res) => {
+module.exports.loginEngg = async (req, res) => {
   try {
-    const { EnggId , password } = req.body;
+    const { EnggId, password } = req.body;
 
     //firstly check the Engg is exist or not
-    const Engg = await ServiceEnggBasicSchema.findOne({EnggId});
+    const Engg = await ServiceEnggBasicSchema.findOne({ EnggId });
 
-    if(!Engg || Engg.EnggPassword !== password){
-      return res.status(401).json({message : 'Invalid Credentials'});
+    if (!Engg || Engg.EnggPassword !== password) {
+      return res.status(401).json({ message: 'Invalid Credentials' });
     }
 
-    const token = generateEnggToken({EnggId});
-    res.json({Engg,token})
+    const token = generateEnggToken({ EnggId });
+    res.json({ Engg, token })
 
 
   } catch (error) {
@@ -110,7 +111,7 @@ module.exports.getAssignedServices = async (req, res) => {
 
     const assignedServices = await serviceAssigtoEngg.find({ ServiceEnggId });
 
-    if (!assignedServices || assignedServices.length === 0 ) {
+    if (!assignedServices || assignedServices.length === 0) {
       return res.status(404).json({
         message: "No services Engg found for the specified Service Engineer ID",
       });
@@ -131,13 +132,13 @@ module.exports.getAssignedServices = async (req, res) => {
 
 //function to handle (all the Engg detail as per engg Id)
 
-module.exports.getEnggDetail = async (req,res) =>{
+module.exports.getEnggDetail = async (req, res) => {
   try {
     const { EnggId } = req.params;
 
-    const enggDetail = await ServiceEnggBasicSchema.findOne({EnggId});
+    const enggDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
 
-    
+
     if (!enggDetail) {
       return res.status(404).json({
         message: "No services Engg found for the specified Service Engineer ID",
@@ -156,3 +157,43 @@ module.exports.getEnggDetail = async (req,res) =>{
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+//api for location  we need to integrate this with engg attendance
+
+module.exports.createEnggLocation = async (req, res) => {
+  try {
+    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;
+
+    const locationEntry = new EnggLocationModel({
+      ServiceEnggId,
+      JobOrderNumber,
+      startingLocation: { type: "Point", coordinates: [longitude, latitude] }
+    });
+
+    await locationEntry.save();
+    res.status(200).json({ message: "Location created successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error in Location creation" });
+  }
+}
+
+module.exports.updateEnggLocation = async (req, res) => {
+  try {
+    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;
+    const createdDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+    const now = new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });
+    const [time, indicator] = now.split(' ');
+    const [hours] = time.split(':');
+    const createdTime = `${hours} ${indicator}`;
+
+    await EnggLocationModel.findOneAndUpdate(
+      { ServiceEnggId, JobOrderNumber, createdDate, createdTime },
+      { longitude, latitude },
+      { upsert: true, new: true } // upsert: true creates a new document if it doesn't exist
+    );
+    res.status(200).json({ message: "Location created successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error in Location creation" });
+  }
+}

@@ -2909,6 +2909,7 @@ element.style {
   background: #fef3de;
   margin-left: 8.4rem;
   margin-top: 0.2rem;
+  word-wrap: break-word;
 }
 .reciver-side {
   padding: 10px 6px;

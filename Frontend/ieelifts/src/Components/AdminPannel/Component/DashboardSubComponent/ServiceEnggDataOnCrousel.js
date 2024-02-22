@@ -7,7 +7,9 @@ import MessageBox from "./MessageBox";
 const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState(false);
+  //const [completedTask, setCompletedTasks] = useState(0)
   const renderArray = [];
+  const renderArrayon = [];
 
   const handleMesageBox = (index) => {
     setShowMessage((prev) => ({
@@ -34,21 +36,31 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
     };
   }, [MessageBoxRef]);
 
-
-
-
-  // You can simplify this function
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
       item.filteredServiceAssignmentsWithClientName.forEach((itemData) => {
         if (itemData.TaskStatus === "InCompleted") {
           renderArray.push(itemData);
         }
+        else {
+          renderArrayon.push(itemData)
+          //setCompletedTasks((prev) => prev + 1)
+        }
       });
     }
   };
-
   assignArray(item);
+
+/* useEffect(() => {
+  assignArray(item);
+},[item.filteredServiceAssignmentsWithClientName]) */
+
+  // You can simplify this function
+
+
+  console.log("emit", item)
+ // console.log("completedTask", completedTask)
+ 
   return (
     <div className="main-crouser" key={index}>
       <div className="second-carusel">
@@ -92,26 +104,26 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
       </div>
 
       <div className="main-head-div">
-        
-          {renderArray.length == 0 ?
-            <div className="skill-box"><div className="dots2">
-            
+
+        {renderArray.length == 0 ?
+          <div className="skill-box"><div className="dots2">
+
+          </div>
+            <div className="skill-bar-ontask">
+              <span className="skill-per-ontask reactjs">
+              </span>
             </div>
-              <div className="skill-bar-ontask">
-                <span className="skill-per-ontask reactjs">
-                </span>
-              </div>
-              </div>
-            :  <div className="skill-box">
-              <div className="dots2">
+          </div>
+          : <div className="skill-box">
+            <div className="dots2">
               <span className="dot-progress"></span>
               <span className="dot-progress2"></span>
             </div>
-              <div className="skill-bar">
-                <span className="skill-per reactjs">
-                  {<span className="tooltip">70%</span>}
-                </span>
-              </div>
+            <div className="skill-bar">
+              <span className="skill-per reactjs">
+                {<span className="tooltip">70%</span>}
+              </span>
+            </div>
             <div className="hover-icon-service">
               <div className="dropdown">
                 <span>{renderArray[0].ClientName.split(' ')[0]}</span>
@@ -121,30 +133,30 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                     <div className="upper-sec">
                       <p>{renderArray[0].ClientName}</p>
                       <p>Service E1</p>
-             <div className="horizontal-row-container">
-                         <span className="horizontal-row"></span>
-             </div>
-           
+                      <div className="horizontal-row-container">
+                        <span className="horizontal-row"></span>
+                      </div>
+
                     </div>
                     <div className="lower-sec">
-                    <p style={{ display:"flex" }}>
-                      <p>JON :</p>
-                      <p>{renderArray[0].JobOrderNumber}</p>
+                      <p style={{ display: "flex" }}>
+                        <p>JON :</p>
+                        <p>{renderArray[0].JobOrderNumber}</p>
                       </p>
-                      <p style={{ display:"flex" }}>
-                      <p>No :</p>
-                      <p>{renderArray[0].ClientNumber}</p>
+                      <p style={{ display: "flex" }}>
+                        <p>No :</p>
+                        <p>{renderArray[0].ClientNumber}</p>
                       </p>
-                      <p style={{ display:"flex" }}>
-                      <p style={{ width: "100%" }}>Add :</p>
-                      <p  style={{ marginLeft:"-2px", textAlign:"left" }}>{renderArray[0].ClientAddress}</p>
+                      <p style={{ display: "flex" }}>
+                        <p style={{ width: "100%" }}>Add :</p>
+                        <p style={{ marginLeft: "-2px", textAlign: "left" }}>{renderArray[0].ClientAddress}</p>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {renderArray.length > 1 ?<div className="dropdown2">
+              {renderArray.length > 1 ? <div className="dropdown2">
                 <span>{renderArray[1].ClientName.split(' ')[0]}</span>
                 <span>service E1</span>
 
@@ -154,38 +166,38 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                       <p>{renderArray[1].ClientName}</p>
                       <p>Service E1</p>
                       <div className="horizontal-row-container">
-                         <span className="horizontal-row"></span>
-             </div>
+                        <span className="horizontal-row"></span>
+                      </div>
                     </div>
                     <div className="lower-sec">
-                    <p style={{ display:"flex" }}>
-                      <p>JON :</p>
-                      <p>{renderArray[1].JobOrderNumber}</p>
+                      <p style={{ display: "flex" }}>
+                        <p>JON :</p>
+                        <p>{renderArray[1].JobOrderNumber}</p>
                       </p>
-                      <p style={{ display:"flex" }}>
-                      <p>No :</p>
-                      <p>{renderArray[1].ClientNumber}</p>
+                      <p style={{ display: "flex" }}>
+                        <p>No :</p>
+                        <p>{renderArray[1].ClientNumber}</p>
                       </p>
-                      <p style={{ display:"flex" }}>
-                      <p style={{ width: "100%" }}>Add :</p>
-                      <p  style={{ marginLeft:"-2px", textAlign:"left" }}>{renderArray[1].ClientAddress}</p>
+                      <p style={{ display: "flex" }}>
+                        <p style={{ width: "100%" }}>Add :</p>
+                        <p style={{ marginLeft: "-2px", textAlign: "left" }}>{renderArray[1].ClientAddress}</p>
                       </p>
                     </div>
                   </div>
                 </div>
-              </div>:null}
-              </div>
-            </div>}
+              </div> : null}
+            </div>
+          </div>}
 
         <div className="dropdown3">
-          <TaskChart completedTasks={2} totalTasks={4}/>
+          <TaskChart completedTasks={renderArrayon.length} totalTasks={item.filteredServiceAssignmentsWithClientName.length} />
           <div
             className="dropdown-menu"
             style={{ left: len - 1 === index ? "-165px" : "-12%" }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
-              {item.filteredServiceAssignmentsWithClientName.length !=0 ?
+              {item.filteredServiceAssignmentsWithClientName.length != 0 ?
                 item.filteredServiceAssignmentsWithClientName.map(
                   (itemData, dataIndex) => (
                     <React.Fragment key={dataIndex}>
@@ -209,7 +221,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                       <span className="horizontal-row2"></span>
                     </React.Fragment>
                   )
-                ):<div  className="tasks-heading-on-no-task">No Task Assigned</div>}
+                ) : <div className="tasks-heading-on-no-task">No Task Assigned</div>}
             </div>
           </div>
         </div>
