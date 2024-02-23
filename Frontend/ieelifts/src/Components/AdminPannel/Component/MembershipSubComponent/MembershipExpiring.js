@@ -79,7 +79,11 @@ const MembershipExpiring = ({ DemoData, count }) => {
       : "total_revenue_outer_border";
 
   return (
-    <div className={count ? "membership_card_expiring":"membership_card_expiring_expanded"}>
+    <div
+      className={
+        count ? "membership_card_expiring" : "membership_card_expiring_expanded"
+      }
+    >
       {count && (
         <div className="membership_card_expiring-title">
           <p>Expiring Soon</p>
