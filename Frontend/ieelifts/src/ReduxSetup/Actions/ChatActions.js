@@ -10,27 +10,36 @@ export const FETCH_ALL_MESSAGES_BY_CHATID = "FETCH_ALL_MESSAGES_BY_CHATID"
 //-------------------------------------------------------------------------------------------------------------------
 //action to create chat
 
-export const createChatActions = (userId,LoginId) => {
-  return async(dispatch)=>{
-      try {
-       const response = await axios.post(`${config.apiUrl}/chat/createChat`,
-       {
-        userId,
-        LoginId,
-       }
-     );
+export const createChatActions = (userId, LoginId) => {
+    return async (dispatch) => {
+        try {
+            if(!userId && !LoginId){
+                console.log("chat is fetched1")
+                dispatch({
+                    type: CREATE_CHAT_ACTION,
+                    payload: []
+                })
+            }
+            else{
+                console.log("chat is fetched2")
+            const response = await axios.post(`${config.apiUrl}/chat/createChat`,
+                {
+                    userId,
+                    LoginId,
+                }
+            );
 
-    //  console.log(response.data);
+            //  console.log(response.data);
 
-     dispatch({
-        type:CREATE_CHAT_ACTION,
-        payload:response.data
-     })
-
-      }catch (error) {
-        console.log("error while fetching data", error);
-      }
-}
+            dispatch({
+                type: CREATE_CHAT_ACTION,
+                payload: response.data
+            })
+        }
+        } catch (error) {
+            console.log("error while fetching data", error);
+        }
+    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -38,24 +47,24 @@ export const createChatActions = (userId,LoginId) => {
 
 //action to send message
 
-export const sendChatMessageAction = (Sender,Content,ChatId) => {
-    return async(dispatch) => {
+export const sendChatMessageAction = (Sender, Content, ChatId) => {
+    return async (dispatch) => {
         try {
             const response = await axios.post(`${config.apiUrl}/chat/sendMessage`,
-       {
-        Sender,
-        Content,
-        ChatId
-       }
-     );
+                {
+                    Sender,
+                    Content,
+                    ChatId
+                }
+            );
 
-     dispatch({
-        type:SEND_MESSAGE_BY_SENDER,
-        payload:response.data
-     })
+            dispatch({
+                type: SEND_MESSAGE_BY_SENDER,
+                payload: response.data
+            })
 
         } catch (error) {
-            console.log("error while fetching data", error); 
+            console.log("error while fetching data", error);
         }
     }
 }
@@ -64,18 +73,23 @@ export const sendChatMessageAction = (Sender,Content,ChatId) => {
 
 //action to get sender messages
 
-export const getSenderMessagesAction = (chatId) =>{
+export const getSenderMessagesAction = (chatId) => {
 
-    // console.log(chatId)
-    return async(dispatch) => {
+    console.log("this is the chats",chatId)
+    return async (dispatch) => {
+        if (!chatId) {
+           return;
+        }
         try {
+            console.log("log")
             const response = await axios.get(`${config.apiUrl}/chat/getChatMessages/${chatId}`);
             dispatch({
-                type:FETCH_ALL_MESSAGES_BY_CHATID,
-                payload:response.data
+                type: FETCH_ALL_MESSAGES_BY_CHATID,
+                payload: response.data
             })
+
         } catch (error) {
-            console.log("error while fetching data from messages", error);  
+            console.log("error while fetching data from messages", error);
         }
     }
 }

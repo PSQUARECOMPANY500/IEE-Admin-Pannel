@@ -882,49 +882,6 @@ module.exports.getBookedDates = async (req, res) => {
 //....................................................................................................................................................................
 // This is the api for fetching Eng details acc to current Date for engg crousel
 
-// module.exports.getEngAssignSlotsDetails = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.body;
-//     const currentDate = new Date().toLocaleDateString('en-GB');
-
-//     // Fetch data from both tables concurrently using Promise.all
-//     const [serviceAssignments, scheduleRequests] = await Promise.all([
-//       ServiceAssigntoEngg.find({ ServiceEnggId }),
-//       AssignSecheduleRequest.find({ ServiceEnggId })
-//     ]);
-//     // Filter data based on the current date
-//     const filteredServiceAssignments = serviceAssignments.filter(item => item.Date === currentDate);
-//       const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
-//         const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
-//         return { ...assignment._doc, ClientName: client?.name };
-//       }))
-
-    
-//     const filteredScheduleRequests = scheduleRequests.filter(item => item.Date === currentDate);
-//       const filteredScheduleRequestssWithClientName = await Promise.all(filteredScheduleRequests.map(async (assignment) => {
-//         const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
-//         return { ...assignment._doc, ClientName: client?.name };
-//       }));
-
-//     // Combine the filtered results
-//     const finalData = {
-//       serviceAssignments: filteredServiceAssignmentsWithClientName,
-//       scheduleRequests: filteredScheduleRequestssWithClientName,
-//       currentDate
-//     };
-
-//     // Send the final data as the response
-//     res.status(200).json({currentateData:finalData});
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message
-//     });
-//   }
-// };
-
-
 const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
   const clients = await clientDetailSchema.find({ JobOrderNumber: { $in: jobOrderNumbers } });
   return clients.reduce((map, client) => {

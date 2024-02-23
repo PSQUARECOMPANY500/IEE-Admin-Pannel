@@ -643,6 +643,7 @@ footer a:hover {
 }
 .main-crouser {
   width: 100%;
+  height: 175px;
   background: #ffffff;
 }
 
@@ -806,6 +807,7 @@ footer a:hover {
 .skill-box {
   width: 50%;
   margin: 25px 0px;
+ 
 }
 
 .skill-box .title {
@@ -1079,8 +1081,12 @@ footer a:hover {
   width: 15%;
   margin-top: 16px;
   position: relative;
+ 
 }
 .dropdown-menu {
+  width: 166px;
+
+  overflow: hidden;
   background-color: #fff;
   list-style-type: none;
   margin: 0;
@@ -1113,7 +1119,7 @@ footer a:hover {
   opacity: 1;
   visibility: visible;
   top: 2%;
-  left: 0%;
+  left: -2px;
   transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
   z-index: 99999;
@@ -1133,7 +1139,7 @@ footer a:hover {
   z-index: 99999;
   width: 166px;
   height: auto;
-  left: -70px;
+  left: -80px;
 }
 .dropdown3:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -1142,7 +1148,7 @@ footer a:hover {
   visibility: visible;
   top: 4%;
   left: -15%;
-  transition: all 0.5s, background 2s 0.5s linear;
+  /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   width: 225px;
   height: auto;
@@ -1162,6 +1168,7 @@ footer a:hover {
 }
 
 .drop-parent {
+
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -1180,17 +1187,19 @@ footer a:hover {
 }
 
 .upper-sec {
+position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
 }
 
 .upper-sec p:first-child {
   font-size: 14px;
   font-weight: 700;
   color: #343434;
-  width: 104%;
+
 }
 .upper-sec p:last-child {
   font-size: 14px;
@@ -1198,15 +1207,24 @@ footer a:hover {
   color: #343434;
 }
 .horizontal-row {
-  border-bottom: 1px solid #c1c1c1;
-  width: 165%;
-  height: 0px;
-  display: flex;
+ border-bottom: 1px solid #c1c1c1; 
+  width: 120%;
+  height: 0px; 
+  margin-top: 5px;
+  margin-bottom: 5px; 
+
+ } 
+
+
+
+  .horizontal-row-container{
+width: 100%;
+  height: 5px;
+   position: relative; 
+   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
+}   
 
 .horizontal-row2 {
   border-bottom: 1px solid #c1c1c1;
@@ -1275,7 +1293,7 @@ footer a:hover {
 .tasks-heading {
   position: relative;
   top: 11px;
-  left: 75px;
+  left: 50px;
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -2874,14 +2892,31 @@ element.style {
   cursor: pointer;
 }
 
+.sender-side{
+  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:end;
+
+
+
+  
+}
+.reciver-side{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:start; 
+}
 .reciver-message,
 .sender-message {
-  max-width: 50%;
+max-width: 70%;
   background: #c1c1c180;
   color: #343434;
-  border-radius: 10px;
-  padding: 9px 0px;
-  font-size: 0.8rem;
+  border-radius: 5px;
+  padding: 10px 10px;
+  font-size: 0.9rem;
   text-wrap: wrap;
   line-height: 1.1;
   text-align: center;
@@ -2893,12 +2928,23 @@ element.style {
   margin-left: 8.4rem;
   margin-top: 0.2rem;
   word-wrap: break-word;
-
 }
 .reciver-side {
   padding: 10px 6px;
+  margin-top: 0.5rem;
+  margin-right: 0.3rem;
+  word-wrap:break-word
+
 }
 
+.reciver-message{
+  color:#000;
+  background: #aca6a6;
+  /* margin-left: 8.4rem; */
+  margin-top: 0.5rem;
+  margin-left: 0.3rem;
+  word-wrap:break-word
+}
 .send-data {
   display: flex;
   flex-direction: row;
@@ -2943,6 +2989,18 @@ element.style {
 .message-body {
   height: 21rem;
   overflow-x: scroll;
+
+
+}
+
+.loader{
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+justify-content: center;
+align-items: center;
+  
 }
 
 /* set scroll behaviour  */
@@ -3132,6 +3190,7 @@ element.style {
   bottom: 15px;
   max-height: 10rem;
   width: 70%;
+
 }
 
 .text-area-message-whatsapp {
@@ -3545,11 +3604,12 @@ element.style {
 }
 
 
-.tasks-heading-on-no-task{
+.tasks-heading-on-no-task {
   position: relative;
   top: 11px;
-  left: 15px;
+  left: 30px;
   margin-bottom: 20px;
+  font-size: 1.1rem;
 }
 
 
