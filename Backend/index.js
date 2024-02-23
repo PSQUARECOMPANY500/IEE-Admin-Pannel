@@ -49,14 +49,42 @@ async function main() {
   console.log("Database connected successfully");
 }
 
-// io.on("connection", (socket) => {
-//   console.log(`A user connected: ${socket.id}`);
+io.on("connection", (socket) => {
+  // console.log(`A user connected: ${socket.id}`);
+  console.log("connected to socket io");
 
-//   socket.on("send_message",(data) => {
-//     console.log(data);
-//   });
+  socket.on("setup",(userData) => {
+    socket.join(userData);
+    console.log("userData",userData)
+    socket.emit("connected")
+  });
 
-// });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    console.log("User Joined Room " + room)
+  })
+
+  socket.on("disconnect", () => {
+    console.log(`A user disconnected: ${socket.id}`);
+  });
+
+
+socket.on("new message", (newMessageRecived) => {
+  var chat = newMessageRecived.chat;
+
+  if(!chat){
+    return console.log("chat users not defined")
+  }
+
+  chat.users.forEach((user) => {
+    if(user._id == newMessageRecived.sender._id) return;
+  })
+
+  socket.in(user._id).emit("message recieved",newMessageRecived)
+
+})
+});
 
 server.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}`);
