@@ -2925,10 +2925,16 @@ max-width: 70%;
 .sender-message {
   color: #f8ac1d;
   background: #fef3de;
-  /* margin-left: 8.4rem; */
+  margin-left: 8.4rem;
+  margin-top: 0.2rem;
+  word-wrap: break-word;
+}
+.reciver-side {
+  padding: 10px 6px;
   margin-top: 0.5rem;
   margin-right: 0.3rem;
   word-wrap:break-word
+
 }
 
 .reciver-message{
