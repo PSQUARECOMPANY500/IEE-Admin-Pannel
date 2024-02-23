@@ -9,6 +9,9 @@ const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller
 router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg);
 router.post("/loginEngg",serviceEnggContoller.loginEngg)
 
+//location service
+router.post("/createEnggLocation",serviceEnggContoller.createEnggLocation)
+router.post("/updateLocation",serviceEnggContoller.updateEnggLocation)
 
 //------------------------------------- All Get Requests -----------------------------------------
 router.get("/getAllCallbacks/:ServiceEnggId",verifyEnggToken,serviceEnggContoller.getAssignCallbacks);

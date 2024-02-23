@@ -13,18 +13,19 @@ import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 
-
+import { io } from 'socket.io-client';
 
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
 
+  const fileInputField = useRef(null);
+  const textareaRef = useRef();
+  const messageBodyRef = useRef(null);
 
 
   const [messageData, setMessageData] = useState();
-  const messageBodyRef = useRef(null);
+  const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
-  const fileInputField = useRef(null);
-  const textareaRef = useRef();
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
 
@@ -49,6 +50,23 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
 
+  //socket implemantation starts ---------------------------------------------
+  const socket = io('http://localhost:8000');
+  
+  useEffect(() => {
+   socket.emit("setup", '65d49276f60a227274baf8e1');
+   socket.on("connection", () => setSocketConnected(true))
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
+
+
+ 
+
 
   const chatCreated = useSelector((state) => {
     if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
@@ -57,7 +75,7 @@ const MessageBox = ({ onClose, EnggId }) => {
       return null
     }
   });
-  console.log("chat created", chatCreated?._id)
+  // console.log("chat created", chatCreated?._id)
 
 
   const getMessages = useSelector((state) => {
@@ -71,7 +89,7 @@ scroll();
       return null
     }
   })
-  console.log("all messages", getMessages, scroll)
+  // console.log("all messages",getMessages)
 
 
   useEffect(() => {
@@ -196,7 +214,12 @@ scroll();
               </div>
             </div>
           )}
+
         </div>
+
+
+
+        
       </div>
 
       <div className="agdam">
