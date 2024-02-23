@@ -1,14 +1,22 @@
 import React from 'react'
-import EngeeniersSubCardContent from './EngeeniersSubCardContent'
+
 
 const EngeeniersSubCard = () => {
+  const [cards, setCards] = useState([]);
+
+  
+  const addCard = () => {
+    const newCard = { id: cards.length + 1, content: `Card ${cards.length + 1}` };
+    setCards([...cards, newCard]);
+  };
  
   return (
   <>
   <div className='EngeeniersSubCard'>
-<EngeeniersSubCardContent/>
-
-
+    <div className='cards'></div>
+    <div className='cards'></div>
+    <div className='cards'></div>
+    <div className='cards'></div>
   </div>
   </>
   )
