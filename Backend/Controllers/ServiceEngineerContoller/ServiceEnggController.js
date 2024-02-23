@@ -65,7 +65,7 @@ module.exports.loginEngg =  async (req,res) => {
     }
 
     const token = generateEnggToken({EnggId});
-    res.json({Engg,token})
+    res.json({Engg,allotAdmin:'65d49276f60a227274baf8e1',token})
 
 
   } catch (error) {

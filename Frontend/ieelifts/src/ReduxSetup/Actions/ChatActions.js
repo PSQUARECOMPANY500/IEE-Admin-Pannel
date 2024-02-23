@@ -66,7 +66,7 @@ export const sendChatMessageAction = (Sender,Content,ChatId) => {
 
 export const getSenderMessagesAction = (chatId) =>{
 
-    console.log(chatId)
+    // console.log(chatId)
     return async(dispatch) => {
         try {
             const response = await axios.get(`${config.apiUrl}/chat/getChatMessages/${chatId}`);

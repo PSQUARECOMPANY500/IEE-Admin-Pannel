@@ -12,7 +12,7 @@ import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 
-
+import { io } from 'socket.io-client';
 
 const MessageBox = ({ onClose,EnggId }) => {
   const dispatch = useDispatch();
@@ -20,6 +20,8 @@ const MessageBox = ({ onClose,EnggId }) => {
   // console.log("clicked EnggId",EnggId);
 
   const [messageData, setMessageData] = useState();
+
+  const [socketConnected, setSocketConnected] = useState(false);
  
   // console.log(messageData)
 
@@ -39,6 +41,21 @@ const MessageBox = ({ onClose,EnggId }) => {
   }, []);
 
 
+  //socket implemantation starts ---------------------------------------------
+  const socket = io('http://localhost:8000');
+  
+  useEffect(() => {
+   socket.emit("setup", '65d49276f60a227274baf8e1');
+   socket.on("connection", () => setSocketConnected(true))
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+
+
+
  
 
 
@@ -49,7 +66,7 @@ const MessageBox = ({ onClose,EnggId }) => {
       return null
     }
   });
-  console.log("chat created", chatCreated?._id)
+  // console.log("chat created", chatCreated?._id)
 
 
   const getMessages = useSelector((state) => {
@@ -59,13 +76,13 @@ const MessageBox = ({ onClose,EnggId }) => {
       return null
     }
   })
-  console.log("all messages",getMessages)
+  // console.log("all messages",getMessages)
 
 
 
   useEffect(()=>{
     dispatch(createChatActions(EnggId,'65d49276f60a227274baf8e1')) //todo - in future the id is dynamic as come from login user
-    console.log("dooon",chatCreated?._id)
+    // console.log("dooon",chatCreated?._id)
     if (chatCreated?._id) {
       dispatch(getSenderMessagesAction(chatCreated._id));
     }
@@ -100,6 +117,13 @@ const MessageBox = ({ onClose,EnggId }) => {
   const handleSendMessage = () =>{
     dispatch(sendChatMessageAction('65d49276f60a227274baf8e1',messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
     setMessageData('');
+    setTimeout(()=>{
+      if (chatCreated?._id) {
+        dispatch(getSenderMessagesAction(chatCreated._id));
+      }
+    },400)
+
+
   }
 
   return (
@@ -120,50 +144,30 @@ const MessageBox = ({ onClose,EnggId }) => {
         <div className="message-body">
 
               {getMessages?.map((item) => {
-                console.log("message item map", item.Content);
-        return (
-          <div className="sender-side" key={item._id}>
-            <div className="sender-message">
-              <p>{item.Content}</p>
-            </div>
-          </div>
-        );
-      })}
-        
-        
-{/*           
+                console.log("message item map", item.ChatId);
+                socket.emit("join chat", item.ChatId);
 
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div> */}
+
+                const isSender = item.Sender[0] === '65d49276f60a227274baf8e1'; // Assuming loggedInUserId is the ID of the currently logged-in user (is is static but in TODO => future it is dynamic)
+              return (
+                <div className={isSender ? "sender-side" : "reciver-side"}  key={item._id}>
+                  <div className={isSender ? "sender-message" : "reciver-message"}>
+                    <p>{item.Content}</p>
+                  </div>
+                </div>
+              );
+            })}
+              
+              
+
           
-          {/* <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div>
-          <div className="reciver-side">
+          
+      {/* <div className="reciver-side">
             <div className="reciver-message">
               <p>how are you b </p>
             </div>
-          </div>
-          <div className="reciver-side">
-            <div className="reciver-message">
-              <p>how are you b fjkwnefnwe fwefh whe fp f </p>
-            </div>
-          </div>
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
-          </div>
-          <div className="sender-side">
-            <div className="sender-message">
-              <p>I am fine jh whc wcuow uc uw c uow vcuo weuo v</p>
-            </div>
           </div> */}
+          
 
           {file.length > 0 && (
             <div className="sender-side">
@@ -172,7 +176,12 @@ const MessageBox = ({ onClose,EnggId }) => {
               </div>
             </div>
           )}
+
         </div>
+
+
+
+        
       </div>
 
       <div className="agdam">

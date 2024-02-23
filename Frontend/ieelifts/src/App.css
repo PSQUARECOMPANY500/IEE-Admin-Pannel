@@ -2876,7 +2876,7 @@ element.style {
 
 .reciver-message,
 .sender-message {
-  width: 50%;
+  max-width: 50%;
   background: #c1c1c180;
   color: #343434;
   border-radius: 10px;
@@ -2892,6 +2892,8 @@ element.style {
   background: #fef3de;
   margin-left: 8.4rem;
   margin-top: 0.2rem;
+  word-wrap: break-word;
+
 }
 .reciver-side {
   padding: 10px 6px;
