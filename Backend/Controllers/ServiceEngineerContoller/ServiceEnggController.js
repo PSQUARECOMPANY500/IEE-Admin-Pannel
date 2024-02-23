@@ -179,13 +179,7 @@ module.exports.createEnggLocation = async (req, res) => {
 
 module.exports.updateEnggLocation = async (req, res) => {
   try {
-    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;
-    const createdDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-    const now = new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });
-    const [time, indicator] = now.split(' ');
-    const [hours] = time.split(':');
-    const createdTime = `${hours} ${indicator}`;
-
+    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;   
     await EnggLocationModel.findOneAndUpdate(
       { ServiceEnggId, JobOrderNumber, createdDate, createdTime },
       { longitude, latitude },
