@@ -63,6 +63,8 @@ router.get(
 router.get("/getMembershipHistory", adminContoller.getMembershipHistory);
 
 router.get("/getClientCalls", adminContoller.getClientCalls);
+
+router.get("/getClientDataForMembership", adminContoller.getClientData);
 //-------------------------------Handle-CheckList-Routes ------------------------------------------
 
 router.post("/checklist", adminContoller.createCheckList);

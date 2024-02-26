@@ -5,7 +5,7 @@ import ClientMembershipDetails from "./ClientMembershipDetails";
 const ExpiringComponent = ({ DemoData }) => {
   return (
     <div className="expandedMembershipheading">
-      <ClientMembershipDetails />
+      <ClientMembershipDetails dataType={DemoData?.dataType} />
       <MembershipExpiring DemoData={DemoData} />
     </div>
   );

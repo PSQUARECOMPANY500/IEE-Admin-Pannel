@@ -1063,16 +1063,18 @@ module.exports.getClientCalls = async (req, res) => {
 module.exports.getClientData = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
-    const clientDetails = await clientDetailSchema.find({ jobOrderNumber });
-
+    const clientDetails = await clientDetailSchema.find({
+      JobOrderNumber: jobOrderNumber,
+    });
     const responseData = {
-      name: clientDetails.name,
+      name: clientDetails[0].name,
       jobOrderNumber,
-      number: clientDetails.PhoneNumber,
-      address: clientDetails.Address,
-      profileImage: clientDetails.ProfileImage,
-      DOH: clientDetails.DateOfHandover,
+      number: clientDetails[0].PhoneNumber,
+      address: clientDetails[0].Address,
+      profileImage: clientDetails[0].ProfileImage,
+      DOH: clientDetails[0].DateOfHandover,
     };
+    console.log(responseData);
     res.status(201).json({ success: true, responseData });
   } catch (error) {
     console.log(error);

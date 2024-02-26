@@ -124,7 +124,8 @@ const MembershipCard = ({
               </div>
             </div>
 
-            <div
+            {order===1 && (
+              <div
               style={
                 order === 1 && setClick
                   ? { marginTop: "1rem" }
@@ -142,6 +143,7 @@ const MembershipCard = ({
                 expiringCount={DemoData?.Data?.details?.expiringCount}
               />
             </div>
+            )}
 
             <div
               style={

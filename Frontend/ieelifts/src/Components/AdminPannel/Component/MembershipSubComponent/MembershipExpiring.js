@@ -6,6 +6,12 @@ import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/A
 import { createSelector } from "reselect";
 
 const MembershipExpiring = ({ DemoData, count }) => {
+  const [page, setPage] = useState(1);
+  const [pageData, setPageData] = useState([]);
+  const ref = useRef();
+  const type = DemoData?.dataType?.toLowerCase();
+  const dispatch = useDispatch();
+
   const selectAdminRootReducer = (state) => state.AdminRootReducer;
   const selectRequestLimitedClientDataReducer = createSelector(
     selectAdminRootReducer,
@@ -20,11 +26,6 @@ const MembershipExpiring = ({ DemoData, count }) => {
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expiring?.[type]
   );
-  const [page, setPage] = useState(1);
-  const [pageData, setPageData] = useState([]);
-  const ref = useRef();
-  const type = DemoData?.dataType?.toLowerCase();
-  const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     requestLimitedClientDataAction(dispatch, type, "expiring", page, 10);

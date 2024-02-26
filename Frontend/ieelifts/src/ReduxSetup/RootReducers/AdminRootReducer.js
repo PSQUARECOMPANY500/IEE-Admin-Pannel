@@ -20,6 +20,9 @@ import { getEnggBasicDataForCrouserReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
 import { fetchClientDetailsByJon } from "../Reducers/ClientReducer";
+import { requestGetMemberShipHistoryReducer } from "../Reducers/AdminReducer";
+import { requestGetMemberShipCallReducer } from "../Reducers/AdminReducer";
+import { requestGetMemberShipClientReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   fetchClientDetailsByJon: fetchClientDetailsByJon,
@@ -45,6 +48,9 @@ const AdminRootReducer = combineReducers({
   getEnggBasicDataForCrouserReducer: getEnggBasicDataForCrouserReducer,
   requestGetMemberShipDataActionReducer: requestGetMemberShipDataActionReducer,
   requestLimitedClientDataReducer: requestLimitedClientDataReducer,
+  requestGetMemberShipHistoryReducer: requestGetMemberShipHistoryReducer,
+  requestGetMemberShipCallReducer: requestGetMemberShipCallReducer,
+  requestGetMemberShipClientReducer: requestGetMemberShipClientReducer,
 });
 
 export default AdminRootReducer;

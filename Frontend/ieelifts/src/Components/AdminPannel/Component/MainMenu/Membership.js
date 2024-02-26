@@ -9,6 +9,7 @@ const Membership = () => {
   const dispatch = useDispatch();
   const [setClick, click] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     dispatch(requestGetMemberShipDataAction());
@@ -24,7 +25,6 @@ const Membership = () => {
       return null;
     }
   });
-  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     if (

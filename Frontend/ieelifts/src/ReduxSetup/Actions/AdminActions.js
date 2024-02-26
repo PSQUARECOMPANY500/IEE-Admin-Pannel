@@ -37,29 +37,37 @@ export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
 
-export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
+export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST =
+  "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
 
 export const GET_BOOKED_DATES_FOR_ENGGS = "GET_BOOKED_DATES_FOR_ENGGS";
 
-export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER";
+export const GET_ENGG_BASIC_DATA_FOR_CROUSER =
+  "GET_ENGG_BASIC_DATA_FOR_CROUSER";
 
+export const GET_CLIENT_MEMBERSHIP_HISTORY = "GET_CLIENT_MEMBERSHIP_HISTORY";
 
+export const GET_CLIENT_CALL_DETAILS = "GET_CLIENT_CALL_DETAILS";
+
+export const GET_CLIENT_DETAILS = "GET_CLIENT_DETAILS";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 
 export const getEnggBasicDataForCrouserAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggCrouserData`)
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggCrouserData`
+      );
       dispatch({
-        type:GET_ENGG_BASIC_DATA_FOR_CROUSER,
-        payload:response.data
-      })
+        type: GET_ENGG_BASIC_DATA_FOR_CROUSER,
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -68,20 +76,18 @@ export const getEnggBasicDataForCrouserAction = () => {
 export const getBookedSlotsforEnggsAction = (date) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAvailbaleEng/?Date=${date}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAvailbaleEng/?Date=${date}`
+      );
       dispatch({
-        type:GET_BOOKED_DATES_FOR_ENGGS,
-        payload:response.data
-      })
+        type: GET_BOOKED_DATES_FOR_ENGGS,
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
-
-
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -200,7 +206,18 @@ export const assignserviceRequestByAdmin = (
   return async (dispatch) => {
     try {
       console.log("2");
-      console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
+      console.log(
+        "assign",
+        ServiceEnggId,
+        JobOrderNumber,
+        RequestId,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        name,
+        enggJon
+      );
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -213,7 +230,7 @@ export const assignserviceRequestByAdmin = (
           Message,
         }
       );
-      console.log("response",response);
+      console.log("response", response);
       await axios.put(`${config.apiUrl}/client/updateServiceRequest`, {
         RequestId,
         name,
@@ -498,4 +515,91 @@ export const requestLimitedClientDataAction = async (
   } catch (error) {
     console.log("error while fetching data", error);
   }
+};
+
+export const getClientMembershipHistoryAction = (jobOrderNumber) => {
+  return async (dispatch) => {
+    try {
+      if (!jobOrderNumber) {
+        dispatch({
+          type: GET_CLIENT_MEMBERSHIP_HISTORY,
+          payload: [],
+        });
+        return;
+      }
+
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getMembershipHistory`,
+        {
+          params: {
+            jobOrderNumber,
+          },
+        }
+      );
+      dispatch({
+        type: GET_CLIENT_MEMBERSHIP_HISTORY,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+export const getClientCallsDetails = (jobOrderNumber, callType) => {
+  return async (dispatch) => {
+    try {
+      if (!jobOrderNumber) {
+        dispatch({
+          type: GET_CLIENT_CALL_DETAILS,
+          payload: [],
+        });
+        return;
+      }
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getClientCalls`,
+        {
+          params: {
+            jobOrderNumber,
+            callType,
+          },
+        }
+      );
+      dispatch({
+        type: GET_CLIENT_CALL_DETAILS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+export const getClientMembershipDetails = (jobOrderNumber) => {
+  return async (dispatch) => {
+    try {
+      if (!jobOrderNumber) {
+        dispatch({
+          type: GET_CLIENT_DETAILS,
+          payload: [],
+        });
+        return;
+      }
+      console.log(jobOrderNumber);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getClientDataForMembership`,
+        {
+          params: {
+            jobOrderNumber,
+          },
+        }
+      );
+      dispatch({
+        type: GET_CLIENT_DETAILS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
 };

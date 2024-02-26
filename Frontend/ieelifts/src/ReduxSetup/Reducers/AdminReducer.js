@@ -21,8 +21,54 @@ import { TICKET_COMPONENT_RENDERED } from "../Actions/AdminActions";
 import { GET_MEMBERSHIP_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
-
+import { GET_CLIENT_MEMBERSHIP_HISTORY } from "../Actions/AdminActions";
 import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
+import { GET_CLIENT_CALL_DETAILS } from "../Actions/AdminActions";
+import { GET_CLIENT_DETAILS } from "../Actions/AdminActions";
+
+const intialState19 = {
+  membershipCleintDetail: null,
+};
+export const requestGetMemberShipClientReducer = (
+  state = intialState19,
+  action
+) => {
+  switch (action.type) {
+    case GET_CLIENT_DETAILS:
+      return { ...state, membershipCleintDetail: action.payload };
+    default:
+      return state;
+  }
+};
+const intialState18 = {
+  membershipCallDetail: null,
+};
+export const requestGetMemberShipCallReducer = (
+  state = intialState18,
+  action
+) => {
+  switch (action.type) {
+    case GET_CLIENT_CALL_DETAILS:
+      return { ...state, membershipCallDetail: action.payload };
+    default:
+      return state;
+  }
+};
+
+const intialState17 = {
+  membershipHistory: null,
+};
+export const requestGetMemberShipHistoryReducer = (
+  state = intialState17,
+  action
+) => {
+  switch (action.type) {
+    case GET_CLIENT_MEMBERSHIP_HISTORY:
+      return { ...state, membershipHistory: action.payload };
+    default:
+      return state;
+  }
+};
 
 const initialState16 = {
   membershipDetail: {

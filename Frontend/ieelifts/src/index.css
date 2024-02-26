@@ -49,7 +49,7 @@ code {
   border-radius: 0.8rem;
   border: 1px solid #ffffff;
   box-shadow: 2px 4px 10px #99886b66;
-  overflow-y: hidden;
+  /* overflow-y: hidden;? */
   /* width: 100%; */
   transition: box-shadow 0.3s ease;
   scale: 1;
@@ -581,8 +581,7 @@ code {
   justify-content: space-between;
   /* align-items: center; */
   height: 40rem;
-  width: 100%;
-
+  width: 50%;
 }
 
 .clientDetailContainer {
@@ -595,6 +594,15 @@ code {
   margin-top: 2rem;
 }
 
+.clientDetailLeft{
+  width: 40%;
+}
+
+.clientDetailRight{
+  width: 60%;
+}
+
+
 .clientName {
   font-size: large;
   font-weight: 600;
@@ -605,7 +613,7 @@ code {
   margin-top: 0.8rem;
 }
 
-.historyContainer{
+.historyContainer {
   height: 20rem;
   overflow-y: scroll;
   padding-right: 0.5rem;
@@ -629,16 +637,19 @@ code {
 
 .historyContainer::-webkit-scrollbar-thumb {
   transition: background-color 0.3s ease;
-  border: 1px solid #0f351d;
 }
 
 .historyContainer:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #0f351d;
   background: 0;
   margin-top: 7px;
   margin-bottom: 5px;
   display: block;
 }
 
+.historyExpiredScroll:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #c10000;
+}
 
 .history {
   font-size: 0.8rem;
@@ -685,36 +696,6 @@ code {
   padding-right: 0.5rem;
 }
 
-/* .callsContainer::-webkit-scrollbar {
-  margin-top: 1rem;
-  width: 2px;
-  border-radius: 20px;
-  display: none;
-}
-
-.callsContainer::-webkit-scrollbar:hover {
-  display: block;
-}
-
-.callsContainer::-webkit-scrollbar-track {
-  background: 0;
-  margin-top: 12px;
-  margin-bottom: 5px;
-}
-
-.callsContainer::-webkit-scrollbar-thumb {
-  transition: background-color 0.3s ease;
-  border: 1px solid #0f351d;
-  transition: background-color 0.3s ease;
-}
-
-.callsContainer:hover::-webkit-scrollbar-thumb {
-  background: 0;
-  margin-top: 7px;
-  margin-bottom: 5px;
-  display: block;
-} */
-
 .callsContainer::-webkit-scrollbar {
   margin-top: 1rem;
   width: 2px;
@@ -733,21 +714,25 @@ code {
 
 .callsContainer::-webkit-scrollbar-thumb {
   transition: background-color 0.3s ease;
-  border: 1px solid #0f351d;
 }
 
 .callsContainer:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #0f351d;
   background: 0;
   margin-top: 7px;
   margin-bottom: 5px;
   display: block;
 }
 
+.callScrollExpired:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #c10000;
+}
+
 .clientDetailCalls {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center; 
+  align-items: center;
   font-size: 0.9rem;
   margin-top: 0.9rem;
   line-height: 2rem;
@@ -773,9 +758,11 @@ code {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  gap: 2rem;
 }
 
 .callButton {
+  width: 100%;
   padding: 1rem 2rem;
   border-radius: 0.6rem;
   cursor: pointer;
@@ -787,7 +774,7 @@ code {
   color: #fff9ef;
 }
 
-.callNowButtonExpired{
+.callNowButtonExpired {
   border: 1px solid #c10000;
   background-color: #c10000;
   color: #fff9ef;
@@ -799,13 +786,27 @@ code {
   border: 1px solid #0f351d;
 }
 
+.addCallButtonExpired {
+  color: #c10000;
+  background-color: #ffffff;
+  border: 1px solid #c10000;
+}
 
 .offerButton {
   background-color: #ffffff;
-  border: 1px solid #0f351d;
   color: #0f351d;
   font-weight: 600;
   border-radius: 0.5rem;
+}
+
+.offerButtonExpired {
+  color: #c10000;
+  border: 1px solid #c10000;
+}
+
+.offerButtonExpired:hover {
+  background-color: #c10000 !important;
+  color: #fff9ef;
 }
 
 .offerButtons {
@@ -832,11 +833,23 @@ code {
   width: 100%;
   padding: 0.6rem 0%;
   transition: all 0.6 ease;
+  border: 1px solid #0f351d;
+}
+
+.offerMainExpired {
+  border: 1px solid #c10000;
+  color: #c10000;
 }
 
 .offerButtonMain:hover {
-  background-color: #0f351d;
   color: #fff9ef;
+  background-color: #0f351d;
+}
+
+.offerButtonMainExpired:hover {
+  color: #fff9ef;
+  border: 1px solid #c10000;
+  background-color: #c10000;
 }
 
 .offerButtonMainSelected {
@@ -844,28 +857,45 @@ code {
   color: #fff9ef;
 }
 
+.offerButtonMainSelectedExpired {
+  color: #fff9ef;
+  background-color: #c10000;
+}
+
 .NotificationContainer {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 75%;
+  width: 100%;
   margin-top: 1rem;
 }
 
 .inputNotification {
-  padding: 1rem;
+  padding: 01rem 1rem;
   height: auto;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   border: 1px solid #0f351d;
   margin-top: 1rem;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputBox {
+  outline: none;
+  border: none;
+  width: 100%;
+  margin-right: 1.5rem;
+  font-size: medium;
 }
 
 .chevronDownMembership {
   position: absolute;
-  top: 62%;
-  left: 11rem;
+  top: 64%;
+  right: 6rem;
   transform: translateY(-55%);
   cursor: pointer;
 }
@@ -891,7 +921,7 @@ code {
   width: 100%;
   text-align: center;
   cursor: pointer;
-  z-index: 9
+  z-index: 9;
 }
 
 .option:last-child {
@@ -899,7 +929,7 @@ code {
 }
 
 .sendButton {
-  padding: 0.844rem 2rem;
+  padding: 0.92rem 2rem;
   border: 1px solid #0f351d;
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
@@ -911,6 +941,10 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.sendButtonExpired {
+  color: #c10000;
 }
 
 /* --------------------------------------------- client details css ends --------------------------------------- */

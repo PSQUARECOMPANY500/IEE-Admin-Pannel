@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-const OfferButton = () => {
+const OfferButton = ({ isExpired }) => {
   const [showHistory, setShowHistory] = useState(false);
   const historyRef = useRef(null);
 
@@ -25,16 +25,47 @@ const OfferButton = () => {
       <div className="offerButtonContainer">
         {showHistory && (
           <div className="offerButtons">
-            <button className="offerButton offer">15%</button>
-            <button className="offerButton offer">25%</button>
-            <button className="offerButton offer">35%</button>
-            <button className="offerButton offer">other</button>
+            <button
+              className={`offerButton offer ${
+                isExpired && "offerButtonExpired"
+              }`}
+            >
+              15%
+            </button>
+            <button
+              className={`offerButton offer ${
+                isExpired && "offerButtonExpired"
+              }`}
+            >
+              25%
+            </button>
+            <button
+              className={`offerButton offer ${
+                isExpired && "offerButtonExpired"
+              }`}
+            >
+              35%
+            </button>
+            <button
+              className={`offerButton offer ${
+                isExpired && "offerButtonExpired"
+              }`}
+            >
+              other
+            </button>
           </div>
         )}
         <div onClick={toggleHistory} ref={historyRef}>
           <button
             className={`offerButton offerButtonMain ${
-              showHistory && "offerButtonMainSelected"
+              isExpired && "offerMainExpired offerButtonMainExpired"
+            } ${
+              showHistory &&
+              `${
+                isExpired
+                  ? "offerButtonMainSelectedExpired"
+                  : "offerButtonMainSelected"
+              }`
             }`}
           >
             Offer Discount

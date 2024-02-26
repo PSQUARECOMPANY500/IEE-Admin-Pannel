@@ -2,29 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { BiSolidSend } from "react-icons/bi";
 
-
-const NotificationMembership = () => {
+const NotificationMembership = ({ isExpired }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [options] = useState(["Option 1", "Option 2", "Option 3"]);
-  const [showOptions, setShowOptions] = useState(false); // Initialize as false
+  const [showOptions, setShowOptions] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
-  const toggleOptions = () => {
+  const toggleOptions = ({ isExpired }) => {
     setShowOptions(!showOptions);
   };
 
   const handleClickOutside = (event) => {
-    console.log('Clicked outside');
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      console.log('Closing dropdown');
       setShowOptions(false);
     }
   };
-
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -34,10 +30,10 @@ const NotificationMembership = () => {
   });
 
   return (
-    <div className="NotificationContainer" >
-      <div ref={dropdownRef}>
+    <div className="NotificationContainer">
+      <div ref={dropdownRef} className="inputNotification">
         <input
-          className="inputNotification"
+          className="inputBox"
           placeholder="Notification"
           value={selectedOption}
           onChange={handleSelectChange}
@@ -46,7 +42,7 @@ const NotificationMembership = () => {
           <FaChevronDown className="chevronDownMembership" />
         </div>
       </div>
-      <div className="sendButton">
+      <div className={`sendButton ${isExpired && "sendButtonExpired"}`}>
         <BiSolidSend />
       </div>
       <div className="notificationOptions">
@@ -56,7 +52,9 @@ const NotificationMembership = () => {
               <div
                 key={index}
                 className="option"
-                onClick={() => handleSelectChange({ target: { value: option } })}
+                onClick={() =>
+                  handleSelectChange({ target: { value: option } })
+                }
               >
                 {option}
               </div>
@@ -64,7 +62,7 @@ const NotificationMembership = () => {
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 };
 
