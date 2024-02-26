@@ -1,139 +1,43 @@
-import React, { useState } from "react";
-import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
+import React from 'react';
+import './TaskPieChart.css';
 
-const data = [
-  { name: "1", value: 800 ,fill: "#F8AC1D" },
-  { name: "2", value: 500 ,fill: "#F8AC1D"},
-  { name: "3", value: 500 ,fill: "#F8AC1D"},
-  { name: "4", value: 500 ,fill: "#F8AC1D"},
-  { name: "5", value: 500 ,fill: "#F8AC1D"},
-  { name: "6", value: 500 ,fill: "#F8AC1D"},
-];
-
-const renderActiveShape = (props) => {
-  const RADIAN = Math.PI / 180;
-  const {
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-    payload,
-    percent,
-    value,
-  } = props;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
+const TaskPieChart = ({ totalTasks, completedTasks }) => {
+  const percentage = (completedTasks / totalTasks) * 100;
+  const radius = 20; // Adjusted radius to fit within 50x50 box
+  const viewBox = `0 0 50 50`; // Adjusted viewBox to fit within 50x50 box
+  const dashArray = radius * Math.PI * 2;
+  const dashOffset = dashArray - (dashArray * percentage) / 100;
 
   return (
-    <g>
-      <text
-        x={cx}
-        y={cy}
-        dy={8}
-        textAnchor="middle"
-        fill={"#444444"}
-        style={{ fontSize: "40px", fontWeight: "700" }}
-      >
-        {payload.name}/{data.length}
-      </text>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
+
+    
+    <div className="circular-progress-bar">
+      
+      <div className="progress-ring">
         
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={fill}
-        style={{ display: "none" }}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-        style={{ display: "none" }}
-      />
-      <circle
-        cx={ex}
-        cy={ey}
-        r={2}
-        fill={fill}
-        stroke="none"
-        style={{ display: "none" }}
-      />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#333"
-        style={{ display: "none" }}
-      >{`PV ${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-        style={{ display: "none" }}
-      >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
-    </g>
+        <svg width="50" height="50" viewBox={viewBox} xmlns="http://www.w3.org/2000/svg">
+          <circle className="background" cx="25" cy="25" r={radius} />
+        
+     
+          <circle
+            className="progress"
+            cx="25"
+            cy="25"
+            r={radius}
+            strokeLinecap="round"
+            style={{
+              strokeDasharray: dashArray,
+              strokeDashoffset: dashOffset,
+            }}
+          />
+          
+        </svg>
+        <div className="progress-text">
+          <span>{completedTasks}</span>/<span>{totalTasks}</span>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
-const TaskChart = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const onPieEnter = (_, index) => {
-    setActiveIndex(index);
-  };
-
-  return (
-    <ResponsiveContainer width={160} height={118}>
-      <PieChart>
-      {/* width={400} height={400} */}
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          data={data}
-          cx="50%"
-          cy="50%"
-          innerRadius={60}
-          outerRadius={80}
-          fill="#fff"
-          dataKey="value"
-          onMouseEnter={onPieEnter}
-          startAngle={90} // Adjust the start angle (90 degrees for the top position)
-          endAngle={-270} // Adjust the end angle (-270 degrees for one complete clockwise rotation)
-          clockwise={true}
-          // paddingAngle={0}
-          // minAngle={45}
-          legendType='circle'
-        />
-      </PieChart>
-    </ResponsiveContainer>
-  );
-};
-
-export default TaskChart;
+export default TaskPieChart;

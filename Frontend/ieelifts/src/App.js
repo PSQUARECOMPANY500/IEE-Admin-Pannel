@@ -5,6 +5,8 @@ import Sidebar from "./Components/CommonComponenets/Sidebar/Sidebar";
 import Dashboard from "./Components/AdminPannel/Component/MainMenu/Dashboard";
 import Request from "./Components/AdminPannel/Component/MainMenu/Request";
 import Membership from "./Components/AdminPannel/Component/MainMenu/Membership";
+import Enggeniers from "./Components/AdminPannel/Component/MainMenu/Enggeniers";
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Requests" element={<Request />} />
           <Route path="/Memberships" element={<Membership />} />
+          <Route path="/Engeeniers" element={<Enggeniers/>} />
         </Routes>
       </Sidebar>
     </>

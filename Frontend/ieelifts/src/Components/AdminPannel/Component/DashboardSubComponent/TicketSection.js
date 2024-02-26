@@ -7,11 +7,35 @@ import AssignDropdown from "./AssignDropdown";
 import FilterDropdown from "./FilterDropdown";
 import { GoPlus } from "react-icons/go";
 import AddTicketModal from "./AddTicketModal";
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+// import { io } from 'socket.io-client';
 
-const TicketSection = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
+
+const TicketSection = ({ setTicketUpdate }) => {
+  const dispatch = useDispatch();
   const dropdownRef = useRef(null);
 
-  // modal manage states
+  // const socket = io('http://localhost:8000');
+
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to the server:', socket.id);
+  //     socket.emit('send_message',{message:"hello"})
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+  const [callbackId, setCallbackId] = useState();
+  const [enggId, setEnggId] = useState();
+  const [isAssigned, setIsAssigned] = useState();
+
+
 
   const [showTicketModal, setShowTicketModal] = useState(false);
 
@@ -27,17 +51,86 @@ const TicketSection = () => {
     checkbox2: false,
   });
 
+  const fetchCallbacks = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.fetchAllCallbackReducer &&
+      state.AdminRootReducer.fetchAllCallbackReducer.callbacks
+    ) {
+      return state.AdminRootReducer.fetchAllCallbackReducer.callbacks.Callbacks;
+    } else {
+      return [];
+    }
+  });
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
+  const [searchText, setSearchText] = useState("");
+  const [filteredCD, setFilteredCD] = useState([]);
+  const [allCD, setallCD] = useState([]);
+  const [timer, setTimer] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+
+
+  useEffect(() => {
+    setFilteredCD(fetchCallbacks)
+    setallCD(fetchCallbacks)
+  }, [fetchCallbacks])
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    const newTimer = setTimeout(() => {
+      if (searchText) {
+        const data = filtersearch(searchText, allCD);
+        setFilteredCD(data);
+      } else {
+        setFilteredCD(allCD);
+      }
+      setIsSearching(false); // Set isSearching to false after search completes
+    }, 700);
+
+    setTimer(newTimer);
+    setIsSearching(true); // Set isSearching to true when search is initiated
+
+    return () => {
+      clearTimeout(newTimer);
+    };
+  }, [searchText, allCD]);
+
+
+  function filtersearch(inputValue, searchRestaurant) {
+    const filteredResults = searchRestaurant.filter((data) => {
+      if (
+        data.clientDetail.name.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.JobOrderNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.PhoneNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
+        data.clientDetail.Address.toLowerCase().includes(inputValue.toLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    return filteredResults;
+  }
+
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
+  const limitAddress = (address, limit) => {
+    return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
+  };
   const handleTicketFilter = () => {
-    console.log("this is handle filter function");
     setShowTicketFilter(!showTicketFilter);
   };
-
+  //............................................................{amit}...................
+  const [renderTicket, setRenderTicket] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(fetchAllCallbacksAction());
+    }, 1000);
+  }, [renderTicket, dispatch]);
+  //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);
-  // const closeModal1 = () => setShowTicketModal1(false);
-  const closeModal2 = () => setShowTicketModal2(false);
-  const closeModal3 = () => setShowTicketModal3(false);
-
-  useEffect(() => {}, [checkboxStates]);
+  useEffect(() => { }, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -48,14 +141,12 @@ const TicketSection = () => {
       return updatedStates;
     });
   };
-
   const handleCheckBoxSingle = (checkboxId) => {
     setCheckboxStates((prevStates) => ({
       ...prevStates,
       [checkboxId]: !prevStates[checkboxId],
     }));
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -73,10 +164,14 @@ const TicketSection = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
-
-  const openModal = (modalNumber) => {
+  const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
+      setCallbackId(callbackIdOnModel); // Set the callbackId here
+      setEnggId(EngId)
+      setIsAssigned(isAssigned)
+
+      // console.log("callbackId............")
       setShowTicketModal1(true);
     } else if (modalNumber === 2) {
       setShowTicketModal2(true);
@@ -86,7 +181,6 @@ const TicketSection = () => {
       setShowTicketModal(true);
     }
   };
-
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -97,24 +191,37 @@ const TicketSection = () => {
             <span> TAT 3 HOURS</span>
             <span> )</span>
           </div>
+          {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-            <div className="right-side-icons">
-              <span className="filter-top-icon">
-                <div class="search-box">
+            <div className="right-side-icons" style={{ display: "grid" }}>
+              <span className="filter-top-icon" >
+                <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
                     className="search-input"
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
                   />
-                  <a href="/" className="search-btn">
+                  <button className="search-btn-ticket-section" onClick={() => {
+                    const data = filtersearch(searchText, allCD)
+                    setFilteredCD(data);
+                  }} >
                     <i>
                       <CiSearch />
                     </i>
-                  </a>
+
+                  </button>
+
                 </div>
+
               </span>
             </div>
+
+            {/* ............................................................ax13-search...................................................... */}
+
 
             <div className="sub-components-ticket-filter">
               <p className="filter-icon" onClick={handleTicketFilter}>
@@ -140,10 +247,12 @@ const TicketSection = () => {
               </p>
             </div>
             {showTicketModal && (
-              <AddTicketModal
+              <AddTicketOnCallRequest
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
-                modalNumber={0}
+                setRenderTicket={setRenderTicket}
+                setTicketUpdate={setTicketUpdate}
+                requestSection={false}
               />
             )}
           </div>
@@ -153,15 +262,16 @@ const TicketSection = () => {
           {/* table start here */}
           <div className="task-list">
             <table className="task-list-table">
-              <thead>
+              <thead className="task-head-list">
                 <tr>
-                  {/* <th>
+                  <th>
+                    {" "}
                     <CheckBox
-                      id="toggleAll"
-                      handleCheckboxChange={handleCheckBoxAll}
-                      checked={checkedAll}
+                      id="checkbox1"
+                      checked={checkboxStates.checkbox1}
+                      handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
                     />
-                  </th> */}
+                  </th>
                   <th>JON</th>
                   <th>NAME</th>
                   <th>NUMBER</th>
@@ -189,166 +299,115 @@ const TicketSection = () => {
 
               {/* TABLE BODY STARTS */}
               <tbody>
-                <tr class="selected">
-                  {/* <td>
-                    {" "}
-                    <CheckBox
-                      id="checkbox1"
-                      checked={checkboxStates.checkbox1}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox1")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                    <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
+                {isSearching ? (
+                  <>
+                    <tr>
+                      <td colSpan="10">
+                        <SkeltonLoader
+                          width={"80vw"}
+                          height={"38px"}
+                          marginTop={"8px"}
+                          marginBottom={"0px"}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="10">
+                        <SkeltonLoader
+                          width={"80vw"}
+                          height={"38px"}
+                          marginTop={"8px"}
+                          marginBottom={"0px"}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="10">
+                        <SkeltonLoader
+                          width={"80vw"}
+                          height={"38px"}
+                          marginTop={"8px"}
+                          marginBottom={"0px"}
+                        />
+                      </td>
+                    </tr>
+                  </>
+                ) : (
+                  filteredCD.map((data, index) => {
+                    //console.log("mast ram", data)
+                    const currentCallbackId = data.callbackId;
+                    const EngName = data.AssignedEng?.name;
+                    const EngId = data.AssignedEng?.id;
+                    const isAssigned = data.isAssigned;
+                    const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
+                    const currentTime = new Date();
+                    // Calculate time difference in milliseconds
+                    const timeDifference = currentTime - createdAtTime;
+                    const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
+                    // Check if the time difference is greater than or equal to 30 minutes
+                    const isTimeoutData = timeDifference >= thirtyMinutesInMilliseconds;
+                    return (
+                      <tr className="selected" key={index}>
+                        <td>
+                          {" "}
+                          <CheckBox
+                            id="checkbox1"
+                            checked={checkboxStates.checkbox1}
+                            handleCheckboxChange={() =>
+                              handleCheckBoxSingle("checkbox1")
+                            }
+                          />
+                        </td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.JobOrderNumber}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.name}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.PhoneNumber}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>
+                          <div className="dropdown-address">
+                            <span className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>
+                              {limitAddress(data?.clientDetail?.Address, 15)}
+                            </span>
+
+                            <div className="dropdown-adddress-menu">
+                              <div className="drop-address">
+                                <p className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.Address}</p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td onClick={() => openModal(1)}>
-                    <AssignDropdown customAssign="assignColor" name="Assign" />
-                  </td>
-                  {showTicketModal1 && (
-                    <AddTicketModal
-                      closeModal={() => setShowTicketModal1(false)}
-                      showTicketModal={showTicketModal1}
-                      modalNumber={1}
-                    />
-                  )}
-                </tr>
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
-
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td onClick={() => openModal(2)}>
-                    <AssignDropdown
-                      customAssignName="assignNameColor"
-                      name="Mohan"
-                    />
-                  </td>
-                  {showTicketModal2 && (
-                    <AddTicketModal
-                      closeModal={closeModal2}
-                      showTicketModal={showTicketModal2}
-                      modalNumber={2}
-                    />
-                  )}
-                </tr>
-
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
-
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td onClick={() => openModal(3)}>
-                    <AssignDropdown
-                      customResolved="assignResolved"
-                      name="Resolved"
-                    />
-                  </td>
-                  {showTicketModal3 && (
-                    <AddTicketModal
-                      closeModal={closeModal3}
-                      showTicketModal={showTicketModal3}
-                      modalNumber={3}
-                    />
-                  )}
-                </tr>
-
-                <tr class="selected">
-                  {/* <td>
-                    <CheckBox
-                      id="checkbox2"
-                      checked={checkboxStates.checkbox2}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxSingle("checkbox2")
-                      }
-                    />
-                  </td> */}
-                  <td>442113</td>
-                  <td>ram kumar</td>
-                  <td>9416484863</td>
-                  <td>
-             <div className="dropdown-address">
-                        <span>ADDRESS ADDRESS</span>
-
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                         <p>Address: E 26, Phase 7, Industrial Area, Sector 73, Sahibzada Ajit Singh Nagar, Punjab 140308</p> 
-                          </div>
-                        </div>
-                      </div>
-             </td>
-                  <td>DESCRIPTION DESCRIPTION</td>
-                  <td>Door</td>
-                  <td>12/10/2020</td>
-                  <td>12:00PM</td>
-                  <td>
-                    <AssignDropdown name="Assign" />
-                  </td>
-                </tr>
-               
+                        </td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.Description}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.TypeOfIssue}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.callbackDate}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.callbackTime}</td>
+                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""} onClick={() => openModal(1, currentCallbackId, EngId, isAssigned)}>
+                          {isAssigned ? (
+                            <AssignDropdown
+                              customAssignName="assignNameColor"
+                              name={EngName}
+                              isAssigned={isAssigned}
+                            />
+                          ) : (
+                            <AssignDropdown
+                              customAssign="assignColor"
+                              name="Assign"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  }))}
               </tbody>
+              {showTicketModal1 && (
+                <AddTicketModal
+                  closeModal={() => setShowTicketModal1(false)}
+                  showTicketModal={showTicketModal1}
+                  callbackId={callbackId}
+                  setRenderTicket={setRenderTicket}
+                  setTicketUpdate={setTicketUpdate}
+                  enggId={enggId}
+                  isAssigned={isAssigned}
+                />
+              )}
               {/* TABLE BODY ENDS */}
             </table>
           </div>

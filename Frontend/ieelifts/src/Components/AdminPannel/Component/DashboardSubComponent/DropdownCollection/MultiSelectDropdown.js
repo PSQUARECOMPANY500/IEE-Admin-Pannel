@@ -1,18 +1,22 @@
-import React from "react";
+import React,{useState} from "react";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
 
-const MultiSelectDropdown = () => {
-  const colourOptions = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-    { value: "apple", label: "apple" },
-    { value: "straw", label: "straw" },
-  ];
+const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChange,isAssigned,EnggName,editchange}) => {
+
+  const [selectedValue , setSelectedValue] = useState([]);
+
+  // console.log("multi slots",selectedValue)
+ 
+  const enggDetailsData = Details || slots || [];
+
+  const dynamicOptions = enggDetailsData.map((engg) => ({
+    value: engg.EnggId || engg.slot,
+    label: engg.EnggName || engg.slot, 
+  }));
 
   // Custom styles for the dropdown
   const customStyles = {
@@ -69,15 +73,27 @@ const MultiSelectDropdown = () => {
     }),
   };
 
+  const handleChange = (selectedOption) =>{
+ console.log("dropdoen information : ",selectedOption); 
+ const selectedValues = selectedOption.map(option => option.value)
+  setSelectedValue(selectedOption)
+  handleEnggSelectionChange(selectedValues)
+  }
+
+
   return (
     <Select
-      placeholder="Select Engineers"
-      closeMenuOnSelect={false}
-      components={animatedComponents}
-      isMulti
-      options={colourOptions}
-      styles={customStyles} // Apply the custom styles
-    />
+    placeholder={placeholder}
+    closeMenuOnSelect={false}
+    components={animatedComponents}
+    isMulti
+    options={dynamicOptions}
+    styles={customStyles}
+    onChange={handleChange}
+    value={selectedValue}
+    isDisabled={editchange ? false : isAssigned}
+/>
+
   );
 };
 

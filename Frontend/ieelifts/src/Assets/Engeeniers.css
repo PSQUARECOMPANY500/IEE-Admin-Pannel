@@ -1,0 +1,64 @@
+.EngeeniersCard{
+min-height: 90vh;
+width: 100%;
+/* background-color:#FFFFFF;
+background-color: red; */
+background-color: #FFFFFF;
+border-radius: 20px;
+display: grid;
+grid-template-columns: 2fr 1fr;
+grid-template-rows: 1fr;
+grid-template-areas: 'EngeeniersSubCard EngeeniersChat';
+}
+
+
+.EngeeniersSubCard{
+
+     grid-area: EngeeniersSubCard;
+    border-radius: 20px;
+    padding: 100px; 
+
+}
+
+.EngeeniersChat{
+
+    grid-area: EngeeniersChat;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+
+
+.Content{
+height: 250px;
+width: 350px;
+background-color:#FFFFFF;
+padding: 10px;
+box-shadow: rgba(99, 99, 99, 0.2) 6px 6px 8px 5px;
+border-radius: 5px;
+position: relative;
+display:flex ;
+flex-direction: column;
+gap: 10px;
+}
+
+.ContentUserProfile1{
+    background-color: red;
+ height: 60%;
+ width: 100%;
+}
+
+.ContentUserProfile2{
+    background-color: red;
+ height: 20%;
+ width: 100%;
+ margin-top: 10px;
+}
+
+.ContentUserProfile3{
+    background-color: red;
+ height: 20%;
+ width: 100%;
+ margin-top: 0px;
+
+}
