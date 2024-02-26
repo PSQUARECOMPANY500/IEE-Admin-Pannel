@@ -20,9 +20,9 @@ import { getEnggBasicDataForCrouserReducer } from '../Reducers/AdminReducer';
 
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
 
-
+import { EnggLocationDetailsFetchReducer } from '../Reducers/AdminReducer';
 const AdminRootReducer = combineReducers({
-    
+    EnggLocationDetailsFetchReducer:EnggLocationDetailsFetchReducer,
     fetchClientDetailsByJon:fetchClientDetailsByJon,
     fetchAssignCallbacksDetailsReducer:fetchAssignCallbacksDetailsReducer,
     fetchAllCallbackReducer:fetchAllCallbackReducer,

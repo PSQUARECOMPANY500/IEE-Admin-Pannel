@@ -37,6 +37,7 @@ export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER"
 
 export const GET_ENG_ASSIGN_SLOTS = "GET_ENG_ASSIGN_SLOTS";
 
+export const GET_ENGG_LOCATION_DETAILS = "GET_ENGG_LOCATION_DETAILS";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 
@@ -440,3 +441,21 @@ return async (dispatch) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */)=>{
+  return async(dispatch)=>{
+    try{
+      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
+
+      console.log("He this a man",response.data)
+      dispatch({
+        type: GET_ENGG_LOCATION_DETAILS,
+        payload: response.data?.combinedData,
+      });
+
+      
+    }catch(error){
+      console.log("error while fetching EnggLocation data", error);
+    }
+  }
+}

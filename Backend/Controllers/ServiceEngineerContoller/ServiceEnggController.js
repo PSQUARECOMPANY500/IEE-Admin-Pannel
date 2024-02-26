@@ -164,7 +164,7 @@ module.exports.createEnggLocation = async (req, res) => { // onswipe of the engg
     const { ServiceEnggId, JobOrderNumber, latitude, longitude } = req.body;
     if (ServiceEnggId && JobOrderNumber && latitude && longitude) {
       const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-      console.log()
+      
       let enggLocation = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
       if (enggLocation) {
         // EnggLocation found, iterate over AllotDetails array
@@ -234,3 +234,39 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     res.status(500).json({ error: "Internal server error in Location creation" });
   }
 } 
+
+
+
+module.exports.getEnggLocationDetail = async (req, res) => {
+  try {
+      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+      const enggDetail = await EnggLocationModel.find({ AttendanceCreatedDate});
+      if (!enggDetail) {
+        return res.status(404).json({
+          message: "No services Engg found for the specified date",
+        });
+      }
+      console.log("tera hone laga huu khone laga hui ",enggDetail)
+
+      const serviceEnggId = await Promise.all(enggDetail.map(async (detail) => {
+        return await ServiceEnggBasicSchema.findOne({ EnggId: detail.ServiceEnggId });
+      }));
+      
+      console.log((serviceEnggId))
+      
+
+      const combinedData = enggDetail.map((detail, index) => ({
+        ...detail.toObject(),
+        serviceEnggIdDetails: serviceEnggId[index],
+      }));
+  
+      res.status(200).json({
+        message: "Services Engg Location retrieved by his/her ID successfully",
+        combinedData,
+      });
+    //}
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}

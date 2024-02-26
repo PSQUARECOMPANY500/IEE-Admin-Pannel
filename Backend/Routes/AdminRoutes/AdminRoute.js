@@ -59,4 +59,7 @@ router.get('/getEnggCrouserData', adminContoller.getEnggCrouserData);
 
 router.post("/checklist", adminContoller.createCheckList);
 
+//------------------------------------admin Getting all the eng location----------------------------------------
+router.get("/getEnggLocationDetail",serviceEnggContoller.getEnggLocationDetail) 
+
 module.exports = router;
