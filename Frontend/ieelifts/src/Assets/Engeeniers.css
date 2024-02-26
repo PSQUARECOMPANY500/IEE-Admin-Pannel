@@ -1,43 +1,555 @@
-.EngeeniersCard{
-min-height: 90vh;
-width: 100%;
-/* background-color:#FFFFFF;
-background-color: red; */
-background-color: #FFFFFF;
-border-radius: 20px;
-display: grid;
-grid-template-columns: 2fr 1fr;
-grid-template-rows: 1fr;
-grid-template-areas: 'EngeeniersSubCard EngeeniersChat';
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
 
-.EngeeniersSubCard{
-
-     grid-area: EngeeniersSubCard;
-    border-radius: 0.4rem;
-    padding: 1rem; 
+ .EngeeniersCardF {
+    min-height: 87vh;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-   grid-gap: 20px;
-    
+    grid-template-columns:2fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'SingleEng EngeeniersChat';
+   
  
 
+    
+}
 
+.SingleEng{
+    grid-area: SingleEng;
+    position: relative;
+}
+
+.SubSingleEng{
+    margin-top: .4rem;
+    margin-bottom: 1.2rem;
+    width: 100%;
+    height: 100%;
+   display: grid;
+   position: relative;
+   grid-template-rows: 1fr .5fr 6fr;
+   grid-row-gap: .5rem;
+    padding: 1rem 1rem;
+}
+
+.PDetails{
+    /* background-color: #00000029; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  
+}
+.Pimg{
+    width: 34%;
+    height: 70%;;
+    display: flex;
+    margin-top: 1rem;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid #707070;
+    border-radius: 10px;
+}
+
+.ODetailsColumn{
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    border-bottom: 2px solid #5353533b;
+    border-radius: 2px;
+}
+
+.ODetails{
+position: relative;
+}
+.EngeeniersCardT {
+    min-height: 87vh;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns:1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'EngeeniersSubCard';
+    
+    
+} 
+/* 
+.EngeeniersCardD {
+    min-height: 87vh;
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns:2fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'SingleEng EngeeniersChat';
+   
+
+    
+} */
+
+
+.EngeeniersSubCard {
+    grid-area: EngeeniersSubCard;
+}
+
+
+.AllCardsF {
+    max-height: 83vh;
+    overflow-y: auto;
+    margin-bottom: 1.2rem;
+    margin-top: 1.2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 4rem;
+    grid-column-gap: 7rem;
+    padding: 2rem 4rem;
+}
+.AllCardsT {
+    max-height: 83vh;
+    overflow-y: auto;
+    margin-bottom: 1.2rem;
+    margin-top: 1.2rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 4rem;
+    grid-column-gap: 7rem;
+    padding: 2rem 4rem;
+}
+
+
+.EngeeniersChatF {
+
+    border-radius: 1.2rem;
+    padding: 1rem 2rem 2rem 2rem;
+    position: relative;
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+
+   
 
 }
 
-.cards{
-    height: 100px;
-    background-color: red;
-    grid-area: cards;
-}
 
-.EngeeniersChat{
-
+.EngeeniersChatT {
     grid-area: EngeeniersChat;
     border-radius: 1.2rem;
-    padding: 1.2rem;
+    padding: 1rem 2rem 2rem 2rem;
+    position: relative;
+    margin-top: 1.2rem;
+    display: none;
+    margin-bottom: 1.2rem;
+
+   
+
+}
+
+.AllCardsF::-webkit-scrollbar-track {
+    border-radius: 10px;
+  
+}
+
+.AllCardsF::-webkit-scrollbar {
+    width: 5px;
+
+}
+
+.AllCardsF::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+   background-color: #FFFFFF;
+
+}
+
+
+
+
+.AllCardsF:hover::-webkit-scrollbar-thumb {
+   background-color: #F8AC1D;
+}
+
+
+
+.AllCardsT::-webkit-scrollbar-track {
+    border-radius: 10px;
+  
+}
+
+.AllCardsT::-webkit-scrollbar {
+    width: 5px;
+
+}
+
+.AllCardsT::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+   background-color: #FFFFFF;
+
+}
+
+
+
+
+.AllCardsT:hover::-webkit-scrollbar-thumb {
+   background-color: #F8AC1D;
+}
+
+
+
+
+.EngCards {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 2px 4px 10px 1px #00000029;
+    min-height: 25vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: .4rem;
+}
+
+
+.EngCardDetails {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    position: relative;
+    height: 50%;
+
+
+}
+
+.EngCardDetailsL {
+    display: flex;
+    margin-top: 1rem;
+    width: 30%;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid #707070;
+    border-radius: 10px;
+}
+
+
+.EngCardRText {
+    display: flex;
+    width: 10vw;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+
+.EngCardDetailsR {
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+}
+
+.table-container {
+    margin-top: 1.8rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .1rem;
+    font-family: "Noto Sans KR", sans-serif;
+    width: 60%;
+    max-width: 100%;
+    position: relative;
+    text-align: start;
+    height: auto;
+
+}
+
+.table-item {
+    font-weight: 600;
+    color: #343434;
+    border-bottom: 2px solid transparent;
+    font-size: .9rem;
+    text-wrap: nowrap;
+}
+
+
+.table-container>.table-item:nth-child(even) {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+
+}
+
+.table-container>.table-item:nth-child(odd) {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+
+}
+
+.EngCardCash {
+    height: 4vh;
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 2rem;
+    align-items: center;
+    background-color: #FFF9EF;
+    box-shadow: inset 1px 2px 3px 1px #00000029;
+    border-radius: 5px;
+}
+
+.EngCardCash h5 {
+    text-wrap: nowrap;
+    display: flex;
+    gap: .5rem;
+    text-align: start;
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+}
+
+.EngCardCash h5 span {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+
+}
+
+.HoriZontalLine {
+    height: 60%;
+    border-radius: 1px;
+    width: 1px;
+    background-color: #7070704D;
+}
+
+
+/* .EngCardMessage{
+    height:5vh;
+    width: 100%;
+    margin-top: 1rem;
+    bottom: -20%;
+    position: relative;
+    background-color: red;
+} */
+
+
+
+
+
+.EngChatNav {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+.VerticalLine {
+    height: 2%;
+    width: 25%;
+    background-color: #7070704D;
+ 
+}
+
+.EngChatNavText {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.EngChatNavText h5{
+    text-wrap: nowrap;
+    font-size: 1.1rem;
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 500;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+
+}
+
+.EngChatBox{
+  height: 98%;
+  width: 100%;
+  background-color: #FFFBF4;
+  border-radius: 5px;
+  box-shadow: 1px 2px 5px 1px #00000029;
+  position: relative;
+}
+
+.EngChatBoxHead{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: .8rem;
+}
+
+.EngChatBoxIcons{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: .4rem;
+}
+
+.EngChatBox  h6{
+    text-wrap: nowrap;
+    font-size: 1.1rem;
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 500;
+    font-family: 'Poppins';
+    line-height: 1.3rem;  
+}
+
+.EngChatMsg{
+    height: 100%;
+    width: 100%;
+   position: relative;
+   }
+
+
+   .PDetails h1{
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+    display: flex;
+    gap: .5rem;
+
+}
+
+
+
+
+.PDetails h1 span{
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: 1.3rem;
+}
+
+
+.SubPDetails{
+    display: flex;
+    width: 24%;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+   
+}
+
+.Icon_Color{
+    color: #F8AC1D;
+}
+
+.ODetailsColumn h5{
+    text-align: left;
+/* font: normal normal medium 18px/27px Poppins; */
+font-family: 'Poppins';
+font-weight: 500;
+margin-bottom: .3rem;
+letter-spacing: 0px;
+color: #444444;
+font-size: .9rem;
+cursor: pointer;
+}
+
+
+
+/* .calendar{
+    background-color: red;
+} */
+
+.TaskHistory{
+    min-height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 0.1fr 1fr;
+    /* background-color: yellow; */
+}
+
+.TaskHeading{
+ position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.AllTask{
+    border-top: 2px solid #5353533b;
+    min-height: 100%;
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: .3rem;
+
+
+   
+
+}
+
+
+
+
+.AllServices{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1rem;
+    padding: 1rem;
+
+}
+
+.Service-table{
+    margin-top: .8rem;
+    padding: 0rem 1rem;
+   
+}
+.ServiceCards{
+  border-radius: 10px;
+  height: 13vh;
+  background-color: #FFFBF4;
+
+  box-shadow: 1px 2px 5px #00000029;
+  /* padding: 0rem 1rem; */
+  /* display: flex;
+  align-items: start; */
+  /* justify-content: flex-start; */
+   
 }
 
 
