@@ -5,18 +5,27 @@ import ClientCallDetails from "./ClientCallDetails";
 import OfferButton from "./OfferButton";
 import NotificationMembership from "./NotificationMembership";
 
-const ClientMembershipDetails = () => {
+const ClientMembershipDetails = ({ isExpired }) => {
   return (
-    <div style={{ width: "65%" }}>
-      <ClientDetails />
-      <ClientMembershipHistory />
-      <ClientCallDetails />
-      <div className="callButtons">
-        <button className="callButton callNowButton">Call Now</button>
-        <button className="callButton addCallButton">Add Call</button>
+    <div className="clientsContainer">
+      <div className="clients">
+        <div>
+          <ClientDetails />
+          <ClientMembershipHistory />
+        </div>
+        <div className="callButtons">
+          <button className={`callButton ${isExpired ? "callNowButtonExpired" :"callNowButton"}`}>Call Now</button>
+          <button className="callButton addCallButton">Add Call</button>
+        </div>
       </div>
-      <OfferButton />
-      <NotificationMembership />
+      <div className="clients">
+        <ClientCallDetails isExpired={isExpired} />
+        <div>
+          <NotificationMembership />
+          <NotificationMembership />
+        </div>
+        <OfferButton />
+      </div>
     </div>
   );
 };

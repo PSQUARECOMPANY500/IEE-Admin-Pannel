@@ -159,13 +159,20 @@ const MembershipExpired = ({ DemoData, count }) => {
   });
 
   return (
-    <div className="membership_card_expiring">
-      <div className="membership_card_expiring-title membership_card_expired-title">
-        <p>Expired</p>
-        {memberShipDetails ? <p>{count}</p> : null}
-      </div>
+    <div className={
+      count ? "membership_card_expiring" : "membership_card_expiring_expanded"
+    }>
+      {count && (
+        <div className="membership_card_expiring-title membership_card_expired-title">
+          <p>Expired</p>
+          {memberShipDetails ? <p>{count}</p> : null}
+        </div>
+      )}
       <div
-        className={`membership_card_scrollable membership_card_scrollable_expired`}
+        className={`membership_card_scrollable membership_card_scrollable_expired 
+        ${!count && "membership_card_scrollable_expanded"
+          }
+        `}
         ref={ref}
       >
         {pageData.map((data, index) => (

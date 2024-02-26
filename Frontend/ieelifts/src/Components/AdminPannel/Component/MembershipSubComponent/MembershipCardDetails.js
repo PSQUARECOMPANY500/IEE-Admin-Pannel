@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ExpiringComponent from "./ExpiringComponent";
+import ExpiredComponent from "./ExpiredComponent";
 
-const MembershipCardDetails = ({ expiringCount, expiredCount,DemoData }) => {
+const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
   const [selectedOption, setSelectedOption] = useState("Expiring");
 
   const handleClick = (option) => {
@@ -46,9 +47,9 @@ const MembershipCardDetails = ({ expiringCount, expiredCount,DemoData }) => {
           {selectedOption === "Revenue" && (
             <p>Show revenue information here...</p>
           )}
-          {selectedOption === "Expiring" && <ExpiringComponent DemoData={DemoData} count={expiringCount} />}
+          {selectedOption === "Expiring" && <ExpiringComponent DemoData={DemoData} />}
           {selectedOption === "Expired" && (
-            <p>Show expired information here...</p>
+            <ExpiredComponent DemoData={DemoData} />
           )}
         </div>
       )}

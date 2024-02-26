@@ -129,9 +129,8 @@ const Membership = () => {
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${
-          setClick ? `membershipCards_expand ` : ""
-        } `}
+        className={`membershipCards ${setClick ? `membershipCards_expand ` : ""
+          } `}
       >
         {cards &&
           cards.map((items, index) => {
