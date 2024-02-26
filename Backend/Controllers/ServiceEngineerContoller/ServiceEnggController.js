@@ -159,35 +159,78 @@ module.exports.getEnggDetail = async (req, res) => {
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //api for location  we need to integrate this with engg attendance
 
-module.exports.createEnggLocation = async (req, res) => {
+module.exports.createEnggLocation = async (req, res) => { // onswipe of the engg update allotdetails , jobordernumber(if joborder number is not present create a new array) starting and ending location 
   try {
-    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;
-
-    const locationEntry = new EnggLocationModel({
-      ServiceEnggId,
-      JobOrderNumber,
-      startingLocation: { type: "Point", coordinates: [longitude, latitude] }
-    });
-
-    await locationEntry.save();
-    res.status(200).json({ message: "Location created successfully" });
-  } catch (error) {
-    console.log(error);
+    const { ServiceEnggId, JobOrderNumber, latitude, longitude } = req.body;
+    if (ServiceEnggId && JobOrderNumber && latitude && longitude) {
+      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+      console.log()
+      let enggLocation = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
+      if (enggLocation) {
+        // EnggLocation found, iterate over AllotDetails array
+        let jobOrderFound = false;
+        for (let i = 0; i < enggLocation.AllotDetails.length; i++) {
+          if (enggLocation.AllotDetails[i].JobOrderNumber === JobOrderNumber && enggLocation.AllotDetails[i].createdDate === AttendanceCreatedDate) {
+            // JobOrderNumber found, update startingLocation coordinates
+            enggLocation.AllotDetails[i].startingLocation.coordinates = [latitude, longitude];
+            jobOrderFound = true;
+            break;
+          }
+        }
+        if (!jobOrderFound) {
+          // JobOrderNumber not found, create new object and push into AllotDetails array
+          enggLocation.AllotDetails.push({
+            JobOrderNumber,
+            startingLocation: {
+              type: "Point",
+              coordinates: [latitude, longitude]
+            },
+            endingLocation: { type: "Point", coordinates: [] },
+            createdDate: AttendanceCreatedDate
+          });
+        }
+        await enggLocation.save();
+        res.status(200).json({ message: "EnggLocation updated successfully" });
+      } else {
+        res.status(404).json({ message: "No Engg data found for the current date" });
+      }
+    }
+  }
+  catch (error) {
+    //console.log(error);
     res.status(500).json({ error: "Internal server error in Location creation" });
   }
 }
 
-module.exports.updateEnggLocation = async (req, res) => {
+module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
+  //this is the api to update current locations(real time )
   try {
-    const { ServiceEnggId, JobOrderNumber, longitude, latitude } = req.body;   
-    await EnggLocationModel.findOneAndUpdate(
-      { ServiceEnggId, JobOrderNumber, createdDate, createdTime },
-      { longitude, latitude },
-      { upsert: true, new: true } // upsert: true creates a new document if it doesn't exist
-    );
-    res.status(200).json({ message: "Location created successfully" });
+
+    /* Attandance logic hear */
+    const { ServiceEnggId, latitude, longitude } = req.body;
+
+    if (ServiceEnggId && latitude && longitude) {
+      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+      const response = await EnggLocationModel.findOneAndUpdate({ ServiceEnggId, AttendanceCreatedDate }, {
+        currentLocation: { type: "Point", coordinates: [latitude, longitude] }
+      })
+      //console.log(response)
+      if (!response) {
+        await EnggLocationModel.create({
+          ServiceEnggId,
+          //mark Attandance Logic here
+          currentLocation: { type: "Point", coordinates: [latitude, longitude] }
+        })
+      }
+      res.status(200).json({ message: "Attendance marked and Location connection started" });
+    }
+    else {
+      res.status(400).json({
+        message: "400 Bad Request"
+      })
+    }
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.status(500).json({ error: "Internal server error in Location creation" });
   }
-}
+} 
