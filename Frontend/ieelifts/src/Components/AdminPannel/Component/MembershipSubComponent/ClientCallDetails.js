@@ -6,7 +6,7 @@
 // const ClientCallDetails = ({ isExpired,dataType }) => {
 //   // const [showHistory, setShowHistory] = useState(Array(10).fill(false));
 //   // const historyRefs = useRef(Array(10).fill(null));
-  
+
 
 //   // const toggleHistory = (index) => {
 //   //   setShowHistory((prevState) =>
@@ -175,6 +175,7 @@ const ClientCallDetails = ({ isExpired, dataType }) => {
 
   return (
     <div className={`callsContainer ${isExpired && "callScrollExpired"}`}>
+      {console.log("callDetails.membershipCallDetail", callDetails.membershipCallDetail)}
       {callDetails.membershipCallDetail && callDetails.membershipCallDetail.map((isShown, index) => (
         <div key={index}>
           <div
@@ -201,8 +202,8 @@ const ClientCallDetails = ({ isExpired, dataType }) => {
           </div>
         </div>
       ))}
-            {console.log(callDetails.membershipCallDetail)}
     </div>
+    // <></>
   );
 };
 
