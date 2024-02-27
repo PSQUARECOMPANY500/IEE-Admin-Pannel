@@ -1049,7 +1049,6 @@ module.exports.getClientCalls = async (req, res) => {
   try {
     const { callType, jobOrderNumber } = req.query;
     const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
-
     res.status(201).json({ success: true, clientCallData });
   } catch (error) {
     console.log(error);
@@ -1066,6 +1065,7 @@ module.exports.getClientData = async (req, res) => {
     const clientDetails = await clientDetailSchema.find({
       JobOrderNumber: jobOrderNumber,
     });
+
     const responseData = {
       name: clientDetails[0].name,
       jobOrderNumber,
@@ -1074,7 +1074,6 @@ module.exports.getClientData = async (req, res) => {
       profileImage: clientDetails[0].ProfileImage,
       DOH: clientDetails[0].DateOfHandover,
     };
-    console.log(responseData);
     res.status(201).json({ success: true, responseData });
   } catch (error) {
     console.log(error);
@@ -1085,6 +1084,27 @@ module.exports.getClientData = async (req, res) => {
   }
 };
 
+// module.exports.getMembershipHistory = async (req, res) => {
+//   try {
+//     const { jobOrderNumber } = req.query;
+
+//     const membershipHistory = await AssignMemeberships.find({
+//       JobOrderNumber: jobOrderNumber,
+//     });
+
+//     const historyData = membershipHistory.filter((a) => {
+//       a.EndDate < Date.now();
+//     });
+//     console.log(historyData);
+//     res.status(201).json({ success: true, historyData });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       error: "Internal server Error",
+//       message: error.message,
+//     });
+//   }
+// };
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1093,7 +1113,27 @@ module.exports.getMembershipHistory = async (req, res) => {
       JobOrderNumber: jobOrderNumber,
     });
 
-    res.status(201).json({ success: true, membershipHistory });
+    const historyData = membershipHistory.filter((a) => {
+      return a.EndDate < Date.now(); // Added return statement here
+    });
+    const ratings = await EnggRating.find({ JobOrderNumber: jobOrderNumber });
+
+    let averageRating = 0;
+    let ratingCount = 0;
+    for (const rating in ratings) {
+      if (
+        rating.createdAt >= historyData.StartDate &&
+        rating.createdAt <= historyData.EndDate
+      ) {
+        averageRating += rating.Rating;
+        ratingCount++;
+      }
+    }
+
+    let calculateRating = averageRating / ratingCount;
+
+    const response = { historyData, calculateRating };
+    res.status(201).json({ success: true, response });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1102,6 +1142,32 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
+
+// module.exports.calculateRatingAverage = async (req, res) => {
+//   try {
+//     const { jobOrderNumber, startDate, endDate } = req.query;
+
+//     const ratings = await EnggRating.find({ JobOrderNumber: jobOrderNumber });
+
+//     let averageRating = 0;
+//     let ratingCount = 0;
+//     for (const rating in ratings) {
+//       if (rating.createdAt >= startDate && rating.createdAt <= endDate) {
+//         averageRating += rating.Rating;
+//         ratingCount++;
+//       }
+//     }
+
+//     let calculateRating = averageRating / ratingCount;
+//     res.status(201).json({ success: true, calculateRating });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       error: "Internal server Error",
+//       message: error.message,
+//     });
+//   }
+// };
 
 // -----------------------------------------------------------------------
 // {armaan-dev}

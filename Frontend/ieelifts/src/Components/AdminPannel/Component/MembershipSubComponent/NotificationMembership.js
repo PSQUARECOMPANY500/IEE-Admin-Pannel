@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { BiSolidSend } from "react-icons/bi";
 
-const NotificationMembership = ({ isExpired }) => {
+const NotificationMembership = ({ isExpired, dataType }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [options] = useState(["Option 1", "Option 2", "Option 3"]);
   const [showOptions, setShowOptions] = useState(false);
@@ -29,6 +29,15 @@ const NotificationMembership = ({ isExpired }) => {
     };
   });
 
+  const sendIconColor =
+    dataType === "Gold"
+      ? "sendButtonGold"
+      : dataType === "Platinum"
+      ? "sendButtonPlatinum"
+      : dataType === "Silver"
+      ? "sendButtonSilver"
+      : "sendButtonWarrenty";
+
   return (
     <div className="NotificationContainer">
       <div ref={dropdownRef} className="inputNotification">
@@ -42,7 +51,7 @@ const NotificationMembership = ({ isExpired }) => {
           <FaChevronDown className="chevronDownMembership" />
         </div>
       </div>
-      <div className={`sendButton ${isExpired && "sendButtonExpired"}`}>
+      <div className={`sendButton ${sendIconColor} ${isExpired && "sendButtonExpired"}`}>
         <BiSolidSend />
       </div>
       <div className="notificationOptions">

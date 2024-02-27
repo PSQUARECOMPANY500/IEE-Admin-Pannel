@@ -2,11 +2,9 @@
 // import { useDispatch, useSelector } from "react-redux";
 // import { getClientCallsDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
-
 // const ClientCallDetails = ({ isExpired,dataType }) => {
 //   // const [showHistory, setShowHistory] = useState(Array(10).fill(false));
 //   // const historyRefs = useRef(Array(10).fill(null));
-
 
 //   // const toggleHistory = (index) => {
 //   //   setShowHistory((prevState) =>
@@ -88,7 +86,7 @@
 //     };
 //   }, []);
 //   return (
-//     <div className={`callsContainer ${isExpired && "callScrollExpired"}`}>
+//     <div className={callsContainer ${isExpired && "callScrollExpired"}}>
 //       {callDetails.membershipCallDetail.map((isShown, index) => (
 //         <div key={index}>
 //           <div
@@ -125,40 +123,34 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getClientCallsDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const ClientCallDetails = ({ isExpired, dataType }) => {
+const ClientCallDetails = ({ isExpired, dataType ,callDetails }) => {
   const dispatch = useDispatch();
-  const callDetails = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.requestGetMemberShipCallReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipCallReducer
-        .membershipCallDetail;
-    } else {
-      return null;
-    }
-  });
 
   useEffect(() => {
     dispatch(getClientCallsDetails());
-  }, [dispatch, dataType]);
+  }, [dataType]);
 
   const [showHistory, setShowHistory] = useState([]);
 
   // Initialize showHistory when callDetails changes
   useEffect(() => {
-    if (callDetails && Array.isArray(callDetails.membershipCallDetail)) {
-      setShowHistory(Array(callDetails.membershipCallDetail.length).fill(false));
+    if (callDetails && Array.isArray(callDetails.clientCallData)) {
+      setShowHistory(Array(callDetails.clientCallData.length).fill(false));
     }
   }, [callDetails]);
 
-  const historyRefs = useRef([]);
-
+  // const toggleHistory = (index) => {
+  //   setShowHistory((prevState) =>
+  //     prevState.map((value, i) => (i === index ? !value : value))
+  //   );
+  // };
   const toggleHistory = (index) => {
     setShowHistory((prevState) =>
       prevState.map((value, i) => (i === index ? !value : false))
     );
   };
+
+  const historyRefs = useRef([]);
 
   const handleClickOutside = (event) => {
     if (!historyRefs.current.some((ref) => ref && ref.contains(event.target))) {
@@ -173,35 +165,46 @@ const ClientCallDetails = ({ isExpired, dataType }) => {
     };
   }, []);
 
+  const scrollBar =
+    dataType === "Gold"
+      ? "callsContainer_gold"
+      : dataType === "Platinum"
+      ? "callsContainer_platinum"
+      : dataType === "Silver"
+      ? "callsContainer_silver"
+      : "";
+
   return (
-    <div className={`callsContainer ${isExpired && "callScrollExpired"}`}>
-      {console.log("callDetails.membershipCallDetail", callDetails.membershipCallDetail)}
-      {callDetails.membershipCallDetail && callDetails.membershipCallDetail.map((isShown, index) => (
-        <div key={index}>
+    <div className={`callsContainer ${scrollBar} ${isExpired && "callScrollExpired"}`}>
+      {callDetails &&
+        callDetails.clientCallData &&
+        callDetails.clientCallData.map((detail, index) => (
           <div
+            key={index}
             ref={(el) => (historyRefs.current[index] = el)}
             className="clientDetailCalls"
             onClick={() => toggleHistory(index)}
             style={{ cursor: "pointer", marginBottom: "10px" }}
           >
-            {isShown && (
+            {showHistory[index] && (
               <div className="clientCallInfo">
-                <p>
+                <p>{detail.description}</p>
+                {/* <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
                   viverra dui eget elit venenatis sagittis. Suspendisse vel
                   scelerisque enim. Mauris condimentum semper sem, et varius
                   orci rhoncus a.
-                </p>
+                </p> */}
               </div>
             )}
             <div className="clientNumber">
               <p>Call {index + 1}</p>
-              <p>June 12</p>
-              <p>20% Off</p>
+              {/* <p>June 12</p> */}
+              <p>{detail.callDate}</p>
+              <p>{detail.discountOffered}% Off</p>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
     // <></>
   );

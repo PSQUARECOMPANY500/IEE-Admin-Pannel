@@ -582,6 +582,7 @@ code {
   /* align-items: center; */
   height: 40rem;
   width: 50%;
+  margin-top: 1rem;
 }
 
 .clientDetailContainer {
@@ -594,14 +595,13 @@ code {
   margin-top: 2rem;
 }
 
-.clientDetailLeft{
+.clientDetailLeft {
   width: 40%;
 }
 
-.clientDetailRight{
+.clientDetailRight {
   width: 60%;
 }
-
 
 .clientName {
   font-size: large;
@@ -654,8 +654,20 @@ code {
 .history {
   font-size: 0.8rem;
   margin-top: 0.9rem;
-  border: 1px solid #ff7f00;
   border-radius: 0.3rem;
+}
+
+.historyBorderWarrenty {
+  border: 1px solid #0f351d;
+}
+.historyBorderPlatinum {
+  border: 1px solid #ff7f00;
+}
+.historyBorderGold {
+  border: 1px solid #f8ac1d;
+}
+.historyBorderSilver {
+  border: 1px solid #8e8e8e;
 }
 
 .historyNumber {
@@ -664,6 +676,22 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.historyNumberWarrenty {
+  background-color: #0f351d1a;
+}
+
+.historyNumberPlatinum {
+  background-color: #ff7f001a;
+}
+
+.historyNumberGold {
+  background-color: #f8ac1d1a;
+}
+
+.historyNumberSilver {
+  background-color: #8e8e8e1a;
 }
 
 .historyClings {
@@ -723,6 +751,20 @@ code {
   margin-bottom: 5px;
   display: block;
 }
+.callsContainer_platinum:hover::-webkit-scrollbar-thumb {
+  background-color: #ff7f00;
+  border: 1px solid #ff7f00;
+}
+
+.callsContainer_gold:hover::-webkit-scrollbar-thumb {
+  background-color: #f8ac1d;
+  border: 1px solid #f8ac1d;
+}
+
+.callsContainer_silver:hover::-webkit-scrollbar-thumb {
+  background-color: #b7b7b7;
+  border: 1px solid #b7b7b7;
+}
 
 .callScrollExpired:hover::-webkit-scrollbar-thumb {
   border: 1px solid #c10000;
@@ -773,6 +815,25 @@ code {
   background-color: #0f351d;
   color: #fff9ef;
 }
+.callNowButtonPlatinum {
+  border: 1px solid #ff7f00;
+  background-color: #ff7f00;
+  color: #fff9ef;
+}
+.callNowButtonGold {
+  border: 1px solid #f8ac1d;
+  background-color: #f8ac1d;
+  color: #fff9ef;
+}
+.callNowButtonSilver {
+  border: 1px solid #8e8e8e;
+  background-color: #8e8e8e;
+  color: #fff9ef;
+}
+
+.callButtonHover:hover {
+  filter: brightness(1.08);
+}
 
 .callNowButtonExpired {
   border: 1px solid #c10000;
@@ -786,10 +847,53 @@ code {
   border: 1px solid #0f351d;
 }
 
+.addCallButton:hover {
+  color: #ffffff;
+  background-color: #0f351d;
+}
+
+.addCallButtonPlatinum {
+  color: #ff7f00;
+  background-color: #ffffff;
+  border: 1px solid #ff7f00;
+}
+
+.addCallButtonPlatinum:hover {
+  color: #ffffff;
+  background-color: #ff7f00;
+}
+
+.addCallButtonGold {
+  color: #f8ac1d;
+  background-color: #ffffff;
+  border: 1px solid #f8ac1d;
+}
+
+.addCallButtonGold:hover {
+  color: #ffffff;
+  background-color: #f8ac1d;
+}
+
+.addCallButtonSilver {
+  color: #8e8e8e;
+  background-color: #ffffff;
+  border: 1px solid #8e8e8e;
+}
+
+.addCallButtonSilver:hover {
+  color: #ffffff;
+  background-color: #8e8e8e;
+}
+
 .addCallButtonExpired {
   color: #c10000;
   background-color: #ffffff;
   border: 1px solid #c10000;
+}
+
+.addCallButtonExpired:hover {
+  color: #ffffff;
+  background-color: #c10000;
 }
 
 .offerButton {
@@ -797,6 +901,7 @@ code {
   color: #0f351d;
   font-weight: 600;
   border-radius: 0.5rem;
+  border: 1px solid #0f351d;
 }
 
 .offerButtonExpired {
@@ -833,7 +938,6 @@ code {
   width: 100%;
   padding: 0.6rem 0%;
   transition: all 0.6 ease;
-  border: 1px solid #0f351d;
 }
 
 .offerMainExpired {
@@ -846,6 +950,39 @@ code {
   background-color: #0f351d;
 }
 
+.offerButtonMainGold {
+  color: #f8ac1d;
+  background-color: #fff9ef;
+  border: 1px solid #f8ac1d;
+}
+
+.offerButtonMainGold:hover {
+  color: #fff9ef;
+  background-color: #f8ac1d;
+}
+
+.offerButtonMainPlatinum {
+  color: #ff7f00;
+  background-color: #fff9ef;
+  border: 1px solid #ff7f00;
+}
+
+.offerButtonMainPlatinum:hover {
+  color: #fff9ef;
+  background-color: #ff7f00;
+}
+
+.offerButtonMainSilver {
+  color: #b7b7b7;
+  background-color: #fff9ef;
+  border: 1px solid #b7b7b7;
+}
+
+.offerButtonMainSilver:hover {
+  color: #fff9ef;
+  background-color: #b7b7b7;
+}
+
 .offerButtonMainExpired:hover {
   color: #fff9ef;
   border: 1px solid #c10000;
@@ -855,6 +992,19 @@ code {
 .offerButtonMainSelected {
   background-color: #0f351d;
   color: #fff9ef;
+}
+
+.offerButtonMainSelectedGold {
+  color: #fff9ef;
+  background-color: #f8ac1d;
+}
+.offerButtonMainSelectedPlatinum {
+  color: #fff9ef;
+  background-color: #ff7f00;
+}
+.offerButtonMainSelectedSilver {
+  color: #fff9ef;
+  background-color: #b7b7b7;
 }
 
 .offerButtonMainSelectedExpired {
@@ -937,10 +1087,22 @@ code {
   margin-top: 1rem;
   cursor: pointer;
   background-color: #ffffff;
-  color: #0f351d;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.sendButtonWarrenty {
+  color: #0f351d;
+}
+.sendButtonPlatinum {
+  color: #ff7f00;
+}
+.sendButtonGold {
+  color: #f8ac1d;
+}
+.sendButtonSilver {
+  color: #8e8e8e;
 }
 
 .sendButtonExpired {

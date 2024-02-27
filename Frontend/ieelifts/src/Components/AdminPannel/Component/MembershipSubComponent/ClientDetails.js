@@ -2,19 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getClientMembershipDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const ClientDetails = ({ dataType }) => {
+const ClientDetails = ({ dataType,clientDetail }) => {
   const dispatch = useDispatch();
-  const clientDetail = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.requestGetMemberShipClientReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipClientReducer
-        .membershipCleintDetail;
-    } else {
-      return null;
-    }
-  });
+
 
   useEffect(() => {
     dispatch(getClientMembershipDetails());
