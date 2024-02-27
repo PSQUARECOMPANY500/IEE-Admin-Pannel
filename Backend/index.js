@@ -44,7 +44,7 @@ const httpServer = createHttpServer(app);
 // Create Socket.IO server
 const io = new SocketServer(httpServer, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:8081", "https://iee-admin-pannel.onrender.com"],
+    origin: ["http://localhost:3000", "http://localhost:8081", "https://iee-admin-pannel.onrender.com:8001","https://iee-admin-pannel.onrender.com:8000","https://iee-admin-pannel.onrender.com"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
