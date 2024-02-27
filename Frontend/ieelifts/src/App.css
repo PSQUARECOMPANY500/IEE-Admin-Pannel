@@ -2929,14 +2929,6 @@ max-width: 70%;
   margin-top: 0.2rem;
   word-wrap: break-word;
 }
-.reciver-side {
-  padding: 10px 6px;
-  margin-top: 0.5rem;
-  margin-right: 0.3rem;
-  word-wrap:break-word
-
-}
-
 .reciver-message{
   color:#000;
   background: #aca6a6;
@@ -3624,5 +3616,34 @@ align-items: center;
 
 
 
+
+/* css for thr message box inside the Engg crouser starts -------------------------------- */
+
+.loader{
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  gap: 10px;
+}
+.box {
+  height: 50px;
+  width: 50px;
+  margin-top: 40%;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: orange transparent;
+  animation: spin 2s infinite ease-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* css for thr message box inside the Engg crouser ends -------------------------------- */
 
 

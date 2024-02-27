@@ -67,7 +67,7 @@ module.exports.sendMessage = async (req,res) =>{
         message = await message.populate("ChatId");
 
 
-        res.json(message);
+        return res.json(message);
 
     } catch (error) {
         console.log(error)

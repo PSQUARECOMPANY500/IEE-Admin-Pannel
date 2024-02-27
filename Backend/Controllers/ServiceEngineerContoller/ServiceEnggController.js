@@ -58,6 +58,8 @@ module.exports.loginEngg = async (req, res) => {
   try {
     const { EnggId, password } = req.body;
 
+    // console.log(EnggId,password)
+
     //firstly check the Engg is exist or not
     const Engg = await ServiceEnggBasicSchema.findOne({ EnggId });
 
@@ -66,7 +68,7 @@ module.exports.loginEngg = async (req, res) => {
     }
 
     const token = generateEnggToken({ EnggId });
-    res.json({ Engg, token })
+    res.json({ Engg,success:true,allotedAdmin:"65d49276f60a227274baf8e1",adminName:"Parabh Simaran", token })
 
 
   } catch (error) {

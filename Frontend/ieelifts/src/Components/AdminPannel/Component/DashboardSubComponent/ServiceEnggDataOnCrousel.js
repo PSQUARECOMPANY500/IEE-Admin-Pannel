@@ -58,7 +58,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   // You can simplify this function
 
 
-  console.log("emit", item)
+  // console.log("emit", item)
  // console.log("completedTask", completedTask)
  
   return (

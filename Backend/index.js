@@ -18,7 +18,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Specify your frontend URL
+    origin: ["http://localhost:3000","https://e908-2405-201-5015-f007-b1ac-2e64-4897-f77a.ngrok-free.app","http://localhost:8081"], // Specify your frontend URL
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
@@ -38,9 +38,8 @@ app.use("/client", clientRoutes);
 //---------------AdminRoutes-----------
 app.use("/admin", AdminRoutes);
 
-
 //------------chatRoute-------------
-app.use("/chat", chatRoute)
+app.use("/chat", chatRoute);
 
 main().catch((err) => console.log(err));
 
@@ -53,37 +52,45 @@ io.on("connection", (socket) => {
   // console.log(`A user connected: ${socket.id}`);
   console.log("connected to socket io");
 
-  socket.on("setup",(userData) => {
-    socket.join(userData);
-    console.log("userData",userData)
-    socket.emit("connected")
-  });
+// setTimeout(()=>{
+//   socket.emit("pankaj", "pankaj mitar");
+// },1000)
 
+
+
+  socket.on("setup", (userData) => {
+    socket.join(userData);
+    console.log("userData", userData);
+    socket.emit("connected");
+  });
 
   socket.on("join chat", (room) => {
     socket.join(room);
-    console.log("User Joined Room " + room)
-  })
-
-  socket.on("disconnect", () => {
-    console.log(`A user disconnected: ${socket.id}`);
+    console.log("User Joined Room " + room);
   });
 
 
-socket.on("new message", (newMessageRecived) => {
-  var chat = newMessageRecived.chat;
 
-  if(!chat){
-    return console.log("chat users not defined")
-  }
+  socket.on("new message", (newMessageRecieved) => {
+    // console.log("*-*-*-*--*",newMessageRecieved)
+    if (!newMessageRecieved || !newMessageRecieved.Sender) {
+      // console.log("Invalid message format");
+      return;
+    }
 
-  chat.users.forEach((user) => {
-    if(user._id == newMessageRecived.sender._id) return;
-  })
+    console.log("/***", newMessageRecieved.ChatId);
+    var chat = newMessageRecieved.ChatId;
+    if (!chat.Users) return console.log("chat users not defined");
+    if (chat.Users[0] == newMessageRecieved.Sender[0]) return; //if you want to true the condition then change the chat.User[1] to chat.User[0];
 
-  socket.in(user._id).emit("message recieved",newMessageRecived)
+    console.log("newMessageRecieved",newMessageRecieved);
 
-})
+    // socket.in(chat.Users[1]).emit("message recieved", newMessageRecieved);
+    socket.emit("message recieved",newMessageRecieved);
+  });
+  socket.on("disconnect", () => {
+    console.log(`A user disconnected:`);
+  });
 });
 
 server.listen(process.env.PORT, () => {

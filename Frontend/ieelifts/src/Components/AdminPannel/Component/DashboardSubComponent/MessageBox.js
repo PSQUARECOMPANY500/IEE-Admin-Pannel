@@ -1,19 +1,19 @@
-import React, { useRef, useState, useEffect,
-  useLayoutEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
-import { MdSend } from "react-icons/md";
+import { MdLocalFireDepartment, MdSend, MdSignalCellularNull } from "react-icons/md";
 import { MdAddCall } from "react-icons/md";
-
 
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 
-import { useDispatch, useSelector } from "react-redux";
-import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
-import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
-import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader"
 
-import { io } from 'socket.io-client';
+import { useDispatch, useSelector } from "react-redux";
+import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions";
+import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
+
+import { io } from "socket.io-client";
 
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   const [messageData, setMessageData] = useState();
+  // console.log("prrrrAlo",messageData)
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
@@ -35,83 +36,84 @@ const MessageBox = ({ onClose, EnggId }) => {
     }
   };
 
-
-
-
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0].name);
   };
 
-
   useEffect(() => {
     setHeight(textareaRef.current);
-
   }, []);
 
-
   //socket implemantation starts ---------------------------------------------
-  const socket = io('http://localhost:8000');
+  const socket = io("http://localhost:8000");
   
+
   useEffect(() => {
-   socket.emit("setup", '65d49276f60a227274baf8e1');
-   socket.on("connection", () => setSocketConnected(true))
+    socket.emit("setup", "65d49276f60a227274baf8e1");// to do in future (dynamic login id)
+    socket.on("connection", () => setSocketConnected(true));
 
     return () => {
       socket.disconnect();
     };
+
   }, []);
+  
 
-
-
-
- 
-
+   
+   
+  
 
   const chatCreated = useSelector((state) => {
-    if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
-      return state.ChatRootReducer.createChatReducer.createChat.FullChat
+    if (
+      state.ChatRootReducer &&
+      state.ChatRootReducer.createChatReducer &&
+      state.ChatRootReducer.createChatReducer.createChat
+    ) {
+      return state.ChatRootReducer.createChatReducer.createChat.FullChat; 
     } else {
-      return null
+      return null;
     }
   });
   // console.log("chat created", chatCreated?._id)
 
-
   const getMessages = useSelector((state) => {
-
-scroll();
-    if (state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message) {
-   
-      return state.ChatRootReducer.getSenderMessagesReducer.message.chats
-
+    scroll();
+    if (
+      state.ChatRootReducer &&
+      state.ChatRootReducer.getSenderMessagesReducer &&
+      state.ChatRootReducer.getSenderMessagesReducer.message
+    ) {
+      return state.ChatRootReducer.getSenderMessagesReducer.message.chats;
     } else {
-      return null
+      return null;
     }
-  })
-  // console.log("all messages",getMessages)
+  });
+  // console.log("all messages", getMessages);
+
+
+  const sendMessage = useSelector((state) =>  state.ChatRootReducer.sendMessageReducer.chatMessage);
+  // console.log("emit", sendMessage);
+
+  const prevSendMessageRef = useRef();
+
 
 
   useEffect(() => {
-    dispatch(createChatActions(EnggId, '65d49276f60a227274baf8e1')); //todo - in future the id is dynamic as come from login user
-   
-
+    dispatch(createChatActions(EnggId, "65d49276f60a227274baf8e1")); //todo - in future the id is dynamic as come from login user
     setTimeout(() => {
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction(chatCreated._id));
       }
-    }, 400)
+    }, 400);
+
     // Cleanup function
     return () => {
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction()); // Clear sender messages when unmounting
-        dispatch(createChatActions())
+        dispatch(createChatActions());
       }
     };
   }, [dispatch, chatCreated?._id]);
-
-
-
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -131,38 +133,57 @@ scroll();
   };
 
   const handleInput = () => {
-
     setHeight(textareaRef.current);
     setSwapIcon(!textareaRef.current.value.trim());
   };
 
 
-
-  const handleSendMessage = () => {
-    dispatch(sendChatMessageAction('65d49276f60a227274baf8e1', messageData, chatCreated?._id)); //todo - in future the id is dynamic as come from login user
-    setMessageData('');
- 
-
-    if (textareaRef.current) {
-      textareaRef.current.value = '';
-      handleInput();
-
+  //function to send the message ------------------------------------------------
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    
+    if(chatCreated?._id){
+      dispatch(sendChatMessageAction("65d49276f60a227274baf8e1",messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
+      console.log('format',messageData);
+      setMessageData("");
     }
-
-
-
+    
+    socket.emit("join chat",chatCreated?._id);
+    
+    if (textareaRef.current) {
+      textareaRef.current.value = "";
+      handleInput();
+    }
+    
     setTimeout(() => {
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction(chatCreated._id));
       }
-
-    }, 400)
-
-  }
-
+    }, 400);
+  };
+  
   useLayoutEffect(() => {
-    scroll(); 
+    scroll();
   }, [getMessages]);
+  
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      console.log("newMessageRecieved",newMessageRecieved)   
+    })
+  })
+  
+
+
+
+  useEffect(() => {
+    if (prevSendMessageRef.current !== sendMessage) {
+      socket.emit("new message", sendMessage);
+      console.log("emit", sendMessage);
+      prevSendMessageRef.current = sendMessage;
+    }
+  }, [sendMessage]);
+
 
 
   return (
@@ -176,35 +197,33 @@ scroll();
             </div>
             <div>
               <RxCross2 onClick={onClose} />
-
             </div>
           </div>
         </div>
 
         <div className="message-body" ref={messageBodyRef}>
           {getMessages?.length > 0 ? (
-
             getMessages.map((item) => {
-              // console.log("message item map", item.Content);
+              console.log("frontend",item.Sender[0])
+
+              const isCurrentUser = item.Sender[0] === '65d49276f60a227274baf8e1';
+
               return (
-                <div className="sender-side" key={item._id}>
-                  <div className="sender-message">
+                <div className={isCurrentUser ? "sender-side":"reciver-side" } key={item._id}>
+                  <div className={isCurrentUser ? "sender-message":"reciver-message"}>
                     <p>{item.Content}</p>
                   </div>
                 </div>
               );
             })
           ) : (
-
-            <div className="loader">Loading...</div>
-          )}
-
-
-          {/* <div className="reciver-side">
-            <div className="reciver-message">
-              <p>how are you b </p>
+            <div className="skelton-in-message">
+            <div className="loader">
+              <div class="box">
+                </div><p>No Message Yet</p>
+                </div>
             </div>
-          </div>   */}
+          )}
 
 
           {file.length > 0 && (
@@ -214,12 +233,7 @@ scroll();
               </div>
             </div>
           )}
-
         </div>
-
-
-
-        
       </div>
 
       <div className="agdam">
@@ -228,7 +242,7 @@ scroll();
             placeholder="Enter message"
             ref={textareaRef}
             onInput={handleInput}
-            style={{ resize: "none", height: '10px', fontFamily: "Poppins" }}
+            style={{ resize: "none", height: "10px", fontFamily: "Poppins" }}
             className="text-area-message-whatsapp"
             rows="4"
             cols="50"
@@ -256,7 +270,7 @@ scroll();
           </div>
 
           <p className="send-messsage" onClick={handleSendMessage}>
-            {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
+            {swapIcon ? <MdOutlineMic /> : <MdSend />}
           </p>
         </div>
       </div>
