@@ -1,7 +1,6 @@
 const express = require("express");
-
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+const { createServer: createHttpServer } = require("http");
+const { Server: SocketServer } = require("socket.io");
 
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -15,30 +14,21 @@ require("dotenv").config();
 
 const app = express();
 
-const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: ["http://localhost:3000","https://e908-2405-201-5015-f007-b1ac-2e64-4897-f77a.ngrok-free.app","http://localhost:8081"], // Specify your frontend URL
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  },
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-//------ Routes------
-
+// ------ Routes ------
 // ---------service engg routes---------
 app.use("/serviceEngg", serviceEnggRoutes);
 
-//-------------client routes----------
+// -------------client routes----------
 app.use("/client", clientRoutes);
 
-//---------------AdminRoutes-----------
+// ---------------AdminRoutes-----------
 app.use("/admin", AdminRoutes);
 
-//------------chatRoute-------------
+// ------------chatRoute-------------
 app.use("/chat", chatRoute);
 
 main().catch((err) => console.log(err));
@@ -48,15 +38,19 @@ async function main() {
   console.log("Database connected successfully");
 }
 
+// Create HTTP server for Express app
+const httpServer = createHttpServer(app);
+
+// Create Socket.IO server
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: ["http://localhost:3000", "http://localhost:8081", "https://iee-admin-pannel.onrender.com"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  },
+});
+
 io.on("connection", (socket) => {
-  // console.log(`A user connected: ${socket.id}`);
   console.log("connected to socket io");
-
-// setTimeout(()=>{
-//   socket.emit("pankaj", "pankaj mitar");
-// },1000)
-
-
 
   socket.on("setup", (userData) => {
     socket.join(userData);
@@ -69,30 +63,32 @@ io.on("connection", (socket) => {
     console.log("User Joined Room " + room);
   });
 
-
-
   socket.on("new message", (newMessageRecieved) => {
-    // console.log("*-*-*-*--*",newMessageRecieved)
+    console.log("*-*-*-*--*", newMessageRecieved);
     if (!newMessageRecieved || !newMessageRecieved.Sender) {
-      // console.log("Invalid message format");
+      console.log("Invalid message format");
       return;
     }
 
     console.log("/***", newMessageRecieved.ChatId);
     var chat = newMessageRecieved.ChatId;
     if (!chat.Users) return console.log("chat users not defined");
-    if (chat.Users[0] == newMessageRecieved.Sender[0]) return; //if you want to true the condition then change the chat.User[1] to chat.User[0];
+    if (chat.Users[0] == newMessageRecieved.Sender[0]) return;
 
-    console.log("newMessageRecieved",newMessageRecieved);
-
-    // socket.in(chat.Users[1]).emit("message recieved", newMessageRecieved);
-    socket.emit("message recieved",newMessageRecieved);
+    console.log("newMessageRecieved", newMessageRecieved);
+    socket.emit("message recieved", newMessageRecieved);
   });
+
   socket.on("disconnect", () => {
     console.log(`A user disconnected:`);
   });
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`Listening on port ${process.env.PORT}`);
+httpServer.listen(process.env.PORT, () => {
+  console.log(`Express server listening on port ${process.env.PORT}`);
 });
+
+// Socket.IO server listening on a different port
+const socketPort = process.env.SOCKET_PORT || 3001; // Default to 3001 if SOCKET_PORT is not provided in .env
+io.listen(socketPort);
+console.log(`Socket.IO server listening on port ${socketPort}`);

@@ -1,5 +1,5 @@
 const config = {
-    apiUrl : 'http://localhost:8000'
+    apiUrl : 'https://iee-admin-pannel.onrender.com'
 };
 
 export default config;

@@ -45,7 +45,7 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
   //socket implemantation starts ---------------------------------------------
-  const socket = io("http://localhost:8000");
+  const socket = io('https://iee-admin-pannel.onrender.com');
   
 
   useEffect(() => {
@@ -167,11 +167,11 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, [getMessages]);
   
 
-  useEffect(() => {
+ 
     socket.on("message recieved", (newMessageRecieved) => {
       console.log("newMessageRecieved",newMessageRecieved)   
     })
-  })
+ 
   
 
 
