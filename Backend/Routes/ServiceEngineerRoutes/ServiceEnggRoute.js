@@ -17,7 +17,23 @@ router.post("/createEnggLocationOnAttendance", serviceEnggContoller.CreateEnggLo
 router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
 router.get("/getAllServices/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignedServices);
 router.get('/getServiceEngg/:EnggId', verifyEnggToken, serviceEnggContoller.getEnggDetail);
+router.get('/getEngScheduleData', verifyEnggToken,  serviceEnggContoller.getEngScheduleData);
 
+
+//engg route on check-in check-out firsthalfbreak SecondHalfBreak LunchBreak
+router.post('/enggCheckIn', serviceEnggContoller.EnggCheckIn);
+router.put('/enggCheckOut', serviceEnggContoller.EnggCheckOut);
+router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
+router.put('/enggOnSecondHalfBreak',serviceEnggContoller.EnggOnSecondHalfBreak);
+router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);
+
+/* 
+router.post('/gnggCheckIn', verifyEnggToken,  serviceEnggContoller.EnggCheckIn);
+router.post('/gnggCheckOut', verifyEnggToken,  serviceEnggContoller.EnggCheckOut);
+router.post('/gnggOnFirstHalfBreak', verifyEnggToken,  serviceEnggContoller.EnggOnFirstHalfBreak);
+router.post('/gnggOnSecondHalfBreak', verifyEnggToken,  serviceEnggContoller.EnggOnSecondHalfBreak);
+router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLunchBreak);
+ */
 
 
 

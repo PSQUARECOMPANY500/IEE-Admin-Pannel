@@ -61,10 +61,7 @@ export default function EnggLocation() {
                                         src={imgurl}
                                         alt="Pin"
                                     />
-
-
                                 </AdvancedMarker>
-
                                 {open === index && (
                                     <InfoWindow position={position} onCloseClick={() => setOpen(null)}>
                                         <p>{engname}</p>
@@ -73,9 +70,6 @@ export default function EnggLocation() {
                             </React.Fragment>
                         );
                     })}
-
-
-
                 </Map>
             </div>
         </APIProvider>

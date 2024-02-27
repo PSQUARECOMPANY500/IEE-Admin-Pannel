@@ -7,6 +7,16 @@ const serviceAssigtoEngg = require("../../Modals/ServiceEngineerModals/AssignSer
 const { generateEnggToken } = require('../../Middleware/ServiceEnggAuthMiddleware')
 
 const EnggLocationModel = require("../../Modals/LocationModel/EnggLocationSchema");
+
+const ServiceAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
+
+const AssignSecheduleRequest = require("../../Modals/ServiceEngineerModals/AssignServiceRequest");
+
+const clientDetailSchema = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
+
+const clientRequestImidiateVisit = require("../../Modals/ServicesModal/ClinetCallback")
+const serviceRequest = require("../../Modals/ServicesModal/ClientServicesRequest")
+const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance")
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -164,7 +174,7 @@ module.exports.createEnggLocation = async (req, res) => { // onswipe of the engg
     const { ServiceEnggId, JobOrderNumber, latitude, longitude } = req.body;
     if (ServiceEnggId && JobOrderNumber && latitude && longitude) {
       const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-      
+
       let enggLocation = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
       if (enggLocation) {
         // EnggLocation found, iterate over AllotDetails array
@@ -206,7 +216,7 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
   //this is the api to update current locations(real time )
   try {
 
-    /* Attandance logic hear */
+    /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
     if (ServiceEnggId && latitude && longitude) {
@@ -233,40 +243,252 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     //console.log(error);
     res.status(500).json({ error: "Internal server error in Location creation" });
   }
-} 
+}
 
 
 
 module.exports.getEnggLocationDetail = async (req, res) => {
   try {
-      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-      const enggDetail = await EnggLocationModel.find({ AttendanceCreatedDate});
-      if (!enggDetail) {
-        return res.status(404).json({
-          message: "No services Engg found for the specified date",
-        });
-      }
-      console.log("tera hone laga huu khone laga hui ",enggDetail)
-
-      const serviceEnggId = await Promise.all(enggDetail.map(async (detail) => {
-        return await ServiceEnggBasicSchema.findOne({ EnggId: detail.ServiceEnggId });
-      }));
-      
-      console.log((serviceEnggId))
-      
-
-      const combinedData = enggDetail.map((detail, index) => ({
-        ...detail.toObject(),
-        serviceEnggIdDetails: serviceEnggId[index],
-      }));
-  
-      res.status(200).json({
-        message: "Services Engg Location retrieved by his/her ID successfully",
-        combinedData,
+    const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+    const enggDetail = await EnggLocationModel.find({ AttendanceCreatedDate });
+    if (!enggDetail) {
+      return res.status(404).json({
+        message: "No services Engg found for the specified date",
       });
+    }
+    const serviceEnggId = await Promise.all(enggDetail.map(async (detail) => {
+      return await ServiceEnggBasicSchema.findOne({ EnggId: detail.ServiceEnggId });
+    }));
+
+    console.log((serviceEnggId))
+
+
+    const combinedData = enggDetail.map((detail, index) => ({
+      ...detail.toObject(),
+      serviceEnggIdDetails: serviceEnggId[index],
+    }));
+
+    res.status(200).json({
+      message: "Services Engg Location retrieved by his/her ID successfully",
+      combinedData,
+    });
     //}
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
+
+//api for the engg app i.e seduled with the daily task
+module.exports.getEngScheduleData = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.body;
+    const currentDate = new Date();
+    const todayDate = currentDate.toLocaleDateString('en-GB');
+
+
+    const tomorrowDate = new Date(currentDate);
+    tomorrowDate.setDate(currentDate.getDate() + 1);
+    const tomorrowDateString = tomorrowDate.toLocaleDateString('en-GB');
+
+
+    const serviceAssignments = await ServiceAssigntoEngg.find({
+      ServiceEnggId: ServiceEnggId,
+      Date: { $in: [todayDate, tomorrowDateString] }
+    });
+
+    const assignScheduleRequests = await AssignSecheduleRequest.find({
+      ServiceEnggId: ServiceEnggId,
+      Date: { $in: [todayDate, tomorrowDateString] }
+    });
+
+
+    const clientDetailsCallbackRequest = await Promise.all(serviceAssignments.map(async (data) => {
+      const callbackid = data.callbackId;
+      const value = await clientRequestImidiateVisit.findOne({ callbackId: callbackid });
+      return { ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
+    }));
+
+    const clientDetailsServiceRequest = await Promise.all(assignScheduleRequests.map(async (data) => {
+      const callbackid = data.callbackId;
+      const value = await serviceRequest.findOne({ callbackId: callbackid });
+      return { ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
+    }));
+
+    const mainDetails = clientDetailsCallbackRequest.concat(clientDetailsServiceRequest).map((data) => ({
+
+      ServiceEnggId: data.ServiceEnggId,
+      JobOrderNumber: data.JobOrderNumber,
+      Slot: data.Slot,
+      Date: data.Date,
+      Message: data.Message,
+      TaskStatus: data.TaskStatus,
+      TypeOfIssue: data.TypeOfIssue,
+      Description: data.Description,
+      Type: data.Type
+    }));
+
+    const filteredServiceAssignmentsWithClientName = await Promise.all(mainDetails.map(async (assignment) => {
+      const client = await clientDetailSchema.findOne({ JobOrderNumber: assignment.JobOrderNumber });
+      return { ...assignment, ClientName: client?.name, ClientNumber: client?.PhoneNumber, ClientAddress: client?.Address, ClientPhoto: client?.ProfileImage };
+    }));
+
+    filteredServiceAssignmentsWithClientName.sort((a, b) => {
+
+      const dateA = new Date(a.Date.split('/').reverse().join('-'));
+      const dateB = new Date(b.Date.split('/').reverse().join('-'));
+
+
+      if (dateA < dateB) return -1;
+      if (dateA > dateB) return 1;
+
+
+      const timeA = convertTimeToSortableFormat(a.Slot[0]);
+      const timeB = convertTimeToSortableFormat(b.Slot[0]);
+      return timeA - timeB;
+    });
+
+
+    res.status(200).json({ EngScheduleData: filteredServiceAssignmentsWithClientName, });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in getEnggAssignDetails" });
+  }
+}
+
+function convertTimeToSortableFormat(time) {
+
+  const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
+  return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
+
+}
+
+
+
+//...................................................................................................................................
+//api for the attendance checkin and checkout
+
+module.exports.EnggCheckIn = async (req, res) => {
+  try {
+    const { IsAttendance, engPhoto, ServiceEnggId, time } = req.body;
+
+    const CheckIn = await EnggAttendanceServiceRecord.create({
+      IsAttendance: IsAttendance,
+      ServiceEnggId: ServiceEnggId,
+      Check_In: {
+        engPhoto: engPhoto,
+        time: time
+      }
+    });
+
+    res.status(201).json({ message: 'Check-in recorded successfully', data: CheckIn });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggCheckIn" });
+  }
+};
+
+module.exports.EnggCheckOut = async (req, res) => {
+  try {
+    const { engPhoto, ServiceEnggId, time } = req.body;
+    const date = new Date().toLocaleDateString('en-GB');
+    const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate({ ServiceEnggId, Date: date }, {
+
+      Check_Out: {
+        engPhoto: engPhoto,
+        time: time
+      }
+    });
+
+    res.status(201).json({ message: 'Check-out recorded successfully', data: CheckIn });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggCheckIn" });
+  }
+};
+
+module.exports.EnggOnFirstHalfBreak = async (req, res) => {
+  try {
+    const { ServiceEnggId, time, isStart } = req.body;
+    const date = new Date().toLocaleDateString('en-GB');
+    const update = {
+
+      [isStart ? "First_halfs_time" : "First_halfe_time"]: time,
+
+    }
+
+    const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
+      { ServiceEnggId, Date: date },
+      update,
+      { new: true }
+    );
+
+    console.log("Break:", Break);
+
+    if (!Break) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    const message = isStart ? 'First_half Break started successfully' : 'First_half Break ended successfully';
+    res.status(201).json({ message, data: Break });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in First_half" });
+  }
+};
+
+
+
+module.exports.EnggOnSecondHalfBreak = async (req, res) => {
+  try {
+    const { ServiceEnggId, time, isStart } = req.body;
+    const date = new Date().toLocaleDateString('en-GB');
+    const update = {
+
+      [isStart ? "Second_halfs_time" : "Second_halfe_time"]: time,
+
+    }
+
+    const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
+      { ServiceEnggId, Date: date },
+      update,
+      { new: true }
+    );
+
+    console.log("Break:", Break);
+
+    if (!Break) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    const message = isStart ? 'Second_half Break started successfully' : 'Second_half Break ended successfully';
+    res.status(201).json({ message, data: Break });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in Second_half" });
+  }
+};
+
+module.exports.EnggOnLunchBreak = async (req, res) => {
+  try {
+    const { ServiceEnggId, isStart } = req.body;
+    const date = new Date().toLocaleDateString('en-GB');
+
+    const update = {
+    Is_Lunch: isStart
+    };
+
+    const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
+      { ServiceEnggId, Date: date },
+      update,
+      { new: true }
+    );
+
+    const message = isStart ? 'Break started successfully' : 'Break ended successfully';
+    res.status(201).json({ message, data: Break });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in Break" });
+  }
+};
+

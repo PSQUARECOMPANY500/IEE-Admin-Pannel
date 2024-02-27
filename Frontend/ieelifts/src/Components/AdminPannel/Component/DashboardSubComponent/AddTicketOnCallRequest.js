@@ -155,9 +155,11 @@
         setModelType(clientDetails.ModelType);
 
 
-        const currentDate = new Date();
+        const currentDate = new Date()
         const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
-        setDate(formatedDate);
+        const updatedFormatedDate = currentDate.toLocaleDateString('en-GB');
+        console.log(updatedFormatedDate)
+        setDate(updatedFormatedDate);
         
         const hours = currentDate.getHours();
         const minutes = currentDate.getMinutes();

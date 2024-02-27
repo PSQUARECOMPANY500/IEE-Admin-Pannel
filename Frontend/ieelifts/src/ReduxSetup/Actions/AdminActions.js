@@ -446,8 +446,6 @@ export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */)=>{
   return async(dispatch)=>{
     try{
       const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
-
-      console.log("He this a man",response.data)
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,
