@@ -13,7 +13,7 @@ import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
-import { io } from "socket.io-client";
+import  {io}  from "socket.io-client";
 
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
@@ -45,25 +45,16 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
   //socket implemantation starts ---------------------------------------------
-  // const socket = io(':8001');
-  const socket = io('https://iee-admin-pannel.onrender.com');
-  
-  
+  // const socket = io(':8000');
 
+  const socket = io('ws://iee-admin-pannel.onrender.com');
+  
+  
   useEffect(() => {
     socket.emit("setup", "65d49276f60a227274baf8e1");// to do in future (dynamic login id)
-    socket.on("connection", () => setSocketConnected(true));
-
-    return () => {
-      socket.disconnect();
-    };
-
+    socket.on("connected", () => setSocketConnected(true));
   }, []);
-  
 
-   
-   
-  
 
   const chatCreated = useSelector((state) => {
     if (
@@ -169,11 +160,13 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, [getMessages]);
   
 
- 
-    socket.on("message recieved", (newMessageRecieved) => {
-      console.log("newMessageRecieved",newMessageRecieved)   
-    })
- 
+ useEffect(() => {
+  socket.on("message recieved", (newMessageRecieved) => {
+    console.log("newMessageRecieved",newMessageRecieved)   
+  })
+
+ })
+    
   
 
 

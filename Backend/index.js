@@ -42,12 +42,8 @@ async function main() {
 const httpServer = createHttpServer(app);
 
 // Create Socket.IO server using the same HTTP server instance
-const io = new SocketServer(httpServer, {
-  cors: {
-    origin: ["http://localhost:3000","https://iee-admin-pannel.onrender.com"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  },
-});
+const io = new SocketServer(httpServer,cors());
+
 
 io.on("connection", (socket) => {
   console.log("connected to socket io");
