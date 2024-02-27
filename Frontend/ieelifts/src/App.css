@@ -3451,8 +3451,10 @@ align-items: center;
 .calendar {
   background-color: white;
   border-radius: 8px;
+  
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   width: 37%;
+  height: 100%;
   position: absolute;
   z-index: 1;
   display: none;
@@ -3460,6 +3462,7 @@ align-items: center;
   left: 0% !important;
   height: 100%;
 }
+
 
 .header {
   background-color: #FFFFFF;

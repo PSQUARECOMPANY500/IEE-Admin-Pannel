@@ -10,39 +10,39 @@ body {
     width: 100%;
 }
 
- .EngeeniersCardF {
+.EngeeniersCardF {
     min-height: 87vh;
     width: 100%;
     background-color: #FFFFFF;
     border-radius: 20px;
     display: grid;
-    grid-template-columns:2fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: 'SingleEng EngeeniersChat';
-   
- 
 
-    
+
+
+
 }
 
-.SingleEng{
+.SingleEng {
     grid-area: SingleEng;
     position: relative;
 }
 
-.SubSingleEng{
-    margin-top: .4rem;
+.SubSingleEng {
+    /* margin-top: .4rem; */
     margin-bottom: 1.2rem;
     width: 100%;
     height: 100%;
-   display: grid;
-   position: relative;
-   grid-template-rows: 1fr .5fr 6fr;
-   grid-row-gap: .5rem;
+    display: grid;
+    position: relative;
+    grid-template-rows: 1fr .5fr 6fr;
+    grid-row-gap: .3rem;
     padding: 1rem 1rem;
 }
 
-.PDetails{
+.PDetails {
     /* background-color: #00000029; */
     display: flex;
     align-items: center;
@@ -50,11 +50,14 @@ body {
     position: relative;
     height: 100%;
     width: 100%;
-  
+
+
 }
-.Pimg{
+
+.Pimg {
     width: 34%;
-    height: 70%;;
+    height: 70%;
+    ;
     display: flex;
     margin-top: 1rem;
     position: relative;
@@ -63,7 +66,7 @@ body {
     border-radius: 10px;
 }
 
-.ODetailsColumn{
+.ODetailsColumn {
     /* background-color: red; */
     display: flex;
     justify-content: space-around;
@@ -72,21 +75,23 @@ body {
     border-radius: 2px;
 }
 
-.ODetails{
-position: relative;
+.ODetails {
+    position: relative;
 }
+
 .EngeeniersCardT {
     min-height: 87vh;
     width: 100%;
     background-color: #FFFFFF;
     border-radius: 20px;
     display: grid;
-    grid-template-columns:1fr;
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: 'EngeeniersSubCard';
-    
-    
-} 
+
+
+}
+
 /* 
 .EngeeniersCardD {
     min-height: 87vh;
@@ -120,6 +125,7 @@ position: relative;
     grid-column-gap: 7rem;
     padding: 2rem 4rem;
 }
+
 .AllCardsT {
     max-height: 83vh;
     overflow-y: auto;
@@ -142,7 +148,7 @@ position: relative;
     margin-top: 1.2rem;
     margin-bottom: 1.2rem;
 
-   
+
 
 }
 
@@ -156,13 +162,13 @@ position: relative;
     display: none;
     margin-bottom: 1.2rem;
 
-   
+
 
 }
 
 .AllCardsF::-webkit-scrollbar-track {
     border-radius: 10px;
-  
+
 }
 
 .AllCardsF::-webkit-scrollbar {
@@ -172,7 +178,7 @@ position: relative;
 
 .AllCardsF::-webkit-scrollbar-thumb {
     border-radius: 10px;
-   background-color: #FFFFFF;
+    background-color: #FFFFFF;
 
 }
 
@@ -180,14 +186,14 @@ position: relative;
 
 
 .AllCardsF:hover::-webkit-scrollbar-thumb {
-   background-color: #F8AC1D;
+    background-color: #F8AC1D;
 }
 
 
 
 .AllCardsT::-webkit-scrollbar-track {
     border-radius: 10px;
-  
+
 }
 
 .AllCardsT::-webkit-scrollbar {
@@ -197,7 +203,7 @@ position: relative;
 
 .AllCardsT::-webkit-scrollbar-thumb {
     border-radius: 10px;
-   background-color: #FFFFFF;
+    background-color: #FFFFFF;
 
 }
 
@@ -205,7 +211,7 @@ position: relative;
 
 
 .AllCardsT:hover::-webkit-scrollbar-thumb {
-   background-color: #F8AC1D;
+    background-color: #F8AC1D;
 }
 
 
@@ -272,10 +278,12 @@ position: relative;
     gap: .1rem;
     font-family: "Noto Sans KR", sans-serif;
     width: 60%;
-    max-width: 100%;
     position: relative;
     text-align: start;
     height: auto;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
 
 }
 
@@ -284,7 +292,9 @@ position: relative;
     color: #343434;
     border-bottom: 2px solid transparent;
     font-size: .9rem;
-    text-wrap: nowrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
 }
 
 
@@ -346,6 +356,9 @@ position: relative;
     background-color: #7070704D;
 }
 
+.AHoriZontalLine {
+    height: 80%;
+}
 
 /* .EngCardMessage{
     height:5vh;
@@ -374,7 +387,7 @@ position: relative;
     height: 2%;
     width: 25%;
     background-color: #7070704D;
- 
+
 }
 
 .EngChatNavText {
@@ -385,7 +398,7 @@ position: relative;
     align-items: center;
 }
 
-.EngChatNavText h5{
+.EngChatNavText h5 {
     text-wrap: nowrap;
     font-size: 1.1rem;
     font-size: 0.8rem;
@@ -396,23 +409,23 @@ position: relative;
 
 }
 
-.EngChatBox{
-  height: 98%;
-  width: 100%;
-  background-color: #FFFBF4;
-  border-radius: 5px;
-  box-shadow: 1px 2px 5px 1px #00000029;
-  position: relative;
+.EngChatBox {
+    height: 98%;
+    width: 100%;
+    background-color: #FFFBF4;
+    border-radius: 5px;
+    box-shadow: 1px 2px 5px 1px #00000029;
+    position: relative;
 }
 
-.EngChatBoxHead{
+.EngChatBoxHead {
     display: flex;
     align-items: center;
     justify-content: end;
     padding: .8rem;
 }
 
-.EngChatBoxIcons{
+.EngChatBoxIcons {
     width: 50%;
     display: flex;
     align-items: center;
@@ -420,24 +433,24 @@ position: relative;
     gap: .4rem;
 }
 
-.EngChatBox  h6{
+.EngChatBox h6 {
     text-wrap: nowrap;
     font-size: 1.1rem;
     font-size: 0.8rem;
     color: #444444;
     font-weight: 500;
     font-family: 'Poppins';
-    line-height: 1.3rem;  
+    line-height: 1.3rem;
 }
 
-.EngChatMsg{
+.EngChatMsg {
     height: 100%;
     width: 100%;
-   position: relative;
-   }
+    position: relative;
+}
 
 
-   .PDetails h1{
+.PDetails h1 {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 400;
@@ -451,7 +464,7 @@ position: relative;
 
 
 
-.PDetails h1 span{
+.PDetails h1 span {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 490;
@@ -460,29 +473,29 @@ position: relative;
 }
 
 
-.SubPDetails{
+.SubPDetails {
     display: flex;
     width: 24%;
     height: 100%;
     justify-content: space-around;
     align-items: center;
-   
+
 }
 
-.Icon_Color{
+.Icon_Color {
     color: #F8AC1D;
 }
 
-.ODetailsColumn h5{
+.ODetailsColumn h5 {
     text-align: left;
-/* font: normal normal medium 18px/27px Poppins; */
-font-family: 'Poppins';
-font-weight: 500;
-margin-bottom: .3rem;
-letter-spacing: 0px;
-color: #444444;
-font-size: .9rem;
-cursor: pointer;
+    /* font: normal normal medium 18px/27px Poppins; */
+    font-family: 'Poppins';
+    font-weight: 500;
+    margin-bottom: .3rem;
+    letter-spacing: 0px;
+    color: #444444;
+    font-size: .9rem;
+    cursor: pointer;
 }
 
 
@@ -491,7 +504,7 @@ cursor: pointer;
     background-color: red;
 } */
 
-.TaskHistory{
+.TaskHistory {
     min-height: 100%;
     width: 100%;
     display: grid;
@@ -499,15 +512,15 @@ cursor: pointer;
     /* background-color: yellow; */
 }
 
-.TaskHeading{
- position: relative;
+.TaskHeading {
+    position: relative;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
 
-.AllTask{
+.AllTask {
     border-top: 2px solid #5353533b;
     min-height: 100%;
     width: 100%;
@@ -515,42 +528,362 @@ cursor: pointer;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: .3rem;
+    overflow-y: auto;
 
 
-   
+
+
 
 }
 
 
+.Services {
+    margin-top: 1rem;
+    padding: .9rem;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 
+.ServicContainer {
+    height: 60vh;
+    margin-top: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
 
-.AllServices{
+.AllServices {
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 1rem;
+    grid-template-columns: 50% 50%;
+    grid-gap: 1rem;
+
     padding: 1rem;
 
+
+
 }
 
-.Service-table{
+
+.ServiceCards {
+    border-radius: 10px;
+    height: 13vh;
+    background-color: #FFFBF4;
+    box-shadow: 1px 2px 5px #00000029;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: .2rem;
+}
+
+
+
+
+table {
     margin-top: .8rem;
-    padding: 0rem 1rem;
-   
-}
-.ServiceCards{
-  border-radius: 10px;
-  height: 13vh;
-  background-color: #FFFBF4;
+    margin-left: .8rem;
+    width: 95%;
+    border-collapse: collapse;
 
-  box-shadow: 1px 2px 5px #00000029;
-  /* padding: 0rem 1rem; */
-  /* display: flex;
-  align-items: start; */
-  /* justify-content: flex-start; */
-   
 }
 
+th,
+td {
+
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: .9rem;
+    padding: .2rem;
+
+}
+
+th {
+    color: #fff;
+    font-weight: bold;
+}
+
+.service-table-item {
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: .9rem;
+
+}
 
 
+tr>td:nth-child(2) {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: .9rem;
+}
+
+.ServiceCardsBottom {
+    width: 100%;
+    height: 20%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+
+
+}
+
+.ServiceCardsBottom>h5:nth-child(1) {
+    font-family: ' Poppins';
+    font-size: .9rem;
+    font-weight: 700;
+    color: #389300;
+
+}
+
+.ServiceCardsBottom>h5:nth-child(2) {
+    font-family: ' Poppins';
+    font-size: .9rem;
+    font-weight: 700;
+    color: #F8AC1D;
+    ;
+
+}
+
+.star {
+    width: 22%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 2px solid #F8AC1D;
+    border-radius: 4px;
+    padding: .1rem;
+    margin-bottom: .3rem;
+
+}
+
+.star h5 {
+    font-size: .8rem;
+    font-family: ' Poppins';
+    letter-spacing: 0px;
+    color: #444444;
+    text-align: left;
+    font-weight: 600;
+}
+
+.small-Icon {
+    font-size: .8rem;
+}
+
+
+.Yello_Scrollbar::-webkit-scrollbar-track {
+    border-radius: 10px;
+
+}
+
+.Yello_Scrollbar::-webkit-scrollbar {
+    width: 5px;
+
+}
+
+.Yello_Scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+
+}
+
+
+
+
+.Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #F8AC1D;
+}
+
+.DateHeading {
+    border-bottom: 1px solid red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.Attendancecalendar {
+    margin-top: .8rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+    position: relative;
+    z-index: 1;
+    display: block;
+    min-height: 20%;
+    background-color: red;
+    background-color: #FFFBF4;
+    
+    
+
+}
+
+.Attendance {
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+}
+
+.Attendacne-header {
+    background-color: #FFFBF4;
+    border-bottom: none;
+    padding: 1rem;
+ 
+}
+
+#monthYear{
+    font-size:.8rem;
+}
+
+
+#aprevBtn, #anextBtn {
+    background: none;
+    border: none;
+    color: #343434;
+    cursor: pointer;
+  font-size: .6rem;
+  }
+  
+.aday {
+    padding: .2rem;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   padding-top: .5rem;
+   
+
+}
+
+
+.aday:hover {
+
+    background-color: #FEF3DE;
+    color: #F8AC1D;
+    border-radius: 50px;
+
+}
+
+.adays {
+    display: grid;
+    grid-template-columns: repeat(7, 9%);
+    grid-column-gap: 1rem;
+    padding: 1rem 1rem;
+    height: 70%;
+    position: relative;
+   
+
+   
+}
+
+.ui-datepicker-prev {
+    order: 1
+}
+
+.aday.current {
+    /* background-color: #FEF3DE; */
+    color: #F8AC1D;
+    border-radius: 50%;
+}
+
+
+
+.aday.current:hover {
+    /* background-color: white; */
+    background-color: transparent;
+    box-shadow: none;
+}
+
+/* .ui-datepicker-next{
+    order: 3} */
+.aday.selected {
+    background: #F8AC1D;
+    border-radius: 50px;
+    box-shadow: inset 1px 2px 3px #00000080;
+    color: black;
+}
+
+
+.days-header {
+    /* display: flex; */
+    /* justify-content: space-around; */
+
+    font-weight: bold;
+    width: 100%;
+   padding-left: 1.2rem;
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(7, 9%);
+    grid-column-gap: .9rem;
+    font-size: .7rem;
+    font-weight: 500;
+    top: -2%;
+
+
+}
+
+.DatesContainer {
+    display: grid;
+    grid-template-rows: repeat(5, 17%);
+    height: 60%;
+    width: 30%;
+    grid-row-gap: 1rem;
+    padding: 1rem 0rem;
+ 
+}
+
+.DatesCard {
+    background-color: #FFFFFF;
+    box-shadow: 1px 2px 5px #00000029;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    /* padding: .2rem; */
+    
+}
+
+.DateCardData{
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:center;
+    border-radius: 5px;
+}
+
+.DateCardData h5{
+    font-family: 'Poppins';
+    font-weight: 500;
+}
+
+.DateCardData>h5:nth-child(2){
+    font-weight: 400;
+    font-size: .5rem;
+}
+
+.DateCardData:nth-child(1){
+height: fit-content;
+background-color:#FEF3DE;
+box-shadow: inset 1px 2px 3px #99886B66;
+width: 20%;
+height: 90%;
+}
