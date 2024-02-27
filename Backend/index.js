@@ -41,10 +41,10 @@ async function main() {
 // Create HTTP server for Express app
 const httpServer = createHttpServer(app);
 
-// Create Socket.IO server
+// Create Socket.IO server using the same HTTP server instance
 const io = new SocketServer(httpServer, {
   cors: {
-    origin: ["http://localhost:3000", "http://localhost:8081", "https://iee-admin-pannel.onrender.com:8001","https://iee-admin-pannel.onrender.com:8000","https://iee-admin-pannel.onrender.com"],
+    origin: ["http://localhost:3000","https://iee-admin-pannel.onrender.com"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 });
@@ -79,16 +79,16 @@ io.on("connection", (socket) => {
     socket.emit("message recieved", newMessageRecieved);
   });
 
+  socket.on("connect_error", (error) => {
+    console.error("Failed to connect to socket.io:", error);
+  });
+
+
   socket.on("disconnect", () => {
     console.log(`A user disconnected:`);
   });
 });
 
 httpServer.listen(process.env.PORT, () => {
-  console.log(`Express server listening on port ${process.env.PORT}`);
+  console.log(`Server listening on port ${process.env.PORT}`);
 });
-
-// Socket.IO server listening on a different port
-const socketPort = process.env.SOCKET_PORT || 3001; // Default to 3001 if SOCKET_PORT is not provided in .env
-io.listen(socketPort);
-console.log(`Socket.IO server listening on port ${socketPort}`);

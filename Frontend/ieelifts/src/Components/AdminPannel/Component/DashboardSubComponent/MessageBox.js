@@ -46,7 +46,7 @@ const MessageBox = ({ onClose, EnggId }) => {
 
   //socket implemantation starts ---------------------------------------------
   // const socket = io(':8001');
-  const socket = io('https://iee-admin-pannel.onrender.com:8001');
+  const socket = io('https://iee-admin-pannel.onrender.com');
   
   
 
