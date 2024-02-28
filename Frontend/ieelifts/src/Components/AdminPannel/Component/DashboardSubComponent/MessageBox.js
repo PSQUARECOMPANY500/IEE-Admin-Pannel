@@ -45,9 +45,9 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
   //socket implemantation starts ---------------------------------------------
-  const socket = io('http://localhost:8000');
+  // const socket = io('http://localhost:8000');
 
-  // const socket = io('https://iee-admin-pannel.onrender.com');
+  const socket = io('https://iee-admin-pannel.onrender.com');
   
   
   useEffect(() => {
@@ -177,13 +177,13 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
 
-  // useEffect(() => {
-  //   if (prevSendMessageRef.current !== sendMessage) {
-  //     socket.emit("newmessage", sendMessage);
-  //     console.log("emit", sendMessage);
-  //     prevSendMessageRef.current = sendMessage;
-  //   }
-  // },[sendMessage]);
+  useEffect(() => {
+    if (prevSendMessageRef.current !== sendMessage) {
+      socket.emit("newmessage", sendMessage);
+      console.log("emit", sendMessage);
+      prevSendMessageRef.current = sendMessage;
+    }
+  },[sendMessage]);
 
 
 
