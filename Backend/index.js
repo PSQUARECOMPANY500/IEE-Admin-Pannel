@@ -42,47 +42,21 @@ async function main() {
 const httpServer = createHttpServer(app);
 
 // Create Socket.IO server using the same HTTP server instance
-const io = new SocketServer(httpServer,cors());
+const io = new SocketServer(httpServer, {cors: {origin: "*"}});
 
-
+// Listen for new connections
 io.on("connection", (socket) => {
-  console.log("connected to socket io");
+  console.log(`A user connected: ${socket.id}`);
+});
 
-  socket.on("setup", (userData) => {
-    socket.join(userData);
-    console.log("userData", userData);
-    socket.emit("connected");
-  });
+// Emit a message every second
+setInterval(() => {
+  io.emit('testing', "press hai ye")
+}, 1000);
 
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User Joined Room " + room);
-  });
-
-  socket.on("new message", (newMessageRecieved) => {
-    console.log("*-*-*-*--*", newMessageRecieved);
-    if (!newMessageRecieved || !newMessageRecieved.Sender) {
-      console.log("Invalid message format");
-      return;
-    }
-
-    console.log("/***", newMessageRecieved.ChatId);
-    var chat = newMessageRecieved.ChatId;
-    if (!chat.Users) return console.log("chat users not defined");
-    if (chat.Users[0] == newMessageRecieved.Sender[0]) return;
-
-    console.log("newMessageRecieved", newMessageRecieved);
-    socket.emit("message recieved", newMessageRecieved);
-  });
-
-  socket.on("connect_error", (error) => {
-    console.error("Failed to connect to socket.io:", error);
-  });
-
-
-  socket.on("disconnect", () => {
-    console.log(`A user disconnected:`);
-  });
+// Listen for disconnections
+io.on("disconnect", () => {
+  console.log(`A user disconnected:`);
 });
 
 httpServer.listen(process.env.PORT, () => {

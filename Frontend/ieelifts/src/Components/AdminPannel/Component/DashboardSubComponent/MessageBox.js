@@ -47,12 +47,17 @@ const MessageBox = ({ onClose, EnggId }) => {
   //socket implemantation starts ---------------------------------------------
   // const socket = io(':8000');
 
-  const socket = io('ws://iee-admin-pannel.onrender.com');
+  const socket = io('https://iee-admin-pannel.onrender.com');
   
   
   useEffect(() => {
-    socket.emit("setup", "65d49276f60a227274baf8e1");// to do in future (dynamic login id)
-    socket.on("connected", () => setSocketConnected(true));
+    socket.on('connect', ()=>[
+      console.log("socket is connected successfully")
+    ])
+
+    socket.on('testing',(message)=>{
+      console.log("this is message",message);
+    })
   }, []);
 
 
