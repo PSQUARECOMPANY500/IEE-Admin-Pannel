@@ -28,22 +28,24 @@ body {
 .SingleEng {
     grid-area: SingleEng;
     position: relative;
+
 }
 
 .SubSingleEng {
     /* margin-top: .4rem; */
-    margin-bottom: 1.2rem;
+
+    /* margin-bottom: 1.2rem; */
     width: 100%;
     height: 100%;
     display: grid;
     position: relative;
-    grid-template-rows: 1fr .5fr 6fr;
-    grid-row-gap: .3rem;
-    padding: 1rem 1rem;
+
+    grid-template-rows: 10% 5%;
+    grid-row-gap: .1rem;
+    padding: .5rem 1rem;
 }
 
 .PDetails {
-    /* background-color: #00000029; */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -51,28 +53,26 @@ body {
     height: 100%;
     width: 100%;
 
-
 }
 
 .Pimg {
-    width: 34%;
-    height: 70%;
-    ;
+    height: 4rem;
+    width: 4rem;
     display: flex;
-    margin-top: 1rem;
     position: relative;
     background-color: transparent;
     border: 1px solid #707070;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .ODetailsColumn {
-    /* background-color: red; */
     display: flex;
     justify-content: space-around;
     align-items: end;
     border-bottom: 2px solid #5353533b;
     border-radius: 2px;
+
+
 }
 
 .ODetails {
@@ -380,6 +380,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+   display: none;
 }
 
 
@@ -390,11 +391,15 @@ body {
 
 }
 
+
 .EngChatNavText {
     width: 80%;
     height: 100%;
     display: flex;
     justify-content: space-around;
+
+   
+
     align-items: center;
 }
 
@@ -410,12 +415,12 @@ body {
 }
 
 .EngChatBox {
-    height: 98%;
     width: 100%;
     background-color: #FFFBF4;
     border-radius: 5px;
     box-shadow: 1px 2px 5px 1px #00000029;
     position: relative;
+  height: 100%;
 }
 
 .EngChatBoxHead {
@@ -423,6 +428,7 @@ body {
     align-items: center;
     justify-content: end;
     padding: .8rem;
+  border-bottom: 1px solid #00000029;
 }
 
 .EngChatBoxIcons {
@@ -480,6 +486,7 @@ body {
     justify-content: space-around;
     align-items: center;
 
+
 }
 
 .Icon_Color {
@@ -488,7 +495,6 @@ body {
 
 .ODetailsColumn h5 {
     text-align: left;
-    /* font: normal normal medium 18px/27px Poppins; */
     font-family: 'Poppins';
     font-weight: 500;
     margin-bottom: .3rem;
@@ -500,28 +506,38 @@ body {
 
 
 
-/* .calendar{
-    background-color: red;
-} */
+
 
 .TaskHistory {
     min-height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    /* background-color: yellow; */
+    grid-template-rows: 7%;
+
+
+
 }
 
 .TaskHeading {
     position: relative;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: end;
+    border-bottom: 2px solid #5353533b;
+
+
+
 }
 
+.TaskHeading h5 {
+    color: #1D1D1D;
+    font-size: 1rem;
+    font-weight: 550;
+    margin-bottom: .3rem;
+}
 
 .AllTask {
-    border-top: 2px solid #5353533b;
+
     min-height: 100%;
     width: 100%;
     position: relative;
@@ -529,9 +545,6 @@ body {
     grid-template-columns: 1fr 1fr;
     grid-column-gap: .3rem;
     overflow-y: auto;
-
-
-
 
 
 }
@@ -542,11 +555,12 @@ body {
     padding: .9rem;
     width: 100%;
     height: 100%;
+
     position: relative;
 }
 
 .ServicContainer {
-    height: 60vh;
+    height: 65vh;
     margin-top: 1rem;
     overflow-y: auto;
     display: flex;
@@ -559,8 +573,8 @@ body {
     display: grid;
     grid-template-columns: 50% 50%;
     grid-gap: 1rem;
-
     padding: 1rem;
+
 
 
 
@@ -719,15 +733,14 @@ tr>td:nth-child(2) {
     margin-top: .8rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 30%;
+    width: 100%;
     position: relative;
     z-index: 1;
     display: block;
     min-height: 20%;
-    background-color: red;
     background-color: #FFFBF4;
-    
-    
+
+
 
 }
 
@@ -735,51 +748,56 @@ tr>td:nth-child(2) {
     height: 100%;
     width: 100%;
     position: relative;
+    display: grid;
+    padding: .5rem .5rem;
+    grid-template-columns: 30% 70%;
+
+
 
 }
+
 
 .Attendacne-header {
     background-color: #FFFBF4;
     border-bottom: none;
     padding: 1rem;
- 
 }
 
-#monthYear{
-    font-size:.8rem;
+#monthYear {
+    font-size: .8rem;
 }
 
 
-#aprevBtn, #anextBtn {
+#aprevBtn,
+#anextBtn {
     background: none;
     border: none;
     color: #343434;
     cursor: pointer;
-  font-size: .6rem;
-  }
-  
+    font-size: .6rem;
+}
+
+
 .aday {
     padding: .2rem;
     text-align: center;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: black;
     display: flex;
     align-items: center;
     justify-content: center;
-   padding-top: .5rem;
-   
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
 
 }
 
 
-.aday:hover {
 
+.aday:hover {
     background-color: #FEF3DE;
     color: #F8AC1D;
-    border-radius: 50px;
-
 }
 
 .adays {
@@ -789,9 +807,10 @@ tr>td:nth-child(2) {
     padding: 1rem 1rem;
     height: 70%;
     position: relative;
-   
 
-   
+
+
+
 }
 
 .ui-datepicker-prev {
@@ -799,36 +818,35 @@ tr>td:nth-child(2) {
 }
 
 .aday.current {
-    /* background-color: #FEF3DE; */
+
     color: #F8AC1D;
-    border-radius: 50%;
+
 }
 
 
 
 .aday.current:hover {
-    /* background-color: white; */
+
     background-color: transparent;
     box-shadow: none;
 }
 
-/* .ui-datepicker-next{
-    order: 3} */
+.ui-datepicker-next {
+    order: 3
+}
+
 .aday.selected {
     background: #F8AC1D;
-    border-radius: 50px;
     box-shadow: inset 1px 2px 3px #00000080;
     color: black;
 }
 
 
 .days-header {
-    /* display: flex; */
-    /* justify-content: space-around; */
 
     font-weight: bold;
     width: 100%;
-   padding-left: 1.2rem;
+    padding-left: 1.2rem;
     position: absolute;
     display: grid;
     grid-template-columns: repeat(7, 9%);
@@ -844,10 +862,10 @@ tr>td:nth-child(2) {
     display: grid;
     grid-template-rows: repeat(5, 17%);
     height: 60%;
-    width: 30%;
+    width: 100%;
     grid-row-gap: 1rem;
     padding: 1rem 0rem;
- 
+
 }
 
 .DatesCard {
@@ -857,33 +875,344 @@ tr>td:nth-child(2) {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    /* padding: .2rem; */
-    
+
 }
 
-.DateCardData{
-  
+.DateCardData {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
     border-radius: 5px;
 }
 
-.DateCardData h5{
+.DateCardData h5 {
     font-family: 'Poppins';
     font-weight: 500;
 }
 
-.DateCardData>h5:nth-child(2){
+.DateCardData>h5:nth-child(2) {
     font-weight: 400;
     font-size: .5rem;
 }
 
-.DateCardData:nth-child(1){
-height: fit-content;
-background-color:#FEF3DE;
-box-shadow: inset 1px 2px 3px #99886B66;
-width: 20%;
-height: 90%;
+.DateCardData:nth-child(1) {
+    height: fit-content;
+    background-color: #FEF3DE;
+    box-shadow: inset 1px 2px 3px #99886B66;
+    width: 20%;
+    height: 90%;
+}
+
+.LeaveHistory {
+
+    position: relative;
+
+}
+
+.SubLeaveHistory {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 40% .1rem 55%;
+    grid-row-gap: 1rem;
+
+}
+
+.LeaveHistoryTop {
+    display: grid;
+    grid-template-rows: 10% 90%;
+
+
+}
+
+
+
+
+
+.VerticalLinelarge {
+    width: 90%;
+    margin-left: 3rem;
+    background-color: #70707021;
+
+}
+
+
+.Leaveheading {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0rem 3rem;
+    padding-right: 2.2rem;
+}
+
+
+.Leaveheading>h5:nth-child(1) {
+    color: #1D1D1D;
+    font-weight: 500;
+    font-family: 'Poppins';
+    font-size: .9rem;
+}
+
+.Leaveheading>h5:nth-child(2) {
+    color: #444444;
+    font-family: 'Poppins';
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+.Leaveheading>h5:nth-child(3) {
+
+    color: #F8AC1D;
+    font-family: 'Poppins';
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+.OldLeaveHistory {
+    overflow-y: auto;
+
+
+
+}
+
+.SubOldLeaveHistory {
+    padding: 1rem 3rem;
+    min-height: 20%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 1rem;
+
+
+
+
+
+}
+
+.OldLeaveCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 6.5vh;
+    background-color: #FFFFFF;
+    box-shadow: 1px 2px 5px #00000029;
+    border-radius: 5px;
+    padding: 0rem .5rem;
+}
+
+
+.OldCardData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+.OldCardData h5 {
+    font-family: 'Poppins';
+    font-weight: 500;
+}
+
+.OldCardData>h5:nth-child(2) {
+    font-weight: 400;
+    font-size: .5rem;
+}
+
+.OldCardData:nth-child(1) {
+
+    background-color: #FEF3DE;
+    box-shadow: inset 1px 2px 3px #99886B66;
+    width: 60px;
+    height: 50px;
+    border-radius: 5px;
+}
+
+.OldLeaveCard>.OldCardData:nth-child(2) {
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.OldLeaveCard>.OldCardData:nth-child(3) {
+    font-family: 'Poppins';
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.LeaveHistoryBottom {
+    position: relative;
+
+}
+
+.SubLeaveHistoryBottom {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+gap: 1rem;
+    position: relative;
+    padding: 0rem 2.5rem 0rem 3rem;
+
+}
+
+.ReqMainContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 30%;
+
+
+
+}
+
+.ReqContainer {
+    height: 70%;
+    width: 100%;
+    border: 1px solid #00000029;
+    position: relative;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.ResMainContainer {
+    width: 100%;
+    height: 45%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    
+
+}
+
+.ResContainer {
+    height: 80%;
+    width: 100%;
+    border: 1px solid #00000029;
+    border-radius: 10px;
+   
+    
+
+
+}
+
+.SubLeaveHistoryBottom h5 {
+    color: #1D1D1D;
+
+}
+
+.ReqContainerL {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    padding: 0rem 2rem;
+    justify-content: center;
+    flex-direction: column;
+
+
+}
+
+.ReqContainerL>h5:nth-child(1) {
+    font-family: 'Poppins';
+    color: #1D1D1D;
+    font-size: 1rem;
+    font-weight: 450;
+}
+
+
+.ReqContainerL>h5:nth-child(2) {
+    color: #B7B7B7;
+    font-size: .8rem;
+    font-weight: 450;
+    text-align: justify;
+    font-family: 'Poppins';
+
+}
+
+
+.ReqContainerR {
+    width: 50%;
+    height: 100%;
+
+}
+
+.ReqMainContainer h5 {
+    font-family: 'Poppins';
+    font-size: .9rem;
+}
+
+
+.ResMainContainer h5 {
+    font-family: 'Poppins';
+    font-size: .9rem;
+    font-weight: 400;
+}
+.ReqContainerR {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 0rem 2rem;
+    justify-content: center;
+
+}
+
+.ReqRDuration {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+
+}
+
+.ReqRDuration h6 {
+    letter-spacing: 0px;
+    color: #B7B7B7;
+    font-family: 'Poppins';
+    font-size: .7rem;
+}
+
+.ReqContainerR h5 {
+    color: #1D1D1D;
+    font-family: 'Poppins';
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+.ReqRDuration>h6:nth-child(2) {
+    color: #1D1D1D;
+}
+
+.ResContainer {
+    padding: 1rem 1rem;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+
+}
+
+.Buttons{
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: end;
+}
+
+.Buttons button{
+    padding: .5rem 2rem;
+    background-color: transparent;
+    border: 1px solid #C10000;
+border-radius: 5px;
+font-family: 'Poppins';
+font-weight: 500;
+cursor: pointer;
+}
+
+.Buttons>button:nth-child(2){
+    border: 1px solid #46A70A;
 }

@@ -28,7 +28,7 @@ const EngeeniersCard = () => {
       case 'c4':
         return <SpareParts />;
       default:
-        return <TaskHistory/>;
+        return <Attendance />;
     }
   };
 
@@ -37,11 +37,11 @@ const EngeeniersCard = () => {
     <>
   
       <div className={isChatOpen?'EngeeniersCardT':'EngeeniersCardF'}>
-
-        {/* <EngeeniersSubCard isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} /> */}
+{/* 
+        <EngeeniersSubCard isChatOpen={isChatOpen} setIsChatOpen={setIsChatOpen} /> */}
         <div className='SingleEng'>
         <div className='SubSingleEng'>
-
+          
         <div className='PDetails'>
         <div className='SubPDetails'>
         <div className='Pimg'></div>
