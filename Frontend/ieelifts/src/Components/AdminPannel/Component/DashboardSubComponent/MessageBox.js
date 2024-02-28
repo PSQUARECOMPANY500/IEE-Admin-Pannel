@@ -13,7 +13,7 @@ import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
-import  {io}  from "socket.io-client";
+import  io from "socket.io-client";
 
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
   //socket implemantation starts ---------------------------------------------
-  // const socket = io(':8000');
+  // const socket = io('http://localhost:8000');
 
   const socket = io('https://iee-admin-pannel.onrender.com');
   
@@ -54,13 +54,16 @@ const MessageBox = ({ onClose, EnggId }) => {
     socket.on('connect', ()=>[
       console.log("socket is connected successfully")
     ])
+  }, []);
 
     socket.on('testing',(message)=>{
       console.log("this is message",message);
     })
-  }, []);
+    
 
-
+    
+    
+    
   const chatCreated = useSelector((state) => {
     if (
       state.ChatRootReducer &&
@@ -146,7 +149,7 @@ const MessageBox = ({ onClose, EnggId }) => {
       setMessageData("");
     }
     
-    socket.emit("join chat",chatCreated?._id);
+    // socket.emit("join chat",chatCreated?._id);
     
     if (textareaRef.current) {
       textareaRef.current.value = "";
@@ -178,11 +181,11 @@ const MessageBox = ({ onClose, EnggId }) => {
 
   useEffect(() => {
     if (prevSendMessageRef.current !== sendMessage) {
-      socket.emit("new message", sendMessage);
+      socket.emit("newmessage", sendMessage);
       console.log("emit", sendMessage);
       prevSendMessageRef.current = sendMessage;
     }
-  }, [sendMessage]);
+  });
 
 
 

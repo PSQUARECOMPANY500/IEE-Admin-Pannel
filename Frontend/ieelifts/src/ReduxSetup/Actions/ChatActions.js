@@ -59,7 +59,7 @@ export const sendChatMessageAction = (Sender,Content,ChatId) => {
                 }
             );
 
-            // console.log("send message from frontend",response);
+            console.log("send message from frontend",response);
 
             dispatch({
                 type: SEND_MESSAGE_BY_SENDER,

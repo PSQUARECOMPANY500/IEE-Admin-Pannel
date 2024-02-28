@@ -43,16 +43,28 @@ const httpServer = createHttpServer(app);
 
 // Create Socket.IO server using the same HTTP server instance
 const io = new SocketServer(httpServer, {cors: {origin: "*"}});
+// console.log("index.js",io)
 
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
-});
+;
 
 // Emit a message every second
 setInterval(() => {
   io.emit('testing', "press hai ye")
-}, 1000);
+}, 10000);
+
+
+socket.on("newmessage",(recivedMessaege) => { 
+  console.log("message si recives",recivedMessaege)
+  socket.emit('message recieved',recivedMessaege)
+});
+
+
+
+
+})
 
 // Listen for disconnections
 io.on("disconnect", () => {
@@ -62,3 +74,7 @@ io.on("disconnect", () => {
 httpServer.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
+
+
+
+
