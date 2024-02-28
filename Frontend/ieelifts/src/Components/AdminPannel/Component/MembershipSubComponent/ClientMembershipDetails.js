@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import ClientDetails from "./ClientDetails";
 import ClientMembershipHistory from "./ClientMembershipHistory";
 import ClientCallDetails from "./ClientCallDetails";
 import OfferButton from "./OfferButton";
 import NotificationMembership from "./NotificationMembership";
 import CallButtons from "./CallButtons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const ClientMembershipDetails = ({ isExpired, dataType }) => {
+  const [buttonSelect, setButtonSelect] = useState(false);
   const historyDetails = useSelector((state) => {
     if (
       state.AdminRootReducer &&
@@ -55,23 +56,33 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
           />
         </div>
         {clientDetail && clientDetail.responseData && (
-          <CallButtons isExpired={isExpired} dataType={dataType} />
-        )}
+          <CallButtons
+            isExpired={isExpired}
+            dataType={dataType}
+            buttonSelect={() => {
+              setButtonSelect(!buttonSelect);
+            }}
+            />
+            )}
       </div>
       <div className="clients">
         <ClientCallDetails
+            JON={clientDetail?.responseData?.jobOrderNumber}
           isExpired={isExpired}
           dataType={dataType}
           callDetails={callDetails}
+          Mybutton={buttonSelect}
         />
-        {clientDetail &&clientDetail.responseData && (
+        {clientDetail && clientDetail.responseData && (
           <div>
             <NotificationMembership isExpired={isExpired} dataType={dataType} />
             <NotificationMembership isExpired={isExpired} dataType={dataType} />
           </div>
         )}
-        {clientDetail &&clientDetail.responseData && (
-          <OfferButton isExpired={isExpired} dataType={dataType} />
+        {clientDetail && clientDetail.responseData && (
+          <>
+            <OfferButton isExpired={isExpired} dataType={dataType} />
+          </>
         )}
       </div>
     </div>

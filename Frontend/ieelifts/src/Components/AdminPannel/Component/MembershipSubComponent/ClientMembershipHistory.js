@@ -124,7 +124,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaPrint } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getClientMembershipHistoryAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
@@ -132,7 +132,7 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
 
   useEffect(() => {
     dispatch(getClientMembershipHistoryAction());
-  }, [dataType]);
+  }, [dispatch,dataType]);
 
   const [showHistory, setShowHistory] = useState([]);
 
@@ -146,7 +146,6 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
   //   }
   // }, [historyDetails]);
   useEffect(() => {
-    console.log(historyDetails);
     if (
       historyDetails &&
       historyDetails.response &&
@@ -231,7 +230,6 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
           historyDetails.response.historyData &&
           historyDetails.response.historyData.map((detail, index) => (
             <div key={index}>
-              {console.log(detail)}
               <div
                 ref={(el) => (historyRefs.current[index] = el)}
                 className={`history ${membershipBorder(

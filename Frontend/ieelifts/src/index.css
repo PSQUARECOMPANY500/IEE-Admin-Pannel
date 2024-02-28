@@ -209,8 +209,9 @@ code {
 }
 
 .membership_card_expiring_expanded {
-  width: 30%;
+  width: 32%;
   height: 17rem;
+  margin-left: 2rem;
 }
 
 .membership_card_expiring-title {
@@ -609,6 +610,15 @@ code {
   text-transform: uppercase;
 }
 
+.address{
+  font-size: smaller;
+}
+
+.jonHeading{
+  font-size: larger;
+  font-weight: 600;
+}
+
 .clientDetail {
   margin-top: 0.8rem;
 }
@@ -710,11 +720,12 @@ code {
 .rating {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .ratingStar {
-  /* margin-top: 12px; */
+  padding-top: 4px;
+  padding-right: 4px;
   color: #f8ac1d;
 }
 
@@ -722,6 +733,10 @@ code {
   height: 25rem;
   overflow-y: scroll;
   padding-right: 0.5rem;
+}
+
+.callMissed {
+  border: 1px solid #c10000 !important;
 }
 
 .callsContainer::-webkit-scrollbar {
@@ -776,11 +791,26 @@ code {
   justify-content: space-between;
   align-items: center;
   font-size: 0.9rem;
-  margin-top: 0.9rem;
+  margin-top: 1.2rem;
   line-height: 2rem;
   border-radius: 0.3rem;
-  padding: 0.7%;
+  padding: 0.7% 2%;
   border: 1px solid #444444;
+}
+
+.clientCallInputAdd {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  margin-top: 0.9rem;
+  margin-bottom: 0.1rem;
+  line-height: 2rem;
+  border-radius: 0.3rem;
+  padding: 0.7% 2%;
+  border: 1px solid #444444;
+  width: 93%;
 }
 
 .clientCallInfo {
@@ -1048,6 +1078,7 @@ code {
   right: 6rem;
   transform: translateY(-55%);
   cursor: pointer;
+  color: #0f351d;
 }
 
 .notificationOptions {
@@ -1110,7 +1141,174 @@ code {
 }
 
 /* --------------------------------------------- client details css ends --------------------------------------- */
+/* --------------------------------------------- calender csss start --------------------------------------- */
+
+.DateHeading {
+  border-bottom: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Attendancecalendar {
+  margin-top: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-height: 20%;
+  background-color: #fffbf4;
+}
+
+.AttendancecalendarMembership {
+  width: 97%;
+  position: absolute;
+  top: 75%;
+  display: none;
+}
+
+.Attendance {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 30% 60%;
+}
+
+.Attendacne-header {
+  background-color: #fffbf4;
+  border-bottom: none;
+  padding: 1rem;
+}
+
+#monthYear {
+  font-size: 0.8rem;
+}
+
+#aprevBtn,
+#anextBtn {
+  background: none;
+  border: none;
+  color: #343434;
+  cursor: pointer;
+  font-size: 0.6rem;
+}
+
+/* .aday {
+  padding: .2rem;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: black;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+ border-radius: 50%;
+ 
+
+} */
+
+.aday {
+  padding: 0.2rem;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 30px; /* Example width */
+  height: 30px; /* Example height */
+}
+
+.aday:hover {
+  background-color: #fef3de;
+  color: #f8ac1d;
+}
+
+.adays {
+  display: grid;
+  grid-template-columns: repeat(7, 9%);
+  grid-column-gap: 1rem;
+  padding: 1rem 1rem;
+  height: 70%;
+  position: relative;
+}
+
+.adaysMembership {
+  margin-top: 2%;
+}
+
+.ui-datepicker-prev {
+  order: 1;
+}
+
+.aday.current {
+  /* background-color: #FEF3DE; */
+  color: #f8ac1d;
+}
+
+.aday.current:hover {
+  /* background-color: white; */
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.ui-datepicker-next {
+  order: 3;
+}
+.aday.selected {
+  background: #f8ac1d;
+  box-shadow: inset 1px 2px 3px #00000080;
+  color: black;
+}
+
+.days-header {
+  /* display: flex; */
+  /* justify-content: space-around; */
+
+  font-weight: bold;
+  width: 100%;
+  padding-left: 1.2rem;
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(7, 9%);
+  grid-column-gap: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  top: -2%;
+}
+/* --------------------------------------------- calender csss ends --------------------------------------- */
 
 /* <------------------------------ membership card expanded css ends ---------------------------------------->*/
+
+/* <-------------------------------Clients CSS Start------------------------------------> */
+
+.ClientCatainer{
+  margin-top: 5.5rem;
+  background-color: #FFFFFF;
+  width: 30%;
+  padding: 1rem;
+}
+
+.clientCard {
+  font-size: small;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.client{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2%;
+}
+
+/* <-------------------------------Clients CSS Start Ends -------------------------------> */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/

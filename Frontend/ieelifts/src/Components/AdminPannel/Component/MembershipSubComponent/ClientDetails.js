@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getClientMembershipDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const ClientDetails = ({ dataType,clientDetail }) => {
+const ClientDetails = ({ dataType, clientDetail }) => {
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch(getClientMembershipDetails());
-  }, [dataType]);
+  }, [dispatch, dataType]);
   // console.log("this is client details",clientDetail);
   return (
     clientDetail && (
@@ -20,10 +19,13 @@ const ClientDetails = ({ dataType,clientDetail }) => {
           <div>
             <p className="clientName">{clientDetail?.responseData?.name}</p>
             {clientDetail?.responseData && (
-              <p>JON: {clientDetail?.responseData?.jobOrderNumber}</p>
+              <div>
+                <span className="jonHeading">JON: </span>
+                <span> {clientDetail?.responseData?.jobOrderNumber}</span>
+              </div>
             )}
             <p>{clientDetail?.responseData?.number}</p>
-            <p>{clientDetail?.responseData?.address}</p>
+            <p className="address" >{clientDetail?.responseData?.address}</p>
           </div>
           <div className="clientDetail">
             {clientDetail?.responseData && (

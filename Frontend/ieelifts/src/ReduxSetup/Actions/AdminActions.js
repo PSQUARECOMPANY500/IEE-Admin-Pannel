@@ -49,6 +49,8 @@ export const GET_CLIENT_MEMBERSHIP_HISTORY = "GET_CLIENT_MEMBERSHIP_HISTORY";
 
 export const GET_CLIENT_CALL_DETAILS = "GET_CLIENT_CALL_DETAILS";
 
+export const CREATE_CLIENT_CALL = "CREATE_CLIENT_CALL";
+
 export const GET_CLIENT_DETAILS = "GET_CLIENT_DETAILS";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
@@ -575,6 +577,25 @@ export const getClientCallsDetails = (jobOrderNumber, callType) => {
   };
 };
 
+export const createClientCalls = (jobOrderNumber, callType, callDate) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/createCall`, {
+        jobOrderNumber,
+        callType,
+        callDate,
+      });
+
+      dispatch({
+        type: CREATE_CLIENT_CALL,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
 export const getClientMembershipDetails = (jobOrderNumber) => {
   return async (dispatch) => {
     try {
@@ -585,7 +606,6 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
         });
         return;
       }
-      console.log(jobOrderNumber);
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientDataForMembership`,
         {

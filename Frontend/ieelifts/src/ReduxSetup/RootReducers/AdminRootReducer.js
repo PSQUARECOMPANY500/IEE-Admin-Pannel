@@ -23,6 +23,7 @@ import { fetchClientDetailsByJon } from "../Reducers/ClientReducer";
 import { requestGetMemberShipHistoryReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipCallReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipClientReducer } from "../Reducers/AdminReducer";
+import { createClientCallReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   fetchClientDetailsByJon: fetchClientDetailsByJon,
@@ -51,6 +52,7 @@ const AdminRootReducer = combineReducers({
   requestGetMemberShipHistoryReducer: requestGetMemberShipHistoryReducer,
   requestGetMemberShipCallReducer: requestGetMemberShipCallReducer,
   requestGetMemberShipClientReducer: requestGetMemberShipClientReducer,
+  createClientCallReducer: createClientCallReducer,
 });
 
 export default AdminRootReducer;

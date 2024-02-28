@@ -24,7 +24,20 @@ import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
 import { GET_CLIENT_MEMBERSHIP_HISTORY } from "../Actions/AdminActions";
 import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_CLIENT_CALL_DETAILS } from "../Actions/AdminActions";
+import { CREATE_CLIENT_CALL } from "../Actions/AdminActions";
 import { GET_CLIENT_DETAILS } from "../Actions/AdminActions";
+
+const intialState20 = {
+  clientCall: null,
+};
+export const createClientCallReducer = (state = intialState20, action) => {
+  switch (action.type) {
+    case CREATE_CLIENT_CALL:
+      return { ...state, clientCall: action.payload };
+    default:
+      return state;
+  }
+};
 
 const intialState19 = {
   membershipCleintDetail: null,
@@ -40,6 +53,7 @@ export const requestGetMemberShipClientReducer = (
       return state;
   }
 };
+
 const intialState18 = {
   membershipCallDetail: null,
 };

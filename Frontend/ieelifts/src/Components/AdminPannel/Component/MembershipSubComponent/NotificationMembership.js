@@ -12,7 +12,7 @@ const NotificationMembership = ({ isExpired, dataType }) => {
     setSelectedOption(event.target.value);
   };
 
-  const toggleOptions = ({ isExpired }) => {
+  const toggleOptions = () => {
     setShowOptions(!showOptions);
   };
 
@@ -48,10 +48,16 @@ const NotificationMembership = ({ isExpired, dataType }) => {
           onChange={handleSelectChange}
         />
         <div onClick={toggleOptions}>
-          <FaChevronDown className="chevronDownMembership" />
+          <FaChevronDown  className={`chevronDownMembership ${sendIconColor} ${
+          isExpired && "sendButtonExpired"
+        }`} />
         </div>
       </div>
-      <div className={`sendButton ${sendIconColor} ${isExpired && "sendButtonExpired"}`}>
+      <div
+        className={`sendButton ${sendIconColor} ${
+          isExpired && "sendButtonExpired"
+        }`}
+      >
         <BiSolidSend />
       </div>
       <div className="notificationOptions">

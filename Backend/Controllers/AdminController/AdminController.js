@@ -1045,10 +1045,28 @@ module.exports.createClientCallDetails = async (req, res) => {
   }
 };
 
+// module.exports.getClientCalls = async (req, res) => {
+//   try {
+//     const { callType, jobOrderNumber } = req.query;
+//     const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
+//     res.status(201).json({ success: true, clientCallData });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       error: "Internal server Error",
+//       message: error.message,
+//     });
+//   }
+// };
+
 module.exports.getClientCalls = async (req, res) => {
   try {
     const { callType, jobOrderNumber } = req.query;
-    const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
+    const clientCallData = await ClientCalls.find({
+      jobOrderNumber,
+      callType,
+    }).sort({ callDate: 1 }); // Sort by callDate in ascending order
+
     res.status(201).json({ success: true, clientCallData });
   } catch (error) {
     console.log(error);
