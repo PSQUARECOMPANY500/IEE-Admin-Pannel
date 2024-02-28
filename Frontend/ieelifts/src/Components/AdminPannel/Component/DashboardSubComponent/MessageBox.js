@@ -45,9 +45,9 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
 
   //socket implemantation starts ---------------------------------------------
-  // const socket = io('http://localhost:8000');
+  const socket = io('http://localhost:8000');
 
-  const socket = io('https://iee-admin-pannel.onrender.com');
+  // const socket = io('https://iee-admin-pannel.onrender.com');
   
   
   useEffect(() => {
@@ -56,9 +56,9 @@ const MessageBox = ({ onClose, EnggId }) => {
     ])
   }, []);
 
-    // socket.on('testing',(message)=>{
-    //   console.log("this is message",message);
-    // })
+    socket.on('testing',(message)=>{
+      console.log("this is message",message);
+    })
     
 
     

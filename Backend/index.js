@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
 
 // Emit a message every second
 setInterval(() => {
-  io.emit('testing', "press hai ye")
+  socket.emit('testing', "press hai ye")
 }, 10000);
 
 
