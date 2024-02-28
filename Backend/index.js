@@ -56,10 +56,10 @@ setInterval(() => {
 }, 10000);
 
 
-socket.on("newmessage",(recivedMessaege) => { 
-  console.log("message si recives",recivedMessaege)
-  socket.emit('message recieved',recivedMessaege)
-});
+// socket.on("newmessage",(recivedMessaege) => { 
+//   console.log("message si recives",recivedMessaege)
+//   socket.emit('message recieved',recivedMessaege)
+// });
 
 
 

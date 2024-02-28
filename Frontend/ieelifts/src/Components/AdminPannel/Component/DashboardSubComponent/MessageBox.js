@@ -56,9 +56,9 @@ const MessageBox = ({ onClose, EnggId }) => {
     ])
   }, []);
 
-    socket.on('testing',(message)=>{
-      console.log("this is message",message);
-    })
+    // socket.on('testing',(message)=>{
+    //   console.log("this is message",message);
+    // })
     
 
     
@@ -168,24 +168,22 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, [getMessages]);
   
 
- useEffect(() => {
   socket.on("message recieved", (newMessageRecieved) => {
     console.log("newMessageRecieved",newMessageRecieved)   
   })
 
- })
     
   
 
 
 
-  useEffect(() => {
-    if (prevSendMessageRef.current !== sendMessage) {
-      socket.emit("newmessage", sendMessage);
-      console.log("emit", sendMessage);
-      prevSendMessageRef.current = sendMessage;
-    }
-  });
+  // useEffect(() => {
+  //   if (prevSendMessageRef.current !== sendMessage) {
+  //     socket.emit("newmessage", sendMessage);
+  //     console.log("emit", sendMessage);
+  //     prevSendMessageRef.current = sendMessage;
+  //   }
+  // },[sendMessage]);
 
 
 
