@@ -19,7 +19,7 @@ const EnggAttendanceRecord = new Schema({
     },
     ServiceEnggId: {
         type: String,
-        require: true
+        require: true,
     },
     Check_In: {
         engPhoto: {
@@ -34,7 +34,6 @@ const EnggAttendanceRecord = new Schema({
     Check_Out: {
         engPhoto: {
             type: String,
-            unique: true,
         },
         time: {
             type: String

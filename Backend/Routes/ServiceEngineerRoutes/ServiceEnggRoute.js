@@ -35,7 +35,8 @@ router.post('/gnggOnSecondHalfBreak', verifyEnggToken,  serviceEnggContoller.Eng
 router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLunchBreak);
  */
 
-
+router.post("/enggLeaveServiceRequest",serviceEnggContoller.enggLeaveServiceRequest)
+router.get("/enggLeaveRecord",serviceEnggContoller.enggLeaveRecord)
 
 
 module.exports = router;

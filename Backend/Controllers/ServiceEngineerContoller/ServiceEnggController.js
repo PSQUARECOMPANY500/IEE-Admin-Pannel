@@ -15,8 +15,13 @@ const AssignSecheduleRequest = require("../../Modals/ServiceEngineerModals/Assig
 const clientDetailSchema = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
 
 const clientRequestImidiateVisit = require("../../Modals/ServicesModal/ClinetCallback")
+
 const serviceRequest = require("../../Modals/ServicesModal/ClientServicesRequest")
+
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance")
+
+const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
+
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -138,7 +143,7 @@ module.exports.getAssignedServices = async (req, res) => {
 };
 
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------{Amit-Features(aX13) Starts}--------------------------------------------------------------------------------
 
 //function to handle (all the Engg detail as per engg Id)
 
@@ -377,7 +382,7 @@ module.exports.EnggCheckIn = async (req, res) => {
       ServiceEnggId: ServiceEnggId,
       Check_In: {
         engPhoto: engPhoto,
-        time: time
+        time: time,
       }
     });
 
@@ -475,7 +480,7 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
     const date = new Date().toLocaleDateString('en-GB');
 
     const update = {
-    Is_Lunch: isStart
+      Is_Lunch: isStart
     };
 
     const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
@@ -492,3 +497,48 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
   }
 };
 
+
+module.exports.enggLeaveServiceRequest = async (req, res) => {
+  try {
+    const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, document } = req.body;
+    if(ServiceEnggId&&TypeOfLeave&&From&&To&&Leave_Reason && document){
+      
+      //console.log(ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, Document );
+  
+  
+      const response = await EnggLeaveServiceRecord.create({
+        ServiceEnggId, 
+        TypeOfLeave, 
+        Duration:{From:From, To:To,},
+        Leave_Reason, 
+        Document :document
+      })
+  
+      return res.status(201).json({response});
+    }
+    else{
+      return res.status(404).json({message:"Please Provide Valid Details"});
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in enggLeaveServiceRequest" });
+  }
+};
+
+
+module.exports.enggLeaveRecord = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.body;
+
+    const response = await EnggLeaveServiceRecord.find({ServiceEnggId})
+
+    if(response.length === 0){
+      return res.status(404).json({message:"No Leave Record Found"});
+    }
+    res.status(201).json({response});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in enggLeaveRecord" });
+  }
+};
+//-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
