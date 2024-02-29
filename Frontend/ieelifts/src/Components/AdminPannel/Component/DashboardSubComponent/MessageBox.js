@@ -172,6 +172,11 @@ const MessageBox = ({ onClose, EnggId }) => {
   //   console.log("newMessageRecieved",newMessageRecieved)   
   // })
 
+  useEffect(()=>{
+    socket.on("EnggNewMessage",(message)=>{
+      console.log("front end pankaj send",message)
+    })
+  })
     
   
 
