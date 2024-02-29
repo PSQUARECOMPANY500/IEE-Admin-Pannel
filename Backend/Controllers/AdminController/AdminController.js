@@ -701,7 +701,7 @@ module.exports.createClientMemebership = async (req, res) => {
   try {
     const {
       JobOrderNumber,
-      MemebershipType,
+      MembershipType,
       StartDate,
       Duration,
       Discount,
@@ -717,9 +717,21 @@ module.exports.createClientMemebership = async (req, res) => {
       startDate.setMonth(startDate.getMonth() + durationInMonths)
     );
 
+    const clientData = await clientDetailSchema.findOne({
+      JobOrderNumber,
+    });
+
+    if (!clientData) {
+      return res.status(404).json({ error: "Client not found" });
+    }
+
+    // Update client membership type
+    clientData.MembershipType = MembershipType;
+    await clientData.save();
+
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
-      MemebershipType,
+      MembershipType,
       StartDate: new Date(StartDate),
       EndDate,
       Duration,
@@ -824,7 +836,7 @@ const calculateExpired = (filteredData) => {
 };
 
 const filterMembershipByType = (data, type) => {
-  return data.filter((member) => member.MemebershipType === type);
+  return data.filter((member) => member.MembershipType === type);
 };
 
 // {armaan-dev}
@@ -1189,3 +1201,4 @@ module.exports.getMembershipHistory = async (req, res) => {
 
 // -----------------------------------------------------------------------
 // {armaan-dev}
+// -----------------------------------------------------------------------

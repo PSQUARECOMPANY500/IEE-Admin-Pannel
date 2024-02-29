@@ -26,6 +26,19 @@ import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions
 import { GET_CLIENT_CALL_DETAILS } from "../Actions/AdminActions";
 import { CREATE_CLIENT_CALL } from "../Actions/AdminActions";
 import { GET_CLIENT_DETAILS } from "../Actions/AdminActions";
+import { GET_ALL_CLIENTS } from "../Actions/AdminActions";
+
+const intialState21 = {
+  clients: null,
+};
+export const getClientsReducer = (state = intialState21, action) => {
+  switch (action.type) {
+    case GET_ALL_CLIENTS:
+      return { ...state, clients: action.payload };
+    default:
+      return state;
+  }
+};
 
 const intialState20 = {
   clientCall: null,

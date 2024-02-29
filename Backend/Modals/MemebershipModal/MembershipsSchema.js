@@ -8,7 +8,7 @@ const memebership = new Schema(
       type: String,
       required: true,
     },
-    MemebershipType: {
+    MembershipType: {
       type: String,
       enum: ["warrenty", "gold", "platinum", "silver"],
       required: true,
