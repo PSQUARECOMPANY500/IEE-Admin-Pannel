@@ -37,6 +37,8 @@ router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLu
 
 router.post("/enggLeaveServiceRequest",serviceEnggContoller.enggLeaveServiceRequest)
 router.get("/enggLeaveRecord",serviceEnggContoller.enggLeaveRecord)
+router.post("/generateOtpForClient",serviceEnggContoller.generateOtpForClient)
+router.get("/validateOtpForClient",serviceEnggContoller.validateOtpForClient)
 
 
 module.exports = router;

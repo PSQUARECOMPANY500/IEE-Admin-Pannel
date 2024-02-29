@@ -22,6 +22,13 @@ const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/
 
 const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
 
+const OtpDetails = require("../../Modals/OTP/Otp")
+
+
+const fastTwoSms = require('fast-two-sms')
+
+const otpGenerator = require('otp-generator')
+
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -501,23 +508,23 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
 module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, document } = req.body;
-    if(ServiceEnggId&&TypeOfLeave&&From&&To&&Leave_Reason && document){
-      
+    if (ServiceEnggId && TypeOfLeave && From && To && Leave_Reason && document) {
+
       //console.log(ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, Document );
-  
-  
+
+
       const response = await EnggLeaveServiceRecord.create({
-        ServiceEnggId, 
-        TypeOfLeave, 
-        Duration:{From:From, To:To,},
-        Leave_Reason, 
-        Document :document
+        ServiceEnggId,
+        TypeOfLeave,
+        Duration: { From: From, To: To, },
+        Leave_Reason,
+        Document: document
       })
-  
-      return res.status(201).json({response});
+
+      return res.status(201).json({ response });
     }
-    else{
-      return res.status(404).json({message:"Please Provide Valid Details"});
+    else {
+      return res.status(404).json({ message: "Please Provide Valid Details" });
     }
   } catch (error) {
     console.error(error);
@@ -530,15 +537,77 @@ module.exports.enggLeaveRecord = async (req, res) => {
   try {
     const { ServiceEnggId } = req.body;
 
-    const response = await EnggLeaveServiceRecord.find({ServiceEnggId})
+    const response = await EnggLeaveServiceRecord.find({ ServiceEnggId })
 
-    if(response.length === 0){
-      return res.status(404).json({message:"No Leave Record Found"});
+    if (response.length === 0) {
+      return res.status(404).json({ message: "No Leave Record Found" });
     }
-    res.status(201).json({response});
+    res.status(201).json({ response });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in enggLeaveRecord" });
   }
 };
+
+
+module.exports.generateOtpForClient = async (req, res) => {
+  try {
+    const { ServiceEnggId, JobOrderNumber, PhoneNumber } = req.body
+    console.log(ServiceEnggId, JobOrderNumber, PhoneNumber)
+    if (ServiceEnggId && JobOrderNumber && PhoneNumber) {
+      const otp = otpGenerator.generate(4, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+        digits: true,
+      });
+
+      const response = await OtpDetails.create({
+        otp: otp,
+        ServiceEnggId: ServiceEnggId,
+        JobOrderNumber: JobOrderNumber
+      })
+
+
+      const timer = 15 * 60 * 1000;
+      setTimeout(async () => {
+        await OtpDetails.findByIdAndDelete({ _id: response._id })
+      }, timer)
+      const apiKey = '8vlAeogu3Nr5XGstZVPMjELTD9xdQbq1WRik760FmUwaSHyOpfwNxQBpXahAlRftmOegdcu0LGob674i';
+      const message = `Your OTP for survice Engg ${ServiceEnggId} is: ${otp}. It will expire in 15 minutes.`;
+
+      if (response) {
+        fastTwoSms.sendMessage({ authorization: apiKey, message: message, numbers: [PhoneNumber] })
+          .then(response => {
+
+            res.status(200).json(response);/* res.status(200).json({response ,message:message}); */
+          })
+          .catch(error => {
+            res.status(500).json({ error: `Unable to generate OTP ${error}` });
+          });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in generateOtpForClient" });
+  }
+}
+
+module.exports.validateOtpForClient = async (req, res) => {
+  try {
+    const {Otp , ServiceEnggId, JobOrderNumber} = req.body;
+    if(Otp && ServiceEnggId&& JobOrderNumber){
+      const response = await OtpDetails.findOne({otp:Otp , ServiceEnggId, JobOrderNumber})
+      if(response){
+        return res.status(200).json({sucess : true});
+      }else{
+        return res.status(404).json({sucess:false})
+      }
+    }
+    return res.status(500).json({ error: "Enter valid data" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in validateOtpForClient" });
+  }
+}
+
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
