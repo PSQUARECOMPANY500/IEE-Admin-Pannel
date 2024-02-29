@@ -68,7 +68,7 @@ module.exports.loginEngg = async (req, res) => {
     }
 
     const token = generateEnggToken({ EnggId });
-    res.json({ Engg,success:true,allotedAdmin:"65d49276f60a227274baf8e1",adminName:"Parabh Simaran", token })
+    res.json({ Engg,success:true,allotedAdmin:"65e0103005fd2695f3aaf6d4",adminName:"Parabh Simaran", token })
 
 
   } catch (error) {

@@ -100,7 +100,7 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   useEffect(() => {
-    dispatch(createChatActions(EnggId, "65d49276f60a227274baf8e1")); //todo - in future the id is dynamic as come from login user
+    dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //todo - in future the id is dynamic as come from login user
     setTimeout(() => {
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction(chatCreated._id));
@@ -144,7 +144,7 @@ const MessageBox = ({ onClose, EnggId }) => {
     e.preventDefault();
     
     if(chatCreated?._id){
-      dispatch(sendChatMessageAction("65d49276f60a227274baf8e1",messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
+      dispatch(sendChatMessageAction("65e0103005fd2695f3aaf6d4",messageData,chatCreated?._id)); //todo - in future the id is dynamic as come from login user
       console.log('format',messageData);
       setMessageData("");
     }
@@ -207,7 +207,7 @@ const MessageBox = ({ onClose, EnggId }) => {
             getMessages.map((item) => {
               console.log("frontend",item.Sender[0])
 
-              const isCurrentUser = item.Sender[0] === '65d49276f60a227274baf8e1';
+              const isCurrentUser = item.Sender[0] === '65e0103005fd2695f3aaf6d4';
 
               return (
                 <div className={isCurrentUser ? "sender-side":"reciver-side" } key={item._id}>
