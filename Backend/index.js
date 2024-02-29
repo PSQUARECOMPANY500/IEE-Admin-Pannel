@@ -48,23 +48,20 @@ const io = new SocketServer(httpServer, {cors: {origin: "*"}});
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
-;
 
 // Emit a message every second
 setInterval(() => {
   socket.emit('testing', "press hai ye")
 }, 10000);
 
+  socket.emit("newmessage","newmessage")
 
-socket.on("newmessage",(recivedMessaege) => { 
+  socket.on("aloo",(recivedMessaege) => { 
   console.log("message si recives",recivedMessaege)
-  socket.emit('message recieved',recivedMessaege)
+  io.emit('messagerecieved',recivedMessaege)
 });
-
-
-
-
 })
+
 
 // Listen for disconnections
 io.on("disconnect", () => {
@@ -74,7 +71,3 @@ io.on("disconnect", () => {
 httpServer.listen(process.env.PORT, () => {
   console.log(`Server listening on port ${process.env.PORT}`);
 });
-
-
-
-

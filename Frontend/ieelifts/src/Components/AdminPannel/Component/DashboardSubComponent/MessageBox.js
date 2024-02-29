@@ -168,9 +168,9 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, [getMessages]);
   
 
-  socket.on("message recieved", (newMessageRecieved) => {
-    console.log("newMessageRecieved",newMessageRecieved)   
-  })
+  // socket.on("messagerecieved", (newMessageRecieved) => {
+  //   console.log("newMessageRecieved",newMessageRecieved)   
+  // })
 
     
   
@@ -179,7 +179,7 @@ const MessageBox = ({ onClose, EnggId }) => {
 
   useEffect(() => {
     if (prevSendMessageRef.current !== sendMessage) {
-      socket.emit("newmessage", sendMessage);
+      socket.emit("aloo", sendMessage);
       console.log("emit", sendMessage);
       prevSendMessageRef.current = sendMessage;
     }
