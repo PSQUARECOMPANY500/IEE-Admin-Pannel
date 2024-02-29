@@ -54,15 +54,13 @@ const MessageBox = ({ onClose, EnggId }) => {
     socket.on('connect', ()=>[
       console.log("socket is connected successfully")
     ])
+
+   return  ()=>{
+      socket.off("connect")
+    }
   }, []);
 
-    socket.on('testing',(message)=>{
-      console.log("this is message",message);
-    })
-    
-
-    
-    
+   
     
   const chatCreated = useSelector((state) => {
     if (
@@ -93,8 +91,6 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   const sendMessage = useSelector((state) =>  state.ChatRootReducer.sendMessageReducer.chatMessage);
-  // console.log("emit", sendMessage);
-
   const prevSendMessageRef = useRef();
 
 
@@ -168,19 +164,13 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, [getMessages]);
   
 
-  // socket.on("messagerecieved", (newMessageRecieved) => {
-  //   console.log("newMessageRecieved",newMessageRecieved)   
-  // })
-
   useEffect(()=>{
     socket.on("EnggNewMessage",(message)=>{
       console.log("front end pankaj send",message)
     })
-  })
+  },[])
     
   
-
-
 
   useEffect(() => {
     if (prevSendMessageRef.current !== sendMessage) {

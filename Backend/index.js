@@ -48,14 +48,6 @@ const io = new SocketServer(httpServer, {cors: {origin: "*"}});
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
-
-// Emit a message every second
-setInterval(() => {
-  socket.emit('testing', "press hai ye")
-}, 10000);
-
-  socket.emit("newmessage","newmessage")
-
   socket.on("aloo",(recivedMessaege) => { 
   console.log("message si recives",recivedMessaege)
   io.emit('messagerecieved',recivedMessaege)
