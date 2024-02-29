@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState} from "react";
 import { GoPerson } from "react-icons/go";
 import { FaLocationArrow } from "react-icons/fa";
 import { GrHomeRounded } from "react-icons/gr";
@@ -7,31 +7,13 @@ import { getClients } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector, useDispatch } from "react-redux";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-import { CiSearch } from "react-icons/ci";
-import { LuSettings2 } from "react-icons/lu";
-import { GoPlus } from "react-icons/go";
 
 const Clients = () => {
   const dispatch = useDispatch();
-  const dropdownRef = useRef(null);
   useEffect(() => {
     dispatch(getClients());
   }, [dispatch]);
 
-  // const socket = io('http://localhost:8000');
-
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to the server:', socket.id);
-  //     socket.emit('send_message',{message:"hello"})
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  const [showTicketFilter, setShowTicketFilter] = useState(false);
 
   const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState({
@@ -58,23 +40,6 @@ const Clients = () => {
     }));
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.classList.contains("filter-icon")
-      ) {
-        setShowTicketFilter(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
 
   const clients = useSelector((state) => {
     if (state.AdminRootReducer && state.AdminRootReducer.getClientsReducer) {
@@ -102,7 +67,7 @@ const Clients = () => {
 
   return (
     <div className="main-container">
-      {/* <div className="ClientCatainer">
+      <div className="ClientCatainer">
         {clients.Clients.map((client, index) => (
           <div
             key={index}
@@ -163,82 +128,94 @@ const Clients = () => {
             </div>
           </div>
         ))}
-      </div> */}
+      </div>
       <div className="ClientCatainer ">
-        <div className="task-list-client ">
-          <table className="task-list-table-client">
-            <thead className="task-head-list">
-              <tr>
-                <th>
-                  <CheckBox
-                    id="checkbox1"
-                    checked={checkboxStates.checkbox1}
-                    handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
-                  />
-                </th>
-                <th>JON</th>
-                <th>NAME</th>
-                <th>NUMBER</th>
-                <th>
-                  <div>
-                    <span>ADDRESS</span>
-                    <HiChevronUpDown />
-                    <span></span>
-                  </div>
-                </th>
-                <th>CallBacks</th>
-                <th>
-                  <div>
-                    <span>Membership</span>
-                    <HiChevronUpDown />
-                    <span></span>
-                  </div>
-                </th>
-                <th>Elevator</th>
-                <th>DOH</th>
-              </tr>
-            </thead>
+        <div className="table_view">
+          <div className="task-list-client ">
+            <table className="task-list-table-client">
+              <thead className="task-head-list">
+                <tr>
+                  <th className="checkbox">
+                    <CheckBox
+                      id="checkbox1"
+                      checked={checkboxStates.checkbox1}
+                      handleCheckboxChange={() =>
+                        handleCheckBoxAll("checkbox1")
+                      }
+                    />
+                  </th>
+                  <th>JON</th>
+                  <th>NAME</th>
+                  <th>NUMBER</th>
+                  <th>
+                    <div>
+                      <span>ADDRESS</span>
+                      <HiChevronUpDown />
+                      <span></span>
+                    </div>
+                  </th>
+                  <th>CallBacks</th>
+                  <th className="membership">
+                    <div>
+                      <span>Membership</span>
+                      <HiChevronUpDown />
+                      <span></span>
+                    </div>
+                  </th>
+                  <th>Elevator</th>
+                  <th>DOH</th>
+                </tr>
+              </thead>
 
-            {/* TABLE BODY STARTS */}
-            <tbody>
-              {clients?.Clients.map((data, index) => {
-                console.log("mast ram", data);
+              {/* TABLE BODY STARTS */}
 
-                return (
-                  <tr className="selected" key={index}>
-                    <td>
-                      {" "}
-                      <CheckBox
-                        id={`checkbox-${data.callbackId}`}
-                        checked={checkboxStates[data.callbackId]}
-                        handleCheckboxChange={() =>
-                          handleCheckBoxSingle(data.callbackId)
-                        }
-                      />
-                    </td>
-                    <td>{data.JobOrderNumber}</td>
-                    <td>{data?.name}</td>
-                    <td>{data?.PhoneNumber}</td>
-                    <td>
-                      <div className="dropdown-address">
-                        <span>{limitAddress(data?.Address, 15)}</span>
+              <tbody className="tbody-main">
+                {clients?.Clients.map((data, index) => {
+                  console.log("mast ram", data);
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                            <p>{data?.Address}</p>
+                  return (
+                    <>
+                      <tr className="selected" key={index}>
+                        <td className="checkbox">
+                          {" "}
+                          <CheckBox
+                            id={`checkbox-${data.callbackId}`}
+                            checked={checkboxStates[data.callbackId]}
+                            handleCheckboxChange={() =>
+                              handleCheckBoxSingle(data.callbackId)
+                            }
+                          />
+                        </td>
+                        <td className="JON">{data.JobOrderNumber}</td>
+                        <td className="name">{data?.name}</td>
+                        <td className="JON">{data?.PhoneNumber}</td>
+                        <td className="address">
+                          <div className="dropdown-address">
+                            {limitAddress(data?.Address, 30)}
+
+                            <div className="dropdown-adddress-menu">
+                              <div className="drop-address">
+                                <p>{data?.Address}</p>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>{data?.callback}</td>
-                    <td>{data?.MembershipType}</td>
-                    <td>{data.ModelType}</td>
-                    <td>{data.DateOfHandover}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                        </td>
+                        <td className="callback">
+                          {data?.callback ? data?.callback : 0}
+                        </td>
+                        <td className="membership">
+                          {data?.MembershipType ? data?.MembershipType : "NONE"}
+                        </td>
+                        <td  className="address">{data.ModelType}</td>
+                        <td  className="address">{data.DateOfHandover}</td>
+                      </tr>
+                      {/* <hr style={{ width: "100%" }} /> */}
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

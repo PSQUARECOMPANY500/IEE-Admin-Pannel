@@ -1382,7 +1382,7 @@ code {
 
 /* Table View  */
 
-.task-list-client {
+/* .task-list-client {
   height: 45rem;
   overflow-x: hidden;
   background-color: white;
@@ -1402,7 +1402,98 @@ code {
   font-weight: 500;
   padding: 0;
   background-color: white;
-  /* width: fit-content; */
+  width: fit-content;
+} */
+.task-list-client {
+  height: 45rem;
+  overflow-x: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+  padding: 2rem 2rem;
+}
+
+.table_view {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.task-head-list tr th {
+  text-align: start;
+  padding: 1rem 2rem;
+  font-size: medium;
+  font-weight: 500;
+  background-color: white;
+  z-index: 0;
+}
+
+.task-head-list {
+  box-shadow: 0px 0px 15px #c1c1c180;
+}
+
+.task-list-table-client tbody tr {
+  margin-top: 3rem;
+  text-align: end;
+}
+
+.task-list-table-client {
+  width: 100%;
+  position: relative;
+}
+.thead-container {
+  width: 100%;
+}
+
+.tbody-main tr td {
+  width: 100%;
+  padding: 01rem 2rem;
+  font-size: small;
+  width: 100%;
+}
+
+.task-list-table-client tbody tr {
+  border-bottom: 1px solid #C1C1C1 !important;
+}
+
+.task-list-table-client tbody tr .checkbox {
+  width: 10% !important;
+}
+.task-list-table-client tbody tr .JON {
+  width: 10% !important;
+}
+.task-list-table-client tbody tr .name {
+  width: 20% !important;
+}
+.task-list-table-client tbody tr .address {
+  width: 30% !important;
+}
+.task-list-table-client tbody tr .callback {
+  width: 4% !important;
+  text-align: center;
+}
+.task-list-table-client tbody tr .membership {
+  text-transform: capitalize;
+  width: 20% !important;
+  text-align: start;
+}
+.task-list-table-client thead tr .membership {
+  width: 40% !important;
+  padding: 0rem 2rem;
+}
+.dropdown-address {
+  z-index: 99999;
+}
+.task-list-table-client {
+  width: 100%;
+  position: relative;
+  border-collapse: collapse; 
+}
+
+.task-list-table-client tbody tr td {
+  border-bottom: 1px solid #ccc;
 }
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
