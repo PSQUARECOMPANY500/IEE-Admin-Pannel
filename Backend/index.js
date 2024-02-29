@@ -60,13 +60,13 @@ setInterval(() => {
   console.log("message si recives",recivedMessaege)
   io.emit('messagerecieved',recivedMessaege)
 });
-})
 
 
 socket.on('newEnggmessage', (messageRecives)=>{
   console.log("pankaj side" , messageRecives);
 })
 
+})
 
 // Listen for disconnections
 io.on("disconnect", () => {
