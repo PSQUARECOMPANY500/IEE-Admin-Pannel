@@ -63,6 +63,11 @@ setInterval(() => {
 })
 
 
+socket.on('newEnggmessage', (messageRecives)=>{
+  console.log("pankaj side" , messageRecives);
+})
+
+
 // Listen for disconnections
 io.on("disconnect", () => {
   console.log(`A user disconnected:`);
