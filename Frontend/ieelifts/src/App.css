@@ -1068,7 +1068,7 @@ footer a:hover {
 .dropdown2 {
   justify-content: flex-start;
   align-items: flex-end;
-  z-index: 0;
+  z-index: 1;
   width: 50%;
 }
 

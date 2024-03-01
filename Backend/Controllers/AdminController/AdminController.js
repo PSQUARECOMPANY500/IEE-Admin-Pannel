@@ -22,6 +22,10 @@ const EnggRating = require("../../Modals/Rating/Rating");
 
 const serviceAdmin = require("../../Modals/ServiceAdminModel/ServiceAdminSchema");
 
+const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
+
+const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
+
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +78,7 @@ module.exports.getEnggCrouserData = async (req, res) => {
       });
 
       return {
-        EnggObjId:item._id,
+        EnggObjId: item._id,
         ServiceEnggId: item.EnggId,
         ServiceEnggName: item.EnggName,
         ServiceEnggPic: item.EnggPhoto,
@@ -938,9 +942,9 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 
 //....................................................................................................................................................................
 
- module.exports.createServiceAdmin = async (req,res) => {
+module.exports.createServiceAdmin = async (req, res) => {
   try {
-    const {AdminName,Password,Phone,Role,AdminId} = req.body;
+    const { AdminName, Password, Phone, Role, AdminId } = req.body;
 
     const newData = await serviceAdmin.create({
       AdminName,
@@ -950,14 +954,63 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
       AdminId
     })
 
-    return res.status(201).json({newData});
+    return res.status(201).json({ newData });
 
   } catch (error) {
     console.log(error);
-    res.status(500).json({error: "Internal server Error", message: error.message})
- }
+    res.status(500).json({ error: "Internal server Error", message: error.message })
+  }
 }
 
 
 
 //....................................................................................................................................................................
+
+module.exports.fetchEnggAttendance = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.body;
+    const len = 5;
+    const today = new Date();
+    const dates = Array.from({ length: len }, (_, i) => {
+      const previousDay = new Date(today);
+      previousDay.setDate(today.getDate() - 2 + i);
+      return previousDay.toLocaleDateString("en-GB");
+    });
+    
+    const attendanceData = await Promise.all(dates.map(async(date)=>{
+      const response = await EnggAttendanceServiceRecord.findOne({ServiceEnggId , Date:date})
+      return response;
+    }))
+
+    console.log(attendanceData)
+
+    res.status(200).json({ attendanceData });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server Error in fetchEnggAttendance", message: error.message })
+  }
+}
+
+
+module.exports.approveLeaveByAdmin = async(req,res) => {
+  try {
+    const {id , IsApproved} = req.body;
+    await EnggLeaveServiceRecord.findByIdAndUpdate({_id:id},{
+      IsApproved:IsApproved,
+    })
+
+    if(newData.TotalLeave >= newData.UsedLeave){
+      const used_Leave = parseInt(newData.UsedLeave) + 1;
+      const newData = await EnggLeaveServiceRecord.findByIdAndUpdate({_id:id},{
+        UsedLeave:used_Leave,
+      })
+
+    return res.status(201).json({ newData });
+    }
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server Error in approveLeaveByAdmin", message: error.message })
+  }
+}
