@@ -1199,6 +1199,91 @@ module.exports.getMembershipHistory = async (req, res) => {
 //   }
 // };
 
+module.exports.filterClient = async (req, res) => {
+  try {
+    const { type, condition } = req.query;
+
+    switch (type) {
+      case "membership":
+        const membership = await clientDetailSchema.find({
+          MembershipType: { $regex: new RegExp(condition, "i") },
+        });
+        res.status(201).json({ success: true, data: membership });
+        break;
+      case "elevatorType":
+        const elevatorType = await clientDetailSchema.find({
+          ModelType: { $regex: new RegExp(condition, "i") },
+        });
+        res.status(201).json({ success: true, data: elevatorType });
+        break;
+      case "location":
+        const clientsInCity = await clientDetailSchema.find({
+          Address: { $regex: new RegExp(condition, "i") },
+        });
+        res.status(200).json({ success: true, data: clientsInCity });
+        break;
+      default:
+        res
+          .status(400)
+          .json({ success: false, message: "Invalid filter type" });
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
+    });
+  }
+};
+
+// module.exports.searchClients = async (req, res) => {
+//   try {
+//     const { searchTerm } = req.query;
+
+//     // Create a regular expression to match the search term case-insensitively
+//     const regex = new RegExp(searchTerm, "i");
+
+//     // Use $or operator to search across multiple fields
+//     const clients = await clientDetailSchema.find({
+//       $or: [
+//         { JobOrderNumber: { $regex: regex } },
+//         { name: { $regex: regex } },
+//         { PhoneNumber: { $regex: regex } },
+//         { Address: { $regex: regex } },
+//       ],
+//     });
+
+//     res.status(200).json({ success: true, clients });
+//   } catch (error) {
+//     console.error("Error searching clients:", error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
+module.exports.searchClients = async (req, res) => {
+  try {
+    const { searchTerm } = req.query;
+
+    // Create a regular expression to match the search term case-insensitively
+    const regex = new RegExp(searchTerm, "i");
+
+    // Use $or operator to search across multiple fields
+    const clients = await clientDetailSchema.find({
+      $or: [
+        { JobOrderNumber: { $regex: regex } },
+        { name: { $regex: regex } },
+        { PhoneNumber: { $regex: regex } },
+        { Address: { $regex: regex } },
+      ],
+    });
+
+    res.status(200).json({ success: true, clients });
+  } catch (error) {
+    console.error("Error searching clients:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 // -----------------------------------------------------------------------
 // {armaan-dev}
 // -----------------------------------------------------------------------

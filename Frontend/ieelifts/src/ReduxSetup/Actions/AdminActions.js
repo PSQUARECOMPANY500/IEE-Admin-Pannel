@@ -54,6 +54,7 @@ export const CREATE_CLIENT_CALL = "CREATE_CLIENT_CALL";
 export const GET_CLIENT_DETAILS = "GET_CLIENT_DETAILS";
 
 export const GET_ALL_CLIENTS = "GET_ALL_CLIENTS";
+export const GET_FILTER_DATA = "GET_FILTER_DATA";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 
@@ -632,6 +633,24 @@ export const getClients = () => {
       const response = await axios.get(`${config.apiUrl}/admin/AllClients`);
       dispatch({
         type: GET_ALL_CLIENTS,
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+export const getfilteredData = (filterCondition) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/filterClient`, {
+        params: {
+          type: filterCondition.type,
+          condition: filterCondition.condition,
+        },
+      });
+
+      dispatch({
+        type: GET_FILTER_DATA,
         payload: response.data,
       });
     } catch (error) {}

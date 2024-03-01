@@ -78,6 +78,8 @@ router.get(
   "/getAssignRequestDetail/:RequestId",
   adminContoller.getAssignServiceRequestByServiceRequestId
 );
+router.get("/filterClient", adminContoller.filterClient);
+router.get("/serchingClient", adminContoller.searchClients);
 // router.get("/getRatingAverage", adminContoller.calculateRatingAverage);
 
 // --------------------------------------------------------------------------

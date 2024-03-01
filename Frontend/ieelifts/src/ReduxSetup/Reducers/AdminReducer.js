@@ -27,7 +27,19 @@ import { GET_CLIENT_CALL_DETAILS } from "../Actions/AdminActions";
 import { CREATE_CLIENT_CALL } from "../Actions/AdminActions";
 import { GET_CLIENT_DETAILS } from "../Actions/AdminActions";
 import { GET_ALL_CLIENTS } from "../Actions/AdminActions";
+import { GET_FILTER_DATA } from "../Actions/AdminActions";
 
+const intialState22 = {
+  clients: null,
+};
+export const getFilterDataReducer = (state = intialState22, action) => {
+  switch (action.type) {
+    case GET_FILTER_DATA:
+      return { ...state, clients: action.payload };
+    default:
+      return state;
+  }
+};
 const intialState21 = {
   clients: null,
 };

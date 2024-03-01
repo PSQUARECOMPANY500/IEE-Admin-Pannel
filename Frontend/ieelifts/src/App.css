@@ -1022,7 +1022,7 @@ footer a:hover {
   text-align: center;
   top: 0;
   visibility: hidden;
-  z-index: -99999;
+  z-index: 99999;
 }
 
 .dropdown-adddress-menu li:first-child {
@@ -1095,6 +1095,7 @@ footer a:hover {
 
 .dropdown-menu li:first-child {
   cursor: default;
+  z-index: 9999;
 }
 
 .dropdown-menu a {

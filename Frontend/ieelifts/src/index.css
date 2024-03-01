@@ -612,6 +612,7 @@ code {
 
 .address {
   font-size: smaller;
+  z-index: 0;
 }
 
 .jonHeading {
@@ -1406,18 +1407,28 @@ code {
 } */
 .task-list-client {
   height: 45rem;
-  overflow-x: hidden;
   width: 100%;
-  scroll-behavior: smooth;
   padding: 2rem 2rem;
+
 }
 
 .table_view {
   background-color: white;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
   width: 100%;
+  /* margin-left: 4%; */
   display: flex;
+  /* flex-direction: column; */
   justify-content: center;
   align-content: center;
+  align-items: center;
+}
+
+.tableContainer{
+  background-color: white;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
@@ -1427,10 +1438,10 @@ code {
   font-size: medium;
   font-weight: 500;
   background-color: white;
-  z-index: 0;
 }
 
 .task-head-list {
+  background-color: white;
   box-shadow: 0px 0px 15px #c1c1c180;
 }
 
@@ -1455,7 +1466,7 @@ code {
 }
 
 .task-list-table-client tbody tr {
-  border-bottom: 1px solid #C1C1C1 !important;
+  border-bottom: 1px solid #c1c1c1 !important;
 }
 
 .task-list-table-client tbody tr .checkbox {
@@ -1465,10 +1476,10 @@ code {
   width: 10% !important;
 }
 .task-list-table-client tbody tr .name {
-  width: 20% !important;
+  width: 22% !important;
 }
 .task-list-table-client tbody tr .address {
-  width: 30% !important;
+  width: 28% !important;
 }
 .task-list-table-client tbody tr .callback {
   width: 4% !important;
@@ -1476,25 +1487,53 @@ code {
 }
 .task-list-table-client tbody tr .membership {
   text-transform: capitalize;
-  width: 20% !important;
+  width: 10% !important;
   text-align: start;
 }
 .task-list-table-client thead tr .membership {
   width: 40% !important;
   padding: 0rem 2rem;
 }
-.dropdown-address {
-  z-index: 99999;
-}
+
 .task-list-table-client {
   width: 100%;
   position: relative;
-  border-collapse: collapse; 
+  border-collapse: collapse;
 }
 
 .task-list-table-client tbody tr td {
   border-bottom: 1px solid #ccc;
 }
+
+.table_view::-webkit-scrollbar {
+  margin-top: 1rem;
+  width: 2px;
+  border-radius: 20px;
+}
+
+.table_view::-webkit-scrollbar:hover {
+  display: block;
+}
+
+.table_view::-webkit-scrollbar-track {
+  background: 0;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.table_view::-webkit-scrollbar-thumb {
+  transition: background-color 0.3s ease;
+  border: 1px solid #f8ac1d;
+}
+
+.table_view:hover::-webkit-scrollbar-thumb {
+  margin-right: 10rem;
+  background: 0;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  display: block;
+}
+
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
 
