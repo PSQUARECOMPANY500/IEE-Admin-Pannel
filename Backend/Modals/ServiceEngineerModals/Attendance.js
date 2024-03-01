@@ -30,6 +30,9 @@ const EnggAttendanceRecord = new Schema({
         }
 
     },
+    image: {
+        type: Buffer
+    },
     Check_Out: {
         engPhoto: {
             type: String,
