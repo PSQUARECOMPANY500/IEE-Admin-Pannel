@@ -24,7 +24,6 @@ const EnggAttendanceRecord = new Schema({
     Check_In: {
         engPhoto: {
             type: String,
-            unique: true,
         },
         time: {
             type: String,
