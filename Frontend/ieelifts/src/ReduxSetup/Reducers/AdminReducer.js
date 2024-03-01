@@ -19,8 +19,7 @@ import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions
 import { GET_BOOKED_DATES_FOR_ENGGS } from '../Actions/AdminActions';
 import { GET_ENGG_BASIC_DATA_FOR_CROUSER } from '../Actions/AdminActions';
 
-import { GET_ENG_ASSIGN_SLOTS } from '../Actions/AdminActions';
-
+import { GET_ENGG_LOCATION_DETAILS } from '../Actions/AdminActions';
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 const intialState14 = {
@@ -326,3 +325,17 @@ export const ticketSectionRenderReducer = (state=intialStateRender, action) => {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+const initialEnggLocatioDetails = {
+    enggLocatioDetails:null
+}
+export const EnggLocationDetailsFetchReducer = (state = initialEnggLocatioDetails , action)=>{
+    switch(action.type){
+        case GET_ENGG_LOCATION_DETAILS:
+            return{
+                ...state,
+                enggLocatioDetails:action.payload
+            }
+            default:
+                return state;
+    }
+}
