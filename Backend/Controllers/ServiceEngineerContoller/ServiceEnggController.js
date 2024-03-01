@@ -616,7 +616,8 @@ module.exports.generateOtpForClient = async (req, res) => {
       };
 
       // Send request to Fast2SMS API
-      const response1 = await axios.post("https://www.fast2sms.com/dev/voice", data, axiosConfig);
+      const response1 = await axios.post("https://www.fast2sms.com/dev/bulkV2", data, axiosConfig);
+      // await axios.post("https://www.fast2sms.com/dev/voice", data, axiosConfig);
 
       res.status(200).json({ success: true, message: "OTP sent successfully" });
     } else {
