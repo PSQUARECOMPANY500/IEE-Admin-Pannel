@@ -2657,8 +2657,8 @@ element.style {
 .service-assign {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 2px;
+  justify-content: space-between;
+  padding: 12px 6px;
   margin-top: 10px;
 }
 
@@ -2706,11 +2706,13 @@ element.style {
   justify-content: center;
   align-items: center;
   border-right: 1px solid #c1c1c1;
-  padding: 0px 12px;
+  padding: 0px 14px;
+  margin-right: 0px;
 }
 
 .name-jon {
-  padding: 0px 12px;
+  padding: 0px 0px;
+  margin-left: -35px;
 }
 
 .name-jon p {
@@ -2766,6 +2768,7 @@ element.style {
   border-radius: 50%;
   display: flex;
   position: relative;
+  margin-right: 8px;
 }
 .image-border-collapse2 {
   border: 3px solid #fff6f6;

@@ -47,9 +47,9 @@ export const createChatActions = (userId, LoginId) => {
 
 //action to send message
 
-export const sendChatMessageAction = (Sender,Content,ChatId) => {
+export const sendChatMessageAction = async (Sender,Content,ChatId) => {
     console.log(Sender,Content,ChatId)
-    return async (dispatch) => {
+    // return async (dispatch) => {
         try {
             const response = await axios.post(`${config.apiUrl}/chat/sendMessage`,
                 {
@@ -61,15 +61,15 @@ export const sendChatMessageAction = (Sender,Content,ChatId) => {
 
             console.log("send message from frontend",response);
 
-            dispatch({
-                type: SEND_MESSAGE_BY_SENDER,
-                payload: response.data
-            })
-
+            // dispatch({
+            //     type: SEND_MESSAGE_BY_SENDER,
+            //     payload: response.data
+            // })
+            return response;
         } catch (error) {
             console.log("error while fetching data", error);
         }
-    }
+    // }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
