@@ -29,6 +29,7 @@ const EnggBasicDetail = new Schema(
       type: String,
       unique: true,
     },
+    
   },
   {
     timestamps: true,

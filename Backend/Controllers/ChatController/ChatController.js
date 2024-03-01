@@ -48,7 +48,7 @@ module.exports.CreateChat = async (req,res) => {
 
 //function to handle sendmessage
 
-module.exports.sendMessage = async (req,res) =>{
+module.exports.sendMessage = async (req,res) =>{   
     try {
         const {Sender , Content, ChatId } = req.body;
 
@@ -65,9 +65,14 @@ module.exports.sendMessage = async (req,res) =>{
         var message = await MessageModal.create(newMessage);
 
         message = await message.populate("ChatId");
+        console.log("reached here succcccesssfulllly")
+        // io.on("connection", (socket) => {
+        //     console.log(`Api connected-----------------------------: ${socket.id}`);
+        //   });
 
+        // io.emit('newMessage', newMessage);
 
-        res.json(message);
+        return res.json(message);
 
     } catch (error) {
         console.log(error)

@@ -56,6 +56,7 @@
       enggAddress: "",
       enggLocation: "",
       enggRating: "",
+      enggPhoto:""
     });
   
 
@@ -157,6 +158,7 @@
           enggName: getEnggState.EnggName,
           enggPhone: getEnggState.PhoneNumber,
           enggAddress: getEnggState.EnggAddress,
+          enggPhoto:getEnggState.EnggPhoto
         });
       }
     }, [getEnggState]);
@@ -490,8 +492,8 @@
                       <div>
                         {getEnggState  ? (
                           <img
-                            style={{ width: "90px", height: "90px" }}
-                            src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+                          style={{ width: "90px", height: "90px",objectFit:'cover', objectPosition:"center", borderRadius:'2px'}}
+                          src={engDetails.enggPhoto}
                             alt="lift"
                           />
                         ) : (

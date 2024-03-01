@@ -2657,8 +2657,8 @@ element.style {
 .service-assign {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 2px;
+  justify-content: space-between;
+  padding: 12px 6px;
   margin-top: 10px;
 }
 
@@ -2706,11 +2706,13 @@ element.style {
   justify-content: center;
   align-items: center;
   border-right: 1px solid #c1c1c1;
-  padding: 0px 12px;
+  padding: 0px 14px;
+  margin-right: 0px;
 }
 
 .name-jon {
-  padding: 0px 12px;
+  padding: 0px 0px;
+  margin-left: -35px;
 }
 
 .name-jon p {
@@ -2766,6 +2768,7 @@ element.style {
   border-radius: 50%;
   display: flex;
   position: relative;
+  margin-right: 8px;
 }
 .image-border-collapse2 {
   border: 3px solid #fff6f6;
@@ -2929,14 +2932,6 @@ max-width: 70%;
   margin-top: 0.2rem;
   word-wrap: break-word;
 }
-.reciver-side {
-  padding: 10px 6px;
-  margin-top: 0.5rem;
-  margin-right: 0.3rem;
-  word-wrap:break-word
-
-}
-
 .reciver-message{
   color:#000;
   background: #aca6a6;
@@ -3624,5 +3619,34 @@ align-items: center;
 
 
 
+
+/* css for thr message box inside the Engg crouser starts -------------------------------- */
+
+.loader{
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  gap: 10px;
+}
+.box {
+  height: 50px;
+  width: 50px;
+  margin-top: 40%;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: orange transparent;
+  animation: spin 2s infinite ease-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* css for thr message box inside the Engg crouser ends -------------------------------- */
 
 

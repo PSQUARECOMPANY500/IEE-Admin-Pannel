@@ -3,8 +3,6 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
-import AddTicketModal1 from "../DashboardSubComponent/AddTicketModal1";
-import ServiceScheduledTable from "./ServiceScheduledTable";
 import ServiceRequestModal from "./ServiceRequestModal";
 
 import { useDispatch, useSelector } from "react-redux";

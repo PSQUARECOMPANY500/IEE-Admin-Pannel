@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -11,10 +11,7 @@ import ServiceRequestModal from "../ServiceRequestSubComponent/ServiceRequestMod
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { getAllAssignServiceRequestAction } from '../../../../ReduxSetup/Actions/AdminActions'
-
-
-
+import { getAllAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const Request = () => {
   const dispatch = useDispatch();
@@ -22,88 +19,65 @@ const Request = () => {
   const [date, setDate] = useState(new Date());
   const [animationDirection, setAnimationDirection] = useState(null);
 
-
   const [showTicketModal5, setShowTicketModal5] = useState(false);
 
   const [RequestId, setRequestId] = useState();
   const [enggId, setEnggId] = useState();
 
-
-
-
-  const openModal = (modalNumber,requestId,EnggId) => {
+  const openModal = (modalNumber, requestId, EnggId) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 5) {
       setShowTicketModal5(true);
       setRequestId(requestId);
       setEnggId(EnggId);
+    }
   };
-}
 
+  const getAssignRequests = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getAllAssignServiceRequestReducer &&
+      state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest
+    ) {
+      return state.AdminRootReducer.getAllAssignServiceRequestReducer
+        .serviceRequest.clientdetailsEmbeded;
+    } else {
+      return [];
+    }
+  });
 
-// const getRequestDetail = useSelector((state) => {
-//   if (
-//     state.AdminRootReducer &&
-//     state.AdminRootReducer.fetchAllServiceRequestsReducers &&
-//     state.AdminRootReducer.fetchAllServiceRequestsReducers
-//       .serviceRequestDetail
-//   ) {
-//     return state.AdminRootReducer.fetchAllServiceRequestsReducers.serviceRequestDetail.ServiceRequest;
-//   } else {
-//     return [];
-//   }
-// });
-// console.log("getRequestDetail", getRequestDetail);
+  console.log("getAssignRequests", getAssignRequests);
 
+  useEffect(() => {
+    dispatch(getAllAssignServiceRequestAction());
+  }, [dispatch]);
 
+  // Function to format date from "DD/MM/YYYY" to "YYYY-MM-DD"
+  const formatDate = (dateString) => {
+    const parts = dateString.split("/");
+    if (parts.length === 3) {
+      const [day, month, year] = parts;
+      return `${year}-${month}-${day}`;
+    }
+    return dateString; // return as is if format is incorrect
+  };
 
-const getAssignRequests = useSelector((state)=> {
-  if(state.AdminRootReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer && state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest){
-    return state.AdminRootReducer.getAllAssignServiceRequestReducer.serviceRequest.clientdetailsEmbeded
-  }else{
-    return []
-  }
-} );
+  const requestDetail = getAssignRequests?.map((value) => ({
+    EnggId: value?.ServiceEnggId,
+    requestId: value?.RequestId,
+    name: value?.clientDetail?.name,
+    date: formatDate(value?.Date), // Convert date format
+    time: value?.Slot,
+    jobNumber: value?.JobOrderNumber,
+    jobType: value?.checklistDetail?.checklistName,
+    profilePics: [
+      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
+    ],
+  }));
 
-
-useEffect(()=>{
-  dispatch(getAllAssignServiceRequestAction())
-},[dispatch])
-
-
-// Function to format date from "DD/MM/YYYY" to "YYYY-MM-DD"
-const formatDate = (dateString) => {
-  const parts = dateString.split('/');
-  if (parts.length === 3) {
-    const [day, month, year] = parts;
-    return `${year}-${month}-${day}`;
-  }
-  return dateString; // return as is if format is incorrect
-};
-
-
-
-const requestDetail = getAssignRequests?.map((value) => ({
-
-  EnggId:value?.ServiceEnggId,
-  requestId:value?.RequestId,
-  name: value?.clientDetail?.name,
-  date: formatDate(value?.Date), // Convert date format
-  time: value?.Slot,
-  jobNumber: value?.JobOrderNumber,
-  jobType: value?.checklistDetail?.checklistName,
-  profilePics: [
-    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-  ]
-}))
-
-
-const data = [...requestDetail];
-// console.log(".0.00.00", data)
-
-
-
+  const data = [...requestDetail];
+  // console.log(".0.00.00", data)
 
   const onChange = (newDate) => {
     setDate(newDate);
@@ -138,14 +112,14 @@ const data = [...requestDetail];
       setAnimationDirection("slideToTop");
     }
   };
-  const [renderTicket, setRenderTicket] = useState(true);  //to referesh
+  const [renderTicket, setRenderTicket] = useState(true); //to referesh
 
   useEffect(() => {
     setTimeout(() => {
       // console.log("renderTicket", renderTicket);
       dispatch(getAllAssignServiceRequestAction());
     }, 1000);
-  }, [renderTicket]); 
+  }, [renderTicket]);
 
   return (
     <>
@@ -173,153 +147,159 @@ const data = [...requestDetail];
 
                 <div className="parent-div-task-request">
                   {filterDataByDate().map((value) => {
-                  const requestId = value.requestId;
-                  const EnggId = value.EnggId;
-                  const slottime = value?.time[0]
-                  if (value.time.length > 1) {
-                    // Create a copy for each slot time
-                    return value.time.map((time) => (
-                      <div
-                      className="animation-all"
-                      style={{ animationName: animationDirection }}
-                    >
-                      {/* one slot start from here */}
+                    const requestId = value.requestId;
+                    const EnggId = value.EnggId;
+                    const slottime = value?.time[0];
+                    if (value.time.length > 1) {
+                      // Create a copy for each slot time
+                      return value.time.map((time) => (
+                        <div
+                          className="animation-all"
+                          style={{ animationName: animationDirection }}
+                        >
+                          {/* one slot start from here */}
 
-                      <div className="request-task-detail">
-                        <div className="service-assign">
-                          <div className="date-time">
-                            <span>TIME</span>
-                            <p>{time.split("-")[0]}</p>
-                          </div>
+                          <div className="request-task-detail">
+                            <div className="service-assign">
+                              <div className="date-time">
+                                <span>TIME</span>
+                                <p>{time.split("-")[0]}</p>
+                              </div>
 
-                          <div className="name-3dots">
-                            <div className="name-jon">
-                              <p>{value?.name}</p>
-                              <div className="jon-type">
-                                <p>
-                                  <span style={{ fontWeight: "500" }}>JON</span>
-                                  :{value?.jobNumber}
-                                </p>
-                                <p>{value?.jobType}</p>
+                              <div className="name-3dots">
+                                <div className="name-jon">
+                                  <p>{value?.name}</p>
+                                  <div className="jon-type">
+                                    <p>
+                                      <span style={{ fontWeight: "500" }}>
+                                        JON
+                                      </span>
+                                      :{value?.jobNumber}
+                                    </p>
+                                    <p>{value?.jobType}</p>
+                                  </div>
+                                </div>
+
+                                <div className="pic-3dots">
+                                  <div
+                                    className="pic"
+                                    style={{
+                                      paddingTop: "2px",
+                                      display: "flex",
+                                    }}
+                                  >
+                                    <div className="image-border-collapse">
+                                      <img
+                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        width={40}
+                                        className="profile-pic"
+                                        alt="img"
+                                      />
+                                    </div>
+                                    <div className="image-border-collapse2">
+                                      <img
+                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        width={40}
+                                        className="profile-pic"
+                                        alt="img"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="dots3"
+                                    onClick={() =>
+                                      openModal(5, requestId, EnggId)
+                                    }
+                                  >
+                                    <HiOutlineDotsVertical />
+                                  </div>
+                                </div>
                               </div>
                             </div>
-
-                            <div className="pic-3dots">
-                              <div
-                                className="pic"
-                                style={{
-                                  paddingTop: "2px",
-                                  display: "flex",
-                                }}
-                              >
-                                <div className="image-border-collapse">
-                                  <img
-                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
-                                    width={40}
-                                    className="profile-pic"
-                                    alt="img"
-                                  />
-                                </div>
-                                <div className="image-border-collapse2">
-                                  <img
-                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
-                                    width={40}
-                                    className="profile-pic"
-                                    alt="img"
-                                  />
-                                </div>
-                              </div>
-                              <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
-
-                                <HiOutlineDotsVertical />
-
-                              </div>
-                            </div>
                           </div>
+
+                          {/* one slot ends from here */}
                         </div>
-                      </div>
+                      ));
+                    } else {
+                      return (
+                        <div
+                          className="animation-all"
+                          style={{ animationName: animationDirection }}
+                        >
+                          {/* one slot start from here */}
 
-                      {/* one slot ends from here */}
-                    </div>
-                    ));
-                  }/* typeof slottime === 'string' ? slottime.split("-")[0] : slottime */
-                  else{
-                  return(
-                    <div
-                      className="animation-all"
-                      style={{ animationName: animationDirection }}
-                    >
-                      {/* one slot start from here */}
-
-                      <div className="request-task-detail">
-                        <div className="service-assign">
-                          <div className="date-time">
-                            <span>TIME</span>
-                            <p>{typeof slottime === 'string' ? slottime.split("-")[0] : slottime}</p>
-                          </div>
-
-                          <div className="name-3dots">
-                            <div className="name-jon">
-                              <p>{value?.name}</p>
-                              <div className="jon-type">
+                          <div className="request-task-detail">
+                            <div className="service-assign">
+                              <div className="date-time">
+                                <span>TIME</span>
                                 <p>
-                                  <span style={{ fontWeight: "500" }}>JON</span>
-                                  :{value?.jobNumber}
+                                  {typeof slottime === "string"
+                                    ? slottime.split("-")[0]
+                                    : slottime}
                                 </p>
-                                <p>{value?.jobType}</p>
                               </div>
-                            </div>
 
-                            <div className="pic-3dots">
-                              <div
-                                className="pic"
-                                style={{
-                                  paddingTop: "2px",
-                                  display: "flex",
-                                }}
-                              >
-                                <div className="image-border-collapse">
-                                  <img
-                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
-                                    width={40}
-                                    className="profile-pic"
-                                    alt="img"
-                                  />
+                              <div className="name-3dots">
+                                <div className="name-jon">
+                                  <p>{value?.name}</p>
+                                  <div className="jon-type">
+                                    <p>
+                                      <span style={{ fontWeight: "500" }}>
+                                        JON
+                                      </span>
+                                      :{value?.jobNumber}
+                                    </p>
+                                    <p>{value?.jobType}</p>
+                                  </div>
                                 </div>
-                                {/* <div className="image-border-collapse2">
-                                  <img
-                                    src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
-                                    width={40}
-                                    className="profile-pic"
-                                    alt="img"
-                                  />
-                                </div> */}
-                              </div>
-                              <div className="dots3" onClick={() => openModal(5,requestId,EnggId)}>
 
-                                <HiOutlineDotsVertical />
-
+                                <div className="pic-3dots">
+                                  <div
+                                    className="pic"
+                                    style={{
+                                      paddingTop: "2px",
+                                      display: "flex",
+                                    }}
+                                  >
+                                    <div className="image-border-collapse">
+                                      <img
+                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        width={40}
+                                        className="profile-pic"
+                                        alt="img"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="dots3"
+                                    onClick={() =>
+                                      openModal(5, requestId, EnggId)
+                                    }
+                                  >
+                                    <HiOutlineDotsVertical />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
-                      {/* one slot ends from here */}
-                    </div>
-                  )
-}})}
+                          {/* one slot ends from here */}
+                        </div>
+                      );
+                    }
+                  })}
 
                   {showTicketModal5 && (
                     <ServiceRequestModal
-                        closeModal={() => setShowTicketModal5(false)}
-                        showTicketModal={showTicketModal5}
-                        RequestId={RequestId}
-                        setRenderTicket={setRenderTicket}
-                        enggId={enggId}
-                        isAssigned={true}
-                      />
-                    )}
+                      closeModal={() => setShowTicketModal5(false)}
+                      showTicketModal={showTicketModal5}
+                      RequestId={RequestId}
+                      setRenderTicket={setRenderTicket}
+                      enggId={enggId}
+                      isAssigned={true}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -327,7 +307,7 @@ const data = [...requestDetail];
         </div>
 
         <div>
-          <RequestScheduledSection  setRenderTicket={setRenderTicket}/>
+          <RequestScheduledSection setRenderTicket={setRenderTicket} />
         </div>
       </div>
     </>
@@ -335,24 +315,3 @@ const data = [...requestDetail];
 };
 
 export default Request;
-
-
-
-
-
-
-
-
-
-// {
-//   name: "Arjun Rawat1",
-//   date: "2024-01-04", // Date in the format YYYY-MM-DD
-//   time: "09:00 AM",
-//   jobNumber: "2022199",
-//   jobType: "SAFETY AUDIT",
-//   profilePics: [
-//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-//     "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-//   ],
-// },
-

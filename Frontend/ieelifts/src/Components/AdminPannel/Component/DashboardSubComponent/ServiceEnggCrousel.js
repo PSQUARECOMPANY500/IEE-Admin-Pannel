@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft } from "react-icons/fa6";
 import { FaChevronRight } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import ServiceEnggDataOnCrousel from "./ServiceEnggDataOnCrousel";
-import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions/AdminActions"
+import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const ServiceEnggCrousel = ({ticketUpdate}) => {
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+
+const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const dispatch = useDispatch();
-  
+
   const sliderRef = useRef(null);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,38 +19,42 @@ const ServiceEnggCrousel = ({ticketUpdate}) => {
 
   const [showMessage, setShowMessage] = useState(false);
 
-  const [assignedArray,setAssignedArray] = useState([]);
-  const [notAssignedArray,setNotAsignedArray] = useState([]);
+  const [assignedArray, setAssignedArray] = useState([]);
+  const [notAssignedArray, setNotAsignedArray] = useState([]);
 
   useEffect(() => {
     dispatch(getEnggBasicDataForCrouserAction());
   }, [ticketUpdate]);
 
-  
   //-------------------------------------------------------------------------------------------------------------------------------
   const getBasicData = useSelector((state) => {
-    if (state.AdminRootReducer && state.AdminRootReducer.getEnggBasicDataForCrouserReducer && state.AdminRootReducer.getEnggBasicDataForCrouserReducer.EnggBasicDetailForCrouser){
-      return state.AdminRootReducer.getEnggBasicDataForCrouserReducer.EnggBasicDetailForCrouser.BasicDetailForCrouser
-  }else{
-    return null
-  }});
- //console.log('getBasicData--**--',getBasicData)
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getEnggBasicDataForCrouserReducer &&
+      state.AdminRootReducer.getEnggBasicDataForCrouserReducer
+        .EnggBasicDetailForCrouser
+    ) {
+      return state.AdminRootReducer.getEnggBasicDataForCrouserReducer
+        .EnggBasicDetailForCrouser.BasicDetailForCrouser;
+    } else {
+      return null;
+    }
+  });
+  //console.log('getBasicData--**--',getBasicData)
 
- useEffect(() => {
-  if (getBasicData) {
-    setAssignedArray([]);
-    setNotAsignedArray([]);
-    getBasicData.forEach(data => {
-      if (data.filteredServiceAssignmentsWithClientName.length !== 0) {
-        setAssignedArray(oldArray => [...oldArray, data]);
-      } else {
-        setNotAsignedArray(oldArray => [...oldArray, data]);
-      }
-    });
-  } 
-}, [getBasicData]);
-
-  
+  useEffect(() => {
+    if (getBasicData) {
+      setAssignedArray([]);
+      setNotAsignedArray([]);
+      getBasicData.forEach((data) => {
+        if (data.filteredServiceAssignmentsWithClientName.length !== 0) {
+          setAssignedArray((oldArray) => [...oldArray, data]);
+        } else {
+          setNotAsignedArray((oldArray) => [...oldArray, data]);
+        }
+      });
+    }
+  }, [getBasicData]);
 
   //console.log("assignedArray",assignedArray)
   //console.log("notAssignedArray",notAssignedArray)
@@ -127,34 +133,45 @@ const ServiceEnggCrousel = ({ticketUpdate}) => {
       <div className="carosel-Navigators-icon">
         {/* Left Arrow */}
 
-        <FaChevronLeft className="carosel-controoler-button1"
+        <FaChevronLeft
+          className="carosel-controoler-button1"
           onClick={() => sliderRef.current.slickPrev()}
-          style={{ visibility: currentSlide > 0 ? "" : "hidden",  }}
+          style={{ visibility: currentSlide > 0 ? "" : "hidden" }}
         />
 
         {/* Right Arrow */}
 
-        <FaChevronRight className="carosel-controoler-button2"
+        <FaChevronRight
+          className="carosel-controoler-button2"
           onClick={() => sliderRef.current.slickNext()}
           style={{
             visibility:
-              currentSlide + settings.slidesToShow < len ? "" : "hidden", 
+              currentSlide + settings.slidesToShow < len ? "" : "hidden",
           }}
         />
       </div>
 
-      <Slider
-        ref={(slider) => (sliderRef.current = slider)}
-        {...settings}
-        beforeChange={handleBeforeChange}
-      >
-        {assignedArray?.map((item, index) => (
-          <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-        ))}
-        {notAssignedArray?.map((item, index) => (
-          <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-        ))}
-      </Slider>
+      {getBasicData === null ? (
+        <div style={{ display: "flex", gap: "25px" }}>
+          <SkeltonLoader width="370px" height="175px" />
+          <SkeltonLoader width="370px" height="175px" />
+          <SkeltonLoader width="370px" height="175px" />
+          <SkeltonLoader width="370px" height="175px" />
+        </div>
+      ) : (
+        <Slider
+          ref={(slider) => (sliderRef.current = slider)}
+          {...settings}
+          beforeChange={handleBeforeChange}
+        >
+          {assignedArray?.map((item, index) => (
+            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
+          ))}
+          {notAssignedArray?.map((item, index) => (
+            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
+          ))}
+        </Slider>
+      )}
     </div>
   );
 };

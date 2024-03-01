@@ -1,7 +1,6 @@
 const express = require("express");
-
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+const { createServer: createHttpServer } = require("http");
+const { Server: SocketServer } = require("socket.io");
 
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -15,32 +14,22 @@ require("dotenv").config();
 
 const app = express();
 
-const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000", // Specify your frontend URL
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  },
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-//------ Routes------
-
+// ------ Routes ------
 // ---------service engg routes---------
 app.use("/serviceEngg", serviceEnggRoutes);
 
-//-------------client routes----------
+// -------------client routes----------
 app.use("/client", clientRoutes);
 
-//---------------AdminRoutes-----------
+// ---------------AdminRoutes-----------
 app.use("/admin", AdminRoutes);
 
-
-//------------chatRoute-------------
-app.use("/chat", chatRoute)
+// ------------chatRoute-------------
+app.use("/chat", chatRoute);
 
 main().catch((err) => console.log(err));
 
@@ -49,43 +38,33 @@ async function main() {
   console.log("Database connected successfully");
 }
 
+// Create HTTP server for Express app
+const httpServer = createHttpServer(app);
+
+// Create Socket.IO server using the same HTTP server instance
+const io = new SocketServer(httpServer, {cors: {origin: "*"}});
+// console.log("index.js",io)
+
+// Listen for new connections
 io.on("connection", (socket) => {
-  // console.log(`A user connected: ${socket.id}`);
-  console.log("connected to socket io");
-
-  socket.on("setup",(userData) => {
-    socket.join(userData);
-    console.log("userData",userData)
-    socket.emit("connected")
-  });
-
-
-  socket.on("join chat", (room) => {
-    socket.join(room);
-    console.log("User Joined Room " + room)
-  })
-
-  socket.on("disconnect", () => {
-    console.log(`A user disconnected: ${socket.id}`);
-  });
-
-
-socket.on("new message", (newMessageRecived) => {
-  var chat = newMessageRecived.chat;
-
-  if(!chat){
-    return console.log("chat users not defined")
-  }
-
-  chat.users.forEach((user) => {
-    if(user._id == newMessageRecived.sender._id) return;
-  })
-
-  socket.in(user._id).emit("message recieved",newMessageRecived)
-
-})
+  console.log(`A user connected: ${socket.id}`);
+  socket.on("aloo",(recivedMessaege) => { 
+  console.log("message si recives",recivedMessaege)
+  io.emit('messagerecieved',recivedMessaege)
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(`Listening on port ${process.env.PORT}`);
+
+socket.on('newEnggmessage', (messageRecives)=>{
+  console.log("pankaj side" , messageRecives);
+  io.emit("EnggNewMessage",messageRecives)
+})
+})
+
+// Listen for disconnections
+io.on("disconnect", () => {
+  console.log(`A user disconnected:`);
+});
+
+httpServer.listen(process.env.PORT, () => {
+  console.log(`Server listening on port ${process.env.PORT}`);
 });
