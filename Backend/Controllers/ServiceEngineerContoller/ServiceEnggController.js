@@ -24,11 +24,8 @@ const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggL
 
 const OtpDetails = require("../../Modals/OTP/Otp")
 
-
-const fastTwoSms = require('fast-two-sms')
-
-const otpGenerator = require('otp-generator')
-
+const axios = require("axios");
+require("dotenv").config();
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -382,8 +379,14 @@ function convertTimeToSortableFormat(time) {
 
 module.exports.EnggCheckIn = async (req, res) => {
   try {
-    const { IsAttendance, engPhoto, ServiceEnggId, time } = req.body;
-
+    const { IsAttendance, engPhoto, ServiceEnggId } = req.body;
+    const time = new Date().toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: '2-digit',
+      hour12: false 
+    });
     const CheckIn = await EnggAttendanceServiceRecord.create({
       IsAttendance: IsAttendance,
       ServiceEnggId: ServiceEnggId,
@@ -402,7 +405,14 @@ module.exports.EnggCheckIn = async (req, res) => {
 
 module.exports.EnggCheckOut = async (req, res) => {
   try {
-    const { engPhoto, ServiceEnggId, time } = req.body;
+    const { engPhoto, ServiceEnggId} = req.body;
+    const time = new Date().toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: '2-digit',
+      hour12: false 
+    });
     const date = new Date().toLocaleDateString('en-GB');
     const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate({ ServiceEnggId, Date: date }, {
 
@@ -550,57 +560,15 @@ module.exports.enggLeaveRecord = async (req, res) => {
 };
 
 
-module.exports.generateOtpForClient = async (req, res) => {
-  try {
-    const { ServiceEnggId, JobOrderNumber, PhoneNumber } = req.body
-    console.log(ServiceEnggId, JobOrderNumber, PhoneNumber)
-    if (ServiceEnggId && JobOrderNumber && PhoneNumber) {
-      const otp = otpGenerator.generate(4, {
-        upperCaseAlphabets: false,
-        specialChars: false,
-        digits: true,
-      });
-
-      const response = await OtpDetails.create({
-        otp: otp,
-        ServiceEnggId: ServiceEnggId,
-        JobOrderNumber: JobOrderNumber
-      })
-
-
-      const timer = 15 * 60 * 1000;
-      setTimeout(async () => {
-        await OtpDetails.findByIdAndDelete({ _id: response._id })
-      }, timer)
-      const apiKey = '8vlAeogu3Nr5XGstZVPMjELTD9xdQbq1WRik760FmUwaSHyOpfwNxQBpXahAlRftmOegdcu0LGob674i';
-      const message = `Your OTP for survice Engg ${ServiceEnggId} is: ${otp}. It will expire in 15 minutes.`;
-
-      if (response) {
-        fastTwoSms.sendMessage({ authorization: apiKey, message: message, numbers: [PhoneNumber] })
-          .then(response => {
-
-            res.status(200).json(response);/* res.status(200).json({response ,message:message}); */
-          })
-          .catch(error => {
-            res.status(500).json({ error: `Unable to generate OTP ${error}` });
-          });
-      }
-    }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal server error in generateOtpForClient" });
-  }
-}
-
 module.exports.validateOtpForClient = async (req, res) => {
   try {
-    const {Otp , ServiceEnggId, JobOrderNumber} = req.body;
-    if(Otp && ServiceEnggId&& JobOrderNumber){
-      const response = await OtpDetails.findOne({otp:Otp , ServiceEnggId, JobOrderNumber})
-      if(response){
-        return res.status(200).json({sucess : true});
-      }else{
-        return res.status(404).json({sucess:false})
+    const { Otp, ServiceEnggId, JobOrderNumber } = req.body;
+    if (Otp && ServiceEnggId && JobOrderNumber) {
+      const response = await OtpDetails.findOne({ otp: Otp, ServiceEnggId, JobOrderNumber })
+      if (response) {
+        return res.status(200).json({ sucess: true });
+      } else {
+        return res.status(404).json({ sucess: false })
       }
     }
     return res.status(500).json({ error: "Enter valid data" });
@@ -609,5 +577,56 @@ module.exports.validateOtpForClient = async (req, res) => {
     return res.status(500).json({ error: "Internal server error in validateOtpForClient" });
   }
 }
+
+
+module.exports.generateOtpForClient = async (req, res) => {
+  try {
+    const { ServiceEnggId, JobOrderNumber, PhoneNumber } = req.body;
+
+    if (ServiceEnggId && JobOrderNumber && PhoneNumber) {
+      const otp = Math.floor(1000 + Math.random() * 9000);
+
+      // Save OTP details to the database
+      const response = await OtpDetails.create({
+        otp: otp,
+        ServiceEnggId: ServiceEnggId,
+        JobOrderNumber: JobOrderNumber
+      });
+      if(response){
+      const timer = 15* 60 * 1000;
+
+      setTimeout(async () => {
+        await OtpDetails.findByIdAndDelete({ _id: response._id })
+      }, timer)
+      }
+      // Prepare data and config for the API request
+      
+      const apiKey = process.env.MESSAGE_API_KEY; 
+      console.log(apiKey , typeof(apiKey));
+      const axiosConfig = {
+        headers: {
+          "authorization": apiKey,
+          "Content-Type": "application/json"
+        }
+      };
+      const data = {
+        "variables_values": otp,
+        "route": "otp",
+        "numbers": PhoneNumber,
+      };
+
+      // Send request to Fast2SMS API
+      const response1 = await axios.post("https://www.fast2sms.com/dev/voice", data, axiosConfig);
+
+      res.status(200).json({ success: true, message: "OTP sent successfully" });
+    } else {
+      res.status(400).json({ error: "Missing required fields" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in generateOtpForClient" });
+  }
+};
+
 
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
