@@ -78,8 +78,9 @@ const EngeeniersCard = () => {
             </div>
             <div className='EngChatMsg'>
       
+                <div className='EngChatSender'></div>
             </div>
-            <div className='EngChatSender'></div>
+       
           </div>
         </div>
       </div>
