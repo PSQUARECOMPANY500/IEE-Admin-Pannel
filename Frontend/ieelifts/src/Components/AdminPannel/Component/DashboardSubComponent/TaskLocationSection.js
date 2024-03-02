@@ -4,7 +4,8 @@ import ReportData from "./ReportData";
 import { LiaStarSolid } from "react-icons/lia"; // use in future (don't delete Please)
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
-import EnggLocation from "./EnggLocationSection/EnggLocation"
+import { FaStar } from "react-icons/fa";
+import EnggLocation from "./EnggLocationSection/EnggLocation";
 
 //import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
 import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
@@ -20,6 +21,30 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+
+
+  //   const clientCallBackTickets = useSelector((state) => { if( state.AdminRootReducer && state.AdminRootReducer.getAllAssignCallbackRequestReducer && state.AdminRootReducer.getAllAssignCallbackRequestReducer.assignCallback){
+  //     return state.AdminRootReducer.getAllAssignCallbackRequestReducer.assignCallback.allAssignCallbacks
+  //   }else{
+  //     return null
+  //   }}
+  // );
+  //   console.log(clientCallBackTickets)
+
+  //   const currentDate = new Date().toLocaleDateString("en-GB");
+  //   console.log(currentDate)
+
+  //   const filteredData = clientCallBackTickets?.filter((item) => {
+  //     const itemDate = item.Date;
+  //     return itemDate === currentDate;
+  //   })
+  //   console.log(filteredData)
+
+
+  //const renderComopnent = useSelector((state) => state.AdminRootReducer.ticketSectionRenderReducer.isComponentRendered);
+  // console.log("*",renderComopnent)
+
+  //get current date service request
   const currentDateServiceRequest = useSelector((state) => {
     if (state.AdminRootReducer && state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer && state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer.currentDateServiceRequest) {
       return state.AdminRootReducer.getCurrentDateAssignServiceRequestReducer.currentDateServiceRequest.serviceRequestDetail
@@ -146,75 +171,292 @@ const TaskLocationSection = forwardRef((props, ref) => {
             {/* -----------------------  araised ticker data here starts ------------------------------------- */}
             {ticket && (
               <>
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                
+                >
+                  <div className="detail"   style={{
+                    background: "rgb(229 229 229 / 47%)",
+                    border: "1px solid #F8AC1D",
+                    boxShadow:" 0px 0px 5px #F8AC1D80"
+                  }}>
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>Preet service</td>
+                        </tr>
+                        <tr>
+                          <th>ENGINEER :</th>
+                          <td>RAM KUMAR</td>
+                        </tr>
+                        <tr>
+                          <th>START TIME :</th>
+                          <td style={{ color: "red" }}>2:15</td>
+                        </tr>
+                        <tr>
+                          <th>END TIME :</th>
+                          <td>
+                            <span style={{ color: "green " }}>5:00</span>
+                            <span className="star-icon2">
+                              {" "}
+                              4.3 <LiaStarSolid style={{ color: "#F8AC1D" }} />
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+                
                 {currentDateCallback?.map((value => (
-                  <div
-                    className="more-descriptive"
-                    onClick={passData}
-                    style={{
-                      background: "#ffffff",
-                    }}>
-                    <div className="detail" style={{
-                    }}>
-                      <table className="customer-table1">
-                        <tbody>
-                          <tr>
-                            <th>NAME :</th>
-                            <td>{value.clientName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>ENGINEER :</th>
-                            <td>{value.enggName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>START TIME :</th>
-                            <td>{extractStartTime(value.Slot)}</td>
-                          </tr>
-                          <tr>
-                            <th>END TIME :</th>
-                            <td>{extractEndTime(value.Slot)}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    //   <div
+                    //   className="more-descriptive"
+                    //   onClick={passData}
+                    //   style={{
+                    //     background: "#ffffff",
+                    //   }}>
+                    //   <div className="detail" style={{
+                    //   }}>
+                    //     <table className="customer-table1">
+                    //       <tbody>
+                    //         <tr>
+                    //           <th>NAME :</th>
+                    //           <td>{value.clientName.toUpperCase()}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>ENGINEER :</th>
+                    //           <td>{value.enggName.toUpperCase()}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>START TIME :</th>
+                    //           <td>{extractStartTime(value.Slot)}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>END TIME :</th>
+                    //           <td>{extractEndTime(value.Slot)}</td>
+                    //         </tr>
+                    //       </tbody>
+                    //     </table>
+                    //   </div>
+                    // </div>
+
+                    <div className="ticket-card" onClick={passData}>
+                    <table className="ticket-table">
+                      <tbody>
+                        <tr>
+                          <th>CN :</th>
+                          <td>{value.clientName.toUpperCase()}</td>
+                        </tr>
+                        <tr>
+                          <th>EN:</th>
+                          <td>{value.enggName.toUpperCase()}</td>
+                        </tr>
+  
+                      </tbody>
+                    </table>
+                    <div className="ticket-card-bottom">
+                      <h5>{extractStartTime(value.Slot)}</h5>
+                      <h5>{extractEndTime(value.Slot)}</h5>
+                      {/* <h5>3:00  <FaStar className='yellow_color' /> </h5> */}
+  
                     </div>
                   </div>
                 )))}
+
+              
+
+
+
+
               </>
             )}
 
             {services && (
               <>
                 {currentDateServiceRequest?.map((serviceData) => (
-                  <div
-                    className="more-descriptive"
-                    onClick={passData}
-                    style={{
-                      background: "#ffffff",
-                    }}
-                  >
-                    <div className="detail">
-                      <table className="customer-table1">
-                        <tbody>
-                          <tr>
-                            <th>NAME :</th>
-                            <td>{serviceData.clientName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>ENGINEER :</th>
-                            <td>{serviceData.enggName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>START TIME :</th>
-                            <td>{extractStartTime(serviceData.Slot)}</td>
-                          </tr>
-                          <tr>
-                            <th>END TIME :</th>
-                            <td>{extractEndTime(serviceData.Slot)}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                  // <div
+                  //   className="more-descriptive"
+                  //   onClick={passData}
+                  //   style={{
+                  //     background: "#ffffff",
+                  //   }}
+                  // >
+                  //   <div className="detail">
+                  //     <table className="customer-table1">
+                  //       <tbody>
+                  //         <tr>
+                  //           <th>NAME :</th>
+                  //           <td>{serviceData.clientName.toUpperCase()}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>ENGINEER :</th>
+                  //           <td>{serviceData.enggName.toUpperCase()}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>START TIME :</th>
+                  //           <td>{extractStartTime(serviceData.Slot)}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>END TIME :</th>
+                  //           <td>{extractEndTime(serviceData.Slot)}</td>
+                  //         </tr>
+                  //       </tbody>
+                  //     </table>
+                  //   </div>
+                  // </div>
+
+
+                  <div className="service-card" onClick={passData}>
+                  <table className="service-table">
+                    <tbody>
+                      <tr>
+                        <th>CN:</th>
+                        <td>{serviceData.clientName.toUpperCase()}</td>
+                      </tr>
+                      <tr>
+                        <th>EN:</th>
+                        <td>{serviceData.enggName.toUpperCase()}</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                  <div className="service-card-bottom">
+                    <h5>{extractStartTime(serviceData.Slot)}</h5>
+                    <h5>{extractEndTime(serviceData.Slot)}</h5>
+                    {/* <h5>3:00  <FaStar className='yellow_color' /> </h5> */}
+
                   </div>
+                </div>
                 ))}
+
+
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+                {/* 
+                <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+
+                {/* <div
+                  className="more-descriptive"
+                  onClick={passData}
+                  style={{
+                    background: "#ffffff",
+                  }}
+                >
+                  <div className="detail">
+                    <table className="customer-table1">
+                      <tbody>
+                        <tr>
+                          <th>NAME :</th>
+                          <td>ARJUN service</td>
+                        </tr>
+                        <tr>
+                          <th>JON :</th>
+                          <td>565454</td>
+                        </tr>
+                        <tr>
+                          <th>ADDRESS :</th>
+                          <td>ADDRESS ADDRESS</td>
+                        </tr>
+                        <tr>
+                          <th>TYPE :</th>
+                          <td>DOOR</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div> */}
+
+              
               </>
             )}
           </div> : null}
@@ -243,9 +485,14 @@ const TaskLocationSection = forwardRef((props, ref) => {
           </div>
           <div className="report-description-section">
             <div className="more-descriptive">
-              <>
-                <EnggLocation style={{ width: "100%", height: "320px", border: 'none', borderRadius: '8px' }} />
-              </>
+              {<iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.1483230038793!2d76.6936452761033!3d30.714230386525795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fee5703d374e5%3A0xda2704bd4dce4210!2sIEE%20LIFTS!5e0!3m2!1sen!2sin!4v1703161333396!5m2!1sen!2sin"
+                style={{ width: "100%", height: "320px", border: 'none', borderRadius: '8px' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="map"
+              ></iframe>}
             </div>
           </div>
         </div>
