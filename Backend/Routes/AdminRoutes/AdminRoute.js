@@ -13,6 +13,8 @@ router.post("/createMembership", adminContoller.createClientMemebership);
 
 router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
 
+router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
+
 //------------------------------ All get requests -------------------------------------------------
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);

@@ -1,6 +1,6 @@
 const config = {
-    // apiUrl : 'https://iee-admin-pannel.onrender.com',
-    apiUrl : 'http://localhost:8000',
+    apiUrl : 'https://iee-admin-pannel.onrender.com',
+    // apiUrl : 'http://localhost:8000',
 
 };
 

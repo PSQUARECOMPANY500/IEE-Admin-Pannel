@@ -2330,20 +2330,6 @@ thead th {
   margin-bottom: 3px;
 }
 
-/* /* .dropdown__text {
-  padding: 12px 16px;
-  cursor: pointer;
-  height: auto;
-  height: 10px;
-  color: black;
-  background: #ffffff;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
-} */
 
 .dropdown__text:after {
   content: "";
@@ -2392,7 +2378,7 @@ thead th {
   color: #f8ac1d;
   background: #fef3de;
 }
-*/
+
 
 /* ticket section status button propety changes dynamically start*/
 .assignColor {

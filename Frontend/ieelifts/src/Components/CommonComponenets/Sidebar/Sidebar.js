@@ -117,6 +117,7 @@ const Sidebar = ({ children }) => {
     },
     {
       Path: "/Engeeniers",
+      Path: "/Engeeniers",
       name: "Engeeniers",
       icon: <MdEngineering />,
     },

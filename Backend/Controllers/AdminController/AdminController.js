@@ -17,6 +17,7 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
+const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
 
 const EnggRating = require("../../Modals/Rating/Rating");
 
@@ -117,6 +118,10 @@ function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
   return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
 }
+function convertTimeToSortableFormat(time) {
+  const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
+  return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to get the booked slots for the particular Engg...
@@ -153,8 +158,10 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
       return {
         ServiceEnggId,
         ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
+        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
         slots: slotsByEnggId[ServiceEnggId],
       }
+
 
     }));
 
