@@ -13,7 +13,10 @@ import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 
-import { io } from 'socket.io-client';
+import io from "socket.io-client";
+import EngChatNav from "../EngeeniersSubComponent/EngChatNav";
+import { IoCallOutline } from "react-icons/io5";
+import { CiVideoOn } from "react-icons/ci";
 
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
@@ -28,6 +31,14 @@ const MessageBox = ({ onClose, EnggId }) => {
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+
+
+  const [allMessages, setAllMessages] = useState([]);
+  console.log("allMessages", allMessages);
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -51,17 +62,19 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   //socket implemantation starts ---------------------------------------------
-  const socket = io('http://localhost:8000');
-  
+  // const socket = io('http://localhost:8000');
+
+  const socket = io("https://iee-admin-pannel.onrender.com");
+
   useEffect(() => {
-   socket.emit("setup", '65d49276f60a227274baf8e1');
-   socket.on("connection", () => setSocketConnected(true))
+    socket.on("connect", () => [
+      console.log("socket is connected successfully"),
+    ]);
 
     return () => {
-      socket.disconnect();
+      socket.off("connect");
     };
   }, []);
-
 
 
 
@@ -79,36 +92,43 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   const getMessages = useSelector((state) => {
-
-scroll();
-    if (state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message) {
-   
-      return state.ChatRootReducer.getSenderMessagesReducer.message.chats
-
+    scroll();
+    if (
+      state.ChatRootReducer &&
+      state.ChatRootReducer.getSenderMessagesReducer &&
+      state.ChatRootReducer.getSenderMessagesReducer.message
+    ) {
+      return state.ChatRootReducer.getSenderMessagesReducer.message.chats;
     } else {
-      return null
+      return null;
     }
-  })
+  });
   // console.log("all messages",getMessages)
 
+  const sendMessage = useSelector(
+    (state) => state?.ChatRootReducer?.sendMessageReducer?.chatMessage
+  );
 
   useEffect(() => {
-    dispatch(createChatActions(EnggId, '65d49276f60a227274baf8e1')); //todo - in future the id is dynamic as come from login user
-   
-
-    setTimeout(() => {
-      if (chatCreated?._id) {
-        dispatch(getSenderMessagesAction(chatCreated._id));
-      }
-    }, 400)
+    setAllMessages([]);
+    setIsLoadingMessages(true);
+    dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //todo - in future the id is dynamic as come from login user
+    if (chatCreated?._id) {
+      dispatch(getSenderMessagesAction(chatCreated._id));
+    }
     // Cleanup function
     return () => {
+      setIsLoadingMessages(true);
       if (chatCreated?._id) {
         dispatch(getSenderMessagesAction()); // Clear sender messages when unmounting
-        dispatch(createChatActions())
+        dispatch(createChatActions());
       }
     };
-  }, [dispatch, chatCreated?._id]);
+  }, [dispatch, chatCreated?._id, EnggId]);
+
+
+
+
 
 
 
@@ -138,129 +158,151 @@ scroll();
 
 
 
-  const handleSendMessage = () => {
-    dispatch(sendChatMessageAction('65d49276f60a227274baf8e1', messageData, chatCreated?._id)); //todo - in future the id is dynamic as come from login user
-    setMessageData('');
- 
-
-    if (textareaRef.current) {
-      textareaRef.current.value = '';
-      handleInput();
-
+//function to send the message ------------------------------------------------
+const handleSendMessage = async (e) => {
+  e.preventDefault();
+  if (chatCreated?._id) {
+    const myNewMessage = await sendChatMessageAction(
+      "65e0103005fd2695f3aaf6d4",
+      messageData,
+      chatCreated?._id
+    );
+    if (myNewMessage) {
+      socket.emit("aloo", myNewMessage.data);
     }
+    dispatch(getSenderMessagesAction(chatCreated._id));
 
+    console.log("format", messageData);
 
-
-    setTimeout(() => {
-      if (chatCreated?._id) {
-        dispatch(getSenderMessagesAction(chatCreated._id));
-      }
-
-    }, 400)
-
+    setMessageData("");
   }
 
-  useLayoutEffect(() => {
-    scroll(); 
-  }, [getMessages]);
+  if (textareaRef.current) {
+    textareaRef.current.value = "";
+    handleInput();
+  }
+
+  setTimeout(() => {
+    if (chatCreated?._id) {
+      dispatch(getSenderMessagesAction(chatCreated._id));
+    }
+  }, 400);
+  socket.emit("aloo", sendMessage);
+};
+
+useLayoutEffect(() => {
+  scroll();
+}, [getMessages]);
+
+useEffect(() => {
+  socket.on("EnggNewMessage", (message) => {
+    setAllMessages((prevMessages) => [...prevMessages, message]);
+  });
+}, []);
+
+
+
 
 
   return (
-    <div className="message-parent-div">
-      <div className="message-child-div">
-        <div className="messagebox-heading">
-          <div className="pro-heading"></div>
-          <div className="featured-icon">
-            <div>
-              <MdAddCall />
+    <>
+       <EngChatNav />
+          <div className='EngChatBox-Dash'>
+            <div className='EngChatBoxHead-Dash'>
+              <h6>online</h6>
+              <div className='EngChatBoxIcons-Dash'>
+                <IoCallOutline />
+                <CiVideoOn />
+                <RxCross2 onClick={onClose} />
+              </div>
             </div>
-            <div>
-              <RxCross2 onClick={onClose} />
+            <div className='EngChatMsg-Dash'>
+              <div className='.SubEngChatMsg-Dash Yello_Scrollbar'>
 
-            </div>
-          </div>
-        </div>
-
-        <div className="message-body" ref={messageBodyRef}>
-          {getMessages?.length > 0 ? (
-
-            getMessages.map((item) => {
-              // console.log("message item map", item.Content);
-              return (
-                <div className="sender-side" key={item._id}>
-                  <div className="sender-message">
+                      {isLoadingMessages ? (
+                    <div className="skelton-in-message">
+                      <div className="loader">
+                        <div class="box"></div>
+                        <p>Loading...</p>
+                      </div>
+                    </div>
+                  ) : allMessages?.length >= 0 ? (
+                allMessages?.map((item, index) => {
+                  const isCurrentUser = item.Sender === "65e0103005fd2695f3aaf6d4";
+                  return (
+                    <div className={isCurrentUser ? "engchatmsg-sender-side-dash" : "engchatmsg-reciver-side-dash"}key={index}>
+                  <div className={isCurrentUser ? "engchatmsg-sender-message-dash" : "engchatmsg-reciver-message-dash"}>
                     <p>{item.Content}</p>
-                  </div>
+                    </div>
                 </div>
               );
             })
           ) : (
-
-            <div className="loader">Loading...</div>
-          )}
-
-
-          {/* <div className="reciver-side">
-            <div className="reciver-message">
-              <p>how are you b </p>
-            </div>
-          </div>   */}
-
-
-          {file.length > 0 && (
-            <div className="sender-side">
-              <div className="sender-message">
-                <p>{file}</p>
+            <div className="skelton-in-message">
+              <div className="loader">
+                <div class="box"></div>
+                <p>No Message Yet</p>
               </div>
             </div>
           )}
 
-        </div>
+
+                
+                {/* <div className=".engchatmsg-reciver-side-dash">
+                  <div className="engchatmsg-reciver-message-dash">
+                    <p>hello preet sir kese ho ap khana ho gya paka kua khaya apne kahane me preet sir  roti me kya bna the sir  aalu gopbhi kha  lslksffhdashjhadfvxcm  sdkjhkjsd shns  skksk afdsdfdskcsd  !</p>
+                  </div>
+                </div> */}
 
 
 
-        
-      </div>
 
-      <div className="agdam">
-        <div className="message-text">
-          <textarea
-            placeholder="Enter message"
-            ref={textareaRef}
-            onInput={handleInput}
-            style={{ resize: "none", height: '10px', fontFamily: "Poppins" }}
-            className="text-area-message-whatsapp"
-            rows="4"
-            cols="50"
-            onChange={(e) => setMessageData(e.target.value)}
-            value={messageData}
-          />
-        </div>
 
-        <div className="user-attachment4">
-          <div className="user-attachment2">
-            <input
-              id="file-upload"
-              type="file"
-              name="file"
-              onChange={handleFileChange}
-              ref={fileInputField}
-              style={{ display: "none" }}
-            ></input>
-            <div
-              onClick={() => fileInputField.current.click()}
-              style={{ marginTop: "3px" }}
-            >
-              <MdOutlineAttachFile />
+              </div>
+
             </div>
-          </div>
 
-          <p className="send-messsage" onClick={handleSendMessage}>
-            {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
-          </p>
-        </div>
-      </div>
-    </div>
+            <div className="agdam-eng-card-dash" >
+              <div className="eng-card-message-text-dash">
+                <textarea
+                  placeholder="Enter message"
+                  ref={textareaRef}
+                  onInput={handleInput}
+                  style={{ resize: "none", minHeight: '50px', height: `${textareaHeight}px`, fontFamily: "Poppins" }}
+                  className="text-area-message-eng-card-dash"
+                  onChange={(e) => setMessageData(e.target.value)}
+                  value={messageData}
+                />
+
+              </div>
+
+              <div className="user-attachment4-eng-card-dash">
+                <div className="user-attachment2-eng-card-dash">
+                  <input
+                    id="file-upload"
+                    type="file"
+                    name="file"
+                    onChange={handleFileChange}
+                    ref={fileInputField}
+                    style={{ display: "none" }}
+                  ></input>
+                  <div
+                    onClick={() => fileInputField.current.click()}
+                    style={{ marginTop: "3px" }}
+                  >
+                    <MdOutlineAttachFile />
+                  </div>
+                </div>
+
+                <p className="send-messsage-eng-card-dash" onClick={handleSendMessage}>
+                  {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
+                </p>
+              </div>
+            </div>
+
+
+
+          </div></>
   );
 };
 

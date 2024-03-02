@@ -20,14 +20,15 @@ body {
     grid-template-rows: 1fr;
     grid-template-areas: 'SingleEng EngeeniersChat';
 
-
-
-
 }
+
+
 
 .SingleEng {
     grid-area: SingleEng;
     position: relative;
+    display: none;
+
 
 }
 
@@ -90,6 +91,7 @@ body {
     grid-template-areas: 'EngeeniersSubCard';
 
 
+
 }
 
 /* 
@@ -143,10 +145,12 @@ body {
 .EngeeniersChatF {
 
     border-radius: 1.2rem;
-    padding: 1rem 2rem 2rem 2rem;
     position: relative;
     margin-top: 1.2rem;
+    height: 790px;
+
     margin-bottom: 1.2rem;
+
 
 
 
@@ -154,15 +158,14 @@ body {
 
 
 .EngeeniersChatT {
-    grid-area: EngeeniersChat;
+
     border-radius: 1.2rem;
-    padding: 1rem 2rem 2rem 2rem;
     position: relative;
     margin-top: 1.2rem;
     display: none;
     margin-bottom: 1.2rem;
-
-
+    height: 790px;
+    margin-bottom: 1.2rem;
 
 }
 
@@ -414,14 +417,7 @@ body {
 
 }
 
-.EngChatBox {
-    width: 100%;
-    background-color: #FFFBF4;
-    border-radius: 5px;
-    box-shadow: 1px 2px 5px 1px #00000029;
-    position: relative;
-    height: 100%;
-}
+
 
 .EngChatBoxHead {
     display: flex;
@@ -449,27 +445,105 @@ body {
     line-height: 1.3rem;
 }
 
-.EngChatMsg {
+.EngChatBox {
+    width: 100%;
+    background-color: #FFFBF4;
+    border-radius: 5px;
+    /* margin-top: -30px;
+    margin-left: -40px; */
+    box-shadow: 1px 2px 5px 1px #00000029;
+    position:relative;
     height: 100%;
+
+
+
+
+
+
+}
+
+.EngChatMsg {
+    height: 85%;
     width: 100%;
     position: relative;
-    padding: 5rem 5rem;
+
+
+
+}
+
+.SubEngChatMsg {
+    height: 100%;
+    width: 100%;
+    padding: 0rem 1rem;
+    padding-bottom: 2rem;
+    overflow-y: auto;
+
+
 
 }
 
 
-.EngChatSender {
 
-    width: 50px;
-    border-left: none;
-    height: 20px;
-    /* background: #FEF3DE 0% 0% no-repeat padding-box; */
-    /* box-shadow: 1px 2px 5px #00000029; */
+.engchatmsg-sender-side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-top: .4rem;
+
+}
+
+.engchatmsg-reciver-side {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-top: .4rem;
+}
+
+.engchatmsg-reciver-message,
+.engchatmsg-sender-message {
+    max-width: 70%;
+    border-radius: 5px;
+    padding: .5rem .5rem;
+    font-size: 0.9rem;
+    text-wrap: wrap;
+    line-height: 1.1;
+    text-align: start;
+    font-family: 'Poppins';
+}
+
+.engchatmsg-sender-message {
+    color: #444444;
+
+    /* background: #fef3de; */
+    margin-left: 8.4rem;
+    margin-top: 0.2rem;
+    word-wrap: break-word;
+    background-color: #FEF3DE;
+    font-family: 'Poppins';
+    box-shadow: 1px 2px 5px #00000029;
     opacity: 1;
-    border-radius: 0px 0px 300px 0px;
-    background-color: #000;
+}
 
-} 
+.engchatmsg-reciver-side {
+    /* padding: 10px 6px; */
+    margin-top: 0.5rem;
+    font-family: 'Poppins';
+    margin-right: 0.3rem;
+    word-wrap: break-word
+}
+
+.engchatmsg-reciver-message {
+    color: #000;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 1px 2px 5px #00000029;
+    opacity: 1;
+    margin-top: 0.5rem;
+    font-family: 'Poppins';
+    margin-left: 0.3rem;
+    word-wrap: break-word
+}
 
 
 
@@ -577,6 +651,15 @@ body {
     position: relative;
 }
 
+.CallBacks {
+    margin-top: 1rem;
+    padding: .9rem;
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+}
+
 .ServicContainer {
     height: 65vh;
     margin-top: 1rem;
@@ -585,7 +668,16 @@ body {
     flex-direction: column;
 }
 
-.AllServices {
+.CallbackContainer {
+    height: 65vh;
+    margin-top: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.AllServices,
+.AllCallback {
     height: 100%;
     width: 100%;
     display: grid;
@@ -599,7 +691,8 @@ body {
 }
 
 
-.ServiceCards {
+.ServiceCards,
+.CallBackCards {
     border-radius: 10px;
     height: 13vh;
     background-color: #FFFBF4;
@@ -639,7 +732,8 @@ th {
     font-weight: bold;
 } */
 
-.service-table-item {
+.service-table-item,
+.callback-table-item {
 
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -688,6 +782,39 @@ tr>td:nth-child(2) {
     ;
 
 }
+
+
+
+
+.CallBackCardsBottom {
+    width: 100%;
+    height: 20%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+
+
+}
+
+.CallBackCardsBottom>h5:nth-child(1) {
+    font-family: ' Poppins';
+    font-size: .9rem;
+    font-weight: 700;
+    color: #389300;
+
+}
+
+.CallBackCardsBottom>h5:nth-child(2) {
+    font-family: ' Poppins';
+    font-size: .9rem;
+    font-weight: 700;
+    color: #F8AC1D;
+    ;
+
+}
+
 
 .star {
     width: 22%;
@@ -740,12 +867,18 @@ tr>td:nth-child(2) {
 }
 
 .DateHeading {
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid #C1C1C180;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.callBackDateHeading {
+    border-bottom: 1px solid #C1C1C180;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .Attendancecalendar {
     margin-top: .8rem;
@@ -1235,3 +1368,109 @@ tr>td:nth-child(2) {
 .Buttons>button:nth-child(2) {
     border: 1px solid #46A70A;
 }
+
+
+
+.eng-card-message-text {
+    position: absolute;
+    bottom: 15px;
+    max-height: 10rem;
+    width: 100%;
+    padding: 1rem;
+
+}
+
+.text-area-message-eng-card {
+    width: 90%;
+    outline: none;
+    border: none;
+    border-radius: 50px;
+    box-shadow: inset 1px 2px 3px #00000029; 
+    position: relative;
+    padding: 15px 12px;
+    top: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #444444;
+    padding-right: 80px;
+    margin-bottom: 10px;
+
+
+
+}
+
+/* .text-area-message-eng-card:hover::-webkit-scrollbar-thumb {
+    border: 1px solid #f8ac1d; 
+  } */
+/* set scroll behaviour  */
+.text-area-message-eng-card::-webkit-scrollbar {
+    width: 2px;
+    /* width of the entire scrollbar */
+}
+
+.text-area-message-eng-card::-webkit-scrollbar-track {
+    background: 0;
+    /* color of the tracking area */
+    margin-top: 7px;
+    margin-bottom: 5px;
+}
+
+.text-area-message-eng-card::-webkit-scrollbar-thumb {
+    background-color: #f8ac1d;
+    /* color of the scroll thumb */
+    border-radius: 20px;
+    /* roundness of the scroll thumb */
+    border: 1px solid #f8ac1d;
+    /* creates padding around scroll thumb */
+    transition: background-color 0.3s ease;
+    /* Adjust the transition duration as needed */
+}
+
+.agdam-eng-card {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 20px; */
+    position: relative;
+    width: 100%;
+
+
+
+}
+
+.user-attachment4-eng-card {
+    position: absolute;
+    height: 100px;
+    right: 20px;
+    display: flex;
+    gap:20px;
+    font-size: 1.5rem;
+    /* padding: 0px 0px; */
+    color: #f8ac1d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    top: -18px;
+    cursor: pointer;
+
+
+}
+
+.send-messsage-eng-card {
+    background: #fef3de;
+    border-radius: 50%;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .text-area-message-eng-card ::placeholder{
+    
+    color: #4444441f;
+    opacity: 0.5;
+  }

@@ -156,7 +156,7 @@ const Attendance = () => {
 
     // Display the surrounding dates
     surroundingDates.forEach(date => {
-      console.log(date.toDateString());
+      // console.log(date.toDateString());
     });
   }
 
@@ -184,7 +184,7 @@ const Attendance = () => {
         </div>
 
         <div className="DatesContainer">
-          <div className="DatesCard">
+          <div className="DatesCard" style={{cursor:'pointer'}}>
             <div className="DateCardData">
               <h5>15</h5>
               <h5>MON</h5>
@@ -206,7 +206,7 @@ const Attendance = () => {
 
           </div>
 
-          <div className="DatesCard">
+          <div className="DatesCard" style={{cursor:'pointer'}}>
             <div className="DateCardData">
               <h5>15</h5>
               <h5>MON</h5>
@@ -228,7 +228,7 @@ const Attendance = () => {
 
           </div>
 
-          <div className="DatesCard">
+          <div className="DatesCard" style={{cursor:'pointer'}}>
             <div className="DateCardData">
               <h5>15</h5>
               <h5>MON</h5>
@@ -250,7 +250,7 @@ const Attendance = () => {
 
           </div>
 
-          <div className="DatesCard">
+          <div className="DatesCard" style={{cursor:'pointer'}}>
             <div className="DateCardData">
               <h5>15</h5>
               <h5>MON</h5>
@@ -272,7 +272,7 @@ const Attendance = () => {
 
           </div>
 
-          <div className="DatesCard">
+          <div className="DatesCard" style={{cursor:'pointer'}}>
             <div className="DateCardData">
               <h5>15</h5>
               <h5>MON</h5>
@@ -309,8 +309,8 @@ const Attendance = () => {
             </div>
             <div className="OldLeaveHistory Yello_Scrollbar">
               <div className="SubOldLeaveHistory">
-                <div className="OldLeaveCard">
-                  <div className="OldCardData">
+                <div className="OldLeaveCard" style={{cursor:'pointer'}}>
+                  <div className="OldCardData" >
                     <h5>15</h5>
                     <h5>MON</h5>
                   </div>

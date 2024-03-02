@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 
 const EngeeniersSubCard = (props) => {
-  const { isChatOpen, setIsChatOpen } = props;
+  const { isChatOpen, setIsChatOpen,hideCard,setHideCard } = props;
   const[isActive,setIsActive]=useState();
 const data=[
   {
@@ -114,7 +114,7 @@ const data=[
   return (
 
 
-    <div className='EngeeniersSubCard'>
+    <div className='EngeeniersSubCard' style={{cursor:'pointer'}}>
       <div className={isChatOpen?'AllCardsT':'AllCardsF'}>
       
       {data.map((e, index) => (

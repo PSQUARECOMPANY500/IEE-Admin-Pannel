@@ -10,7 +10,7 @@ const CartopShift = () => {
     <h6>m/c room & motor area check & clean</h6>
   </div>
   <div className='IssueResolvedR'>
-  <GrGallery />
+  <GrGallery  style={{cursor:'pointer'}}/>
   </div>
 </div>
 <div className='IssueNotResolved CardShiftCards'>
@@ -19,7 +19,7 @@ const CartopShift = () => {
     <h6>m/c room & motor area check & clean</h6>
   </div>
   <div className='IssueNotResolvedR'>
-  <GrGallery />
+  <GrGallery   style={{cursor:'pointer'}}/>
   </div>
 </div>
 <div className='SparePartChange CardShiftCards'>

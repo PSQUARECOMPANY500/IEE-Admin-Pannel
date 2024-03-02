@@ -209,62 +209,64 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     </table>
                   </div>
                 </div> */}
-                {/* 
+                
                 {currentDateCallback?.map((value => (
-                      <div
-                      className="more-descriptive"
-                      onClick={passData}
-                      style={{
-                        background: "#ffffff",
-                      }}>
-                      <div className="detail" style={{
-                      }}>
-                        <table className="customer-table1">
-                          <tbody>
-                            <tr>
-                              <th>NAME :</th>
-                              <td>{value.clientName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th>ENGINEER :</th>
-                              <td>{value.enggName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th>START TIME :</th>
-                              <td>{extractStartTime(value.Slot)}</td>
-                            </tr>
-                            <tr>
-                              <th>END TIME :</th>
-                              <td>{extractEndTime(value.Slot)}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                )))} */}
+                    //   <div
+                    //   className="more-descriptive"
+                    //   onClick={passData}
+                    //   style={{
+                    //     background: "#ffffff",
+                    //   }}>
+                    //   <div className="detail" style={{
+                    //   }}>
+                    //     <table className="customer-table1">
+                    //       <tbody>
+                    //         <tr>
+                    //           <th>NAME :</th>
+                    //           <td>{value.clientName.toUpperCase()}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>ENGINEER :</th>
+                    //           <td>{value.enggName.toUpperCase()}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>START TIME :</th>
+                    //           <td>{extractStartTime(value.Slot)}</td>
+                    //         </tr>
+                    //         <tr>
+                    //           <th>END TIME :</th>
+                    //           <td>{extractEndTime(value.Slot)}</td>
+                    //         </tr>
+                    //       </tbody>
+                    //     </table>
+                    //   </div>
+                    // </div>
 
-                 <div className="ticket-card">
-                 <table className="ticket-table">
-                          <tbody>
-                            <tr>
-                              <th>NAME :</th>
-                              <td>Aayush Malviya</td>
-                            </tr>
-                            <tr>
-                              <th>ENGINEER :</th>
-                              <td>Service Enginner 1</td>
-                            </tr>
-                        
-                          </tbody>
-                        </table>
-                        <div className="ticket-card-bottom">
-                          <h5>3:00</h5>
-                          <h5>3:00</h5>
-                          <h5>3:00  <FaStar className='yellow_color'/> </h5>
-                      
-                        </div>
-                </div> 
-          
+                    <div className="ticket-card" onClick={passData}>
+                    <table className="ticket-table">
+                      <tbody>
+                        <tr>
+                          <th>CN :</th>
+                          <td>{value.clientName.toUpperCase()}</td>
+                        </tr>
+                        <tr>
+                          <th>EN:</th>
+                          <td>{value.enggName.toUpperCase()}</td>
+                        </tr>
+  
+                      </tbody>
+                    </table>
+                    <div className="ticket-card-bottom">
+                      <h5>{extractStartTime(value.Slot)}</h5>
+                      <h5>{extractEndTime(value.Slot)}</h5>
+                      {/* <h5>3:00  <FaStar className='yellow_color' /> </h5> */}
+  
+                    </div>
+                  </div>
+                )))}
+
+              
+
 
 
 
@@ -274,36 +276,59 @@ const TaskLocationSection = forwardRef((props, ref) => {
             {services && (
               <>
                 {currentDateServiceRequest?.map((serviceData) => (
-                  <div
-                    className="more-descriptive"
-                    onClick={passData}
-                    style={{
-                      background: "#ffffff",
-                    }}
-                  >
-                    <div className="detail">
-                      <table className="customer-table1">
-                        <tbody>
-                          <tr>
-                            <th>NAME :</th>
-                            <td>{serviceData.clientName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>ENGINEER :</th>
-                            <td>{serviceData.enggName.toUpperCase()}</td>
-                          </tr>
-                          <tr>
-                            <th>START TIME :</th>
-                            <td>{extractStartTime(serviceData.Slot)}</td>
-                          </tr>
-                          <tr>
-                            <th>END TIME :</th>
-                            <td>{extractEndTime(serviceData.Slot)}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                  // <div
+                  //   className="more-descriptive"
+                  //   onClick={passData}
+                  //   style={{
+                  //     background: "#ffffff",
+                  //   }}
+                  // >
+                  //   <div className="detail">
+                  //     <table className="customer-table1">
+                  //       <tbody>
+                  //         <tr>
+                  //           <th>NAME :</th>
+                  //           <td>{serviceData.clientName.toUpperCase()}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>ENGINEER :</th>
+                  //           <td>{serviceData.enggName.toUpperCase()}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>START TIME :</th>
+                  //           <td>{extractStartTime(serviceData.Slot)}</td>
+                  //         </tr>
+                  //         <tr>
+                  //           <th>END TIME :</th>
+                  //           <td>{extractEndTime(serviceData.Slot)}</td>
+                  //         </tr>
+                  //       </tbody>
+                  //     </table>
+                  //   </div>
+                  // </div>
+
+
+                  <div className="service-card" onClick={passData}>
+                  <table className="service-table">
+                    <tbody>
+                      <tr>
+                        <th>CN:</th>
+                        <td>{serviceData.clientName.toUpperCase()}</td>
+                      </tr>
+                      <tr>
+                        <th>EN:</th>
+                        <td>{serviceData.enggName.toUpperCase()}</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                  <div className="service-card-bottom">
+                    <h5>{extractStartTime(serviceData.Slot)}</h5>
+                    <h5>{extractEndTime(serviceData.Slot)}</h5>
+                    {/* <h5>3:00  <FaStar className='yellow_color' /> </h5> */}
+
                   </div>
+                </div>
                 ))}
 
 
@@ -430,6 +455,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     </table>
                   </div>
                 </div> */}
+
+              
               </>
             )}
           </div> : null}
