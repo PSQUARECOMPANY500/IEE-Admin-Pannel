@@ -402,7 +402,11 @@
                     </div>
   
                     <div className="col75">
-                      <SingleSetDropdown padding="8px" width="85%" placeholder={"Type Of Issue"} Details={[{ _id: 1, checklistName: 'door' },{ _id: 2, checklistName: 'lift' }]}  onStateChange={handleTypeOfIssue}/>
+                      <SingleSetDropdown padding="8px" width="85%" placeholder={"Type Of Issue"}
+                       Details={[{ _id: 1, checklistName: 'Door' },{ _id: 2, checklistName: 'Light' },
+                       { _id: 3, checklistName: 'Fan' },{ _id: 4, checklistName: 'Buttons' },
+                       { _id: 5, checklistName: 'Lift' },{ _id: 6, checklistName: 'Other' }]} 
+                        onStateChange={handleTypeOfIssue}/>
                     </div>
                   </div>
   

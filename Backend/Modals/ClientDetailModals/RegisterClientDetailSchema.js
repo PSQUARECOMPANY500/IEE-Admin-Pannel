@@ -8,9 +8,9 @@ const clientRegister = new Schema(
       unique: true,
       required: true,
     },
-    name:{
-      type:String,
-      required:true
+    name: {
+      type: String,
+      required: true,
     },
     Password: {
       type: String,
@@ -35,6 +35,13 @@ const clientRegister = new Schema(
     ModelType: {
       type: String,
       required: true,
+    },
+    MembershipType: {
+      type: String,
+      enum: ["warrenty", "gold", "platinum", "silver"],
+    },
+    CallbackCount: {
+      type: String,
     },
   },
   {

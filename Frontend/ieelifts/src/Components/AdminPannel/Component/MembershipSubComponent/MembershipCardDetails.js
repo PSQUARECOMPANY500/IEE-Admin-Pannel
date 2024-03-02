@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import ExpiringComponent from "./ExpiringComponent";
+import ExpiredComponent from "./ExpiredComponent";
 
-const MembershipCardDetails = () => {
-  const [selectedOption, setSelectedOption] = useState("Expired");
+const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
+  const [selectedOption, setSelectedOption] = useState("Expiring");
 
   const handleClick = (option) => {
     setSelectedOption(option);
@@ -9,26 +11,45 @@ const MembershipCardDetails = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div onClick={() => handleClick("Revenue")}>Show Revenue</div>
-        <div onClick={() => handleClick("ExpiringSoon")}>
-          Show Expiring Soon
+      <div className="expandedMembershipheading">
+        <div
+          onClick={() => handleClick("Revenue")}
+          className="headingCenter"
+          style={{
+            borderBottom: selectedOption === "Revenue" && "2px solid #0F351D",
+          }}
+        >
+          Revenue
         </div>
-        <div onClick={() => handleClick("Expired")}>Show Expired</div>
+        <div
+          onClick={() => handleClick("Expiring")}
+          className="headingCenter"
+          style={{
+            borderBottom: selectedOption === "Expiring" && "2px solid #0F351D",
+          }}
+        >
+          <span>Expiring Soon</span> <span>{expiringCount}</span>
+        </div>
+        <div
+          onClick={() => handleClick("Expired")}
+          style={{
+            borderBottom: selectedOption === "Expired" && "2px solid #0F351D",
+          }}
+          className="headingCenter"
+        >
+          <span>Expired</span> <span>{expiredCount}</span>
+        </div>
       </div>
 
       {selectedOption && (
         <div>
-          <h2>{selectedOption}</h2>
           {/* Display information based on the selected option */}
           {selectedOption === "Revenue" && (
             <p>Show revenue information here...</p>
           )}
-          {selectedOption === "ExpiringSoon" && (
-            <p>Show expiring soon information here...</p>
-          )}
+          {selectedOption === "Expiring" && <ExpiringComponent DemoData={DemoData} />}
           {selectedOption === "Expired" && (
-            <p>Show expired information here...</p>
+            <ExpiredComponent DemoData={DemoData} />
           )}
         </div>
       )}

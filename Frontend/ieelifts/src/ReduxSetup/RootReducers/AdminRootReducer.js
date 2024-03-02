@@ -19,6 +19,14 @@ import { getBookedSlotsforEnggsReducer } from '../Reducers/AdminReducer';
 import { getEnggBasicDataForCrouserReducer } from '../Reducers/AdminReducer';
 
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
+import { requestGetMemberShipHistoryReducer } from "../Reducers/AdminReducer";
+import { requestGetMemberShipCallReducer } from "../Reducers/AdminReducer";
+import { requestGetMemberShipClientReducer } from "../Reducers/AdminReducer";
+import { createClientCallReducer } from "../Reducers/AdminReducer";
+import { getClientsReducer } from "../Reducers/AdminReducer";
+import { getFilterDataReducer } from "../Reducers/AdminReducer";
+import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
+import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
 
 import { EnggLocationDetailsFetchReducer } from '../Reducers/AdminReducer';
 const AdminRootReducer = combineReducers({
@@ -39,8 +47,15 @@ const AdminRootReducer = combineReducers({
     getCurrentDateAssignCalbackAction:getCurrentDateAssignCalbackAction,
     getCurrentDateAssignServiceRequestReducer:getCurrentDateAssignServiceRequestReducer,
     getBookedSlotsforEnggsReducer:getBookedSlotsforEnggsReducer,
-    getEnggBasicDataForCrouserReducer:getEnggBasicDataForCrouserReducer
-
+    getEnggBasicDataForCrouserReducer:getEnggBasicDataForCrouserReducer,
+    requestGetMemberShipDataActionReducer: requestGetMemberShipDataActionReducer,
+    requestLimitedClientDataReducer: requestLimitedClientDataReducer,
+    requestGetMemberShipHistoryReducer: requestGetMemberShipHistoryReducer,
+    requestGetMemberShipCallReducer: requestGetMemberShipCallReducer,
+    requestGetMemberShipClientReducer: requestGetMemberShipClientReducer,
+    createClientCallReducer: createClientCallReducer,
+    getClientsReducer: getClientsReducer,
+    getFilterDataReducer: getFilterDataReducer,
 })
 
 export default AdminRootReducer;
