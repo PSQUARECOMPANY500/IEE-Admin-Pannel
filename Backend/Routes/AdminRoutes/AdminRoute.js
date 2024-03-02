@@ -13,8 +13,9 @@ router.post("/createMembership", adminContoller.createClientMemebership);
 
 router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
 
+router.post('/createServiceAdmin', adminContoller.createServiceAdmin )  // crete service admin
+
 //------------------------------ All get requests -------------------------------------------------
-router.get("/getMembership", adminContoller.getClientMemebership);
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
@@ -65,5 +66,18 @@ router.get("/getEnggLocationDetail",serviceEnggContoller.getEnggLocationDetail)
 router.get("/fetchEnggAttendance",adminContoller.fetchEnggAttendance)
 
 router.put("/approveLeaveByAdmin",adminContoller.approveLeaveByAdmin)
+
+
+router.get("/filterClient", adminContoller.filterClient);
+router.get("/serchingClient", adminContoller.searchClients)
+router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
+router.get("/getClientDataForMembership", adminContoller.getClientData);
+router.get("/getClientCalls", adminContoller.getClientCalls);
+router.get("/getMembershipHistory", adminContoller.getMembershipHistory);
+router.get("/getMembershipDetails", adminContoller.getMembershipDetails);
+router.get("/getClientId/:JON", adminContoller.getClientDetail);
+router.get("/getMembership", adminContoller.getClientMembership);
+router.post("/createMembership", adminContoller.createClientMemebership);
+router.post("/createCall", adminContoller.createClientCallDetails);
 
 module.exports = router;

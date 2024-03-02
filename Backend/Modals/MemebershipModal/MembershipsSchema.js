@@ -8,7 +8,7 @@ const memebership = new Schema(
       type: String,
       required: true,
     },
-    MemebershipType: {
+    MembershipType: {
       type: String,
       enum: ["warrenty", "gold", "platinum", "silver"],
       required: true,
@@ -16,6 +16,9 @@ const memebership = new Schema(
     StartDate: {
       type: Date,
       required: true,
+    },
+    EndDate: {
+      type: Date,
     },
     Duration: {
       type: String,
@@ -29,12 +32,22 @@ const memebership = new Schema(
       type: String,
       required: true,
     },
-    isRenewed: {
-      type: Boolean,
-      required: true,
-      default: false,
+    callbacksCount: {
+      type: Number,
     },
-    isExpired: {
+    serviecsCount: {
+      type: Number,
+    },
+    sparePartsSoldCount: {
+      type: Number,
+    },
+    SOScallsCount: {
+      type: Number,
+    },
+    revenue: {
+      type: Number,
+    },
+    isRenewed: {
       type: Boolean,
       required: true,
       default: false,
