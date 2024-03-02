@@ -100,13 +100,13 @@ const Sidebar = ({ children }) => {
       name: "Requests",
       icon: <RiGitPullRequestFill />,
     },
+    // {
+    //   Path: "/dsad",
+    //   name: "Immediate Visits",
+    //   icon: <MdOutlineModeOfTravel />,
+    // },
     {
-      Path: "/dsad",
-      name: "Immediate Visits",
-      icon: <MdOutlineModeOfTravel />,
-    },
-    {
-      Path: "/afsd",
+      Path: "/Clients",
       name: "Clients",
       icon: <MdOutlineAirlineSeatReclineNormal />,
     },
@@ -120,11 +120,11 @@ const Sidebar = ({ children }) => {
       name: "Engeeniers",
       icon: <MdEngineering />,
     },
-    {
-      Path: "/agsd",
-      name: "SOS Requests",
-      icon: <MdOutlineSos />,
-    },
+    // {
+    //   Path: "/agsd",
+    //   name: "SOS Requests",
+    //   icon: <MdOutlineSos />,
+    // },
   ];
 
   useEffect(() => {
@@ -142,6 +142,9 @@ const Sidebar = ({ children }) => {
         break;
         case "/Engeeniers":
           setTopBarHeading("Engeeniers");
+          break;
+        case "/Clients":
+          setTopBarHeading("Clients");
           break;
       // Add more cases for other pages
       default:

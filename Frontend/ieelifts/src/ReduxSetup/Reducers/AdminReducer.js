@@ -20,6 +20,163 @@ import { GET_BOOKED_DATES_FOR_ENGGS } from '../Actions/AdminActions';
 import { GET_ENGG_BASIC_DATA_FOR_CROUSER } from '../Actions/AdminActions';
 
 import { GET_ENGG_LOCATION_DETAILS } from '../Actions/AdminActions';
+import { GET_CLIENT_CALL_DETAILS } from "../Actions/AdminActions";
+import { CREATE_CLIENT_CALL } from "../Actions/AdminActions";
+import { GET_CLIENT_DETAILS } from "../Actions/AdminActions";
+import { GET_ALL_CLIENTS } from "../Actions/AdminActions";
+import { GET_FILTER_DATA } from "../Actions/AdminActions";
+import { GET_MEMBERSHIP_DATA } from "../Actions/AdminActions";
+import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
+import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
+import { GET_CLIENT_MEMBERSHIP_HISTORY } from "../Actions/AdminActions";
+
+
+
+const intialState22 = {
+    clients: null,
+  };
+  export const getFilterDataReducer = (state = intialState22, action) => {
+    switch (action.type) {
+      case GET_FILTER_DATA:
+        return { ...state, clients: action.payload };
+      default:
+        return state;
+    }
+  };
+  const intialState21 = {
+    clients: null,
+  };
+  export const getClientsReducer = (state = intialState21, action) => {
+    switch (action.type) {
+      case GET_ALL_CLIENTS:
+        return { ...state, clients: action.payload };
+      default:
+        return state;
+    }
+  };
+  const intialState20 = {
+    clientCall: null,
+  };
+  export const createClientCallReducer = (state = intialState20, action) => {
+    switch (action.type) {
+      case CREATE_CLIENT_CALL:
+        return { ...state, clientCall: action.payload };
+      default:
+        return state;
+    }
+  };
+  const intialState19 = {
+    membershipCleintDetail: null,
+  };
+  export const requestGetMemberShipClientReducer = (
+    state = intialState19,
+    action
+  ) => {
+    switch (action.type) {
+      case GET_CLIENT_DETAILS:
+        return { ...state, membershipCleintDetail: action.payload };
+      default:
+        return state;
+    }
+  };
+  const intialState18 = {
+    membershipCallDetail: null,
+  };
+  export const requestGetMemberShipCallReducer = (
+    state = intialState18,
+    action
+  ) => {
+    switch (action.type) {
+      case GET_CLIENT_CALL_DETAILS:
+        return { ...state, membershipCallDetail: action.payload };
+      default:
+        return state;
+    }
+  };
+  const intialState17 = {
+    membershipHistory: null,
+  };
+  export const requestGetMemberShipHistoryReducer = (
+    state = intialState17,
+    action
+  ) => {
+    switch (action.type) {
+      case GET_CLIENT_MEMBERSHIP_HISTORY:
+        return { ...state, membershipHistory: action.payload };
+      default:
+        return state;
+    }
+  };
+  const initialState16 = {
+    membershipDetail: {
+      expiring: {},
+      expired: {},
+    },
+  };
+  export const requestLimitedClientDataReducer = (
+    state = initialState16,
+    action
+  ) => {
+    switch (action.type) {
+      case GET_LIMITED_CLIENT_DATA:
+        return {
+          ...state,
+          membershipDetail: {
+            ...state.membershipDetail,
+            expiring: { ...state.membershipDetail.expiring, ...action.payload },
+          },
+        };
+      case GET_LIMITED_CLIENT_DATA_EXPIRED:
+        return {
+          ...state,
+          membershipDetail: {
+            ...state.membershipDetail,
+            expired: { ...state.membershipDetail.expired, ...action.payload },
+          },
+        };
+      default:
+        return state;
+    }
+  };
+  // const intialState14 = {
+  //   membershipDetail: null,
+  // };
+  // export const requestLimitedClientDataReducer = (
+  //   state = intialState14,
+  //   action
+  // ) => {
+  //   switch (action.type) {
+  //     case GET_LIMITED_CLIENT_DATA:
+  //       console.log("Information", action.payload);
+  //       return {
+  //         ...state,
+  //         membershipDetail: { ...state.membershipDetail, ...action.payload },
+  //       };
+  //     case GET_LIMITED_CLIENT_DATA_EXPIRED:
+  //       console.log("Information", action.payload);
+  //       return {
+  //         ...state,
+  //         membershipDetail: { ...state.membershipDetail, ...action.payload },
+  //       };
+  //     default:
+  //       return state;
+  //   }
+  // };
+  const intialState15 = {
+    membershipDetail: null,
+  };
+  export const requestGetMemberShipDataActionReducer = (
+    state = intialState15,
+    action
+  ) => {
+    switch (action.type) {
+      case GET_MEMBERSHIP_DATA:
+        return { ...state, membershipDetail: action.payload };
+      default:
+        return state;
+    }
+  };
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 const intialState14 = {
