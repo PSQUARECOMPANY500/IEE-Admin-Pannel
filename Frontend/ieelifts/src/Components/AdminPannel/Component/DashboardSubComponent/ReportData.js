@@ -1,96 +1,85 @@
-import React from "react";
+import React, { useState } from 'react';
+import ReportIssue from './ReportIssue';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { GrGallery } from "react-icons/gr";
+import CabinFloors from './CabinFloors';
+import CartopShift from './CartopShift';
+import Invoice from './Invoice';
+import MCRoom from './MCRoom';
+import PitArea from './PitArea';
+import Rating from './Rating';
 
-const ReportData = () => {
+
+function ReportTable() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const routes = [{name:'M/c Room',co:<MCRoom/>},{name:'Cabin,Floors',co:<CabinFloors />} ,{name:'Cartop,Shaft',co:<CartopShift />}  , {name:'PIT Area',co: <PitArea />}, {name:'Invoice',co: <Invoice />},{name:'Rating',co: <Rating />} ];
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === routes.length - 1 ? 0 : prevIndex + 1));
+  };
+
+
+  const goToPrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? routes.length - 1 : prevIndex - 1));
+  };
+
+  const CurrentComponent = routes[currentIndex].co;
+
   return (
-        <table className="customer-table">
-          <tbody>
-            <tr>
-              <th>NAME :</th>
-              <td>ARJUN service</td>
-            </tr>
-            <tr>
-              <th>JON :</th>
-              <td>565454</td>
-            </tr>
-            <tr>
-              <th>ADDRESS :</th>
-              <td>ADDRESS ADDRESS</td>
-            </tr>
-            <tr>
-              <th>TYPE :</th>
-              <td>DOOR</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>ENGINEER :</th>
-              <td>MOHAN RAJ RAWAT</td>
-            </tr>
-            <tr>
-              <th>START TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>END TIME :</th>
-              <td>4:00</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-            <tr>
-              <th>DESCRIPTION :</th>
-              <td>NOT WORKING</td>
-            </tr>
-          </tbody>
-        </table>
-  )
-};
+    <div className="ReportTable">
+      {/* <ReportIssue/> */}
+      <div className='ReportNavigation'>
+        <div className='CarouselButtons'>
+          <div className='CarouselButtonsL'>
+            {currentIndex !== 0 ? <FaChevronLeft onClick={goToPrev} className='cursor' /> : ''}
+          </div>
+          <div className='ComponentNames'>
+            <div className='ComponentNames'>
+              {currentIndex > 0 && (
+                <div className='PreviousComponentName'>
+                  <p>{routes[currentIndex - 1].name}</p>
+                </div>
+              )}
+              <div className='CurrentComponentName'>
+                <p style={{ color: '#F8AC1D', fontSize: '.9rem', textAlign: 'center',whiteSpace:'nowrap' }}>
+                  {routes[currentIndex].name}
+                </p>
+              </div>
+              {currentIndex < routes.length - 1 && (
+                <div className='NextComponentName'>
+                  <p>{routes[currentIndex + 1].name}</p>
+                </div>
+              )}
+            </div>
 
-export default ReportData;
+          </div>
+
+          <div className='CarouselButtonsR'>
+            {currentIndex !== routes.length - 1 && <FaChevronRight onClick={goToNext} className='cursor' />}
+          </div>
+        </div>
+        <div className='CarouselScroll'>
+          <div className='Progress1'>
+            <div
+              className='Progress2'
+              style={{ marginLeft: `${(currentIndex / (routes.length)) * 100}%` }}
+            ></div>
+          </div>
+        </div>
 
 
-           
-               
+        {CurrentComponent}
+
+      </div>
+
+    </div>
+
+  );
+}
+
+export default ReportTable;
+
+
+
+
+

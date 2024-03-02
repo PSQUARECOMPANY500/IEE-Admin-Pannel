@@ -12,7 +12,7 @@
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "react": "^18.2.0",
-    "react-calendar": "^4.7.0",
+    "react-calendar": "^4.8.0",
     "react-content-loader": "^6.2.1",
     "react-date-picker": "^10.6.0",
     "react-dom": "^18.2.0",
@@ -57,5 +57,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

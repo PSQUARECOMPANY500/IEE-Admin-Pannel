@@ -463,7 +463,7 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 48rem;
+  height: 51rem;
   transition: border 1s ease;
 }
 
@@ -1327,8 +1327,8 @@ code {
   text-transform: uppercase;
   display: grid;
   gap: 2rem;
-  padding-right: 40rem;
-  grid-template-columns: 20% 20% 20% 20%;
+  margin-left: 2rem;
+  grid-template-columns: 24% 24% 24% 24%;
   justify-content: space-between;
   align-items: center;
   /* gap: 1rem; */

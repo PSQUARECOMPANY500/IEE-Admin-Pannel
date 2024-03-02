@@ -19,7 +19,6 @@ import { getBookedSlotsforEnggsReducer } from '../Reducers/AdminReducer';
 import { getEnggBasicDataForCrouserReducer } from '../Reducers/AdminReducer';
 
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
-
 import { requestGetMemberShipHistoryReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipCallReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipClientReducer } from "../Reducers/AdminReducer";
@@ -28,8 +27,8 @@ import { getClientsReducer } from "../Reducers/AdminReducer";
 import { getFilterDataReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
+import { EnggLocationDetailsFetchReducer } from "../Reducers/AdminReducer";
 
-import { EnggLocationDetailsFetchReducer } from '../Reducers/AdminReducer';
 const AdminRootReducer = combineReducers({
     EnggLocationDetailsFetchReducer:EnggLocationDetailsFetchReducer,
     fetchClientDetailsByJon:fetchClientDetailsByJon,

@@ -118,7 +118,7 @@ const Sidebar = ({ children }) => {
     {
       Path: "/Engeeniers",
       Path: "/Engeeniers",
-      name: "Engeeniers",
+      name: "Engineers",
       icon: <MdEngineering />,
     },
     // {
@@ -142,7 +142,7 @@ const Sidebar = ({ children }) => {
         setTopBarHeading("Memberships");
         break;
         case "/Engeeniers":
-          setTopBarHeading("Engeeniers");
+          setTopBarHeading("Engineers");
           break;
         case "/Clients":
           setTopBarHeading("Clients");
