@@ -4,7 +4,7 @@ import ReportData from "./ReportData";
 import { LiaStarSolid } from "react-icons/lia"; // use in future (don't delete Please)
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
-import EnggLocation from "./EnggLocationSection/EnggLocation";
+import EnggLocation from "./EnggLocationSection/EnggLocation"
 
 //import { getAllAssignCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)
 import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"  //(may be use in future TODO)

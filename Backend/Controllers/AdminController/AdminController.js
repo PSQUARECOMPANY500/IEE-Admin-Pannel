@@ -17,7 +17,6 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const AssignMemeberships = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
-const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSchema");
 
 const EnggRating = require("../../Modals/Rating/Rating");
 

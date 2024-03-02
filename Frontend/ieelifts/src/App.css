@@ -2330,7 +2330,6 @@ thead th {
   margin-bottom: 3px;
 }
 
-
 .dropdown__text:after {
   content: "";
   transition: all 0.3s;
