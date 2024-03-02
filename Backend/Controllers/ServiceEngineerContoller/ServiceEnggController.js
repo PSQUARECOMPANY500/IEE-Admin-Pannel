@@ -382,6 +382,7 @@ function convertTimeToSortableFormat(time) {
 module.exports.EnggCheckIn = async (req, res) => {
   try {
     const { IsAttendance, engPhoto, ServiceEnggId } = req.body;
+    
     const time = new Date().toLocaleTimeString("en-IN", {
       timeZone: "Asia/Kolkata",
       hour: "2-digit",
@@ -393,7 +394,7 @@ module.exports.EnggCheckIn = async (req, res) => {
       IsAttendance: IsAttendance,
       ServiceEnggId: ServiceEnggId,
       Check_In: {
-        engPhoto: engPhoto,
+        engPhoto: req.file.filename,
         time: time,
       }
     });
@@ -404,6 +405,9 @@ module.exports.EnggCheckIn = async (req, res) => {
     return res.status(500).json({ error: "Internal server error in EnggCheckIn" });
   }
 };
+
+
+
 
 module.exports.EnggCheckOut = async (req, res) => {
   try {

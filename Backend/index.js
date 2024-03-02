@@ -1,7 +1,7 @@
 const express = require("express");
 const { createServer: createHttpServer } = require("http");
 const { Server: SocketServer } = require("socket.io");
-
+const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -17,6 +17,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(morgan('dev'));
 
 // ------ Routes ------
 // ---------service engg routes---------

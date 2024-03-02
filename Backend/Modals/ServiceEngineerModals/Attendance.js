@@ -24,12 +24,14 @@ const EnggAttendanceRecord = new Schema({
     Check_In: {
         engPhoto: {
             type: String,
-            unique: true,
         },
         time: {
             type: String,
         }
 
+    },
+    image: {
+        type: Buffer
     },
     Check_Out: {
         engPhoto: {
