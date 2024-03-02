@@ -27,6 +27,7 @@ import { getClientsReducer } from "../Reducers/AdminReducer";
 import { getFilterDataReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
+import { EnggLocationDetailsFetchReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
     EnggLocationDetailsFetchReducer:EnggLocationDetailsFetchReducer,
