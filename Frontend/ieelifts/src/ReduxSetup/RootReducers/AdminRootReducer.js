@@ -20,8 +20,6 @@ import { getEnggBasicDataForCrouserReducer } from '../Reducers/AdminReducer';
 
 import { fetchClientDetailsByJon } from '../Reducers/ClientReducer';
 
-import { EnggLocationDetailsFetchReducer } from '../Reducers/AdminReducer';
-
 import { requestGetMemberShipHistoryReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipCallReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipClientReducer } from "../Reducers/AdminReducer";
