@@ -21,7 +21,7 @@ export const createChatActions = (userId, LoginId) => {
                 })
             }
             else{
-                console.log("chat is fetched2")
+                // console.log("chat is fetched2")
             const response = await axios.post(`${config.apiUrl}/chat/createChat`,
                 {
                     userId,
@@ -47,8 +47,9 @@ export const createChatActions = (userId, LoginId) => {
 
 //action to send message
 
-export const sendChatMessageAction = (Sender, Content, ChatId) => {
-    return async (dispatch) => {
+export const sendChatMessageAction = async (Sender,Content,ChatId) => {
+    console.log(Sender,Content,ChatId)
+    // return async (dispatch) => {
         try {
             const response = await axios.post(`${config.apiUrl}/chat/sendMessage`,
                 {
@@ -58,15 +59,17 @@ export const sendChatMessageAction = (Sender, Content, ChatId) => {
                 }
             );
 
-            dispatch({
-                type: SEND_MESSAGE_BY_SENDER,
-                payload: response.data
-            })
+            console.log("send message from frontend",response);
 
+            // dispatch({
+            //     type: SEND_MESSAGE_BY_SENDER,
+            //     payload: response.data
+            // })
+            return response;
         } catch (error) {
             console.log("error while fetching data", error);
         }
-    }
+    // }
 }
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -75,13 +78,13 @@ export const sendChatMessageAction = (Sender, Content, ChatId) => {
 
 export const getSenderMessagesAction = (chatId) => {
 
-    console.log("this is the chats",chatId)
+    // console.log("this is the chats",chatId)
     return async (dispatch) => {
         if (!chatId) {
            return;
         }
         try {
-            console.log("log")
+            // console.log("log")
             const response = await axios.get(`${config.apiUrl}/chat/getChatMessages/${chatId}`);
             dispatch({
                 type: FETCH_ALL_MESSAGES_BY_CHATID,

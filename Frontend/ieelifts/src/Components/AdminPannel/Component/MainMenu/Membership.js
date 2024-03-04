@@ -1,24 +1,82 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MembershipCard from "../MembershipSubComponent/MembershipCard";
-import {
-  warrentyDemoData,
-  goldDemoData,
-  platinumDemoData,
-  silverDemoData,
-} from "../MembershipSubComponent/MemvbershipDemoData";
+import { requestGetMemberShipDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Membership = () => {
+  const dispatch = useDispatch();
   const [setClick, click] = useState(false);
   const [clickCount, setClickCount] = useState(0);
-  const [cards, setCards] = useState([
-    { DemoData: warrentyDemoData, order: 1, toggleOrder: 2, id: 1 },
-    { DemoData: platinumDemoData, order: 2, toggleOrder: 1, id: 2 },
-    { DemoData: goldDemoData, order: 3, toggleOrder: 1, id: 3 },
-    { DemoData: silverDemoData, order: 4, toggleOrder: 1, id: 4 },
-    { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
-  ]);
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    dispatch(requestGetMemberShipDataAction());
+  }, [dispatch]);
+
+  const membershipJon = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.requestGetMemberShipDataActionReducer
+    ) {
+      return state?.AdminRootReducer?.requestGetMemberShipDataActionReducer;
+    } else {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    if (
+      membershipJon &&
+      membershipJon.membershipDetail &&
+      membershipJon.membershipDetail.data
+    ) {
+    
+      setCards([
+        {
+          DemoData: {
+            dataType: "Warrenty",
+            Data: membershipJon.membershipDetail.data[0],
+          },
+          order: 1,
+          toggleOrder: 2,
+          id: 1,
+        },
+        {
+          DemoData: {
+            dataType: "Platinum",
+            Data: membershipJon.membershipDetail.data[1],
+          },
+          order: 2,
+          toggleOrder: 1,
+          id: 2,
+        },
+        {
+          DemoData: {
+            dataType: "Gold",
+            Data: membershipJon.membershipDetail.data[3],
+          },
+          order: 3,
+          toggleOrder: 1,
+          id: 3,
+        },
+        {
+          DemoData: {
+            dataType: "Silver",
+            Data: membershipJon.membershipDetail.data[2],
+          },
+          order: 4,
+          toggleOrder: 1,
+          id: 4,
+        },
+        { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
+      ]);
+    } else {
+      // Reset cards to an empty array if membershipJon is not available
+      setCards([]);
+    }
+  }, [membershipJon]);
 
   const handleDoubleClick = (id) => {
     const clickedIndex = cards.findIndex((card) => card.id === id);
@@ -61,61 +119,39 @@ const Membership = () => {
       return card;
     });
     setCards(updatedCards);
-    setClickCount(0);
+    if (clickCount === 1) {
+      setClickCount(0);
+    } else {
+      setClickCount(1);
+    }
     click(!setClick);
   };
 
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${
-          setClick ? `membershipCards_expand ` : ""
-        } `}
+        className={`membershipCards ${setClick ? `membershipCards_expand ` : "non_expand_gap"
+          } `}
       >
-        <MembershipCard
-          DemoData={cards[0].DemoData}
-          order={cards[0].order}
-          setClick={setClick}
-          clickCount={clickCount}
-          itemClick={() => {
-            handleDoubleClick(1);
-            setClickCount(1);
-            click(true);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[1].DemoData}
-          order={cards[1].order}
-          setClick={setClick}
-          clickCount={clickCount}
-          itemClick={() => {
-            handleDoubleClick(2);
-            click(true);
-            setClickCount(1);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[2].DemoData}
-          order={cards[2].order}
-          clickCount={clickCount}
-          setClick={setClick}
-          itemClick={() => {
-            handleDoubleClick(3);
-            click(true);
-            setClickCount(1);
-          }}
-        />
-        <MembershipCard
-          DemoData={cards[3].DemoData}
-          clickCount={clickCount}
-          order={cards[3].order}
-          setClick={setClick}
-          itemClick={() => {
-            handleDoubleClick(4);
-            setClickCount(1);
-            click(true);
-          }}
-        />
+        {cards &&
+          cards.map((items, index) => {
+            if (index === cards.length - 1) return null;
+
+            return (
+              <MembershipCard
+                key={index}
+                DemoData={items.DemoData}
+                order={items.order}
+                setClick={setClick}
+                clickCount={clickCount}
+                itemClick={() => {
+                  handleDoubleClick(index + 1);
+                  setClickCount(1);
+                  click(true);
+                }}
+              />
+            );
+          })}
         {setClick && (
           <MembershipCard
             clickCount={clickCount}

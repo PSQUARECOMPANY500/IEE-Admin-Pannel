@@ -7,32 +7,45 @@ const EnggLocationSchema = new Schema(
             type: String,
             require: true,
         },
-        JobOrderNumber: {
-            type: String,
+        Attendance: {
+            type: Boolean,
             require: true,
+            default: false
         },
-        startingLocation: {
+        currentLocation: { //only runs ont time when the eng mark present in the attendance 
             type: { type: String },
             coordinates: []
         },
-        endingLocation: {
-            type: { type: String },
-            coordinates: []
+        AllotDetails: [{
+            JobOrderNumber: {
+                type: String,
+                require: true,
+            },
+            startingLocation: { //when the engg will accept the request (swipe)
+                type: { type: String },
+                coordinates: []
+            },
+            endingLocation: { //client lift location 
+                type: { type: String },
+                coordinates: []
+            },
+            createdDate: {
+                type: String,
+                default: () => {
+                    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+                    return now; // Extract date part
+                }
+            },
         },
-        longitude: {
-            type: Number,
-        },
-        latitude: {
-            type: Number,
-        },
-        createdDate: {
+        ],
+        AttendanceCreatedDate: {
             type: String,
             default: () => {
                 const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
                 return now; // Extract date part
             }
         },
-        createdTime: {
+        AttendanceCreatedTime: {
             type: String,
             default: () => {
                 const now = new Date().toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" });

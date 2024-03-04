@@ -1115,7 +1115,7 @@ footer a:hover {
 .dropdown2 {
   justify-content: flex-start;
   align-items: flex-end;
-  z-index: 0;
+  z-index: 1;
   width: 50%;
 }
 
@@ -2506,21 +2506,6 @@ thead th {
   margin-bottom: 3px;
 }
 
-/* /* .dropdown__text {
-  padding: 12px 16px;
-  cursor: pointer;
-  height: auto;
-  height: 10px;
-  color: black;
-  background: #ffffff;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
-} */
-
 .dropdown__text:after {
   content: "";
   transition: all 0.3s;
@@ -2569,7 +2554,6 @@ thead th {
   background: #fef3de;
 }
 
-*/
 
 /* ticket section status button propety changes dynamically start*/
 .assignColor {
@@ -2840,8 +2824,8 @@ element.style {
 .service-assign {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 12px 2px;
+  justify-content: space-between;
+  padding: 12px 6px;
   margin-top: 10px;
 }
 
@@ -2889,11 +2873,13 @@ element.style {
   justify-content: center;
   align-items: center;
   border-right: 1px solid #c1c1c1;
-  padding: 0px 12px;
+  padding: 0px 14px;
+  margin-right: 0px;
 }
 
 .name-jon {
-  padding: 0px 12px;
+  padding: 0px 0px;
+  margin-left: -35px;
 }
 
 .name-jon p {
@@ -2958,6 +2944,7 @@ element.style {
   border-radius: 50%;
   display: flex;
   position: relative;
+  margin-right: 8px;
 }
 
 .image-border-collapse2 {
@@ -4954,3 +4941,40 @@ margin-top: -10px;
 }
 
 /* ---------------------------------------------------ayush css End */
+
+
+
+
+
+
+
+/* css for thr message box inside the Engg crouser starts -------------------------------- */
+
+.loader{
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  gap: 10px;
+}
+.box {
+  height: 50px;
+  width: 50px;
+  margin-top: 40%;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: orange transparent;
+  animation: spin 2s infinite ease-out;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* css for thr message box inside the Engg crouser ends -------------------------------- */
+
+

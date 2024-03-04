@@ -6,7 +6,7 @@ import Dashboard from "./Components/AdminPannel/Component/MainMenu/Dashboard";
 import Request from "./Components/AdminPannel/Component/MainMenu/Request";
 import Membership from "./Components/AdminPannel/Component/MainMenu/Membership";
 import Enggeniers from "./Components/AdminPannel/Component/MainMenu/Enggeniers";
-
+import Clients from "./Components/AdminPannel/Component/MainMenu/Clients"
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
           <Route path="/Requests" element={<Request />} />
           <Route path="/Memberships" element={<Membership />} />
           <Route path="/Engeeniers" element={<Enggeniers/>} />
+          <Route path="/Clients" element={<Clients />} />
         </Routes>
       </Sidebar>
     </>

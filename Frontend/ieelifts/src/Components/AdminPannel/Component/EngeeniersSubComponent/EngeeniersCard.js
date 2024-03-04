@@ -242,15 +242,31 @@ const EngeeniersCard = () => {
 
                 <div className="engchatmsg-sender-side">
                   <div className="engchatmsg-sender-message">
-                    <p>hello preet sir kese ho ap khana ho gya paka kua khaya apne kahane me preet sir  roti me kya bna the sir  aalu gopbhi kha  lslksffhdashjhadfvxcm  sdkjhkjsd shns  skksk afdsdfdskcsd  !</p>
+                    <p>Hi there! How are you doing today?</p>
                   </div>
                 </div>
 
                 <div className=".engchatmsg-reciver-side">
                   <div className="engchatmsg-reciver-message">
-                    <p>hello preet sir kese ho ap khana ho gya paka kua khaya apne kahane me preet sir  roti me kya bna the sir  aalu gopbhi kha  lslksffhdashjhadfvxcm  sdkjhkjsd shns  skksk afdsdfdskcsd  !</p>
+                    <p>Hey! I'm doing well, thanks. How about you?</p>
                   </div>
                 </div>
+                <div className="engchatmsg-sender-side">
+                  <div className="engchatmsg-sender-message">
+                    <p>I'm good too, thanks for asking. Did you do anything interesting recently?
+</p>
+                  </div>
+                </div>
+
+                <div className=".engchatmsg-reciver-side">
+                  <div className="engchatmsg-reciver-message">
+                    <p>Not much, just caught up on some reading and went for a walk. How about you?
+</p>
+                  </div>
+                </div>
+          
+
+
 
 
 

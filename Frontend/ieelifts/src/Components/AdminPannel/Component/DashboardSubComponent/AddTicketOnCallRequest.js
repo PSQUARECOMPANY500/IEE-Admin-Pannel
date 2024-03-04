@@ -57,6 +57,7 @@
       enggAddress: "",
       enggLocation: "",
       enggRating: "",
+      enggPhoto:""
     });
   
     const [ClickListOnSelect, setClickListOnSelect] = useState(null);
@@ -155,9 +156,11 @@
         setModelType(clientDetails.ModelType);
 
 
-        const currentDate = new Date();
+        const currentDate = new Date()
         const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
-        setDate(formatedDate);
+        const updatedFormatedDate = currentDate.toLocaleDateString('en-GB');
+        console.log(updatedFormatedDate)
+        setDate(updatedFormatedDate);
         
         const hours = currentDate.getHours();
         const minutes = currentDate.getMinutes();
@@ -207,6 +210,7 @@
           enggName: getEnggState.EnggName,
           enggPhone: getEnggState.PhoneNumber,
           enggAddress: getEnggState.EnggAddress,
+          enggPhoto:getEnggState.EnggPhoto
         });
       }
     }, [getEnggState]);
@@ -398,7 +402,11 @@
                     </div>
   
                     <div className="col75">
-                      <SingleSetDropdown padding="8px" width="85%" placeholder={"Type Of Issue"} Details={[{ _id: 1, checklistName: 'door' },{ _id: 2, checklistName: 'lift' }]}  onStateChange={handleTypeOfIssue}/>
+                      <SingleSetDropdown padding="8px" width="85%" placeholder={"Type Of Issue"}
+                       Details={[{ _id: 1, checklistName: 'Door' },{ _id: 2, checklistName: 'Light' },
+                       { _id: 3, checklistName: 'Fan' },{ _id: 4, checklistName: 'Buttons' },
+                       { _id: 5, checklistName: 'Lift' },{ _id: 6, checklistName: 'Other' }]} 
+                        onStateChange={handleTypeOfIssue}/>
                     </div>
                   </div>
   
@@ -528,8 +536,8 @@
                       <div>
                         {getEnggState  ? (
                           <img
-                            style={{ width: "90px", height: "90px" }}
-                            src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+                          style={{ width: "90px", height: "90px",objectFit:'cover', objectPosition:"center", borderRadius:'2px'}}
+                          src={engDetails.enggPhoto}
                             alt="lift"
                           />
                         ) : (

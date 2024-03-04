@@ -1,17 +1,13 @@
-import React, { useRef, useState, useEffect,
-  useLayoutEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { MdSend } from "react-icons/md";
 import { MdAddCall } from "react-icons/md";
-
-
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
-
 import { useDispatch, useSelector } from "react-redux";
-import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
-import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
-import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
+import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions";
+import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
 import io from "socket.io-client";
 import EngChatNav from "../EngeeniersSubComponent/EngChatNav";
@@ -25,8 +21,11 @@ const MessageBox = ({ onClose, EnggId }) => {
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
 
-
   const [messageData, setMessageData] = useState();
+
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+
+  // console.log("prrrrAlo",messageData)
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
@@ -34,7 +33,6 @@ const MessageBox = ({ onClose, EnggId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
 
 
   const [allMessages, setAllMessages] = useState([]);
@@ -46,20 +44,13 @@ const MessageBox = ({ onClose, EnggId }) => {
     }
   };
 
-
-
-
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0].name);
   };
 
-
   useEffect(() => {
     setHeight(textareaRef.current);
-
   }, []);
-
 
   //socket implemantation starts ---------------------------------------------
   // const socket = io('http://localhost:8000');
@@ -82,14 +73,17 @@ const MessageBox = ({ onClose, EnggId }) => {
 
 
   const chatCreated = useSelector((state) => {
-    if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
-      return state.ChatRootReducer.createChatReducer.createChat.FullChat
+    if (
+      state.ChatRootReducer &&
+      state.ChatRootReducer.createChatReducer &&
+      state.ChatRootReducer.createChatReducer.createChat
+    ) {
+      return state.ChatRootReducer.createChatReducer.createChat.FullChat;
     } else {
-      return null
+      return null;
     }
   });
   // console.log("chat created", chatCreated?._id)
-
 
   const getMessages = useSelector((state) => {
     scroll();
@@ -151,7 +145,6 @@ const MessageBox = ({ onClose, EnggId }) => {
   };
 
   const handleInput = () => {
-
     setHeight(textareaRef.current);
     setSwapIcon(!textareaRef.current.value.trim());
   };
