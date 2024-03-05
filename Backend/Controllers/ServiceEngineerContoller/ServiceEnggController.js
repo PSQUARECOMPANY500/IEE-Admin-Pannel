@@ -376,6 +376,21 @@ function convertTimeToSortableFormat(time) {
 
 //...................................................................................................................................
 //api for the attendance checkin and checkout
+module.exports.EnggTime = async (req, res) => {
+  try {
+      const time = new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: '2-digit',
+        hour12: false
+      });
+      return res.status(201).json({ time:time });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggTime" });
+  }
+};
 
 module.exports.EnggCheckIn = async (req, res) => {
   try {

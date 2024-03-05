@@ -32,8 +32,8 @@ const storage = multer.diskStorage({
 
 const uploadImg = multer({ storage:storage}).array("photos",2);
 
+router.get('/getTime', serviceEnggContoller.EnggTime);
 router.post('/enggCheckIn',  uploadImg ,serviceEnggContoller.EnggCheckIn);
-
 router.put('/enggCheckOut',  uploadImg, serviceEnggContoller.EnggCheckOut);
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
