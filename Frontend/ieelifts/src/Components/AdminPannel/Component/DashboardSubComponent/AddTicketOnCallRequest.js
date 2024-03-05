@@ -152,7 +152,6 @@ const AddTicketOnCallRequest = ({
       const currentDate = new Date();
       const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
       const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
-      console.log(updatedFormatedDate);
       setDate(updatedFormatedDate);
 
       const hours = currentDate.getHours();
@@ -290,7 +289,6 @@ const AddTicketOnCallRequest = ({
           );
         } else {
           toast.error("Please fill all the fields");
-          console.log("not valid input");
         }
       });
     }

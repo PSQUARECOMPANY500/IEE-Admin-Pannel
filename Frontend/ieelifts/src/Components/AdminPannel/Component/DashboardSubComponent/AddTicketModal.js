@@ -185,7 +185,6 @@ const AddTicketModal = ({
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
-    console.log(selectedOptions);
   };
 
   const handleAssignDateChange = (selectedOption) => {
@@ -261,7 +260,6 @@ const AddTicketModal = ({
       setTicketUpdate((prev) => !prev);
       closeModal();
     } else {
-      console.log("not valid input");
       toast.error("Please fill all the fields");
     }
   };

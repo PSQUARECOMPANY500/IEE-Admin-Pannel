@@ -25,6 +25,8 @@ const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggL
 const OtpDetails = require("../../Modals/OTP/Otp")
 const Report = require("../../Modals/Report/ReportSchema");
 
+const CheckList = require("../../Modals/ChecklistModal/ChecklistModal")
+
 const axios = require("axios");
 require("dotenv").config();
 // ---------------------------------------------------------------------------------------------------------------------
@@ -396,8 +398,18 @@ module.exports.EnggTime = async (req, res) => {
 module.exports.EnggCheckIn = async (req, res) => {
   console.log("req of checkin",req)
   try {
-    const data = req.files;
+    const frontimage = req.files['frontimage'][0].filename;
+    const backimage = req.files['backimage'][0].filename;
+
     const { IsAttendance, ServiceEnggId } = req.body;
+    
+    console.log(frontimage)
+    console.log(backimage)
+    console.log(IsAttendance)
+    console.log(ServiceEnggId)
+
+    return;
+
     if (IsAttendance && ServiceEnggId) {
       let enggPhoto = '';
 
@@ -691,55 +703,6 @@ module.exports.generateOtpForClient = async (req, res) => {
   }
 };
 
-/* 
-{
-    "checklistName":"Callback",
-    "subcategories":[
-        {
-            "subcategoryName":"Cabin, Floors",
-            "questions":[
-                {
-                    "questionId":"65e6f774458a4ce49e974f1e",
-                    "Response":true
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f1f",
-                    "Response":false
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f20",
-                    "Response":true
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f21",
-                    "Response":true
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f22",
-                    "Response":true
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f23",
-                    "Response":false
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f24",
-                    "Response":true
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f25",
-                    "Response":false
-                },
-                {
-                    "questionId":"65e6f774458a4ce49e974f26",
-                    "Response":true
-                }
-            ]
-        }
-    ]
-}
-*/
-
 
 module.exports.EnggReportResponse = async (req, res) => {
   try {
@@ -758,4 +721,18 @@ module.exports.EnggReportResponse = async (req, res) => {
   }
 }
 
+
+module.exports.EnggReportQuestionFetch = async (req, res) => {
+  try {
+    const { CheckListId } = req.body;
+    if (CheckListId) {
+      const response = await CheckList.findById(CheckListId);
+      return res.status(200).json({response });
+    }
+    return res.status(500).json({ error: "Enter valid data" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggReportQuestionFetch" });
+  }
+}
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
