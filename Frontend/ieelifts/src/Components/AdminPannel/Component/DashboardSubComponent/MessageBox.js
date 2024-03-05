@@ -85,6 +85,8 @@ const MessageBox = ({ onClose, EnggId }) => {
   });
   // console.log("chat created", chatCreated?._id)
 
+
+
   const getMessages = useSelector((state) => {
     scroll();
     if (
@@ -97,7 +99,34 @@ const MessageBox = ({ onClose, EnggId }) => {
       return null;
     }
   });
-  // console.log("all messages",getMessages)
+  console.log("all messages in selector",getMessages)
+
+
+  useEffect(() => {
+    const fetchIntiakMessages = async () => {
+      setIsLoading(true);
+      setIsLoadingMessages(true);
+      const FinalMessages = await getMessages?.map((data) => {
+        return {
+          chatId: data.ChatId,
+          Content: data.Content,
+          Sender: data.Sender[0],
+        };
+      });
+
+      console.log("finalmessage", FinalMessages);
+
+      setAllMessages(FinalMessages);
+      setIsLoadingMessages(false);
+      setIsLoading(false);
+    };
+
+    fetchIntiakMessages();
+    scroll();
+  }, [getMessages]);
+
+
+
 
   const sendMessage = useSelector(
     (state) => state?.ChatRootReducer?.sendMessageReducer?.chatMessage
@@ -179,7 +208,7 @@ const handleSendMessage = async (e) => {
     if (chatCreated?._id) {
       dispatch(getSenderMessagesAction(chatCreated._id));
     }
-  }, 400);
+  }, 100);
   socket.emit("aloo", sendMessage);
 };
 
@@ -192,6 +221,7 @@ useEffect(() => {
     setAllMessages((prevMessages) => [...prevMessages, message]);
   });
 }, []);
+
 
 
 
