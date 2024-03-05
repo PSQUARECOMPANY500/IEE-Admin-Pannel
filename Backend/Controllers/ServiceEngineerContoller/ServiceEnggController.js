@@ -87,7 +87,7 @@ module.exports.loginEngg = async (req, res) => {
     }
 
     const token = generateEnggToken({ EnggId });
-    res.json({ Engg,success:true,allotedAdmin:"65e0103005fd2695f3aaf6d4",adminName:"Parabh Simaran", token })
+    res.json({ Engg, success: true, allotedAdmin: "65e0103005fd2695f3aaf6d4", adminName: "Parabh Simaran", token })
 
 
   } catch (error) {
@@ -374,32 +374,39 @@ function convertTimeToSortableFormat(time) {
 
 }
 
-
-
 //...................................................................................................................................
 //api for the attendance checkin and checkout
 
 module.exports.EnggCheckIn = async (req, res) => {
   try {
-    const { IsAttendance, engPhoto, ServiceEnggId } = req.body;
-    
-    const time = new Date().toLocaleTimeString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: '2-digit',
-      hour12: false 
-    });
-    const CheckIn = await EnggAttendanceServiceRecord.create({
-      IsAttendance: IsAttendance,
-      ServiceEnggId: ServiceEnggId,
-      Check_In: {
-        engPhoto: req.file.filename,
-        time: time,
-      }
-    });
+    const data = req.files;
+    const { IsAttendance, ServiceEnggId } = req.body;
+    if (IsAttendance && ServiceEnggId) {
+      let enggPhoto = '';
 
-    res.status(201).json({ message: 'Check-in recorded successfully', data: CheckIn });
+      data.forEach((imgDetails) => {
+        enggPhoto += imgDetails?.filename + ' '; // Concatenate filename and a space to enggPhoto
+      });
+
+      const time = new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: '2-digit',
+        hour12: false
+      });
+
+      const CheckIn = await EnggAttendanceServiceRecord.create({
+        IsAttendance: IsAttendance,
+        ServiceEnggId: ServiceEnggId,
+        Check_In: {
+          engPhoto: enggPhoto,
+          time: time,
+        }
+      });
+      return res.status(201).json({ message: 'Check-in recorded successfully', data: CheckIn });
+    }
+    res.status(500).json({ error: "ServiceEnggId and IsAttendance not find" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in EnggCheckIn" });
@@ -411,24 +418,33 @@ module.exports.EnggCheckIn = async (req, res) => {
 
 module.exports.EnggCheckOut = async (req, res) => {
   try {
-    const { engPhoto, ServiceEnggId} = req.body;
-    const time = new Date().toLocaleTimeString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: '2-digit',
-      hour12: false 
-    });
-    const date = new Date().toLocaleDateString('en-GB');
-    const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate({ ServiceEnggId, Date: date }, {
+    const data = req.files;
+    const { ServiceEnggId } = req.body;
+    if (ServiceEnggId) {
+      let enggPhoto = '';
 
-      Check_Out: {
-        engPhoto: engPhoto,
-        time: time
-      }
-    });
+      data.forEach((imgDetails) => {
+        enggPhoto += imgDetails?.filename + ' '; // Concatenate filename and a space to enggPhoto
+      });
 
-    res.status(201).json({ message: 'Check-out recorded successfully', data: CheckIn });
+      const time = new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: '2-digit',
+        hour12: false
+      });
+      const date = new Date().toLocaleDateString('en-GB');
+
+      const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate({ ServiceEnggId, Date: date }, {
+        Check_Out: {
+          engPhoto: enggPhoto,
+          time: time
+        }
+      });
+      res.status(201).json({ message: 'Check-out recorded successfully', data: CheckIn });
+    }
+    return res.status(500).json({ error: "ServiceEnggId not find" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in EnggCheckIn" });
@@ -437,7 +453,15 @@ module.exports.EnggCheckOut = async (req, res) => {
 
 module.exports.EnggOnFirstHalfBreak = async (req, res) => {
   try {
-    const { ServiceEnggId, time, isStart } = req.body;
+    const { ServiceEnggId, isStart } = req.body;
+    if (ServiceEnggId && isStart) {
+    const time = new Date().toLocaleTimeString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: '2-digit',
+      hour12: false
+    });
     const date = new Date().toLocaleDateString('en-GB');
     const update = {
 
@@ -458,7 +482,9 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
     }
 
     const message = isStart ? 'First_half Break started successfully' : 'First_half Break ended successfully';
-    res.status(201).json({ message, data: Break });
+    return res.status(201).json({message, data: Break , time: time });
+  }
+  return res.status(500).json({ error: "ServiceEnggId and isStart not found inFirst_half" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in First_half" });
@@ -469,28 +495,38 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
 
 module.exports.EnggOnSecondHalfBreak = async (req, res) => {
   try {
-    const { ServiceEnggId, time, isStart } = req.body;
-    const date = new Date().toLocaleDateString('en-GB');
-    const update = {
+    const { ServiceEnggId, isStart } = req.body;
+    if (ServiceEnggId && isStart) {
+      const time = new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: '2-digit',
+        hour12: false
+      });
+      const date = new Date().toLocaleDateString('en-GB');
+      const update = {
 
-      [isStart ? "Second_halfs_time" : "Second_halfe_time"]: time,
+        [isStart ? "Second_halfs_time" : "Second_halfe_time"]: time,
 
+      }
+
+      const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
+        { ServiceEnggId, Date: date },
+        update,
+        { new: true }
+      );
+
+      //console.log("Break:", Break);
+
+      if (!Break) {
+        return res.status(404).json({ error: 'Record not found' });
+      }
+
+      const message = isStart ? 'Second_half Break started successfully' : 'Second_half Break ended successfully';
+      return res.status(201).json({ message, data: Break , time: time });
     }
-
-    const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
-      { ServiceEnggId, Date: date },
-      update,
-      { new: true }
-    );
-
-    console.log("Break:", Break);
-
-    if (!Break) {
-      return res.status(404).json({ error: 'Record not found' });
-    }
-
-    const message = isStart ? 'Second_half Break started successfully' : 'Second_half Break ended successfully';
-    res.status(201).json({ message, data: Break });
+    return res.status(500).json({ error: "ServiceEnggId and isStart not found in Second_half" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in Second_half" });
@@ -500,20 +536,23 @@ module.exports.EnggOnSecondHalfBreak = async (req, res) => {
 module.exports.EnggOnLunchBreak = async (req, res) => {
   try {
     const { ServiceEnggId, isStart } = req.body;
-    const date = new Date().toLocaleDateString('en-GB');
+    if( ServiceEnggId&& isStart){
+      const date = new Date().toLocaleDateString('en-GB');
 
-    const update = {
-      Is_Lunch: isStart
-    };
-
-    const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
-      { ServiceEnggId, Date: date },
-      update,
-      { new: true }
-    );
-
-    const message = isStart ? 'Break started successfully' : 'Break ended successfully';
-    res.status(201).json({ message, data: Break });
+      const update = {
+        Is_Lunch: isStart
+      };
+  
+      const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
+        { ServiceEnggId, Date: date },
+        update,
+        { new: true }
+      );
+  
+      const message = isStart ? 'Break started successfully' : 'Break ended successfully';
+      return res.status(201).json({ message, data: Break });
+    }
+    return res.status(500).json({ error: "ServiceEnggId and isStart not found in Break" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in Break" });
@@ -598,17 +637,17 @@ module.exports.generateOtpForClient = async (req, res) => {
         ServiceEnggId: ServiceEnggId,
         JobOrderNumber: JobOrderNumber
       });
-      if(response){
-      const timer = 15* 60 * 1000;
+      if (response) {
+        const timer = 15 * 60 * 1000;
 
-      setTimeout(async () => {
-        await OtpDetails.findByIdAndDelete({ _id: response._id })
-      }, timer)
+        setTimeout(async () => {
+          await OtpDetails.findByIdAndDelete({ _id: response._id })
+        }, timer)
       }
       // Prepare data and config for the API request
-      
-      const apiKey = process.env.MESSAGE_API_KEY; 
-      console.log(apiKey , typeof(apiKey));
+
+      const apiKey = process.env.MESSAGE_API_KEY;
+      console.log(apiKey, typeof (apiKey));
       const axiosConfig = {
         headers: {
           "authorization": apiKey,
