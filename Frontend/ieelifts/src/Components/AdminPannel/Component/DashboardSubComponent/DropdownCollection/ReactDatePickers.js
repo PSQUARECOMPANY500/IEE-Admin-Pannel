@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 
-
-
-
-const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) => {
-
+const ReactDatePickers = ({
+  isAssigned,
+  fetchedDate,
+  OnDateChange,
+  editchange,
+}) => {
   const daysContainerRef = useRef(null);
   const prevBtnRef = useRef(null);
   const nextBtnRef = useRef(null);
@@ -17,7 +18,6 @@ const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) 
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
-  //console.log(selectedDate);
   const handleDayClick = (day) => {
     const newSelectedDate = new Date(
       currentDate.getFullYear(),
@@ -25,7 +25,7 @@ const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) 
       day
     );
     setSelectedDate(newSelectedDate);
-    OnDateChange(newSelectedDate)
+    OnDateChange(newSelectedDate);
     dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-US");
     calendarRef.current.style.display = "none";
     renderCalendar();
@@ -43,10 +43,7 @@ const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) 
     if (date.toDateString() === new Date().toDateString()) {
       dayElement.classList.add("current");
     }
-    if (
-      selectedDate &&
-      date.toDateString() === selectedDate.toDateString()
-    ) {
+    if (selectedDate && date.toDateString() === selectedDate.toDateString()) {
       dayElement.classList.add("selected");
     }
 
@@ -143,29 +140,27 @@ const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) 
         id="dateInput"
         placeholder={isAssigned ? fetchedDate : "Select a date"}
         ref={dateInputRef}
-        onClick={ handleDateInputClick}
-        readOnly={isAssigned } // Disable input when isAssigned is true
+        onClick={handleDateInputClick}
+        readOnly={isAssigned} // Disable input when isAssigned is true
       />
-      {<div className="calendar" id="calendar" ref={calendarRef}>
-        <div className="header">
-          <button id="prevBtn" onClick={handlePrevClick}>
-            <FaChevronLeft />
-
-          </button>
-          <h2 id="monthYear" ref={monthYearRef}>
-            Month Year
-          </h2>
-          <button id="nextBtn" onClick={handleNextClick}>
-            <FaChevronRight />
-          </button>
+      {
+        <div className="calendar" id="calendar" ref={calendarRef}>
+          <div className="header">
+            <button id="prevBtn" onClick={handlePrevClick}>
+              <FaChevronLeft />
+            </button>
+            <h2 id="monthYear" ref={monthYearRef}>
+              Month Year
+            </h2>
+            <button id="nextBtn" onClick={handleNextClick}>
+              <FaChevronRight />
+            </button>
+          </div>
+          <div className="days" id="daysContainer" ref={daysContainerRef}></div>
         </div>
-        <div className="days" id="daysContainer" ref={daysContainerRef}></div>
-      </div>}
+      }
     </div>
   );
 };
 
 export default ReactDatePickers;
-
-
-

@@ -23,6 +23,7 @@ const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/
 const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
 
 const OtpDetails = require("../../Modals/OTP/Otp")
+const Report = require("../../Modals/Report/ReportSchema");
 
 const axios = require("axios");
 require("dotenv").config();
@@ -394,6 +395,8 @@ module.exports.EnggTime = async (req, res) => {
 
 module.exports.EnggCheckIn = async (req, res) => {
   try {
+
+    console.log("req of checkin",req)
     const data = req.files;
     const { IsAttendance, ServiceEnggId } = req.body;
     if (IsAttendance && ServiceEnggId) {
@@ -469,7 +472,7 @@ module.exports.EnggCheckOut = async (req, res) => {
 module.exports.EnggOnFirstHalfBreak = async (req, res) => {
   try {
     const { ServiceEnggId, isStart } = req.body;
-    if (ServiceEnggId && isStart) {
+    if (ServiceEnggId) {
     const time = new Date().toLocaleTimeString("en-IN", {
       timeZone: "Asia/Kolkata",
       hour: "2-digit",
@@ -662,7 +665,7 @@ module.exports.generateOtpForClient = async (req, res) => {
       // Prepare data and config for the API request
 
       const apiKey = process.env.MESSAGE_API_KEY;
-      console.log(apiKey, typeof (apiKey));
+     // console.log(apiKey, typeof (apiKey));
       const axiosConfig = {
         headers: {
           "authorization": apiKey,
@@ -679,9 +682,9 @@ module.exports.generateOtpForClient = async (req, res) => {
       const response1 = await axios.post("https://www.fast2sms.com/dev/bulkV2", data, axiosConfig);
       // await axios.post("https://www.fast2sms.com/dev/voice", data, axiosConfig);
 
-      res.status(200).json({ success: true, message: "OTP sent successfully" });
+      return res.status(200).json({ success: true, message: "OTP sent successfully" });
     } else {
-      res.status(400).json({ error: "Missing required fields" });
+      return res.status(400).json({ error: "Missing required fields" });
     }
   } catch (error) {
     console.error(error);
@@ -689,5 +692,71 @@ module.exports.generateOtpForClient = async (req, res) => {
   }
 };
 
+/* 
+{
+    "checklistName":"Callback",
+    "subcategories":[
+        {
+            "subcategoryName":"Cabin, Floors",
+            "questions":[
+                {
+                    "questionId":"65e6f774458a4ce49e974f1e",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f1f",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f20",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f21",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f22",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f23",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f24",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f25",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f774458a4ce49e974f26",
+                    "Response":true
+                }
+            ]
+        }
+    ]
+}
+*/
+
+
+module.exports.EnggReportResponse = async (req, res) => {
+  try {
+    const { checklistName , subcategories} = req.body;
+    if (checklistName && subcategories) {
+      const response = await Report.create({
+        checklistName:checklistName,
+        subcategories:subcategories
+      })
+      return res.status(200).json({response });
+    }
+    return res.status(500).json({ error: "Enter valid data" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggReportResponse" });
+  }
+}
 
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------

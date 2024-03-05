@@ -1,6 +1,6 @@
-  //................................{amit}....................................
+//................................{amit}....................................
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
@@ -12,12 +12,10 @@ import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminAction
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
-//import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
-// import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModal = ({
   closeModal,
@@ -31,7 +29,6 @@ const AddTicketModal = ({
   const dispatch = useDispatch();
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
-  // console.log('selectedEnggId',selectedEnggId[0])
 
   //  manage use states for the input fields
   const [jon, setJon] = useState("");
@@ -41,11 +38,9 @@ const AddTicketModal = ({
   const [typeOfIssue, setTypeOfIssue] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
-  const [time,setTime]= useState("")
+  const [time, setTime] = useState("");
   const [modelType, setModelType] = useState("");
-  const [engDate , setengDate]=useState("")
-
-  // console.log('engDate', engDate)
+  const [engDate, setengDate] = useState("");
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -54,23 +49,17 @@ const AddTicketModal = ({
     enggAddress: "",
     enggLocation: "",
     enggRating: "",
-    enggPhoto:""
+    enggPhoto: "",
   });
-
-  // console.log("2-----",engDetails.enggName)
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
-  const [fetchedDate,setfetchedDate] = useState("")
- 
-   
- 
+  const [fetchedDate, setfetchedDate] = useState("");
 
- 
   //slots logic here ends-------------------------------------------------
   // use use selector select to select the service engg state
-  const  serviceEnggDetail = useSelector((state) => {
+  const serviceEnggDetail = useSelector((state) => {
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.fetchAllClientDetailReducer &&
@@ -117,42 +106,37 @@ const AddTicketModal = ({
     return;
   });
 
-  console.log("emit -=--=-=", getEnggState)
-
-  const getAssignedCallbackDetails = useSelector((state)=>{
-    return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
-  })
-
+  const getAssignedCallbackDetails = useSelector((state) => {
+    return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer
+      ?.assignDetails;
+  });
 
   useEffect(() => {
-    if(isAssigned){
+    if (isAssigned) {
       dispatch(fetchEnggDetailAction(enggId));
-      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
       dispatch(fetchAllClientDetailAction());
       dispatch(fetchChecklistAction());
-      dispatch(requestAssignCallbackDetail(callbackId))
-    }
-    else{
+      dispatch(requestAssignCallbackDetail(callbackId));
+    } else {
       dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
       dispatch(fetchAllClientDetailAction());
       dispatch(fetchChecklistAction());
     }
-  
+
     return () => {
       dispatch(fetchEnggDetailAction());
     };
   }, []);
 
-
   useEffect(() => {
-    //no problem
     if (getEnggState) {
       setEngDetails({
         enggJon: getEnggState.EnggId,
         enggName: getEnggState.EnggName,
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
-        enggPhoto:getEnggState.EnggPhoto
+        enggPhoto: getEnggState.EnggPhoto,
       });
     }
   }, [getEnggState]);
@@ -164,56 +148,51 @@ const AddTicketModal = ({
     setAddress(userCallBackDetail?.clientDetail?.Address || "");
     setTypeOfIssue(userCallBackDetail?.TypeOfIssue || "");
     setDescription(userCallBackDetail?.Description || "");
-    setDate(userCallBackDetail?.callbackDate|| "");
-    setTime(userCallBackDetail?.callbackTime|| "");
-   
+    setDate(userCallBackDetail?.callbackDate || "");
+    setTime(userCallBackDetail?.callbackTime || "");
+
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
   useEffect(() => {
-    //no problem
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
 
-  useEffect(()=>{
- 
-    if(getAssignedCallbackDetails?.callbackdetails){
-      setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
+  useEffect(() => {
+    if (getAssignedCallbackDetails?.callbackdetails) {
+      setClickListOnSelect(
+        getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName
+      );
       setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
       setMessage(getAssignedCallbackDetails.callbackdetails.Message);
-      const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
-      setfetchedDate(dateAsString)
+      const dateAsString =
+        getAssignedCallbackDetails.callbackdetails.Date.toString();
+      setfetchedDate(dateAsString);
     }
-  
-  },[getAssignedCallbackDetails])
-
+  }, [getAssignedCallbackDetails]);
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    // console.log(selectedOptions[0])
-    // console.log(selectedOptions);
-    setSelectedEnggId(selectedOptions)// selected Engg id console
+    setSelectedEnggId(selectedOptions); // selected Engg id console
     dispatch(fetchEnggDetailAction(selectedOptions));
   };
 
   const handleEnggSelectionChange1 = (value) => {
-   setSelectedSlot(value);
+    setSelectedSlot(value);
   };
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
-    console.log(selectedOptions)
+    console.log(selectedOptions);
   };
 
-
-  const handleAssignDateChange = (selectedOption)=>{
-    const formattedDate = selectedOption.toLocaleDateString('en-GB');
+  const handleAssignDateChange = (selectedOption) => {
+    const formattedDate = selectedOption.toLocaleDateString("en-GB");
     setengDate(formattedDate);
-    // console.log(formattedDate)
     dispatch(getBookedSlotsforEnggsAction(formattedDate));
-  }
+  };
 
   const timeSlots = [
     {
@@ -230,23 +209,25 @@ const AddTicketModal = ({
     },
   ];
   const bookedDateForEngg = useSelector((state) => {
-    if(state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg){
-      return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
-    }else{
-      return null
-  }
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg
+    ) {
+      return state.AdminRootReducer.getBookedSlotsforEnggsReducer
+        .bookedDatesEngg.BookedSlots;
+    } else {
+      return null;
+    }
   });
-  // console.log('bookedDateForEngg',bookedDateForEngg)
 
-  const filteredSlots = timeSlots.filter(slot => {
-    const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
-    // console.log("bookedengg",engg)
+  const filteredSlots = timeSlots.filter((slot) => {
+    const engg = bookedDateForEngg?.find(
+      (engg) => engg.ServiceEnggId === selectedEnggId[0]
+    );
     const bookedSlots = engg ? engg.slots : [];
     return !bookedSlots.includes(slot.slot);
   });
-  // console.log("filteredSlots",filteredSlots)
-
-  
 
   const handleElevatorSectionDetails = () => {
     let dateOnAssign;
@@ -257,10 +238,9 @@ const AddTicketModal = ({
       date &&
       message
     ) {
-      if(engDate===""){
+      if (engDate === "") {
         dateOnAssign = fetchedDate;
-      }
-      else{
+      } else {
         dateOnAssign = engDate;
       }
       dispatch(
@@ -276,21 +256,21 @@ const AddTicketModal = ({
           engDetails.enggJon
         )
       );
-      
+
       setRenderTicket((prev) => !prev);
       setTicketUpdate((prev) => !prev);
       closeModal();
     } else {
       console.log("not valid input");
-      toast.error("Please fill all the fields")
-      }
-     };
-//-------------------------------------------OnClick Edit-------------------------------------------------
-  const [editchange,setEditChange] = useState(false);
+      toast.error("Please fill all the fields");
+    }
+  };
+  //-------------------------------------------OnClick Edit-------------------------------------------------
+  const [editchange, setEditChange] = useState(false);
 
-  const handleEditSection=()=>{
-    setEditChange(!editchange)
-  }
+  const handleEditSection = () => {
+    setEditChange(!editchange);
+  };
 
   return (
     <>
@@ -488,9 +468,15 @@ const AddTicketModal = ({
 
                   <div className="engg-photo-section">
                     <div>
-                      {getEnggState  ? (
+                      {getEnggState ? (
                         <img
-                          style={{ width: "90px", height: "90px",objectFit:'cover', objectPosition:"center", borderRadius:'2px'}}
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            borderRadius: "2px",
+                          }}
                           src={engDetails.enggPhoto}
                           alt="lift"
                         />
@@ -500,7 +486,7 @@ const AddTicketModal = ({
                     </div>
 
                     <div style={{ width: "50%" }}>
-                      {getEnggState  ? (
+                      {getEnggState ? (
                         <div className="elevator-detail-row">
                           <div className="col-elevator75">
                             <input
@@ -514,7 +500,7 @@ const AddTicketModal = ({
                         <SkeltonLoader width="80px" height="10px" />
                       )}
 
-                      {getEnggState  ? (
+                      {getEnggState ? (
                         <div className="elevator-detail-row">
                           <div className="col-elevator75">
                             <input
@@ -528,7 +514,7 @@ const AddTicketModal = ({
                         <SkeltonLoader width="80px" height="10px" />
                       )}
 
-                      {getEnggState  ? (
+                      {getEnggState ? (
                         <div className="elevator-detail-row">
                           <div className="col-elevator75">
                             <input
@@ -542,7 +528,7 @@ const AddTicketModal = ({
                         <SkeltonLoader width="80px" height="10px" />
                       )}
 
-                      {getEnggState  ? (
+                      {getEnggState ? (
                         <div className="elevator-detail-row">
                           <div className="col-elevator75">
                             <input
@@ -559,7 +545,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div>
-                    {getEnggState  ? (
+                    {getEnggState ? (
                       <div
                         className="elevator-detail-row"
                         style={{ marginTop: "10px" }}
@@ -611,61 +597,71 @@ const AddTicketModal = ({
                 <div className="grid-form-container">
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      
-                
-                  
-                  <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange}/>
+                      <div className="data-pic">
+                        <ReactDatePickers
+                          className="date-picker-dropdown"
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          fetchedDate={fetchedDate}
+                          OnDateChange={handleAssignDateChange}
+                        />
                       </div>
-
-                     
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                    {engDate || isAssigned ? (<MultiSelectDropdown
-                        placeholder={isAssigned?engDetails.enggName:"Select Enggineers"}
-                         Details={serviceEnggDetail}
-                         handleEnggSelectionChange={handleEnggSelectionChange}
-                         isAssigned={isAssigned}
-                         editchange={editchange}
-                         enggName={engDetails.enggName}
-                       />) : (<MultiSelectDropdown
-                        placeholder="Please Select Date First"
-                       />)}
-                      
+                      {engDate || isAssigned ? (
+                        <MultiSelectDropdown
+                          placeholder={
+                            isAssigned
+                              ? engDetails.enggName
+                              : "Select Enggineers"
+                          }
+                          Details={serviceEnggDetail}
+                          handleEnggSelectionChange={handleEnggSelectionChange}
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          enggName={engDetails.enggName}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Date First" />
+                      )}
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                  {engDetails.enggName || isAssigned ? ( <MultiSelectDropdown
-                        placeholder={isAssigned?selectedSlot?.join(" | "):"Select Slot"}
-                        slots={filteredSlots}
-                        handleEnggSelectionChange={handleEnggSelectionChange1}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Engg First"
-                       />)}
-                     
-
+                      {engDetails.enggName || isAssigned ? (
+                        <MultiSelectDropdown
+                          placeholder={
+                            isAssigned
+                              ? selectedSlot?.join(" | ")
+                              : "Select Slot"
+                          }
+                          slots={filteredSlots}
+                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          enggName={engDetails.enggName}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Engg First" />
+                      )}
                     </div>
                   </div>
 
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                  
-                    <SingleSetDropdown
+                      <SingleSetDropdown
                         padding="6px"
                         width="100%"
-                        placeholder={isAssigned?ClickListOnSelect:"Allot A Checklist"}
+                        placeholder={
+                          isAssigned ? ClickListOnSelect : "Allot A Checklist"
+                        }
                         Details={checkList}
                         isAssigned={isAssigned}
                         editchange={editchange}
                         onStateChange={handleSingleSetDropdown}
                       />
-
                     </div>
                   </div>
                 </div>
@@ -678,10 +674,10 @@ const AddTicketModal = ({
                       width: "80%",
                       marginLeft: "10%",
                       resize: "none",
-                      color:"black",
+                      color: "black",
                     }}
                     readOnly={editchange ? false : isAssigned}
-                    placeholder={isAssigned?message:"message"}
+                    placeholder={isAssigned ? message : "message"}
                     onChange={(e) => {
                       setMessage(e.target.value);
                     }}
@@ -693,7 +689,12 @@ const AddTicketModal = ({
 
           <div className="footer-section">
             <div className="buttons">
-              <button className={`edit-button ${editchange&&`edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
+              <button
+                className={`edit-button ${editchange && `edit-button-onClick`}`}
+                onClick={handleEditSection}
+              >
+                Edit
+              </button>
               <button
                 className="assign-button"
                 onClick={handleElevatorSectionDetails}

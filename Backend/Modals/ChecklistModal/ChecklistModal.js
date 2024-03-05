@@ -6,12 +6,12 @@ const checklist = new Schema({
   subcategories: [
     {
       subcategoryName: { type: String },
-      questions: [{ questionText: {type:String}}],
-    },
-    {
-      subcategoryName: {type:String},
-      questions: [{ questionText: {type:String}}],
-    },
+      questions: [
+        {
+           questionText: {type:String}
+        }
+      ],
+    }
   ],
 });
 

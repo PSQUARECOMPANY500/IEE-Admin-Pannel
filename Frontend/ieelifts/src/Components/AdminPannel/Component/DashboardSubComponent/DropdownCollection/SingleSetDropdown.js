@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 import Select from "react-select";
 
-
-
-const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChange,isAssigned,editchange}) => {
-
-  const selectedValue = Details || []
+const SingleSetDropdown = ({
+  width,
+  padding,
+  placeholder,
+  Details,
+  onStateChange,
+  isAssigned,
+  editchange,
+}) => {
+  const selectedValue = Details || [];
 
   const options = selectedValue.map((details) => ({
-    value:details._id , label:details.checklistName
-  }))
-   
-    
-
+    value: details._id,
+    label: details.checklistName,
+  }));
 
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleChange = (selected) => {
-    //console.log("Selected abhinav :", selected);
     setSelectedOption(selected);
-    onStateChange(selected)
+    onStateChange(selected);
   };
-
 
   const customStyles = {
     control: (provided, state) => ({

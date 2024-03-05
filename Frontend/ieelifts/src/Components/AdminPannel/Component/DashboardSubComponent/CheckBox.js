@@ -1,23 +1,22 @@
-import React from 'react'
+import React from "react";
 
 const CheckBox = ({ id, checked, handleCheckboxChange }) => {
-    // console.log({id:id,checked:checked,handleCheckboxChange:handleCheckboxChange})
   return (
     <div className="checkboxes__row">
-    <div className="checkboxes__item">
-      <label className="checkbox style-c">
-        <input
-         type="checkbox"
-         id={id}
-        checked={checked}
-        onChange={handleCheckboxChange}
-        />
-        <div className="checkbox__checkmark"></div>
-        <div className="checkbox__body"></div>
-      </label>
+      <div className="checkboxes__item">
+        <label className="checkbox style-c">
+          <input
+            type="checkbox"
+            id={id}
+            checked={checked}
+            onChange={handleCheckboxChange}
+          />
+          <div className="checkbox__checkmark"></div>
+          <div className="checkbox__body"></div>
+        </label>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default CheckBox
+export default CheckBox;
