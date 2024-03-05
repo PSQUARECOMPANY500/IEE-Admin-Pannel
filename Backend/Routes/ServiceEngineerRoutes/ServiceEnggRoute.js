@@ -60,7 +60,7 @@ router.post('/enggCheckIn', upload.single('image'), async (req, res) => {
     minute: "2-digit",
     second: '2-digit',
     hour12: false 
-  });
+  });      
   const newImage = new EnggAttendanceServiceRecord({
     image: req.file.buffer,
     Check_In: {
