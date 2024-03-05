@@ -46,7 +46,19 @@ router.post('/enggCheckIn',  uploadImg.fields([
 ]) ,serviceEnggContoller.EnggCheckIn);
 
 
-router.put('/enggCheckOut',  uploadImg, serviceEnggContoller.EnggCheckOut);
+router.put('/enggCheckOut', uploadImg.fields([
+  {
+    name:'frontimage',
+    maxCount:1
+  },
+  {
+    name:'backimage',
+    maxCount:1
+  }
+  ]) ,serviceEnggContoller.EnggCheckOut);
+
+
+  
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
 router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);
