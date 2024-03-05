@@ -394,9 +394,8 @@ module.exports.EnggTime = async (req, res) => {
 };
 
 module.exports.EnggCheckIn = async (req, res) => {
+  console.log("req of checkin",req)
   try {
-
-    console.log("req of checkin",req)
     const data = req.files;
     const { IsAttendance, ServiceEnggId } = req.body;
     if (IsAttendance && ServiceEnggId) {
