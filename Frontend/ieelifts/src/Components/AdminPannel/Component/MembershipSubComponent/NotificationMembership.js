@@ -47,11 +47,11 @@ const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
           value={selectedOption}
           onChange={handleSelectChange}
         />
-        {/* <div onClick={toggleOptions}>
+        <div onClick={toggleOptions}>
           <FaChevronDown  className={`chevronDownMembership ${sendIconColor} ${
           isExpired && "sendButtonExpired"
         }`} />
-        </div> */}
+        </div>
       </div>
       <div
         className={`sendButton ${sendIconColor} ${

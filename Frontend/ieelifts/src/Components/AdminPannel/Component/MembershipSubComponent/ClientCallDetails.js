@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getClientCallsDetails,
@@ -12,8 +12,23 @@ const ClientCallDetails = ({
   callDetails,
   Mybutton,
   JON,
+  setButtonSelect,
 }) => {
+  const ACalendarRef = useRef(null);
+  const AMonthyearRef = useRef(null);
+  const ADayContainerRef = useRef(null);
+  const [acurrentDate, setACurrentDate] = useState(new Date());
+  const [aselectedDate, setASelectedDate] = useState(null);
+  const [showCalender, setShowCalender] = useState(false);
+  const [pageData, setPageData] = useState([]);
   const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    setButtonSelect(false);
+    if (callDetails && callDetails.clientCallData) {
+      setPageData(callDetails.clientCallData);
+    }
+  }, [callDetails]);
   useEffect(() => {
     dispatch(getClientCallsDetails());
   }, [dispatch, dataType]);
@@ -24,11 +39,6 @@ const ClientCallDetails = ({
       setShowHistory(Array(callDetails.clientCallData.length).fill(false));
     }
   }, [callDetails]);
-  // const toggleHistory = (index) => {
-  //   setShowHistory((prevState) =>
-  //     prevState.map((value, i) => (i === index ? !value : value))
-  //   );
-  // };
   const toggleHistory = (index) => {
     setShowHistory((prevState) =>
       prevState.map((value, i) => (i === index ? !value : false))
@@ -54,12 +64,7 @@ const ClientCallDetails = ({
       : dataType === "Silver"
       ? "callsContainer_silver"
       : "";
-  const ACalendarRef = useRef(null);
-  const AMonthyearRef = useRef(null);
-  const ADayContainerRef = useRef(null);
-  const [acurrentDate, setACurrentDate] = useState(new Date());
-  const [aselectedDate, setASelectedDate] = useState(null);
-  const [showCalender, setShowCalender] = useState(false);
+
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -157,6 +162,7 @@ const ClientCallDetails = ({
       dispatch(createClientCalls(JON, "membership", aselectedDate));
     }
   }, [dispatch, aselectedDate]);
+
   // eslint-disable-next-line
   const createdCall = useSelector((state) => {
     if (
@@ -168,6 +174,23 @@ const ClientCallDetails = ({
       return null;
     }
   });
+  useEffect(() => {
+    if (
+      createdCall &&
+      createdCall.clientCall &&
+      callDetails.clientCallData &&
+      callDetails
+    ) {
+      setPageData(() => [
+        createdCall.clientCall,
+        ...callDetails.clientCallData,
+      ]);
+      setASelectedDate(null);
+      setShowCalender(!showCalender);
+      setButtonSelect(false);
+    }
+  }, [createdCall]);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { month: "long", day: "numeric", year: "numeric" };
@@ -202,7 +225,9 @@ const ClientCallDetails = ({
           id="Attendancecalendar"
           ref={ACalendarRef}
           style={
-            showCalender && aselectedDate === null ? { display: "block" } : {}
+            showCalender && aselectedDate === null
+              ? { display: "block" }
+              : { display: "none" }
           }
         >
           <div className="header Attendacne-header">
@@ -230,7 +255,7 @@ const ClientCallDetails = ({
       >
         {callDetails &&
           callDetails.clientCallData &&
-          callDetails.clientCallData.map((detail, index) => (
+          pageData.map((detail, index) => (
             <div
               key={index}
               ref={(el) => (historyRefs.current[index] = el)}
@@ -245,17 +270,10 @@ const ClientCallDetails = ({
               {showHistory[index] && detail.description && (
                 <div className="clientCallInfo ">
                   <p>{detail.description}</p>
-                  {/* <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  viverra dui eget elit venenatis sagittis. Suspendisse vel
-                  scelerisque enim. Mauris condimentum semper sem, et varius
-                  orci rhoncus a.
-                </p> */}
                 </div>
               )}
               <div className="clientNumber ">
                 <p>Call {index + 1}</p>
-                {/* <p>June 12</p> */}
                 <p>{formatDate(detail.callDate)}</p>
                 <p>{detail.discountOffered}% Off</p>
               </div>

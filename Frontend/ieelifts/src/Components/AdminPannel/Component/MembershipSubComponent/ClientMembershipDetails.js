@@ -62,21 +62,26 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
             buttonSelect={() => {
               setButtonSelect(!buttonSelect);
             }}
-            />
-            )}
+          />
+        )}
       </div>
       <div className="clients">
         <ClientCallDetails
-            JON={clientDetail?.responseData?.jobOrderNumber}
+          JON={clientDetail?.responseData?.jobOrderNumber}
           isExpired={isExpired}
           dataType={dataType}
           callDetails={callDetails}
           Mybutton={buttonSelect}
+         setButtonSelect={setButtonSelect}
         />
         {clientDetail && clientDetail.responseData && (
           <div>
             <NotificationMembership isExpired={isExpired} dataType={dataType} />
-            <NotificationMembership isExpired={isExpired} dataType={dataType} whatsApp={"whatsapp"} />
+            <NotificationMembership
+              isExpired={isExpired}
+              dataType={dataType}
+              whatsApp={"whatsapp"}
+            />
           </div>
         )}
         {clientDetail && clientDetail.responseData && (

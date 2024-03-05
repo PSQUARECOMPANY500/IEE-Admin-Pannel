@@ -844,7 +844,7 @@ code {
   border-radius: 0.3rem;
   padding: 0.7% 2%;
   border: 1px solid #444444;
-  width: 93%;
+  width: 97%;
 }
 
 .clientCallInfo {
@@ -1184,23 +1184,12 @@ code {
   justify-content: center;
 }
 
-.Attendancecalendar {
-  margin-top: 0.8rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  display: block;
-  min-height: 20%;
-  background-color: #fffbf4;
-}
 
 .AttendancecalendarMembership {
-  width: 97%;
-  position: absolute;
-  top: 75%;
-  display: none;
+  position: absolute !important;
+  top: 75% !important;
+  width: 97% !important;
+  top: 0;
 }
 
 .Attendance {
@@ -1332,6 +1321,11 @@ code {
   justify-content: space-between;
   align-items: center;
   /* gap: 1rem; */
+}
+
+.clear_section{
+  font-size: small;
+  font-weight: 600;
 }
 
 .clientCard {
@@ -1466,7 +1460,6 @@ code {
 }
 
 .tableContainer {
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1477,11 +1470,10 @@ code {
   padding: 1rem 2rem;
   font-size: medium;
   font-weight: 500;
-  background-color: white;
+  /* box-shadow:  0px 0px 15px #c1c1c180; */
 }
 
-.task-head-list {
-  background-color: white;
+.task-head-list tr  {
   box-shadow: 0px 0px 15px #c1c1c180;
 }
 

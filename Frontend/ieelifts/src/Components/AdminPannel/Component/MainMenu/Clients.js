@@ -81,7 +81,7 @@ import ClientTableView from "../ClientsSubComponent/ClientTableView";
 import ClientFilterDropdown from "../ClientsSubComponent/ClientFilterDropdown";
 
 const Clients = () => {
-  const [layout, setLayout] = useState("Table");
+  const [layout, setLayout] = useState("Card");
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
@@ -119,21 +119,20 @@ const Clients = () => {
 
     // If filteredData exists, use it instead
     if (filteredData) {
-      console.log(filteredData);
       dataToRender = filteredData;
     }
 
     if (layout === "Card") {
       return <ClientCardView clientData={dataToRender} />;
     } else {
-      return <ClientCardView clientData={dataToRender} />;
-      // return <ClientTableView clientData={dataToRender} />;
+      // return <ClientCardView clientData={dataToRender} />;
+      return <ClientTableView clientData={dataToRender} />;
     }
   };
 
   return (
     <div className="main-container">
-      {/* <div style={{ marginTop: "10rem" }}>
+      <div style={{ marginTop: "10rem" }}>
         <p className="filter-icon" onClick={handleTicketFilter}>
           <LuSettings2 />
           {""}
@@ -143,9 +142,9 @@ const Clients = () => {
             <ClientFilterDropdown />
           </div>
         )}
-      </div> */}
+      </div>
       {renderClientView()}
-      {/* <button onClick={handleLayout}>Change Layout</button> */}
+      <button onClick={handleLayout}>Change Layout</button>
     </div>
   );
 };
