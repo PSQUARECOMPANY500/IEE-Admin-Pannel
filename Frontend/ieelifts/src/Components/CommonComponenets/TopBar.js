@@ -13,32 +13,32 @@ const TopBar = (props) => {
 
 
   return (
-    <div className="top-bar">
+    <div className="top-bar" >
       <div
         className="left-side-heading"
         style={{
-          marginLeft: props.isOpen ? "15%" : "9%",
-          transition: "margin-left 0.3s ease",
+          marginLeft: props.isOpen ? "0%" : "-9.5rem",
+    
         }}
       >
         <p>{props.heading}</p>
       </div>
 
       <div className="right-side-icons">
-        <span className="top-icon">
-          <div className="search-box">
+      <span className="top-icon">
+        <div className="search-box">
             <input
               type="text"
               placeholder="Search anything"
               className="search-input"
             />
-            <a href="/" className="search-btn">
-              <i>
-                <RiSearchLine />
+           
+              <i  className="search-btn ">
+                <RiSearchLine className="iconColor"/>
               </i>
-            </a>
+            
           </div>
-        </span>
+         </span> 
         <div style={{ display: "flex" }}>
           <span className="top-icon-bell" onClick={handleNotificationBox}>
             <HiOutlineBell />{" "}
@@ -51,6 +51,7 @@ const TopBar = (props) => {
         </div>
       </div>
     </div>
+ 
   );
 };
 

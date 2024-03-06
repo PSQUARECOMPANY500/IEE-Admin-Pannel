@@ -2,6 +2,13 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
 }
 
 /* set body scroll property starts */
@@ -33,9 +40,7 @@ body::-webkit-scrollbar-thumb {
   position: relative;
 }
 
-.container {
-  display: flex;
-}
+
 
 main {
   display: flex;
@@ -48,7 +53,7 @@ main {
   height: auto;
   background: #ffffff;
   color: rgb(20, 19, 19);
-  height: auto;
+  height: 100%;
   transition: all 0.5s;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
@@ -87,7 +92,7 @@ main {
   margin-left: 80px;
 }
 
-/* hamburger css starts */
+/* hamburger css starts  */
 .toggle-button {
   width: 8px;
   height: 19px;
@@ -96,6 +101,8 @@ main {
   padding: 4px;
   transition: 0.25s;
   z-index: 15;
+  cursor: pointer;
+
 }
 
 .toggle-button:hover {
@@ -103,20 +110,24 @@ main {
 }
 
 .menu-icon {
-  transition: transform 0.8s ease-in-out;
-  /* Adjust the duration and easing function as needed */
+  transition: .5s ease;
 }
+
+
 
 .rotate {
-  transform: rotate(360deg);
-  /* Rotate 180 degrees */
+
+
+  transform: rotateZ(180deg);
 }
 
+/* 
 .toggle-button .menu-bar {
   position: absolute;
   border-radius: 2px;
   width: 80%;
   transition: 0.5s;
+
 }
 
 .toggle-button .menu-bar-top {
@@ -154,9 +165,44 @@ main {
 .button-open .menu-bar-bottom {
   transform: rotate(-40deg) translate(0px, -4.5px);
   transition: 0.5s;
-}
+} */
 
 /* hamburger css ends */
+.toggle-button-menu {
+
+  width: 20%;
+  position: absolute;
+  right: 8%;
+
+  margin-left: .2rem;
+}
+
+.wrapper {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-bar {
+  height: 2px;
+  background-color: #000;
+  width: 12px;
+  transition: .5s ease;
+}
+
+.menu-bar-top {
+  border-radius: 5px;
+
+}
+
+.menu-bar-bottom {
+  border-radius: 5px;
+
+}
 
 .link {
   display: flex;
@@ -277,6 +323,7 @@ span::after {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
   cursor: pointer;
   margin-top: 8px;
@@ -476,7 +523,16 @@ span::after {
   padding-right: 0;
   padding-left: 0;
   width: 100%;
+ 
+  
+
 }
+
+
+.container {
+  display: flex;
+}
+
 
 /* topbar css starts */
 .top-bar {
@@ -484,13 +540,15 @@ span::after {
   justify-content: space-between;
   display: flex;
   width: 100%;
+  height: 75px;
   flex-direction: row;
   align-items: center;
   background: #ffff;
-  padding: 15px 16px;
   margin-top: 0px;
   position: fixed;
+  top: 0;
   z-index: 3;
+  padding-left: 18rem;
   box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
   /* gap: 65%; */
 }
@@ -499,7 +557,8 @@ span::after {
   color: #191919;
   font-size: 24px;
   font-weight: 500;
-  margin-left: 12%;
+  transition: .5s ease;
+  /* margin-left: 12%; */
 }
 
 .right-side-icons {
@@ -516,23 +575,16 @@ span::after {
 .dot {
   height: 8px;
   width: 8px;
-  background-color: #ff0000;
+  background-color: red;
   border-radius: 50%;
   position: relative;
   top: 10px;
   right: 20px;
 }
 
-.top-icon {
-  padding: 5px 9px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 7px;
-  cursor: pointer;
-  height: 33px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
-}
+
+
+
 
 .top-icon-bell,
 .filter-icon,
@@ -568,18 +620,17 @@ span::after {
 /* search bar css starts */
 
 .search-input {
-  background: #ffffff;
+
   color: #343434;
   outline: none;
   border: none;
-  line-height: 30px;
   width: 0px;
   float: left;
   font-size: 14px;
   transition: 0.7s ease;
   font-family: sans-serif;
   border-radius: 9px;
-  padding-left: 0px;
+
 }
 
 .search-btn {
@@ -587,14 +638,16 @@ span::after {
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  background: #fffdfd;
   padding: 0px;
-  padding-top: 3px;
   border-radius: 4%;
   float: left;
   color: #343434;
   transition: 0.4s ease;
-  font-size: 24px;
+  font-size: 1.5rem;
+}
+
+.iconColor {
+  color: #343434;
 }
 
 .search-btn-ticket-section {
@@ -605,13 +658,12 @@ span::after {
   text-decoration: none;
   background: #fffdfd;
   padding: 8px 2px 4px 1px;
-  /* padding-top: 7px; */
+
   border-radius: 4%;
   float: left;
   color: #343434;
   transition: 0.4s ease;
   font-size: 22px;
-  /* font-weight: 800; */
   margin-top: 0px;
   height: 38px;
   width: 26px;
@@ -619,34 +671,49 @@ span::after {
 
 .search-box {
   display: flex;
+
+
+}
+
+.top-icon {
+  padding: 1.4rem .7rem;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  border-radius: 7px;
+  cursor: pointer;
+  height: 33px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
 
 .search-box:hover>.search-input {
   width: 240px;
-  margin: 0px 0px;
-  /* padding-left: 10px; */
+  padding: .8rem .1rem;
+
 }
 
+/* 
 .search-input:focus {
   width: 240px;
   margin: 0px 8px;
-}
+} */
 
-.search-box:hover>.search-btn {
+/* .search-box:hover>.search-btn {
   background: #fff;
-}
+} */
 
-.search-input:focus+.search-btn {
+/* .search-input:focus+.search-btn {
   background: #fff;
-}
+} */
 
-.search-box:hover>.search-btn-ticket-section {
+/* .search-box:hover>.search-btn-ticket-section {
   background: #fff;
 }
 
 .search-input:focus+.search-btn-ticket-section {
   background: #fff;
-}
+} */
 
 footer {
   position: fixed;
@@ -2061,25 +2128,35 @@ thead th {
 /* filter dropdown css starts */
 .filter-dropdowns {
   margin-top: 10px;
+
 }
+
+
 
 .child-filter-dropdown {
   padding: 10px;
+  position: relative;
+  max-height: 300px;
+  /* background-color: red;
+  background: rgb(253, 253, 253);
+  background-color: red; */
+ 
 }
 
 .dropdown-content {
-  position: absolute;
+   position: absolute;
   z-index: 1;
-  margin-top: 14.2rem;
-  margin-left: 124px;
-  background: rgb(253, 253, 253);
+  /* margin-top: 22rem; */
+  margin-left: -5rem;
   width: 160px;
+
   overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  border-radius: 4px;
-  /* top: 0; */
+  border-radius: 4px; 
+  background-color: #fff;
+  top: 33%;
 }
 
 .dropdown-content-filter {
@@ -2117,7 +2194,7 @@ thead th {
   background: transparent;
   border: 0;
   outline: 0;
-  width: 120px;
+  width: 100px;
   margin-left: 27px;
   padding: 7px 0px;
 }
@@ -4526,7 +4603,7 @@ element.style {
   border-radius: 15px;
 }
 
-.Progress2{
+.Progress2 {
   height: 100%;
   background-color: #F8AC1D;
   width: 16.66%;
@@ -4535,29 +4612,29 @@ element.style {
   border-radius: 15px;
 }
 
-.ComponentNames{
+.ComponentNames {
   width: 100%;
   display: flex;
 
 
 }
 
-.ComponentNames p{
-color: #444444;
-font-size:.8rem;
-align-items: center;
-font-family: 'Poppins';
-margin-left: 2.5rem;
-margin-top: .5rem;
-/* white-space:nowrap; */
+.ComponentNames p {
+  color: #444444;
+  font-size: .8rem;
+  align-items: center;
+  font-family: 'Poppins';
+  margin-left: 2.5rem;
+  margin-top: .5rem;
+  /* white-space:nowrap; */
 }
 
 
-.ticket-card { 
+.ticket-card {
   /* padding: 0 1em; */
 
   height: 6rem;
-  width:100%;
+  width: 100%;
   border-radius: 10px;
   background-color: #FFFFFF;
   box-shadow: 0.5px 1px 2px #00000029;
@@ -4567,17 +4644,17 @@ margin-top: .5rem;
   position: relative;
   padding: .4rem;
   position: relative;
- 
+
 }
 
-.ticket-table{
+.ticket-table {
   font-family: 'Poppins';
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   text-align: center;
 
-   
+
 }
 
 .ticket-table tbody tr td,
@@ -4585,15 +4662,15 @@ margin-top: .5rem;
   font-size: .8rem;
   color: #444444;
   text-transform: uppercase;
-  
+
 
 }
 
-.ticket-table tbody tr th{
+.ticket-table tbody tr th {
   font-weight: 500;
 }
 
-.ticket-card-bottom{
+.ticket-card-bottom {
   height: 40%;
   width: 100%;
   display: flex;
@@ -4602,37 +4679,40 @@ margin-top: .5rem;
   padding: 0 1.2rem 0rem .2rem;
 }
 
-.ticket-card-bottom h5{
+.ticket-card-bottom h5 {
   text-align: left;
-/* font: normal normal medium 14px/21px Poppins; */
-font-family: 'Poppins';
-font-size: .8rem;
-letter-spacing: 0px;
-color: #F8AC1D;
-opacity: 1;
-font-weight: 400;
+  /* font: normal normal medium 14px/21px Poppins; */
+  font-family: 'Poppins';
+  font-size: .8rem;
+  letter-spacing: 0px;
+  color: #F8AC1D;
+  opacity: 1;
+  font-weight: 400;
 }
-.ticket-card-bottom>h5:nth-child(1){
+
+.ticket-card-bottom>h5:nth-child(1) {
   color: #389300;
 }
-.ticket-card-bottom>h5:nth-child(2){
+
+.ticket-card-bottom>h5:nth-child(2) {
   color: #C10000;
 }
-.ticket-card-bottom>h5:nth-child(3){
+
+.ticket-card-bottom>h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
 
-.yellow_color{
+.yellow_color {
   color: #F8AC1D;
 
 }
 
-.service-card { 
+.service-card {
   /* padding: 0 1em; */
 
   height: 6rem;
-  width:100%;
+  width: 100%;
   border-radius: 10px;
   background-color: #FFFFFF;
   box-shadow: 0.5px 1px 2px #00000029;
@@ -4642,17 +4722,17 @@ font-weight: 400;
   position: relative;
   padding: .4rem;
   position: relative;
- 
+
 }
 
-.service-table{
+.service-table {
   font-family: 'Poppins';
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   text-align: center;
 
-   
+
 }
 
 .service-table tbody tr td,
@@ -4660,15 +4740,15 @@ font-weight: 400;
   font-size: .8rem;
   color: #444444;
   text-transform: uppercase;
-  
+
 
 }
 
-.service-table tbody tr th{
+.service-table tbody tr th {
   font-weight: 500;
 }
 
-.service-card-bottom{
+.service-card-bottom {
   height: 40%;
   width: 100%;
   display: flex;
@@ -4677,39 +4757,42 @@ font-weight: 400;
   padding: 0 1.2rem 0rem .2rem;
 }
 
-.service-card-bottom h5{
+.service-card-bottom h5 {
   text-align: left;
-/* font: normal normal medium 14px/21px Poppins; */
-font-family: 'Poppins';
-font-size: .8rem;
-letter-spacing: 0px;
-color: #F8AC1D;
-opacity: 1;
-font-weight: 400;
+  /* font: normal normal medium 14px/21px Poppins; */
+  font-family: 'Poppins';
+  font-size: .8rem;
+  letter-spacing: 0px;
+  color: #F8AC1D;
+  opacity: 1;
+  font-weight: 400;
 }
-.service-card-bottom>h5:nth-child(1){
+
+.service-card-bottom>h5:nth-child(1) {
   color: #389300;
 }
-.service-card-bottom>h5:nth-child(2){
+
+.service-card-bottom>h5:nth-child(2) {
   color: #C10000;
 }
-.service-card-bottom>h5:nth-child(3){
+
+.service-card-bottom>h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
 
-.yellow_color{
+.yellow_color {
   color: #F8AC1D;
 
 }
 
-.EngChatBox-Dash{
-  width:350px;
+.EngChatBox-Dash {
+  width: 350px;
   height: 480px;
   background-color: #FFFBF4;
   border-radius: 5px;
   margin-top: 10px;
-margin-left: -295px;
+  margin-left: -295px;
   /* box-shadow: 1px 2px 5px 1px #00000029; */
   position: absolute;
   z-index: 999;
@@ -4724,10 +4807,10 @@ margin-left: -295px;
   justify-content: end;
   padding: .8rem;
   border-bottom: 1px solid #00000029;
- 
+
 }
 
-.EngChatBoxIcons-Dash{
+.EngChatBoxIcons-Dash {
   width: 50%;
   display: flex;
   align-items: center;
@@ -4738,13 +4821,13 @@ margin-left: -295px;
 
 
 .EngChatBox-Dash h6 {
-    text-wrap: nowrap;
-    font-size: 1.1rem;
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 500;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  text-wrap: nowrap;
+  font-size: 1.1rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 500;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 }
 
 .EngChatMsg-Dash {
@@ -4780,27 +4863,27 @@ margin-left: -295px;
 
 .engchatmsg-reciver-message-dash,
 .engchatmsg-sender-message-dash {
-    max-width: 70%;
-    border-radius: 5px;
-    padding: .5rem .5rem;
-    font-size: 0.9rem;
-    text-wrap: wrap;
-    line-height: 1.1;
-    text-align: start;
-    font-family: 'Poppins';
+  max-width: 70%;
+  border-radius: 5px;
+  padding: .5rem .5rem;
+  font-size: 0.9rem;
+  text-wrap: wrap;
+  line-height: 1.1;
+  text-align: start;
+  font-family: 'Poppins';
 }
 
-.engchatmsg-sender-message-dash{
-    color: #444444;
+.engchatmsg-sender-message-dash {
+  color: #444444;
 
-    /* background: #fef3de; */
-    margin-left: 8.4rem;
-    margin-top: 0.2rem;
-    word-wrap: break-word;
-    background-color: #FEF3DE;
-    font-family: 'Poppins';
-    box-shadow: 1px 2px 5px #00000029;
-    opacity: 1;
+  /* background: #fef3de; */
+  margin-left: 8.4rem;
+  margin-top: 0.2rem;
+  word-wrap: break-word;
+  background-color: #FEF3DE;
+  font-family: 'Poppins';
+  box-shadow: 1px 2px 5px #00000029;
+  opacity: 1;
 }
 
 .engchatmsg-reciver-side-dash {
@@ -4833,7 +4916,7 @@ margin-left: -295px;
 
 
 
-.eng-card-message-text-dash{
+.eng-card-message-text-dash {
   position: absolute;
   bottom: 15px;
   max-height: 10rem;
@@ -4847,7 +4930,7 @@ margin-left: -295px;
   outline: none;
   border: none;
   border-radius: 50px;
-  box-shadow: inset 1px 2px 3px #00000029; 
+  box-shadow: inset 1px 2px 3px #00000029;
   position: relative;
   padding: 15px 12px;
   top: -45px;
@@ -4906,7 +4989,7 @@ margin-left: -295px;
   height: 100px;
   right: 20px;
   display: flex;
-  gap:15px;
+  gap: 15px;
   font-size: 1.5rem;
   /* padding: 0px 0px; */
   color: #f8ac1d;
@@ -4916,8 +4999,8 @@ margin-left: -295px;
   width: 20%;
   top: -65px;
   cursor: pointer;
- 
-  
+
+
 
 
 }
@@ -4927,15 +5010,15 @@ margin-left: -295px;
   border-radius: 50%;
   text-align: center;
   padding: 10px;
-margin-top: -10px;
+  margin-top: -10px;
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
 }
 
-.text-area-message-eng-card-dash ::placeholder{
-  
+.text-area-message-eng-card-dash ::placeholder {
+
   color: #4444441f;
   opacity: 0.5;
 }
@@ -4950,12 +5033,13 @@ margin-top: -10px;
 
 /* css for thr message box inside the Engg crouser starts -------------------------------- */
 
-.loader{
+.loader {
   display: flex;
   flex-direction: column;
   font-size: 1rem;
   gap: 10px;
 }
+
 .box {
   height: 50px;
   width: 50px;
@@ -4970,11 +5054,10 @@ margin-top: -10px;
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
 /* css for thr message box inside the Engg crouser ends -------------------------------- */
-
-

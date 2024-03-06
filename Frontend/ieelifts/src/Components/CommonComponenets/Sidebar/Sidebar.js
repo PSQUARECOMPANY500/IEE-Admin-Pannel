@@ -141,12 +141,12 @@ const Sidebar = ({ children }) => {
       case "/Memberships":
         setTopBarHeading("Memberships");
         break;
-        case "/Engeeniers":
-          setTopBarHeading("Engineers");
-          break;
-        case "/Clients":
-          setTopBarHeading("Clients");
-          break;
+      case "/Engeeniers":
+        setTopBarHeading("Engineers");
+        break;
+      case "/Clients":
+        setTopBarHeading("Clients");
+        break;
       // Add more cases for other pages
       default:
         setTopBarHeading("Default Heading");
@@ -179,7 +179,7 @@ const Sidebar = ({ children }) => {
 
   return (
     <div className="container">
-      {/* top bar */}
+    
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
@@ -214,15 +214,18 @@ const Sidebar = ({ children }) => {
             >
               {/* hamburger animationa and functionality */}
               <div
-                className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
-                style={{ width: isOpen ? "8px" : "0px" }}
+                // className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
+                style={{ height: isOpen ? ".8rem" : ".6rem", top: isOpen ? '40px' : '35px' }}
+                className="toggle-button-menu"
                 onClick={handleToggleClick}
               >
                 <div className="wrapper">
-                  <div className="menu-bar menu-bar-top"></div>
-                  {/* <div className="menu-bar menu-bar-middle"></div> */}
-                  <div className="menu-bar menu-bar-bottom"></div>
+                  <div className="menu-bar menu-bar-top" style={{ transform: isOpen ? 'none' : 'rotate(40deg)' }}
+                  ></div>
+
+                  <div className="menu-bar menu-bar-bottom" style={{ transform: isOpen ? 'none' : 'rotate(-40deg)' }}></div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -302,14 +305,17 @@ const Sidebar = ({ children }) => {
                   MAIN MENU
                 </span>
                 <span
-                  style={{ fontSize: isOpen ? "16px" : "0px" }}
+                  style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                  {menuIcon ? (
+                  {/* {menuIcon ? (
                     <FiChevronUp style={{ fontSize: "20px" }} />
                   ) : (
-                    <FaAngleDown />
-                  )}
+                  
+                    <FiChevronUp style={{ fontSize: "20px" }} />
+                  )} */}
+
+                  <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -331,10 +337,10 @@ const Sidebar = ({ children }) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                    // ClassName={
-                    //   location.pathname === item.Path ? "active-link" : ""
-                    // }
-                    // not know the reason of commenting todo - uncomment if there is some problem exist
+                  // ClassName={
+                  //   location.pathname === item.Path ? "active-link" : ""
+                  // }
+                  // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div
