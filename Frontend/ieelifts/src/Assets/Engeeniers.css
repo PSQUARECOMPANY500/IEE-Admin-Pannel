@@ -63,7 +63,7 @@ body {
 .ODetailsColumn {
   display: flex;
   justify-content: space-around;
-  align-items: end;
+  align-items: flex-end;
   border-bottom: 2px solid #5353533b;
   border-radius: 2px;
 }
@@ -357,7 +357,7 @@ body {
 .EngChatBoxHead {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   padding: 0.8rem;
   border-bottom: 1px solid #00000029;
 }
@@ -366,7 +366,7 @@ body {
   width: 50%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   gap: 0.4rem;
 }
 
@@ -410,7 +410,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   margin-top: 0.4rem;
 }
 
@@ -418,7 +418,7 @@ body {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   margin-top: 0.4rem;
 }
 
@@ -518,7 +518,7 @@ body {
   position: relative;
   display: flex;
   justify-content: space-around;
-  align-items: end;
+  align-items: flex-end;
   border-bottom: 2px solid #5353533b;
 }
 
@@ -1100,7 +1100,7 @@ tr > td:nth-child(2) {
 .ReqContainerR {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   padding: 0rem 2rem;
   justify-content: center;
 }
@@ -1133,7 +1133,7 @@ tr > td:nth-child(2) {
 .ResContainer {
   padding: 1rem 1rem;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -1142,7 +1142,7 @@ tr > td:nth-child(2) {
   display: flex;
   gap: 1rem;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .Buttons button {

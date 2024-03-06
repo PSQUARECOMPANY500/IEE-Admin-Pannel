@@ -4,6 +4,7 @@ import React from "react";
 import MembershipCardDetails from "./MembershipCardDetails";
 import MembershipExpiring from "./MembershipExpiring";
 import MembershipExpired from "./MembershipExpired";
+import MembershipCardTopBar from "./MembershipCardTopBar";
 // import { useDispatch, useSelector } from "react-redux";
 
 const MembershipCard = ({
@@ -85,64 +86,33 @@ const MembershipCard = ({
       >
         {DemoData !== "" && (
           <>
-            <div
-              className={`membership_card_topbar ${
-                setClick
-                  ? order !== 1
-                    ? "membership_card_topbar_non_expand "
-                    : ` membership_card_topbar_expand  ${
-                        clickCount !== 1 ? "animation" : "animationExpand"
-                      }
-                    `
-                  : ""
-              }`}
-            >
-              <div className="membership_card_topbar_left">
-                <p className={`membership_card_title ${titleClass}`}>
-                  {DemoData?.dataType}
-                </p>
-                <p
-                  className="membership_card_revenue"
-                  style={setClick ? { display: "none" } : {}}
-                >
-                  Revenue
-                  {DemoData?.Data?.details?.totalRevenue !== undefined
-                    ? `: ₹${DemoData?.Data?.details?.totalRevenue}`
-                    : " --"}
-                </p>
-              </div>
+            <MembershipCardTopBar
+              setClick={setClick}
+              order={order}
+              clickCount={clickCount}
+              DemoData={DemoData}
+              titleClass={titleClass}
+              cardColor={cardColor}
+            />
+            {order === 1 && (
               <div
-                className={`membership_card_counts ${cardColor} ${
-                  setClick && "membership_card_counts_expand"
-                } ${order === 1 && "membership_card_counts_expanded"}`}
-                style={{
-                  padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
-                }}
+                style={
+                  order === 1 && setClick
+                    ? { marginTop: "1rem" }
+                    : { display: "none" }
+                }
+                className={
+                  order === 1 && setClick && clickCount !== 1
+                    ? "animation"
+                    : "animationExpand"
+                }
               >
-                {/* <p>125</p> */}
-                <p>{DemoData?.Data?.details?.count}</p>
+                <MembershipCardDetails
+                  DemoData={DemoData}
+                  expiredCount={DemoData?.Data?.details?.expiredCount}
+                  expiringCount={DemoData?.Data?.details?.expiringCount}
+                />
               </div>
-            </div>
-
-            {order===1 && (
-              <div
-              style={
-                order === 1 && setClick
-                  ? { marginTop: "1rem" }
-                  : { display: "none" }
-              }
-              className={
-                order === 1 && setClick && clickCount !== 1
-                  ? "animation"
-                  : "animationExpand"
-              }
-            >
-              <MembershipCardDetails
-                DemoData={DemoData}
-                expiredCount={DemoData?.Data?.details?.expiredCount}
-                expiringCount={DemoData?.Data?.details?.expiringCount}
-              />
-            </div>
             )}
 
             <div

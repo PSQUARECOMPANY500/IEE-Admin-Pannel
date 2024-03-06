@@ -1,6 +1,5 @@
 import React from "react";
 import { GoPerson } from "react-icons/go";
-import { FaLocationArrow } from "react-icons/fa";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
 
@@ -46,7 +45,6 @@ const clientCardView = ({ clientData }) => {
               <div className="clientCards ">
                 <div className="client ">
                   <p>
-                    {/* <FaLocationArrow className="locationArrow" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"

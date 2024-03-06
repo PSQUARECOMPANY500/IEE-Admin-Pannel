@@ -1,15 +1,14 @@
-import React from 'react'
+import React from "react";
 import MembershipExpired from "./MembershipExpired";
 import ClientMembershipDetails from "./ClientMembershipDetails";
 
-
 const ExpiredComponent = ({ DemoData }) => {
-    return (
+  return (
     <div className="expandedMembershipheading">
-        <ClientMembershipDetails isExpired ={true} />
-        <MembershipExpired DemoData={DemoData}  />
+      <ClientMembershipDetails isExpired={true} />
+      <MembershipExpired DemoData={DemoData} />
     </div>
-    )
-}
+  );
+};
 
-export default ExpiredComponent
+export default ExpiredComponent;

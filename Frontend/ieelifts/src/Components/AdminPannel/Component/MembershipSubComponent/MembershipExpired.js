@@ -164,14 +164,13 @@ const MembershipExpired = ({ DemoData, count }) => {
         count ? "membership_card_expiring" : "membership_card_expiring_expanded"
       }
     >
-    
       {count !== undefined && count !== null ? (
         <div className="membership_card_expiring-title membership_card_expired-title">
           <p>Expired</p>
           {memberShipDetails ? <p>{count}</p> : null}
         </div>
       ) : (
-       <></>
+        <></>
       )}
 
       <div

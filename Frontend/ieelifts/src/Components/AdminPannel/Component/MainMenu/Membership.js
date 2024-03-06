@@ -32,7 +32,6 @@ const Membership = () => {
       membershipJon.membershipDetail &&
       membershipJon.membershipDetail.data
     ) {
-    
       setCards([
         {
           DemoData: {
@@ -73,7 +72,6 @@ const Membership = () => {
         { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
       ]);
     } else {
-      // Reset cards to an empty array if membershipJon is not available
       setCards([]);
     }
   }, [membershipJon]);
@@ -89,12 +87,10 @@ const Membership = () => {
       orderOneIndex !== -1 &&
       orderOneIndex !== clickedIndex
     ) {
-      // Swap the order of the front with the toggle order
       const clickedToggleIndex = updatedCards[clickedIndex].order;
       updatedCards[clickedIndex].order = updatedCards[clickedIndex].toggleOrder;
       updatedCards[clickedIndex].toggleOrder = clickedToggleIndex;
 
-      // Swap the order of the clicked card with the toggle order
       const orderOneIndexToggle = updatedCards[orderOneIndex].order;
       updatedCards[orderOneIndex].order =
         updatedCards[orderOneIndex].toggleOrder;
@@ -130,8 +126,9 @@ const Membership = () => {
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${setClick ? `membershipCards_expand ` : "non_expand_gap"
-          } `}
+        className={`membershipCards ${
+          setClick ? `membershipCards_expand ` : "non_expand_gap"
+        } `}
       >
         {cards &&
           cards.map((items, index) => {

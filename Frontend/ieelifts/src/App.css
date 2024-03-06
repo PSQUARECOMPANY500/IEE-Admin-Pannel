@@ -1878,7 +1878,7 @@ tbody tr {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: end;
+  justify-content: flex-end;
   width: 143px;
 }
 
@@ -3089,7 +3089,7 @@ element.style {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
 
 
 
@@ -3100,7 +3100,7 @@ element.style {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .reciver-message,
@@ -4115,7 +4115,7 @@ element.style {
   height: 100%;
   width: 20%;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
 }
 
@@ -4124,7 +4124,7 @@ element.style {
   width: 20%;
 
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
 }
 
@@ -4449,7 +4449,7 @@ element.style {
 
   display: flex;
   justify-content: space-between;
-  align-items: start;
+  align-items: flex-start;
 
 }
 
@@ -4721,7 +4721,7 @@ margin-left: -295px;
 .EngChatBoxHead-Dash {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   padding: .8rem;
   border-bottom: 1px solid #00000029;
  
@@ -4731,7 +4731,7 @@ margin-left: -295px;
   width: 50%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   gap: .4rem;
 }
 
@@ -4773,7 +4773,7 @@ margin-left: -295px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   margin-top: .4rem;
 
 }
@@ -4807,7 +4807,7 @@ margin-left: -295px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   margin-top: .4rem;
 }
 

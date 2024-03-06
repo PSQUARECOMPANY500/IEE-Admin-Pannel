@@ -43,11 +43,12 @@ const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
 
       {selectedOption && (
         <div>
-          {/* Display information based on the selected option */}
           {selectedOption === "Revenue" && (
             <p>Show revenue information here...</p>
           )}
-          {selectedOption === "Expiring" && <ExpiringComponent DemoData={DemoData} />}
+          {selectedOption === "Expiring" && (
+            <ExpiringComponent DemoData={DemoData} />
+          )}
           {selectedOption === "Expired" && (
             <ExpiredComponent DemoData={DemoData} />
           )}

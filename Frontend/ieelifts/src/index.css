@@ -31,33 +31,28 @@ code {
 /* ----------------- Membership Card css --------------------------- */
 
 .membershipCards {
-  margin-top: 5.5rem;
-  transform: translateY(0);
-  /* Initial transform value */
-  transition: all 0.6s ease;
+  margin-top: 5.4rem;
+  transition: all 0.6s ease; 
 }
 
 .non_expand_gap {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 49% 49%;
   justify-content: center;
   align-content: center;
-  gap: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-bottom: 1.5rem;
+  /* gap: 2rem; */
+  /* margin-left: 2rem; */
+  /* margin-right: 2rem; */
+  /* margin-bottom: 1.5rem; */
 }
 
 .membership_card {
-  /* min-height: 30vh; */
   background-color: #ffffff;
-  padding: 2%;
+  padding: 1rem;
   margin: 1rem;
   border-radius: 0.8rem;
   border: 1px solid #ffffff;
   box-shadow: 2px 4px 10px #99886b66;
-  /* overflow-y: hidden;? */
-  /* width: 100%; */
   transition: box-shadow 0.3s ease;
   scale: 1;
 }
@@ -1184,7 +1179,6 @@ code {
   justify-content: center;
 }
 
-
 .AttendancecalendarMembership {
   position: absolute !important;
   top: 75% !important;
@@ -1323,7 +1317,7 @@ code {
   /* gap: 1rem; */
 }
 
-.clear_section{
+.clear_section {
   font-size: small;
   font-weight: 600;
 }
@@ -1473,7 +1467,7 @@ code {
   /* box-shadow:  0px 0px 15px #c1c1c180; */
 }
 
-.task-head-list tr  {
+.task-head-list tr {
   box-shadow: 0px 0px 15px #c1c1c180;
 }
 

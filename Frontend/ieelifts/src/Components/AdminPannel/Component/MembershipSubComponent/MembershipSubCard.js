@@ -21,12 +21,12 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
       dispatch(getClientMembershipDetails());
       dispatch(getClientMembershipHistoryAction());
     };
-  }, [dispatch,jobOrderNumber,state]);
-  
-  const handleJob = (job)=>{
+  }, [dispatch, jobOrderNumber, state]);
+
+  const handleJob = (job) => {
     setJobOrderNumber(job);
-    setState(state+1)
-  }
+    setState(state + 1);
+  };
 
   const cardClass = isExpired
     ? "membership_card_data_display_expired"
@@ -79,7 +79,9 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
           <p className="JON">{data?.JobOrderNumber}</p>
         </div>
         <div className={`membership_card_data_info nameAddress`}>
-          <p className={"expandCardName"} style={{fontSize:"0.9rem"}}>{data?.name}</p>
+          <p className={"expandCardName"} style={{ fontSize: "0.9rem" }}>
+            {data?.name}
+          </p>
           <p className="membership_card_data_address">{truncatedAddress}</p>
         </div>
       </div>

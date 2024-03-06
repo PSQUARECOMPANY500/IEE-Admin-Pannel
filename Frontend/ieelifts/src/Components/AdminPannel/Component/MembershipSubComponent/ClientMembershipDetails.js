@@ -72,7 +72,7 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
           dataType={dataType}
           callDetails={callDetails}
           Mybutton={buttonSelect}
-         setButtonSelect={setButtonSelect}
+          setButtonSelect={setButtonSelect}
         />
         {clientDetail && clientDetail.responseData && (
           <div>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const CallButtons = ({ isExpired, dataType,buttonSelect  }) => {
+const CallButtons = ({ isExpired, dataType, buttonSelect }) => {
   const callButtonColor =
     dataType === "Gold"
       ? "callNowButtonGold"
@@ -27,7 +27,7 @@ const CallButtons = ({ isExpired, dataType,buttonSelect  }) => {
         Call Now
       </button>
       <button
-        onClick={()=>buttonSelect()}
+        onClick={() => buttonSelect()}
         className={`callButton  ${
           isExpired ? "addCallButtonExpired" : addCallButton
         }`}

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { BiSolidSend } from "react-icons/bi";
 
-const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
+const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [options] = useState(["Option 1", "Option 2", "Option 3"]);
   const [showOptions, setShowOptions] = useState(false);
@@ -43,14 +43,18 @@ const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
       <div ref={dropdownRef} className="inputNotification">
         <input
           className="inputBox"
-          placeholder={whatsApp==="whatsapp"?"Notification":"Whatsapp Message"}
+          placeholder={
+            whatsApp === "whatsapp" ? "Notification" : "Whatsapp Message"
+          }
           value={selectedOption}
           onChange={handleSelectChange}
         />
         <div onClick={toggleOptions}>
-          <FaChevronDown  className={`chevronDownMembership ${sendIconColor} ${
-          isExpired && "sendButtonExpired"
-        }`} />
+          <FaChevronDown
+            className={`chevronDownMembership ${sendIconColor} ${
+              isExpired && "sendButtonExpired"
+            }`}
+          />
         </div>
       </div>
       <div
