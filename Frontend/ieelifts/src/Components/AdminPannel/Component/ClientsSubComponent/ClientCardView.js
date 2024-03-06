@@ -46,7 +46,6 @@ const clientCardView = ({ clientData }) => {
               <div className="clientCards ">
                 <div className="client ">
                   <p>
-                    {/* <FaLocationArrow className="locationArrow" /> */}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"

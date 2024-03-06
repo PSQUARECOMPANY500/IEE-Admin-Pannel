@@ -30,11 +30,35 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploadImg = multer({ storage:storage}).array("photos",2);
+// const uploadImg = multer({ storage:storage}).array("photos",2);
+const uploadImg = multer({ storage:storage});
 
 router.get('/getTime', serviceEnggContoller.EnggTime);
-router.post('/enggCheckIn',  uploadImg ,serviceEnggContoller.EnggCheckIn);
-router.put('/enggCheckOut',  uploadImg, serviceEnggContoller.EnggCheckOut);
+router.post('/enggCheckIn',  uploadImg.fields([
+{
+  name:'frontimage',
+  maxCount:1
+},
+{
+  name:'backimage',
+  maxCount:1
+}
+]) ,serviceEnggContoller.EnggCheckIn);
+
+
+router.put('/enggCheckOut', uploadImg.fields([
+  {
+    name:'frontimage',
+    maxCount:1
+  },
+  {
+    name:'backimage',
+    maxCount:1
+  }
+  ]) ,serviceEnggContoller.EnggCheckOut);
+
+
+  
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
 router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);
@@ -51,6 +75,9 @@ router.post("/enggLeaveServiceRequest", serviceEnggContoller.enggLeaveServiceReq
 router.get("/enggLeaveRecord", serviceEnggContoller.enggLeaveRecord)
 router.post("/generateOtpForClient", serviceEnggContoller.generateOtpForClient)
 router.get("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
+
+router.post("/EnggReportResponse", serviceEnggContoller.EnggReportResponse)
+router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFetch)
 
 
 module.exports = router;

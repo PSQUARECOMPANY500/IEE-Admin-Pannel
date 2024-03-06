@@ -23,6 +23,9 @@ const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/
 const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
 
 const OtpDetails = require("../../Modals/OTP/Otp")
+const Report = require("../../Modals/Report/ReportSchema");
+
+const CheckList = require("../../Modals/ChecklistModal/ChecklistModal")
 
 const axios = require("axios");
 require("dotenv").config();
@@ -393,9 +396,20 @@ module.exports.EnggTime = async (req, res) => {
 };
 
 module.exports.EnggCheckIn = async (req, res) => {
+  console.log("req of checkin",req)
   try {
-    const data = req.files;
+    const frontimage = req.files['frontimage'][0].filename;
+    const backimage = req.files['backimage'][0].filename;
+
     const { IsAttendance, ServiceEnggId } = req.body;
+    
+    console.log(frontimage)
+    console.log(backimage)
+    console.log(IsAttendance)
+    console.log(ServiceEnggId)
+
+    return;
+
     if (IsAttendance && ServiceEnggId) {
       let enggPhoto = '';
 
@@ -469,7 +483,7 @@ module.exports.EnggCheckOut = async (req, res) => {
 module.exports.EnggOnFirstHalfBreak = async (req, res) => {
   try {
     const { ServiceEnggId, isStart } = req.body;
-    if (ServiceEnggId && isStart) {
+    if (ServiceEnggId) {
     const time = new Date().toLocaleTimeString("en-IN", {
       timeZone: "Asia/Kolkata",
       hour: "2-digit",
@@ -662,7 +676,7 @@ module.exports.generateOtpForClient = async (req, res) => {
       // Prepare data and config for the API request
 
       const apiKey = process.env.MESSAGE_API_KEY;
-      console.log(apiKey, typeof (apiKey));
+     // console.log(apiKey, typeof (apiKey));
       const axiosConfig = {
         headers: {
           "authorization": apiKey,
@@ -679,9 +693,9 @@ module.exports.generateOtpForClient = async (req, res) => {
       const response1 = await axios.post("https://www.fast2sms.com/dev/bulkV2", data, axiosConfig);
       // await axios.post("https://www.fast2sms.com/dev/voice", data, axiosConfig);
 
-      res.status(200).json({ success: true, message: "OTP sent successfully" });
+      return res.status(200).json({ success: true, message: "OTP sent successfully" });
     } else {
-      res.status(400).json({ error: "Missing required fields" });
+      return res.status(400).json({ error: "Missing required fields" });
     }
   } catch (error) {
     console.error(error);
@@ -690,4 +704,35 @@ module.exports.generateOtpForClient = async (req, res) => {
 };
 
 
+module.exports.EnggReportResponse = async (req, res) => {
+  try {
+    const { checklistName , subcategories} = req.body;
+    if (checklistName && subcategories) {
+      const response = await Report.create({
+        checklistName:checklistName,
+        subcategories:subcategories
+      })
+      return res.status(200).json({response });
+    }
+    return res.status(500).json({ error: "Enter valid data" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggReportResponse" });
+  }
+}
+
+
+module.exports.EnggReportQuestionFetch = async (req, res) => {
+  try {
+    const { CheckListId } = req.body;
+    if (CheckListId) {
+      const response = await CheckList.findById(CheckListId);
+      return res.status(200).json({response });
+    }
+    return res.status(500).json({ error: "Enter valid data" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggReportQuestionFetch" });
+  }
+}
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
