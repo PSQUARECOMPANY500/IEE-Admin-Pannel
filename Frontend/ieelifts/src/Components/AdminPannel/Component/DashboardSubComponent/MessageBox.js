@@ -24,19 +24,12 @@ const MessageBox = ({ onClose, EnggId }) => {
   const [messageData, setMessageData] = useState();
 
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
-
-  // console.log("prrrrAlo",messageData)
-  const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-
-
-
   const [allMessages, setAllMessages] = useState([]);
-  console.log("allMessages", allMessages);
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -67,11 +60,6 @@ const MessageBox = ({ onClose, EnggId }) => {
     };
   }, []);
 
-
-
- 
-
-
   const chatCreated = useSelector((state) => {
     if (
       state.ChatRootReducer &&
@@ -83,9 +71,6 @@ const MessageBox = ({ onClose, EnggId }) => {
       return null;
     }
   });
-  // console.log("chat created", chatCreated?._id)
-
-
 
   const getMessages = useSelector((state) => {
     scroll();
@@ -99,8 +84,6 @@ const MessageBox = ({ onClose, EnggId }) => {
       return null;
     }
   });
-  console.log("all messages in selector",getMessages)
-
 
   useEffect(() => {
     const fetchIntiakMessages = async () => {
@@ -114,8 +97,6 @@ const MessageBox = ({ onClose, EnggId }) => {
         };
       });
 
-      console.log("finalmessage", FinalMessages);
-
       setAllMessages(FinalMessages);
       setIsLoadingMessages(false);
       setIsLoading(false);
@@ -124,9 +105,6 @@ const MessageBox = ({ onClose, EnggId }) => {
     fetchIntiakMessages();
     scroll();
   }, [getMessages]);
-
-
-
 
   const sendMessage = useSelector(
     (state) => state?.ChatRootReducer?.sendMessageReducer?.chatMessage
@@ -148,13 +126,6 @@ const MessageBox = ({ onClose, EnggId }) => {
       }
     };
   }, [dispatch, chatCreated?._id, EnggId]);
-
-
-
-
-
-
-
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -178,154 +149,148 @@ const MessageBox = ({ onClose, EnggId }) => {
     setSwapIcon(!textareaRef.current.value.trim());
   };
 
-
-
-//function to send the message ------------------------------------------------
-const handleSendMessage = async (e) => {
-  e.preventDefault();
-  if (chatCreated?._id) {
-    const myNewMessage = await sendChatMessageAction(
-      "65e0103005fd2695f3aaf6d4",
-      messageData,
-      chatCreated?._id
-    );
-    if (myNewMessage) {
-      socket.emit("aloo", myNewMessage.data);
-    }
-    dispatch(getSenderMessagesAction(chatCreated._id));
-
-    console.log("format", messageData);
-
-    setMessageData("");
-  }
-
-  if (textareaRef.current) {
-    textareaRef.current.value = "";
-    handleInput();
-  }
-
-  setTimeout(() => {
+  //function to send the message ------------------------------------------------
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
     if (chatCreated?._id) {
+      const myNewMessage = await sendChatMessageAction(
+        "65e0103005fd2695f3aaf6d4",
+        messageData,
+        chatCreated?._id
+      );
+      if (myNewMessage) {
+        socket.emit("aloo", myNewMessage.data);
+      }
       dispatch(getSenderMessagesAction(chatCreated._id));
+      setMessageData("");
     }
-  }, 100);
-  socket.emit("aloo", sendMessage);
-};
 
-useLayoutEffect(() => {
-  scroll();
-}, [getMessages]);
+    if (textareaRef.current) {
+      textareaRef.current.value = "";
+      handleInput();
+    }
 
-useEffect(() => {
-  socket.on("EnggNewMessage", (message) => {
-    setAllMessages((prevMessages) => [...prevMessages, message]);
-  });
-}, []);
+    setTimeout(() => {
+      if (chatCreated?._id) {
+        dispatch(getSenderMessagesAction(chatCreated._id));
+      }
+    }, 100);
+    socket.emit("aloo", sendMessage);
+  };
 
+  useLayoutEffect(() => {
+    scroll();
+  }, [getMessages]);
 
-
-
-
+  useEffect(() => {
+    socket.on("EnggNewMessage", (message) => {
+      setAllMessages((prevMessages) => [...prevMessages, message]);
+    });
+  }, []);
 
   return (
     <>
-       <EngChatNav />
-          <div className='EngChatBox-Dash'>
-            <div className='EngChatBoxHead-Dash'>
-              <h6>online</h6>
-              <div className='EngChatBoxIcons-Dash'>
-                <IoCallOutline />
-                <CiVideoOn />
-                <RxCross2 onClick={onClose} />
-              </div>
-            </div>
-            <div className='EngChatMsg-Dash'>
-              <div className='.SubEngChatMsg-Dash Yello_Scrollbar'>
-
-                      {isLoadingMessages ? (
-                    <div className="skelton-in-message">
-                      <div className="loader">
-                        <div class="box"></div>
-                        <p>Loading...</p>
-                      </div>
-                    </div>
-                  ) : allMessages?.length >= 0 ? (
-                allMessages?.map((item, index) => {
-                  const isCurrentUser = item.Sender === "65e0103005fd2695f3aaf6d4";
-                  return (
-                    <div className={isCurrentUser ? "engchatmsg-sender-side-dash" : "engchatmsg-reciver-side-dash"}key={index}>
-                  <div className={isCurrentUser ? "engchatmsg-sender-message-dash" : "engchatmsg-reciver-message-dash"}>
-                    <p>{item.Content}</p>
-                    </div>
+      <EngChatNav />
+      <div className="EngChatBox-Dash">
+        <div className="EngChatBoxHead-Dash">
+          <h6>online</h6>
+          <div className="EngChatBoxIcons-Dash">
+            <IoCallOutline />
+            <CiVideoOn />
+            <RxCross2 onClick={onClose} />
+          </div>
+        </div>
+        <div className="EngChatMsg-Dash">
+          <div className=".SubEngChatMsg-Dash Yello_Scrollbar">
+            {isLoadingMessages ? (
+              <div className="skelton-in-message">
+                <div className="loader">
+                  <div class="box"></div>
+                  <p>Loading...</p>
                 </div>
-              );
-            })
-          ) : (
-            <div className="skelton-in-message">
-              <div className="loader">
-                <div class="box"></div>
-                <p>No Message Yet</p>
               </div>
-            </div>
-          )}
-
-
-                
-                {/* <div className=".engchatmsg-reciver-side-dash">
-                  <div className="engchatmsg-reciver-message-dash">
-                    <p>hello preet sir kese ho ap khana ho gya paka kua khaya apne kahane me preet sir  roti me kya bna the sir  aalu gopbhi kha  lslksffhdashjhadfvxcm  sdkjhkjsd shns  skksk afdsdfdskcsd  !</p>
-                  </div>
-                </div> */}
-
-
-
-
-
-              </div>
-
-            </div>
-
-            <div className="agdam-eng-card-dash" >
-              <div className="eng-card-message-text-dash">
-                <textarea
-                  placeholder="Enter message"
-                  ref={textareaRef}
-                  onInput={handleInput}
-                  style={{ resize: "none", minHeight: '50px', height: `${textareaHeight}px`, fontFamily: "Poppins" }}
-                  className="text-area-message-eng-card-dash"
-                  onChange={(e) => setMessageData(e.target.value)}
-                  value={messageData}
-                />
-
-              </div>
-
-              <div className="user-attachment4-eng-card-dash">
-                <div className="user-attachment2-eng-card-dash">
-                  <input
-                    id="file-upload"
-                    type="file"
-                    name="file"
-                    onChange={handleFileChange}
-                    ref={fileInputField}
-                    style={{ display: "none" }}
-                  ></input>
+            ) : allMessages?.length >= 0 ? (
+              allMessages?.map((item, index) => {
+                const isCurrentUser =
+                  item.Sender === "65e0103005fd2695f3aaf6d4";
+                return (
                   <div
-                    onClick={() => fileInputField.current.click()}
-                    style={{ marginTop: "3px" }}
+                    className={
+                      isCurrentUser
+                        ? "engchatmsg-sender-side-dash"
+                        : "engchatmsg-reciver-side-dash"
+                    }
+                    key={index}
                   >
-                    <MdOutlineAttachFile />
+                    <div
+                      className={
+                        isCurrentUser
+                          ? "engchatmsg-sender-message-dash"
+                          : "engchatmsg-reciver-message-dash"
+                      }
+                    >
+                      <p>{item.Content}</p>
+                    </div>
                   </div>
+                );
+              })
+            ) : (
+              <div className="skelton-in-message">
+                <div className="loader">
+                  <div class="box"></div>
+                  <p>No Message Yet</p>
                 </div>
+              </div>
+            )}
+          </div>
+        </div>
 
-                <p className="send-messsage-eng-card-dash" onClick={handleSendMessage}>
-                  {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
-                </p>
+        <div className="agdam-eng-card-dash">
+          <div className="eng-card-message-text-dash">
+            <textarea
+              placeholder="Enter message"
+              ref={textareaRef}
+              onInput={handleInput}
+              style={{
+                resize: "none",
+                minHeight: "50px",
+                height: `${textareaHeight}px`,
+                fontFamily: "Poppins",
+              }}
+              className="text-area-message-eng-card-dash"
+              onChange={(e) => setMessageData(e.target.value)}
+              value={messageData}
+            />
+          </div>
+
+          <div className="user-attachment4-eng-card-dash">
+            <div className="user-attachment2-eng-card-dash">
+              <input
+                id="file-upload"
+                type="file"
+                name="file"
+                onChange={handleFileChange}
+                ref={fileInputField}
+                style={{ display: "none" }}
+              ></input>
+              <div
+                onClick={() => fileInputField.current.click()}
+                style={{ marginTop: "3px" }}
+              >
+                <MdOutlineAttachFile />
               </div>
             </div>
 
-
-
-          </div></>
+            <p
+              className="send-messsage-eng-card-dash"
+              onClick={handleSendMessage}
+            >
+              {swapIcon ? <MdOutlineMic /> : <MdSend />}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

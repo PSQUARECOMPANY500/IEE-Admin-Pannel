@@ -49,7 +49,6 @@ export default function EnggLocation() {
           )}
           {enggLocationDetails &&
             enggLocationDetails.map((data, index) => {
-              console.log(data);
               const latitude = parseFloat(
                 data.currentLocation.coordinates?.[0]
               );

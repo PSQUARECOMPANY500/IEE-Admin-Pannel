@@ -396,19 +396,19 @@ module.exports.EnggTime = async (req, res) => {
 };
 
 module.exports.EnggCheckIn = async (req, res) => {
-  console.log("req of checkin",req)
+  // console.log("req of checkin",req)
   try {
-    const frontimage = req.files['frontimage'][0].filename;
-    const backimage = req.files['backimage'][0].filename;
+    const frontimage = req;
+    // const backimage = req.files;
 
     const { IsAttendance, ServiceEnggId } = req.body;
     
     console.log(frontimage)
-    console.log(backimage)
+    // console.log(backimage)
     console.log(IsAttendance)
     console.log(ServiceEnggId)
 
-    return;
+    return res.status(200);
 
     if (IsAttendance && ServiceEnggId) {
       let enggPhoto = '';

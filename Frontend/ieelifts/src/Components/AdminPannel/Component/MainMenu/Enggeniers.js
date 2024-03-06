@@ -1,17 +1,16 @@
-import React from 'react'
-import '../../../../Assets/Engeeniers.css'
-import EngeeniersCard from '../EngeeniersSubComponent/EngeeniersCard'
-
+import React from "react";
+import "../../../../Assets/Engeeniers.css";
+import EngeeniersCard from "../EngeeniersSubComponent/EngeeniersCard";
 
 const Enggeniers = () => {
   return (
     <div className={`main-container`}>
-    <div className={`container`}></div>
-    <div style={{ width: "100%", marginTop: "6%" }}>
-<EngeeniersCard/>
+      <div className={`container`}></div>
+      <div style={{ width: "100%", marginTop: "6%" }}>
+        <EngeeniersCard />
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default Enggeniers
+export default Enggeniers;

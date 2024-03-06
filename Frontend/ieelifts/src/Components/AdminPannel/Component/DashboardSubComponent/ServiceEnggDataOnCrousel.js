@@ -7,7 +7,6 @@ import MessageBox from "./MessageBox";
 const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState(false);
-  //const [completedTask, setCompletedTasks] = useState(0)
   const renderArray = [];
   const renderArrayon = [];
 
@@ -24,7 +23,10 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (MessageBoxRef.current && !MessageBoxRef.current.contains(event.target)) {
+      if (
+        MessageBoxRef.current &&
+        !MessageBoxRef.current.contains(event.target)
+      ) {
         setShowMessage(false);
       }
     };
@@ -41,26 +43,14 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
       item.filteredServiceAssignmentsWithClientName.forEach((itemData) => {
         if (itemData.TaskStatus === "InCompleted") {
           renderArray.push(itemData);
-        }
-        else {
-          renderArrayon.push(itemData)
-          //setCompletedTasks((prev) => prev + 1)
+        } else {
+          renderArrayon.push(itemData);
         }
       });
     }
   };
   assignArray(item);
 
-/* useEffect(() => {
-  assignArray(item);
-},[item.filteredServiceAssignmentsWithClientName]) */
-
-  // You can simplify this function
-
-
-  //console.log("emit", item)
- // console.log("completedTask", completedTask)
- 
   return (
     <div className="main-crouser" key={index}>
       <div className="second-carusel">
@@ -72,13 +62,14 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
               height: "50px",
               width: "50px",
               borderRadius: "100%",
-              objectFit: "cover"
+              objectFit: "cover",
             }}
           />
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>
             <span className="star-icon">
-              {item.averageRating}<LiaStarSolid style={{ color: "#F8AC1D" }} />
+              {item.averageRating}
+              <LiaStarSolid style={{ color: "#F8AC1D" }} />
             </span>
           </div>
         </div>
@@ -97,24 +88,25 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
               }}
               className="engg-message"
             >
-              <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
+              <MessageBox
+                onClose={handleMessageBoxClose}
+                EnggId={item.EnggObjId}
+              />
             </div>
           )}
         </div>
       </div>
 
       <div className="main-head-div">
-
-        {renderArray.length == 0 ?
-          <div className="skill-box"><div className="dots2">
-
-          </div>
+        {renderArray.length == 0 ? (
+          <div className="skill-box">
+            <div className="dots2"></div>
             <div className="skill-bar-ontask">
-              <span className="skill-per-ontask reactjs">
-              </span>
+              <span className="skill-per-ontask reactjs"></span>
             </div>
           </div>
-          : <div className="skill-box">
+        ) : (
+          <div className="skill-box">
             <div className="dots2">
               <span className="dot-progress"></span>
               <span className="dot-progress2"></span>
@@ -126,7 +118,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
             </div>
             <div className="hover-icon-service">
               <div className="dropdown">
-                <span>{renderArray[0].ClientName.split(' ')[0]}</span>
+                <span>{renderArray[0].ClientName.split(" ")[0]}</span>
                 <span>service E1</span>
                 <div className="dropdown-menu">
                   <div className="drop-parent">
@@ -136,7 +128,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                       <div className="horizontal-row-container">
                         <span className="horizontal-row"></span>
                       </div>
-
                     </div>
                     <div className="lower-sec">
                       <p style={{ display: "flex" }}>
@@ -149,55 +140,65 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                       </p>
                       <p style={{ display: "flex" }}>
                         <p style={{ width: "100%" }}>Add :</p>
-                        <p style={{ marginLeft: "-2px", textAlign: "left" }}>{renderArray[0].ClientAddress}</p>
+                        <p style={{ marginLeft: "-2px", textAlign: "left" }}>
+                          {renderArray[0].ClientAddress}
+                        </p>
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {renderArray.length > 1 ? <div className="dropdown2">
-                <span>{renderArray[1].ClientName.split(' ')[0]}</span>
-                <span>service E1</span>
+              {renderArray.length > 1 ? (
+                <div className="dropdown2">
+                  <span>{renderArray[1].ClientName.split(" ")[0]}</span>
+                  <span>service E1</span>
 
-                <div className="dropdown-menu">
-                  <div className="drop-parent">
-                    <div className="upper-sec">
-                      <p>{renderArray[1].ClientName}</p>
-                      <p>Service E1</p>
-                      <div className="horizontal-row-container">
-                        <span className="horizontal-row"></span>
+                  <div className="dropdown-menu">
+                    <div className="drop-parent">
+                      <div className="upper-sec">
+                        <p>{renderArray[1].ClientName}</p>
+                        <p>Service E1</p>
+                        <div className="horizontal-row-container">
+                          <span className="horizontal-row"></span>
+                        </div>
                       </div>
-                    </div>
-                    <div className="lower-sec">
-                      <p style={{ display: "flex" }}>
-                        <p>JON :</p>
-                        <p>{renderArray[1].JobOrderNumber}</p>
-                      </p>
-                      <p style={{ display: "flex" }}>
-                        <p>No :</p>
-                        <p>{renderArray[1].ClientNumber}</p>
-                      </p>
-                      <p style={{ display: "flex" }}>
-                        <p style={{ width: "100%" }}>Add :</p>
-                        <p style={{ marginLeft: "-2px", textAlign: "left" }}>{renderArray[1].ClientAddress}</p>
-                      </p>
+                      <div className="lower-sec">
+                        <p style={{ display: "flex" }}>
+                          <p>JON :</p>
+                          <p>{renderArray[1].JobOrderNumber}</p>
+                        </p>
+                        <p style={{ display: "flex" }}>
+                          <p>No :</p>
+                          <p>{renderArray[1].ClientNumber}</p>
+                        </p>
+                        <p style={{ display: "flex" }}>
+                          <p style={{ width: "100%" }}>Add :</p>
+                          <p style={{ marginLeft: "-2px", textAlign: "left" }}>
+                            {renderArray[1].ClientAddress}
+                          </p>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div> : null}
+              ) : null}
             </div>
-          </div>}
+          </div>
+        )}
 
         <div className="dropdown3">
-          <TaskChart completedTasks={renderArrayon.length} totalTasks={item.filteredServiceAssignmentsWithClientName.length} />
+          <TaskChart
+            completedTasks={renderArrayon.length}
+            totalTasks={item.filteredServiceAssignmentsWithClientName.length}
+          />
           <div
             className="dropdown-menu"
             style={{ left: len - 1 === index ? "-165px" : "-302%" }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
-              {item.filteredServiceAssignmentsWithClientName.length != 0 ?
+              {item.filteredServiceAssignmentsWithClientName.length != 0 ? (
                 item.filteredServiceAssignmentsWithClientName.map(
                   (itemData, dataIndex) => (
                     <React.Fragment key={dataIndex}>
@@ -209,7 +210,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                             <div className="task-dot-on-complete"></div>
                           )}
                           <div className="taskmain-info">
-                            <p>{itemData.ClientName.split(' ')[0]}</p>
+                            <p>{itemData.ClientName.split(" ")[0]}</p>
                             <p>{itemData.JobOrderNumber}</p>
                           </div>
                         </div>
@@ -221,7 +222,10 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                       <span className="horizontal-row2"></span>
                     </React.Fragment>
                   )
-                ) : <div className="tasks-heading-on-no-task">No Task Assigned</div>}
+                )
+              ) : (
+                <div className="tasks-heading-on-no-task">No Task Assigned</div>
+              )}
             </div>
           </div>
         </div>
@@ -231,4 +235,3 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
 };
 
 export default ServiceEnggDataOnCrousel;
-

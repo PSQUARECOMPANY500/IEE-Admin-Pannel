@@ -1,16 +1,15 @@
-import React from 'react'
-import { GrGallery } from 'react-icons/gr'
+import React from "react";
+import { GrGallery } from "react-icons/gr";
 
 const PitArea = () => {
   return (
-    <div className='McRoom'>
-    <h5>All areas are working well</h5>
-    <div className='McRoomCard'>
-    <GrGallery  className='gallery'/>
-
+    <div className="McRoom">
+      <h5>All areas are working well</h5>
+      <div className="McRoomCard">
+        <GrGallery className="gallery" />
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default PitArea
+export default PitArea;

@@ -40,7 +40,6 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       return null;
     }
   });
-  //console.log('getBasicData--**--',getBasicData)
 
   useEffect(() => {
     if (getBasicData) {
@@ -56,11 +55,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
     }
   }, [getBasicData]);
 
-  //console.log("assignedArray",assignedArray)
-  //console.log("notAssignedArray",notAssignedArray)
-  //console.log("................................................................................")
   const len = getBasicData?.length;
-  // console.log("::::",len);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

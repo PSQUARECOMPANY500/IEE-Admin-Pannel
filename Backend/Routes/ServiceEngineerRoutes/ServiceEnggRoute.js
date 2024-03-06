@@ -22,10 +22,10 @@ router.get('/getEngScheduleData', verifyEnggToken, serviceEnggContoller.getEngSc
 
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
+  destination : (req, file, cb) => {
     cb(null, './public/uplodes');
   },
-  filename(req, file, cb) {
+  filename :(req, file, cb) => {
     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
   },
 });
@@ -58,7 +58,7 @@ router.put('/enggCheckOut', uploadImg.fields([
   ]) ,serviceEnggContoller.EnggCheckOut);
 
 
-  
+
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
 router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);

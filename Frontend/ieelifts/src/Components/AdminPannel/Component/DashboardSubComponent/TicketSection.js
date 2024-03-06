@@ -8,8 +8,6 @@ import FilterDropdown from "./FilterDropdown";
 import { GoPlus } from "react-icons/go";
 import AddTicketModal from "./AddTicketModal";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
-// import { io } from 'socket.io-client';
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
@@ -17,32 +15,13 @@ import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
-
-  // const socket = io('http://localhost:8000');
-
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to the server:', socket.id);
-  //     socket.emit('send_message',{message:"hello"})
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   const [callbackId, setCallbackId] = useState();
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
-
-
-
   const [showTicketModal, setShowTicketModal] = useState(false);
-
   const [showTicketModal1, setShowTicketModal1] = useState(false);
   const [showTicketModal2, setShowTicketModal2] = useState(false);
   const [showTicketModal3, setShowTicketModal3] = useState(false);
-
   const [showTicketFilter, setShowTicketFilter] = useState(false);
 
   const [checkedAll, setCheckedAll] = useState(false);
@@ -69,11 +48,10 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
 
-
   useEffect(() => {
-    setFilteredCD(fetchCallbacks)
-    setallCD(fetchCallbacks)
-  }, [fetchCallbacks])
+    setFilteredCD(fetchCallbacks);
+    setallCD(fetchCallbacks);
+  }, [fetchCallbacks]);
 
   useEffect(() => {
     if (timer) {
@@ -98,14 +76,21 @@ const TicketSection = ({ setTicketUpdate }) => {
     };
   }, [searchText, allCD]);
 
-
   function filtersearch(inputValue, searchRestaurant) {
     const filteredResults = searchRestaurant.filter((data) => {
       if (
-        data.clientDetail.name.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.JobOrderNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.PhoneNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.Address.toLowerCase().includes(inputValue.toLowerCase())
+        data.clientDetail.name
+          .toLowerCase()
+          .includes(inputValue.toLowerCase()) ||
+        data.clientDetail.JobOrderNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.PhoneNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.Address.toLowerCase().includes(
+          inputValue.toLowerCase()
+        )
       ) {
         return true;
       }
@@ -130,7 +115,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   }, [renderTicket, dispatch]);
   //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);
-  useEffect(() => { }, [checkboxStates]);
+  useEffect(() => {}, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -168,10 +153,8 @@ const TicketSection = ({ setTicketUpdate }) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
       setCallbackId(callbackIdOnModel); // Set the callbackId here
-      setEnggId(EngId)
-      setIsAssigned(isAssigned)
-
-      // console.log("callbackId............")
+      setEnggId(EngId);
+      setIsAssigned(isAssigned);
       setShowTicketModal1(true);
     } else if (modalNumber === 2) {
       setShowTicketModal2(true);
@@ -195,7 +178,7 @@ const TicketSection = ({ setTicketUpdate }) => {
 
           <div className="icon-align-div">
             <div className="right-side-icons" style={{ display: "grid" }}>
-              <span className="filter-top-icon" >
+              <span className="filter-top-icon">
                 <div className="search-box">
                   <input
                     type="text"
@@ -205,23 +188,22 @@ const TicketSection = ({ setTicketUpdate }) => {
                       setSearchText(e.target.value);
                     }}
                   />
-                  <button className="search-btn-ticket-section" onClick={() => {
-                    const data = filtersearch(searchText, allCD)
-                    setFilteredCD(data);
-                  }} >
+                  <button
+                    className="search-btn-ticket-section"
+                    onClick={() => {
+                      const data = filtersearch(searchText, allCD);
+                      setFilteredCD(data);
+                    }}
+                  >
                     <i>
                       <CiSearch />
                     </i>
-
                   </button>
-
                 </div>
-
               </span>
             </div>
 
             {/* ............................................................ax13-search...................................................... */}
-
 
             <div className="sub-components-ticket-filter">
               <p className="filter-icon" onClick={handleTicketFilter}>
@@ -269,7 +251,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                     <CheckBox
                       id="checkbox1"
                       checked={checkboxStates.checkbox1}
-                      handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
+                      handleCheckboxChange={() =>
+                        handleCheckBoxAll("checkbox1")
+                      }
                     />
                   </th>
                   <th>JON</th>
@@ -334,7 +318,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </>
                 ) : (
                   filteredCD.map((data, index) => {
-                    //console.log("mast ram", data)
                     const currentCallbackId = data.callbackId;
                     const EngName = data.AssignedEng?.name;
                     const EngId = data.AssignedEng?.id;
@@ -346,7 +329,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                     const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
 
                     // Check if the time difference is greater than or equal to 30 minutes
-                    const isTimeoutData = timeDifference >= thirtyMinutesInMilliseconds;
+                    const isTimeoutData =
+                      timeDifference >= thirtyMinutesInMilliseconds;
                     return (
                       <tr className="selected" key={index}>
                         <td>
@@ -359,27 +343,94 @@ const TicketSection = ({ setTicketUpdate }) => {
                             }
                           />
                         </td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.JobOrderNumber}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.name}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.PhoneNumber}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.JobOrderNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.name}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.PhoneNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
                           <div className="dropdown-address">
-                            <span className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>
+                            <span
+                              className={
+                                !isAssigned && isTimeoutData
+                                  ? "timeout-data"
+                                  : ""
+                              }
+                            >
                               {limitAddress(data?.clientDetail?.Address, 15)}
                             </span>
 
                             <div className="dropdown-adddress-menu">
                               <div className="drop-address">
-                                <p className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data?.clientDetail?.Address}</p>
+                                <p
+                                  className={
+                                    !isAssigned && isTimeoutData
+                                      ? "timeout-data"
+                                      : ""
+                                  }
+                                >
+                                  {data?.clientDetail?.Address}
+                                </p>
                               </div>
                             </div>
                           </div>
                         </td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.Description}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.TypeOfIssue}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.callbackDate}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""}>{data.callbackTime}</td>
-                        <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""} onClick={() => openModal(1, currentCallbackId, EngId, isAssigned)}>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.Description}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.TypeOfIssue}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackDate}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackTime}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                          onClick={() =>
+                            openModal(1, currentCallbackId, EngId, isAssigned)
+                          }
+                        >
                           {isAssigned ? (
                             <AssignDropdown
                               customAssignName="assignNameColor"
@@ -395,7 +446,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                         </td>
                       </tr>
                     );
-                  }))}
+                  })
+                )}
               </tbody>
               {showTicketModal1 && (
                 <AddTicketModal

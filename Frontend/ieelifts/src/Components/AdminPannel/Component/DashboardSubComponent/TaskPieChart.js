@@ -1,5 +1,5 @@
-import React from 'react';
-import './TaskPieChart.css';
+import React from "react";
+import "./TaskPieChart.css";
 
 const TaskPieChart = ({ totalTasks, completedTasks }) => {
   const percentage = (completedTasks / totalTasks) * 100;
@@ -9,16 +9,16 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
   const dashOffset = dashArray - (dashArray * percentage) / 100;
 
   return (
-
-    
     <div className="circular-progress-bar">
-      
       <div className="progress-ring">
-        
-        <svg width="50" height="50" viewBox={viewBox} xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="50"
+          height="50"
+          viewBox={viewBox}
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <circle className="background" cx="25" cy="25" r={radius} />
-        
-     
+
           <circle
             className="progress"
             cx="25"
@@ -30,7 +30,6 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
               strokeDashoffset: dashOffset,
             }}
           />
-          
         </svg>
         <div className="progress-text">
           <span>{completedTasks}</span>/<span>{totalTasks}</span>
@@ -38,6 +37,6 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
       </div>
     </div>
   );
-}
+};
 
 export default TaskPieChart;

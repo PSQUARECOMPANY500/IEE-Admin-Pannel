@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const SpareParts = () => {
-  return (
-    <div>SpareParts</div>
-  )
-}
+  return <div>SpareParts</div>;
+};
 
-export default SpareParts
+export default SpareParts;

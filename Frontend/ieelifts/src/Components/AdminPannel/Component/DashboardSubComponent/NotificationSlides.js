@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 
 const NotificationSlides = ({ notifications }) => {
   const [key, setKey] = useState(0);
-  console.log("popo", key);
-
   useEffect(() => {
     // Increment the key to force re-render and trigger the animation
     setKey((prevKey) => prevKey + 1);
   }, [notifications]);
 
   return (
-    <div
-      key={key}
-      className="notification-all">
+    <div key={key} className="notification-all">
       {" "}
       {notifications.map((notification, index) => (
         <div

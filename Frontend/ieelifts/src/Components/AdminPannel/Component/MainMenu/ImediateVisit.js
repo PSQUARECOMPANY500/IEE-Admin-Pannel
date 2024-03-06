@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ImediateVisit = () => {
-  return (
-    <div>
-      this is our emidiate visit component
-    </div>
-  )
-}
+  return <div>this is our emidiate visit component</div>;
+};
 
-export default ImediateVisit
+export default ImediateVisit;

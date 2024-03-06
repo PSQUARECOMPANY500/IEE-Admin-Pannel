@@ -15,36 +15,6 @@ const NotificationSection = () => {
       time: "30 minutes ago",
       imageUrl: "https://example.com/image2.png",
     },
-    // {
-    //   category: "Enginner",
-    //   description: "Notification text 2",
-    //   time: "30 minutes ago",
-    //   imageUrl: "https://example.com/image2.png",
-    // },
-    // {
-    //   category: "Enginner",
-    //   description: "Notification text 2",
-    //   time: "30 minutes ago",
-    //   imageUrl: "https://example.com/image2.png",
-    // },
-    // {
-    //   category: "Enginner",
-    //   description: "Notification text 2",
-    //   time: "30 minutes ago",
-    //   imageUrl: "https://example.com/image2.png",
-    // },
-    // {
-    //   category: "Enginner",
-    //   description: "Notification text 2",
-    //   time: "30 minutes ago",
-    //   imageUrl: "https://example.com/image2.png",
-    // },
-    // {
-    //   category: "Enginner",
-    //   description: "Notification text 2",
-    //   time: "30 minutes ago",
-    //   imageUrl: "https://example.com/image2.png",
-    // },
     {
       category: "Client",
       description: "client text 3",
@@ -82,7 +52,7 @@ const NotificationSection = () => {
   ]);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
- const handleNotificationData = (category) => {
+  const handleNotificationData = (category) => {
     if (selectedCategory !== category) {
       setSelectedCategory(category);
 
@@ -96,8 +66,6 @@ const NotificationSection = () => {
       }
     }
   };
-
-  
 
   return (
     <div className="parent-Notification-div">
