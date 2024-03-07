@@ -260,9 +260,9 @@ const TicketSection = ({ setTicketUpdate }) => {
 
         <div>
           {/* table start here */}
-          <div className="task-list">
-            <table className="task-list-table">
-              <thead className="task-head-list">
+
+             
+          <thead className="task-head-list">
                 <tr>
                   <th>
                     {" "}
@@ -296,9 +296,15 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </th>
                 </tr>
               </thead>
+          <div className="task-list">
+            <table className="task-list-table">
+      
+       
 
               {/* TABLE BODY STARTS */}
-              <tbody>
+
+      
+      <tbody  >
                 {isSearching ? (
                   <>
                     <tr>
@@ -397,6 +403,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                     );
                   }))}
               </tbody>
+     
               {showTicketModal1 && (
                 <AddTicketModal
                   closeModal={() => setShowTicketModal1(false)}

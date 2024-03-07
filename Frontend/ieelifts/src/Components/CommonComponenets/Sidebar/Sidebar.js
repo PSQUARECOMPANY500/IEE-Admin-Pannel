@@ -1,15 +1,9 @@
-// dependincies import start here
+
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
 import logo from "../../../Assets/Images/logo.png";
-
-// dependincies import end here
-
-// react icons import starts
-// import { GiHamburgerMenu } from "react-icons/gi";
 import { FaAngleDown } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
 import { RiGitPullRequestFill } from "react-icons/ri";
@@ -23,12 +17,11 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
-// import { FaAngleRight } from "react-icons/fa6";
+
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
-// react icons import ends
 
 const Sidebar = ({ children }) => {
   const location = useLocation();

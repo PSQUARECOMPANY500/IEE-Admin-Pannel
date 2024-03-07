@@ -8,4 +8,4 @@ const SkeltonLoader = ({width,height, marginTop ,  marginBottom }) => {
   )
 }
 
-export default SkeltonLoader;
+export default SkeltonLoader

@@ -2,13 +2,6 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
 }
 
 /* set body scroll property starts */
@@ -40,7 +33,10 @@ body::-webkit-scrollbar-thumb {
   position: relative;
 }
 
-
+.container {
+  background: #fff9ef;
+  display: flex;
+}
 
 main {
   display: flex;
@@ -50,18 +46,21 @@ main {
 }
 
 .sidebar {
-  height: auto;
+  /* height: auto; */
   background: #ffffff;
   color: rgb(20, 19, 19);
-  height: 100%;
+  /* height: auto; */
   transition: all 0.5s;
   position: relative;
+  position: sticky;
+  top: 0;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   display: flex;
   z-index: 4;
   justify-content: center;
   align-items: baseline;
+  height: 100vh;
 }
 
 .logo-image {
@@ -92,7 +91,33 @@ main {
   margin-left: 80px;
 }
 
-/* hamburger css starts  */
+/* hamburger css starts */
+/* .toggle-button {
+  width: 8px;
+  height: 19px;
+  position: fixed;
+  transform: translate(15px, -8px);
+  padding: 4px;
+  transition: 0.25s;
+  z-index: 15;
+}
+
+.toggle-button:hover {
+  cursor: pointer;
+}
+
+.menu-icon {
+  transition: transform 0.8s ease-in-out;
+  Adjust the duration and easing function as needed
+} */
+/* 
+.rotate {
+  transform: rotate(360deg);
+  Rotate 180 degrees
+} */
+
+
+
 .toggle-button {
   width: 8px;
   height: 19px;
@@ -116,18 +141,15 @@ main {
 
 
 .rotate {
-
-
   transform: rotateZ(180deg);
 }
 
-/* 
+
 .toggle-button .menu-bar {
   position: absolute;
   border-radius: 2px;
   width: 80%;
   transition: 0.5s;
-
 }
 
 .toggle-button .menu-bar-top {
@@ -165,9 +187,12 @@ main {
 .button-open .menu-bar-bottom {
   transform: rotate(-40deg) translate(0px, -4.5px);
   transition: 0.5s;
-} */
+}
 
 /* hamburger css ends */
+
+
+
 .toggle-button-menu {
 
   width: 20%;
@@ -323,7 +348,6 @@ span::after {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   padding: 5px;
   cursor: pointer;
   margin-top: 8px;
@@ -503,6 +527,7 @@ span::after {
   top: 0;
   left: 0;
   width: 100%;
+ 
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
 }
@@ -523,18 +548,33 @@ span::after {
   padding-right: 0;
   padding-left: 0;
   width: 100%;
- 
-  
-
 }
-
-
-.container {
-  display: flex;
-}
-
 
 /* topbar css starts */
+/* .top-bar {
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  background: #ffff;
+  padding: 15px 16px;
+  margin-top: 0px;
+  position: fixed;
+  z-index: 3;
+  box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
+  gap: 65%;
+} */
+
+/* .left-side-heading {
+  color: #191919;
+  font-size: 24px;
+  font-weight: 500;
+  margin-left: 12%;
+} */
+
+
 .top-bar {
   align-items: center;
   justify-content: space-between;
@@ -575,16 +615,23 @@ span::after {
 .dot {
   height: 8px;
   width: 8px;
-  background-color: red;
+  background-color: #ff0000;
   border-radius: 50%;
   position: relative;
   top: 10px;
   right: 20px;
 }
 
-
-
-
+/* .top-icon {
+  padding: 5px 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  cursor: pointer;
+  height: 33px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+} */
 
 .top-icon-bell,
 .filter-icon,
@@ -618,6 +665,88 @@ span::after {
 /* topbar css ends */
 
 /* search bar css starts */
+
+/* .search-input {
+  background: #ffffff;
+  color: #343434;
+  outline: none;
+  border: none;
+  line-height: 30px;
+  width: 0px;
+  float: left;
+  font-size: 14px;
+  transition: 0.7s ease;
+  font-family: sans-serif;
+  border-radius: 9px;
+  padding-left: 0px;
+}
+
+.search-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background: #fffdfd;
+  padding: 0px;
+  padding-top: 3px;
+  border-radius: 4%;
+  float: left;
+  color: #343434;
+  transition: 0.4s ease;
+  font-size: 24px;
+}
+
+.search-btn-ticket-section {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  background: #fffdfd;
+  padding: 8px 2px 4px 1px;
+   padding-top: 7px; 
+  border-radius: 4%;
+  float: left;
+  color: #343434;
+  transition: 0.4s ease;
+  font-size: 22px;
+   font-weight: 800; 
+  margin-top: 0px;
+  height: 38px;
+  width: 26px;
+}
+
+.search-box {
+  display: flex;
+}
+
+.search-box:hover>.search-input {
+  width: 240px;
+  margin: 0px 0px;
+   padding-left: 10px; 
+}
+
+.search-input:focus {
+  width: 240px;
+  margin: 0px 8px;
+}
+
+.search-box:hover>.search-btn {
+  background: #fff;
+}
+
+.search-input:focus+.search-btn {
+  background: #fff;
+}
+
+.search-box:hover>.search-btn-ticket-section {
+  background: #fff;
+}
+
+.search-input:focus+.search-btn-ticket-section {
+  background: #fff;
+} */
+
 
 .search-input {
 
@@ -714,7 +843,6 @@ span::after {
 .search-input:focus+.search-btn-ticket-section {
   background: #fff;
 } */
-
 footer {
   position: fixed;
   bottom: 0;
@@ -1439,7 +1567,7 @@ footer a:hover {
   border: 1px solid #c1c1c180;
   border-radius: 4px;
   margin-top: 50px;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   background: #ffffff;
   z-index: -1;
 }
@@ -1449,6 +1577,7 @@ footer a:hover {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
+
 }
 
 .tasks-section {
@@ -1892,7 +2021,9 @@ tbody tr {
   height: 336px;
   overflow-x: hidden;
   scroll-behavior: smooth;
+position: relative;
 }
+
 
 /* set body scroll property starts */
 .task-list:hover::-webkit-scrollbar-thumb {
@@ -1927,18 +2058,23 @@ tbody tr {
 /* set body scroll property ends */
 
 .child-ticket-div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px;
-  gap: 12px;
+   display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+   padding: 30px;
+  gap: 12px; 
   position: relative;
-}
+
+
+} 
 
 .heading-icon-align {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+
+  
 }
 
 .icon-align-div {
@@ -1947,25 +2083,36 @@ tbody tr {
   gap: 10px;
   justify-content: end;
   width: 143px;
+  
+
+
 }
 
 table {
   width: 100%;
-  ;
 }
 
 thead th {
   background-color: #f2f2f2;
   position: sticky;
-  top: 0;
+  top: 4%;
+width: 100%;
   z-index: 2;
+
+
+
+ 
+
 }
+
 
 /* Add your other styles as needed */
 
 .ticket-section-heading {
   font-size: 1.2rem;
   font-weight: 600;
+;
+
 }
 
 .ticket-section-heading span:nth-child(1) {
@@ -1987,7 +2134,7 @@ thead th {
 .sub-components-ticket-filter {
   box-shadow: none;
   padding: 0px 0px;
-  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+
   border-radius: 6px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
@@ -1997,7 +2144,11 @@ thead th {
   text-align: start;
   font-weight: 500;
   padding: 0;
+
+
 }
+
+
 
 .task-list-table td {
   font-size: 1rem;
@@ -2007,12 +2158,12 @@ thead th {
 .parent-full-div .task-list-table table thead tr {
   border: 2px solid #000 !important;
   /* Adjust the color and thickness as needed */
-}
+} 
 
 .parent-full-div .task-list-table {
   border-collapse: separate;
   border-spacing: 0 10px;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; 
   padding: 3px;
 }
 
@@ -2027,14 +2178,14 @@ thead th {
   border-bottom: 1px solid #c1c1c180;
 }
 
-.parent-full-div .task-list-table thead {
+/* .parent-full-div .task-list-table thead {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   padding: 10px;
   /* Adjust padding as needed */
-
+/* 
   border-radius: 10px;
-}
+} */ 
 
 /* check box css code starts here */
 .checkbox.style-c {
@@ -2128,6 +2279,128 @@ thead th {
 /* filter dropdown css starts */
 .filter-dropdowns {
   margin-top: 10px;
+}
+
+.child-filter-dropdown {
+  padding: 10px;
+}
+
+/* .dropdown-content {
+  position: absolute;
+  z-index: 1;
+  margin-top: 14.2rem;
+  margin-left: 124px;
+  background: rgb(253, 253, 253);
+  width: 160px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 4px;
+   top: 0; 
+}
+
+.dropdown-content-filter {
+  position: absolute;
+  margin-top: 4rem;
+  background: rgb(253, 253, 253);
+  width: 160px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 4px;
+  top: 0;
+  margin-left: -115px;
+  z-index: 3;
+}
+
+.search-icon-filter,
+.search-ticket-filter-icon {
+  position: absolute;
+  top: 17px;
+  left: 5px;
+}
+
+.search-ticket-filter-icon {
+  left: 15px;
+}
+
+.search-bar-div {
+  border: 1px solid #c1c1c180;
+  border-radius: 7px;
+}
+
+.search-bar-div input {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  width: 120px;
+  margin-left: 27px;
+  padding: 7px 0px;
+}
+
+.filter-icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 4px 14px;
+}
+
+.filter-lists {
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  list-style-type: none;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.filter-icons span {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filter-icons span:hover {
+  background: white;
+  color: black;
+}
+
+.listing-filter2 {
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.filter-lists li {
+  padding: 2px;
+}
+
+.filter-lists li:hover {
+  background: #fef3de;
+  color: #f8ac1d;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.search-bar-div {
+  border: 1px solid #c1c1c180;
+  border-radius: 5px;
+} */
+
+
+
+
+.filter-dropdowns {
+  margin-top: 10px;
 
 }
 
@@ -2140,11 +2413,11 @@ thead th {
   /* background-color: red;
   background: rgb(253, 253, 253);
   background-color: red; */
- 
+
 }
 
 .dropdown-content {
-   position: absolute;
+  position: absolute;
   z-index: 1;
   /* margin-top: 22rem; */
   margin-left: -5rem;
@@ -2154,10 +2427,34 @@ thead th {
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  border-radius: 4px; 
+  border-radius: 4px;
   background-color: #fff;
   top: 33%;
 }
+
+
+
+
+
+@media (min-width: 768px) and (max-width: 1064px) {
+
+  .dropdown-content {
+    top: 30%;
+  }
+  
+  
+}
+
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+
+  .dropdown-content {
+    top: 31%;
+  }
+}
+
+
+@media (min-width: 1441px) {}
 
 .dropdown-content-filter {
   position: absolute;
@@ -2254,6 +2551,7 @@ thead th {
   border: 1px solid #c1c1c180;
   border-radius: 5px;
 }
+
 
 /* filter dropdown css ends */
 
@@ -4786,6 +5084,9 @@ element.style {
 
 }
 
+
+
+
 .EngChatBox-Dash {
   width: 350px;
   height: 480px;
@@ -4793,9 +5094,9 @@ element.style {
   border-radius: 5px;
   margin-top: 10px;
   margin-left: -295px;
-  /* box-shadow: 1px 2px 5px 1px #00000029; */
   position: absolute;
   z-index: 999;
+
   box-shadow: 10px 10px 25px #00000029;
 
 
@@ -4837,18 +5138,14 @@ element.style {
   padding: .5rem;
 
 
-
 }
 
 .SubEngChatMsg-Dash {
-  height: 100%;
+  height: 94%;
   width: 100%;
-
   padding: 0rem 1rem;
   padding-bottom: 2rem;
   overflow-y: auto;
-
-
 
 }
 
@@ -5014,16 +5311,14 @@ element.style {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .text-area-message-eng-card-dash ::placeholder {
-
   color: #4444441f;
   opacity: 0.5;
 }
 
-/* ---------------------------------------------------ayush css End */
+/* ---------------------------------------------------ayush css End  eng chat end aayush csss */
 
 
 
