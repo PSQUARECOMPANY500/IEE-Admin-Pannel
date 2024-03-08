@@ -28,6 +28,8 @@ const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggL
 
 const ClientCalls = require("../../Modals/ClientDetailModals/ClientCallsSchema");
 
+const SpearParts = require("../../Modals/SpearParts/SpearParts");
+
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -476,18 +478,18 @@ module.exports.assignCallbacks = async (req, res) => {
     if (existingCallback) {
       // Update existing data
       callback = await ServiceAssigntoEngg.findOneAndUpdate({
-          callbackId
-        }, {
-          ServiceEnggId,
-          JobOrderNumber,
-          AllotAChecklist,
-          Slot,
-          Date,
-          Message,
-          ServiceProcess,
-        }, {
-          new: true
-        } // Return the updated document
+        callbackId
+      }, {
+        ServiceEnggId,
+        JobOrderNumber,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      }, {
+        new: true
+      } // Return the updated document
       );
     } else {
       // Create a new entry
@@ -956,32 +958,32 @@ module.exports.getClientMemebership = async (req, res) => {
 
 module.exports.getBookedDates = async (req, res) => {
   const timeSlots = [{
-      slot: "9:00-10:00",
-    },
-    {
-      slot: "10:00-11:00",
-    },
-    {
-      slot: "11:00-12:00",
-    },
-    {
-      slot: "12:00-13:00",
-    },
-    {
-      slot: "13:00-14:00",
-    },
-    {
-      slot: "14:00-15:00",
-    },
-    {
-      slot: "15:00-16:00",
-    },
-    {
-      slot: "16:00-17:00",
-    },
-    {
-      slot: "17:00-18:00",
-    },
+    slot: "9:00-10:00",
+  },
+  {
+    slot: "10:00-11:00",
+  },
+  {
+    slot: "11:00-12:00",
+  },
+  {
+    slot: "12:00-13:00",
+  },
+  {
+    slot: "13:00-14:00",
+  },
+  {
+    slot: "14:00-15:00",
+  },
+  {
+    slot: "15:00-16:00",
+  },
+  {
+    slot: "16:00-17:00",
+  },
+  {
+    slot: "17:00-18:00",
+  },
   ];
 
   try {
@@ -1130,36 +1132,42 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const {
-      ServiceEnggId
-    } = req.body;
-    const len = 5;
-    const today = new Date();
-    const dates = Array.from({
-      length: len
-    }, (_, i) => {
-      const previousDay = new Date(today);
-      previousDay.setDate(today.getDate() - 2 + i);
-      return previousDay.toLocaleDateString("en-GB");
-    });
+    const { ServiceEnggId, selectedDate } = req.body;
+    if (ServiceEnggId) {
+      const len = 5;
+      console.log(selectedDate);
+      const today = new Date(selectedDate)
 
-    const attendanceData = await Promise.all(dates.map(async (date) => {
-      const response = await EnggAttendanceServiceRecord.findOne({
-        ServiceEnggId,
-        Date: date
-      })
-      return response;
-    }))
+      const dates = Array.from({
+        length: len
+      }, (_, i) => {
+        const previousDay = new Date(today);
+        previousDay.setDate(today.getDate() - 3 + i);
+        return previousDay.toLocaleDateString("en-GB");
+      });
 
-    console.log(attendanceData)
+      const attendanceData = await Promise.all(dates.map(async (date) => {
+        const response = await EnggAttendanceServiceRecord.findOne({
+          ServiceEnggId,
+          Date: date
+        })
+        return response;
+      }))
 
-    res.status(200).json({
-      attendanceData
-    });
+      //console.log(attendanceData)
 
+      return res.status(200).json({
+        attendanceData
+      });
+    }
+
+    return res.status(500).json({
+      error: "Invalid Input",
+      message: error.message
+    })
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Internal server Error in fetchEnggAttendance",
       message: error.message
     })
@@ -1468,25 +1476,25 @@ module.exports.searchClients = async (req, res) => {
     // Use $or operator to search across multiple fields
     const clients = await clientDetailSchema.find({
       $or: [{
-          JobOrderNumber: {
-            $regex: regex
-          }
-        },
-        {
-          name: {
-            $regex: regex
-          }
-        },
-        {
-          PhoneNumber: {
-            $regex: regex
-          }
-        },
-        {
-          Address: {
-            $regex: regex
-          }
-        },
+        JobOrderNumber: {
+          $regex: regex
+        }
+      },
+      {
+        name: {
+          $regex: regex
+        }
+      },
+      {
+        PhoneNumber: {
+          $regex: regex
+        }
+      },
+      {
+        Address: {
+          $regex: regex
+        }
+      },
       ],
     });
     res.status(200).json({
@@ -1736,3 +1744,24 @@ const filterMembershipByType = (data, type) => {
 // {armaan-dev}
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------
+
+module.exports.createSpearParts = async (req, res) => {
+  try {
+    const { SpearPart, subcategoryName } = req.body;
+    //console.log("chutiye",SpearPart , subcategoryName);
+    if (SpearPart && subcategoryName) {
+      const response = await SpearParts.create({
+        SpearPart: SpearPart,
+        subcategoryName: subcategoryName,
+      })
+      return res.status(200).json({ response })
+    }
+    return res.status(500).json({ error: "Please fill all fields in createSpearParts" })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: "Internal server error in createSpearParts"
+    });
+  }
+};

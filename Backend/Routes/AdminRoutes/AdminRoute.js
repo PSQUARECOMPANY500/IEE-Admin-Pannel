@@ -79,5 +79,9 @@ router.get("/getClientId/:JON", adminContoller.getClientDetail);
 router.get("/getMembership", adminContoller.getClientMembership);
 router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
+router.post("/createSpearParts", adminContoller.createSpearParts);
+
+
+
 
 module.exports = router;

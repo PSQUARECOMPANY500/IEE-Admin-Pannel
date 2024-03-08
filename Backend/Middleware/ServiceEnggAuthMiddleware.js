@@ -1,9 +1,17 @@
 // authMiddleware.js
 const jwt = require("jsonwebtoken");
+const express = require("express")
+
+const bodyParser = require("body-parser");
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const EnggAttendanceServiceRecord = require("../Modals/ServiceEngineerModals/Attendance")
 
 // Function to generate a JWT token
 const generateEnggToken = (user) => {
-  return jwt.sign({ user }, "engg-secret-key", { expiresIn: "1h"});
+  return jwt.sign({ user }, "engg-secret-key", { expiresIn: "1h" });
 };
 
 // Middleware to verify the user's JWT token
