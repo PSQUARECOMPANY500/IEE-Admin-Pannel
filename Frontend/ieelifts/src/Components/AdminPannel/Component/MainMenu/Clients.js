@@ -1,16 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { LuSettings2 } from "react-icons/lu";
+import React, { useEffect, useState } from "react";
 import { getClients } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector, useDispatch } from "react-redux";
 import ClientCardView from "../ClientsSubComponent/ClientCardView";
 import ClientTableView from "../ClientsSubComponent/ClientTableView";
-import ClientFilterDropdown from "../ClientsSubComponent/ClientFilterDropdown";
 
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
-  const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dispatch = useDispatch();
-  const dropdownRef = useRef(null);
 
   useEffect(() => {
     dispatch(getClients());
@@ -23,45 +19,40 @@ const Clients = () => {
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
   );
 
-  const handleLayout = () => {
-    setLayout((prevLayout) => (prevLayout === "Table" ? "Card" : "Table"));
-  };
+  const clientLayout = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ChangeLayoutReducer?.initialLayout?.clientLayout
+        ?.layout
+  );
 
-  const handleTicketFilter = () => {
-    setShowTicketFilter((prevFilter) => !prevFilter);
-  };
+  const searchClient = useSelector(
+    (state) => state?.AdminRootReducer?.searchClientReducer?.clients?.clients
+  );
+
+  useEffect(() => {
+    if (clientLayout !== undefined) {
+      setLayout(clientLayout === "grid" ? "grid" : "list");
+    }
+  }, [clientLayout]);
 
   const renderClientView = () => {
-    let dataToRender = clients;
-
-    if (filteredData) {
+    let dataToRender;
+    if (searchClient) {
+      dataToRender = searchClient;
+    } else if (filteredData) {
       dataToRender = filteredData;
+    } else {
+      dataToRender = clients;
     }
 
-    if (layout === "Card") {
+    if (layout === "grid") {
       return <ClientCardView clientData={dataToRender} />;
     } else {
       return <ClientTableView clientData={dataToRender} />;
     }
   };
 
-  return (
-    <div className="main-container">
-      <div style={{ marginTop: "10rem" }}>
-        <p className="filter-icon" onClick={handleTicketFilter}>
-          <LuSettings2 />
-          {""}
-        </p>
-        {showTicketFilter && (
-          <div ref={dropdownRef}>
-            <ClientFilterDropdown />
-          </div>
-        )}
-      </div>
-      {renderClientView()}
-      <button onClick={handleLayout}>Change Layout</button>
-    </div>
-  );
+  return <div className="main-container">{renderClientView()}</div>;
 };
 
 export default Clients;

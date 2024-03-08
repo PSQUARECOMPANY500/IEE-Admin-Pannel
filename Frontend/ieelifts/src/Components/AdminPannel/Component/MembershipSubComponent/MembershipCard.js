@@ -1,11 +1,11 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
-import React from "react";
+import React, { useState } from "react";
 import MembershipCardDetails from "./MembershipCardDetails";
 import MembershipExpiring from "./MembershipExpiring";
 import MembershipExpired from "./MembershipExpired";
 import MembershipCardTopBar from "./MembershipCardTopBar";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const MembershipCard = ({
   DemoData,
@@ -14,6 +14,7 @@ const MembershipCard = ({
   itemClick,
   clickCount,
 }) => {
+  const dispatch = useDispatch();
   const titleClass =
     DemoData.dataType === "Warrenty"
       ? "membership_card_title_warrenty"
@@ -81,6 +82,7 @@ const MembershipCard = ({
         onDoubleClick={(e) => {
           if (clickCount !== 1) {
             itemClick();
+
           }
         }}
       >

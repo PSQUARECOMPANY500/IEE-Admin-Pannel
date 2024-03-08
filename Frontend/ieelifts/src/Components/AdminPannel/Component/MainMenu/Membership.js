@@ -1,8 +1,12 @@
-// <-----------------------------  Author:- Armaan Singh ----------------------------------->
+// // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import MembershipCard from "../MembershipSubComponent/MembershipCard";
-import { requestGetMemberShipDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import {
+  changeLayout,
+  membershipLayoutButton,
+  requestGetMemberShipDataAction,
+} from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Membership = () => {
@@ -10,6 +14,7 @@ const Membership = () => {
   const [setClick, click] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const [cards, setCards] = useState([]);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     dispatch(requestGetMemberShipDataAction());
@@ -26,7 +31,12 @@ const Membership = () => {
     }
   });
 
-  useEffect(() => {
+  const membershipLayout = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ChangeLayoutReducer?.initialLayout
+        ?.membershipLayout
+  );
+  useLayoutEffect(() => {
     if (
       membershipJon &&
       membershipJon.membershipDetail &&
@@ -71,10 +81,44 @@ const Membership = () => {
         },
         { DemoData: "", order: 5, toggleOrder: 1, id: 5 },
       ]);
+      dispatch(membershipLayoutButton(false));
     } else {
       setCards([]);
     }
   }, [membershipJon]);
+
+  const handleGoingBack = () => {
+    if (membershipJon) {
+      const updatedCards = [...cards];
+      updatedCards.map((card, index) => {
+        if (card.order === 1 && index !== 0) {
+          const toggleNumber = card.toggleOrder;
+          card.toggleOrder = card.order;
+          card.order = toggleNumber;
+        }
+        if (index === 0 && card.order !== 1) {
+          card.order = 1;
+          card.toggleOrder = 2;
+        }
+        return card;
+      });
+      setCards(updatedCards);
+      if (clickCount === 1) {
+        setClickCount(0);
+      } else {
+        setClickCount(1);
+      }
+      click(!setClick);
+      dispatch(membershipLayoutButton(false));
+    }
+  };
+
+  useEffect(() => {
+    if (membershipLayout && !isInitialMount.current) {
+      handleGoingBack();
+    }
+    isInitialMount.current = false;
+  }, [membershipLayout]);
 
   const handleDoubleClick = (id) => {
     const clickedIndex = cards.findIndex((card) => card.id === id);
@@ -96,31 +140,10 @@ const Membership = () => {
         updatedCards[orderOneIndex].toggleOrder;
       updatedCards[orderOneIndex].toggleOrder = orderOneIndexToggle;
     }
-
-    setCards(updatedCards);
-  };
-
-  const handleGoingBack = () => {
-    const updatedCards = [...cards];
-    updatedCards.map((card, index) => {
-      if (card.order === 1 && index !== 0) {
-        const toggleNumber = card.toggleOrder;
-        card.toggleOrder = card.order;
-        card.order = toggleNumber;
-      }
-      if (index === 0 && card.order !== 1) {
-        card.order = 1;
-        card.toggleOrder = 2;
-      }
-      return card;
-    });
-    setCards(updatedCards);
-    if (clickCount === 1) {
-      setClickCount(0);
-    } else {
-      setClickCount(1);
+    if (clickCount === 0) {
+      dispatch(membershipLayoutButton(true));
     }
-    click(!setClick);
+    setCards(updatedCards);
   };
 
   return (
@@ -137,7 +160,7 @@ const Membership = () => {
             return (
               <MembershipCard
                 key={index}
-                DemoData={items.DemoData}
+                DemoData={items.DemoData || {}}
                 order={items.order}
                 setClick={setClick}
                 clickCount={clickCount}
@@ -149,7 +172,7 @@ const Membership = () => {
               />
             );
           })}
-        {setClick && (
+        {setClick && cards[4] && (
           <MembershipCard
             clickCount={clickCount}
             DemoData={cards[4].DemoData}
@@ -163,14 +186,6 @@ const Membership = () => {
           />
         )}
       </div>
-      <button
-        onClick={() => {
-          handleGoingBack();
-        }}
-      >
-        {" "}
-        Go Back{" "}
-      </button>
     </div>
   );
 };

@@ -28,6 +28,8 @@ const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggL
 
 const ClientCalls = require("../../Modals/ClientDetailModals/ClientCallsSchema");
 
+const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilter");
+
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1223,19 +1225,7 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
-// module.exports.getClientCalls = async (req, res) => {
-//   try {
-//     const { callType, jobOrderNumber } = req.query;
-//     const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
-//     res.status(201).json({ success: true, clientCallData });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
+
 module.exports.getClientCalls = async (req, res) => {
   try {
     const { callType, jobOrderNumber } = req.query;
@@ -1283,25 +1273,7 @@ module.exports.getClientData = async (req, res) => {
     });
   }
 };
-// module.exports.getMembershipHistory = async (req, res) => {
-//   try {
-//     const { jobOrderNumber } = req.query;
-//     const membershipHistory = await AssignMemeberships.find({
-//       JobOrderNumber: jobOrderNumber,
-//     });
-//     const historyData = membershipHistory.filter((a) => {
-//       a.EndDate < Date.now();
-//     });
-//     console.log(historyData);
-//     res.status(201).json({ success: true, historyData });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
+
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1342,28 +1314,7 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
-// module.exports.calculateRatingAverage = async (req, res) => {
-//   try {
-//     const { jobOrderNumber, startDate, endDate } = req.query;
-//     const ratings = await EnggRating.find({ JobOrderNumber: jobOrderNumber });
-//     let averageRating = 0;
-//     let ratingCount = 0;
-//     for (const rating in ratings) {
-//       if (rating.createdAt >= startDate && rating.createdAt <= endDate) {
-//         averageRating += rating.Rating;
-//         ratingCount++;
-//       }
-//     }
-//     let calculateRating = averageRating / ratingCount;
-//     res.status(201).json({ success: true, calculateRating });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
+
 module.exports.filterClient = async (req, res) => {
   try {
     const { type, condition } = req.query;
@@ -1416,26 +1367,7 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
-// module.exports.searchClients = async (req, res) => {
-//   try {
-//     const { searchTerm } = req.query;
-//     // Create a regular expression to match the search term case-insensitively
-//     const regex = new RegExp(searchTerm, "i");
-//     // Use $or operator to search across multiple fields
-//     const clients = await clientDetailSchema.find({
-//       $or: [
-//         { JobOrderNumber: { $regex: regex } },
-//         { name: { $regex: regex } },
-//         { PhoneNumber: { $regex: regex } },
-//         { Address: { $regex: regex } },
-//       ],
-//     });
-//     res.status(200).json({ success: true, clients });
-//   } catch (error) {
-//     console.error("Error searching clients:", error);
-//     res.status(500).json({ success: false, message: "Internal server error" });
-//   }
-// };
+
 module.exports.searchClients = async (req, res) => {
   try {
     const { searchTerm } = req.query;
@@ -1699,6 +1631,40 @@ const calculateExpired = (filteredData) => {
 const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MembershipType === type);
 };
+
+module.exports.createLocationForFilter = async (req, res) => {
+  try {
+    const { location } = req.body;
+    console.log("this is location: ", location);
+    const findLocation = await LocationSchema.find({ location });
+    if (findLocation) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Location already exists" });
+    }
+
+    const locationCreated = await LocationSchema.create({ location });
+
+    res.status(201).json({ success: true, locationCreated });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+module.exports.getFilteringLocations = async (req, res) => {
+  try {
+    const locations = await LocationSchema.find();
+
+    res.status(201).json({ success: true, locations });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
 // {armaan-dev}
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------

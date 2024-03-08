@@ -11,11 +11,10 @@ const clientCardView = ({ clientData }) => {
       ? "clientCardShadowPlatinum"
       : type === "gold"
       ? "clientCardShadowGold"
-      : type === "silver"
+      : type === "silver" 
       ? "clientCardShadowSilver"
       : "noMembershipP";
   }
-  console.log(clientData);
   return (
     <div className="ClientCatainer">
       {clientData &&

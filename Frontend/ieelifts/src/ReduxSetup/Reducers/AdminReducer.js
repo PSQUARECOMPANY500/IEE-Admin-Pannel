@@ -30,6 +30,11 @@ import { GET_MEMBERSHIP_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
 import { GET_CLIENT_MEMBERSHIP_HISTORY } from "../Actions/AdminActions";
+import { CHANGE_CLIENT_LAYOUT } from "../Actions/AdminActions";
+import { CHANGE_MEMBERSHIP_LAYOUT } from "../Actions/AdminActions";
+import { GET_FILTER_LOCATIONS } from "../Actions/AdminActions";
+import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
+import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 
 const intialState22 = {
   clients: null,
@@ -479,3 +484,85 @@ export const EnggLocationDetailsFetchReducer = (
       return state;
   }
 };
+
+const layoutInitial = {
+  initialLayout: {
+    clientLayout: null,
+    membershipLayout: null,
+  },
+};
+
+export const ChangeLayoutReducer = (state = layoutInitial, action) => {
+  switch (action.type) {
+    case CHANGE_CLIENT_LAYOUT:
+      return {
+        ...state,
+        initialLayout: {
+          ...state.initialLayout,
+          clientLayout: action.payload,
+        },
+      };
+    case CHANGE_MEMBERSHIP_LAYOUT:
+      return {
+        ...state,
+        initialLayout: {
+          ...state.initialLayout,
+          membershipLayout: action.payload,
+        },
+      };
+    default:
+      return state;
+  }
+};
+
+const locationsState = {
+  locations: null,
+};
+
+export const filteringLocationsReducer = (state = locationsState, action) => {
+  switch (action.type) {
+    case GET_FILTER_LOCATIONS:
+      return {
+        ...state,
+        locations: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const searchingState = {
+  clients: null,
+};
+
+export const searchClientReducer = (state = searchingState, action) => {
+  switch (action.type) {
+    case GET_SEARCHED_CLIENTS:
+      return {
+        ...state,
+        clients: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const buttonLayout = {
+  button: null,
+};
+
+export const membershipButtonLayoutReducer = (state = buttonLayout, action) => {
+  switch (action.type) {
+    case CHANGE_MEMBERSHIP_LAYOUT_BUTTON:
+      return {
+        button: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+// armaan-dev ends

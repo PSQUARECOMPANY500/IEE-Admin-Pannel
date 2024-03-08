@@ -10,7 +10,6 @@ body {
   cursor: default;
 
   -webkit-user-select: none;
-
   /* Safari */
   -ms-user-select: none;
   /* IE 10 and IE 11 */
@@ -18,7 +17,6 @@ body {
   /* Standard syntax */
   z-index: 0;
 }
-
 
 code {
   font-family: "Poppins", source-code-pro, Menlo, Monaco, Consolas,

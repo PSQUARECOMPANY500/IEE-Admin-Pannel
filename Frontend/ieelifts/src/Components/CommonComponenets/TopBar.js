@@ -1,81 +1,184 @@
-import React, { useState } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import { HiOutlineBell } from "react-icons/hi2";
 import { RiSearchLine } from "react-icons/ri";
 import { CiGrid41 } from "react-icons/ci";
 import { TbListTree } from "react-icons/tb";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import NotificationSection from "../AdminPannel/Component/DashboardSubComponent/NotificationSection";
 import { LuSettings2 } from "react-icons/lu";
+import ClientFilterDropdown from "../AdminPannel/Component/ClientsSubComponent/ClientFilterDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeLayout,
+  getfilteredData,
+  searchClients,
+} from "../../ReduxSetup/Actions/AdminActions";
+
+const useClickOutside = (ref, handler) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        handler();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, handler]);
+};
 
 const TopBar = (props) => {
+  const dispatch = useDispatch();
   const [showNotification, setShowNotification] = useState(false);
-  const [isGrid, setIsGrid] = useState(true);
+  const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
-
+  const [searchValue, setSearchValue] = useState("");
+  const [showTicketFilter, setShowTicketFilter] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
 
   const handleNotificationBox = () => {
     setShowNotification(!showNotification);
   };
 
+  useLayoutEffect(() => {
+    if (searchValue !== "") {
+      dispatch(searchClients(searchValue));
+    }
+  }, [searchValue]);
+
+  const filteredData = useSelector(
+    (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
+  );
+
+  useEffect(() => {
+    if (filteredData) {
+      setSearchValue("");
+    }
+  }, [filteredData]);
+
   const toggleGrid = () => {
     setIsGrid(!isGrid);
+    dispatch(changeLayout("membership", isGrid));
   };
 
+  const membershipLayout = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.membershipButtonLayoutReducer?.button?.button
+  );
+
+  useEffect(() => {
+    if (membershipLayout == true) {
+      setIsGrid(!isGrid);
+    }
+    return () => {
+      setIsGrid(false);
+    };
+  }, [membershipLayout]);
 
   const clienttoggleGrid = () => {
     setClientIsGrid(!clientIsGrid);
+    dispatch(changeLayout("client", clientIsGrid));
   };
+
+  const handleTicketFilter = () => {
+    if (filteredData !== null && showTicketFilter == false) {
+      dispatch(getfilteredData(null));
+      setSearchValue("");
+    }
+    setShowTicketFilter((prevFilter) => !prevFilter);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleOutsideClick = useCallback(() => {
+    setShowTicketFilter(false);
+  }, []);
+
+  const dropdownClickRef = useRef();
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
   return (
-    <div className="top-bar" >
+    <div className="top-bar">
       <div
         className="left-side-heading"
         style={{
           marginLeft: props.isOpen ? "0%" : "-9.5rem",
-
         }}
       >
         <p>{props.heading}</p>
       </div>
 
       <div className="right-side-icons">
+        {location.pathname === "/Clients" ? (
+          <span className="top-iconn ">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search clients"
+                className="search-input"
+                value={searchValue}
+                onChange={handleSearchChange}
+              />
 
+              <i className="search-btn">
+                <RiSearchLine className="iconColor" />
+              </i>
+            </div>
+          </span>
+        ) : (
+          <span className="top-icon">
+            <div className="search-box">
+              <input
+                type="text"
+                placeholder="Search anything"
+                className="search-input"
+              />
 
+              <i className="search-btn ">
+                <RiSearchLine className="iconColor" />
+              </i>
+            </div>
+          </span>
+        )}
 
-        <span className="top-icon">
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="Search anything"
-              className="search-input"
-            />
-
-            <i className="search-btn ">
-              <RiSearchLine className="iconColor" />
-            </i>
-
+        {location.pathname === "/Memberships" && (
+          <div className="top-icon" onClick={toggleGrid}>
+            {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
-        </span>
+        )}
 
-
-        {location.pathname === '/Memberships' && <div className="top-icon" onClick={toggleGrid}>
-          {isGrid ? <TbListTree /> : <CiGrid41 />}
-        </div>}
-
-        {/* <FilterDropdown /> */}
-
-
-      { location.pathname === '/Clients' && <>
-          <div className="top-icon">    <LuSettings2 /></div>
-          <div className="top-icon" onClick={clienttoggleGrid}>
-            {clientIsGrid ? <TbListTree /> : <CiGrid41 />}
-          </div>
-
-        </> }
-
-
-
-
+        {location.pathname === "/Clients" && (
+          <>
+            <div className="top-icon">
+              {" "}
+              <div style={{ position: "relative" }} ref={dropdownClickRef}>
+                <p className="filter-icon" onClick={handleTicketFilter}>
+                  <LuSettings2 />
+                  {""}
+                </p>
+                {showTicketFilter && (
+                  <div ref={dropdownRef} style={{ position: "absolute" }}>
+                    <ClientFilterDropdown />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="top-icon" onClick={clienttoggleGrid}>
+              {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
+            </div>
+          </>
+        )}
 
         <div style={{ display: "flex" }}>
           <span className="top-icon-bell" onClick={handleNotificationBox}>
@@ -83,14 +186,10 @@ const TopBar = (props) => {
           </span>
           <div className="dot"></div>
 
-          {showNotification && (
-            <NotificationSection />
-          )}
+          {showNotification && <NotificationSection />}
         </div>
-
       </div>
     </div>
-
   );
 };
 

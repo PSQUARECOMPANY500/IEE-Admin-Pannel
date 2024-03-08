@@ -30,6 +30,9 @@ export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
 export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
   "GET_CURRENT_DATE_ASSIGN_CALLBACK";
 
+export const CHANGE_CLIENT_LAYOUT = "CHANGE_CLIENT_LAYOUT";
+export const CHANGE_MEMBERSHIP_LAYOUT = "CHANGE_MEMBERSHIP_LAYOUT";
+
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 
@@ -56,6 +59,10 @@ export const GET_MEMBERSHIP_DATA = "GET_MEMBERSHIP_DATA";
 export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
+export const GET_FILTER_LOCATIONS = "GET_FILTER_LOCATIONS";
+export const GET_SEARCHED_CLIENTS = "GET_SEARCHED_CLIENTS";
+export const CHANGE_MEMBERSHIP_LAYOUT_BUTTON =
+  "CHANGE_MEMBERSHIP_LAYOUT_BUTTON";
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 
@@ -492,7 +499,6 @@ export const requestGetMemberShipDataAction = () => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getMembershipDetails`
       );
-      console.log("responce", response.data);
 
       dispatch({
         type: GET_MEMBERSHIP_DATA,
@@ -519,7 +525,6 @@ export const requestLimitedClientDataAction = async (
         pageSize,
       },
     });
-    console.log("I am in requestLimitedClientDataAction", response.data);
     if (wanted === "expiring") {
       dispatch({
         type: GET_LIMITED_CLIENT_DATA,
@@ -645,11 +650,11 @@ export const getClients = () => {
     } catch (error) {}
   };
 };
+
 export const getfilteredData = (filterCondition) => {
   return async (dispatch) => {
     try {
       if (filterCondition === null) {
-        console.log(filterCondition);
         dispatch({
           type: GET_FILTER_DATA,
           payload: [],
@@ -665,6 +670,80 @@ export const getfilteredData = (filterCondition) => {
       dispatch({
         type: GET_FILTER_DATA,
         payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+export const changeLayout = (type, to) => {
+  return async (dispatch) => {
+    try {
+      switch (type) {
+        case "client":
+          dispatch({
+            type: CHANGE_CLIENT_LAYOUT,
+            payload: to ? { layout: "grid" } : { layout: "list" },
+          });
+          break;
+        case "membership":
+          dispatch({
+            type: CHANGE_MEMBERSHIP_LAYOUT,
+            payload: to ? { layout: "open" } : { layout: "close" },
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (error) {}
+  };
+};
+
+export const getFilterLocation = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getFilteringLocations`
+      );
+      dispatch({
+        type: GET_FILTER_LOCATIONS,
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+export const searchClients = (searchTerm) => {
+  return async (dispatch) => {
+    try {
+      if (searchTerm === null || searchTerm === "") {
+        dispatch({
+          type: GET_SEARCHED_CLIENTS,
+          payload: [],
+        });
+        return;
+      }
+      const response = await axios.get(
+        `${config.apiUrl}/admin/serchingClient`,
+        {
+          params: {
+            searchTerm,
+          },
+        }
+      );
+      dispatch({
+        type: GET_SEARCHED_CLIENTS,
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+export const membershipLayoutButton = (button) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
+        payload: { button },
       });
     } catch (error) {}
   };
