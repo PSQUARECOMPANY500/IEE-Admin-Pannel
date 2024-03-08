@@ -107,6 +107,7 @@ router.get("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
 router.post("/EnggReportResponse", serviceEnggContoller.EnggReportResponse)
 router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFetch)
 router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance)
+router.get("/EnggCheckInCheckOutDetals/:ServiceEnggId", serviceEnggContoller.EnggCheckInCheckOutDetals)
 
 
 module.exports = router;

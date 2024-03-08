@@ -420,7 +420,7 @@ module.exports.EnggCheckIn = async (req, res) => {
           time: time,
         }
       });
-      return res.status(201).json({time});
+      return res.status(201).json(time);
     }
     return res.status(500).json({ error: "ServiceEnggId or IsAttendance not find" });
   } catch (error) {
@@ -453,7 +453,7 @@ module.exports.EnggCheckOut = async (req, res) => {
           time: time
         }
       });
-     return res.status(201).json({time});
+     return res.status(201).json(time);
     }
     return res.status(500).json({ error: "ServiceEnggId not find" });
   } catch (error) {
@@ -480,7 +480,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
 
     const checkBreak = await EnggAttendanceServiceRecord.findOne({ServiceEnggId, Date: date});
     if(checkBreak.First_halfs_time  && checkBreak.First_halfe_time){
-      return res.status(200).json({time:"0 min"})
+      return res.status(200).json("0 min")
     }
 
     if(!checkBreak.First_halfs_time  && !checkBreak.First_halfe_time){
@@ -490,7 +490,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
         { new: true }
       );
 
-      return res.status(200).json({time:"15 min"})
+      return res.status(200).json("15 min")
       //point where start time will get update
     }
 
@@ -501,21 +501,21 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
           update,
           { new: true }
         ); 
-        return res.status(200).json({time:"0 min"})
+        return res.status(200).json("0 min")
       }     
       const [hour, minut, ] = time.split(":");
       const [hour1, minut1, ] = checkBreak.First_halfs_time.split(":");
 
       if (hour === hour1) {
         const remaningmin = minut - minut1;
-        return res.status(200).json( remaningmin + "min")
+        return res.status(200).json(remaningmin + " min")
       }
       if(hour > hour1){
         const rhour =hour-hour1;
         const rminut = 60 - parseInt(minut1);
         const finalrminut = parseInt(minut) + parseInt(rminut);
         const finalTimeInMinut = parseInt(finalrminut) + (parseInt(rhour)*60);
-        return res.status(200).json(finalTimeInMinut+ "min")
+        return res.status(200).json(finalTimeInMinut+ " min")
       }
       //point where endtime will get update 
     }
@@ -526,8 +526,6 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
     return res.status(500).json({ error: "Internal server error in First_half" });
   }
 };
-
-
 
 module.exports.EnggOnSecondHalfBreak = async (req, res) => {
   try {
@@ -548,7 +546,7 @@ module.exports.EnggOnSecondHalfBreak = async (req, res) => {
 
       const checkBreak = await EnggAttendanceServiceRecord.findOne({ServiceEnggId, Date: date});
     if(checkBreak.Second_halfs_time  && checkBreak.Second_halfe_time){
-      return res.status(200).json({time:"0 min"})
+      return res.status(200).json("0 min")
     }
 
     if(!checkBreak.Second_halfs_time  && !checkBreak.Second_halfe_time){
@@ -558,7 +556,7 @@ module.exports.EnggOnSecondHalfBreak = async (req, res) => {
         { new: true }
       );
 
-      return res.status(200).json({time:"15 min"})
+      return res.status(200).json("15 min")
     }
 
     if(checkBreak.Second_halfs_time  && !checkBreak.Second_halfe_time){
@@ -568,21 +566,21 @@ module.exports.EnggOnSecondHalfBreak = async (req, res) => {
           update,
           { new: true }
         ); 
-        return res.status(200).json({time:"0 min"})
+        return res.status(200).json("0 min")
       }     
       const [hour, minut, ] = time.split(":");
       const [hour1, minut1, ] = checkBreak.Second_halfs_time.split(":");
 
       if (hour === hour1) {
         const remaningmin = minut - minut1;
-        return res.status(200).json( remaningmin + "min")
+        return res.status(200).json(remaningmin + " min")
       }
       if(hour > hour1){
         const rhour =hour-hour1;
         const rminut = 60 - parseInt(minut1);
         const finalrminut = parseInt(minut) + parseInt(rminut);
         const finalTimeInMinut = parseInt(finalrminut) + (parseInt(rhour)*60);
-        return res.status(200).json(finalTimeInMinut+ "min")
+        return res.status(200).json(finalTimeInMinut+ " min")
       }
       //point where endtime will get update 
     }
@@ -615,7 +613,7 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
   
       const checkBreak = await EnggAttendanceServiceRecord.findOne({ServiceEnggId, Date: date});
     if(checkBreak.Lunch_breaks_time  && checkBreak.Lunch_breake_time){
-      return res.status(200).json({time:"0 min"})
+      return res.status(200).json("0 min")
     }
 
     if(!checkBreak.Lunch_breaks_time  && !checkBreak.Lunch_breake_time){
@@ -625,7 +623,7 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
         { new: true }
       );
 
-      return res.status(200).json({time:"30 min"})
+      return res.status(200).json("30 min")
       //point where start time will get update
     }
 
@@ -636,21 +634,21 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
           update,
           { new: true }
         ); 
-        return res.status(200).json({time:"0 min"})
+        return res.status(200).json("0 min")
       }     
       const [hour, minut, ] = time.split(":");
       const [hour1, minut1, ] = checkBreak.Lunch_breaks_time.split(":");
 
       if (hour === hour1) {
         const remaningmin = minut - minut1;
-        return res.status(200).json( remaningmin + "min")
+        return res.status(200).json( remaningmin + " min")
       }
       if(hour > hour1){
         const rhour =hour-hour1;
         const rminut = 60 - parseInt(minut1);
         const finalrminut = parseInt(minut) + parseInt(rminut);
         const finalTimeInMinut = parseInt(finalrminut) + (parseInt(rhour)*60);
-        return res.status(200).json(finalTimeInMinut+ "min")
+        return res.status(200).json(finalTimeInMinut+ " min")
       }
     }
   }
@@ -803,6 +801,22 @@ module.exports.EnggReportQuestionFetch = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error in EnggReportQuestionFetch" });
+  }
+}
+
+
+module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
+  try {
+    const Id  = req.params.ServiceEnggId;
+    if (Id) {
+      const date = new Date().toLocaleDateString('en-GB');
+      const response = await EnggAttendanceServiceRecord.findOne({ ServiceEnggId:Id, Date: date });
+      return res.status(200).json({"Check_In":response.Check_In.time ,"Check_Out":response.Check_Out.time  });
+    }
+    return res.status(500).json({ error: "ServiceEnggId Not Found" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in EnggCheckInCheckOutDetals" });
   }
 }
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------

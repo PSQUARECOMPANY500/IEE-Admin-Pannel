@@ -9,42 +9,24 @@ import { GoPlus } from "react-icons/go";
 import AddTicketModal from "./AddTicketModal";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 // import { io } from 'socket.io-client';
-
+import { getBankDetils } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
+import { pincodeDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
-
-  // const socket = io('http://localhost:8000');
-
-  // useEffect(() => {
-  //   socket.on('connect', () => {
-  //     console.log('Connected to the server:', socket.id);
-  //     socket.emit('send_message',{message:"hello"})
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
   const [callbackId, setCallbackId] = useState();
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
-
-
-
   const [showTicketModal, setShowTicketModal] = useState(false);
-
   const [showTicketModal1, setShowTicketModal1] = useState(false);
   const [showTicketModal2, setShowTicketModal2] = useState(false);
   const [showTicketModal3, setShowTicketModal3] = useState(false);
-
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-
   const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState({
     checkbox1: false,
@@ -68,6 +50,26 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [allCD, setallCD] = useState([]);
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+
+
+  //--------------------------------code for preet sir for pincode and IFSC code----------------------------------------------------
+  async function getpincodeDetailsData(pincode){
+    const data = await pincodeDetails(pincode);
+    console.log(data[0]?.PostOffice[0].District)
+    console.log(data[0]?.PostOffice[0].State)
+  }
+
+  async function getBankDetilsData(IFSCcode){
+    const data = await getBankDetils(IFSCcode);
+    console.log(data.BRANCH)
+  }
+
+  useEffect(()=>{
+    getpincodeDetailsData("135133")
+    getBankDetilsData("SBIN0001840")
+  },[])
+
+  //--------------------------------code for preet sir for pincode and IFSC code[ends]----------------------------------------------------
 
 
   useEffect(() => {

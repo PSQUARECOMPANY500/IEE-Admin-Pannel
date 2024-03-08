@@ -272,7 +272,7 @@ export const assignCallBackByAdminAction = (ServiceEnggId, JobOrderNumber, callb
         callbackId,
         name,
         enggJon,
-      }, );
+      },);
 
       dispatch({
         type: ASSIGN_CALLBACK_BY_ADMIN,
@@ -426,30 +426,7 @@ export const requestAssignCallbackDetail = (callbackId) => {
   }
 }
 
-
-
-
-
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//action performed for rendering the components
-/* 
-export const ticketSectionRenderAction = () => {
-return async (dispatch) => {
-  try {
-    dispatch({ type: TICKET_COMPONENT_RENDERED})  
-  } catch (error) {
-    console.log("error while fetching data", error);
-  }
-}
-} */
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */ ) => {
+export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
@@ -472,9 +449,9 @@ export const requestGetMemberShipDataAction = () => {
     try {
       const response = await axios.get(
         `${config.apiUrl}/admin/getMembershipDetails`
-        );
-        console.log("responce",response.data)
-      
+      );
+      console.log("responce", response.data)
+
       dispatch({
         type: GET_MEMBERSHIP_DATA,
         payload: response.data,
@@ -500,7 +477,7 @@ export const requestLimitedClientDataAction = async (
         pageSize,
       },
     });
-    console.log("I am in requestLimitedClientDataAction",response.data);
+    console.log("I am in requestLimitedClientDataAction", response.data);
     if (wanted === "expiring") {
       dispatch({
         type: GET_LIMITED_CLIENT_DATA,
@@ -528,10 +505,10 @@ export const getClientMembershipHistoryAction = (jobOrderNumber) => {
       }
       const response = await axios.get(
         `${config.apiUrl}/admin/getMembershipHistory`, {
-          params: {
-            jobOrderNumber,
-          },
-        }
+        params: {
+          jobOrderNumber,
+        },
+      }
       );
       dispatch({
         type: GET_CLIENT_MEMBERSHIP_HISTORY,
@@ -554,11 +531,11 @@ export const getClientCallsDetails = (jobOrderNumber, callType) => {
       }
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientCalls`, {
-          params: {
-            jobOrderNumber,
-            callType,
-          },
-        }
+        params: {
+          jobOrderNumber,
+          callType,
+        },
+      }
       );
       dispatch({
         type: GET_CLIENT_CALL_DETAILS,
@@ -598,10 +575,10 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
       }
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientDataForMembership`, {
-          params: {
-            jobOrderNumber,
-          },
-        }
+        params: {
+          jobOrderNumber,
+        },
+      }
       );
       dispatch({
         type: GET_CLIENT_DETAILS,
@@ -620,7 +597,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 export const getfilteredData = (filterCondition) => {
@@ -636,8 +613,54 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
 // -------------------armaan-dev---------------
+
+/* export const requestAssignCallbackDetail = (callbackId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getAssignCallbackDetail/${callbackId}`);
+      //console.log("assign_responce",response.data);
+
+      dispatch({
+        type: GET_ASSIGN_CALLBACK_DETAILS,
+        payload: response.data,
+      });
+
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  }
+} */
+
+/* 
+
+IFSC : https://ifsc.razorpay.com/
+PinCode : https://api.postalpincode.in/pincode/
+
+*/
+
+export const getBankDetils = async (IFSCcode) => {
+  try {
+    const response = await axios.get(`https://ifsc.razorpay.com/${IFSCcode}`);
+    //console.log("assign_responce", response.data);
+    return response.data;
+
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+}
+
+export const pincodeDetails = async (pincode) => {
+  try {
+    const response = await axios.get(`https://api.postalpincode.in/pincode/${pincode}`);
+    //console.log("assign_responce", response.data);
+    return response.data;
+
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+}
