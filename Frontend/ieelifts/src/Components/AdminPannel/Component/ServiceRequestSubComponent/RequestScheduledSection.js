@@ -148,7 +148,7 @@ const RequestScheduledSection = ({setRenderTicket}) => {
           </div>
         </div>
 
-        <div>
+        <>
           {/* table start here */}
 
           {handleRequestScheduledTable ? (
@@ -158,7 +158,7 @@ const RequestScheduledSection = ({setRenderTicket}) => {
           )}
 
           {/* table end here */}
-        </div>
+        </>
       </div>
     </div>
   );

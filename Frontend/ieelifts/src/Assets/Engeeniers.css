@@ -448,7 +448,6 @@ body {
 }
 
 
-
 .engchatmsg-sender-side {
   width: 100%;
   display: flex;
@@ -700,25 +699,32 @@ th {
 .service-table-item,
 .callback-table-item {
 
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  font-size: 0.8rem;
-  color: #444444;
-  font-weight: 400;
-  font-family: 'Poppins';
-  line-height: .9rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 0.9rem;
+    color: #444444;
+    font-weight: 400;
+    font-family: 'Poppins';
+    line-height: .9rem;
 
 }
 
 
-tr>td:nth-child(2) {
-  font-size: 0.8rem;
-  color: #444444;
-  font-weight: 490;
-  font-family: 'Poppins';
-  line-height: .9rem;
-}
 
+.callback-table-item tr>td:nth-child(2) {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: .9rem;
+}
+.service-table-item tr>td:nth-child(2) {
+    font-size: 0.8rem;
+    color: #444444;
+    font-weight: 490;
+    font-family: 'Poppins';
+    line-height: .9rem;
+}
 .ServiceCardsBottom {
   width: 100%;
   height: 20%;

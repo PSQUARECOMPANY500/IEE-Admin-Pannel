@@ -318,7 +318,7 @@
                   {/* one row strats */}
                   <div className="row">
                     <div className="col25">
-                      <label>JON:</label>
+                      <label>JON</label>
                     </div>
   
                     <div className="col75">

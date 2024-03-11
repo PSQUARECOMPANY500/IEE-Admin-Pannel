@@ -9,7 +9,7 @@ const ClientTableView = ({ clientData }) => {
     checkbox2: false,
   });
 
-  useEffect(() => {}, [checkboxStates]);
+  useEffect(() => { }, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -33,45 +33,55 @@ const ClientTableView = ({ clientData }) => {
   // };
 
   return (
-    <div className="ClientCatainer tableContainer">
-      <div className="table_view">
-        <div className="task-list-client ">
-          <table className="task-list-table-client">
-            <thead className="task-head-list">
-              <tr>
-                <th className="checkbox">
-                  <CheckBox
-                    id="checkbox1"
-                    checked={checkboxStates.checkbox1}
-                    handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
-                  />
-                </th>
-                <th>JON</th>
-                <th>NAME</th>
-                <th>NUMBER</th>
-                <th>
-                  <div>
-                    <span>ADDRESS</span>
-                    <HiChevronUpDown />
-                    <span></span>
-                  </div>
-                </th>
-                <th>CallBacks</th>
-                <th className="membership">
-                  <div>
-                    <span>Membership</span>
-                    <HiChevronUpDown />
-                    <span></span>
-                  </div>
-                </th>
-                <th>Elevator</th>
-                <th>DOH</th>
-              </tr>
-            </thead>
+
+    // <div className="table_view">
+
+    // </div>
+
+    <div className="table_view">
+      <div className="sub_table_view">
+        <div className="client_table-container">
+          <table>
+              <thead >
+             
+                  <tr>
+                  <th className="checkbox">
+                    <CheckBox
+                      id="checkbox1"
+                      checked={checkboxStates.checkbox1}
+                      handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
+                    />
+                  </th>
+                  <th>JON</th>
+                  <th>NAME</th>
+                  <th>NUMBER</th>
+                  <th>
+                    <div>
+                      <span>ADDRESS</span>
+                      <HiChevronUpDown />
+                      <span></span>
+                    </div>
+                  </th>
+                  <th>CallBacks</th>
+                  <th className="membership">
+                    <div>
+                      <span>Membership</span>
+                      <HiChevronUpDown />
+                      <span></span>
+                    </div>
+                  </th>
+                  <th>Elevator</th>
+                  <th>DOH</th>
+                </tr>
+             
+              </thead>
+
+
+     
 
             {/* TABLE BODY STARTS */}
 
-            <tbody className="tbody-main">
+            <tbody>
               {clientData &&
                 clientData?.map((data, index) => {
                   return (
@@ -106,7 +116,12 @@ const ClientTableView = ({ clientData }) => {
         </div>
       </div>
     </div>
+
+
+
+
   );
 };
 
 export default ClientTableView;
+
