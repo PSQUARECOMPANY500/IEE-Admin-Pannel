@@ -28,11 +28,43 @@ code {
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
 
+/* membership loader start */
+
+.loaderMembership {
+  width: 1rem;
+  height: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin-left: 10rem;
+  margin-right: 0;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
+  }
+}
+
+/* membership loader ends */
+
 /* ----------------- Membership Card css --------------------------- */
 
 .membershipCards {
   margin-top: 5.4rem;
-  transition: all 0.6s ease; 
+  transition: all 0.6s ease;
 }
 
 .non_expand_gap {
@@ -1435,8 +1467,7 @@ code {
   position: relative;
   padding: 1.5rem;
   margin-top: 5%;
-  padding-bottom: .5rem;
-
+  padding-bottom: 0.5rem;
 }
 
 .sub_table_view {
@@ -1444,39 +1475,29 @@ code {
   width: 100%;
   background-color: white;
   position: relative;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 3px #C1C1C1;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px #c1c1c1;
   border-radius: 10px;
   padding: 1rem 2rem;
 }
-
 
 .client_table-container {
   max-height: 700px;
   overflow-y: auto;
   /* border-radius: 20px; */
   /* margin-top: 1rem; */
-
 }
-
 
 .client_table-container table {
   width: 100%;
   border-collapse: collapse;
-
 }
-
-
 
 .client_table-container thead {
   position: sticky;
   top: 0;
   background-color: white;
   z-index: 1;
-
-
-
-
 }
 
 /* set body scroll property starts */
@@ -1502,41 +1523,28 @@ code {
   border-radius: 20px;
   border: 1px solid #ffffff;
   transition: background-color 0.3s ease;
-
 }
 
-
-
-
 .client_table-container table th {
-
   font-weight: 600;
-  padding: 1rem .4rem;
-  font-size: .8rem;
+  padding: 1rem 0.4rem;
+  font-size: 0.8rem;
   text-align: left;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 
   color: #444444;
   opacity: 1;
- 
-
-
 }
-
 
 .client_table-container table td {
-
   text-align: start;
-  padding: 1.5rem .4rem;
-  border-bottom: 1px solid #C1C1C180; 
-  font-size: .9rem;
+  padding: 1.5rem 0.4rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 500;
-  font-family: 'Poppins';
-
-
+  font-family: "Poppins";
 }
-
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
 

@@ -1,11 +1,14 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useLayoutEffect, useEffect, useRef, useState } from "react";
 import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { createSelector } from "reselect";
+import MembershipLoader from "./MembershipLoader";
 const MembershipExpiring = ({ DemoData, count }) => {
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
+  const [loader, setLoader] = useState(false);
   const ref = useRef();
   const type = DemoData?.dataType?.toLowerCase();
   const dispatch = useDispatch();
@@ -23,8 +26,18 @@ const MembershipExpiring = ({ DemoData, count }) => {
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expiring?.[type]
   );
-  useLayoutEffect(() => {
-    requestLimitedClientDataAction(dispatch, type, "expiring", page, 10);
+  // useLayoutEffect(() => {
+  //   setLoader(true);
+  //   requestLimitedClientDataAction(dispatch, type, "expiring", page, 10);
+  //   setLoader(false);
+  // }, [page, type, dispatch]);
+  useEffect(() => {
+    setLoader(true);
+    requestLimitedClientDataAction(dispatch, type, "expiring", page, 10)
+      .then(() => setLoader(false))
+      .catch((error) => {
+        setLoader(false);
+      });
   }, [page, type, dispatch]);
   const memberShipDetails = useSelector(selectExpiredMembership);
   useEffect(() => {
@@ -56,9 +69,13 @@ const MembershipExpiring = ({ DemoData, count }) => {
   };
   useEffect(() => {
     const currentRef = ref.current;
-    currentRef.addEventListener("scroll", handleInfiniteScroll);
-    return () => currentRef.removeEventListener("scroll", handleInfiniteScroll);
-  });
+    if (currentRef) {
+      currentRef.addEventListener("scroll", handleInfiniteScroll);
+      return () =>
+        currentRef.removeEventListener("scroll", handleInfiniteScroll);
+    }
+  }, [handleInfiniteScroll]);
+
   const scrollbar =
     DemoData.dataType === "Warrenty"
       ? "membership_card_scrollable_warrenty"
@@ -70,38 +87,48 @@ const MembershipExpiring = ({ DemoData, count }) => {
       ? "membership_card_scrollable_silver"
       : "total_revenue_outer_border";
   return (
-    <div
-      className={
-        count ? "membership_card_expiring" : "membership_card_expiring_expanded"
-      }
-    >
-      {count !== undefined && count !== null ? (
-        <div className="membership_card_expiring-title">
-          <p>Expiring Soon</p>
-          {<p>{count ? count : 0}</p>}
+    <>
+      {ref && (
+        <div
+          className={
+            count
+              ? "membership_card_expiring"
+              : "membership_card_expiring_expanded"
+          }
+        >
+          {count !== undefined && count !== null ? (
+            <div className="membership_card_expiring-title">
+              <p>Expiring Soon</p>
+              {memberShipDetails ? <p>{count}</p> : "--"}
+            </div>
+          ) : (
+            <></>
+          )}
+          {loader ? (
+            <MembershipLoader />
+          ) : (
+            <div
+              className={`membership_card_scrollable ${
+                !count && "membership_card_scrollable_expanded"
+              } ${scrollbar}`}
+              ref={ref}
+            >
+              {memberShipDetails &&
+                pageData &&
+                pageData.map((data, index) => (
+                  <MembershipSubCard
+                    data={data}
+                    isToShowNumber={count ? true : false}
+                    isExpired={false}
+                    key={index}
+                    dataType={DemoData?.dataType}
+                  />
+                ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <></>
       )}
-      <div
-        className={`membership_card_scrollable ${
-          !count && "membership_card_scrollable_expanded"
-        } ${scrollbar}`}
-        ref={ref}
-      >
-        {memberShipDetails &&
-          pageData &&
-          pageData.map((data, index) => (
-            <MembershipSubCard
-              data={data}
-              isToShowNumber={count ? true : false}
-              isExpired={false}
-              key={index}
-              dataType={DemoData?.dataType}
-            />
-          ))}
-      </div>
-    </div>
+    </>
   );
 };
 export default MembershipExpiring;

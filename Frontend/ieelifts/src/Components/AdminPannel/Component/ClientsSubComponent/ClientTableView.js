@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
@@ -17,7 +18,7 @@ const ClientTableView = ({ clientData }) => {
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
     }
   };
-  console.log("this is client state: ", checkboxStates);
+
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];

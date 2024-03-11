@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { IoChevronDownSharp } from "react-icons/io5";
@@ -65,12 +66,12 @@ const ClientFilterDropdown = () => {
   return (
     <div className="filter-dropdown">
       <div className="child-filter-dropdown">
-        {/* <div className="search-bar-div">
+        <div className="search-bar-div">
           <span className="search-icon-filter">
             <CiSearch />
           </span>
           <input type="text" placeholder="search" />
-        </div> */}
+        </div>
 
         {filters.map((filter, index) => (
           <div key={index} className="filter-dropdowns">

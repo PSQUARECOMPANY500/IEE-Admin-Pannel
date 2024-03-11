@@ -67,7 +67,7 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
     <div
       className={`membership_card_data_expire ${cardClassBorder} `}
       onClick={() => {
-        handleJob(data?.JobOrderNumber);
+        !isToShowNumber && handleJob(data?.JobOrderNumber);
       }}
       style={{ cursor: "pointer" }}
     >

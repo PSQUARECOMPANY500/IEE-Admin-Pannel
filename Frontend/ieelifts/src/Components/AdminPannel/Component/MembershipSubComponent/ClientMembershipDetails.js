@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// // <-----------------------------  Author:- Armaan Singh ----------------------------------->
+import React, { useState, useEffect } from "react";
 import ClientDetails from "./ClientDetails";
 import ClientMembershipHistory from "./ClientMembershipHistory";
 import ClientCallDetails from "./ClientCallDetails";
@@ -8,41 +9,38 @@ import CallButtons from "./CallButtons";
 import { useSelector } from "react-redux";
 
 const ClientMembershipDetails = ({ isExpired, dataType }) => {
+  const [loading, setLoading] = useState(true);
   const [buttonSelect, setButtonSelect] = useState(false);
-  const historyDetails = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+  const historyDetails = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipHistoryReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipHistoryReducer
-        .membershipHistory;
-    } else {
-      return null;
-    }
-  });
-
-  const callDetails = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+        ?.membershipHistory
+  );
+  const callDetails = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipCallReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipCallReducer
-        .membershipCallDetail;
-    } else {
-      return null;
-    }
-  });
-  const clientDetail = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+        ?.membershipCallDetail
+  );
+  const clientDetail = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipClientReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipClientReducer
-        .membershipCleintDetail;
-    } else {
-      return null;
+        ?.membershipCleintDetail
+  );
+
+  console.log("clientDetail:", clientDetail);
+  console.log("callDetails:", callDetails);
+  console.log("historyDetails:", historyDetails);
+
+  useEffect(() => {
+    // Check if all selectors have retrieved data
+    if (historyDetails && callDetails && clientDetail) {
+      setLoading(false);
     }
-  });
+  }, [historyDetails, callDetails, clientDetail]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="clientsContainer">

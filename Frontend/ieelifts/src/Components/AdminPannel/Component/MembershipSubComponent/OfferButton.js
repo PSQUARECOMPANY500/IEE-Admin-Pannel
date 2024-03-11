@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useRef, useEffect } from "react";
 
 const OfferButton = ({ isExpired, dataType }) => {
