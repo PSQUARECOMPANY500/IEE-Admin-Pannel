@@ -284,6 +284,7 @@ nav {
   width: 300px;
   background: #ffffff;
   margin: 12px auto;
+  transition: 0.5s ease;
 }
 
 .main-menu-adjust {
@@ -295,6 +296,7 @@ nav {
   cursor: pointer;
   display: block;
   font-weight: 700;
+  transition: 0.5s ease;
 }
 
 span::after {
@@ -417,10 +419,10 @@ span::after {
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 10px;
 
-  transition: all 0.2s;
+  transition: all 0.5s;
 
-  animation-duration: 0.2s all;
-  animation-timing-function: ease-in 0.2s all;
+  animation-duration: 0.5s all;
+  animation-timing-function: ease-in 0.5s all;
   /* animation: sliders; */
 }
 
@@ -527,7 +529,7 @@ span::after {
   top: 0;
   left: 0;
   width: 100%;
- 
+
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
 }
@@ -1889,11 +1891,8 @@ footer a:hover {
   height: 320px;
   width: 100%;
   border-radius: 10px;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
-  /* border: 1px solid #c1c1c180; */
   overflow-x: hidden;
   scroll-behavior: smooth;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -1969,19 +1968,19 @@ footer a:hover {
   padding: 3px 5px;
 }
 
-th {
+.customer-table1 th {
   padding: 5px 5px;
   font-weight: 600;
   color: #343434;
 }
 
-tbody th,
-tbody td {
+.customer-table1 tbody th,
+.customer-table1 tbody td {
   text-align: start;
 }
 
-tbody tr {
-  border-bottom: 2px solid transparent;
+.customer-table1 tbody tr {
+  /* border-bottom: 2px solid transparent; */
   color: #343434;
 }
 
@@ -2016,57 +2015,304 @@ tbody tr {
 /* taskLocationsection css ends */
 
 /* tasks section css starts  */
+.my_table-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 20px;
+  margin-top: 1rem;
 
-.task-list {
-  height: 336px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-position: relative;
 }
 
 
+.my_table-container table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+
+
+.my_table-container thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+
+
+
+
+}
+
 /* set body scroll property starts */
-.task-list:hover::-webkit-scrollbar-thumb {
+.my_table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
   /* Change the color to your desired hover color */
 }
 
 /* set scroll behaviour  */
-.task-list::-webkit-scrollbar {
+.my_table-container::-webkit-scrollbar {
   width: 2px;
   /* width of the entire scrollbar */
 }
 
-.task-list::-webkit-scrollbar-track {
+.my_table-container::-webkit-scrollbar-track {
   background: 0;
-  /* color of the tracking area */
   margin-top: 4rem;
   margin-bottom: 10px;
 }
 
-.task-list::-webkit-scrollbar-thumb {
+.my_table-container::-webkit-scrollbar-thumb {
   background-color: #f8ac1d;
-  /* color of the scroll thumb */
   border-radius: 20px;
-  /* roundness of the scroll thumb */
   border: 1px solid #ffffff;
-  /* creates padding around scroll thumb */
   transition: background-color 0.3s ease;
-  /* Adjust the transition duration as needed */
+
 }
 
+
+.my_table-container table th {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 2px 6px;
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+
+  line-height: .9rem;
+}
+
+
+
+.my_table-container table td {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: .9rem;
+}
+
+
+/* ------------------------------------------------------------------------------------sevice req table by aayush malviya start------------------------------------------------------- */
+
+
+.service-request-table {
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 20x;
+
+
+
+}
+
+
+.service-request-table table {
+  width: 100%;
+  border-collapse: collapse;
+
+
+}
+
+
+
+.service-request-table thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  height: 50px;
+
+
+
+}
+
+/* set body scroll property starts */
+.service-request-table:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #f8ac1d;
+  /* Change the color to your desired hover color */
+}
+
+/* set scroll behaviour  */
+.service-request-table::-webkit-scrollbar {
+  width: 2px;
+  /* width of the entire scrollbar */
+}
+
+.service-request-table::-webkit-scrollbar-track {
+  background: 0;
+  margin-top: 4rem;
+  margin-bottom: 10px;
+}
+
+.service-request-table::-webkit-scrollbar-thumb {
+  background-color: #f8ac1d;
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  transition: background-color 0.3s ease;
+
+}
+
+
+.service-request-table table th {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 2px 6px;
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+
+  line-height: .9rem;
+}
+
+
+
+.service-request-table table td {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: .9rem;
+}
+
+/*---------------------------------------------------------- service req table end by aayush------------------------------------------------------------------  */
+
+
+/*---------------------------------------------------------- service schedule  table start by aayush------------------------------------------------------------------  */
+
+.service-schedule-table {
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 20px;
+  margin-top: 1rem;
+  padding: 20x;
+
+
+
+}
+
+
+.service-schedule-table table {
+  width: 100%;
+  border-collapse: collapse;
+
+
+}
+
+
+
+.service-schedule-table thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  height: 50px;
+
+
+
+}
+
+/* set body scroll property starts */
+.service-schedule-table:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #f8ac1d;
+  /* Change the color to your desired hover color */
+}
+
+/* set scroll behaviour  */
+.service-schedule-table::-webkit-scrollbar {
+  width: 2px;
+  /* width of the entire scrollbar */
+}
+
+.service-schedule-table::-webkit-scrollbar-track {
+  background: 0;
+  margin-top: 4rem;
+  margin-bottom: 10px;
+}
+
+.service-schedule-table::-webkit-scrollbar-thumb {
+  background-color: #f8ac1d;
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  transition: background-color 0.3s ease;
+
+}
+
+
+.service-schedule-table table th {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 2px 6px;
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+
+  line-height: .9rem;
+}
+
+
+
+.service-schedule-table table td {
+  font-size: 1rem;
+  text-align: start;
+  font-weight: 500;
+  padding: 20px 6px;
+  border-bottom: 1px solid #C1C1C180;
+  font-size: .9rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: .9rem;
+}
+
+/*---------------------------------------------------------- service schedule  table end by aayush------------------------------------------------------------------  */
 /* set body scroll property ends */
 
 .child-ticket-div {
-   display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-   padding: 30px;
-  gap: 12px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+  gap: 12px;
   position: relative;
 
 
-} 
+
+}
 
 .heading-icon-align {
   display: flex;
@@ -2074,7 +2320,7 @@ position: relative;
   align-items: center;
 
 
-  
+
 }
 
 .icon-align-div {
@@ -2083,27 +2329,11 @@ position: relative;
   gap: 10px;
   justify-content: end;
   width: 143px;
-  
+
 
 
 }
 
-table {
-  width: 100%;
-}
-
-thead th {
-  background-color: #f2f2f2;
-  position: sticky;
-  top: 4%;
-width: 100%;
-  z-index: 2;
-
-
-
- 
-
-}
 
 
 /* Add your other styles as needed */
@@ -2111,7 +2341,7 @@ width: 100%;
 .ticket-section-heading {
   font-size: 1.2rem;
   font-weight: 600;
-;
+  ;
 
 }
 
@@ -2134,60 +2364,15 @@ width: 100%;
 .sub-components-ticket-filter {
   box-shadow: none;
   padding: 0px 0px;
-
   border-radius: 6px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
-}
-
-.task-list-table th {
-  font-size: 1rem;
-  text-align: start;
-  font-weight: 500;
-  padding: 0;
-
 
 }
 
 
 
-.task-list-table td {
-  font-size: 1rem;
-  text-align: start;
-}
 
-.parent-full-div .task-list-table table thead tr {
-  border: 2px solid #000 !important;
-  /* Adjust the color and thickness as needed */
-} 
 
-.parent-full-div .task-list-table {
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; 
-  padding: 3px;
-}
 
-.parent-full-div .task-list-table td,
-.parent-full-div .task-list-table th {
-  /* border-bottom: 1px solid #C1C1C180;  */
-  padding: 15px;
-  /* Adjust the padding as needed */
-}
-
-.parent-full-div .task-list-table td {
-  border-bottom: 1px solid #c1c1c180;
-}
-
-/* .parent-full-div .task-list-table thead {
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  padding: 10px;
-  /* Adjust padding as needed */
-/* 
-  border-radius: 10px;
-} */ 
-
-/* check box css code starts here */
 .checkbox.style-c {
   display: inline-block;
   position: relative;
@@ -2213,9 +2398,9 @@ width: 100%;
   opacity: 1;
 }
 
-.checkbox.style-c:hover input~.checkbox__checkmark {
-  background-color: #eee;
-}
+/* .checkbox.style-c:hover input~.checkbox__checkmark {
+  /* background-color: #eee; */
+/* }  */
 
 .checkbox.style-c:hover input:checked~.checkbox__checkmark {
   background-color: #ffffff;
@@ -2227,7 +2412,6 @@ width: 100%;
   left: 0;
   height: 20px;
   width: 20px;
-  background-color: #eee;
   transition: background-color 0.25s ease;
   border-radius: 4px;
   border: 1px solid #c1c1c1;
@@ -2285,7 +2469,7 @@ width: 100%;
   padding: 10px;
 }
 
-/* .dropdown-content {
+.dropdown-content {
   position: absolute;
   z-index: 1;
   margin-top: 14.2rem;
@@ -2297,7 +2481,7 @@ width: 100%;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 4px;
-   top: 0; 
+  top: 0;
 }
 
 .dropdown-content-filter {
@@ -2394,7 +2578,7 @@ width: 100%;
 .search-bar-div {
   border: 1px solid #c1c1c180;
   border-radius: 5px;
-} */
+}
 
 
 
@@ -2419,7 +2603,6 @@ width: 100%;
 .dropdown-content {
   position: absolute;
   z-index: 1;
-  /* margin-top: 22rem; */
   margin-left: -5rem;
   width: 160px;
 
@@ -2441,8 +2624,8 @@ width: 100%;
   .dropdown-content {
     top: 30%;
   }
-  
-  
+
+
 }
 
 
@@ -2590,6 +2773,7 @@ width: 100%;
   height: 80%;
   background: white;
   z-index: 4;
+
 }
 
 .cross-icon {
@@ -2607,6 +2791,7 @@ width: 100%;
   border-radius: 8px;
   height: auto;
   box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
+
 }
 
 .upload-photo-secton {
@@ -2618,10 +2803,12 @@ width: 100%;
 
 .client-information-section {
   width: 40%;
+
 }
 
 .membership-information-section {
   width: 40%;
+
 }
 
 .client-section {
@@ -2630,6 +2817,7 @@ width: 100%;
   justify-content: center;
   align-items: center;
   gap: 0px;
+
 }
 
 .client-form,

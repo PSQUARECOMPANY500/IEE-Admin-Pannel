@@ -126,8 +126,8 @@ const Clients = () => {
     if (layout === "Card") {
       return <ClientCardView clientData={dataToRender} />;
     } else {
-      return <ClientCardView clientData={dataToRender} />;
-      // return <ClientTableView clientData={dataToRender} />;
+      // return <ClientCardView clientData={dataToRender} />;
+      return <ClientTableView clientData={dataToRender} />;
     }
   };
 

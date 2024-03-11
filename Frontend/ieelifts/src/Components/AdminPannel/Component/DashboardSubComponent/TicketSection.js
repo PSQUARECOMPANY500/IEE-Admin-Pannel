@@ -258,11 +258,13 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-        <div>
-          {/* table start here */}
+
 
              
-          <thead className="task-head-list">
+         
+          <div className="my_table-container">
+            <table>
+            <thead>
                 <tr>
                   <th>
                     {" "}
@@ -296,9 +298,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </th>
                 </tr>
               </thead>
-          <div className="task-list">
-            <table className="task-list-table">
-      
        
 
               {/* TABLE BODY STARTS */}
@@ -421,7 +420,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* table end here */}
         </div>
       </div>
-    </div>
+
   );
 };
 
