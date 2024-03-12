@@ -68,6 +68,7 @@ const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChan
       onChange={handleChange}
       isDisabled={editchange ? false : isAssigned}
     />
+ 
   );
 };
 

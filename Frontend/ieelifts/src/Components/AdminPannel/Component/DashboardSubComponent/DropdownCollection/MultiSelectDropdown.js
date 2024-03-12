@@ -35,12 +35,13 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
         // border:'1px solid #F8AC1D',
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
+       
       },
     }),
     menu: (provided) => ({
       ...provided,
       backgroundColor: "#ffffff",
-      padding: "8px",
+      padding: "20px",
     }),
     option: (provided, state) => ({
       ...provided,
