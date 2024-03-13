@@ -9,6 +9,9 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
+  {
+    console.log("rednering!", dataType);
+  }
   const dispatch = useDispatch();
   const [jobOrderNumber, setJobOrderNumber] = useState();
   const [state, setState] = useState(0);

@@ -10,7 +10,6 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
 const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
-
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
@@ -23,10 +22,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [showTicketModal4, setShowTicketModal4] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({});
-  const [totalCheckboxes, setTotalCheckboxes] = useState(0);
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState(0);
+  const [checkboxStates, setCheckboxStates] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,8 +45,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     }
   });
 
-
-
   //use effect for dispatching ations
   useEffect(() => {
     dispatch(fetchAllServiceRequestsAction());
@@ -61,8 +55,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -71,7 +63,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
         !event.target.classList.contains("filter-icon")
       ) {
         setShowTicketFilter(false);
-        console.log(showTicketFilter);
       }
     };
 
@@ -92,12 +83,14 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     }
   };
 
-
-
+  // useEffect(() => {
+  //   setFilteredCD(getRequestDetail);
+  //   setallCD(getRequestDetail);
+  // }, [getRequestDetail]);
   useEffect(() => {
-    setFilteredCD(getRequestDetail)
-    setallCD(getRequestDetail)
-  }, [getRequestDetail])
+    setFilteredCD(getRequestDetail);
+    setallCD(getRequestDetail);
+  }, [getRequestDetail]);
 
   useEffect(() => {
     if (timer) {
@@ -122,14 +115,21 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     };
   }, [searchText, allCD]);
 
-
   function filtersearch(inputValue, searchRestaurant) {
     const filteredResults = searchRestaurant.filter((data) => {
       if (
-        data.clientDetail.name.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.JobOrderNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.PhoneNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.Address.toLowerCase().includes(inputValue.toLowerCase())
+        data.clientDetail.name
+          .toLowerCase()
+          .includes(inputValue.toLowerCase()) ||
+        data.clientDetail.JobOrderNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.PhoneNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.Address.toLowerCase().includes(
+          inputValue.toLowerCase()
+        )
       ) {
         return true;
       }
@@ -137,51 +137,40 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     });
     return filteredResults;
   }
-
-
-
   useEffect(() => {
     if (filteredCD) {
-      setTotalCheckboxes(filteredCD.length -1);
-      setSelectedCheckboxes(Object.values(checkboxStates).filter(Boolean).length);
-      setTimeout(()=>{
-        console.log("selectedCheckboxes",selectedCheckboxes ,"totalCheckboxes", totalCheckboxes)
-        if(selectedCheckboxes === totalCheckboxes){
-          setCheckedAll(true);
-        }
-      
-      },1500)
-      
+      setCheckboxStates(Array(filteredCD.length).fill(false));
     }
-  }, [checkboxStates, filteredCD, selectedCheckboxes, totalCheckboxes]);
-  
+  }, [filteredCD]);
 
+  // const handleCheckBoxAll = () => {
+  //   if (filteredCD) {
+  //     const allChecked = checkboxStates.every((isChecked) => isChecked);
+  //     setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+  //   }
+  // };
 
-
-
+  // const handleCheckBoxAll = () => {
+  //   if (getRequestDetail) {
+  //     const allChecked = checkboxStates.every((isChecked) => isChecked);
+  //     setCheckboxStates(Array(getRequestDetail.length).fill(!allChecked));
+  //   }
+  // };
   const handleCheckBoxAll = () => {
-  
-    const updatedStates = {};
-    const newValue = !checkedAll;
-    for (let i = 0; i < filteredCD.length; i++) {
-      updatedStates[i] = newValue;
+    if (filteredCD) {
+      const allChecked = checkboxStates.every((isChecked) => isChecked);
+      setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
     }
-    setCheckboxStates(updatedStates);
-    setCheckedAll(newValue);
-
   };
-
-
 
   const handleCheckBoxSingle = (index) => {
-   
-    setCheckboxStates((prevStates) => ({
-      ...prevStates,
-      [index]: !prevStates[index],
-    }));
-    
-  
+    setCheckboxStates((prevStates) => {
+      const newCheckboxStates = [...prevStates];
+      newCheckboxStates[index] = !prevStates[index];
+      return newCheckboxStates;
+    });
   };
+  console.log(checkboxStates);
   return (
     <div className="service-request-table">
       <table>
@@ -189,10 +178,9 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
           <tr>
             <th>
               <CheckBox
-                id="toggleAll"
-              
+                id="checkbox1"
+                checked={checkboxStates.every((isChecked) => isChecked)}
                 handleCheckboxChange={handleCheckBoxAll}
-                checked={checkedAll}
               />
             </th>
             <th>JON</th>
@@ -262,70 +250,77 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
                 </td>
               </tr>
             </>
-          ) : (filteredCD?.map((value,index) => {
+          ) : (
+            filteredCD.map((value, index) => {
+              const isAssignedValue = value?.isAssigned;
+              const enngID = value?.AssignedEng?.id;
+              const name = value?.AssignedEng?.name;
 
-            const isAssignedValue = value?.isAssigned;
-            const enngID = value?.AssignedEng?.id;
-            const name = value?.AssignedEng?.name;
+              // Due to returning of null here there is an issue in indexing due to which the checkboxes are giving trouble
+              // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
 
+              // Check if isAssigned is true, if not, don't render the row
+              if (isAssignedValue) {
+                return null;
+              }
 
-            // Check if isAssigned is true, if not, don't render the row
-            if (isAssignedValue) {
-              return null;
-            }
+              console.log("this is index: ", index);
+              return (
+                <tbody key={value._id}>
+                  <tr className="selected">
+                    <td>
+                      <CheckBox
+                        id={`checkbox-${index}`}
+                        checked={checkboxStates[index]}
+                        handleCheckboxChange={() => handleCheckBoxSingle(index)}
+                      />
+                    </td>
+                    <td>{value.JobOrderNumber}</td>
+                    <td>{value?.clientDetail?.name}</td>
+                    <td>{value?.clientDetail?.PhoneNumber}</td>
 
-            return (
-              <tbody key={value._id}>
-                <tr className="selected">
-                  <td>
-                    {" "}
-                    <CheckBox
-                   
-                      id={`checkbox-${index}`}
-                      checked={checkboxStates[index] || false}
-                      handleCheckboxChange={() => handleCheckBoxSingle(index)}
-                    
-                    />
-                  </td>
-                  <td>{value.JobOrderNumber}</td>
-                  <td>{value?.clientDetail?.name}</td>
-                  <td>{value?.clientDetail?.PhoneNumber}</td>
+                    <td>
+                      <div className="dropdown-address">
+                        <span>
+                          {limitAddress(value?.clientDetail?.Address, 15)}
+                        </span>
 
-                  <td>
-                    <div className="dropdown-address">
-                      <span>
-                        {limitAddress(value?.clientDetail?.Address, 15)}
-                      </span>
-
-                      <div className="dropdown-adddress-menu">
-                        <div className="drop-address">
-                          <p>{value?.clientDetail?.Address}</p>
+                        <div className="dropdown-adddress-menu">
+                          <div className="drop-address">
+                            <p>{value?.clientDetail?.Address}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
+                    </td>
 
-                  <td>{value?.TypeOfIssue}</td>
-                  <td>GOLD</td>
-                  <td>{value?.RequestDate}</td>
-                  <td>{value?.RequestTime}</td>
+                    <td>{value?.TypeOfIssue}</td>
+                    <td>GOLD</td>
+                    <td>{value?.RequestDate}</td>
+                    <td>{value?.RequestTime}</td>
 
-                  <td onClick={() => openModal(4, value?.RequestId, isAssignedValue, enngID)}>
-                    {isAssignedValue ? (
-                      <AssignDropdown
-                        customAssignName="assignNameColor"
-                        name={name}
-                        isAssigned={isAssigned}
-                      />
-                    ) : (
-                      <AssignDropdown customAssign="assignColor" name="Assign" />
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            );
-          }))
-          }
+                    <td
+                      onClick={() =>
+                        openModal(4, value?.RequestId, isAssignedValue, enngID)
+                      }
+                    >
+                      {isAssignedValue ? (
+                        <AssignDropdown
+                          customAssignName="assignNameColor"
+                          name={name}
+                          isAssigned={isAssigned}
+                        />
+                      ) : (
+                        <AssignDropdown
+                          customAssign="assignColor"
+                          name="Assign"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })
+          )}
         </>
 
         {showTicketModal4 && (

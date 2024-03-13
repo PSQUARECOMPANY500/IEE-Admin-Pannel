@@ -4,8 +4,8 @@ import ExpiringComponent from "./ExpiringComponent";
 import ExpiredComponent from "./ExpiredComponent";
 
 const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
-  const [selectedOption, setSelectedOption] = useState("Expiring");
-
+  const [selectedOption, setSelectedOption] = useState("Expired");
+ 
   const handleClick = (option) => {
     setSelectedOption(option);
   };

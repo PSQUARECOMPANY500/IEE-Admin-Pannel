@@ -46,7 +46,6 @@ const Request = () => {
     }
   });
 
-  console.log("getAssignRequests", getAssignRequests);
 
   useEffect(() => {
     dispatch(getAllAssignServiceRequestAction());

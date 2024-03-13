@@ -115,15 +115,17 @@ const MembershipExpiring = ({ DemoData, count }) => {
             >
               {memberShipDetails &&
                 pageData &&
-                pageData.map((data, index) => (
-                  <MembershipSubCard
-                    data={data}
-                    isToShowNumber={count ? true : false}
-                    isExpired={false}
-                    key={index}
-                    dataType={DemoData?.dataType}
-                  />
-                ))}
+                pageData.map((data, index) => {
+                  return (
+                    <MembershipSubCard
+                      data={data}
+                      isToShowNumber={count ? true : false}
+                      isExpired={false}
+                      key={index}
+                      dataType={DemoData?.dataType}
+                    />
+                  );
+                })}
             </div>
           )}
         </div>

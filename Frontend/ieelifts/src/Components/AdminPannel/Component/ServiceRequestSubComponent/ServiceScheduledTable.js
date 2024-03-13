@@ -11,7 +11,6 @@ const ServiceScheduledTable = () => {
   const [totalCheckboxes, setTotalCheckboxes] = useState(0);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState(0);
 
-  
   const handleCheckBoxAll = () => {
     const updatedStates = {};
     const newValue = !checkedAll;
@@ -53,11 +52,10 @@ const ServiceScheduledTable = () => {
     },
   ];
 
-
   useEffect(() => {
     setTotalCheckboxes(data.length);
     setSelectedCheckboxes(Object.values(checkboxStates).filter(Boolean).length);
-    setCheckedAll(selectedCheckboxes===totalCheckboxes);
+    setCheckedAll(selectedCheckboxes === totalCheckboxes);
   }, [checkboxStates, data]);
 
   return (

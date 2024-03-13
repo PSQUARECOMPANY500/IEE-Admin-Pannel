@@ -29,12 +29,7 @@ const MembershipExpired = ({ DemoData, count }) => {
   const type = DemoData?.dataType?.toLowerCase();
   const dispatch = useDispatch();
 
-  // useLayoutEffect(() => {
-  //   setLoader(true);
-  //   requestLimitedClientDataAction(dispatch, type, "expired", page, 10);
-  //   setLoader(false);
-  // }, [page, type, dispatch]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     setLoader(true);
     requestLimitedClientDataAction(dispatch, type, "expired", page, 10)
       .then(() => setLoader(false))
@@ -74,11 +69,6 @@ const MembershipExpired = ({ DemoData, count }) => {
     return;
   };
 
-  // useEffect(() => {
-  //   const currentRef = ref.current;
-  //   currentRef.addEventListener("scroll", handleInfiniteScroll);
-  //   return () => currentRef.removeEventListener("scroll", handleInfiniteScroll);
-  // });
   useEffect(() => {
     const currentRef = ref.current;
     if (currentRef) {
@@ -116,15 +106,17 @@ const MembershipExpired = ({ DemoData, count }) => {
           `}
               ref={ref}
             >
-              {pageData.map((data, index) => (
-                <MembershipSubCard
-                  data={data}
-                  isToShowNumber={count ? true : false}
-                  isExpired={true}
-                  key={index}
-                  dataType={DemoData?.dataType}
-                />
-              ))}
+              {pageData.map((data, index) => {
+                return (
+                  <MembershipSubCard
+                    data={data}
+                    isToShowNumber={count ? true : false}
+                    isExpired={true}
+                    key={index}
+                    dataType={DemoData?.dataType}
+                  />
+                );
+              })}
             </div>
           )}
         </div>

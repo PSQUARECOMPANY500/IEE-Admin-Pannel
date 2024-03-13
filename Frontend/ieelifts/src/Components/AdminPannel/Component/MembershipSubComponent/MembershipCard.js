@@ -82,7 +82,6 @@ const MembershipCard = ({
         onDoubleClick={(e) => {
           if (clickCount !== 1) {
             itemClick();
-
           }
         }}
       >
@@ -96,7 +95,7 @@ const MembershipCard = ({
               titleClass={titleClass}
               cardColor={cardColor}
             />
-            {order === 1 && (
+            {order === 1 && setClick && (
               <div
                 style={
                   order === 1 && setClick
@@ -109,6 +108,7 @@ const MembershipCard = ({
                     : "animationExpand"
                 }
               >
+            
                 <MembershipCardDetails
                   DemoData={DemoData}
                   expiredCount={DemoData?.Data?.details?.expiredCount}
@@ -152,22 +152,23 @@ const MembershipCard = ({
                 </span>
               </div>
             </div>
-
-            <div
-              className={`membership_card_stats `}
-              style={setClick ? { display: "none" } : {}}
-            >
-              <MembershipExpiring
-                DemoData={DemoData}
-                setClick={setClick}
-                count={DemoData?.Data?.details?.expiringCount}
-              />
-              <MembershipExpired
-                DemoData={DemoData}
-                setClick={setClick}
-                count={DemoData?.Data?.details?.expiredCount}
-              />
-            </div>
+            {!setClick && (
+              <div
+                className={`membership_card_stats `}
+                style={setClick ? { display: "none" } : {}}
+              >
+                <MembershipExpiring
+                  DemoData={DemoData}
+                  setClick={setClick}
+                  count={DemoData?.Data?.details?.expiringCount}
+                />
+                <MembershipExpired
+                  DemoData={DemoData}
+                  setClick={setClick}
+                  count={DemoData?.Data?.details?.expiredCount}
+                />
+              </div>
+            )}
           </>
         )}
 
