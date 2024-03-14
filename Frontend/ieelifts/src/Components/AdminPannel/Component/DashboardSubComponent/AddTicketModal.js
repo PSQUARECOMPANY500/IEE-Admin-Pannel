@@ -27,7 +27,7 @@ const AddTicketModal = ({
   setTicketUpdate,
 }) => {
   const dispatch = useDispatch();
-
+  //console.log("kon h wo chutiya")
   const [selectedEnggId, setSelectedEnggId] = useState([]);
 
   //  manage use states for the input fields
@@ -708,3 +708,5 @@ const AddTicketModal = ({
 };
 
 export default AddTicketModal;
+
+// 

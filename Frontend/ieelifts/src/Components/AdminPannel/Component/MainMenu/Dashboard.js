@@ -26,8 +26,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <div ref={ref2} className={`main-container`}>
-        <div className={`container`}></div>
+      <div ref={ref2}  className={`main-container`}>
+        {/* <div className={`container`}></div> */}
         <div style={{ width: "100%", marginTop: "6%" }}>
           <ServiceEnggCrousel ticketUpdate={ticketUpdate} />
           <TaskLocationSection

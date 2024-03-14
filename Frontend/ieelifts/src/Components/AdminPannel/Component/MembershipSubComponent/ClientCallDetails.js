@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getClientCallsDetails,
@@ -12,23 +13,32 @@ const ClientCallDetails = ({
   callDetails,
   Mybutton,
   JON,
+  setButtonSelect,
 }) => {
+  const ACalendarRef = useRef(null);
+  const AMonthyearRef = useRef(null);
+  const ADayContainerRef = useRef(null);
+  const [acurrentDate, setACurrentDate] = useState(new Date());
+  const [aselectedDate, setASelectedDate] = useState(null);
+  const [showCalender, setShowCalender] = useState(false);
+  const [pageData, setPageData] = useState([]);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getClientCallsDetails());
-  }, [dispatch, dataType]);
-  const [showHistory, setShowHistory] = useState([]);
-  // Initialize showHistory when callDetails changes
-  useEffect(() => {
+
+  useLayoutEffect(() => {
+    setButtonSelect(false);
+    if (callDetails && callDetails.clientCallData) {
+      setPageData(callDetails.clientCallData);
+    }
     if (callDetails && Array.isArray(callDetails.clientCallData)) {
       setShowHistory(Array(callDetails.clientCallData.length).fill(false));
     }
   }, [callDetails]);
-  // const toggleHistory = (index) => {
-  //   setShowHistory((prevState) =>
-  //     prevState.map((value, i) => (i === index ? !value : value))
-  //   );
-  // };
+
+  useEffect(() => {
+    dispatch(getClientCallsDetails());
+  }, [dispatch, dataType]);
+  const [showHistory, setShowHistory] = useState([]);
+
   const toggleHistory = (index) => {
     setShowHistory((prevState) =>
       prevState.map((value, i) => (i === index ? !value : false))
@@ -54,12 +64,7 @@ const ClientCallDetails = ({
       : dataType === "Silver"
       ? "callsContainer_silver"
       : "";
-  const ACalendarRef = useRef(null);
-  const AMonthyearRef = useRef(null);
-  const ADayContainerRef = useRef(null);
-  const [acurrentDate, setACurrentDate] = useState(new Date());
-  const [aselectedDate, setASelectedDate] = useState(null);
-  const [showCalender, setShowCalender] = useState(false);
+
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -157,6 +162,7 @@ const ClientCallDetails = ({
       dispatch(createClientCalls(JON, "membership", aselectedDate));
     }
   }, [dispatch, aselectedDate]);
+
   // eslint-disable-next-line
   const createdCall = useSelector((state) => {
     if (
@@ -168,6 +174,40 @@ const ClientCallDetails = ({
       return null;
     }
   });
+
+  // useEffect(() => {
+  //   if (
+  //     createdCall &&
+  //     createdCall.clientCall &&
+  //     callDetails.clientCallData &&
+  //     callDetails
+  //   ) {
+  //     setASelectedDate(null);
+  //     setShowCalender(!showCalender);
+  //     setButtonSelect(false);
+  //     const newCalls = [createdCall.clientCall, ...callDetails.clientCallData];
+  //     newCalls.sort((a, b) => new Date(a.callDate) - new Date(b.callDate));
+  //     setPageData(newCalls);
+  //   }
+  // }, [createdCall]);
+
+  useEffect(() => {
+    if (
+      createdCall &&
+      createdCall.clientCall &&
+      callDetails.clientCallData &&
+      callDetails
+    ) {
+      setPageData(() => [
+        createdCall.clientCall,
+        ...callDetails.clientCallData,
+      ]);
+      setASelectedDate(null);
+      setShowCalender(!showCalender);
+      setButtonSelect(false);
+    }
+  }, [createdCall]);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { month: "long", day: "numeric", year: "numeric" };
@@ -176,6 +216,7 @@ const ClientCallDetails = ({
     );
     return formattedDate;
   }
+
   return (
     <>
       <div
@@ -202,7 +243,9 @@ const ClientCallDetails = ({
           id="Attendancecalendar"
           ref={ACalendarRef}
           style={
-            showCalender && aselectedDate === null ? { display: "block" } : {}
+            showCalender && aselectedDate === null
+              ? { display: "block" }
+              : { display: "none" }
           }
         >
           <div className="header Attendacne-header">
@@ -228,39 +271,42 @@ const ClientCallDetails = ({
           isExpired && "callScrollExpired"
         }`}
       >
-        {callDetails &&
-          callDetails.clientCallData &&
-          callDetails.clientCallData.map((detail, index) => (
-            <div
-              key={index}
-              ref={(el) => (historyRefs.current[index] = el)}
-              className={`clientDetailCalls ${
-                new Date(detail.callDate) < Date.now() &&
-                !detail.description &&
-                "callMissed"
-              }`}
-              onClick={() => toggleHistory(index)}
-              style={{ cursor: "pointer", marginBottom: "10px" }}
-            >
-              {showHistory[index] && detail.description && (
-                <div className="clientCallInfo ">
-                  <p>{detail.description}</p>
-                  {/* <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  viverra dui eget elit venenatis sagittis. Suspendisse vel
-                  scelerisque enim. Mauris condimentum semper sem, et varius
-                  orci rhoncus a.
-                </p> */}
+        <div>
+          {pageData.length !== 0 ? (
+            pageData.map((detail, index) => (
+              <div
+                key={index}
+                ref={(el) => (historyRefs.current[index] = el)}
+                className={`clientDetailCalls ${
+                  new Date(detail.callDate) < Date.now() &&
+                  !detail.description &&
+                  "callMissed"
+                }`}
+                onClick={() => toggleHistory(index)}
+                style={{ cursor: "pointer", marginBottom: "10px" }}
+              >
+                {showHistory[index] && detail.description && (
+                  <div className="clientCallInfo ">
+                    <p>{detail.description}</p>
+                  </div>
+                )}
+                <div className="clientNumber ">
+                  <p>Call {index + 1}</p>
+                  <p>{formatDate(detail.callDate)}</p>
+                  <p>{detail.discountOffered}% Off</p>
                 </div>
-              )}
-              <div className="clientNumber ">
-                <p>Call {index + 1}</p>
-                {/* <p>June 12</p> */}
-                <p>{formatDate(detail.callDate)}</p>
-                <p>{detail.discountOffered}% Off</p>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <>
+              <div className="no_history">
+                <span className="no_history_subHeading">
+                  Sorry no client calls are avilable at this time.
+                </span>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </>
   );

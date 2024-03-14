@@ -28,6 +28,10 @@ const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggL
 
 const ClientCalls = require("../../Modals/ClientDetailModals/ClientCallsSchema");
 
+const SpearParts = require("../../Modals/SpearParts/SpearParts");
+
+const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilter");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -42,85 +46,73 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const EnggDetail = await ServiceEnggData.find({});
     const currentDate = new Date();
 
-    const BasicDetail = await Promise.all(
-      EnggDetail.map(async (item) => {
-        const enggRating = await EnggRating.find({
-          ServiceEnggId: item.EnggId,
+    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
+      const enggRating = await EnggRating.find({
+        ServiceEnggId: item.EnggId
+      });
+      const ratingsCount = enggRating.length;
+      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
+      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+
+      const ServiceEnggId = item.EnggId;
+
+      const serviceAssignments = await ServiceAssigntoEngg.find({
+        ServiceEnggId
+      });
+      const assignScheduleRequests = await AssignSecheduleRequest.find({
+        ServiceEnggId
+      });
+
+      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
+        ServiceEnggId: data.ServiceEnggId,
+        JobOrderNumber: data.JobOrderNumber,
+        Slot: data.Slot,
+        Date: data.Date,
+        TaskStatus: data.ServiceProcess,
+      }));
+
+      const filteredServiceAssignments = mainDetails.filter(item => {
+        return item.Date === currentDate.toLocaleDateString('en-GB');
+      });
+
+      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
+        const client = await clientDetailSchema.findOne({
+          JobOrderNumber: assignment.JobOrderNumber
         });
-        const ratingsCount = enggRating.length;
-        const ratingsSum = enggRating.reduce(
-          (sum, rating) => sum + rating.Rating,
-          0
-        );
-        const averageRating =
-          ratingsCount > 0
-            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
-            : 0;
-
-        const ServiceEnggId = item.EnggId;
-
-        const serviceAssignments = await ServiceAssigntoEngg.find({
-          ServiceEnggId,
-        });
-        const assignScheduleRequests = await AssignSecheduleRequest.find({
-          ServiceEnggId,
-        });
-
-        const mainDetails = serviceAssignments
-          .concat(assignScheduleRequests)
-          .map((data) => ({
-            ServiceEnggId: data.ServiceEnggId,
-            JobOrderNumber: data.JobOrderNumber,
-            Slot: data.Slot,
-            Date: data.Date,
-            TaskStatus: data.ServiceProcess,
-          }));
-
-        const filteredServiceAssignments = mainDetails.filter((item) => {
-          return item.Date === currentDate.toLocaleDateString("en-GB");
-        });
-
-        const filteredServiceAssignmentsWithClientName = await Promise.all(
-          filteredServiceAssignments.map(async (assignment) => {
-            const client = await clientDetailSchema.findOne({
-              JobOrderNumber: assignment.JobOrderNumber,
-            });
-            return {
-              ...assignment,
-              ClientName: client?.name,
-              ClientNumber: client?.PhoneNumber,
-              ClientAddress: client?.Address,
-            };
-          })
-        );
-
-        filteredServiceAssignmentsWithClientName.sort((a, b) => {
-          const timeA = convertTimeToSortableFormat(a.Slot[0]);
-          const timeB = convertTimeToSortableFormat(b.Slot[0]);
-          return timeA - timeB;
-        });
-
         return {
-          EnggObjId: item._id,
-          ServiceEnggId: item.EnggId,
-          ServiceEnggName: item.EnggName,
-          ServiceEnggPic: item.EnggPhoto,
-          averageRating,
-          filteredServiceAssignmentsWithClientName,
+          ...assignment,
+          ClientName: client?.name,
+          ClientNumber: client?.PhoneNumber,
+          ClientAddress: client?.Address
         };
-      })
-    );
+      }));
+
+      filteredServiceAssignmentsWithClientName.sort((a, b) => {
+        const timeA = convertTimeToSortableFormat(a.Slot[0]);
+        const timeB = convertTimeToSortableFormat(b.Slot[0]);
+        return timeA - timeB;
+      });
+
+      return {
+        EnggObjId: item._id,
+        ServiceEnggId: item.EnggId,
+        ServiceEnggName: item.EnggName,
+        ServiceEnggPic: item.EnggPhoto,
+        averageRating,
+        filteredServiceAssignmentsWithClientName
+      };
+    }));
 
     res.status(200).json({
-      BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
+      BasicDetailForCrouser: BasicDetail.filter(item => !item.error)
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error",
+      error: "Internal server error"
     });
   }
-};
+}
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
@@ -488,22 +480,19 @@ module.exports.assignCallbacks = async (req, res) => {
 
     if (existingCallback) {
       // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate(
-        {
-          callbackId,
-        },
-        {
-          ServiceEnggId,
-          JobOrderNumber,
-          AllotAChecklist,
-          Slot,
-          Date,
-          Message,
-          ServiceProcess,
-        },
-        {
-          new: true,
-        } // Return the updated document
+      callback = await ServiceAssigntoEngg.findOneAndUpdate({
+        callbackId
+      }, {
+        ServiceEnggId,
+        JobOrderNumber,
+        AllotAChecklist,
+        Slot,
+        Date,
+        Message,
+        ServiceProcess,
+      }, {
+        new: true
+      } // Return the updated document
       );
     } else {
       // Create a new entry
@@ -956,34 +945,33 @@ module.exports.getClientMemebership = async (req, res) => {
 //function to get all booked dates {amit-features}
 
 module.exports.getBookedDates = async (req, res) => {
-  const timeSlots = [
-    {
-      slot: "9:00-10:00",
-    },
-    {
-      slot: "10:00-11:00",
-    },
-    {
-      slot: "11:00-12:00",
-    },
-    {
-      slot: "12:00-13:00",
-    },
-    {
-      slot: "13:00-14:00",
-    },
-    {
-      slot: "14:00-15:00",
-    },
-    {
-      slot: "15:00-16:00",
-    },
-    {
-      slot: "16:00-17:00",
-    },
-    {
-      slot: "17:00-18:00",
-    },
+  const timeSlots = [{
+    slot: "9:00-10:00",
+  },
+  {
+    slot: "10:00-11:00",
+  },
+  {
+    slot: "11:00-12:00",
+  },
+  {
+    slot: "12:00-13:00",
+  },
+  {
+    slot: "13:00-14:00",
+  },
+  {
+    slot: "14:00-15:00",
+  },
+  {
+    slot: "15:00-16:00",
+  },
+  {
+    slot: "16:00-17:00",
+  },
+  {
+    slot: "17:00-18:00",
+  },
   ];
 
   try {
@@ -1154,45 +1142,48 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const { ServiceEnggId } = req.body;
-    const len = 5;
-    const today = new Date();
-    const dates = Array.from(
-      {
-        length: len,
-      },
-      (_, i) => {
-        const previousDay = new Date(today);
-        previousDay.setDate(today.getDate() - 2 + i);
-        return previousDay.toLocaleDateString("en-GB");
-      }
-    );
+    const { ServiceEnggId, selectedDate } = req.body;
+    if (ServiceEnggId) {
+      const len = 5;
+      console.log(selectedDate);
+      const today = new Date(selectedDate)
 
-    const attendanceData = await Promise.all(
-      dates.map(async (date) => {
+      const dates = Array.from({
+        length: len
+      }, (_, i) => {
+        const previousDay = new Date(today);
+        previousDay.setDate(today.getDate() - 3 + i);
+        return previousDay.toLocaleDateString("en-GB");
+      });
+
+      const attendanceData = await Promise.all(dates.map(async (date) => {
         const response = await EnggAttendanceServiceRecord.findOne({
           ServiceEnggId,
-          Date: date,
-        });
+          Date: date
+        })
         return response;
-      })
-    );
+      }))
 
-    console.log(attendanceData);
+      //console.log(attendanceData)
 
-    res.status(200).json({
-      attendanceData,
-    });
+      return res.status(200).json({
+        attendanceData
+      });
+    }
+
+    return res.status(500).json({
+      error: "Invalid Input",
+      message: error.message
+    })
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    return res.status(500).json({
       error: "Internal server Error in fetchEnggAttendance",
       message: error.message,
     });
   }
 };
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.approveLeaveByAdmin = async (req, res) => {
   try {
     const { id, IsApproved } = req.body;
@@ -1261,21 +1252,7 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
-// module.exports.getClientCalls = async (req, res) => {
-//   try {
-//     const { callType, jobOrderNumber } = req.query;
-//     const clientCallData = await ClientCalls.find({ jobOrderNumber, callType });
-//     res.status(201).json({ success: true, clientCallData });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getClientCalls = async (req, res) => {
   try {
     const { callType, jobOrderNumber } = req.query;
@@ -1283,7 +1260,7 @@ module.exports.getClientCalls = async (req, res) => {
       jobOrderNumber,
       callType,
     }).sort({
-      callDate: 1,
+      callDate: -1,
     }); // Sort by callDate in ascending order
     res.status(201).json({
       success: true,
@@ -1324,26 +1301,7 @@ module.exports.getClientData = async (req, res) => {
     });
   }
 };
-// module.exports.getMembershipHistory = async (req, res) => {
-//   try {
-//     const { jobOrderNumber } = req.query;
-//     const membershipHistory = await AssignMemeberships.find({
-//       JobOrderNumber: jobOrderNumber,
-//     });
-//     const historyData = membershipHistory.filter((a) => {
-//       a.EndDate < Date.now();
-//     });
-//     console.log(historyData);
-//     res.status(201).json({ success: true, historyData });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
-//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1384,30 +1342,7 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-// module.exports.calculateRatingAverage = async (req, res) => {
-//   try {
-//     const { jobOrderNumber, startDate, endDate } = req.query;
-//     const ratings = await EnggRating.find({ JobOrderNumber: jobOrderNumber });
-//     let averageRating = 0;
-//     let ratingCount = 0;
-//     for (const rating in ratings) {
-//       if (rating.createdAt >= startDate && rating.createdAt <= endDate) {
-//         averageRating += rating.Rating;
-//         ratingCount++;
-//       }
-//     }
-//     let calculateRating = averageRating / ratingCount;
-//     res.status(201).json({ success: true, calculateRating });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
-//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.filterClient = async (req, res) => {
   try {
     const { type, condition } = req.query;
@@ -1445,6 +1380,44 @@ module.exports.filterClient = async (req, res) => {
           data: clientsInCity,
         });
         break;
+      case "date":
+        let clients;
+        if (condition === "newest") {
+          clients = await clientDetailSchema
+            .find()
+            .sort({ DateOfHandover: -1 });
+        } else if (condition === "oldest") {
+          clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "Invalid date condition",
+          });
+          return;
+        }
+        res.status(200).json({
+          success: true,
+          data: clients,
+        });
+        break;
+      case "name":
+        let sortedClients;
+        if (condition === "a-z") {
+          sortedClients = await clientDetailSchema.find().sort({ name: 1 });
+        } else if (condition === "z-a") {
+          sortedClients = await clientDetailSchema.find().sort({ name: -1 });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "Invalid name condition",
+          });
+          return;
+        }
+        res.status(200).json({
+          success: true,
+          data: sortedClients,
+        });
+        break;
       default:
         res.status(400).json({
           success: false,
@@ -1460,28 +1433,7 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-// module.exports.searchClients = async (req, res) => {
-//   try {
-//     const { searchTerm } = req.query;
-//     // Create a regular expression to match the search term case-insensitively
-//     const regex = new RegExp(searchTerm, "i");
-//     // Use $or operator to search across multiple fields
-//     const clients = await clientDetailSchema.find({
-//       $or: [
-//         { JobOrderNumber: { $regex: regex } },
-//         { name: { $regex: regex } },
-//         { PhoneNumber: { $regex: regex } },
-//         { Address: { $regex: regex } },
-//       ],
-//     });
-//     res.status(200).json({ success: true, clients });
-//   } catch (error) {
-//     console.error("Error searching clients:", error);
-//     res.status(500).json({ success: false, message: "Internal server error" });
-//   }
-// };
-//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.searchClients = async (req, res) => {
   try {
     const { searchTerm } = req.query;
@@ -1676,7 +1628,6 @@ module.exports.getClientMembership = async (req, res) => {
     const { dataType, wanted, page, pageSize } = req.query;
     const membershipData = await AssignMemeberships.find();
     const filteredData = filterMembershipByType(membershipData, dataType);
-    console.log(membershipData);
     const skip = (page - 1) * pageSize;
     let clientData, totalExpiredPages, totalExpiringPages;
     switch (wanted) {
@@ -1751,6 +1702,61 @@ const calculateExpired = (filteredData) => {
 const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MembershipType === type);
 };
+
+module.exports.createLocationForFilter = async (req, res) => {
+  try {
+    const { location } = req.body;
+    console.log("this is location: ", location);
+    const findLocation = await LocationSchema.find({ location });
+    if (findLocation) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Location already exists" });
+    }
+
+    const locationCreated = await LocationSchema.create({ location });
+
+    res.status(201).json({ success: true, locationCreated });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+module.exports.getFilteringLocations = async (req, res) => {
+  try {
+    const locations = await LocationSchema.find();
+
+    res.status(201).json({ success: true, locations });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
 // {armaan-dev}
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------
+
+module.exports.createSpearParts = async (req, res) => {
+  try {
+    const { SpearPart, subcategoryName } = req.body;
+    //console.log("chutiye",SpearPart , subcategoryName);
+    if (SpearPart && subcategoryName) {
+      const response = await SpearParts.create({
+        SpearPart: SpearPart,
+        subcategoryName: subcategoryName,
+      })
+      return res.status(200).json({ response })
+    }
+    return res.status(500).json({ error: "Please fill all fields in createSpearParts" })
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      error: "Internal server error in createSpearParts"
+    });
+  }
+};

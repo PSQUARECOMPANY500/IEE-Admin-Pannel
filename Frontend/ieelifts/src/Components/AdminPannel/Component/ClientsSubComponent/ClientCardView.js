@@ -1,6 +1,6 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React from "react";
 import { GoPerson } from "react-icons/go";
-import { FaLocationArrow } from "react-icons/fa";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
 
@@ -12,11 +12,10 @@ const clientCardView = ({ clientData }) => {
       ? "clientCardShadowPlatinum"
       : type === "gold"
       ? "clientCardShadowGold"
-      : type === "silver"
+      : type === "silver" 
       ? "clientCardShadowSilver"
       : "noMembershipP";
   }
-  console.log(clientData);
   return (
     <div className="ClientCatainer">
       {clientData &&

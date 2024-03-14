@@ -12,6 +12,7 @@ import ServiceRequestModal from "../ServiceRequestSubComponent/ServiceRequestMod
 import { useSelector, useDispatch } from "react-redux";
 
 import { getAllAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import ServiceRequestModals from "../ServiceRequestSubComponent/ServiceRequestModals";
 
 const Request = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,6 @@ const Request = () => {
     }
   });
 
-  console.log("getAssignRequests", getAssignRequests);
 
   useEffect(() => {
     dispatch(getAllAssignServiceRequestAction());
@@ -291,7 +291,7 @@ const Request = () => {
                   })}
 
                   {showTicketModal5 && (
-                    <ServiceRequestModal
+                    <ServiceRequestModals
                       closeModal={() => setShowTicketModal5(false)}
                       showTicketModal={showTicketModal5}
                       RequestId={RequestId}

@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const serviceEnggRoutes = require("./Routes/ServiceEngineerRoutes/ServiceEnggRoute");
+const router = require("./Routes/ServiceEngineerRoutes/ServiceEnggRoute");
 const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 
 // ------ Routes ------
 // ---------service engg routes---------
-app.use("/serviceEngg", serviceEnggRoutes);
+app.use("/serviceEngg", router);
 
 // -------------client routes----------
 app.use("/client", clientRoutes);

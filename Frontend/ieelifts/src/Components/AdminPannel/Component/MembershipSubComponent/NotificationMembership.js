@@ -1,8 +1,9 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { BiSolidSend } from "react-icons/bi";
 
-const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
+const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [options] = useState(["Option 1", "Option 2", "Option 3"]);
   const [showOptions, setShowOptions] = useState(false);
@@ -43,15 +44,19 @@ const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
       <div ref={dropdownRef} className="inputNotification">
         <input
           className="inputBox"
-          placeholder={whatsApp==="whatsapp"?"Notification":"Whatsapp Message"}
+          placeholder={
+            whatsApp === "whatsapp" ? "Notification" : "Whatsapp Message"
+          }
           value={selectedOption}
           onChange={handleSelectChange}
         />
-        {/* <div onClick={toggleOptions}>
-          <FaChevronDown  className={`chevronDownMembership ${sendIconColor} ${
-          isExpired && "sendButtonExpired"
-        }`} />
-        </div> */}
+        <div onClick={toggleOptions}>
+          <FaChevronDown
+            className={`chevronDownMembership ${sendIconColor} ${
+              isExpired && "sendButtonExpired"
+            }`}
+          />
+        </div>
       </div>
       <div
         className={`sendButton ${sendIconColor} ${
@@ -60,7 +65,7 @@ const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
       >
         <BiSolidSend />
       </div>
-      <div className="notificationOptions">
+      {/* <div className="notificationOptions">
         {showOptions && (
           <div className="options">
             {options.map((option, index) => (
@@ -76,7 +81,7 @@ const NotificationMembership = ({ isExpired, dataType,whatsApp }) => {
             ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

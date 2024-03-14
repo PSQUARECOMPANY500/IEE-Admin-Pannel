@@ -28,8 +28,7 @@ const EnggBasicDetail = new Schema(
     EnggPhoto: {
       type: String,
       unique: true,
-    },
-    
+    },  
   },
   {
     timestamps: true,

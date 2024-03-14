@@ -9,6 +9,7 @@
     "@vis.gl/react-google-maps": "^0.7.1",
     "axios": "^1.6.5",
     "easy-pie-chart": "^2.1.7",
+    "google-map-react": "^2.2.1",
     "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "jwt-decode": "^4.0.0",

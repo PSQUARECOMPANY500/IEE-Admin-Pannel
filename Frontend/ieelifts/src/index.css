@@ -28,36 +28,129 @@ code {
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
 
+/* membership loader start */
+
+.loder_Container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+/* .loaderMembership {
+  width: 1rem;
+  height: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin-left: 10rem;
+  margin-right: 0;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
+  }
+} */
+
+/* .loaderMembership{
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader{
+  width: 1rem;
+  height: 1rem;
+  background-color: black;
+  border-radius: 50%;
+  right: 0;
+}
+
+.dot1{
+  position: absolute;
+  left:100%
+} */
+.loaderMembership {
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: #fef3de;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.dot1 {
+  animation: gooeyEffect1 0.5s infinite alternate;
+  /* left: 0; */
+}
+
+.dot2 {
+  animation: gooeyEffect2 0.5s infinite alternate;
+  left: 0.6rem;
+}
+
+@keyframes gooeyEffect1 {
+  0% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+@keyframes gooeyEffect2 {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* membership loader ends */
+
 /* ----------------- Membership Card css --------------------------- */
 
 .membershipCards {
-  margin-top: 5.5rem;
-  transform: translateY(0);
-  /* Initial transform value */
+  margin-top: 5.4rem;
   transition: all 0.6s ease;
 }
 
 .non_expand_gap {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 49% 49%;
   justify-content: center;
   align-content: center;
-  gap: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-bottom: 1.5rem;
+  /* gap: 2rem; */
+  /* margin-left: 2rem; */
+  /* margin-right: 2rem; */
+  /* margin-bottom: 1.5rem; */
 }
 
 .membership_card {
-  /* min-height: 30vh; */
   background-color: #ffffff;
-  padding: 2%;
+  padding: 1rem;
   margin: 1rem;
   border-radius: 0.8rem;
   border: 1px solid #ffffff;
   box-shadow: 2px 4px 10px #99886b66;
-  /* overflow-y: hidden;? */
-  /* width: 100%; */
   transition: box-shadow 0.3s ease;
   scale: 1;
 }
@@ -296,6 +389,28 @@ code {
   border-radius: 0.6rem;
   padding: 2%;
   position: relative;
+  cursor: pointer;
+}
+
+.selectedSubCardExpired {
+  background-color: #c10000;
+}
+
+.selecetedSubCardColor {
+  color: #ffffff !important;
+}
+
+.seleceted_SubCard_Background_Warrenty {
+  background-color: #0f351d;
+}
+.seleceted_SubCard_Background_Platinum {
+  background-color: #ff7f00;
+}
+.seleceted_SubCard_Background_Gold {
+  background-color: #f8ac1d;
+}
+.seleceted_SubCard_Background_Silver {
+  background-color: #b7b7b7;
 }
 
 .membership_card_data_display_expired_border {
@@ -476,11 +591,8 @@ code {
 }
 
 .expandCardName {
-  font-size: small;
+  font-size: 0.9rem;
   font-weight: 700;
-}
-.historyMain {
-  margin-top: 2rem;
 }
 
 @keyframes expandAnimation {
@@ -507,6 +619,10 @@ code {
   color: #ffffff;
   padding: 1% 1.5%;
   border-radius: 50%;
+}
+
+.expansion_labels {
+  margin-top: 1rem;
 }
 
 .after_expansion_labels {
@@ -580,7 +696,15 @@ code {
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  /* gap: 5%; */
+}
+
+.no_expire_membership {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25%;
+  color: #444444;
 }
 
 .headingCenter {
@@ -593,6 +717,10 @@ code {
   text-align: center;
   cursor: pointer;
   padding-bottom: 0.7rem;
+}
+
+.bottomheadingBorder {
+  border-bottom: 2px solid #0f351d;
 }
 
 /* --------------------------------------------- client details css -------------------------------------------- */
@@ -657,6 +785,28 @@ code {
   margin-top: 0.8rem;
 }
 
+.historyMain {
+  margin-top: 2rem;
+  margin-bottom: 10px;
+}
+
+.no_history {
+  border: 1px solid #444444;
+  text-align: center;
+  font-size: medium;
+  margin-top: 1rem;
+  cursor: default;
+  padding: 1rem 0rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  color: #444444;
+}
+
+.no_history_subHeading {
+  font-size: small;
+}
+
 .historyContainer {
   height: 20rem;
   overflow-y: scroll;
@@ -699,17 +849,21 @@ code {
   font-size: 0.8rem;
   margin-top: 0.9rem;
   border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 .historyBorderWarrenty {
   border: 1px solid #0f351d;
 }
+
 .historyBorderPlatinum {
   border: 1px solid #ff7f00;
 }
+
 .historyBorderGold {
   border: 1px solid #f8ac1d;
 }
+
 .historyBorderSilver {
   border: 1px solid #8e8e8e;
 }
@@ -800,6 +954,7 @@ code {
   margin-bottom: 5px;
   display: block;
 }
+
 .callsContainer_platinum:hover::-webkit-scrollbar-thumb {
   background-color: #ff7f00;
   border: 1px solid #ff7f00;
@@ -844,7 +999,7 @@ code {
   border-radius: 0.3rem;
   padding: 0.7% 2%;
   border: 1px solid #444444;
-  width: 93%;
+  width: 97%;
 }
 
 .clientCallInfo {
@@ -869,9 +1024,10 @@ code {
 
 .callButton {
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem;
   border-radius: 0.6rem;
   cursor: pointer;
+  font-family: "Poppins";
 }
 
 .callNowButton {
@@ -879,16 +1035,19 @@ code {
   background-color: #0f351d;
   color: #fff9ef;
 }
+
 .callNowButtonPlatinum {
   border: 1px solid #ff7f00;
   background-color: #ff7f00;
   color: #fff9ef;
 }
+
 .callNowButtonGold {
   border: 1px solid #f8ac1d;
   background-color: #f8ac1d;
   color: #fff9ef;
 }
+
 .callNowButtonSilver {
   border: 1px solid #8e8e8e;
   background-color: #8e8e8e;
@@ -960,12 +1119,17 @@ code {
   background-color: #c10000;
 }
 
+.offerButtonContainer {
+  margin-top: 1rem;
+}
+
 .offerButton {
   background-color: #ffffff;
   color: #0f351d;
   font-weight: 600;
   border-radius: 0.5rem;
   border: 1px solid #0f351d;
+  font-family: "Poppins";
 }
 
 .offerButtonExpired {
@@ -1000,7 +1164,7 @@ code {
 .offerButtonMain {
   cursor: pointer;
   width: 100%;
-  padding: 0.6rem 0%;
+  padding: 1rem 0%;
   transition: all 0.6 ease;
 }
 
@@ -1062,10 +1226,12 @@ code {
   color: #fff9ef;
   background-color: #f8ac1d;
 }
+
 .offerButtonMainSelectedPlatinum {
   color: #fff9ef;
   background-color: #ff7f00;
 }
+
 .offerButtonMainSelectedSilver {
   color: #fff9ef;
   background-color: #b7b7b7;
@@ -1082,11 +1248,10 @@ code {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 1rem;
 }
 
 .inputNotification {
-  padding: 01rem 1rem;
+  padding: 0.79rem 1rem;
   height: auto;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
@@ -1104,6 +1269,7 @@ code {
   width: 100%;
   margin-right: 1.5rem;
   font-size: medium;
+  font-family: "Poppins";
 }
 
 .chevronDownMembership {
@@ -1144,7 +1310,7 @@ code {
 }
 
 .sendButton {
-  padding: 0.92rem 2rem;
+  padding: 0.95rem 2rem;
   border: 1px solid #0f351d;
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
@@ -1160,12 +1326,15 @@ code {
 .sendButtonWarrenty {
   color: #0f351d;
 }
+
 .sendButtonPlatinum {
   color: #ff7f00;
 }
+
 .sendButtonGold {
   color: #f8ac1d;
 }
+
 .sendButtonSilver {
   color: #8e8e8e;
 }
@@ -1184,23 +1353,11 @@ code {
   justify-content: center;
 }
 
-.Attendancecalendar {
-  margin-top: 0.8rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  display: block;
-  min-height: 20%;
-  background-color: #fffbf4;
-}
-
 .AttendancecalendarMembership {
-  width: 97%;
-  position: absolute;
-  top: 75%;
-  display: none;
+  position: absolute !important;
+  top: 75% !important;
+  width: 97% !important;
+  top: 0;
 }
 
 .Attendance {
@@ -1254,8 +1411,10 @@ code {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  width: 30px; /* Example width */
-  height: 30px; /* Example height */
+  width: 30px;
+  /* Example width */
+  height: 30px;
+  /* Example height */
 }
 
 .aday:hover {
@@ -1294,6 +1453,7 @@ code {
 .ui-datepicker-next {
   order: 3;
 }
+
 .aday.selected {
   background: #f8ac1d;
   box-shadow: inset 1px 2px 3px #00000080;
@@ -1315,6 +1475,7 @@ code {
   font-weight: 500;
   top: -2%;
 }
+
 /* --------------------------------------------- calender csss ends --------------------------------------- */
 
 /* <------------------------------ membership card expanded css ends ---------------------------------------->*/
@@ -1334,6 +1495,11 @@ code {
   /* gap: 1rem; */
 }
 
+.clear_section {
+  font-size: small;
+  font-weight: 600;
+}
+
 .clientCard {
   background-color: #ffffff;
   font-size: small;
@@ -1344,19 +1510,19 @@ code {
 }
 
 .clientCardShadowWarrenty {
-  box-shadow: inset 0px 0px 15px #0f351d;
+  box-shadow: inset 0px 0px 15px #0f351d, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowPlatinum {
-  box-shadow: inset 0px 0px 15px #ff7f0080;
+  box-shadow: inset 0px 0px 15px #ff7f0080, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowGold {
-  box-shadow: inset 0px 0px 15px #f8ac1d80;
+  box-shadow: inset 0px 0px 15px #f8ac1d80, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowSilver {
-  box-shadow: inset 0px 0px 15px #b7b7b7;
+  box-shadow: inset 0px 0px 15px #b7b7b7, 2px 4px 10px #00000029;
 }
 
 .noMembershipP {
@@ -1424,154 +1590,93 @@ code {
 
 /* Table View  */
 
-/* .task-list-client {
-  height: 45rem;
-  overflow-x: hidden;
-  background-color: white;
-  width: 100%;
-  scroll-behavior: smooth;
-  padding: 2rem;
-}
-
-.task-head-list tr {
-  border: 1px solid black;
-  padding: 1rem;
-}
-
-.task-list-table-client th {
-  font-size: 1.2rem;
-  text-align: center;
-  font-weight: 500;
-  padding: 0;
-  background-color: white;
-  width: fit-content;
-} */
-.task-list-client {
-  height: 45rem;
-  width: 100%;
-  padding: 2rem 2rem;
-}
-
 .table_view {
-  background-color: white;
-  overflow-y: scroll;
-  scroll-behavior: smooth;
   width: 100%;
-  /* margin-left: 4%; */
-  display: flex;
-  /* flex-direction: column; */
-  justify-content: center;
-  align-content: center;
-  align-items: center;
+  height: 90%;
+  position: relative;
+  padding: 1.5rem;
+  margin-top: 5%;
+  padding-bottom: 0.5rem;
 }
 
-.tableContainer {
+.sub_table_view {
+  height: 100%;
+  width: 100%;
   background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.task-head-list tr th {
-  text-align: start;
+  position: relative;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px #c1c1c1;
+  border-radius: 10px;
   padding: 1rem 2rem;
-  font-size: medium;
-  font-weight: 500;
-  background-color: white;
 }
 
-.task-head-list {
-  background-color: white;
-  box-shadow: 0px 0px 15px #c1c1c180;
+.client_table-container {
+  max-height: 700px;
+  overflow-y: auto;
+  /* border-radius: 20px; */
+  /* margin-top: 1rem; */
 }
 
-.task-list-table-client tbody tr {
-  margin-top: 3rem;
-  text-align: end;
-}
-
-.task-list-table-client {
+.client_table-container table {
   width: 100%;
-  position: relative;
-}
-.thead-container {
-  width: 100%;
-}
-
-.tbody-main tr td {
-  width: 100%;
-  padding: 01rem 2rem;
-  font-size: small;
-  width: 100%;
-}
-
-.task-list-table-client tbody tr {
-  border-bottom: 1px solid #c1c1c1 !important;
-}
-
-.task-list-table-client tbody tr .checkbox {
-  width: 10% !important;
-}
-.task-list-table-client tbody tr .JON {
-  width: 10% !important;
-}
-.task-list-table-client tbody tr .name {
-  width: 22% !important;
-}
-.task-list-table-client tbody tr .address {
-  width: 28% !important;
-}
-.task-list-table-client tbody tr .callback {
-  width: 4% !important;
-  text-align: center;
-}
-.task-list-table-client tbody tr .membership {
-  text-transform: capitalize;
-  width: 10% !important;
-  text-align: start;
-}
-.task-list-table-client thead tr .membership {
-  width: 40% !important;
-  padding: 0rem 2rem;
-}
-
-.task-list-table-client {
-  width: 100%;
-  position: relative;
   border-collapse: collapse;
 }
 
-.task-list-table-client tbody tr td {
-  border-bottom: 1px solid #ccc;
+.client_table-container thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  box-shadow: 0px 0px 3px #C1C1C1;
+
+
+
 }
 
-.table_view::-webkit-scrollbar {
-  margin-top: 1rem;
-  width: 2px;
-  border-radius: 20px;
-}
-
-.table_view::-webkit-scrollbar:hover {
-  display: block;
-}
-
-.table_view::-webkit-scrollbar-track {
-  background: 0;
-  margin-top: 12px;
-  margin-bottom: 5px;
-}
-
-.table_view::-webkit-scrollbar-thumb {
-  transition: background-color 0.3s ease;
+/* set body scroll property starts */
+.client_table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
+  /* Change the color to your desired hover color */
 }
 
-.table_view:hover::-webkit-scrollbar-thumb {
-  margin-right: 10rem;
+/* set scroll behaviour  */
+.client_table-container::-webkit-scrollbar {
+  width: 2px;
+  /* width of the entire scrollbar */
+}
+
+.client_table-container::-webkit-scrollbar-track {
   background: 0;
-  margin-top: 7px;
-  margin-bottom: 5px;
-  display: block;
+  margin-top: 4rem;
+  margin-bottom: 10px;
+}
+
+.client_table-container::-webkit-scrollbar-thumb {
+  background-color: #f8ac1d;
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.client_table-container table th {
+  font-weight: 600;
+  padding: 1rem 0.4rem;
+  font-size: 0.8rem;
+  text-align: left;
+  font-family: "Poppins";
+
+  color: #444444;
+  opacity: 1;
+}
+
+.client_table-container table td {
+  text-align: start;
+  padding: 1.5rem 0.4rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
+  color: #444444;
+  font-weight: 500;
+  font-family: "Poppins";
 }
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */

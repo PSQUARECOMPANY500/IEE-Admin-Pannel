@@ -48,11 +48,11 @@ const EnggAttendanceRecord = new Schema({
     First_halfe_time: {
         type: String,
     },
-    Is_Lunch: {
-
-        type: Boolean,
-        default: false,
-
+    Lunch_breaks_time:{
+        type:String,
+    },
+    Lunch_breake_time:{
+        type:String,
     },
     Second_halfs_time: {
         type: String,

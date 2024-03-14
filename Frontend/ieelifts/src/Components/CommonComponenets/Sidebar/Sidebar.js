@@ -1,12 +1,9 @@
-// dependincies import start here
+
 import React, { useState, useEffect } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
 import logo from "../../../Assets/Images/logo.png";
-// dependincies import end here
-// react icons import starts
 import { FaAngleDown } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
 import { RiGitPullRequestFill } from "react-icons/ri";
@@ -18,12 +15,11 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
-// import { FaAngleRight } from "react-icons/fa6";
+
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
-// react icons import ends
 
 const Sidebar = ( {children} ) => {
   const location = useLocation();
@@ -166,7 +162,7 @@ const Sidebar = ( {children} ) => {
 
   return (
     <div className="container">
-      {/* top bar */}
+    
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
@@ -201,14 +197,18 @@ const Sidebar = ( {children} ) => {
             >
               {/* hamburger animationa and functionality */}
               <div
-                className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
-                style={{ width: isOpen ? "8px" : "0px" }}
+                // className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
+                style={{ height: isOpen ? ".8rem" : ".6rem", top: isOpen ? '40px' : '35px' }}
+                className="toggle-button-menu"
                 onClick={handleToggleClick}
               >
                 <div className="wrapper">
-                  <div className="menu-bar menu-bar-top"></div>
-                  <div className="menu-bar menu-bar-bottom"></div>
+                  <div className="menu-bar menu-bar-top" style={{ transform: isOpen ? 'none' : 'rotate(40deg)' }}
+                  ></div>
+
+                  <div className="menu-bar menu-bar-bottom" style={{ transform: isOpen ? 'none' : 'rotate(-40deg)' }}></div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -288,14 +288,17 @@ const Sidebar = ( {children} ) => {
                   MAIN MENU
                 </span>
                 <span
-                  style={{ fontSize: isOpen ? "16px" : "0px" }}
+                  style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                  {menuIcon ? (
+                  {/* {menuIcon ? (
                     <FiChevronUp style={{ fontSize: "20px" }} />
                   ) : (
-                    <FaAngleDown />
-                  )}
+                  
+                    <FiChevronUp style={{ fontSize: "20px" }} />
+                  )} */}
+
+                  <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -303,7 +306,7 @@ const Sidebar = ( {children} ) => {
             <input type="checkbox" id="touch" />
             <ul
               className="slide"
-              style={{ height: mainMenuOpen ? "337px" : "" }}
+              style={{ height: mainMenuOpen ? "250px" : "" }}
             >
               <li
                 style={{
@@ -317,6 +320,10 @@ const Sidebar = ( {children} ) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
+                  // ClassName={
+                  //   location.pathname === item.Path ? "active-link" : ""
+                  // }
+                  // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div

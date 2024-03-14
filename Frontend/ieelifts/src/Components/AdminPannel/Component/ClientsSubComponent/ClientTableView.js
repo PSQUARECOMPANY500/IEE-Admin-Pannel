@@ -1,49 +1,44 @@
-import React, { useState, useEffect } from "react";
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
 const ClientTableView = ({ clientData }) => {
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: false,
-  });
+  const [checkboxStates, setCheckboxStates] = useState([]);
 
-  useEffect(() => {}, [checkboxStates]);
+  useLayoutEffect(() => {
+    if (clientData) {
+      setCheckboxStates(Array(clientData.length).fill(false));
+    }
+  }, [clientData]);
+
   const handleCheckBoxAll = () => {
-    setCheckedAll(!checkedAll);
+    if (clientData) {
+      const allChecked = checkboxStates.every((isChecked) => isChecked);
+      setCheckboxStates(Array(clientData.length).fill(!allChecked));
+    }
+  };
+
+  const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
-      const updatedStates = {};
-      Object.keys(prevStates).forEach((key) => {
-        updatedStates[key] = !checkedAll;
-      });
-      return updatedStates;
+      const newCheckboxStates = [...prevStates];
+      newCheckboxStates[index] = !prevStates[index];
+      return newCheckboxStates;
     });
   };
 
-  const handleCheckBoxSingle = (checkboxId) => {
-    setCheckboxStates((prevStates) => ({
-      ...prevStates,
-      [checkboxId]: !prevStates[checkboxId],
-    }));
-  };
-
-  // const limitAddress = (address, limit) => {
-  //   return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
-  // };
-
   return (
-    <div className="ClientCatainer tableContainer">
-      <div className="table_view">
-        <div className="task-list-client ">
-          <table className="task-list-table-client">
-            <thead className="task-head-list">
+    <div className="table_view">
+      <div className="sub_table_view">
+        <div className="client_table-container">
+          <table>
+            <thead>
               <tr>
                 <th className="checkbox">
                   <CheckBox
                     id="checkbox1"
-                    checked={checkboxStates.checkbox1}
-                    handleCheckboxChange={() => handleCheckBoxAll("checkbox1")}
+                    checked={checkboxStates.every((isChecked) => isChecked)}
+                    handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>
                 <th>JON</th>
@@ -71,36 +66,31 @@ const ClientTableView = ({ clientData }) => {
 
             {/* TABLE BODY STARTS */}
 
-            <tbody className="tbody-main">
+            <tbody>
               {clientData &&
-                clientData?.map((data, index) => {
-                  return (
-                    <tr className="selected" key={index}>
-                      <td className="checkbox">
-                        {" "}
-                        <CheckBox
-                          id={`checkbox-${data.callbackId}`}
-                          checked={checkboxStates[data.callbackId]}
-                          handleCheckboxChange={() =>
-                            handleCheckBoxSingle(data.callbackId)
-                          }
-                        />
-                      </td>
-                      <td className="JON">{data.JobOrderNumber}</td>
-                      <td className="name">{data?.name}</td>
-                      <td className="JON">{data?.PhoneNumber}</td>
-                      <td className="address">S{data?.Address}</td>
-                      <td className="callback">
-                        {data?.callback ? data?.callback : 0}
-                      </td>
-                      <td className="membership">
-                        {data?.MembershipType ? data?.MembershipType : "NONE"}
-                      </td>
-                      <td className="address">{data.ModelType}</td>
-                      <td className="address">{data.DateOfHandover}</td>
-                    </tr>
-                  );
-                })}
+                clientData.map((data, index) => (
+                  <tr className="selected" key={index}>
+                    <td className="checkbox">
+                      <CheckBox
+                        id={`checkbox-${index}`}
+                        checked={checkboxStates[index]}
+                        handleCheckboxChange={() => handleCheckBoxSingle(index)}
+                      />
+                    </td>
+                    <td className="JON">{data.JobOrderNumber}</td>
+                    <td className="name">{data?.name}</td>
+                    <td className="checkbox">{data?.PhoneNumber}</td>
+                    <td className="address">S{data?.Address}</td>
+                    <td className="callback">
+                      {data?.callback ? data?.callback : 0}
+                    </td>
+                    <td className="membership">
+                      {data?.MembershipType ? data?.MembershipType : "NONE"}
+                    </td>
+                    <td className="address">{data.ModelType}</td>
+                    <td className="address">{data.DateOfHandover}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

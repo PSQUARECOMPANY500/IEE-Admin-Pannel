@@ -5,6 +5,7 @@ const EnggAttendanceServiceRecord = require('../../Modals/ServiceEngineerModals/
 const { verifyEnggToken } = require("../../Middleware/ServiceEnggAuthMiddleware")
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
+const adminContoller = require("../../Controllers/AdminController/AdminController");
 
 //-------------------------------------- All Post Requests -------------------------------
 router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg);
@@ -36,35 +37,62 @@ const storage = multer.diskStorage({
   },
 });
 
-// const uploadImg = multer({ storage:storage}).array("photos",2);
-const uploadImg = multer({ storage:storage});
+const upload = multer({ storage: storage });
 
-router.get('/getTime', serviceEnggContoller.EnggTime);
-router.post('/enggCheckIn',  uploadImg.fields([
-{
-  name:'frontimage',
-  maxCount:1
-},
-{
-  name:'backimage',
-  maxCount:1
-}
-]) ,serviceEnggContoller.EnggCheckIn);
-
-
-router.put('/enggCheckOut', uploadImg.fields([
+const uploadImg = upload.fields([
   {
-    name:'frontimage',
-    maxCount:1
+    name: 'frontimage',
+    maxCount: 1
   },
   {
-    name:'backimage',
-    maxCount:1
+    name: 'backimage',
+    maxCount: 1
   }
-  ]) ,serviceEnggContoller.EnggCheckOut);
+]);
+
+const checkInAttendance = async (req, res, next) => {
+  const  Id  = req.params.ServiceEnggId;
+  //console.log(Id);
+  //console.log(req.params.ServiceEnggId);
+  if (Id) {
+    const date = new Date().toLocaleDateString('en-GB');
+
+    const checksum = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId: Id,
+      Date: date,
+    });
+    
+    if (checksum) {
+      return res.status(403).json({ message: "Engg already CheckedIN" });
+    }
+    next();
+  } else {
+    return res.status(400).json({ message: "ServiceEnggId is required" });
+  }
+};
 
 
 
+
+const checkOutAttendance = async (req, res, next) => {
+  const Id = req.params.ServiceEnggId;
+  if (Id) {
+    const date = new Date().toLocaleDateString('en-GB');
+
+    const checksum = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId: Id,
+      Date: date,
+    });
+    if (checksum?.Check_Out?.engPhoto) {
+      return res.status(403).json({ message: "Engg already CheckedOUT" });
+    }
+    next();
+  }
+}
+
+router.get('/getTime', serviceEnggContoller.EnggTime);
+router.post('/enggCheckIn/:ServiceEnggId', checkInAttendance, uploadImg, serviceEnggContoller.EnggCheckIn);
+router.put('/enggCheckOut/:ServiceEnggId',checkOutAttendance, uploadImg, serviceEnggContoller.EnggCheckOut);
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
 router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);
@@ -84,6 +112,8 @@ router.get("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
 
 router.post("/EnggReportResponse", serviceEnggContoller.EnggReportResponse)
 router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFetch)
+router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance)
+router.get("/EnggCheckInCheckOutDetals/:ServiceEnggId", serviceEnggContoller.EnggCheckInCheckOutDetals)
 
 
 module.exports = router;

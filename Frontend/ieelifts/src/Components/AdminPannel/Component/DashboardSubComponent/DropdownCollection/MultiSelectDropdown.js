@@ -35,23 +35,33 @@ const MultiSelectDropdown = ({
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
 
       borderRadius: "5px",
-      fontSize: "17px", // Font size of the control
+      fontSize: "0.8rem", // Font size of the control
+      // height:'30px',
+    
       ":hover": {
         // border:'1px solid #F8AC1D',
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
+       
       },
+    }),    placeholder: (provided) => ({
+      ...provided,
+      fontSize: "0.8rem", // Adjust the font size here
+      fontFamily:'Poppins',
+      opacity:'0.6',
     }),
     menu: (provided) => ({
       ...provided,
       backgroundColor: "#ffffff",
-      padding: "8px",
+      padding: "5px",
+      fontSize:'0.8rem',
+   
     }),
     option: (provided, state) => ({
       ...provided,
       backgroundColor: state.isSelected ? "#FFFFFF" : "#FFFFFF",
       color: state.isSelected ? "white" : "black",
-      fontSize: "14px",
+      fontSize: "0.8rem",
       ":hover": {
         backgroundColor: "#FEF3DE", // Background color of the remove icon on click
         color: "#F8AC1D", // Text color of the remove icon on click
@@ -87,16 +97,18 @@ const MultiSelectDropdown = ({
 
   return (
     <Select
-      placeholder={placeholder}
-      closeMenuOnSelect={false}
-      components={animatedComponents}
-      isMulti
-      options={dynamicOptions}
-      styles={customStyles}
-      onChange={handleChange}
-      value={selectedValue}
-      isDisabled={editchange ? false : isAssigned}
-    />
+    placeholder={placeholder}
+    closeMenuOnSelect={false}
+    components={animatedComponents}
+    isMulti
+    options={dynamicOptions}
+    styles={customStyles}
+    onChange={handleChange}
+    value={selectedValue}
+    isDisabled={editchange ? false : isAssigned}
+    isSearchable={false} 
+/>
+
   );
 };
 

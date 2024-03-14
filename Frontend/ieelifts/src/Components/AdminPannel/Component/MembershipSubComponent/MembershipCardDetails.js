@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState } from "react";
 import ExpiringComponent from "./ExpiringComponent";
 import ExpiredComponent from "./ExpiredComponent";
@@ -14,28 +15,25 @@ const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
       <div className="expandedMembershipheading">
         <div
           onClick={() => handleClick("Revenue")}
-          className="headingCenter"
-          style={{
-            borderBottom: selectedOption === "Revenue" && "2px solid #0F351D",
-          }}
+          className={`headingCenter ${
+            selectedOption === "Revenue" && "bottomheadingBorder"
+          }`}
         >
           Revenue
         </div>
         <div
           onClick={() => handleClick("Expiring")}
-          className="headingCenter"
-          style={{
-            borderBottom: selectedOption === "Expiring" && "2px solid #0F351D",
-          }}
+          className={`headingCenter ${
+            selectedOption === "Expiring" && "bottomheadingBorder"
+          }`}
         >
           <span>Expiring Soon</span> <span>{expiringCount}</span>
         </div>
         <div
           onClick={() => handleClick("Expired")}
-          style={{
-            borderBottom: selectedOption === "Expired" && "2px solid #0F351D",
-          }}
-          className="headingCenter"
+          className={`headingCenter ${
+            selectedOption === "Expired" && "bottomheadingBorder"
+          }`}
         >
           <span>Expired</span> <span>{expiredCount}</span>
         </div>
@@ -43,13 +41,14 @@ const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
 
       {selectedOption && (
         <div>
-          {/* Display information based on the selected option */}
           {selectedOption === "Revenue" && (
             <p>Show revenue information here...</p>
           )}
-          {selectedOption === "Expiring" && <ExpiringComponent DemoData={DemoData} />}
+          {selectedOption === "Expiring" && (
+            <ExpiringComponent DemoData={DemoData} count={expiringCount} />
+          )}
           {selectedOption === "Expired" && (
-            <ExpiredComponent DemoData={DemoData} />
+            <ExpiredComponent DemoData={DemoData} count={expiredCount} />
           )}
         </div>
       )}

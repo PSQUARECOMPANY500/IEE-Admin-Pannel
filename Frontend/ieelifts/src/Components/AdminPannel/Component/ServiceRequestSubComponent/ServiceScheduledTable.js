@@ -1,91 +1,67 @@
 import React, { useState, useEffect, useRef } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
 import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
-
-const data = [
-  {
-    JON: 563553,
-  },
-  {
-    JON: 563553,
-  },
-  {
-    JON: 563553,
-  },
-  {
-    JON: 563553,
-  },
-  {
-    JON: 563553,
-  },
-];
+import AddTicketModals from "../DashboardSubComponent/AddTicketModals";
 
 const ServiceScheduledTable = () => {
-  const dropdownRef = useRef(null);
-
-  // modal manage states
-
   const [showTicketModal5, setShowTicketModal5] = useState(false);
-
-  const [showTicketFilter, setShowTicketFilter] = useState(false);
-
   const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: false,
-  });
+  const [checkboxStates, setCheckboxStates] = useState({});
+  const [totalCheckboxes, setTotalCheckboxes] = useState(0);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState(0);
 
-  useEffect(() => {}, [checkboxStates]);
   const handleCheckBoxAll = () => {
-    setCheckedAll(!checkedAll);
-    setCheckboxStates((prevStates) => {
-      const updatedStates = {};
-      Object.keys(prevStates).forEach((key) => {
-        updatedStates[key] = !checkedAll;
-      });
-      return updatedStates;
-    });
+    const updatedStates = {};
+    const newValue = !checkedAll;
+    for (let i = 0; i < data.length; i++) {
+      updatedStates[i] = newValue;
+    }
+    setCheckboxStates(updatedStates);
+    setCheckedAll(newValue);
   };
 
-  const handleCheckBoxSingle = (checkboxId) => {
+  const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => ({
       ...prevStates,
-      [checkboxId]: !prevStates[checkboxId],
+      [index]: !prevStates[index],
     }));
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.classList.contains("filter-icon")
-      ) {
-        setShowTicketFilter(false);
-        console.log(showTicketFilter);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef, showTicketFilter]);
-
   const openModal = (modalNumber) => {
-    // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 5) {
       setShowTicketModal5(true);
     }
   };
 
+  const data = [
+    {
+      JON: 563553,
+    },
+    {
+      JON: 563553,
+    },
+    {
+      JON: 563553,
+    },
+    {
+      JON: 563553,
+    },
+    {
+      JON: 563553,
+    },
+  ];
+
+  useEffect(() => {
+    setTotalCheckboxes(data.length);
+    setSelectedCheckboxes(Object.values(checkboxStates).filter(Boolean).length);
+    setCheckedAll(selectedCheckboxes === totalCheckboxes);
+  }, [checkboxStates, data]);
+
   return (
-    <div className="task-list">
-      <table className="task-list-table">
+    <div className="service-schedule-table">
+      <table>
         <thead>
           <tr>
             <th>
@@ -118,25 +94,22 @@ const ServiceScheduledTable = () => {
           </tr>
         </thead>
 
-        {/* TABLE BODY STARTS */}
-        {data.map((value) => (
-          <tbody>
-            <tr className="selected">
+        <tbody>
+          {data.map((value, index) => (
+            <tr className="selected" key={index}>
               <td>
-                {" "}
                 <CheckBox
-                  id="checkbox1"
-                  checked={checkboxStates.checkbox1}
-                  handleCheckboxChange={() => handleCheckBoxSingle("checkbox1")}
+                  id={`checkbox-${index}`}
+                  checked={checkboxStates[index] || false}
+                  handleCheckboxChange={() => handleCheckBoxSingle(index)}
                 />
               </td>
-              <td>442113</td>
+              <td>{value.JON}</td>
               <td>ram kumar</td>
               <td>9416484863</td>
               <td>
                 <div className="dropdown-address">
                   <span>ADDRESS ADDRESS</span>
-
                   <div className="dropdown-adddress-menu">
                     <div className="drop-address">
                       <p>
@@ -153,17 +126,15 @@ const ServiceScheduledTable = () => {
                 <AssignDropdown customAssign="assignColor" name="Assign" />
               </td>
               {showTicketModal5 && (
-                <AddTicketModal
+                <AddTicketModals
                   closeModal={() => setShowTicketModal5(false)}
                   showTicketModal={showTicketModal5}
                   modalNumber={5}
                 />
               )}
             </tr>
-          </tbody>
-        ))}
-
-        {/* TABLE BODY ENDS */}
+          ))}
+        </tbody>
       </table>
     </div>
   );

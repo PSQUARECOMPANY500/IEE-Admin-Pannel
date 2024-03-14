@@ -8,17 +8,22 @@ import ServiceRequestModal from "./ServiceRequestModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import ServiceRequestModals from "./ServiceRequestModals";
 
 const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
-
   const [RequestId, setRequestId] = useState();
-
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
-
   const [renderTicket, setRenderTicket] = useState(true);
+  const [filteredCD, setFilteredCD] = useState([]);
+  const [allCD, setallCD] = useState([]);
+  const [timer, setTimer] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showTicketModal4, setShowTicketModal4] = useState(false);
+  const [showTicketFilter, setShowTicketFilter] = useState(false);
+  const [checkboxStates, setCheckboxStates] = useState([]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,18 +45,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
       return null;
     }
   });
-  // console.log("getRequestDetail", getRequestDetail);
-
-  // modal manage states
-  const [showTicketModal4, setShowTicketModal4] = useState(false);
-
-  const [showTicketFilter, setShowTicketFilter] = useState(false);
-
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: false,
-  });
 
   //use effect for dispatching ations
   useEffect(() => {
@@ -63,25 +56,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-  useEffect(() => {}, [checkboxStates]);
-  const handleCheckBoxAll = () => {
-    setCheckedAll(!checkedAll);
-    setCheckboxStates((prevStates) => {
-      const updatedStates = {};
-      Object.keys(prevStates).forEach((key) => {
-        updatedStates[key] = !checkedAll;
-      });
-      return updatedStates;
-    });
-  };
-
-  const handleCheckBoxSingle = (checkboxId) => {
-    setCheckboxStates((prevStates) => ({
-      ...prevStates,
-      [checkboxId]: !prevStates[checkboxId],
-    }));
-  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -90,7 +64,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
         !event.target.classList.contains("filter-icon")
       ) {
         setShowTicketFilter(false);
-        console.log(showTicketFilter);
       }
     };
 
@@ -110,11 +83,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
       setEnggId(enngID);
     }
   };
-
-  const [filteredCD, setFilteredCD] = useState([]);
-  const [allCD, setallCD] = useState([]);
-  const [timer, setTimer] = useState(null);
-  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     setFilteredCD(getRequestDetail);
@@ -166,17 +134,36 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     });
     return filteredResults;
   }
+  useEffect(() => {
+    if (filteredCD) {
+      setCheckboxStates(Array(filteredCD.length).fill(false));
+    }
+  }, [filteredCD]);
 
+  const handleCheckBoxAll = () => {
+    if (filteredCD) {
+      const allChecked = checkboxStates.every((isChecked) => isChecked);
+      setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+    }
+  };
+
+  const handleCheckBoxSingle = (index) => {
+    setCheckboxStates((prevStates) => {
+      const newCheckboxStates = [...prevStates];
+      newCheckboxStates[index] = !prevStates[index];
+      return newCheckboxStates;
+    });
+  };
   return (
-    <div className="task-list">
-      <table className="task-list-table">
+    <div className="service-request-table">
+      <table>
         <thead>
           <tr>
             <th>
               <CheckBox
-                id="toggleAll"
+                id="checkbox1"
+                checked={checkboxStates.every((isChecked) => isChecked)}
                 handleCheckboxChange={handleCheckBoxAll}
-                checked={checkedAll}
               />
             </th>
             <th>JON</th>
@@ -247,13 +234,17 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
               </tr>
             </>
           ) : (
-            filteredCD?.map((value) => {
+            filteredCD.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
 
+              // Due to returning of null here there is an issue in indexing due to which the checkboxes are giving trouble
+              // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
+
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
+                checkboxStates[index] = true;
                 return null;
               }
 
@@ -261,13 +252,10 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
                 <tbody key={value._id}>
                   <tr className="selected">
                     <td>
-                      {" "}
                       <CheckBox
-                        id="checkbox1"
-                        checked={checkboxStates.checkbox1}
-                        handleCheckboxChange={() =>
-                          handleCheckBoxSingle("checkbox1")
-                        }
+                        id={`checkbox-${index}`}
+                        checked={checkboxStates[index]}
+                        handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
                     <td>{value.JobOrderNumber}</td>
@@ -319,7 +307,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
         </>
 
         {showTicketModal4 && (
-          <ServiceRequestModal
+          <ServiceRequestModals
             closeModal={() => setShowTicketModal4(false)}
             showTicketModal={showTicketModal4}
             RequestId={RequestId}

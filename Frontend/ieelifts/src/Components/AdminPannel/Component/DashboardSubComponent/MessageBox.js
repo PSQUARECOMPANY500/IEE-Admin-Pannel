@@ -8,27 +8,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
-
 import io from "socket.io-client";
 import EngChatNav from "../EngeeniersSubComponent/EngChatNav";
 import { IoCallOutline } from "react-icons/io5";
 import { CiVideoOn } from "react-icons/ci";
-
 const MessageBox = ({ onClose, EnggId }) => {
   const dispatch = useDispatch();
-
   const fileInputField = useRef(null);
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
-
   const [messageData, setMessageData] = useState();
-
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   const [allMessages, setAllMessages] = useState([]);
 
   const scroll = () => {
@@ -36,30 +30,23 @@ const MessageBox = ({ onClose, EnggId }) => {
       messageBodyRef.current.scrollTop = messageBodyRef.current.scrollHeight;
     }
   };
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0].name);
   };
-
   useEffect(() => {
     setHeight(textareaRef.current);
   }, []);
-
   //socket implemantation starts ---------------------------------------------
   // const socket = io('http://localhost:8000');
-
   const socket = io("https://iee-admin-pannel.onrender.com");
-
   useEffect(() => {
     socket.on("connect", () => [
       console.log("socket is connected successfully"),
     ]);
-
     return () => {
       socket.off("connect");
     };
   }, []);
-
   const chatCreated = useSelector((state) => {
     if (
       state.ChatRootReducer &&
@@ -73,7 +60,7 @@ const MessageBox = ({ onClose, EnggId }) => {
   });
 
   const getMessages = useSelector((state) => {
-    scroll();
+
     if (
       state.ChatRootReducer &&
       state.ChatRootReducer.getSenderMessagesReducer &&
@@ -108,8 +95,8 @@ const MessageBox = ({ onClose, EnggId }) => {
 
   const sendMessage = useSelector(
     (state) => state?.ChatRootReducer?.sendMessageReducer?.chatMessage
-  );
 
+  );
   useEffect(() => {
     setAllMessages([]);
     setIsLoadingMessages(true);
@@ -126,24 +113,18 @@ const MessageBox = ({ onClose, EnggId }) => {
       }
     };
   }, [dispatch, chatCreated?._id, EnggId]);
-
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
     const verticalBorders = Math.round(
       parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
     );
     const maxHeight = parseFloat(style.maxHeight) || 70;
-
     elem.style.height = "20px";
-
     const newHeight = elem.scrollHeight + verticalBorders;
-
     elem.style.overflowY = newHeight > maxHeight ? "auto" : "hidden";
     elem.style.height = Math.min(newHeight, maxHeight) + "px";
-
     setTextareaHeight(Math.min(newHeight, maxHeight));
   };
-
   const handleInput = () => {
     setHeight(textareaRef.current);
     setSwapIcon(!textareaRef.current.value.trim());
@@ -182,12 +163,19 @@ const MessageBox = ({ onClose, EnggId }) => {
     scroll();
   }, [getMessages]);
 
-  useEffect(() => {
-    socket.on("EnggNewMessage", (message) => {
-      setAllMessages((prevMessages) => [...prevMessages, message]);
-    });
-  }, []);
+useEffect(() => {
+  socket.on("EnggNewMessage", (message) => {
+    setAllMessages((prevMessages) => [...prevMessages, message]);
+  });
+}, []);
 
+
+
+  useEffect(() => {
+  
+    scroll();
+  }, [allMessages]);
+  
   return (
     <>
       <EngChatNav />
@@ -200,8 +188,8 @@ const MessageBox = ({ onClose, EnggId }) => {
             <RxCross2 onClick={onClose} />
           </div>
         </div>
-        <div className="EngChatMsg-Dash">
-          <div className=".SubEngChatMsg-Dash Yello_Scrollbar">
+        <div className="EngChatMsg-Dash"  >
+          <div className="SubEngChatMsg-Dash Yello_Scrollbar" ref={messageBodyRef} >
             {isLoadingMessages ? (
               <div className="skelton-in-message">
                 <div className="loader">
@@ -244,7 +232,6 @@ const MessageBox = ({ onClose, EnggId }) => {
             )}
           </div>
         </div>
-
         <div className="agdam-eng-card-dash">
           <div className="eng-card-message-text-dash">
             <textarea
@@ -262,7 +249,6 @@ const MessageBox = ({ onClose, EnggId }) => {
               value={messageData}
             />
           </div>
-
           <div className="user-attachment4-eng-card-dash">
             <div className="user-attachment2-eng-card-dash">
               <input
@@ -280,7 +266,6 @@ const MessageBox = ({ onClose, EnggId }) => {
                 <MdOutlineAttachFile />
               </div>
             </div>
-
             <p
               className="send-messsage-eng-card-dash"
               onClick={handleSendMessage}
@@ -293,5 +278,4 @@ const MessageBox = ({ onClose, EnggId }) => {
     </>
   );
 };
-
 export default MessageBox;

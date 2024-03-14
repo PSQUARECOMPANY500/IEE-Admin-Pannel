@@ -4,7 +4,7 @@ import React from "react";
 import MembershipCardDetails from "./MembershipCardDetails";
 import MembershipExpiring from "./MembershipExpiring";
 import MembershipExpired from "./MembershipExpired";
-// import { useDispatch, useSelector } from "react-redux";
+import MembershipCardTopBar from "./MembershipCardTopBar";
 
 const MembershipCard = ({
   DemoData,
@@ -85,117 +85,75 @@ const MembershipCard = ({
       >
         {DemoData !== "" && (
           <>
-            <div
-              className={`membership_card_topbar ${
-                setClick
-                  ? order !== 1
-                    ? "membership_card_topbar_non_expand "
-                    : ` membership_card_topbar_expand  ${
-                        clickCount !== 1 ? "animation" : "animationExpand"
-                      }
-                    `
-                  : ""
-              }`}
-            >
-              <div className="membership_card_topbar_left">
-                <p className={`membership_card_title ${titleClass}`}>
-                  {DemoData?.dataType}
-                </p>
-                <p
-                  className="membership_card_revenue"
-                  style={setClick ? { display: "none" } : {}}
-                >
-                  Revenue
-                  {DemoData?.Data?.details?.totalRevenue !== undefined
-                    ? `: ₹${DemoData?.Data?.details?.totalRevenue}`
-                    : " --"}
-                </p>
-              </div>
+            <MembershipCardTopBar
+              setClick={setClick}
+              order={order}
+              clickCount={clickCount}
+              DemoData={DemoData}
+              titleClass={titleClass}
+              cardColor={cardColor}
+            />
+            {order === 1 && setClick && (
               <div
-                className={`membership_card_counts ${cardColor} ${
-                  setClick && "membership_card_counts_expand"
-                } ${order === 1 && "membership_card_counts_expanded"}`}
-                style={{
-                  padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
-                }}
+                className={`${
+                  order === 1 && setClick && clickCount !== 1
+                    ? "animation"
+                    : "animationExpand"
+                } expansion_labels`}
               >
-                {/* <p>125</p> */}
-                <p>{DemoData?.Data?.details?.count}</p>
+                <MembershipCardDetails
+                  DemoData={DemoData}
+                  expiredCount={DemoData?.Data?.details?.expiredCount}
+                  expiringCount={DemoData?.Data?.details?.expiringCount}
+                />
               </div>
-            </div>
-
-            {order===1 && (
-              <div
-              style={
-                order === 1 && setClick
-                  ? { marginTop: "1rem" }
-                  : { display: "none" }
-              }
-              className={
-                order === 1 && setClick && clickCount !== 1
-                  ? "animation"
-                  : "animationExpand"
-              }
-            >
-              <MembershipCardDetails
-                DemoData={DemoData}
-                expiredCount={DemoData?.Data?.details?.expiredCount}
-                expiringCount={DemoData?.Data?.details?.expiringCount}
-              />
-            </div>
             )}
 
-            <div
-              style={
-                order !== 1 && setClick
-                  ? { marginTop: "1rem" }
-                  : { display: "none" }
-              }
-            >
-              <div className="after_expansion_labels">
-                <span>Revenue:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.totalRevenue !== undefined
-                    ? `${DemoData?.Data?.details?.totalRevenue}`
-                    : " --"}
-                </span>
+            {order !== 1 && setClick && (
+              <div className="expansion_labels">
+                <div className="after_expansion_labels">
+                  <span>Revenue:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.totalRevenue !== undefined
+                      ? `${DemoData?.Data?.details?.totalRevenue}`
+                      : " --"}
+                  </span>
+                </div>
+                <div className="after_expansion_labels">
+                  <span>Expiring Soon:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.expiringCount !== undefined
+                      ? `${DemoData?.Data?.details?.expiringCount}`
+                      : " --"}
+                  </span>
+                </div>
+                <div className="after_expansion_labels after_expansion_labels_expired">
+                  <span>Expired:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.expiredCount !== undefined
+                      ? `${DemoData?.Data?.details?.expiredCount}`
+                      : " --"}
+                  </span>
+                </div>
               </div>
-              <div className="after_expansion_labels">
-                <span>Expiring Soon:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.expiringCount !== undefined
-                    ? `${DemoData?.Data?.details?.expiringCount}`
-                    : " --"}
-                </span>
+            )}
+            {!setClick && (
+              <div className={`membership_card_stats `}>
+                <MembershipExpiring
+                  DemoData={DemoData}
+                  setClick={setClick}
+                  count={DemoData?.Data?.details?.expiringCount}
+                />
+                <MembershipExpired
+                  DemoData={DemoData}
+                  setClick={setClick}
+                  count={DemoData?.Data?.details?.expiredCount}
+                />
               </div>
-              <div className="after_expansion_labels after_expansion_labels_expired">
-                <span>Expired:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.expiredCount !== undefined
-                    ? `${DemoData?.Data?.details?.expiredCount}`
-                    : " --"}
-                </span>
-              </div>
-            </div>
-
-            <div
-              className={`membership_card_stats `}
-              style={setClick ? { display: "none" } : {}}
-            >
-              <MembershipExpiring
-                DemoData={DemoData}
-                setClick={setClick}
-                count={DemoData?.Data?.details?.expiringCount}
-              />
-              <MembershipExpired
-                DemoData={DemoData}
-                setClick={setClick}
-                count={DemoData?.Data?.details?.expiredCount}
-              />
-            </div>
+            )}
           </>
         )}
 
