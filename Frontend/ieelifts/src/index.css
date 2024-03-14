@@ -696,7 +696,15 @@ code {
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  /* gap: 5%; */
+}
+
+.no_expire_membership {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25%;
+  color: #444444;
 }
 
 .headingCenter {
@@ -793,11 +801,6 @@ code {
   display: flex;
   flex-direction: column;
   color: #444444;
-}
-
-.no_history_heading {
-  font-size: 1.5rem;
-  font-weight: 500;
 }
 
 .no_history_subHeading {

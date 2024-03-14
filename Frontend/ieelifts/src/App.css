@@ -644,13 +644,12 @@ span::after {
 
 .filter-icon {
   box-shadow: none;
-  padding: 12px 13px;
-  font-size: 16px;
+  font-size: 1.2rem;
 }
 
-.filter-top-icon {
+/* .filter-top-icon {
   padding: 2px 6px;
-}
+} */
 
 /* topbar css ends */
 
@@ -2458,6 +2457,7 @@ footer a:hover {
   list-style-type: none;
   cursor: pointer;
   margin-top: 6px;
+  font-weight: 500;
 }
 
 .filter-icons span {

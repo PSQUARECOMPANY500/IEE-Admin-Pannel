@@ -178,7 +178,7 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
       ) : (
         <>
           <div className="no_history">
-            <span className="no_history_heading">Empty</span>
+          
             <span className="no_history_subHeading">
               Sorry no history avilable at this time.
             </span>

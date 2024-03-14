@@ -174,6 +174,23 @@ const ClientCallDetails = ({
       return null;
     }
   });
+
+  // useEffect(() => {
+  //   if (
+  //     createdCall &&
+  //     createdCall.clientCall &&
+  //     callDetails.clientCallData &&
+  //     callDetails
+  //   ) {
+  //     setASelectedDate(null);
+  //     setShowCalender(!showCalender);
+  //     setButtonSelect(false);
+  //     const newCalls = [createdCall.clientCall, ...callDetails.clientCallData];
+  //     newCalls.sort((a, b) => new Date(a.callDate) - new Date(b.callDate));
+  //     setPageData(newCalls);
+  //   }
+  // }, [createdCall]);
+
   useEffect(() => {
     if (
       createdCall &&
@@ -283,7 +300,6 @@ const ClientCallDetails = ({
           ) : (
             <>
               <div className="no_history">
-                <span className="no_history_heading">Empty</span>
                 <span className="no_history_subHeading">
                   Sorry no client calls are avilable at this time.
                 </span>

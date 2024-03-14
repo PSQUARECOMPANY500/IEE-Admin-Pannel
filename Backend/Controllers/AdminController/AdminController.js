@@ -1233,7 +1233,7 @@ module.exports.getClientCalls = async (req, res) => {
       jobOrderNumber,
       callType,
     }).sort({
-      callDate: 1,
+      callDate: -1,
     }); // Sort by callDate in ascending order
     res.status(201).json({
       success: true,
