@@ -26,11 +26,8 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [showTicketModal3, setShowTicketModal3] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
 
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: false,
-  });
+  // const [checkedAll, setCheckedAll] = useState(false);
+  const [checkboxStates, setCheckboxStates] = useState([]);
 
   const fetchCallbacks = useSelector((state) => {
     if (
@@ -117,23 +114,29 @@ const TicketSection = ({ setTicketUpdate }) => {
   }, [renderTicket, dispatch]);
   //.............................................................{/amit}.................
   const closeModal = () => setShowTicketModal(false);
-  useEffect(() => {}, [checkboxStates]);
+
+  //.............................................................{/armaan}.................
+
+  useEffect(() => {
+    if (fetchCallbacks) {
+      setCheckboxStates(Array(fetchCallbacks.length).fill(false));
+    }
+  }, [fetchCallbacks]);
   const handleCheckBoxAll = () => {
-    setCheckedAll(!checkedAll);
+    if (fetchCallbacks) {
+      const allChecked = checkboxStates.every((isChecked) => isChecked);
+      setCheckboxStates(Array(fetchCallbacks.length).fill(!allChecked));
+    }
+  };
+  const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
-      const updatedStates = {};
-      Object.keys(prevStates).forEach((key) => {
-        updatedStates[key] = !checkedAll;
-      });
-      return updatedStates;
+      const newCheckboxStates = [...prevStates];
+      newCheckboxStates[index] = !prevStates[index];
+      return newCheckboxStates;
     });
   };
-  const handleCheckBoxSingle = (checkboxId) => {
-    setCheckboxStates((prevStates) => ({
-      ...prevStates,
-      [checkboxId]: !prevStates[checkboxId],
-    }));
-  };
+  //.............................................................{/armaan}.................
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -242,241 +245,228 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-
-
-             
-         
-          <div className="my_table-container" >
-            <table >
+        <div className="my_table-container">
+          <table>
             <thead>
-                <tr>
-                  <th>
+              <tr>
+                <th>
+                  {" "}
+                  <CheckBox
+                    id="checkbox1"
+                    checked={checkboxStates.every((isChecked) => isChecked)}
+                    handleCheckboxChange={handleCheckBoxAll}
+                  />
+                </th>
+                <th>JON</th>
+                <th>NAME</th>
+                <th>NUMBER</th>
+                <th>
+                  <div>
+                    <span>ADDRESS</span>
+                    <HiChevronUpDown />
+                    <span></span>
+                  </div>
+                </th>
+                <th>DESCRIPTION</th>
+                <th>TYPE</th>
+                <th>DATE</th>
+                <th>TIME</th>
+                <th>
+                  <div>
                     {" "}
-                    <CheckBox
-                      id="checkbox1"
-                      checked={checkboxStates.checkbox1}
-                      handleCheckboxChange={() =>
-                        handleCheckBoxAll("checkbox1")
-                      }
-                    />
-                  </th>
-                  <th>JON</th>
-                  <th>NAME</th>
-                  <th>NUMBER</th>
-                  <th>
-                    <div>
-                      <span>ADDRESS</span>
-                      <HiChevronUpDown />
-                      <span></span>
-                    </div>
-                  </th>
-                  <th>DESCRIPTION</th>
-                  <th>TYPE</th>
-                  <th>DATE</th>
-                  <th>TIME</th>
-                  <th>
-                    <div>
-                      {" "}
-                      <span>STATUS</span>
-                      <HiChevronUpDown />
-                      <span></span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-       
+                    <span>STATUS</span>
+                    <HiChevronUpDown />
+                    <span></span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
 
-              {/* TABLE BODY STARTS */}
+            {/* TABLE BODY STARTS */}
 
-      
-      <tbody >
-                {isSearching ? (
-                  <>
-                    <tr  style={{overflowX: "hidden"}} >
-                      <td colSpan="10" >
-                        <SkeltonLoader
-                          width={"80vw"}
-                          height={"38px"}
-                          marginTop={"8px"}
-                          marginBottom={"0px"}
+            <tbody>
+              {isSearching ? (
+                <>
+                  <tr style={{ overflowX: "hidden" }}>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                </>
+              ) : (
+                filteredCD.map((data, index) => {
+                  const currentCallbackId = data.callbackId;
+                  const EngName = data.AssignedEng?.name;
+                  const EngId = data.AssignedEng?.id;
+                  const isAssigned = data.isAssigned;
+                  const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
+                  const currentTime = new Date();
+                  // Calculate time difference in milliseconds
+                  const timeDifference = currentTime - createdAtTime;
+                  const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+                  // Check if the time difference is greater than or equal to 30 minutes
+                  const isTimeoutData =
+                    timeDifference >= thirtyMinutesInMilliseconds;
+                  return (
+                    <tr className="selected" key={index}>
+                      <td>
+                        {" "}
+                        <CheckBox
+                          id={`checkbox-${index}`}
+                          checked={checkboxStates[index]}
+                          handleCheckboxChange={() =>
+                            handleCheckBoxSingle(index)
+                          }
                         />
                       </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="10">
-                        <SkeltonLoader
-                          width={"80vw"}
-                          height={"38px"}
-                          marginTop={"8px"}
-                          marginBottom={"0px"}
-                        />
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data.JobOrderNumber}
                       </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="10">
-                        <SkeltonLoader
-                          width={"80vw"}
-                          height={"38px"}
-                          marginTop={"8px"}
-                          marginBottom={"0px"}
-                        />
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data?.clientDetail?.name}
                       </td>
-                    </tr>
-                  </>
-                  
-                  
-                ) : (
-                  filteredCD.map((data, index) => {
-                    const currentCallbackId = data.callbackId;
-                    const EngName = data.AssignedEng?.name;
-                    const EngId = data.AssignedEng?.id;
-                    const isAssigned = data.isAssigned;
-                    const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
-                    const currentTime = new Date();
-                    // Calculate time difference in milliseconds
-                    const timeDifference = currentTime - createdAtTime;
-                    const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-                    // Check if the time difference is greater than or equal to 30 minutes
-                    const isTimeoutData =
-                      timeDifference >= thirtyMinutesInMilliseconds;
-                    return (
-                      <tr className="selected" key={index}>
-                        <td>
-                          {" "}
-                          <CheckBox
-                            id="checkbox1"
-                            checked={checkboxStates.checkbox1}
-                            handleCheckboxChange={() =>
-                              handleCheckBoxSingle("checkbox1")
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data?.clientDetail?.PhoneNumber}
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        <div className="dropdown-address">
+                          <span
+                            className={
+                              !isAssigned && isTimeoutData ? "timeout-data" : ""
                             }
-                          />
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data.JobOrderNumber}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data?.clientDetail?.name}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data?.clientDetail?.PhoneNumber}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          <div className="dropdown-address">
-                            <span
-                              className={
-                                !isAssigned && isTimeoutData
-                                  ? "timeout-data"
-                                  : ""
-                              }
-                            >
-                              {limitAddress(data?.clientDetail?.Address, 15)}
-                            </span>
+                          >
+                            {limitAddress(data?.clientDetail?.Address, 15)}
+                          </span>
 
-                            <div className="dropdown-adddress-menu">
-                              <div className="drop-address">
-                                <p
-                                  className={
-                                    !isAssigned && isTimeoutData
-                                      ? "timeout-data"
-                                      : ""
-                                  }
-                                >
-                                  {data?.clientDetail?.Address}
-                                </p>
-                              </div>
+                          <div className="dropdown-adddress-menu">
+                            <div className="drop-address">
+                              <p
+                                className={
+                                  !isAssigned && isTimeoutData
+                                    ? "timeout-data"
+                                    : ""
+                                }
+                              >
+                                {data?.clientDetail?.Address}
+                              </p>
                             </div>
                           </div>
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data.Description}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data.TypeOfIssue}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data.callbackDate}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                        >
-                          {data.callbackTime}
-                        </td>
-                        <td
-                          className={
-                            !isAssigned && isTimeoutData ? "timeout-data" : ""
-                          }
-                          onClick={() =>
-                            openModal(1, currentCallbackId, EngId, isAssigned)
-                          }
-                        >
-                          {isAssigned ? (
-                            <AssignDropdown
-                              customAssignName="assignNameColor"
-                              name={EngName}
-                              isAssigned={isAssigned}
-                            />
-                          ) : (
-                            <AssignDropdown
-                              customAssign="assignColor"
-                              name="Assign"
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-     
-              {showTicketModal1 && (
-                <AddTicketModals
-                  closeModal={() => setShowTicketModal1(false)}
-                  showTicketModal={showTicketModal1}
-                  callbackId={callbackId}
-                  setRenderTicket={setRenderTicket}
-                  setTicketUpdate={setTicketUpdate}
-                  enggId={enggId}
-                  isAssigned={isAssigned}
-                />
+                        </div>
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data.Description}
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data.TypeOfIssue}
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data.callbackDate}
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        {data.callbackTime}
+                      </td>
+                      <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                        onClick={() =>
+                          openModal(1, currentCallbackId, EngId, isAssigned)
+                        }
+                      >
+                        {isAssigned ? (
+                          <AssignDropdown
+                            customAssignName="assignNameColor"
+                            name={EngName}
+                            isAssigned={isAssigned}
+                          />
+                        ) : (
+                          <AssignDropdown
+                            customAssign="assignColor"
+                            name="Assign"
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
-              {/* TABLE BODY ENDS */}
-            </table>
-          </div>
-          {/* table end here */}
-        </div>
-      </div>
+            </tbody>
 
+            {showTicketModal1 && (
+              <AddTicketModals
+                closeModal={() => setShowTicketModal1(false)}
+                showTicketModal={showTicketModal1}
+                callbackId={callbackId}
+                setRenderTicket={setRenderTicket}
+                setTicketUpdate={setTicketUpdate}
+                enggId={enggId}
+                isAssigned={isAssigned}
+              />
+            )}
+            {/* TABLE BODY ENDS */}
+          </table>
+        </div>
+        {/* table end here */}
+      </div>
+    </div>
   );
 };
 

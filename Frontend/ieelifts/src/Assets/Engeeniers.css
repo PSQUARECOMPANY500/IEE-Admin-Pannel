@@ -10,17 +10,15 @@ body {
   width: 100%;
 }
 
-
-.EngeeniersCard {
+.EngeeniersCardF {
   min-height: 87vh;
   width: 100%;
   background-color: #FFFFFF;
   border-radius: 20px;
   display: grid;
-  /* grid-template-columns:  1fr; */
-  grid-template-areas:'EngeeniersSubCard' ;
+  grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr;
-
+  grid-template-areas: 'SingleEng EngeeniersChat';
 
 }
 
@@ -82,7 +80,19 @@ body {
   position: relative;
 }
 
+.EngeeniersCardT {
+  min-height: 87vh;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'EngeeniersSubCard';
 
+
+
+}
 
 /* 
 .EngeeniersCardD {
@@ -100,34 +110,59 @@ body {
 } */
 
 
-/* .EngeeniersSubCard {
+.EngeeniersSubCard {
   grid-area: EngeeniersSubCard;
-} */
+}
 
 
-
-.AllCards {
+.AllCardsF {
   max-height: 83vh;
   overflow-y: auto;
   margin-bottom: 1.2rem;
   margin-top: 1.2rem;
   width: 100%;
   display: grid;
+  grid-template-columns: 1fr 1fr;
   grid-row-gap: 4rem;
   grid-column-gap: 7rem;
   padding: 2rem 4rem;
- 
+}
 
+.AllCardsT {
+  max-height: 83vh;
+  overflow-y: auto;
+  margin-bottom: 1.2rem;
+  margin-top: 1.2rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row-gap: 4rem;
+  grid-column-gap: 7rem;
+  padding: 2rem 4rem;
 }
 
 
-
-
-.EngeeniersChat{
+.EngeeniersChatF {
 
   border-radius: 1.2rem;
   position: relative;
   margin-top: 5rem;
+  height: 790px;
+
+  margin-bottom: 1.2rem;
+
+
+
+
+}
+
+
+.EngeeniersChatT {
+
+  border-radius: 1.2rem;
+  position: relative;
+  margin-top: 5rem;
+  display: none;
   margin-bottom: 1.2rem;
   height: 790px;
   margin-bottom: 1.2rem;
@@ -414,9 +449,10 @@ body {
   width: 100%;
   background-color: #FFFBF4;
   border-radius: 5px;
-
+  /* margin-top: -30px;
+  margin-left: -40px; */
   box-shadow: 1px 2px 5px 1px #00000029;
-  position: relative;
+  position:relative;
   height: 100%;
   margin-top: 1rem;
 
@@ -446,6 +482,7 @@ body {
 
 
 }
+
 
 
 .engchatmsg-sender-side {
@@ -699,32 +736,25 @@ th {
 .service-table-item,
 .callback-table-item {
 
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    font-size: 0.9rem;
-    color: #444444;
-    font-weight: 400;
-    font-family: 'Poppins';
-    line-height: .9rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 400;
+  font-family: 'Poppins';
+  line-height: .9rem;
 
 }
 
 
+tr>td:nth-child(2) {
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: .9rem;
+}
 
-.callback-table-item tr>td:nth-child(2) {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 490;
-    font-family: 'Poppins';
-    line-height: .9rem;
-}
-.service-table-item tr>td:nth-child(2) {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 490;
-    font-family: 'Poppins';
-    line-height: .9rem;
-}
 .ServiceCardsBottom {
   width: 100%;
   height: 20%;
@@ -1356,7 +1386,7 @@ th {
   outline: none;
   border: none;
   border-radius: 50px;
-  box-shadow: inset 1px 2px 3px #00000029;
+  box-shadow: inset 1px 2px 3px #00000029; 
   position: relative;
   padding: 15px 12px;
   top: 4px;
@@ -1415,7 +1445,7 @@ th {
   height: 100px;
   right: 20px;
   display: flex;
-  gap: 20px;
+  gap:20px;
   font-size: 1.5rem;
   /* padding: 0px 0px; */
   color: #f8ac1d;
@@ -1440,8 +1470,8 @@ th {
   align-items: center;
 }
 
-.text-area-message-eng-card ::placeholder {
-
+.text-area-message-eng-card ::placeholder{
+  
   color: #4444441f;
   opacity: 0.5;
 }
