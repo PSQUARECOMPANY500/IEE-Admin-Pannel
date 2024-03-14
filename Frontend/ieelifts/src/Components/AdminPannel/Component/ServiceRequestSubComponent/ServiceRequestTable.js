@@ -234,7 +234,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
               </tr>
             </>
           ) : (
-            filteredCD.map((value, index) => {
+            filteredCD?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
