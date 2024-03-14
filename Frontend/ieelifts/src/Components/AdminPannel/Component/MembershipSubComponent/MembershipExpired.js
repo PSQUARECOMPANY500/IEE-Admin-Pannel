@@ -112,7 +112,9 @@ const MembershipExpired = ({ DemoData, count }) => {
           )}
 
           {loader ? (
-            <MembershipLoader />
+            <div className="loder_Container">
+              <MembershipLoader />
+            </div>
           ) : (
             <div
               className={`membership_card_scrollable membership_card_scrollable_expired 
