@@ -126,7 +126,9 @@ const TopBar = (props) => {
               <input
                 type="text"
                 placeholder="Search clients"
-                className="search-input"
+                className={`search-input ${
+                  searchValue.length > 0 && "inputSearchWritten"
+                }`}
                 value={searchValue}
                 onChange={handleSearchChange}
               />
@@ -168,7 +170,10 @@ const TopBar = (props) => {
                   {""}
                 </p>
                 {showTicketFilter && (
-                  <div ref={dropdownRef} style={{ position: "absolute",backgroundColor:"white" }}>
+                  <div
+                    ref={dropdownRef}
+                    style={{ position: "absolute", backgroundColor: "white" }}
+                  >
                     <ClientFilterDropdown />
                   </div>
                 )}

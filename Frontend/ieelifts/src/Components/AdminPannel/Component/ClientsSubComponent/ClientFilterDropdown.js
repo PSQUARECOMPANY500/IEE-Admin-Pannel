@@ -74,8 +74,10 @@ const ClientFilterDropdown = () => {
     },
   ];
   return (
+    
     <div className="filter-dropdown">
-      <div className="child-filter-dropdown">
+      <div className="child-filter-dropdown" style={{maxHeight:'1000px',width:'200px', boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px'
+}}>
         {/* <div className="search-bar-div">
           <span className="search-icon-filter">
             <CiSearch />

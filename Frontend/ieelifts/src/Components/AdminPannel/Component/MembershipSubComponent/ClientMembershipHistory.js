@@ -178,13 +178,10 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
       ) : (
         <>
           <div className="no_history">
-            <div className="no_history_up">
-              <span className="no_history_icon">
-                <TbHistoryOff />
-              </span>
-              <span className="no_history_heading">Empty</span>
-            </div>
-            <span className="no_history_subHeading">Sorry no history avilable at this time.</span>
+            <span className="no_history_heading">Empty</span>
+            <span className="no_history_subHeading">
+              Sorry no history avilable at this time.
+            </span>
           </div>
         </>
       )}

@@ -795,22 +795,12 @@ code {
   color: #444444;
 }
 
-.no_history_up {
-  display: flex;
-  flex-direction: column;
-}
-
-.no_history_icon {
-  transform: scale(1.5);
-  color: #444444;
-}
-
 .no_history_heading {
   font-size: 1.5rem;
   font-weight: 500;
 }
 
-.no_history_subHeading{
+.no_history_subHeading {
   font-size: small;
 }
 

@@ -29,17 +29,16 @@ const ClientCallDetails = ({
     if (callDetails && callDetails.clientCallData) {
       setPageData(callDetails.clientCallData);
     }
-  }, [callDetails]);
-  useEffect(() => {
-    dispatch(getClientCallsDetails());
-  }, [dispatch, dataType]);
-  const [showHistory, setShowHistory] = useState([]);
-  // Initialize showHistory when callDetails changes
-  useEffect(() => {
     if (callDetails && Array.isArray(callDetails.clientCallData)) {
       setShowHistory(Array(callDetails.clientCallData.length).fill(false));
     }
   }, [callDetails]);
+
+  useEffect(() => {
+    dispatch(getClientCallsDetails());
+  }, [dispatch, dataType]);
+  const [showHistory, setShowHistory] = useState([]);
+
   const toggleHistory = (index) => {
     setShowHistory((prevState) =>
       prevState.map((value, i) => (i === index ? !value : false))
@@ -200,6 +199,7 @@ const ClientCallDetails = ({
     );
     return formattedDate;
   }
+
   return (
     <>
       <div
@@ -255,11 +255,7 @@ const ClientCallDetails = ({
         }`}
       >
         <div>
-          {callDetails &&
-          callDetails.clientCallData &&
-          pageData.length !== 0 && !Mybutton  ? (
-            callDetails &&
-            callDetails.clientCallData &&
+          {pageData.length !== 0 ? (
             pageData.map((detail, index) => (
               <div
                 key={index}
@@ -286,7 +282,12 @@ const ClientCallDetails = ({
             ))
           ) : (
             <>
-              <div>There are no previous and scheduled calls</div>
+              <div className="no_history">
+                <span className="no_history_heading">Empty</span>
+                <span className="no_history_subHeading">
+                  Sorry no client calls are avilable at this time.
+                </span>
+              </div>
             </>
           )}
         </div>
