@@ -4,8 +4,14 @@ import { useState } from 'react';
 
 
 const EngeeniersSubCard = (props) => {
-  const { isChatOpen, setIsChatOpen,hideCard,setHideCard } = props;
-  const[isActive,setIsActive]=useState();
+const clickCount=props.clickCount;
+const setClickCount=props.setClickCount;
+console.log(clickCount)
+
+
+
+
+
 const data=[
   {
     "Spare": 15,
@@ -109,30 +115,37 @@ const data=[
   }
 ]
 
-
+const updateClick = (index) => {
+  const clickCValue = index === clickCount.num ? 2 : 1;
+  setClickCount({ num: index, clickC: clickCValue });
+}
 
   return (
+ 
 
-
-    <div className='EngeeniersSubCard' style={{cursor:'pointer'}}>
-      <div className={isChatOpen?'AllCardsT':'AllCardsF'}>
+    <div className='EngeeniersSubCard' style={{
+      cursor: 'pointer',
+      display: clickCount.clickC === 2 ? 'none' : 'grid'
+    }}
+    >
+      <div className='AllCards' style={{gridTemplateColumns:clickCount.clickC>0?'1fr 1fr':'1fr 1fr 1fr'}}>
       
       {data.map((e, index) => (
-           <div className='EngCards' onClick={() => setIsChatOpen(false)}>
+           <div className='EngCards' key={index} onClick={()=>updateClick(index)}>
            <div className='EngCardDetails'>
                <div className='EngCardDetailsL'>
 
                </div>
                <div className='EngCardDetailsR'>
-                   <div class="table-container">
-                       <div class="table-item">NAME</div>
-                       <div class="table-item">{e.NAME}</div>
-                       <div class="table-item">ID</div>
-                       <div class="table-item">{e.ID}</div>
-                       <div class="table-item">RATING</div>
-                       <div class="table-item">{e.RATING}</div>
-                       <div class="table-item">LEAVES</div>
-                       <div class="table-item">{e.LEAVES}</div>
+                   <div className="table-container">
+                       <div className="table-item">NAME</div>
+                       <div className="table-item">{e.NAME}</div>
+                       <div className="table-item">ID</div>
+                       <div className="table-item">{e.ID}</div>
+                       <div className="table-item">RATING</div>
+                       <div className="table-item">{e.RATING}</div>
+                       <div className="table-item">LEAVES</div>
+                       <div className="table-item">{e.LEAVES}</div>
                    </div>
                </div>
            </div>

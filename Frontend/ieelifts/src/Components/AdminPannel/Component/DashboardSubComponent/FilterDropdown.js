@@ -19,7 +19,7 @@ const FilterDropdown = ({ className }) => {
             <span className={`search-icon-filter ${className}`}>
               <CiSearch />
             </span>
-            <input type="text" placeholder="search"></input>
+            <input type="text" placeholder="Search" />
           </div>
 
           <div className="filter-dropdowns">

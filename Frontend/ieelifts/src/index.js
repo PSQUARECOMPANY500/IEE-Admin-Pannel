@@ -5,7 +5,7 @@ import App from "./App";
 import "./TicketSection.css"
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 import { Provider } from 'react-redux'; // Import Provider from react-redux
 import store from "./ReduxSetup/Store";

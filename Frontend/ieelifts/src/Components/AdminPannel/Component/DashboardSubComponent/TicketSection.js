@@ -15,6 +15,8 @@ import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminAct
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 import { pincodeDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
+import AddTicketModals from "./AddTicketModals";
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
@@ -247,7 +249,7 @@ const TicketSection = ({ setTicketUpdate }) => {
               </p>
             </div>
             {showTicketModal && (
-              <AddTicketOnCallRequest
+              <AddTicketOnCallRequests
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}
@@ -258,11 +260,13 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-        <div>
-          {/* table start here */}
-          <div className="task-list">
-            <table className="task-list-table">
-              <thead className="task-head-list">
+
+
+             
+         
+          <div className="my_table-container" >
+            <table >
+            <thead>
                 <tr>
                   <th>
                     {" "}
@@ -296,13 +300,16 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </th>
                 </tr>
               </thead>
+       
 
               {/* TABLE BODY STARTS */}
-              <tbody>
+
+      
+      <tbody >
                 {isSearching ? (
                   <>
-                    <tr>
-                      <td colSpan="10">
+                    <tr  style={{overflowX: "hidden"}} >
+                      <td colSpan="10" >
                         <SkeltonLoader
                           width={"80vw"}
                           height={"38px"}
@@ -332,6 +339,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                     </tr>
                   </>
+                  
+                  
                 ) : (
                   filteredCD.map((data, index) => {
                     //console.log("mast ram", data)
@@ -397,8 +406,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                     );
                   }))}
               </tbody>
+     
               {showTicketModal1 && (
-                <AddTicketModal
+                <AddTicketModals
                   closeModal={() => setShowTicketModal1(false)}
                   showTicketModal={showTicketModal1}
                   callbackId={callbackId}
@@ -414,7 +424,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* table end here */}
         </div>
       </div>
-    </div>
+
   );
 };
 

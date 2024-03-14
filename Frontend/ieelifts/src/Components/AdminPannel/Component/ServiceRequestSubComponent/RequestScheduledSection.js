@@ -7,6 +7,7 @@ import { GoPlus } from "react-icons/go";
 import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequest";
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
+import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
 
 
 const RequestScheduledSection = ({setRenderTicket}) => {
@@ -137,18 +138,23 @@ const RequestScheduledSection = ({setRenderTicket}) => {
                 {""}
               </p>
             </div>
-            {showTicketModal && (
-              <AddTicketOnCallRequest
+            {showTicketModal &&
+             (
+              <AddTicketOnCallRequests
+                   
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}
                 requestSection={true}
               />
-            )}
+
+            )
+            
+            }
           </div>
         </div>
 
-        <div>
+        <>
           {/* table start here */}
 
           {handleRequestScheduledTable ? (
@@ -158,7 +164,7 @@ const RequestScheduledSection = ({setRenderTicket}) => {
           )}
 
           {/* table end here */}
-        </div>
+        </>
       </div>
     </div>
   );
