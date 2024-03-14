@@ -5,23 +5,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import MembershipLoader from "./MembershipLoader";
+import {
+  getClientMembershipDetails,
+  getClientMembershipHistoryAction,
+  getClientCallsDetails,
+} from "../../../../ReduxSetup/Actions/AdminActions";
 
+const selectAdminRootReducer = (state) => state.AdminRootReducer;
+const selectRequestLimitedClientDataReducer = createSelector(
+  selectAdminRootReducer,
+  (adminRootReducer) => adminRootReducer.requestLimitedClientDataReducer
+);
+const selectMembershipDetail = createSelector(
+  selectRequestLimitedClientDataReducer,
+  (requestLimitedClientDataReducer) =>
+    requestLimitedClientDataReducer?.membershipDetail
+);
 const MembershipExpired = ({ DemoData, count }) => {
-  // Selectors using Reselect
-  const selectAdminRootReducer = (state) => state.AdminRootReducer;
-  const selectRequestLimitedClientDataReducer = createSelector(
-    selectAdminRootReducer,
-    (adminRootReducer) => adminRootReducer.requestLimitedClientDataReducer
-  );
-  const selectMembershipDetail = createSelector(
-    selectRequestLimitedClientDataReducer,
-    (requestLimitedClientDataReducer) =>
-      requestLimitedClientDataReducer?.membershipDetail
-  );
   const selectExpiredMembership = createSelector(
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expired?.[type]
   );
+
+  // Selectors using Reselect
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -63,9 +69,7 @@ const MembershipExpired = ({ DemoData, count }) => {
           setPage((prevPage) => prevPage + 1);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     return;
   };
 
@@ -78,9 +82,19 @@ const MembershipExpired = ({ DemoData, count }) => {
     }
   }, [handleInfiniteScroll]);
 
+  useEffect(() => {
+    if (pageData && !count) {
+      dispatch(getClientMembershipDetails(pageData[0]?.JobOrderNumber));
+      dispatch(getClientMembershipHistoryAction(pageData[0]?.JobOrderNumber));
+      dispatch(
+        getClientCallsDetails(pageData[0]?.JobOrderNumber, "membership")
+      );
+    }
+  }, [pageData]);
+
   return (
     <>
-      {ref && (
+      {ref && pageData && (
         <div
           className={
             count

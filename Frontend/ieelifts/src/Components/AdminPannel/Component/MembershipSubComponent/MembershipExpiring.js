@@ -5,6 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { createSelector } from "reselect";
 import MembershipLoader from "./MembershipLoader";
+import {
+  getClientMembershipDetails,
+  getClientMembershipHistoryAction,
+  getClientCallsDetails,
+} from "../../../../ReduxSetup/Actions/AdminActions";
+
 const MembershipExpiring = ({ DemoData, count }) => {
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
@@ -26,15 +32,11 @@ const MembershipExpiring = ({ DemoData, count }) => {
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expiring?.[type]
   );
-  // useLayoutEffect(() => {
-  //   setLoader(true);
-  //   requestLimitedClientDataAction(dispatch, type, "expiring", page, 10);
-  //   setLoader(false);
-  // }, [page, type, dispatch]);
+
   useEffect(() => {
     setLoader(true);
     requestLimitedClientDataAction(dispatch, type, "expiring", page, 10)
-      .then(() => setLoader(false))
+      .then(() =>  setLoader(false))
       .catch((error) => {
         setLoader(false);
       });
@@ -63,9 +65,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
           setPage((prevPage) => prevPage + 1);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     const currentRef = ref.current;
@@ -75,6 +75,16 @@ const MembershipExpiring = ({ DemoData, count }) => {
         currentRef.removeEventListener("scroll", handleInfiniteScroll);
     }
   }, [handleInfiniteScroll]);
+
+  useEffect(() => {
+    if (pageData && !count) {
+      dispatch(getClientMembershipDetails(pageData[0]?.JobOrderNumber));
+      dispatch(getClientMembershipHistoryAction(pageData[0]?.JobOrderNumber));
+      dispatch(
+        getClientCallsDetails(pageData[0]?.JobOrderNumber, "membership")
+      );
+    }
+  }, [pageData]);
 
   const scrollbar =
     DemoData.dataType === "Warrenty"
@@ -105,7 +115,11 @@ const MembershipExpiring = ({ DemoData, count }) => {
             <></>
           )}
           {loader ? (
-            <MembershipLoader />
+            <>
+              <div className="loder_Container">
+                <MembershipLoader />
+              </div>
+            </>
           ) : (
             <div
               className={`membership_card_scrollable ${

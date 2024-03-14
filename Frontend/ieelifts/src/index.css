@@ -30,7 +30,13 @@ code {
 
 /* membership loader start */
 
-.loaderMembership {
+.loder_Container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+/* .loaderMembership {
   width: 1rem;
   height: 1rem;
   aspect-ratio: 1;
@@ -55,6 +61,66 @@ code {
   100% {
     box-shadow: 20px 0 #0002, -20px 0 #000;
     background: #000;
+  }
+} */
+
+/* .loaderMembership{
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader{
+  width: 1rem;
+  height: 1rem;
+  background-color: black;
+  border-radius: 50%;
+  right: 0;
+}
+
+.dot1{
+  position: absolute;
+  left:100%
+} */
+.loaderMembership {
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: #FEF3DE;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.dot1 {
+  animation: gooeyEffect1 0.5s infinite alternate;
+  /* left: 0; */
+}
+
+.dot2 {
+  animation: gooeyEffect2 0.5s infinite alternate;
+  left: 0.6rem;
+}
+
+@keyframes gooeyEffect1 {
+  0% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+@keyframes gooeyEffect2 {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.2);
   }
 }
 
@@ -323,6 +389,28 @@ code {
   border-radius: 0.6rem;
   padding: 2%;
   position: relative;
+  cursor: pointer;
+}
+
+.selectedSubCardExpired {
+  background-color: #c10000;
+}
+
+.selecetedSubCardColor {
+  color: #ffffff !important;
+}
+
+.seleceted_SubCard_Background_Warrenty {
+  background-color: #0f351d;
+}
+.seleceted_SubCard_Background_Platinum {
+  background-color: #ff7f00;
+}
+.seleceted_SubCard_Background_Gold {
+  background-color: #f8ac1d;
+}
+.seleceted_SubCard_Background_Silver {
+  background-color: #b7b7b7;
 }
 
 .membership_card_data_display_expired_border {
@@ -503,12 +591,14 @@ code {
 }
 
 .expandCardName {
-  font-size: small;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
 .historyMain {
   margin-top: 2rem;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 @keyframes expandAnimation {
@@ -535,6 +625,10 @@ code {
   color: #ffffff;
   padding: 1% 1.5%;
   border-radius: 50%;
+}
+
+.expansion_labels {
+  margin-top: 1rem;
 }
 
 .after_expansion_labels {
@@ -621,6 +715,10 @@ code {
   text-align: center;
   cursor: pointer;
   padding-bottom: 0.7rem;
+}
+
+.bottomheadingBorder {
+  border-bottom: 2px solid #0f351d;
 }
 
 /* --------------------------------------------- client details css -------------------------------------------- */
@@ -901,9 +999,10 @@ code {
 
 .callButton {
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem ;
   border-radius: 0.6rem;
   cursor: pointer;
+  font-family: "Poppins"
 }
 
 .callNowButton {
@@ -995,12 +1094,17 @@ code {
   background-color: #c10000;
 }
 
+.offerButtonContainer {
+  margin-top: 1rem;
+}
+
 .offerButton {
   background-color: #ffffff;
   color: #0f351d;
   font-weight: 600;
   border-radius: 0.5rem;
   border: 1px solid #0f351d;
+  font-family: "Poppins"
 }
 
 .offerButtonExpired {
@@ -1035,7 +1139,7 @@ code {
 .offerButtonMain {
   cursor: pointer;
   width: 100%;
-  padding: 0.6rem 0%;
+  padding: 1rem 0%;
   transition: all 0.6 ease;
 }
 
@@ -1123,7 +1227,7 @@ code {
 }
 
 .inputNotification {
-  padding: 01rem 1rem;
+  padding: 0.79rem 1rem;
   height: auto;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
@@ -1141,6 +1245,7 @@ code {
   width: 100%;
   margin-right: 1.5rem;
   font-size: medium;
+  font-family: "Poppins"
 }
 
 .chevronDownMembership {
@@ -1181,7 +1286,7 @@ code {
 }
 
 .sendButton {
-  padding: 0.92rem 2rem;
+  padding: 0.95rem 2rem;
   border: 1px solid #0f351d;
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;

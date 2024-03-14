@@ -1,7 +1,7 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
 
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
@@ -9,11 +9,9 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
-  {
-    console.log("rednering!", dataType);
-  }
   const dispatch = useDispatch();
   const [jobOrderNumber, setJobOrderNumber] = useState();
+  const [selected, setSelected] = useState(false);
   const [state, setState] = useState(0);
   useEffect(() => {
     dispatch(getClientMembershipDetails(jobOrderNumber));
@@ -30,6 +28,18 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
     setJobOrderNumber(job);
     setState(state + 1);
   };
+  const clientDetail = useSelector(
+    (state) =>
+      state.AdminRootReducer.requestGetMemberShipClientReducer
+        ?.membershipCleintDetail?.responseData?.jobOrderNumber
+  );
+
+  useEffect(() => {
+    setSelected(false);
+    if (clientDetail && data?.JobOrderNumber === clientDetail) {
+      setSelected(true);
+    }
+  }, [clientDetail]);
 
   const cardClass = isExpired
     ? "membership_card_data_display_expired"
@@ -51,7 +61,9 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
     ? "membership_card_data_display_expiring_border_gold"
     : "membership_card_data_display_expiring_border_silver";
 
-  const jonTitleColor = isExpired
+  const jonTitleColor = selected
+    ? "selecetedSubCardColor"
+    : isExpired
     ? "membership_card_data_jon_title_expiry"
     : dataType === "Warrenty"
     ? "membership_card_data_jon_title_warrenty"
@@ -61,6 +73,15 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
     ? "membership_card_data_jon_title_gold"
     : "membership_card_data_jon_title_silver";
 
+  const selectedBackgroundColor =
+    dataType === "Warrenty"
+      ? "seleceted_SubCard_Background_Warrenty"
+      : dataType === "Platinum"
+      ? "seleceted_SubCard_Background_Platinum"
+      : dataType === "Gold"
+      ? "seleceted_SubCard_Background_Gold"
+      : "seleceted_SubCard_Background_Silver";
+
   const truncatedAddress =
     data?.address && data.address.length > 26
       ? data.address.slice(0, 26) + "..."
@@ -68,23 +89,28 @@ const MembershipSubCard = ({ data, dataType, isExpired, isToShowNumber }) => {
 
   return (
     <div
-      className={`membership_card_data_expire ${cardClassBorder} `}
+      className={`membership_card_data_expire ${cardClassBorder} ${
+        selected && !isExpired && selectedBackgroundColor
+      } ${selected && isExpired && "selectedSubCardExpired"}`}
       onClick={() => {
         !isToShowNumber && handleJob(data?.JobOrderNumber);
       }}
-      style={{ cursor: "pointer" }}
     >
-      <div className="membership_card_data_display">
+      <div
+        className={`membership_card_data_display ${
+          selected && "selecetedSubCardColor"
+        }`}
+      >
         <div className="membership_card_data_jon membership_card_data_info">
           <p className={`membership_card_data_jon_title ${jonTitleColor}`}>
             Jon
           </p>
-          <p className="JON">{data?.JobOrderNumber}</p>
+          <p className={`JON ${selected && "selecetedSubCardColor"}`}>
+            {data?.JobOrderNumber}
+          </p>
         </div>
         <div className={`membership_card_data_info nameAddress`}>
-          <p className={"expandCardName"} style={{ fontSize: "0.9rem" }}>
-            {data?.name}
-          </p>
+          <p className={"expandCardName"}>{data?.name}</p>
           <p className="membership_card_data_address">{truncatedAddress}</p>
         </div>
       </div>

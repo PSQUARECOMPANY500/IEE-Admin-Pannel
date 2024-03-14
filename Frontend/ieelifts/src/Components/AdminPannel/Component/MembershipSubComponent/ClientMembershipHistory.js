@@ -104,7 +104,6 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
                   detail.MemebershipType
                 )}`}
                 onClick={() => toggleHistory(index)}
-                style={{ cursor: "pointer", marginBottom: "10px" }}
               >
                 {showHistory[index] && (
                   <div className="historyDetails">

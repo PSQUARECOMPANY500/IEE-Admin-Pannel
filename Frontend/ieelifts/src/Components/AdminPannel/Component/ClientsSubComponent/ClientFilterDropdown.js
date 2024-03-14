@@ -58,6 +58,16 @@ const ClientFilterDropdown = () => {
       options: locations?.locations?.locations,
     },
     {
+      type: "date",
+      label: "By Date of Handover",
+      options: ["newest", "oldest"],
+    },
+    {
+      type: "name",
+      label: "By Alphabatical",
+      options: ["a-z", "z-a"],
+    },
+    {
       type: "clear",
       label: "Clear Filter",
       options: [],

@@ -1352,6 +1352,44 @@ module.exports.filterClient = async (req, res) => {
           data: clientsInCity,
         });
         break;
+      case "date":
+        let clients;
+        if (condition === "newest") {
+          clients = await clientDetailSchema
+            .find()
+            .sort({ DateOfHandover: -1 });
+        } else if (condition === "oldest") {
+          clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "Invalid date condition",
+          });
+          return;
+        }
+        res.status(200).json({
+          success: true,
+          data: clients,
+        });
+        break;
+      case "name":
+        let sortedClients;
+        if (condition === "a-z") {
+          sortedClients = await clientDetailSchema.find().sort({ name: 1 });
+        } else if (condition === "z-a") {
+          sortedClients = await clientDetailSchema.find().sort({ name: -1 });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "Invalid name condition",
+          });
+          return;
+        }
+        res.status(200).json({
+          success: true,
+          data: sortedClients,
+        });
+        break;
       default:
         res.status(400).json({
           success: false,

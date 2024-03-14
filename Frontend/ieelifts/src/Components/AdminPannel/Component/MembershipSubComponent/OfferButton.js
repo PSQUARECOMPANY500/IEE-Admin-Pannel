@@ -41,8 +41,8 @@ const OfferButton = ({ isExpired, dataType }) => {
       : "";
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <div className="offerButtonContainer">
+    <div className="offerButtonContainer">
+      <div>
         {showHistory && (
           <div className="offerButtons">
             <button

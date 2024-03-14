@@ -4,8 +4,8 @@ import ExpiringComponent from "./ExpiringComponent";
 import ExpiredComponent from "./ExpiredComponent";
 
 const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
-  const [selectedOption, setSelectedOption] = useState("Expired");
- 
+  const [selectedOption, setSelectedOption] = useState("Expiring");
+
   const handleClick = (option) => {
     setSelectedOption(option);
   };
@@ -15,28 +15,25 @@ const MembershipCardDetails = ({ expiringCount, expiredCount, DemoData }) => {
       <div className="expandedMembershipheading">
         <div
           onClick={() => handleClick("Revenue")}
-          className="headingCenter"
-          style={{
-            borderBottom: selectedOption === "Revenue" && "2px solid #0F351D",
-          }}
+          className={`headingCenter ${
+            selectedOption === "Revenue" && "bottomheadingBorder"
+          }`}
         >
           Revenue
         </div>
         <div
           onClick={() => handleClick("Expiring")}
-          className="headingCenter"
-          style={{
-            borderBottom: selectedOption === "Expiring" && "2px solid #0F351D",
-          }}
+          className={`headingCenter ${
+            selectedOption === "Expiring" && "bottomheadingBorder"
+          }`}
         >
           <span>Expiring Soon</span> <span>{expiringCount}</span>
         </div>
         <div
           onClick={() => handleClick("Expired")}
-          style={{
-            borderBottom: selectedOption === "Expired" && "2px solid #0F351D",
-          }}
-          className="headingCenter"
+          className={`headingCenter ${
+            selectedOption === "Expired" && "bottomheadingBorder"
+          }`}
         >
           <span>Expired</span> <span>{expiredCount}</span>
         </div>

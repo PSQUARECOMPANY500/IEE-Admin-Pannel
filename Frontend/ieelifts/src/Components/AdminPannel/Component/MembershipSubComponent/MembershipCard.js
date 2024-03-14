@@ -97,18 +97,12 @@ const MembershipCard = ({
             />
             {order === 1 && setClick && (
               <div
-                style={
-                  order === 1 && setClick
-                    ? { marginTop: "1rem" }
-                    : { display: "none" }
-                }
-                className={
+                className={`${
                   order === 1 && setClick && clickCount !== 1
                     ? "animation"
                     : "animationExpand"
-                }
+                } expansion_labels`}
               >
-            
                 <MembershipCardDetails
                   DemoData={DemoData}
                   expiredCount={DemoData?.Data?.details?.expiredCount}
@@ -117,46 +111,39 @@ const MembershipCard = ({
               </div>
             )}
 
-            <div
-              style={
-                order !== 1 && setClick
-                  ? { marginTop: "1rem" }
-                  : { display: "none" }
-              }
-            >
-              <div className="after_expansion_labels">
-                <span>Revenue:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.totalRevenue !== undefined
-                    ? `${DemoData?.Data?.details?.totalRevenue}`
-                    : " --"}
-                </span>
+            {order !== 1 && setClick && (
+              <div className="expansion_labels">
+                <div className="after_expansion_labels">
+                  <span>Revenue:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.totalRevenue !== undefined
+                      ? `${DemoData?.Data?.details?.totalRevenue}`
+                      : " --"}
+                  </span>
+                </div>
+                <div className="after_expansion_labels">
+                  <span>Expiring Soon:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.expiringCount !== undefined
+                      ? `${DemoData?.Data?.details?.expiringCount}`
+                      : " --"}
+                  </span>
+                </div>
+                <div className="after_expansion_labels after_expansion_labels_expired">
+                  <span>Expired:</span>
+                  <span>
+                    {" "}
+                    {DemoData?.Data?.details?.expiredCount !== undefined
+                      ? `${DemoData?.Data?.details?.expiredCount}`
+                      : " --"}
+                  </span>
+                </div>
               </div>
-              <div className="after_expansion_labels">
-                <span>Expiring Soon:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.expiringCount !== undefined
-                    ? `${DemoData?.Data?.details?.expiringCount}`
-                    : " --"}
-                </span>
-              </div>
-              <div className="after_expansion_labels after_expansion_labels_expired">
-                <span>Expired:</span>
-                <span>
-                  {" "}
-                  {DemoData?.Data?.details?.expiredCount !== undefined
-                    ? `${DemoData?.Data?.details?.expiredCount}`
-                    : " --"}
-                </span>
-              </div>
-            </div>
+            )}
             {!setClick && (
-              <div
-                className={`membership_card_stats `}
-                style={setClick ? { display: "none" } : {}}
-              >
+              <div className={`membership_card_stats `}>
                 <MembershipExpiring
                   DemoData={DemoData}
                   setClick={setClick}
