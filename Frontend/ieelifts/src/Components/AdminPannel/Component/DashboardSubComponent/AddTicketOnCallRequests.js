@@ -272,7 +272,7 @@ const AddTicketOnCallRequests = ({
     else {
       dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)).then(callbackId => {
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
-
+          
           dispatch(
             assignCallBackByAdminAction(
               engDetails?.enggJon,
@@ -310,11 +310,12 @@ const AddTicketOnCallRequests = ({
         <div className="child-modal-container">
 
           <div className="sub-child-modal-container">
-            <div className="cross-icon" onClick={closeModal} style={{ cursor: 'pointer' }}>
-              <RxCross2 />
-            </div>
+        
 
             <div className="req-client-section">
+                  <div className="cross-icon" onClick={closeModal} >
+              <RxCross2 style={{cursor:'pointer'}}/>
+            </div>
               <div className="req-photo-upload-section">
                 <div className="req-photo-container">
                   <img
@@ -337,7 +338,7 @@ const AddTicketOnCallRequests = ({
 
                     <div className="col75">
                       {/* <input className={``} type="text" name="name" placeholder="Enter-Client-Id"  onChange={(e)=>setJon(e.target.value)} /> */}
-                      <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter-Client-Id" />
+                      <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter Jon Number" />
 
                     </div>
                   </div>
@@ -361,7 +362,7 @@ const AddTicketOnCallRequests = ({
                       </div>
                     ) : (
                       <div className="col75">
-                        <SkeltonLoader width="220px" height="10px" />
+                        <SkeltonLoader width="220px"  />
                       </div>
                     )}
 
@@ -382,7 +383,7 @@ const AddTicketOnCallRequests = ({
                       </div>
                     ) : (
                       <div className="col75">
-                        <SkeltonLoader width="220px" height="10px" />
+                        <SkeltonLoader width="220px"  />
                       </div>
                     )}
 
@@ -398,7 +399,7 @@ const AddTicketOnCallRequests = ({
                     ) : (
                       <div className="col75">
                         <div>
-                          <SkeltonLoader width="220px" height="10px" />
+                          <SkeltonLoader width="220px"  />
                         </div>
                       </div>
                     )}
@@ -411,7 +412,7 @@ const AddTicketOnCallRequests = ({
                     </div>
 
                     <div className="col75">
-                      <SingleSetDropdown padding="8px" width="80%" placeholder={"Type Of Issue"}
+                      <SingleSetDropdown padding="8px" width="80%" className='dropdown-chnages' placeholder={"Type Of Issue"} 
                         Details={[{ _id: 1, checklistName: 'Door' }, { _id: 2, checklistName: 'Light' },
                         { _id: 3, checklistName: 'Fan' }, { _id: 4, checklistName: 'Buttons' },
                         { _id: 5, checklistName: 'Lift' }, { _id: 6, checklistName: 'Other' }]}
@@ -421,7 +422,7 @@ const AddTicketOnCallRequests = ({
 
                   <div className="row">
                     <div className="col25">
-                      <label>DESCRIPTION:</label>
+                      <label style={{marginBottom:'2rem'}}>DESCRIPTION:</label>
                     </div>
                     <div className="col75">
                       <textarea
@@ -464,7 +465,7 @@ const AddTicketOnCallRequests = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" height="27px" marginTop={'-5px'} marginLeft={'-25px'} />
+                      <SkeltonLoader width="200px" />
                     </div>)}
 
 
@@ -476,7 +477,7 @@ const AddTicketOnCallRequests = ({
                     {time ? (<div className="membership-form-col2">
                       <p>{time}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" height="27px" marginTop={'-5px'} marginLeft={'-25px'} />
+                      <SkeltonLoader width="200px"  />
                     </div>)}
 
                   </div>
@@ -540,7 +541,7 @@ const AddTicketOnCallRequests = ({
                               alt="lift"
                             />
                           ) : (
-                            <SkeltonLoader width="90px" height="90px" />
+                            <SkeltonLoader width="90px" height="90px"  marginBottom='1.6rem'/>
                           )}
                         </div>
 
@@ -556,7 +557,7 @@ const AddTicketOnCallRequests = ({
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="80px" height="10px" />
+                            <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
                           )}
 
                           {getEnggState ? (
@@ -570,7 +571,7 @@ const AddTicketOnCallRequests = ({
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="80px" height="10px" />
+                            <SkeltonLoader  width="200px" height="20px" marginBottom='10px' />
                           )}
 
                           {getEnggState ? (
@@ -584,7 +585,7 @@ const AddTicketOnCallRequests = ({
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="80px" height="10px" />
+                            <SkeltonLoader  width="200px" height="20px" marginBottom='10px' />
                           )}
 
                           {getEnggState ? (
@@ -598,7 +599,7 @@ const AddTicketOnCallRequests = ({
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="80px" height="10px" />
+                            <SkeltonLoader  width="200px" height="20px" marginBottom='10px' />
                           )}
                         </div>
                       </div>
@@ -624,7 +625,7 @@ const AddTicketOnCallRequests = ({
                             </div>
                           </div>
                         ) : (
-                          <SkeltonLoader width="100px" height="10px" />
+                          <SkeltonLoader  width="200px" height="20px" marginBottom='10px'  />
                         )}
 
                         {getEnggState ? (
@@ -693,11 +694,12 @@ const AddTicketOnCallRequests = ({
                     <div className="col75">
 
                       <SingleSetDropdown
-                        padding="6px"
+                        padding="0.5rem"
                         width="100%"
                         placeholder={"Allot A Checklist"}
                         Details={checkList}
                         onStateChange={handleSingleSetDropdown}
+                        isSearchable={false} 
                       />
                     </div>
                   </div>
@@ -705,12 +707,12 @@ const AddTicketOnCallRequests = ({
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter-Client-Id" />
+                    <input  placeholder="Enter Representative Name (Optional)" />
                   </div>
 
 
                   <div className="col75">
-                    <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter-Client-Id" />
+                    <input placeholder="Enter Representative Number (Optional)" />
                   </div>
 
                   <div className="col75">
@@ -719,19 +721,20 @@ const AddTicketOnCallRequests = ({
                       id="subject"
                       name="subject"
                       style={{
-                        height: "120px",
-                        width: "80%",
+                        height: "105px",
+                        width: "93%",
                         resize: "none",
                       }}
 
                       onChange={(e) => {
                         setMessage(e.target.value);
                       }}
+                      placeholder="Add A Message"
                     ></textarea>
 
                   </div>
 
-                  <div className="footer-section">
+                  <div className="footer-section" style={{width:'80%'}}>
                     <div className="buttons">
                       <button className={`edit-button`}  >Edit</button>
                       <button

@@ -32,12 +32,23 @@ const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChan
         : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
       borderRadius: "5px",
-      fontSize: "17px",
+      fontSize:'0.5rem',
+      height:'30px',
+      fontFamily:'Poppins',
+     
+    
       width: width,
+      color:'red',
       ":hover": {
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
       },
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      fontSize: ".8rem", // Adjust the font size here
+      fontFamily:'Poppins',
+      opacity:'0.6',
     }),
     menu: (provided) => ({
       ...provided,
@@ -56,7 +67,9 @@ const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChan
         color: "#F8AC1D",
         borderRadius: "5px",
       },
+
     }),
+ 
   };
 
   return (
@@ -67,6 +80,7 @@ const SingleSetDropdown = ({ width, padding , placeholder, Details , onStateChan
       value={selectedOption}
       onChange={handleChange}
       isDisabled={editchange ? false : isAssigned}
+      isSearchable={false} 
     />
  
   );
