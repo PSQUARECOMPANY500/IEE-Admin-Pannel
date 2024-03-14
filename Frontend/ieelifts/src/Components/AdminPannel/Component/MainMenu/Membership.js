@@ -32,7 +32,6 @@ const Membership = () => {
       membershipJon.membershipDetail &&
       membershipJon.membershipDetail.data
     ) {
-    
       setCards([
         {
           DemoData: {
@@ -130,8 +129,9 @@ const Membership = () => {
   return (
     <div className="main-container">
       <div
-        className={`membershipCards ${setClick ? `membershipCards_expand ` : "non_expand_gap"
-          } `}
+        className={`membershipCards ${
+          setClick ? `membershipCards_expand ` : "non_expand_gap"
+        } `}
       >
         {cards &&
           cards.map((items, index) => {

@@ -13,8 +13,6 @@ import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from '../Actions/Adm
 import { GET_ALL_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 import { GET_ALL_ASSIGN_CALLBACK } from '../Actions/AdminActions';
 import { GET_CURRENT_DATE_ASSIGN_CALLBACK } from '../Actions/AdminActions';
-/* import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions'; */
-/* import { TICKET_COMPONENT_RENDERED } from '../Actions/AdminActions'; */
 import { GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST } from '../Actions/AdminActions';
 
 import { GET_BOOKED_DATES_FOR_ENGGS } from '../Actions/AdminActions';
@@ -31,6 +29,29 @@ import { GET_LIMITED_CLIENT_DATA } from "../Actions/AdminActions";
 import { GET_LIMITED_CLIENT_DATA_EXPIRED } from "../Actions/AdminActions";
 import { GET_CLIENT_MEMBERSHIP_HISTORY } from "../Actions/AdminActions";
 
+import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
+import { OPEN_MODAL } from "../Actions/AdminActions";
+import { CLOSE_MODAL } from "../Actions/AdminActions";
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+const initialStates = {
+  data:null,
+  isLoggedIn: !!localStorage.getItem("adminData"),
+}
+export const loginAdminReducer = (state=initialStates , action) => {
+  switch (action.type){
+    case LOGIN_SERVICE_ADMIN:
+      return {...state, data:action.payload,isLoggedIn: true};
+      default:
+        return state;
+  }
+
+}
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 const intialState22 = {
@@ -44,6 +65,8 @@ const intialState22 = {
         return state;
     }
   };
+
+
   const intialState21 = {
     clients: null,
   };
@@ -55,6 +78,10 @@ const intialState22 = {
         return state;
     }
   };
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+
   const intialState20 = {
     clientCall: null,
   };
@@ -66,6 +93,9 @@ const intialState22 = {
         return state;
     }
   };
+
+  // --------------------------------------------------------------------------------------------------------------------------------------------------
+
   const intialState19 = {
     membershipCleintDetail: null,
   };
@@ -80,6 +110,9 @@ const intialState22 = {
         return state;
     }
   };
+
+  // --------------------------------------------------------------------------------------------------------------------------------------------------
+
   const intialState18 = {
     membershipCallDetail: null,
   };
@@ -94,6 +127,9 @@ const intialState22 = {
         return state;
     }
   };
+
+  // --------------------------------------------------------------------------------------------------------------------------------------------------
+
   const intialState17 = {
     membershipHistory: null,
   };
@@ -108,6 +144,11 @@ const intialState22 = {
         return state;
     }
   };
+
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------
+
+
   const initialState16 = {
     membershipDetail: {
       expiring: {},
@@ -497,3 +538,29 @@ export const EnggLocationDetailsFetchReducer = (state = initialEnggLocatioDetail
                 return state;
     }
 }
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+  const intialStateOpenModal = {
+    isModalOpen:false
+  }
+  export const modalOpenerReducer = (state=intialStateOpenModal, action) => {
+    switch(action.type) {
+      case 'OPEN_MODAL':
+        return {...state, isModalOpen:true };
+      case 'CLOSE_MODAL':
+        return {...state, isModalOpen:false};
+        default:
+          return state;
+    }
+  }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+

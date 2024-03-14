@@ -9,8 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
-
+const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -18,7 +17,6 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
 
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
-
 
   const [renderTicket, setRenderTicket] = useState(true);
 
@@ -65,7 +63,7 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
 
-  useEffect(() => { }, [checkboxStates]);
+  useEffect(() => {}, [checkboxStates]);
   const handleCheckBoxAll = () => {
     setCheckedAll(!checkedAll);
     setCheckboxStates((prevStates) => {
@@ -119,9 +117,9 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    setFilteredCD(getRequestDetail)
-    setallCD(getRequestDetail)
-  }, [getRequestDetail])
+    setFilteredCD(getRequestDetail);
+    setallCD(getRequestDetail);
+  }, [getRequestDetail]);
 
   useEffect(() => {
     if (timer) {
@@ -146,14 +144,21 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
     };
   }, [searchText, allCD]);
 
-
   function filtersearch(inputValue, searchRestaurant) {
     const filteredResults = searchRestaurant.filter((data) => {
       if (
-        data.clientDetail.name.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.JobOrderNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.PhoneNumber.toLowerCase().includes(inputValue.toLowerCase()) ||
-        data.clientDetail.Address.toLowerCase().includes(inputValue.toLowerCase())
+        data.clientDetail.name
+          .toLowerCase()
+          .includes(inputValue.toLowerCase()) ||
+        data.clientDetail.JobOrderNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.PhoneNumber.toLowerCase().includes(
+          inputValue.toLowerCase()
+        ) ||
+        data.clientDetail.Address.toLowerCase().includes(
+          inputValue.toLowerCase()
+        )
       ) {
         return true;
       }
@@ -161,7 +166,6 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
     });
     return filteredResults;
   }
-
 
   return (
     <div className="task-list">
@@ -209,29 +213,9 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
 
         {/* TABLE BODY STARTS */}
         <>
-                {isSearching ? (
-                  <>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        width={"80vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                  <td colSpan="10">
-                    <SkeltonLoader
-                      width={"80vw"}
-                      height={"38px"}
-                      marginTop={"8px"}
-                      marginBottom={"0px"}
-                    />
-                  </td>
-                </tr>
-                <tr>
+          {isSearching ? (
+            <>
+              <tr>
                 <td colSpan="10">
                   <SkeltonLoader
                     width={"80vw"}
@@ -241,72 +225,98 @@ const ServiceRequestTable = ({ setRenderTicket2 ,searchText}) => {
                   />
                 </td>
               </tr>
-              </>
-                ) : (filteredCD?.map((value) => {
-
-          const isAssignedValue = value?.isAssigned;
-          const enngID = value?.AssignedEng?.id;
-          const name = value?.AssignedEng?.name;
-
-
-          // Check if isAssigned is true, if not, don't render the row
-          if (isAssignedValue) {
-            return null;
-          }
-
-          return (
-            <tbody key={value._id}>
-              <tr className="selected">
-                <td>
-                  {" "}
-                  <CheckBox
-                    id="checkbox1"
-                    checked={checkboxStates.checkbox1}
-                    handleCheckboxChange={() =>
-                      handleCheckBoxSingle("checkbox1")
-                    }
+              <tr>
+                <td colSpan="10">
+                  <SkeltonLoader
+                    width={"80vw"}
+                    height={"38px"}
+                    marginTop={"8px"}
+                    marginBottom={"0px"}
                   />
                 </td>
-                <td>{value.JobOrderNumber}</td>
-                <td>{value?.clientDetail?.name}</td>
-                <td>{value?.clientDetail?.PhoneNumber}</td>
-
-                <td>
-                  <div className="dropdown-address">
-                    <span>
-                      {limitAddress(value?.clientDetail?.Address, 15)}
-                    </span>
-
-                    <div className="dropdown-adddress-menu">
-                      <div className="drop-address">
-                        <p>{value?.clientDetail?.Address}</p>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-
-                <td>{value?.TypeOfIssue}</td>
-                <td>GOLD</td>
-                <td>{value?.RequestDate}</td>
-                <td>{value?.RequestTime}</td>
-
-                <td onClick={() => openModal(4, value?.RequestId, isAssignedValue, enngID)}>
-                  {isAssignedValue ? (
-                    <AssignDropdown
-                      customAssignName="assignNameColor"
-                      name={name}
-                      isAssigned={isAssigned}
-                    />
-                  ) : (
-                    <AssignDropdown customAssign="assignColor" name="Assign" />
-                  )}
+              </tr>
+              <tr>
+                <td colSpan="10">
+                  <SkeltonLoader
+                    width={"80vw"}
+                    height={"38px"}
+                    marginTop={"8px"}
+                    marginBottom={"0px"}
+                  />
                 </td>
               </tr>
-            </tbody>
-          );
-        }))
-      }
-      </>
+            </>
+          ) : (
+            filteredCD?.map((value) => {
+              const isAssignedValue = value?.isAssigned;
+              const enngID = value?.AssignedEng?.id;
+              const name = value?.AssignedEng?.name;
+
+              // Check if isAssigned is true, if not, don't render the row
+              if (isAssignedValue) {
+                return null;
+              }
+
+              return (
+                <tbody key={value._id}>
+                  <tr className="selected">
+                    <td>
+                      {" "}
+                      <CheckBox
+                        id="checkbox1"
+                        checked={checkboxStates.checkbox1}
+                        handleCheckboxChange={() =>
+                          handleCheckBoxSingle("checkbox1")
+                        }
+                      />
+                    </td>
+                    <td>{value.JobOrderNumber}</td>
+                    <td>{value?.clientDetail?.name}</td>
+                    <td>{value?.clientDetail?.PhoneNumber}</td>
+
+                    <td>
+                      <div className="dropdown-address">
+                        <span>
+                          {limitAddress(value?.clientDetail?.Address, 15)}
+                        </span>
+
+                        <div className="dropdown-adddress-menu">
+                          <div className="drop-address">
+                            <p>{value?.clientDetail?.Address}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>{value?.TypeOfIssue}</td>
+                    <td>GOLD</td>
+                    <td>{value?.RequestDate}</td>
+                    <td>{value?.RequestTime}</td>
+
+                    <td
+                      onClick={() =>
+                        openModal(4, value?.RequestId, isAssignedValue, enngID)
+                      }
+                    >
+                      {isAssignedValue ? (
+                        <AssignDropdown
+                          customAssignName="assignNameColor"
+                          name={name}
+                          isAssigned={isAssigned}
+                        />
+                      ) : (
+                        <AssignDropdown
+                          customAssign="assignColor"
+                          name="Assign"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })
+          )}
+        </>
 
         {showTicketModal4 && (
           <ServiceRequestModal

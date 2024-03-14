@@ -1,10 +1,9 @@
 import axios from "axios";
 import config from "../../config";
 
-import {
-  toast
-} from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
+import { Navigate } from "react-router-dom";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
@@ -17,26 +16,29 @@ export const CLEAR_TABLE_DATA = "CLEAR_TABLE_DATA";
 export const ASSIGN_CALLBACK_BY_ADMIN = "ASSIGN_CALLBACK_BY_ADMIN";
 export const GET_ASSIGN_CALLBACK_DETAILS = "GET_ASSIGN_CALLBACK_DETAILS";
 export const GET_ALL_SERVICE_REQUEST = "GET_ALL_SERVICE_REQUEST";
-export const GET_REQUEST_DETAIL_BY_REQUEST_ID = "GET_REQUEST_DETAIL_BY_REQUEST_ID";
+export const GET_REQUEST_DETAIL_BY_REQUEST_ID =
+  "GET_REQUEST_DETAIL_BY_REQUEST_ID";
 
-export const ASSIGN_SERVICE_REQUEST_BY_ADMIN = "ASSIGN_SERVICE_REQUEST_BY_ADMIN";
+export const ASSIGN_SERVICE_REQUEST_BY_ADMIN =
+  "ASSIGN_SERVICE_REQUEST_BY_ADMIN";
 
-export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID = "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
+export const GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID =
+  "GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID";
 
 export const GET_ALL_ASSIGN_SERVICE_REQUEST = "GET_ALL_ASSIGN_SERVICE_REQUEST";
 
 export const GET_ALL_ASSIGN_CALLBACK = "GET_ALL_ASSIGN_CALLBACK";
 
-export const GET_CURRENT_DATE_ASSIGN_CALLBACK = "GET_CURRENT_DATE_ASSIGN_CALLBACK";
-
-/* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
-/* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
-
-export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST = "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
+export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
+  "GET_CURRENT_DATE_ASSIGN_CALLBACK";
+  
+export const GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST =
+  "GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST";
 
 export const GET_BOOKED_DATES_FOR_ENGGS = "GET_BOOKED_DATES_FOR_ENGGS";
 
-export const GET_ENGG_BASIC_DATA_FOR_CROUSER = "GET_ENGG_BASIC_DATA_FOR_CROUSER";
+export const GET_ENGG_BASIC_DATA_FOR_CROUSER =
+  "GET_ENGG_BASIC_DATA_FOR_CROUSER";
 
 export const GET_ENG_ASSIGN_SLOTS = "GET_ENG_ASSIGN_SLOTS";
 
@@ -53,23 +55,58 @@ export const GET_MEMBERSHIP_DATA = "GET_MEMBERSHIP_DATA";
 export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
+
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+
+export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle login Service Admin
+export const loginServiceAdminAction = (AdminId, Password) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/loginAdmin`, {
+        AdminId,
+        Password,
+      });
+      localStorage.setItem("adminData", JSON.stringify(response.data.token));
+
+      dispatch({
+        type: LOGIN_SERVICE_ADMIN,
+        payload: response.data,
+      });
+
+      toast.success("login successfully");
+
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000); // Delay in milliseconds
+    } catch (error) {
+      toast.error("Invalid Credientials");
+      console.log("error while fetching Eng_details", error);
+    }
+  };
+};
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get Engg Basic data in the Engg crouser
 
 export const getEnggBasicDataForCrouserAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggCrouserData`)
-      //console.log(response,"response from eng crousal")
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggCrouserData`
+      );
       dispatch({
         type: GET_ENGG_BASIC_DATA_FOR_CROUSER,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -78,39 +115,37 @@ export const getEnggBasicDataForCrouserAction = () => {
 export const getBookedSlotsforEnggsAction = (date) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAvailbaleEng/?Date=${date}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAvailbaleEng/?Date=${date}`
+      );
       dispatch({
         type: GET_BOOKED_DATES_FOR_ENGGS,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
-
-
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//function to handle get Current Date Assign Service Request 
+//function to handle get Current Date Assign Service Request
 export const getCurrentDateAssignServiceRequestAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignServiceRequest`)
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getCurrentDateAssignServiceRequest`
+      );
       dispatch({
         type: GET_CURRENT_DATE_ASSIGN_SERVICE_REQUEST,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -119,22 +154,18 @@ export const getCurrentDateAssignServiceRequestAction = () => {
 export const getCurrentDateAssignCalbackAction = () => {
   return async (dispatch) => {
     try {
-      //console.log("USEeFFECT CALLED PART 2")
-      const response = await axios.get(`${config.apiUrl}/admin/getCurrentDateAssignCallback`);
-      //console.log("response",response);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getCurrentDateAssignCallback`
+      );
       dispatch({
         type: GET_CURRENT_DATE_ASSIGN_CALLBACK,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
-
-
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -143,21 +174,19 @@ export const getCurrentDateAssignCalbackAction = () => {
 export const getAllAssignCallbackRequestAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAllAssignCallback`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAllAssignCallback`
+      );
 
       dispatch({
         type: GET_ALL_ASSIGN_CALLBACK,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
-
-
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -166,52 +195,66 @@ export const getAllAssignCallbackRequestAction = () => {
 export const getAllAssignServiceRequestAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAllAssignServices`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAllAssignServices`
+      );
       dispatch({
         type: GET_ALL_ASSIGN_SERVICE_REQUEST,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //action to handle get Assign service Request detail By Request Id
 
 export const assignServiceRequestDetailByRequestIdAction = (RequestId) => {
-  // console.log("2");
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAssignRequestDetail/${RequestId}`
+      );
       dispatch({
         type: GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID,
-        payload: response.data
-      })
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
+  };
+};
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle Assign service Request by admin
 
-export const assignserviceRequestByAdmin = (ServiceEnggId, JobOrderNumber, RequestId, AllotAChecklist, Slot, Date, Message, name, enggJon) => {
+export const assignserviceRequestByAdmin = (
+  ServiceEnggId,
+  JobOrderNumber,
+  RequestId,
+  AllotAChecklist,
+  Slot,
+  Date,
+  Message,
+  name,
+  enggJon
+) => {
   return async (dispatch) => {
     try {
-      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
-      const response = await axios.post(`${config.apiUrl}/admin/assignRequest`, {
-        ServiceEnggId,
-        JobOrderNumber,
-        RequestId,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-      });
+      const response = await axios.post(
+        `${config.apiUrl}/admin/assignRequest`,
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          RequestId,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+        }
+      );
 
       await axios.put(`${config.apiUrl}/client/updateServiceRequest`, {
         RequestId,
@@ -220,16 +263,15 @@ export const assignserviceRequestByAdmin = (ServiceEnggId, JobOrderNumber, Reque
       });
       dispatch({
         type: ASSIGN_SERVICE_REQUEST_BY_ADMIN,
-        payload: response.data
-      })
+        payload: response.data,
+      });
 
-      toast.success('Assign Request successfully');
-
+      toast.success("Assign Request successfully");
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //action to handle get request by request Id
@@ -237,51 +279,62 @@ export const assignserviceRequestByAdmin = (ServiceEnggId, JobOrderNumber, Reque
 export const getRequestDetailByRequestIdAction = (RequestId) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getRequestDetailByRequestid/${RequestId}`)
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getRequestDetailByRequestid/${RequestId}`
+      );
 
       dispatch({
         type: GET_REQUEST_DETAIL_BY_REQUEST_ID,
-        payload: response.data
-      })
-
+        payload: response.data,
+      });
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
-  }
-}
-
+  };
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle callBack Assign BY Admin
 
-export const assignCallBackByAdminAction = (ServiceEnggId, JobOrderNumber, callbackId, AllotAChecklist, Slot, Date, Message, name, enggJon) => {
+export const assignCallBackByAdminAction = (
+  ServiceEnggId,
+  JobOrderNumber,
+  callbackId,
+  AllotAChecklist,
+  Slot,
+  Date,
+  Message,
+  name,
+  enggJon
+) => {
   return async (dispatch) => {
     try {
-
-      const response = await axios.post(`${config.apiUrl}/admin/assigncallback`, {
-        ServiceEnggId,
-        JobOrderNumber,
-        callbackId,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-      });
+      const response = await axios.post(
+        `${config.apiUrl}/admin/assigncallback`,
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          callbackId,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+        }
+      );
 
       await axios.put(`${config.apiUrl}/client/updateCallbacks`, {
         callbackId,
         name,
         enggJon,
-      }, );
+      });
 
       dispatch({
         type: ASSIGN_CALLBACK_BY_ADMIN,
-        payload: response.data
-      })
-      toast.success('Assign callback successfully');
+        payload: response.data,
+      });
+      toast.success("Assign callback successfully");
     } catch (error) {
       console.log("error while fetching Eng_details", error);
-      // toast.success('no notification');
     }
   };
 };
@@ -291,24 +344,20 @@ export const assignCallBackByAdminAction = (ServiceEnggId, JobOrderNumber, callb
 export const fetchEnggDetailAction = (EnggId) => {
   return async (dispatch) => {
     try {
-
       if (EnggId === undefined) {
         dispatch({
           type: GET_ENGG_DETAIL,
           payload: null,
         });
       } else {
-        //console.log("EngId ",EnggId);
         const response = await axios.get(
           `${config.apiUrl}/admin/getEnggDetailById/${EnggId}`
         );
-        //console.log("this is the responce fetchEnggDetailAction:",response);
         dispatch({
           type: GET_ENGG_DETAIL,
           payload: response.data,
         });
       }
-
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
@@ -322,7 +371,6 @@ export const fetchChecklistAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getCheckList`);
-      // console.log("checklist", response)
       dispatch({
         type: GET_ALL_CHECKLIST,
         payload: response.data,
@@ -339,7 +387,6 @@ export const fetchAllCallbacksAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/Allcallbacks`);
-      // console.log(response)
       dispatch({
         type: GET_ALL_CALLBACK,
         payload: response.data,
@@ -356,7 +403,6 @@ export const fetchAllServiceRequestsAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/Allservices`);
-      // console.log(response)
       dispatch({
         type: GET_ALL_SERVICE_REQUEST,
         payload: response.data,
@@ -412,25 +458,20 @@ export const fetchAllClientDetailAction = () => {
 export const requestAssignCallbackDetail = (callbackId) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getAssignCallbackDetail/${callbackId}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getAssignCallbackDetail/${callbackId}`
+      );
       //console.log("assign_responce",response.data);
 
       dispatch({
         type: GET_ASSIGN_CALLBACK_DETAILS,
         payload: response.data,
       });
-
     } catch (error) {
       console.log("error while fetching data", error);
     }
-  }
-}
-
-
-
-
-
-
+  };
+};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -449,32 +490,32 @@ return async (dispatch) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */ ) => {
+export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggLocationDetail`
+      );
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,
       });
-
-
     } catch (error) {
       console.log("error while fetching EnggLocation data", error);
     }
-  }
-}
+  };
+};
 
-// -------------------armaan-dev---------------
+// -------------------armaan-dev----------------------------------------------------------------------------------------------------------------------
 
 export const requestGetMemberShipDataAction = () => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
         `${config.apiUrl}/admin/getMembershipDetails`
-        );
-        console.log("responce",response.data)
-      
+      );
+      console.log("responce", response.data);
+
       dispatch({
         type: GET_MEMBERSHIP_DATA,
         payload: response.data,
@@ -484,6 +525,9 @@ export const requestGetMemberShipDataAction = () => {
     }
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 export const requestLimitedClientDataAction = async (
   dispatch,
   dataType,
@@ -500,7 +544,7 @@ export const requestLimitedClientDataAction = async (
         pageSize,
       },
     });
-    console.log("I am in requestLimitedClientDataAction",response.data);
+    console.log("I am in requestLimitedClientDataAction", response.data);
     if (wanted === "expiring") {
       dispatch({
         type: GET_LIMITED_CLIENT_DATA,
@@ -516,6 +560,9 @@ export const requestLimitedClientDataAction = async (
     console.log("error while fetching data", error);
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 export const getClientMembershipHistoryAction = (jobOrderNumber) => {
   return async (dispatch) => {
     try {
@@ -527,7 +574,8 @@ export const getClientMembershipHistoryAction = (jobOrderNumber) => {
         return;
       }
       const response = await axios.get(
-        `${config.apiUrl}/admin/getMembershipHistory`, {
+        `${config.apiUrl}/admin/getMembershipHistory`,
+        {
           params: {
             jobOrderNumber,
           },
@@ -542,6 +590,9 @@ export const getClientMembershipHistoryAction = (jobOrderNumber) => {
     }
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 export const getClientCallsDetails = (jobOrderNumber, callType) => {
   return async (dispatch) => {
     try {
@@ -553,7 +604,8 @@ export const getClientCallsDetails = (jobOrderNumber, callType) => {
         return;
       }
       const response = await axios.get(
-        `${config.apiUrl}/admin/getClientCalls`, {
+        `${config.apiUrl}/admin/getClientCalls`,
+        {
           params: {
             jobOrderNumber,
             callType,
@@ -569,6 +621,9 @@ export const getClientCallsDetails = (jobOrderNumber, callType) => {
     }
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 export const createClientCalls = (jobOrderNumber, callType, callDate) => {
   return async (dispatch) => {
     try {
@@ -586,6 +641,8 @@ export const createClientCalls = (jobOrderNumber, callType, callDate) => {
     }
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const getClientMembershipDetails = (jobOrderNumber) => {
   return async (dispatch) => {
     try {
@@ -597,7 +654,8 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
         return;
       }
       const response = await axios.get(
-        `${config.apiUrl}/admin/getClientDataForMembership`, {
+        `${config.apiUrl}/admin/getClientDataForMembership`,
+        {
           params: {
             jobOrderNumber,
           },
@@ -612,6 +670,9 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
     }
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 export const getClients = () => {
   return async (dispatch) => {
     try {
@@ -641,3 +702,43 @@ export const getfilteredData = (filterCondition) => {
 };
 
 // -------------------armaan-dev---------------
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//open modal action for addEngg component
+
+export const openAddEngggModalAction = () => ({
+  type: "OPEN_MODAL",
+});
+export const closeAddEngggModalAction = () => ({
+  type: "CLOSE_MODAL",
+});
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// IFSC code API : https://ifsc.razorpay.com/
+// PinCode : https://api.postalpincode.in/pincode/
+
+export const getBankDetails = async (IFSCCode) => {
+  try {
+    const response = await axios.get(`https://ifsc.razorpay.com/${IFSCCode}`);
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const getDetailByPinCode = async (pincode) => {
+  try {
+    const response = await axios.get(
+      `https://api.postalpincode.in/pincode/${pincode}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -121,13 +121,13 @@ module.exports.loginClientwithPhoneNumber = async (req, res) => {
     };
 
     const token = generateToken({ Number });
-    res
-      .status(200)
-      .json({
-        message: "You are logged in Successfully",
-        CLientDetailWithPhoneNumber,
-        token,
-      });
+      res
+        .status(200)
+        .json({
+          message: "You are logged in Successfully",
+          CLientDetailWithPhoneNumber,
+          token,
+        });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });

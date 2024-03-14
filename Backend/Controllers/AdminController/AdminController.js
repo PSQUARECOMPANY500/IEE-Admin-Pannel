@@ -24,18 +24,15 @@ const serviceAdmin = require("../../Modals/ServiceAdminModel/ServiceAdminSchema"
 
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
 
-const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema")
+const EnggLeaveServiceRecord = require("../../Modals/ServiceEngineerModals/EnggLeaveSchema");
 
 const ClientCalls = require("../../Modals/ClientDetailModals/ClientCallsSchema");
+
+const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
-//function to handle 
-
-
-
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle Engg Crouser Data on dashboard only   ServiceEnggId, ServiceEnggName, ServiceEnggPic ,averageRating
@@ -45,81 +42,113 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const EnggDetail = await ServiceEnggData.find({});
     const currentDate = new Date();
 
-    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({
-        ServiceEnggId: item.EnggId
-      });
-      const ratingsCount = enggRating.length;
-      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
-      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
-
-      const ServiceEnggId = item.EnggId;
-
-      const serviceAssignments = await ServiceAssigntoEngg.find({
-        ServiceEnggId
-      });
-      const assignScheduleRequests = await AssignSecheduleRequest.find({
-        ServiceEnggId
-      });
-
-      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        Date: data.Date,
-        TaskStatus: data.ServiceProcess,
-      }));
-
-      const filteredServiceAssignments = mainDetails.filter(item => {
-        return item.Date === currentDate.toLocaleDateString('en-GB');
-      });
-
-      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
-        const client = await clientDetailSchema.findOne({
-          JobOrderNumber: assignment.JobOrderNumber
+    const BasicDetail = await Promise.all(
+      EnggDetail.map(async (item) => {
+        const enggRating = await EnggRating.find({
+          ServiceEnggId: item.EnggId,
         });
+        const ratingsCount = enggRating.length;
+        const ratingsSum = enggRating.reduce(
+          (sum, rating) => sum + rating.Rating,
+          0
+        );
+        const averageRating =
+          ratingsCount > 0
+            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
+            : 0;
+
+        const ServiceEnggId = item.EnggId;
+
+        const serviceAssignments = await ServiceAssigntoEngg.find({
+          ServiceEnggId,
+        });
+        const assignScheduleRequests = await AssignSecheduleRequest.find({
+          ServiceEnggId,
+        });
+
+        const mainDetails = serviceAssignments
+          .concat(assignScheduleRequests)
+          .map((data) => ({
+            ServiceEnggId: data.ServiceEnggId,
+            JobOrderNumber: data.JobOrderNumber,
+            Slot: data.Slot,
+            Date: data.Date,
+            TaskStatus: data.ServiceProcess,
+          }));
+
+        const filteredServiceAssignments = mainDetails.filter((item) => {
+          return item.Date === currentDate.toLocaleDateString("en-GB");
+        });
+
+        const filteredServiceAssignmentsWithClientName = await Promise.all(
+          filteredServiceAssignments.map(async (assignment) => {
+            const client = await clientDetailSchema.findOne({
+              JobOrderNumber: assignment.JobOrderNumber,
+            });
+            return {
+              ...assignment,
+              ClientName: client?.name,
+              ClientNumber: client?.PhoneNumber,
+              ClientAddress: client?.Address,
+            };
+          })
+        );
+
+        filteredServiceAssignmentsWithClientName.sort((a, b) => {
+          const timeA = convertTimeToSortableFormat(a.Slot[0]);
+          const timeB = convertTimeToSortableFormat(b.Slot[0]);
+          return timeA - timeB;
+        });
+
         return {
-          ...assignment,
-          ClientName: client?.name,
-          ClientNumber: client?.PhoneNumber,
-          ClientAddress: client?.Address
+          EnggObjId: item._id,
+          ServiceEnggId: item.EnggId,
+          ServiceEnggName: item.EnggName,
+          ServiceEnggPic: item.EnggPhoto,
+          averageRating,
+          filteredServiceAssignmentsWithClientName,
         };
-      }));
-
-      filteredServiceAssignmentsWithClientName.sort((a, b) => {
-        const timeA = convertTimeToSortableFormat(a.Slot[0]);
-        const timeB = convertTimeToSortableFormat(b.Slot[0]);
-        return timeA - timeB;
-      });
-
-      return {
-        EnggObjId: item._id,
-        ServiceEnggId: item.EnggId,
-        ServiceEnggName: item.EnggName,
-        ServiceEnggPic: item.EnggPhoto,
-        averageRating,
-        filteredServiceAssignmentsWithClientName
-      };
-    }));
+      })
+    );
 
     res.status(200).json({
-      BasicDetailForCrouser: BasicDetail.filter(item => !item.error)
+      BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
+};
 
 function convertTimeToSortableFormat(time) {
-  const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
-  return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
+  const [startTime, endTime] = time.split("-").map((slot) =>
+    slot
+      .trim()
+      .split(":")
+      .map((part) => parseInt(part))
+  );
+  return (
+    startTime[0] * 60 +
+    (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 +
+    (startTime[0] >= 12 ? 720 : 0) +
+    (startTime[0] === 12 ? -720 : 0)
+  );
 }
 function convertTimeToSortableFormat(time) {
-  const [startTime, endTime] = time.split('-').map(slot => slot.trim().split(':').map(part => parseInt(part)));
-  return startTime[0] * 60 + (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 + (startTime[0] >= 12 ? 720 : 0) + (startTime[0] === 12 ? -720 : 0);
+  const [startTime, endTime] = time.split("-").map((slot) =>
+    slot
+      .trim()
+      .split(":")
+      .map((part) => parseInt(part))
+  );
+  return (
+    startTime[0] * 60 +
+    (startTime[1] + (startTime[0] >= 12 ? 12 : 0)) * 60 +
+    (startTime[0] >= 12 ? 720 : 0) +
+    (startTime[0] === 12 ? -720 : 0)
+  );
 }
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -127,15 +156,13 @@ function convertTimeToSortableFormat(time) {
 
 module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
   try {
-    const {
-      Date
-    } = req.query;
+    const { Date } = req.query;
 
     const assignCallbackDate = await ServiceAssigntoEngg.find({
-      Date
+      Date,
     });
     const assignRequestDate = await AssignSecheduleRequest.find({
-      Date
+      Date,
     });
 
     const combinedData = [...assignCallbackDate, ...assignRequestDate];
@@ -150,81 +177,76 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
     });
 
     // Converting object into array of objects
-    const result = await Promise.all(Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
-      const enggDetails = await ServiceEnggBasicSchema.findOne({
-        EnggId: ServiceEnggId
-      });
-      return {
-        ServiceEnggId,
-        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
-        ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
-        slots: slotsByEnggId[ServiceEnggId],
-      }
-
-
-    }));
+    const result = await Promise.all(
+      Object.keys(slotsByEnggId).map(async (ServiceEnggId) => {
+        const enggDetails = await ServiceEnggBasicSchema.findOne({
+          EnggId: ServiceEnggId,
+        });
+        return {
+          ServiceEnggId,
+          ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
+          ServiceEnggName: enggDetails ? enggDetails.EnggName : "Unknown",
+          slots: slotsByEnggId[ServiceEnggId],
+        };
+      })
+    );
 
     res.status(200).json({
-      BookedSlots: result
+      BookedSlots: result,
     });
-
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
-
-
-
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get current date Assign Service Detail
 module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = new Date().toLocaleDateString('en-GB')
+    const currentDate = new Date().toLocaleDateString("en-GB");
     const currentDetailServiceRequest = await AssignSecheduleRequest.find({
-      Date: currentDate
+      Date: currentDate,
     });
 
     if (currentDetailServiceRequest.length === 0) {
       return res.status(400).json({
-        message: "no Service Request for today's"
-      })
+        message: "no Service Request for today's",
+      });
     }
 
-    const serviceRequestDetail = await Promise.all(currentDetailServiceRequest.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({
-        EnggId: item.ServiceEnggId
+    const serviceRequestDetail = await Promise.all(
+      currentDetailServiceRequest.map(async (item) => {
+        const enggDetail = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        });
+        const clientDetail = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
+
+        //extract only specific field
+
+        const enggName = enggDetail ? enggDetail.EnggName : null;
+        const clientName = clientDetail ? clientDetail.name : null;
+
+        return {
+          ...item._doc,
+          enggName,
+          clientName,
+        };
       })
-      const clientDetail = await clientDetailSchema.findOne({
-        JobOrderNumber: item.JobOrderNumber
-      })
-
-      //extract only specific field
-
-      const enggName = enggDetail ? enggDetail.EnggName : null;
-      const clientName = clientDetail ? clientDetail.name : null;
-
-      return {
-        ...item._doc,
-        enggName,
-        clientName
-      }
-    }))
+    );
     return res.status(200).json({
-      serviceRequestDetail
+      serviceRequestDetail,
     });
-
   } catch (error) {
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
-
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle get AssignCallbackDetail of current date
@@ -232,40 +254,42 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
     const currentDate = new Date().toLocaleDateString("en-GB");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
-      Date: currentDate
+      Date: currentDate,
     });
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
-        message: "no callback for today's"
-      })
+        message: "no callback for today's",
+      });
     }
 
-    const callbackWithDetails = await Promise.all(currentDetailCallback.map(async (item) => {
-      const enggDetail = await ServiceEnggData.findOne({
-        EnggId: item.ServiceEnggId
-      })
-      const clientdetail = await clientDetailSchema.findOne({
-        JobOrderNumber: item.JobOrderNumber
-      })
+    const callbackWithDetails = await Promise.all(
+      currentDetailCallback.map(async (item) => {
+        const enggDetail = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        });
+        const clientdetail = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
 
-      // Extract only specific fields from enggDetail and clientDetail
-      const enggName = enggDetail ? enggDetail.EnggName : null;
-      const clientName = clientdetail ? clientdetail.name : null;
+        // Extract only specific fields from enggDetail and clientDetail
+        const enggName = enggDetail ? enggDetail.EnggName : null;
+        const clientName = clientdetail ? clientdetail.name : null;
 
-      return {
-        ...item._doc,
-        enggName,
-        clientName
-      }
-    }))
+        return {
+          ...item._doc,
+          enggName,
+          clientName,
+        };
+      })
+    );
     return res.status(200).json({
-      callbackWithDetails
+      callbackWithDetails,
     });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -279,23 +303,19 @@ module.exports.getAllAssignCallbacks = async (req, res) => {
     const allAssignCallbacks = await ServiceAssigntoEngg.find({});
     if (!allAssignCallbacks || allAssignCallbacks.length === 0) {
       return res.status(400).json({
-        message: "No callback"
-      })
+        message: "No callback",
+      });
     }
     return res.status(200).json({
-      allAssignCallbacks
+      allAssignCallbacks,
     });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
-
-
-
-
+};
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 //functio to handle get all Referals for admin
@@ -304,18 +324,15 @@ module.exports.getAllreferals = async (req, res) => {
     const allReferals = await ReferalSchema.find({});
     return res.status(200).json({
       message: "All referals fetched Successfully",
-      Referals: allReferals
-    })
+      Referals: allReferals,
+    });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
-
-
-
+};
 
 //function to handle get ALL Aassign service request by admin from the assignserviceRequestTable
 
@@ -324,41 +341,45 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     const assignServicerequest = await AssignSecheduleRequest.find();
 
     // Get all unique JobOrderNumbers and AllotAChecklist ids
-    const jobOrderNumbers = assignServicerequest.map(request => request.JobOrderNumber);
-    const allotAChecklistIds = assignServicerequest.map(request => request.AllotAChecklist);
+    const jobOrderNumbers = assignServicerequest.map(
+      (request) => request.JobOrderNumber
+    );
+    const allotAChecklistIds = assignServicerequest.map(
+      (request) => request.AllotAChecklist
+    );
     const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
     const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
 
     // Fetch client details for each unique JobOrderNumber
     const clientDetails = await clientDetailSchema.find({
       JobOrderNumber: {
-        $in: uniqueJobOrderNumbers
-      }
+        $in: uniqueJobOrderNumbers,
+      },
     });
 
     // Fetch checklist details for each unique AllotAChecklist id
     const checklistDetails = await ChecklistModal.find({
       _id: {
-        $in: uniqueAllotAChecklistIds
-      }
+        $in: uniqueAllotAChecklistIds,
+      },
     });
 
     // Create a map for quick access to client and checklist details
     const clientMap = {};
-    clientDetails.forEach(client => {
+    clientDetails.forEach((client) => {
       clientMap[client.JobOrderNumber] = client;
     });
 
     const checklistMap = {};
-    checklistDetails.forEach(checklist => {
+    checklistDetails.forEach((checklist) => {
       checklistMap[checklist._id] = checklist;
     });
 
     // Combine assign service requests with client and checklist details
-    const clientdetailsEmbeded = assignServicerequest.map(request => ({
+    const clientdetailsEmbeded = assignServicerequest.map((request) => ({
       ...request._doc,
       clientDetail: clientMap[request.JobOrderNumber] || null,
-      checklistDetail: checklistMap[request.AllotAChecklist] || null
+      checklistDetail: checklistMap[request.AllotAChecklist] || null,
     }));
 
     res.status(200).json({
@@ -368,22 +389,19 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
   } catch (error) {
     console.error("Error creating engg detail:", error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // function to handle get all engg Detail by Id
 module.exports.getEnggDetail = async (req, res) => {
   try {
-    const {
-      EnggId
-    } = req.params;
+    const { EnggId } = req.params;
 
     const enggDetail = await ServiceEnggBasicSchema.findOne({
-      EnggId
+      EnggId,
     });
 
     if (!enggDetail) {
@@ -399,7 +417,7 @@ module.exports.getEnggDetail = async (req, res) => {
   } catch (error) {
     console.error("Error creating engg detail:", error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -409,10 +427,7 @@ module.exports.getEnggDetail = async (req, res) => {
 //function to handle insert data in the { checkList }
 module.exports.createCheckList = async (req, res) => {
   try {
-    const {
-      checklistName,
-      subcategories
-    } = req.body;
+    const { checklistName, subcategories } = req.body;
 
     const newCheckList = await ChecklistModal.create({
       checklistName,
@@ -425,7 +440,7 @@ module.exports.createCheckList = async (req, res) => {
   } catch (error) {
     console.error("Error creating checklist:", error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -437,16 +452,14 @@ module.exports.getAllChecklist = async (req, res) => {
   try {
     const checklist = await ChecklistModal.find({});
 
-    res
-      .status(200)
-      .json({
-        message: "fetch checklist sucessfully",
-        Checklists: checklist
-      });
+    res.status(200).json({
+      message: "fetch checklist sucessfully",
+      Checklists: checklist,
+    });
   } catch (error) {
     console.error("Error while getting checklist:", error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -470,14 +483,16 @@ module.exports.assignCallbacks = async (req, res) => {
 
     // Check if the callbackId already exists
     const existingCallback = await ServiceAssigntoEngg.findOne({
-      callbackId
+      callbackId,
     });
 
     if (existingCallback) {
       // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate({
-          callbackId
-        }, {
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        {
+          callbackId,
+        },
+        {
           ServiceEnggId,
           JobOrderNumber,
           AllotAChecklist,
@@ -485,8 +500,9 @@ module.exports.assignCallbacks = async (req, res) => {
           Date,
           Message,
           ServiceProcess,
-        }, {
-          new: true
+        },
+        {
+          new: true,
         } // Return the updated document
       );
     } else {
@@ -514,7 +530,7 @@ module.exports.assignCallbacks = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -538,23 +554,27 @@ module.exports.AssignServiceRequests = async (req, res) => {
     let callback;
 
     const existingCallback = await AssignSecheduleRequest.findOne({
-      RequestId
+      RequestId,
     });
 
     if (existingCallback) {
-      callback = await AssignSecheduleRequest.findOneAndUpdate({
-        RequestId
-      }, {
-        ServiceEnggId,
-        JobOrderNumber,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-        ServiceProcess,
-      }, {
-        new: true
-      });
+      callback = await AssignSecheduleRequest.findOneAndUpdate(
+        {
+          RequestId,
+        },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        {
+          new: true,
+        }
+      );
     } else {
       callback = await AssignSecheduleRequest.create({
         ServiceEnggId,
@@ -579,7 +599,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -611,7 +631,7 @@ module.exports.getAllCallbacks = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -626,15 +646,14 @@ module.exports.getAllRequests = async (req, res) => {
     const clientRequestDetail = await Promise.all(
       serviceRequests.map(async (Requests) => {
         const clientDetail = await clientDetailSchema.findOne({
-          JobOrderNumber: Requests.JobOrderNumber
-        })
+          JobOrderNumber: Requests.JobOrderNumber,
+        });
         return {
           ...Requests._doc,
-          clientDetail: clientDetail
-        }
+          clientDetail: clientDetail,
+        };
       })
-    )
-
+    );
 
     res.status(200).json({
       message: "all services Requests fetched Succesfully",
@@ -643,31 +662,27 @@ module.exports.getAllRequests = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
 //Function to handle get Callbackdetail By CallbackId
 module.exports.getCallbackDetailByCallbackId = async (req, res) => {
   try {
-    const {
-      callbackId
-    } = req.params;
+    const { callbackId } = req.params;
 
     const clientCallbacksDetails = await getAllCalbacks.findOne({
-      callbackId
+      callbackId,
     });
 
     // console.log("HE",clientCallbacksDetails)
 
     if (!clientCallbacksDetails) {
       res.status(404).json({
-        message: "no data found with this callback id"
+        message: "no data found with this callback id",
       });
     }
 
@@ -688,7 +703,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -697,17 +712,15 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
 //Function to handle get Request detail By RequestId
 module.exports.getRequestDetailByRequestId = async (req, res) => {
   try {
-    const {
-      RequestId
-    } = req.params;
+    const { RequestId } = req.params;
 
     const clientRequestDetails = await getAllServiceRequest.findOne({
-      RequestId
+      RequestId,
     });
     // console.log("clientRequestDetails",clientRequestDetails)
     if (!clientRequestDetails) {
       res.status(404).json({
-        message: "no data found with this Request id"
+        message: "no data found with this Request id",
       });
     }
 
@@ -728,7 +741,7 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -747,7 +760,7 @@ module.exports.getAllClientsData = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -767,7 +780,7 @@ module.exports.getAllServiceEnggData = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -777,16 +790,14 @@ module.exports.getAllServiceEnggData = async (req, res) => {
 // function to handle getAssign Callback By CallbackId
 module.exports.getAssignCallbackByCallbackId = async (req, res) => {
   try {
-    const {
-      callbackId
-    } = req.params;
+    const { callbackId } = req.params;
 
     const callbackDetail = await ServiceAssigntoEngg.findOne({
-      callbackId
+      callbackId,
     });
     if (!callbackDetail) {
       return res.status(404).json({
-        error: "Callback not found"
+        error: "Callback not found",
       });
     }
 
@@ -794,11 +805,9 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
       EnggId: callbackDetail.ServiceEnggId,
     });
     if (!serviceEnggDetail) {
-      return res
-        .status(404)
-        .json({
-          error: "Service Engineer details not found"
-        });
+      return res.status(404).json({
+        error: "Service Engineer details not found",
+      });
     }
     const checkList = await ChecklistModal.findOne({
       _id: callbackDetail.AllotAChecklist,
@@ -806,7 +815,7 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
 
     if (!checkList) {
       return res.status(404).json({
-        error: "Checklist not found"
+        error: "Checklist not found",
       });
     }
     const callbackdetails = {
@@ -816,12 +825,12 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
     };
 
     res.status(200).json({
-      callbackdetails: callbackdetails
+      callbackdetails: callbackdetails,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -830,16 +839,14 @@ module.exports.getAssignCallbackByCallbackId = async (req, res) => {
 // function to handle get Assign service request By ServiceId
 module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
   try {
-    const {
-      RequestId
-    } = req.params;
+    const { RequestId } = req.params;
 
     const RequestDetail = await AssignSecheduleRequest.findOne({
-      RequestId
+      RequestId,
     });
     if (!RequestDetail) {
       return res.status(404).json({
-        error: "Request not found"
+        error: "Request not found",
       });
     }
 
@@ -847,11 +854,9 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
       EnggId: RequestDetail.ServiceEnggId,
     });
     if (!serviceEnggDetail) {
-      return res
-        .status(404)
-        .json({
-          error: "Service Engineer details not found"
-        });
+      return res.status(404).json({
+        error: "Service Engineer details not found",
+      });
     }
     const checkList = await ChecklistModal.findOne({
       _id: RequestDetail.AllotAChecklist,
@@ -859,7 +864,7 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
 
     if (!checkList) {
       return res.status(404).json({
-        error: "Checklist not found"
+        error: "Checklist not found",
       });
     }
     const callbackdetails = {
@@ -869,12 +874,12 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
     };
 
     res.status(200).json({
-      details: callbackdetails
+      details: callbackdetails,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -908,16 +913,14 @@ module.exports.createClientMemebership = async (req, res) => {
       isDisable,
     });
 
-    res
-      .status(201)
-      .json({
-        message: "memebership created successfully",
-        MemberShipDetails
-      });
+    res.status(201).json({
+      message: "memebership created successfully",
+      MemberShipDetails,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
@@ -938,24 +941,23 @@ module.exports.getClientMemebership = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      ...calculations
+      ...calculations,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "internal server error"
+      error: "internal server error",
     });
   }
 };
-
-
 
 // to filter the membership
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //function to get all booked dates {amit-features}
 
 module.exports.getBookedDates = async (req, res) => {
-  const timeSlots = [{
+  const timeSlots = [
+    {
       slot: "9:00-10:00",
     },
     {
@@ -989,7 +991,7 @@ module.exports.getBookedDates = async (req, res) => {
 
     const groupedDates = {};
 
-    data.forEach(entry => {
+    data.forEach((entry) => {
       if (!groupedDates[entry.Date]) {
         groupedDates[entry.Date] = {
           slots: [],
@@ -1006,19 +1008,17 @@ module.exports.getBookedDates = async (req, res) => {
       if (allSlots === slotLength) {
         groupedDates[date].isSlotAvailable = false;
       }
-    })
+    });
 
     res.json(groupedDates);
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error",
-      "message": error.message
+      message: error.message,
     });
   }
-
-}
+};
 
 //....................................................................................................................................................................
 // This is the api for fetching Eng details acc to current Date for engg crousel
@@ -1026,8 +1026,8 @@ module.exports.getBookedDates = async (req, res) => {
 const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
   const clients = await clientDetailSchema.find({
     JobOrderNumber: {
-      $in: jobOrderNumbers
-    }
+      $in: jobOrderNumbers,
+    },
   });
   return clients.reduce((map, client) => {
     map[client.JobOrderNumber] = client.name;
@@ -1037,169 +1037,197 @@ const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
 
 module.exports.getEngAssignSlotsDetails = async (req, res) => {
   try {
-    const {
-      ServiceEnggId
-    } = req.body;
-    const currentDate = new Date().toLocaleDateString('en-GB');
+    const { ServiceEnggId } = req.body;
+    const currentDate = new Date().toLocaleDateString("en-GB");
 
     // Fetch data from both tables concurrently using Promise.all
     const [serviceAssignments, scheduleRequests] = await Promise.all([
       ServiceAssigntoEngg.find({
         ServiceEnggId,
-        Date: currentDate
+        Date: currentDate,
       }),
       AssignSecheduleRequest.find({
         ServiceEnggId,
-        Date: currentDate
-      })
+        Date: currentDate,
+      }),
     ]);
 
     const jobOrderNumbers = [
       ...new Set([
-        ...serviceAssignments.map(assignment => assignment.JobOrderNumber),
-        ...scheduleRequests.map(request => request.JobOrderNumber)
-      ])
+        ...serviceAssignments.map((assignment) => assignment.JobOrderNumber),
+        ...scheduleRequests.map((request) => request.JobOrderNumber),
+      ]),
     ];
 
-    const clientDetailsMap = await getClientDetailsByJobOrderNumbers(jobOrderNumbers);
+    const clientDetailsMap = await getClientDetailsByJobOrderNumbers(
+      jobOrderNumbers
+    );
 
     const finalData = {
-      serviceAssignments: serviceAssignments.map(assignment => ({
+      serviceAssignments: serviceAssignments.map((assignment) => ({
         ...assignment._doc,
-        ClientName: clientDetailsMap[assignment.JobOrderNumber]
+        ClientName: clientDetailsMap[assignment.JobOrderNumber],
       })),
-      scheduleRequests: scheduleRequests.map(request => ({
+      scheduleRequests: scheduleRequests.map((request) => ({
         ...request._doc,
-        ClientName: clientDetailsMap[request.JobOrderNumber]
+        ClientName: clientDetailsMap[request.JobOrderNumber],
       })),
-      currentDate
+      currentDate,
     };
 
     // Send the final data as the response
     res.status(200).json({
-      currentateData: finalData
+      currentateData: finalData,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error",
-      message: error.message
+      message: error.message,
     });
   }
 };
 
+//.......................................................................................................................................................................
 
+//function to handle login service Engg (Preet)
+module.exports.loginServiceAdmin = async (req, res) => {
+  try {
+    const { AdminId, Password } = req.body;
 
+    const Admin = await serviceAdmin.findOne({ AdminId });
+
+    if (!Admin || Admin.Password !== Password) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const token = generateToken({
+      _id: Admin._id,
+      AdminName: Admin.AdminName,
+      Phone: Admin.Phone,
+      Role: Admin.ServiceAdmin,
+      AdminId: Admin.AdminId,
+    });
+
+    res.status(200).json({
+      message: "You are logged in Successfully",
+      Admin,
+      token,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server Error",
+      message: error.message,
+    });
+  }
+};
 
 //....................................................................................................................................................................
 
 module.exports.createServiceAdmin = async (req, res) => {
   try {
-    const {
-      AdminName,
-      Password,
-      Phone,
-      Role,
-      AdminId
-    } = req.body;
+    const { AdminName, Password, Phone, Role, AdminId } = req.body;
 
     const newData = await serviceAdmin.create({
       AdminName,
       Password,
       Phone,
       Role,
-      AdminId
-    })
-
-    return res.status(201).json({
-      newData
+      AdminId,
     });
 
+    return res.status(201).json({
+      newData,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error",
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
-
-
+};
 
 //....................................................................................................................................................................
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const {
-      ServiceEnggId
-    } = req.body;
+    const { ServiceEnggId } = req.body;
     const len = 5;
     const today = new Date();
-    const dates = Array.from({
-      length: len
-    }, (_, i) => {
-      const previousDay = new Date(today);
-      previousDay.setDate(today.getDate() - 2 + i);
-      return previousDay.toLocaleDateString("en-GB");
-    });
+    const dates = Array.from(
+      {
+        length: len,
+      },
+      (_, i) => {
+        const previousDay = new Date(today);
+        previousDay.setDate(today.getDate() - 2 + i);
+        return previousDay.toLocaleDateString("en-GB");
+      }
+    );
 
-    const attendanceData = await Promise.all(dates.map(async (date) => {
-      const response = await EnggAttendanceServiceRecord.findOne({
-        ServiceEnggId,
-        Date: date
+    const attendanceData = await Promise.all(
+      dates.map(async (date) => {
+        const response = await EnggAttendanceServiceRecord.findOne({
+          ServiceEnggId,
+          Date: date,
+        });
+        return response;
       })
-      return response;
-    }))
+    );
 
-    console.log(attendanceData)
+    console.log(attendanceData);
 
     res.status(200).json({
-      attendanceData
+      attendanceData,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error in fetchEnggAttendance",
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.approveLeaveByAdmin = async (req, res) => {
   try {
-    const {
-      id,
-      IsApproved
-    } = req.body;
-    await EnggLeaveServiceRecord.findByIdAndUpdate({
-      _id: id
-    }, {
-      IsApproved: IsApproved,
-    })
+    const { id, IsApproved } = req.body;
+    await EnggLeaveServiceRecord.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        IsApproved: IsApproved,
+      }
+    );
 
     if (newData.TotalLeave >= newData.UsedLeave) {
       const used_Leave = parseInt(newData.UsedLeave) + 1;
-      const newData = await EnggLeaveServiceRecord.findByIdAndUpdate({
-        _id: id
-      }, {
-        UsedLeave: used_Leave,
-      })
+      const newData = await EnggLeaveServiceRecord.findByIdAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          UsedLeave: used_Leave,
+        }
+      );
 
       return res.status(201).json({
-        newData
+        newData,
       });
     }
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Internal server Error in approveLeaveByAdmin",
-      message: error.message
-    })
+      message: error.message,
+    });
   }
-}
+};
 
 // -----------------------------------------------------------------------
 // {armaan-dev}
@@ -1223,7 +1251,7 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
     res.status(201).json({
       success: true,
-      clientCall
+      clientCall,
     });
   } catch (error) {
     console.log(error);
@@ -1246,21 +1274,20 @@ module.exports.createClientCallDetails = async (req, res) => {
 //     });
 //   }
 // };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getClientCalls = async (req, res) => {
   try {
-    const {
-      callType,
-      jobOrderNumber
-    } = req.query;
+    const { callType, jobOrderNumber } = req.query;
     const clientCallData = await ClientCalls.find({
       jobOrderNumber,
       callType,
     }).sort({
-      callDate: 1
+      callDate: 1,
     }); // Sort by callDate in ascending order
     res.status(201).json({
       success: true,
-      clientCallData
+      clientCallData,
     });
   } catch (error) {
     console.log(error);
@@ -1270,11 +1297,10 @@ module.exports.getClientCalls = async (req, res) => {
     });
   }
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getClientData = async (req, res) => {
   try {
-    const {
-      jobOrderNumber
-    } = req.query;
+    const { jobOrderNumber } = req.query;
     const clientDetails = await clientDetailSchema.find({
       JobOrderNumber: jobOrderNumber,
     });
@@ -1288,7 +1314,7 @@ module.exports.getClientData = async (req, res) => {
     };
     res.status(201).json({
       success: true,
-      responseData
+      responseData,
     });
   } catch (error) {
     console.log(error);
@@ -1317,11 +1343,10 @@ module.exports.getClientData = async (req, res) => {
 //     });
 //   }
 // };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getMembershipHistory = async (req, res) => {
   try {
-    const {
-      jobOrderNumber
-    } = req.query;
+    const { jobOrderNumber } = req.query;
     const membershipHistory = await AssignMemeberships.find({
       JobOrderNumber: jobOrderNumber,
     });
@@ -1329,7 +1354,7 @@ module.exports.getMembershipHistory = async (req, res) => {
       return a.EndDate < Date.now(); // Added return statement here
     });
     const ratings = await EnggRating.find({
-      JobOrderNumber: jobOrderNumber
+      JobOrderNumber: jobOrderNumber,
     });
     let averageRating = 0;
     let ratingCount = 0;
@@ -1345,11 +1370,11 @@ module.exports.getMembershipHistory = async (req, res) => {
     let calculateRating = averageRating / ratingCount;
     const response = {
       historyData,
-      calculateRating
+      calculateRating,
     };
     res.status(201).json({
       success: true,
-      response
+      response,
     });
   } catch (error) {
     console.log(error);
@@ -1359,6 +1384,7 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 // module.exports.calculateRatingAverage = async (req, res) => {
 //   try {
 //     const { jobOrderNumber, startDate, endDate } = req.query;
@@ -1381,53 +1407,49 @@ module.exports.getMembershipHistory = async (req, res) => {
 //     });
 //   }
 // };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.filterClient = async (req, res) => {
   try {
-    const {
-      type,
-      condition
-    } = req.query;
+    const { type, condition } = req.query;
     switch (type) {
       case "membership":
         const membership = await clientDetailSchema.find({
           MembershipType: {
-            $regex: new RegExp(condition, "i")
+            $regex: new RegExp(condition, "i"),
           },
         });
         res.status(201).json({
           success: true,
-          data: membership
+          data: membership,
         });
         break;
       case "elevatorType":
         const elevatorType = await clientDetailSchema.find({
           ModelType: {
-            $regex: new RegExp(condition, "i")
+            $regex: new RegExp(condition, "i"),
           },
         });
         res.status(201).json({
           success: true,
-          data: elevatorType
+          data: elevatorType,
         });
         break;
       case "location":
         const clientsInCity = await clientDetailSchema.find({
           Address: {
-            $regex: new RegExp(condition, "i")
+            $regex: new RegExp(condition, "i"),
           },
         });
         res.status(200).json({
           success: true,
-          data: clientsInCity
+          data: clientsInCity,
         });
         break;
       default:
-        res
-          .status(400)
-          .json({
-            success: false,
-            message: "Invalid filter type"
-          });
+        res.status(400).json({
+          success: false,
+          message: "Invalid filter type",
+        });
         break;
     }
   } catch (error) {
@@ -1438,6 +1460,7 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 // module.exports.searchClients = async (req, res) => {
 //   try {
 //     const { searchTerm } = req.query;
@@ -1458,49 +1481,50 @@ module.exports.filterClient = async (req, res) => {
 //     res.status(500).json({ success: false, message: "Internal server error" });
 //   }
 // };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.searchClients = async (req, res) => {
   try {
-    const {
-      searchTerm
-    } = req.query;
+    const { searchTerm } = req.query;
     // Create a regular expression to match the search term case-insensitively
     const regex = new RegExp(searchTerm, "i");
     // Use $or operator to search across multiple fields
     const clients = await clientDetailSchema.find({
-      $or: [{
+      $or: [
+        {
           JobOrderNumber: {
-            $regex: regex
-          }
+            $regex: regex,
+          },
         },
         {
           name: {
-            $regex: regex
-          }
+            $regex: regex,
+          },
         },
         {
           PhoneNumber: {
-            $regex: regex
-          }
+            $regex: regex,
+          },
         },
         {
           Address: {
-            $regex: regex
-          }
+            $regex: regex,
+          },
         },
       ],
     });
     res.status(200).json({
       success: true,
-      clients
+      clients,
     });
   } catch (error) {
     console.error("Error searching clients:", error);
     res.status(500).json({
       success: false,
-      message: "Internal server error"
+      message: "Internal server error",
     });
   }
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------
 // {armaan-dev}
 // -----------------------------------------------------------------------
@@ -1525,12 +1549,12 @@ module.exports.getMembershipDetails = async (req, res) => {
     // Send responseData or do whatever you need with it
     res.status(200).json({
       success: true,
-      data: responseData
+      data: responseData,
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -1558,14 +1582,14 @@ const calculateData = async (data) => {
     expiringCount: expiringCount.length,
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 // Get client Details
 module.exports.getClientDetail = async (req, res) => {
   try {
-    const {
-      JON
-    } = req.params;
+    const { JON } = req.params;
     const client = await clientDetailSchema.findOne({
-      JobOrderNumber: JON
+      JobOrderNumber: JON,
     });
     if (!client) {
       return res.status(404).json({
@@ -1579,7 +1603,7 @@ module.exports.getClientDetail = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -1612,7 +1636,7 @@ module.exports.createClientMemebership = async (req, res) => {
     });
     if (!clientData) {
       return res.status(404).json({
-        error: "Client not found"
+        error: "Client not found",
       });
     }
     // Update client membership type
@@ -1630,31 +1654,26 @@ module.exports.createClientMemebership = async (req, res) => {
       isExpired,
       isDisable,
     });
-    res
-      .status(201)
-      .json({
-        message: "memebership created successfully",
-        MemberShipDetails
-      });
+    res.status(201).json({
+      message: "memebership created successfully",
+      MemberShipDetails,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "intenal server error"
+      error: "intenal server error",
     });
   }
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------
 // {armaan-dev}
 // ---------------------------------------------------------------------
 // {armaan-dev}
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getClientMembership = async (req, res) => {
   try {
-    const {
-      dataType,
-      wanted,
-      page,
-      pageSize
-    } = req.query;
+    const { dataType, wanted, page, pageSize } = req.query;
     const membershipData = await AssignMemeberships.find();
     const filteredData = filterMembershipByType(membershipData, dataType);
     console.log(membershipData);
@@ -1678,24 +1697,23 @@ module.exports.getClientMembership = async (req, res) => {
         clientData = sortedExpiringData.slice(skip, skip + pageSize);
         break;
       default:
-        return res
-          .status(404)
-          .json({
-            success: false,
-            message: "Incorrect params"
-          });
+        return res.status(404).json({
+          success: false,
+          message: "Incorrect params",
+        });
     }
     const clientDetails = await sentClientData(clientData);
     return res.status(201).json({
       [dataType]: {
-        totalPages: wanted === "expired" ? totalExpiredPages : totalExpiringPages,
+        totalPages:
+          wanted === "expired" ? totalExpiredPages : totalExpiringPages,
         clientData: clientDetails,
       },
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };

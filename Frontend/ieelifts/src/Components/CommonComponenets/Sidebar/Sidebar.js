@@ -1,23 +1,18 @@
 // dependincies import start here
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import logo from "../../../Assets/Images/logo.png";
-
 // dependincies import end here
-
 // react icons import starts
-// import { GiHamburgerMenu } from "react-icons/gi";
 import { FaAngleDown } from "react-icons/fa6";
 import { MdDashboard } from "react-icons/md";
 import { RiGitPullRequestFill } from "react-icons/ri";
-import { MdOutlineModeOfTravel } from "react-icons/md";
 import { MdOutlineAirlineSeatReclineNormal } from "react-icons/md";
 import { MdOutlineCardMembership } from "react-icons/md";
 import { MdEngineering } from "react-icons/md";
-import { MdOutlineSos } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
@@ -30,7 +25,7 @@ import TopBar from "../TopBar";
 
 // react icons import ends
 
-const Sidebar = ({ children }) => {
+const Sidebar = ( {children} ) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
   const [toogleOpen, settoogleClose] = useState(true);
@@ -45,10 +40,6 @@ const Sidebar = ({ children }) => {
   // handle menue dropdowb
   const [mainMenuOpen, setMainMenuOpen] = useState(true);
   const [officeMenuOpen, setOfficeMenuOpen] = useState(false);
-
-  // const toogle = () => {
-  //   setIsOpen(!isOpen);
-  // };
 
   const handleToggleClick = () => {
     setIsButtonOpen((prevState) => !prevState);
@@ -100,11 +91,6 @@ const Sidebar = ({ children }) => {
       name: "Requests",
       icon: <RiGitPullRequestFill />,
     },
-    // {
-    //   Path: "/dsad",
-    //   name: "Immediate Visits",
-    //   icon: <MdOutlineModeOfTravel />,
-    // },
     {
       Path: "/Clients",
       name: "Clients",
@@ -121,11 +107,6 @@ const Sidebar = ({ children }) => {
       name: "Engineers",
       icon: <MdEngineering />,
     },
-    // {
-    //   Path: "/agsd",
-    //   name: "SOS Requests",
-    //   icon: <MdOutlineSos />,
-    // },
   ];
 
   useEffect(() => {
@@ -141,12 +122,12 @@ const Sidebar = ({ children }) => {
       case "/Memberships":
         setTopBarHeading("Memberships");
         break;
-        case "/Engeeniers":
-          setTopBarHeading("Engineers");
-          break;
-        case "/Clients":
-          setTopBarHeading("Clients");
-          break;
+      case "/Engeeniers":
+        setTopBarHeading("Engineers");
+        break;
+      case "/Clients":
+        setTopBarHeading("Clients");
+        break;
       // Add more cases for other pages
       default:
         setTopBarHeading("Default Heading");
@@ -176,6 +157,12 @@ const Sidebar = ({ children }) => {
       icon: <TbSettings2 />,
     },
   ];
+
+
+ const handleLogout = () => {
+  localStorage.removeItem("adminData");
+  Navigate('/')
+}
 
   return (
     <div className="container">
@@ -220,7 +207,6 @@ const Sidebar = ({ children }) => {
               >
                 <div className="wrapper">
                   <div className="menu-bar menu-bar-top"></div>
-                  {/* <div className="menu-bar menu-bar-middle"></div> */}
                   <div className="menu-bar menu-bar-bottom"></div>
                 </div>
               </div>
@@ -278,7 +264,7 @@ const Sidebar = ({ children }) => {
                 <Link to="/" className="sub-menue-link">
                   <p>Leaves</p>
                 </Link>
-                <Link to="/" className="sub-menue-link">
+                <Link className="sub-menue-link" onClick={handleLogout}>
                   <p>Logout</p>
                 </Link>
               </div>
@@ -331,10 +317,6 @@ const Sidebar = ({ children }) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                    // ClassName={
-                    //   location.pathname === item.Path ? "active-link" : ""
-                    // }
-                    // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div

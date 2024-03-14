@@ -1,5 +1,4 @@
 import { combineReducers} from 'redux';
-
 import { fetchAllCallbackReducer } from "../Reducers/AdminReducer"
 import { fetchCallbackDetailWithCallbackIdReducer } from "../Reducers/AdminReducer"
 import { fetchAllClientDetailReducer } from "../Reducers/AdminReducer"
@@ -28,6 +27,9 @@ import { getFilterDataReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
 import { EnggLocationDetailsFetchReducer } from "../Reducers/AdminReducer";
+import { modalOpenerReducer } from "../Reducers/AdminReducer";
+// import { loginServiceAdminReducer } from "../Reducers/AdminReducer";
+import { loginAdminReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
     EnggLocationDetailsFetchReducer:EnggLocationDetailsFetchReducer,
@@ -56,6 +58,9 @@ const AdminRootReducer = combineReducers({
     createClientCallReducer: createClientCallReducer,
     getClientsReducer: getClientsReducer,
     getFilterDataReducer: getFilterDataReducer,
+    modalOpenerReducer:modalOpenerReducer,
+    loginAdminReducer:loginAdminReducer
 })
+
 
 export default AdminRootReducer;

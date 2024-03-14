@@ -10,6 +10,7 @@ const CheckBox = ({ id, checked, handleCheckboxChange }) => {
             id={id}
             checked={checked}
             onChange={handleCheckboxChange}
+            style={{outline:'none'}}
           />
           <div className="checkbox__checkmark"></div>
           <div className="checkbox__body"></div>

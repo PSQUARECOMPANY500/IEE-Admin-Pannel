@@ -8,8 +8,7 @@ import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequ
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
 
-
-const RequestScheduledSection = ({setRenderTicket}) => {
+const RequestScheduledSection = ({ setRenderTicket }) => {
   const dropdownRef = useRef(null);
   // modal manage states
 
@@ -43,8 +42,6 @@ const RequestScheduledSection = ({setRenderTicket}) => {
     };
   }, [dropdownRef]);
 
- 
-
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 0) setShowTicketModal(true);
@@ -57,10 +54,10 @@ const RequestScheduledSection = ({setRenderTicket}) => {
     setHandleRequestScheduledTable(false);
   };
 
- //.................................................................ax13-search-func-starts----------------------------------------------------------
- const [searchText, setSearchText] = useState("");
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
+  const [searchText, setSearchText] = useState("");
 
- //.................................................................ax13-search-func-starts----------------------------------------------------------
+  //.................................................................ax13-search-func-starts----------------------------------------------------------
 
   return (
     <div className="parent-full-div">
@@ -93,7 +90,7 @@ const RequestScheduledSection = ({setRenderTicket}) => {
             <div className="right-side-icons">
               <span className="filter-top-icon">
                 <div className="search-box">
-                <input
+                  <input
                     type="text"
                     placeholder="Search anything"
                     className="search-input"
@@ -101,14 +98,15 @@ const RequestScheduledSection = ({setRenderTicket}) => {
                       setSearchText(e.target.value);
                     }}
                   />
-                  <button className="search-btn-ticket-section"/*  onClick={() => {
+                  <button
+                    className="search-btn-ticket-section" /*  onClick={() => {
                     const data = filtersearch(searchText, allCD)
                     setFilteredCD(data);
-                  }} */ >
+                  }} */
+                  >
                     <i>
                       <CiSearch />
                     </i>
-
                   </button>
                 </div>
               </span>
@@ -152,9 +150,12 @@ const RequestScheduledSection = ({setRenderTicket}) => {
           {/* table start here */}
 
           {handleRequestScheduledTable ? (
-            <ServiceRequestTable setRenderTicket2={setRenderTicket} searchText={searchText}/>
+            <ServiceRequestTable
+              setRenderTicket2={setRenderTicket}
+              searchText={searchText}
+            />
           ) : (
-            <ServiceScheduledTable searchText={searchText}/>
+            <ServiceScheduledTable searchText={searchText} />
           )}
 
           {/* table end here */}
