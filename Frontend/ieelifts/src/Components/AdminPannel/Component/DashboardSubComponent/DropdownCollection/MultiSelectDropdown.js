@@ -41,7 +41,7 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
       },
     }),    placeholder: (provided) => ({
       ...provided,
-      fontSize: ".8rem", // Adjust the font size here
+      fontSize: "0.8rem", // Adjust the font size here
       fontFamily:'Poppins',
       opacity:'0.6',
     }),
@@ -56,7 +56,7 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
       ...provided,
       backgroundColor: state.isSelected ? "#FFFFFF" : "#FFFFFF",
       color: state.isSelected ? "white" : "black",
-      fontSize: "14px",
+      fontSize: "0.8rem",
       ":hover": {
         backgroundColor: "#FEF3DE", // Background color of the remove icon on click
         color: "#F8AC1D", // Text color of the remove icon on click

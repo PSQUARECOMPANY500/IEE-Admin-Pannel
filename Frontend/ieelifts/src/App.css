@@ -3096,12 +3096,12 @@ footer a:hover {
 .col75 input[type="text"] {
   /* width: 80%; */
   /* padding: 0.5rem; */
-  width: 390px;
-  padding: 0.5rem;
+  width:220px;
+  padding: 0.6rem;
   border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
@@ -3115,16 +3115,17 @@ footer a:hover {
 .col75 input {
   width: 392px;
   /* padding: 8px; */
-  padding: 0.5rem;
+  padding: 0.6rem;
   border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
-  font-size: 15px;
+  font-size: 0.9rem;
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
   font-family: 'Poppins';
   outline-color: #F8AC1D;
+
 }
 
 .col75 textarea {
@@ -3142,7 +3143,7 @@ footer a:hover {
   /* fontSize: ".8rem", // Adjust the font size here
   fontFamily:'Poppins',
   opacity:'0.6', */
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-family: "Poppins";
 
 }
@@ -3278,18 +3279,19 @@ footer a:hover {
 
 .elevator-detail-row {
   display: flex;
-  width: 105%;
-  justify-content: center;
+  width: 100%;
+  justify-content:start;
   align-items: center;
-  margin-left: 28px;
+  margin-left: 0px;
 }
 
-.col-elevator25 label {
-  padding: 0px 0px 0px 0;
-  display: inline-block;
-  color: #343434;
-  font-size: 14px;
-  font-weight: 700;
+
+  .col-elevator25 label {
+    padding: 0px 0px 0px 0;
+    display: inline-block;
+    color: #343434;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .col-elevator25 {
@@ -3368,6 +3370,7 @@ footer a:hover {
 .col-elevator75 input {
   border: none;
   font-family: poppins;
+
 }
 
 .col-elevator75 input[type="text"]:focus {

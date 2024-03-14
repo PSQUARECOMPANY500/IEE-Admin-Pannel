@@ -145,6 +145,7 @@ const ReactDatePickers = ({ isAssigned, fetchedDate, OnDateChange,editchange }) 
         ref={dateInputRef}
         onClick={ handleDateInputClick}
         readOnly={isAssigned } // Disable input when isAssigned is true
+          
       />
       {<div className="calendar" id="calendar" ref={calendarRef}>
         <div className="header">

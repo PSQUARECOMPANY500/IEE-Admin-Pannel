@@ -39,7 +39,7 @@ const AddTicketOnCallRequests = ({
   const [name, setname] = useState(""); //-api
   const [number, setnumber] = useState(""); //-api
   const [address, setaddress] = useState(""); //-api
-  const [ModelType, setModelType] = useState("")
+  const [ModelType, setModelType] = useState("") 
   const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
@@ -412,7 +412,7 @@ const AddTicketOnCallRequests = ({
                     </div>
 
                     <div className="col75">
-                      <SingleSetDropdown padding="8px" width="80%" className='dropdown-chnages' placeholder={"Type Of Issue"} 
+                      <SingleSetDropdown padding="8px" width="220px" className='dropdown-chnages' placeholder={"Type Of Issue"} 
                         Details={[{ _id: 1, checklistName: 'Door' }, { _id: 2, checklistName: 'Light' },
                         { _id: 3, checklistName: 'Fan' }, { _id: 4, checklistName: 'Buttons' },
                         { _id: 5, checklistName: 'Lift' }, { _id: 6, checklistName: 'Other' }]}
@@ -428,7 +428,7 @@ const AddTicketOnCallRequests = ({
                       <textarea
                         id="subject"
                         name="subject"
-                        style={{ height: "50px", resize: "none" }}
+                        style={{ height: "50px", resize: "none",width:'220px' }}
                         onChange={(e) => setdtext(e.target.value)}
                       ></textarea>
                     </div>
@@ -497,9 +497,18 @@ const AddTicketOnCallRequests = ({
                       <div className="req-elevator-col1">
                         <p>TYPE:</p>
                       </div>
+
+                      {ModelType ? (
                       <div className="req-elevator-col2">
-                        <p>Hydraulic </p>
+                        <p>{ModelType}</p>
+                        
                       </div>
+                   ) : (
+                    <div className="col75">
+                      <SkeltonLoader width="80px"/>
+                    </div>
+                  )}
+                     
                     </div>
                     <div className="req-elevator-row">
                       <div className="req-elevator-col1">
@@ -739,6 +748,7 @@ const AddTicketOnCallRequests = ({
                       <button className={`edit-button`}  >Edit</button>
                       <button
                         className="assign-button"
+                        onClick={handleElevatorSectionDetails}
 
                       >
                         Assign

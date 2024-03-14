@@ -328,8 +328,10 @@ const AddTicketOnCallRequest = ({
                   </div>
 
                   <div className="col75">
-                    <input className={``} type="text" name="name" placeholder="Enter-Client-Id" onChange={(e) => setJon(e.target.value)} />
-                  </div>
+                    {/* <input className={``} type="text" name="name" placeholder="Enter-Client-Id"  onChange={(e)=>setJon(e.target.value)} /> */}
+                      <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter Jon Number" />
+                  
+                    </div>
                 </div>
                 {/* one row ends */}
 
