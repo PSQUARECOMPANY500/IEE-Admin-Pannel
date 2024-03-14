@@ -595,12 +595,6 @@ code {
   font-weight: 700;
 }
 
-.historyMain {
-  margin-top: 2rem;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
 @keyframes expandAnimation {
   from {
     transform: translateY(3rem);
@@ -783,6 +777,43 @@ code {
   margin-top: 0.8rem;
 }
 
+.historyMain {
+  margin-top: 2rem;
+  margin-bottom: 10px;
+}
+
+.no_history {
+  border: 1px solid #444444;
+  text-align: center;
+  font-size: medium;
+  margin-top: 1rem;
+  cursor: default;
+  padding: 1rem 0rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  color: #444444;
+}
+
+.no_history_up {
+  display: flex;
+  flex-direction: column;
+}
+
+.no_history_icon {
+  transform: scale(1.5);
+  color: #444444;
+}
+
+.no_history_heading {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.no_history_subHeading{
+  font-size: small;
+}
+
 .historyContainer {
   height: 20rem;
   overflow-y: scroll;
@@ -825,6 +856,7 @@ code {
   font-size: 0.8rem;
   margin-top: 0.9rem;
   border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 .historyBorderWarrenty {

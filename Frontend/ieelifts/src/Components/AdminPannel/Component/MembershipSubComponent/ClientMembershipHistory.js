@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaPrint } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { getClientMembershipHistoryAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { TbHistoryOff } from "react-icons/tb";
 
 const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
   const dispatch = useDispatch();
@@ -176,7 +177,15 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
         </div>
       ) : (
         <>
-          <div>There is no previous history.</div>
+          <div className="no_history">
+            <div className="no_history_up">
+              <span className="no_history_icon">
+                <TbHistoryOff />
+              </span>
+              <span className="no_history_heading">Empty</span>
+            </div>
+            <span className="no_history_subHeading">Sorry no history avilable at this time.</span>
+          </div>
         </>
       )}
     </div>
