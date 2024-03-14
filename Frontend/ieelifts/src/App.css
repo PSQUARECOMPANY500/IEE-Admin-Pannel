@@ -2739,6 +2739,7 @@ footer a:hover {
 /* filter dropdown css ends */
 
 /* assign ticket modal css starts */
+/*----------------------------------------------------------------------------changes by aayush malviya start from here---------------------------------------------------------------------- */
 .modal-wrapper {
   position: fixed;
   left: 0;
@@ -2762,8 +2763,193 @@ footer a:hover {
 }
 
 .child-modal-container {
-  padding: 20px;
+  height: 45rem;
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+
 }
+
+.sub-child-modal-container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
+.req-client-section {
+  width: 100%;
+  height: 40%;
+  position: relative;
+  display: flex;
+  padding-top: 1rem;
+
+}
+
+.req-elevator-section {
+  width: 100%;
+  height: 60%;
+  position: relative;
+  display: flex;
+
+}
+
+.req-elevator-section .calendar {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 37%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  display: none;
+  top: 22% !important;
+  left: 12% !important;
+  height: 70%;
+}
+
+.req-elevator-section-left {
+  width: 25%;
+  height: 100%;
+  position: relative;
+
+}
+
+
+.req-elevator-details {
+  width: 100%;
+  height: 35%;
+  position: relative;
+  padding-left: 4.1rem;
+
+}
+
+.sub-req-elevator-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  padding-left: 1rem;
+  margin-top: .5rem;
+}
+
+.req-elevator-section-right {
+  width: 75%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  padding-left: 8.2rem;
+
+
+}
+
+.req-el-left {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  background: #000;
+
+}
+
+.req-el-right {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  background: orange;
+}
+
+.req-elevator-row {
+  width: 100%;
+  display: flex;
+}
+
+.req-elevator-col1 {
+  width: 25%;
+
+}
+
+.req-eng-details {
+  width: 100%;
+  height: 25%;
+  position: relative;
+  padding-left: 4.1rem;
+}
+
+.req-eng-details h1 {
+  font-size: .9rem;
+  font-family: 'Poppins';
+  font-weight: 500;
+
+}
+
+
+.req-elevator-col1 p {
+  color: #272626;
+  font-size: .8rem;
+  font-weight: 500;
+  font-family: 'Poppins';
+}
+
+
+.req-elevator-col2 p {
+  color: #1D1D1D;
+  font-size: .8rem;
+  font-weight: 400;
+  font-family: 'Poppins';
+}
+
+
+.req-elevator-col2 {
+  width: 75%;
+
+}
+
+.req-elevator-details h1 {
+  font-size: .9rem;
+  font-family: 'Poppins';
+  font-weight: 500;
+  text-align: start;
+}
+
+.req-photo-upload-section {
+  width: 25%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.req-photo-upload-section img {
+  height: 13rem;
+  width: 13rem;
+  border-radius: 3px;
+}
+
+
+
+
+.req-client-information-section {
+  width: 45%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-top: 1rem;
+  justify-content: center;
+}
+
 
 .modal-container {
   position: fixed;
@@ -2781,8 +2967,11 @@ footer a:hover {
   position: absolute;
   top: 12px;
   font-size: 30px;
+  height: 40px;
+  width: 40px;
   color: black;
-  cursor: pointer;
+  z-index: 9;
+
 }
 
 .modal-container.active {
@@ -2795,28 +2984,99 @@ footer a:hover {
 }
 
 .upload-photo-secton {
-  width: 30%;
+  width: 20%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+
+}
+
+.upload-photo-secton img {
+  height: 200px;
+  width: 200px;
+  border-radius: 2px;
 }
 
 .client-information-section {
-  width: 40%;
+  width: 0%;
 
 }
 
-.membership-information-section {
+.req-membership-information-section {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 86%;
+  align-items: flex-end;
+  position: relative;
+
+
+
+}
+
+.membership-form-container {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  align-items: flex-end;
+
+}
+
+.membership-form-row {
+  width: 100%;
+  height: 27px;
+  display: flex;
+  gap: 1rem;
+
+
+}
+
+.membership-form-container p {
+  font-size: .8rem;
+  font-family: 'Poppins';
+  color: #444444;
+  font-weight: 500;
+}
+
+.membership-form-col1 {
   width: 40%;
+  height: 100%;
+
+}
+
+.membership-form-col2 {
+  width: 70%;
+  height: 100%;
+  position: relative;
+
+}
+
+.membership-form-col22 {
+  width: 70%;
+  height: 100%;
+  position: relative;
+
+
+
 
 }
 
 .client-section {
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   gap: 0px;
+  position: relative;
+
 
 }
 
@@ -2825,25 +3085,20 @@ footer a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-end;
+  width: 90%;
+  position: relative;
+  height: 80%;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
 }
 
 .col75 input[type="text"] {
-  width: 80%;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  resize: vertical;
-  font-size: 14px;
-  font-weight: 400;
-  outline: none;
-}
-
-.col75 textarea {
-  width: 80%;
-  height: 10px;
-  padding: 8px;
-  /* border: 1px solid #c1c1c1; */
+  /* width: 80%; */
+  /* padding: 0.5rem; */
+  width: 390px;
+  padding: 0.5rem;
+  border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
   font-size: 15px;
@@ -2851,16 +3106,66 @@ footer a:hover {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
   font-family: 'Poppins';
+  outline-color:#F8AC1D;
+ 
+
 }
+
+
+.col75 input {
+  width: 392px;
+  /* padding: 8px; */
+  padding: 0.5rem;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  border: none;
+  font-family: 'Poppins';
+  outline-color: #F8AC1D;
+}
+
+.col75 textarea {
+  width: 80%;
+  height: 10px;
+  padding: 8px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  border: none;
+  font-family: 'Poppins';
+  /* fontSize: ".8rem", // Adjust the font size here
+  fontFamily:'Poppins',
+  opacity:'0.6', */
+  font-size: 0.8rem;
+  font-family: "Poppins";
+
+}
+
+.col75 textarea::placeholder{
+  font-size: 0.8rem;
+  font-family: "Poppins";
+  opacity: 0.6;
+  
+}
+
 
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
-  outline: none;
+  /* outline: none; */
+
 }
 
+.col75 input[type='text']:hover{
+  box-shadow: 0px 0px 5px #f8ac1d80;
+}
 .col75 textarea:focus {
-  /* border: 1px solid #f8ac1d; */
-
+  border: 1px solid #f8ac1d;
   border: none;
   outline: none;
   box-shadow: 0px 0px 5px #f8ac1d80;
@@ -2870,22 +3175,43 @@ footer a:hover {
   border: 1px solid #f8ac1d;
 }
 
-.client-information-section .client-form .row .col75 select[type="text"]:focus {
+.req-client-information-section .req-client-form .row .col75 select[type="text"]:focus {
   border: 1px solid #f8ac1d;
   outline: none;
+}
+
+.req-client-form {
+  width: 100%;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: .6rem;
+
+}
+
+
+
+.col75 p {
+  color: #1D1D1D;
+  font-size: .8rem;
+  font-weight: 400;
+  font-family: 'Poppins';
 }
 
 .col25 label {
   padding: 0px 0px 0px 0;
   display: inline-block;
-  color: #343434;
-  font-size: 14px;
-  font-weight: 700;
+  color: #272626;
+  font-size: .8rem;
+  font-weight: 500;
+  font-family: 'Poppins';
 }
 
 .col25 {
   float: left;
-  width: 50%;
+  width: 20%;
   margin-top: 0px;
   display: flex;
   align-items: center;
@@ -2894,40 +3220,49 @@ footer a:hover {
 
 .col75 {
   float: left;
-  width: 100%;
-  margin-top: 6px;
-  margin-bottom: 6px;
+  width: 80%;
+
 }
 
-.client-information-section .client-form .row {
+.req-elevator-section-right .col75 {
+  width: 92%;
+
+}
+
+.req-client-information-section .req-client-form .row {
   display: flex;
-  width: 80%;
-  justify-content: center;
+  width: 100%;
+  justify-content: flex-start;
   align-items: center;
   gap: 0px;
-  margin-top: -4px;
+
+
 }
 
-.client-information-section .client-form .row .col75 select {
-  width: 86%;
+
+.req-client-information-section .req-client-form .row .col75 select {
+  width: 100%;
   padding: 8px;
-  border: 1px solid #c1c1c1;
   border-radius: 4px;
+  border: 1px solid red;
   resize: vertical;
   font-size: 14px;
   font-weight: 400;
+
 }
 
-.membership-information-section .client-form2 .row {
+.req-membership-information-section .req-client-form2 .row {
   display: flex;
-  width: 80%;
+  width: 100%;
   justify-content: center;
   align-items: center;
+
 }
 
-.membership-information-section .client-form2 .row .col75 input {
+.req-membership-information-section .client-form2 .row .col75 input {
   border: none;
 }
+
 
 .elevator-section {
   width: 100%;
@@ -2963,15 +3298,40 @@ footer a:hover {
   margin-top: 0px;
 }
 
+
+
 .grid-form-container {
   background-color: white;
-  width: 80%;
-  margin: 0px auto;
-  gap: 7px;
+  width: 46%;
+  height: 70%;
+  padding-top: 2.5rem;
   display: flex;
   flex-direction: column;
+  gap: 0.3rem;
+  justify-content: space-around;
+}
+.grid-form-container2 {
+  height: 90%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 3.3rem;
+  align-items: center;
+  gap: 1.7rem;
 }
 
+ .col75 input::placeholder{
+  opacity: 0.6;
+  font-size: 0.8rem;
+  font-family: 'Poppins';
+  text-transform: capitalize;
+}
+.grid-form-container2 .buttons {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  /* margin-top: -1rem; */
+}
 .engg-form {
   display: flex;
 }
@@ -2993,12 +3353,17 @@ footer a:hover {
   position: relative;
 }
 
-.grid-form-container .sm-box .col75 select {
-  width: 100%;
+/* .grid-form-container .sm-box .col75 select {
+  width: 50%;
   padding: 10px 10px;
   border: 1px solid #c1c1c1;
   border-radius: 5px;
-}
+} */
+
+/* .grid-form-container{ */
+/* background: red;
+  width: 50%;
+} */
 
 .col-elevator75 input {
   border: none;
@@ -3020,8 +3385,10 @@ footer a:hover {
 .engg-photo-section {
   display: flex;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
+  gap:0.5rem;
   margin-top: 10px;
+
 }
 
 
@@ -3189,6 +3556,9 @@ footer a:hover {
 .css-1nmdiq5-menu:hover {
   font-size: 14px !important;
 }
+
+/*----------------------------------------------------------------------------changes by aayush malviya end --------------------------------------------------------------------- */
+
 
 /*------------------------------------------------------ dashboard css ends ------------------------------------------------------------------------*/
 
@@ -3576,6 +3946,8 @@ element.style {
 @keyframes slideToTop {
   from {
     margin-top: -100%;
+
+
     width: 100%;
     opacity: 0;
     transform: translateY(-20px);
@@ -4245,7 +4617,7 @@ element.style {
 
 .calendar-box {
   text-align: center;
-  width: 94%;
+  width: 100%;
 }
 
 .ui-datepicker-header,
@@ -4350,15 +4722,16 @@ element.style {
 
 #dateInput {
   width: 100%;
-  padding: 10px;
-  border: none;
+  padding: 0.5rem;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 15px;
+  font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
-  border-radius: 5px;
-  font-size: 14px;
-  outline: none;
-  cursor: pointer;
+  border: none;
   font-family: 'Poppins';
-  color: #444444;
+  outline-color: #F8AC1D;
 }
 
 .ui-datepicker {
@@ -4381,8 +4754,8 @@ element.style {
   animation: loading 2s infinite ease-in-out;
   border-radius: 5px;
   position: relative;
-  margin-top: 10px;
-  margin-left: 10px;
+  height: 18px;
+
 }
 
 @keyframes loading {

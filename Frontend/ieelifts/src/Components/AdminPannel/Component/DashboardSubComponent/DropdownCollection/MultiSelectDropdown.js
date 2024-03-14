@@ -30,17 +30,27 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
 
       borderRadius: "5px",
-      fontSize: "17px", // Font size of the control
+      fontSize: "0.8rem", // Font size of the control
+      // height:'30px',
+    
       ":hover": {
         // border:'1px solid #F8AC1D',
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
+       
       },
+    }),    placeholder: (provided) => ({
+      ...provided,
+      fontSize: ".8rem", // Adjust the font size here
+      fontFamily:'Poppins',
+      opacity:'0.6',
     }),
     menu: (provided) => ({
       ...provided,
       backgroundColor: "#ffffff",
-      padding: "8px",
+      padding: "5px",
+      fontSize:'0.8rem',
+   
     }),
     option: (provided, state) => ({
       ...provided,
@@ -92,6 +102,7 @@ const MultiSelectDropdown = ({placeholder,Details,slots,handleEnggSelectionChang
     onChange={handleChange}
     value={selectedValue}
     isDisabled={editchange ? false : isAssigned}
+    isSearchable={false} 
 />
 
   );
