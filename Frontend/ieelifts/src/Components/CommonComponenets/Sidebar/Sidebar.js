@@ -316,7 +316,7 @@ const Sidebar = ({ children }) => {
             <input type="checkbox" id="touch" />
             <ul
               className="slide"
-              style={{ height: mainMenuOpen ? "337px" : "" }}
+              style={{ height: mainMenuOpen ? "250px" : "" }}
             >
               <li
                 style={{
