@@ -1,25 +1,25 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 
 .EngeeniersCard {
-    min-height: 87vh;
-    width: 100%;
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    display: grid;
-    /* grid-template-columns:  1fr; */
-    grid-template-areas:'EngeeniersSubCard' ;
-    grid-template-rows: 1fr;
+  min-height: 87vh;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  display: grid;
+  /* grid-template-columns:  1fr; */
+  grid-template-areas:'EngeeniersSubCard' ;
+  grid-template-rows: 1fr;
 
 
 }
@@ -27,96 +27,96 @@ body {
 
 
 .SingleEng {
-    grid-area: SingleEng;
-    position: relative;
-    display: none;
+  grid-area: SingleEng;
+  position: relative;
+  display: none;
 
 
 }
 
 .SubSingleEng {
-    /* margin-top: .4rem; */
+  /* margin-top: .4rem; */
 
-    /* margin-bottom: 1.2rem; */
-    width: 100%;
-    height: 100%;
-    display: grid;
-    position: relative;
+  /* margin-bottom: 1.2rem; */
+  width: 100%;
+  height: 100%;
+  display: grid;
+  position: relative;
 
-    grid-template-rows: 10% 5%;
-    grid-row-gap: .1rem;
-    padding: .5rem 1rem;
+  grid-template-rows: 10% 5%;
+  grid-row-gap: .1rem;
+  padding: .5rem 1rem;
 }
 
 .PDetails {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: 100%;
+  width: 100%;
 
 }
 
 .Pimg {
-    height: 4rem;
-    width: 4rem;
-    display: flex;
-    position: relative;
-    background-color: transparent;
-    border: 1px solid #707070;
-    border-radius: 5px;
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  position: relative;
+  background-color: transparent;
+  border: 1px solid #707070;
+  border-radius: 5px;
 }
 
 .ODetailsColumn {
-    display: flex;
-    justify-content: space-around;
-    align-items: end;
-    border-bottom: 2px solid #5353533b;
-    border-radius: 2px;
+  display: flex;
+  justify-content: space-around;
+  align-items: end;
+  border-bottom: 2px solid #5353533b;
+  border-radius: 2px;
 
 
 }
 
 .ODetails {
-    position: relative;
+  position: relative;
 }
 
 
 
 /* 
 .EngeeniersCardD {
-    min-height: 87vh;
-    width: 100%;
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    display: grid;
-    grid-template-columns:2fr 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: 'SingleEng EngeeniersChat';
-   
+  min-height: 87vh;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns:2fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'SingleEng EngeeniersChat';
+ 
 
-    
+  
 } */
 
 
 /* .EngeeniersSubCard {
-    grid-area: EngeeniersSubCard;
+  grid-area: EngeeniersSubCard;
 } */
 
 
 
 .AllCards {
-    max-height: 83vh;
-    overflow-y: auto;
-    margin-bottom: 1.2rem;
-    margin-top: 1.2rem;
-    width: 100%;
-    display: grid;
-    grid-row-gap: 4rem;
-    grid-column-gap: 7rem;
-    padding: 2rem 4rem;
-   
+  max-height: 83vh;
+  overflow-y: auto;
+  margin-bottom: 1.2rem;
+  margin-top: 1.2rem;
+  width: 100%;
+  display: grid;
+  grid-row-gap: 4rem;
+  grid-column-gap: 7rem;
+  padding: 2rem 4rem;
+ 
 
 }
 
@@ -125,28 +125,28 @@ body {
 
 .EngeeniersChat{
 
-    border-radius: 1.2rem;
-    position: relative;
-    margin-top: 5rem;
-    margin-bottom: 1.2rem;
-    height: 790px;
-    margin-bottom: 1.2rem;
+  border-radius: 1.2rem;
+  position: relative;
+  margin-top: 5rem;
+  margin-bottom: 1.2rem;
+  height: 790px;
+  margin-bottom: 1.2rem;
 
 }
 
 .AllCardsF::-webkit-scrollbar-track {
-    border-radius: 10px;
+  border-radius: 10px;
 
 }
 
 .AllCardsF::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 
 }
 
 .AllCardsF::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #FFFFFF;
+  border-radius: 10px;
+  background-color: #FFFFFF;
 
 }
 
@@ -154,24 +154,24 @@ body {
 
 
 .AllCardsF:hover::-webkit-scrollbar-thumb {
-    background-color: #F8AC1D;
+  background-color: #F8AC1D;
 }
 
 
 
 .AllCardsT::-webkit-scrollbar-track {
-    border-radius: 10px;
+  border-radius: 10px;
 
 }
 
 .AllCardsT::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 
 }
 
 .AllCardsT::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #FFFFFF;
+  border-radius: 10px;
+  background-color: #FFFFFF;
 
 }
 
@@ -179,162 +179,162 @@ body {
 
 
 .AllCardsT:hover::-webkit-scrollbar-thumb {
-    background-color: #F8AC1D;
+  background-color: #F8AC1D;
 }
 
 
 
 
 .EngCards {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    box-shadow: 2px 4px 10px 1px #00000029;
-    min-height: 25vh;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-    padding: .4rem;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 2px 4px 10px 1px #00000029;
+  min-height: 25vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: .4rem;
 }
 
 
 .EngCardDetails {
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-    position: relative;
-    height: 50%;
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  position: relative;
+  height: 50%;
 
 
 }
 
 .EngCardDetailsL {
-    display: flex;
-    margin-top: 1rem;
-    width: 30%;
-    position: relative;
-    background-color: transparent;
-    border: 1px solid #707070;
-    border-radius: 10px;
+  display: flex;
+  margin-top: 1rem;
+  width: 30%;
+  position: relative;
+  background-color: transparent;
+  border: 1px solid #707070;
+  border-radius: 10px;
 }
 
 
 .EngCardRText {
-    display: flex;
-    width: 10vw;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  width: 10vw;
+  justify-content: center;
+  align-items: center;
 
 
 }
 
 
 .EngCardDetailsR {
-    width: 70%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 
 }
 
 .table-container {
-    margin-top: 1.8rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .1rem;
-    font-family: "Noto Sans KR", sans-serif;
-    width: 60%;
-    position: relative;
-    text-align: start;
-    height: auto;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    position: relative;
+  margin-top: 1.8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .1rem;
+  font-family: "Noto Sans KR", sans-serif;
+  width: 60%;
+  position: relative;
+  text-align: start;
+  height: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  position: relative;
 
 }
 
 .table-item {
-    font-weight: 600;
-    color: #343434;
-    border-bottom: 2px solid transparent;
-    font-size: .9rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  font-weight: 600;
+  color: #343434;
+  border-bottom: 2px solid transparent;
+  font-size: .9rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 
 }
 
 
 .table-container>.table-item:nth-child(even) {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 490;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 
 }
 
 .table-container>.table-item:nth-child(odd) {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 400;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 400;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 
 }
 
 .EngCardCash {
-    height: 4vh;
-    width: 85%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0rem 2rem;
-    align-items: center;
-    background-color: #FFF9EF;
-    box-shadow: inset 1px 2px 3px 1px #00000029;
-    border-radius: 5px;
+  height: 4vh;
+  width: 85%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0rem 2rem;
+  align-items: center;
+  background-color: #FFF9EF;
+  box-shadow: inset 1px 2px 3px 1px #00000029;
+  border-radius: 5px;
 }
 
 .EngCardCash h5 {
-    text-wrap: nowrap;
-    display: flex;
-    gap: .5rem;
-    text-align: start;
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 400;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  text-wrap: nowrap;
+  display: flex;
+  gap: .5rem;
+  text-align: start;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 400;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 }
 
 .EngCardCash h5 span {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 490;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 
 }
 
 .HoriZontalLine {
-    height: 60%;
-    border-radius: 1px;
-    width: 1px;
-    background-color: #7070704D;
+  height: 60%;
+  border-radius: 1px;
+  width: 1px;
+  background-color: #7070704D;
 }
 
 .AHoriZontalLine {
-    height: 80%;
+  height: 80%;
 }
 
 /* .EngCardMessage{
-    height:5vh;
-    width: 100%;
-    margin-top: 1rem;
-    bottom: -20%;
-    position: relative;
-    background-color: red;
+  height:5vh;
+  width: 100%;
+  margin-top: 1rem;
+  bottom: -20%;
+  position: relative;
+  background-color: red;
 } */
 
 
@@ -342,83 +342,83 @@ body {
 
 
 .EngChatNav {
-    height: 40px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    display: none;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  display: none;
 }
 
 
 .VerticalLine {
-    height: 2%;
-    width: 25%;
-    background-color: #7070704D;
+  height: 2%;
+  width: 25%;
+  background-color: #7070704D;
 
 }
 
 
 .EngChatNavText {
-    width: 80%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
+  width: 80%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
 
 
 
-    align-items: center;
+  align-items: center;
 }
 
 .EngChatNavText h5 {
-    text-wrap: nowrap;
-    font-size: 1.1rem;
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 500;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  text-wrap: nowrap;
+  font-size: 1.1rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 500;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 
 }
 
 
 
 .EngChatBoxHead {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding: .8rem;
-    border-bottom: 1px solid #00000029;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding: .8rem;
+  border-bottom: 1px solid #00000029;
 }
 
 .EngChatBoxIcons {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    gap: .4rem;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: .4rem;
 }
 
 .EngChatBox h6 {
-    text-wrap: nowrap;
-    font-size: 1.1rem;
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 500;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  text-wrap: nowrap;
+  font-size: 1.1rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 500;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 }
 
 .EngChatBox {
-    width: 100%;
-    background-color: #FFFBF4;
-    border-radius: 5px;
+  width: 100%;
+  background-color: #FFFBF4;
+  border-radius: 5px;
 
-    box-shadow: 1px 2px 5px 1px #00000029;
-    position: relative;
-    height: 100%;
-    margin-top: 1rem;
+  box-shadow: 1px 2px 5px 1px #00000029;
+  position: relative;
+  height: 100%;
+  margin-top: 1rem;
 
 
 
@@ -428,20 +428,20 @@ body {
 }
 
 .EngChatMsg {
-    height: 85%;
-    width: 100%;
-    position: relative;
+  height: 85%;
+  width: 100%;
+  position: relative;
 
 
 
 }
 
 .SubEngChatMsg {
-    height: 100%;
-    width: 100%;
-    padding: 0rem 1rem;
-    padding-bottom: 2rem;
-    overflow-y: auto;
+  height: 100%;
+  width: 100%;
+  padding: 0rem 1rem;
+  padding-bottom: 2rem;
+  overflow-y: auto;
 
 
 
@@ -449,77 +449,77 @@ body {
 
 
 .engchatmsg-sender-side {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    margin-top: .4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-top: .4rem;
 
 }
 
 .engchatmsg-reciver-side {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    margin-top: .4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-top: .4rem;
 }
 
 .engchatmsg-reciver-message,
 .engchatmsg-sender-message {
-    max-width: 70%;
-    border-radius: 5px;
-    padding: .5rem .5rem;
-    font-size: 0.9rem;
-    text-wrap: wrap;
-    line-height: 1.1;
-    text-align: start;
-    font-family: 'Poppins';
+  max-width: 70%;
+  border-radius: 5px;
+  padding: .5rem .5rem;
+  font-size: 0.9rem;
+  text-wrap: wrap;
+  line-height: 1.1;
+  text-align: start;
+  font-family: 'Poppins';
 }
 
 .engchatmsg-sender-message {
-    color: #444444;
+  color: #444444;
 
-    /* background: #fef3de; */
-    margin-left: 8.4rem;
-    margin-top: 0.2rem;
-    word-wrap: break-word;
-    background-color: #FEF3DE;
-    font-family: 'Poppins';
-    box-shadow: 1px 2px 5px #00000029;
-    opacity: 1;
+  /* background: #fef3de; */
+  margin-left: 8.4rem;
+  margin-top: 0.2rem;
+  word-wrap: break-word;
+  background-color: #FEF3DE;
+  font-family: 'Poppins';
+  box-shadow: 1px 2px 5px #00000029;
+  opacity: 1;
 }
 
 .engchatmsg-reciver-side {
-    /* padding: 10px 6px; */
-    margin-top: 0.5rem;
-    font-family: 'Poppins';
-    margin-right: 0.3rem;
-    word-wrap: break-word
+  /* padding: 10px 6px; */
+  margin-top: 0.5rem;
+  font-family: 'Poppins';
+  margin-right: 0.3rem;
+  word-wrap: break-word
 }
 
 .engchatmsg-reciver-message {
-    color: #000;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    box-shadow: 1px 2px 5px #00000029;
-    opacity: 1;
-    margin-top: 0.5rem;
-    font-family: 'Poppins';
-    margin-left: 0.3rem;
-    word-wrap: break-word
+  color: #000;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 1px 2px 5px #00000029;
+  opacity: 1;
+  margin-top: 0.5rem;
+  font-family: 'Poppins';
+  margin-left: 0.3rem;
+  word-wrap: break-word
 }
 
 
 
 
 .PDetails h1 {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 400;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
-    display: flex;
-    gap: .5rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 400;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
+  display: flex;
+  gap: .5rem;
 
 }
 
@@ -527,37 +527,37 @@ body {
 
 
 .PDetails h1 span {
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 490;
-    font-family: 'Poppins';
-    line-height: 1.3rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 490;
+  font-family: 'Poppins';
+  line-height: 1.3rem;
 }
 
 
 .SubPDetails {
-    display: flex;
-    width: 24%;
-    height: 100%;
-    justify-content: space-around;
-    align-items: center;
+  display: flex;
+  width: 24%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
 
 
 }
 
 .Icon_Color {
-    color: #F8AC1D;
+  color: #F8AC1D;
 }
 
 .ODetailsColumn h5 {
-    text-align: left;
-    font-family: 'Poppins';
-    font-weight: 500;
-    margin-bottom: .3rem;
-    letter-spacing: 0px;
-    color: #444444;
-    font-size: .9rem;
-    cursor: pointer;
+  text-align: left;
+  font-family: 'Poppins';
+  font-weight: 500;
+  margin-bottom: .3rem;
+  letter-spacing: 0px;
+  color: #444444;
+  font-size: .9rem;
+  cursor: pointer;
 }
 
 
@@ -565,89 +565,89 @@ body {
 
 
 .TaskHistory {
-    min-height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 7%;
+  min-height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 7%;
 
 
 
 }
 
 .TaskHeading {
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-    align-items: end;
-    border-bottom: 2px solid #5353533b;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: end;
+  border-bottom: 2px solid #5353533b;
 
 
 
 }
 
 .TaskHeading h5 {
-    color: #1D1D1D;
-    font-size: 1rem;
-    font-weight: 550;
-    margin-bottom: .3rem;
+  color: #1D1D1D;
+  font-size: 1rem;
+  font-weight: 550;
+  margin-bottom: .3rem;
 }
 
 .AllTask {
 
-    min-height: 100%;
-    width: 100%;
-    position: relative;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: .3rem;
-    overflow-y: auto;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: .3rem;
+  overflow-y: auto;
 
 
 }
 
 
 .Services {
-    margin-top: 1rem;
-    padding: .9rem;
-    width: 100%;
-    height: 100%;
+  margin-top: 1rem;
+  padding: .9rem;
+  width: 100%;
+  height: 100%;
 
-    position: relative;
+  position: relative;
 }
 
 .CallBacks {
-    margin-top: 1rem;
-    padding: .9rem;
-    width: 100%;
-    height: 100%;
+  margin-top: 1rem;
+  padding: .9rem;
+  width: 100%;
+  height: 100%;
 
-    position: relative;
+  position: relative;
 }
 
 .ServicContainer {
-    height: 65vh;
-    margin-top: 1rem;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+  height: 65vh;
+  margin-top: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .CallbackContainer {
-    height: 65vh;
-    margin-top: 1rem;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+  height: 65vh;
+  margin-top: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .AllServices,
 .AllCallback {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: 1rem;
-    padding: 1rem;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 1rem;
+  padding: 1rem;
 
 
 
@@ -657,43 +657,43 @@ body {
 
 .ServiceCards,
 .CallBackCards {
-    border-radius: 10px;
-    height: 13vh;
-    background-color: #FFFBF4;
-    box-shadow: 1px 2px 5px #00000029;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: .2rem;
+  border-radius: 10px;
+  height: 13vh;
+  background-color: #FFFBF4;
+  box-shadow: 1px 2px 5px #00000029;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .2rem;
 }
 
 
 
 /* 
 table {
-    margin-top: .8rem;
-    margin-left: .8rem;
-    width: 95%;
-    border-collapse: collapse;
+  margin-top: .8rem;
+  margin-left: .8rem;
+  width: 95%;
+  border-collapse: collapse;
 
 }
 
 th,
 td {
 
-    font-size: 0.8rem;
-    color: #444444;
-    font-weight: 400;
-    font-family: 'Poppins';
-    line-height: .9rem;
-    padding: .2rem;
+  font-size: 0.8rem;
+  color: #444444;
+  font-weight: 400;
+  font-family: 'Poppins';
+  line-height: .9rem;
+  padding: .2rem;
 
 }
 
 th {
-    color: #fff;
-    font-weight: bold;
+  color: #fff;
+  font-weight: bold;
 } */
 
 .service-table-item,
@@ -726,31 +726,31 @@ th {
     line-height: .9rem;
 }
 .ServiceCardsBottom {
-    width: 100%;
-    height: 20%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  width: 100%;
+  height: 20%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 
 
 
 }
 
 .ServiceCardsBottom>h5:nth-child(1) {
-    font-family: ' Poppins';
-    font-size: .9rem;
-    font-weight: 700;
-    color: #389300;
+  font-family: ' Poppins';
+  font-size: .9rem;
+  font-weight: 700;
+  color: #389300;
 
 }
 
 .ServiceCardsBottom>h5:nth-child(2) {
-    font-family: ' Poppins';
-    font-size: .9rem;
-    font-weight: 700;
-    color: #F8AC1D;
-    ;
+  font-family: ' Poppins';
+  font-size: .9rem;
+  font-weight: 700;
+  color: #F8AC1D;
+  ;
 
 }
 
@@ -758,75 +758,75 @@ th {
 
 
 .CallBackCardsBottom {
-    width: 100%;
-    height: 20%;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  width: 100%;
+  height: 20%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 
 
 
 }
 
 .CallBackCardsBottom>h5:nth-child(1) {
-    font-family: ' Poppins';
-    font-size: .9rem;
-    font-weight: 700;
-    color: #389300;
+  font-family: ' Poppins';
+  font-size: .9rem;
+  font-weight: 700;
+  color: #389300;
 
 }
 
 .CallBackCardsBottom>h5:nth-child(2) {
-    font-family: ' Poppins';
-    font-size: .9rem;
-    font-weight: 700;
-    color: #F8AC1D;
-    ;
+  font-family: ' Poppins';
+  font-size: .9rem;
+  font-weight: 700;
+  color: #F8AC1D;
+  ;
 
 }
 
 
 .star {
-    width: 22%;
-    height: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border: 2px solid #F8AC1D;
-    border-radius: 4px;
-    padding: .1rem;
-    margin-bottom: .3rem;
+  width: 22%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 2px solid #F8AC1D;
+  border-radius: 4px;
+  padding: .1rem;
+  margin-bottom: .3rem;
 
 }
 
 .star h5 {
-    font-size: .8rem;
-    font-family: ' Poppins';
-    letter-spacing: 0px;
-    color: #444444;
-    text-align: left;
-    font-weight: 600;
+  font-size: .8rem;
+  font-family: ' Poppins';
+  letter-spacing: 0px;
+  color: #444444;
+  text-align: left;
+  font-weight: 600;
 }
 
 .small-Icon {
-    font-size: .8rem;
+  font-size: .8rem;
 }
 
 
 .Yello_Scrollbar::-webkit-scrollbar-track {
-    border-radius: 10px;
+  border-radius: 10px;
 
 }
 
 .Yello_Scrollbar::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 
 }
 
 .Yello_Scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #FFFFFF;
+  border-radius: 10px;
+  background-color: #FFFFFF;
 
 }
 
@@ -834,45 +834,45 @@ th {
 
 
 .Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
-    background-color: #F8AC1D;
+  background-color: #F8AC1D;
 }
 
 .DateHeading {
-    border-bottom: 1px solid #C1C1C180;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border-bottom: 1px solid #C1C1C180;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .callBackDateHeading {
-    border-bottom: 1px solid #C1C1C180;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border-bottom: 1px solid #C1C1C180;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Attendancecalendar {
-    margin-top: .8rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    display: block;
-    min-height: 20%;
-    background-color: #FFFBF4;
+  margin-top: .8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-height: 20%;
+  background-color: #FFFBF4;
 
 
 
 }
 
 .Attendance {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    display: grid;
-    padding: .5rem .5rem;
-    grid-template-columns: 30% 70%;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: grid;
+  padding: .5rem .5rem;
+  grid-template-columns: 30% 70%;
 
 
 
@@ -880,55 +880,55 @@ th {
 
 
 .Attendacne-header {
-    background-color: #FFFBF4;
-    border-bottom: none;
-    padding: 1rem;
+  background-color: #FFFBF4;
+  border-bottom: none;
+  padding: 1rem;
 }
 
 #monthYear {
-    font-size: .8rem;
+  font-size: .8rem;
 }
 
 
 #aprevBtn,
 #anextBtn {
-    background: none;
-    border: none;
-    color: #343434;
-    cursor: pointer;
-    font-size: .6rem;
+  background: none;
+  border: none;
+  color: #343434;
+  cursor: pointer;
+  font-size: .6rem;
 }
 
 
 .aday {
-    padding: .2rem;
-    text-align: center;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+  padding: .2rem;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 
 }
 
 
 
 .aday:hover {
-    background-color: #FEF3DE;
-    color: #F8AC1D;
+  background-color: #FEF3DE;
+  color: #F8AC1D;
 }
 
 .adays {
-    display: grid;
-    grid-template-columns: repeat(7, 9%);
-    grid-column-gap: 1rem;
-    padding: 1rem 1rem;
-    height: 70%;
-    position: relative;
+  display: grid;
+  grid-template-columns: repeat(7, 9%);
+  grid-column-gap: 1rem;
+  padding: 1rem 1rem;
+  height: 70%;
+  position: relative;
 
 
 
@@ -936,12 +936,12 @@ th {
 }
 
 .ui-datepicker-prev {
-    order: 1
+  order: 1
 }
 
 .aday.current {
 
-    color: #F8AC1D;
+  color: #F8AC1D;
 
 }
 
@@ -949,101 +949,101 @@ th {
 
 .aday.current:hover {
 
-    background-color: transparent;
-    box-shadow: none;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .ui-datepicker-next {
-    order: 3
+  order: 3
 }
 
 .aday.selected {
-    background: #F8AC1D;
-    box-shadow: inset 1px 2px 3px #00000080;
-    color: black;
+  background: #F8AC1D;
+  box-shadow: inset 1px 2px 3px #00000080;
+  color: black;
 }
 
 
 .days-header {
 
-    font-weight: bold;
-    width: 100%;
-    padding-left: 1.2rem;
-    position: absolute;
-    display: grid;
-    grid-template-columns: repeat(7, 9%);
-    grid-column-gap: .9rem;
-    font-size: .7rem;
-    font-weight: 500;
-    top: -2%;
+  font-weight: bold;
+  width: 100%;
+  padding-left: 1.2rem;
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(7, 9%);
+  grid-column-gap: .9rem;
+  font-size: .7rem;
+  font-weight: 500;
+  top: -2%;
 
 
 }
 
 .DatesContainer {
-    display: grid;
-    grid-template-rows: repeat(5, 17%);
-    height: 60%;
-    width: 100%;
-    grid-row-gap: 1rem;
-    padding: 1rem 0rem;
+  display: grid;
+  grid-template-rows: repeat(5, 17%);
+  height: 60%;
+  width: 100%;
+  grid-row-gap: 1rem;
+  padding: 1rem 0rem;
 
 }
 
 .DatesCard {
-    background-color: #FFFFFF;
-    box-shadow: 1px 2px 5px #00000029;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  background-color: #FFFFFF;
+  box-shadow: 1px 2px 5px #00000029;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 
 }
 
 .DateCardData {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
 }
 
 .DateCardData h5 {
-    font-family: 'Poppins';
-    font-weight: 500;
+  font-family: 'Poppins';
+  font-weight: 500;
 }
 
 .DateCardData>h5:nth-child(2) {
-    font-weight: 400;
-    font-size: .5rem;
+  font-weight: 400;
+  font-size: .5rem;
 }
 
 .DateCardData:nth-child(1) {
-    height: fit-content;
-    background-color: #FEF3DE;
-    box-shadow: inset 1px 2px 3px #99886B66;
-    width: 20%;
-    height: 90%;
+  height: fit-content;
+  background-color: #FEF3DE;
+  box-shadow: inset 1px 2px 3px #99886B66;
+  width: 20%;
+  height: 90%;
 }
 
 .LeaveHistory {
 
-    position: relative;
+  position: relative;
 
 }
 
 .SubLeaveHistory {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-rows: 40% .1rem 55%;
-    grid-row-gap: 1rem;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 40% .1rem 55%;
+  grid-row-gap: 1rem;
 
 }
 
 .LeaveHistoryTop {
-    display: grid;
-    grid-template-rows: 10% 90%;
+  display: grid;
+  grid-template-rows: 10% 90%;
 
 
 }
@@ -1053,58 +1053,58 @@ th {
 
 
 .VerticalLinelarge {
-    width: 90%;
-    margin-left: 3rem;
-    background-color: #70707021;
+  width: 90%;
+  margin-left: 3rem;
+  background-color: #70707021;
 
 }
 
 
 .Leaveheading {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0rem 3rem;
-    padding-right: 2.2rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0rem 3rem;
+  padding-right: 2.2rem;
 }
 
 
 .Leaveheading>h5:nth-child(1) {
-    color: #1D1D1D;
-    font-weight: 500;
-    font-family: 'Poppins';
-    font-size: .9rem;
+  color: #1D1D1D;
+  font-weight: 500;
+  font-family: 'Poppins';
+  font-size: .9rem;
 }
 
 .Leaveheading>h5:nth-child(2) {
-    color: #444444;
-    font-family: 'Poppins';
-    font-size: .9rem;
-    font-weight: 400;
+  color: #444444;
+  font-family: 'Poppins';
+  font-size: .9rem;
+  font-weight: 400;
 }
 
 .Leaveheading>h5:nth-child(3) {
 
-    color: #F8AC1D;
-    font-family: 'Poppins';
-    font-size: .9rem;
-    font-weight: 400;
+  color: #F8AC1D;
+  font-family: 'Poppins';
+  font-size: .9rem;
+  font-weight: 400;
 }
 
 .OldLeaveHistory {
-    overflow-y: auto;
+  overflow-y: auto;
 
 
 
 }
 
 .SubOldLeaveHistory {
-    padding: 1rem 3rem;
-    min-height: 20%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: 1rem;
+  padding: 1rem 3rem;
+  min-height: 20%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-gap: 1rem;
 
 
 
@@ -1113,109 +1113,109 @@ th {
 }
 
 .OldLeaveCard {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 6.5vh;
-    background-color: #FFFFFF;
-    box-shadow: 1px 2px 5px #00000029;
-    border-radius: 5px;
-    padding: 0rem .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 6.5vh;
+  background-color: #FFFFFF;
+  box-shadow: 1px 2px 5px #00000029;
+  border-radius: 5px;
+  padding: 0rem .5rem;
 }
 
 
 .OldCardData {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
 }
 
 .OldCardData h5 {
-    font-family: 'Poppins';
-    font-weight: 500;
+  font-family: 'Poppins';
+  font-weight: 500;
 }
 
 .OldCardData>h5:nth-child(2) {
-    font-weight: 400;
-    font-size: .5rem;
+  font-weight: 400;
+  font-size: .5rem;
 }
 
 .OldCardData:nth-child(1) {
 
-    background-color: #FEF3DE;
-    box-shadow: inset 1px 2px 3px #99886B66;
-    width: 60px;
-    height: 50px;
-    border-radius: 5px;
+  background-color: #FEF3DE;
+  box-shadow: inset 1px 2px 3px #99886B66;
+  width: 60px;
+  height: 50px;
+  border-radius: 5px;
 }
 
 .OldLeaveCard>.OldCardData:nth-child(2) {
-    font-family: 'Poppins';
-    font-weight: 700;
-    font-size: 1.2rem;
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 .OldLeaveCard>.OldCardData:nth-child(3) {
-    font-family: 'Poppins';
-    font-weight: 700;
-    font-size: 1rem;
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .LeaveHistoryBottom {
-    position: relative;
+  position: relative;
 
 }
 
 .SubLeaveHistoryBottom {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    position: relative;
-    padding: 0rem 2.5rem 0rem 3rem;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+  padding: 0rem 2.5rem 0rem 3rem;
 
 }
 
 .ReqMainContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 30%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 30%;
 
 
 
 }
 
 .ReqContainer {
-    height: 70%;
-    width: 100%;
-    border: 1px solid #00000029;
-    position: relative;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
+  height: 70%;
+  width: 100%;
+  border: 1px solid #00000029;
+  position: relative;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .ResMainContainer {
-    width: 100%;
-    height: 45%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  width: 100%;
+  height: 45%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 
 
 }
 
 .ResContainer {
-    height: 80%;
-    width: 100%;
-    border: 1px solid #00000029;
-    border-radius: 10px;
+  height: 80%;
+  width: 100%;
+  border: 1px solid #00000029;
+  border-radius: 10px;
 
 
 
@@ -1223,225 +1223,225 @@ th {
 }
 
 .SubLeaveHistoryBottom h5 {
-    color: #1D1D1D;
+  color: #1D1D1D;
 
 }
 
 .ReqContainerL {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    padding: 0rem 2rem;
-    justify-content: center;
-    flex-direction: column;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  padding: 0rem 2rem;
+  justify-content: center;
+  flex-direction: column;
 
 
 }
 
 .ReqContainerL>h5:nth-child(1) {
-    font-family: 'Poppins';
-    color: #1D1D1D;
-    font-size: 1rem;
-    font-weight: 450;
+  font-family: 'Poppins';
+  color: #1D1D1D;
+  font-size: 1rem;
+  font-weight: 450;
 }
 
 
 .ReqContainerL>h5:nth-child(2) {
-    color: #B7B7B7;
-    font-size: .8rem;
-    font-weight: 450;
-    text-align: justify;
-    font-family: 'Poppins';
+  color: #B7B7B7;
+  font-size: .8rem;
+  font-weight: 450;
+  text-align: justify;
+  font-family: 'Poppins';
 
 }
 
 
 .ReqContainerR {
-    width: 50%;
-    height: 100%;
+  width: 50%;
+  height: 100%;
 
 }
 
 .ReqMainContainer h5 {
-    font-family: 'Poppins';
-    font-size: .9rem;
+  font-family: 'Poppins';
+  font-size: .9rem;
 }
 
 
 .ResMainContainer h5 {
-    font-family: 'Poppins';
-    font-size: .9rem;
-    font-weight: 400;
+  font-family: 'Poppins';
+  font-size: .9rem;
+  font-weight: 400;
 }
 
 .ReqContainerR {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    padding: 0rem 2rem;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 0rem 2rem;
+  justify-content: center;
 
 }
 
 .ReqRDuration {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 
 
 }
 
 .ReqRDuration h6 {
-    letter-spacing: 0px;
-    color: #B7B7B7;
-    font-family: 'Poppins';
-    font-size: .7rem;
+  letter-spacing: 0px;
+  color: #B7B7B7;
+  font-family: 'Poppins';
+  font-size: .7rem;
 }
 
 .ReqContainerR h5 {
-    color: #1D1D1D;
-    font-family: 'Poppins';
-    font-size: .9rem;
-    font-weight: 400;
+  color: #1D1D1D;
+  font-family: 'Poppins';
+  font-size: .9rem;
+  font-weight: 400;
 }
 
 .ReqRDuration>h6:nth-child(2) {
-    color: #1D1D1D;
+  color: #1D1D1D;
 }
 
 .ResContainer {
-    padding: 1rem 1rem;
-    display: flex;
-    justify-content: end;
-    width: 100%;
+  padding: 1rem 1rem;
+  display: flex;
+  justify-content: end;
+  width: 100%;
 
 }
 
 .Buttons {
-    width: 100%;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: end;
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: end;
 }
 
 .Buttons button {
-    padding: .5rem 2rem;
-    background-color: transparent;
-    border: 1px solid #C10000;
-    border-radius: 5px;
-    font-family: 'Poppins';
-    font-weight: 500;
-    cursor: pointer;
+  padding: .5rem 2rem;
+  background-color: transparent;
+  border: 1px solid #C10000;
+  border-radius: 5px;
+  font-family: 'Poppins';
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .Buttons>button:nth-child(2) {
-    border: 1px solid #46A70A;
+  border: 1px solid #46A70A;
 }
 
 
 
 .eng-card-message-text {
-    position: absolute;
-    bottom: 15px;
-    max-height: 10rem;
-    width: 100%;
-    padding: 1rem;
+  position: absolute;
+  bottom: 15px;
+  max-height: 10rem;
+  width: 100%;
+  padding: 1rem;
 
 }
 
 .text-area-message-eng-card {
-    width: 90%;
-    outline: none;
-    border: none;
-    border-radius: 50px;
-    box-shadow: inset 1px 2px 3px #00000029;
-    position: relative;
-    padding: 15px 12px;
-    top: 4px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #444444;
-    padding-right: 80px;
-    margin-bottom: 10px;
+  width: 90%;
+  outline: none;
+  border: none;
+  border-radius: 50px;
+  box-shadow: inset 1px 2px 3px #00000029;
+  position: relative;
+  padding: 15px 12px;
+  top: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #444444;
+  padding-right: 80px;
+  margin-bottom: 10px;
 
 
 
 }
 
 /* .text-area-message-eng-card:hover::-webkit-scrollbar-thumb {
-    border: 1px solid #f8ac1d; 
-  } */
+  border: 1px solid #f8ac1d; 
+} */
 /* set scroll behaviour  */
 .text-area-message-eng-card::-webkit-scrollbar {
-    width: 2px;
-    /* width of the entire scrollbar */
+  width: 2px;
+  /* width of the entire scrollbar */
 }
 
 .text-area-message-eng-card::-webkit-scrollbar-track {
-    background: 0;
-    /* color of the tracking area */
-    margin-top: 7px;
-    margin-bottom: 5px;
+  background: 0;
+  /* color of the tracking area */
+  margin-top: 7px;
+  margin-bottom: 5px;
 }
 
 .text-area-message-eng-card::-webkit-scrollbar-thumb {
-    background-color: #f8ac1d;
-    /* color of the scroll thumb */
-    border-radius: 20px;
-    /* roundness of the scroll thumb */
-    border: 1px solid #f8ac1d;
-    /* creates padding around scroll thumb */
-    transition: background-color 0.3s ease;
-    /* Adjust the transition duration as needed */
+  background-color: #f8ac1d;
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 1px solid #f8ac1d;
+  /* creates padding around scroll thumb */
+  transition: background-color 0.3s ease;
+  /* Adjust the transition duration as needed */
 }
 
 .agdam-eng-card {
-    height: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* padding: 20px; */
-    position: relative;
-    width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 20px; */
+  position: relative;
+  width: 100%;
 
 
 
 }
 
 .user-attachment4-eng-card {
-    position: absolute;
-    height: 100px;
-    right: 20px;
-    display: flex;
-    gap: 20px;
-    font-size: 1.5rem;
-    /* padding: 0px 0px; */
-    color: #f8ac1d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 15%;
-    top: -18px;
-    cursor: pointer;
+  position: absolute;
+  height: 100px;
+  right: 20px;
+  display: flex;
+  gap: 20px;
+  font-size: 1.5rem;
+  /* padding: 0px 0px; */
+  color: #f8ac1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+  top: -18px;
+  cursor: pointer;
 
 
 }
 
 .send-messsage-eng-card {
-    background: #fef3de;
-    border-radius: 50%;
-    text-align: center;
-    padding: 10px;
-    margin-bottom: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background: #fef3de;
+  border-radius: 50%;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .text-area-message-eng-card ::placeholder {
 
-    color: #4444441f;
-    opacity: 0.5;
+  color: #4444441f;
+  opacity: 0.5;
 }

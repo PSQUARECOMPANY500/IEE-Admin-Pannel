@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// // <-----------------------------  Author:- Armaan Singh ----------------------------------->
+import React, { useState, useEffect } from "react";
 import ClientDetails from "./ClientDetails";
 import ClientMembershipHistory from "./ClientMembershipHistory";
 import ClientCallDetails from "./ClientCallDetails";
@@ -6,85 +7,87 @@ import OfferButton from "./OfferButton";
 import NotificationMembership from "./NotificationMembership";
 import CallButtons from "./CallButtons";
 import { useSelector } from "react-redux";
+import MembershipLoader from "./MembershipLoader"
 
 const ClientMembershipDetails = ({ isExpired, dataType }) => {
   const [buttonSelect, setButtonSelect] = useState(false);
-  const historyDetails = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+  const historyDetails = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipHistoryReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipHistoryReducer
-        .membershipHistory;
-    } else {
-      return null;
-    }
-  });
-
-  const callDetails = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+        ?.membershipHistory
+  );
+  const callDetails = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipCallReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipCallReducer
-        .membershipCallDetail;
-    } else {
-      return null;
-    }
-  });
-  const clientDetail = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
+        ?.membershipCallDetail
+  );
+  const clientDetail = useSelector(
+    (state) =>
       state.AdminRootReducer.requestGetMemberShipClientReducer
-    ) {
-      return state?.AdminRootReducer.requestGetMemberShipClientReducer
-        .membershipCleintDetail;
-    } else {
-      return null;
-    }
-  });
+        ?.membershipCleintDetail
+  );
 
   return (
     <div className="clientsContainer">
-      <div className="clients">
-        <div>
-          <ClientDetails dataType={dataType} clientDetail={clientDetail} />
-          <ClientMembershipHistory
-            isExpired={isExpired}
-            dataType={dataType}
-            historyDetails={historyDetails}
-          />
-        </div>
-        {clientDetail && clientDetail.responseData && (
-          <CallButtons
-            isExpired={isExpired}
-            dataType={dataType}
-            buttonSelect={() => {
-              setButtonSelect(!buttonSelect);
-            }}
-            />
+      {clientDetail && callDetails && historyDetails ? (
+        <>
+          <div className="clients">
+            <div>
+              <ClientDetails dataType={dataType} clientDetail={clientDetail} />
+              {clientDetail && clientDetail.responseData && (
+                <ClientMembershipHistory
+                  isExpired={isExpired}
+                  dataType={dataType}
+                  historyDetails={historyDetails}
+                />
+              )}
+            </div>
+            {clientDetail && clientDetail.responseData && (
+              <CallButtons
+                isExpired={isExpired}
+                dataType={dataType}
+                buttonSelect={() => {
+                  setButtonSelect(!buttonSelect);
+                }}
+              />
             )}
-      </div>
-      <div className="clients">
-        <ClientCallDetails
-            JON={clientDetail?.responseData?.jobOrderNumber}
-          isExpired={isExpired}
-          dataType={dataType}
-          callDetails={callDetails}
-          Mybutton={buttonSelect}
-        />
-        {clientDetail && clientDetail.responseData && (
-          <div>
-            <NotificationMembership isExpired={isExpired} dataType={dataType} />
-            <NotificationMembership isExpired={isExpired} dataType={dataType} whatsApp={"whatsapp"} />
           </div>
-        )}
-        {clientDetail && clientDetail.responseData && (
-          <>
-            <OfferButton isExpired={isExpired} dataType={dataType} />
-          </>
-        )}
-      </div>
+          <div className="clients">
+            {clientDetail && clientDetail.responseData && (
+              <>
+                <ClientCallDetails
+                  JON={clientDetail?.responseData?.jobOrderNumber}
+                  isExpired={isExpired}
+                  dataType={dataType}
+                  callDetails={callDetails}
+                  Mybutton={buttonSelect}
+                  setButtonSelect={setButtonSelect}
+                />
+                <div>
+                  <NotificationMembership
+                    isExpired={isExpired}
+                    dataType={dataType}
+                  />
+                  <NotificationMembership
+                    isExpired={isExpired}
+                    dataType={dataType}
+                    whatsApp={"whatsapp"}
+                  />
+                </div>
+              </>
+            )}
+            {clientDetail && clientDetail.responseData && (
+              <>
+                <OfferButton isExpired={isExpired} dataType={dataType} />
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+        <MembershipLoader/>
+        </>
+      )}
     </div>
   );
 };

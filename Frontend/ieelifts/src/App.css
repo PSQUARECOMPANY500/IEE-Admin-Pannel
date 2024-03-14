@@ -116,8 +116,6 @@ main {
   Rotate 180 degrees
 } */
 
-
-
 .toggle-button {
   width: 8px;
   height: 19px;
@@ -127,7 +125,6 @@ main {
   transition: 0.25s;
   z-index: 15;
   cursor: pointer;
-
 }
 
 .toggle-button:hover {
@@ -135,15 +132,12 @@ main {
 }
 
 .menu-icon {
-  transition: .5s ease;
+  transition: 0.5s ease;
 }
-
-
 
 .rotate {
   transform: rotateZ(180deg);
 }
-
 
 .toggle-button .menu-bar {
   position: absolute;
@@ -191,15 +185,12 @@ main {
 
 /* hamburger css ends */
 
-
-
 .toggle-button-menu {
-
   width: 20%;
   position: absolute;
   right: 8%;
 
-  margin-left: .2rem;
+  margin-left: 0.2rem;
 }
 
 .wrapper {
@@ -216,17 +207,15 @@ main {
   height: 2px;
   background-color: #000;
   width: 12px;
-  transition: .5s ease;
+  transition: 0.5s ease;
 }
 
 .menu-bar-top {
   border-radius: 5px;
-
 }
 
 .menu-bar-bottom {
   border-radius: 5px;
-
 }
 
 .link {
@@ -576,7 +565,6 @@ span::after {
   margin-left: 12%;
 } */
 
-
 .top-bar {
   align-items: center;
   justify-content: space-between;
@@ -599,7 +587,7 @@ span::after {
   color: #191919;
   font-size: 24px;
   font-weight: 500;
-  transition: .5s ease;
+  transition: 0.5s ease;
   /* margin-left: 12%; */
 }
 
@@ -655,14 +643,13 @@ span::after {
 }
 
 .filter-icon {
-  /* box-shadow: none; */
-  padding: 12px 13px;
-  font-size: 16px;
+  box-shadow: none;
+  font-size: 1.2rem;
 }
 
-.filter-top-icon {
+/* .filter-top-icon {
   padding: 2px 6px;
-}
+} */
 
 /* topbar css ends */
 
@@ -749,9 +736,7 @@ span::after {
   background: #fff;
 } */
 
-
 .search-input {
-
   color: #343434;
   outline: none;
   border: none;
@@ -761,7 +746,6 @@ span::after {
   transition: 0.7s ease;
   font-family: sans-serif;
   border-radius: 9px;
-
 }
 
 .search-btn {
@@ -802,12 +786,10 @@ span::after {
 
 .search-box {
   display: flex;
-
-
 }
 
 .top-icon {
-  padding: 1.4rem .7rem;
+  padding: 1.4rem 0.7rem;
   display: flex;
   justify-content: center;
 
@@ -818,10 +800,19 @@ span::after {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
 }
 
-.search-box:hover>.search-input {
+.top-icon:hover .search-input {
   width: 240px;
-  padding: .8rem .1rem;
+  padding: 0.8rem 0.1rem;
+}
 
+.search-input::selection {
+  width: 240px;
+  padding: 0.8rem 0.1rem;
+}
+
+.inputSearchWritten {
+  width: 240px;
+  padding: 0.8rem 0.1rem;
 }
 
 /* 
@@ -1049,7 +1040,6 @@ footer a:hover {
 .skill-box {
   width: 50%;
   margin: 25px 0px;
-
 }
 
 .skill-box .title {
@@ -1325,7 +1315,6 @@ footer a:hover {
   width: 15%;
   margin-top: 16px;
   position: relative;
-
 }
 
 .dropdown-menu {
@@ -1414,7 +1403,6 @@ footer a:hover {
 }
 
 .drop-parent {
-
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -1445,7 +1433,6 @@ footer a:hover {
   font-size: 14px;
   font-weight: 700;
   color: #343434;
-
 }
 
 .upper-sec p:last-child {
@@ -1460,10 +1447,7 @@ footer a:hover {
   height: 0px;
   margin-top: 5px;
   margin-bottom: 5px;
-
 }
-
-
 
 .horizontal-row-container {
   width: 100%;
@@ -1514,7 +1498,6 @@ footer a:hover {
   max-height: 118px;
   max-width: 160px;
   cursor: pointer !important;
-
 }
 
 .task-dot {
@@ -1579,7 +1562,6 @@ footer a:hover {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
-
 }
 
 .tasks-section {
@@ -1755,7 +1737,6 @@ footer a:hover {
   line-height: 1;
   border-radius: 10px;
   height: 94px;
-
 }
 
 /* .more-descriptive .detail:hover{
@@ -1794,10 +1775,10 @@ footer a:hover {
   margin-right: 5px;
   margin-bottom: 2px; */
   /* change by ayyush */
-  padding: .5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   border: 1px solid #f8ac1d;
   background: #f8ac1d;
-  font-size: .8rem;
+  font-size: 0.8rem;
   border-radius: 5px;
   margin-left: auto;
   margin-right: 5px;
@@ -1821,10 +1802,10 @@ footer a:hover {
   margin-left: auto;
   margin-right: 5px;
   margin-bottom: 2px; */
-  padding: .5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   border: 1px solid #f8ac1d;
   /* background: #f8ac1d; */
-  font-size: .8rem;
+  font-size: 0.8rem;
   border-radius: 5px;
   margin-left: auto;
   margin-right: 5px;
@@ -1953,7 +1934,6 @@ footer a:hover {
   margin: 10px auto;
   border-collapse: collapse;
   text-align: center;
-
 }
 
 .customer-table1 {
@@ -2023,7 +2003,6 @@ footer a:hover {
   overflow-x: hidden;
 }
 
-
 .my_table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -2033,8 +2012,6 @@ footer a:hover {
 
 
 }
-
-
 
 .my_table-container thead {
   position: sticky;
@@ -2069,9 +2046,7 @@ footer a:hover {
   border-radius: 20px;
   border: 1px solid #ffffff;
   transition: background-color 0.3s ease;
-
 }
-
 
 .my_table-container table th {
 
@@ -2087,30 +2062,26 @@ footer a:hover {
   font-size: .9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
 
-  line-height: .9rem;
+  line-height: 0.9rem;
 }
-
-
 
 .my_table-container table td {
   font-size: 1rem;
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
-  font-size: .9rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
-  line-height: .9rem;
+  font-family: "Poppins";
+  line-height: 0.9rem;
 }
 
-
 /* ------------------------------------------------------------------------------------sevice req table by aayush malviya start------------------------------------------------------- */
-
 
 .service-request-table {
   max-height: 300px;
@@ -2122,15 +2093,10 @@ footer a:hover {
 
 }
 
-
 .service-request-table table {
   width: 100%;
   border-collapse: collapse;
-
-
 }
-
-
 
 .service-request-table thead {
   position: sticky;
@@ -2167,9 +2133,7 @@ footer a:hover {
   border-radius: 20px;
   border: 1px solid #ffffff;
   transition: background-color 0.3s ease;
-
 }
-
 
 .service-request-table table th {
   font-size: 1rem;
@@ -2180,33 +2144,30 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
-  font-size: .9rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
 
-  line-height: .9rem;
+  line-height: 0.9rem;
 }
-
-
 
 .service-request-table table td {
   font-size: 1rem;
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
-  font-size: .9rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
-  line-height: .9rem;
+  font-family: "Poppins";
+  line-height: 0.9rem;
 }
 
 /*---------------------------------------------------------- service req table end by aayush------------------------------------------------------------------  */
-
 
 /*---------------------------------------------------------- service schedule  table start by aayush------------------------------------------------------------------  */
 
@@ -2216,20 +2177,12 @@ footer a:hover {
   border-radius: 20px;
   margin-top: 1rem;
   padding: 20x;
-
-
-
 }
-
 
 .service-schedule-table table {
   width: 100%;
   border-collapse: collapse;
-
-
 }
-
-
 
 .service-schedule-table thead {
   position: sticky;
@@ -2266,9 +2219,7 @@ footer a:hover {
   border-radius: 20px;
   border: 1px solid #ffffff;
   transition: background-color 0.3s ease;
-
 }
-
 
 .service-schedule-table table th {
   font-size: 1rem;
@@ -2279,29 +2230,27 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
-  font-size: .9rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
 
-  line-height: .9rem;
+  line-height: 0.9rem;
 }
-
-
 
 .service-schedule-table table td {
   font-size: 1rem;
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
-  font-size: .9rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
-  font-family: 'Poppins';
-  line-height: .9rem;
+  font-family: "Poppins";
+  line-height: 0.9rem;
 }
 
 /*---------------------------------------------------------- service schedule  table end by aayush------------------------------------------------------------------  */
@@ -2320,31 +2269,21 @@ footer a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-
-
 }
 
 .icon-align-div {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: end;
+  justify-content: flex-end;
   width: 143px;
-
-
-
 }
-
-
 
 /* Add your other styles as needed */
 
 .ticket-section-heading {
   font-size: 1.2rem;
   font-weight: 600;
-  ;
-
 }
 
 .ticket-section-heading span:nth-child(1) {
@@ -2367,13 +2306,7 @@ footer a:hover {
   box-shadow: none;
   padding: 0px 0px;
   border-radius: 6px;
-
 }
-
-
-
-
-
 
 .checkbox.style-c {
   display: inline-block;
@@ -2392,11 +2325,11 @@ footer a:hover {
   width: 0;
 }
 
-.checkbox.style-c input:checked~.checkbox__checkmark {
+.checkbox.style-c input:checked ~ .checkbox__checkmark {
   background-color: #ffffff;
 }
 
-.checkbox.style-c input:checked~.checkbox__checkmark:after {
+.checkbox.style-c input:checked ~ .checkbox__checkmark:after {
   opacity: 1;
 }
 
@@ -2404,7 +2337,7 @@ footer a:hover {
   /* background-color: #eee; */
 /* }  */
 
-.checkbox.style-c:hover input:checked~.checkbox__checkmark {
+.checkbox.style-c:hover input:checked ~ .checkbox__checkmark {
   background-color: #ffffff;
 }
 
@@ -2544,6 +2477,7 @@ footer a:hover {
   list-style-type: none;
   cursor: pointer;
   margin-top: 6px;
+  font-weight: 500;
 }
 
 .filter-icons span {
@@ -2582,15 +2516,9 @@ footer a:hover {
   border-radius: 5px;
 }
 
-
-
-
 .filter-dropdowns {
   margin-top: 10px;
-
 }
-
-
 
 .child-filter-dropdown {
   padding: 10px;
@@ -2599,7 +2527,12 @@ footer a:hover {
   /* background-color: red;
   background: rgb(253, 253, 253);
   background-color: red; */
+}
 
+.child-filter-dropdown {
+  padding: 10px;
+  position: relative;
+  max-height: 1000px;
 }
 
 .dropdown-content {
@@ -2617,29 +2550,20 @@ footer a:hover {
   top: 14%;
 }
 
-
-
-
-
 @media (min-width: 768px) and (max-width: 1064px) {
-
   .dropdown-content {
     top: 30%;
   }
-
-
 }
 
-
 @media (min-width: 1025px) and (max-width: 1440px) {
-
   .dropdown-content {
     top: 31%;
   }
 }
 
-
-@media (min-width: 1441px) {}
+@media (min-width: 1441px) {
+}
 
 .dropdown-content-filter {
   position: absolute;
@@ -2737,7 +2661,6 @@ footer a:hover {
   border-radius: 5px;
 }
 
-
 /* filter dropdown css ends */
 
 /* assign ticket modal css starts */
@@ -2769,7 +2692,6 @@ footer a:hover {
   width: 100%;
   position: relative;
   border-radius: 8px;
-
 }
 
 .sub-child-modal-container {
@@ -2781,8 +2703,6 @@ footer a:hover {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
-
 }
 
 .req-client-section {
@@ -2791,7 +2711,6 @@ footer a:hover {
   position: relative;
   display: flex;
   padding-top: 1rem;
-
 }
 
 .req-elevator-section {
@@ -2799,7 +2718,6 @@ footer a:hover {
   height: 60%;
   position: relative;
   display: flex;
-
 }
 
 .req-elevator-section .calendar {
@@ -2820,25 +2738,22 @@ footer a:hover {
   width: 25%;
   height: 100%;
   position: relative;
-
 }
-
 
 .req-elevator-details {
   width: 100%;
   height: 35%;
   position: relative;
   padding-left: 4.1rem;
-
 }
 
 .sub-req-elevator-details {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: .3rem;
+  gap: 0.3rem;
   padding-left: 1rem;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .req-elevator-section-right {
@@ -2849,8 +2764,6 @@ footer a:hover {
   justify-content: start;
   align-items: start;
   padding-left: 8.2rem;
-
-
 }
 
 .req-el-left {
@@ -2858,7 +2771,6 @@ footer a:hover {
   height: 100%;
   position: relative;
   background: #000;
-
 }
 
 .req-el-right {
@@ -2875,7 +2787,6 @@ footer a:hover {
 
 .req-elevator-col1 {
   width: 25%;
-
 }
 
 .req-eng-details {
@@ -2886,37 +2797,32 @@ footer a:hover {
 }
 
 .req-eng-details h1 {
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   font-weight: 500;
-
 }
-
 
 .req-elevator-col1 p {
   color: #272626;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
-
 
 .req-elevator-col2 p {
-  color: #1D1D1D;
-  font-size: .8rem;
+  color: #1d1d1d;
+  font-size: 0.8rem;
   font-weight: 400;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
-
 
 .req-elevator-col2 {
   width: 75%;
-
 }
 
 .req-elevator-details h1 {
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   font-weight: 500;
   text-align: start;
 }
@@ -2939,9 +2845,6 @@ footer a:hover {
   border-radius: 3px;
 }
 
-
-
-
 .req-client-information-section {
   width: 45%;
   height: 100%;
@@ -2952,7 +2855,6 @@ footer a:hover {
   justify-content: center;
 }
 
-
 .modal-container {
   position: fixed;
   top: 50%;
@@ -2961,7 +2863,6 @@ footer a:hover {
   height: 80%;
   background: white;
   z-index: 4;
-
 }
 
 .cross-icon {
@@ -2973,7 +2874,6 @@ footer a:hover {
   width: 40px;
   color: black;
   z-index: 9;
-
 }
 
 .modal-container.active {
@@ -2982,7 +2882,6 @@ footer a:hover {
   border-radius: 8px;
   height: auto;
   box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
-
 }
 
 .upload-photo-secton {
@@ -2993,8 +2892,6 @@ footer a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 }
 
 .upload-photo-secton img {
@@ -3005,7 +2902,6 @@ footer a:hover {
 
 .client-information-section {
   width: 0%;
-
 }
 
 .req-membership-information-section {
@@ -3016,9 +2912,6 @@ footer a:hover {
   height: 86%;
   align-items: flex-end;
   position: relative;
-
-
-
 }
 
 .membership-form-container {
@@ -3029,7 +2922,6 @@ footer a:hover {
   justify-content: flex-end;
   position: relative;
   align-items: flex-end;
-
 }
 
 .membership-form-row {
@@ -3037,13 +2929,11 @@ footer a:hover {
   height: 27px;
   display: flex;
   gap: 1rem;
-
-
 }
 
 .membership-form-container p {
-  font-size: .8rem;
-  font-family: 'Poppins';
+  font-size: 0.8rem;
+  font-family: "Poppins";
   color: #444444;
   font-weight: 500;
 }
@@ -3051,24 +2941,18 @@ footer a:hover {
 .membership-form-col1 {
   width: 40%;
   height: 100%;
-
 }
 
 .membership-form-col2 {
   width: 70%;
   height: 100%;
   position: relative;
-
 }
 
 .membership-form-col22 {
   width: 70%;
   height: 100%;
   position: relative;
-
-
-
-
 }
 
 .client-section {
@@ -3078,8 +2962,6 @@ footer a:hover {
   align-items: center;
   gap: 0px;
   position: relative;
-
-
 }
 
 .client-form,
@@ -3141,7 +3023,7 @@ footer a:hover {
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   /* fontSize: ".8rem", // Adjust the font size here
   fontFamily:'Poppins',
   opacity:'0.6', */
@@ -3151,17 +3033,16 @@ footer a:hover {
 }
 
 .col75 textarea::placeholder {
+.col75 textarea::placeholder {
   font-size: 0.8rem;
   font-family: "Poppins";
   opacity: 0.6;
 
 }
 
-
 .col75 input[type="text"]:focus {
   box-shadow: 0px 0px 5px #f8ac1d80;
   /* outline: none; */
-
 }
 
 .col75 input[type='text']:hover {
@@ -3183,38 +3064,39 @@ footer a:hover {
   border: 1px solid #f8ac1d;
 }
 
-.req-client-information-section .req-client-form .row .col75 select[type="text"]:focus {
+.req-client-information-section
+  .req-client-form
+  .row
+  .col75
+  select[type="text"]:focus {
   border: 1px solid #f8ac1d;
   outline: none;
 }
 
 .req-client-form {
   width: 100%;
-  padding: .5rem;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: .6rem;
-
+  gap: 0.6rem;
 }
 
-
-
 .col75 p {
-  color: #1D1D1D;
-  font-size: .8rem;
+  color: #1d1d1d;
+  font-size: 0.8rem;
   font-weight: 400;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .col25 label {
   padding: 0px 0px 0px 0;
   display: inline-block;
   color: #272626;
-  font-size: .8rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .col25 {
@@ -3229,12 +3111,10 @@ footer a:hover {
 .col75 {
   float: left;
   width: 80%;
-
 }
 
 .req-elevator-section-right .col75 {
   width: 92%;
-
 }
 
 .req-client-information-section .req-client-form .row {
@@ -3243,10 +3123,7 @@ footer a:hover {
   justify-content: flex-start;
   align-items: center;
   gap: 0px;
-
-
 }
-
 
 .req-client-information-section .req-client-form .row .col75 select {
   width: 100%;
@@ -3256,7 +3133,6 @@ footer a:hover {
   resize: vertical;
   font-size: 14px;
   font-weight: 400;
-
 }
 
 .req-membership-information-section .req-client-form2 .row {
@@ -3264,13 +3140,11 @@ footer a:hover {
   width: 100%;
   justify-content: center;
   align-items: center;
-
 }
 
 .req-membership-information-section .client-form2 .row .col75 input {
   border: none;
 }
-
 
 .elevator-section {
   width: 100%;
@@ -3307,8 +3181,6 @@ footer a:hover {
   margin-top: 0px;
 }
 
-
-
 .grid-form-container {
   background-color: white;
   width: 46%;
@@ -3333,7 +3205,7 @@ footer a:hover {
 .col75 input::placeholder {
   opacity: 0.6;
   font-size: 0.8rem;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   text-transform: capitalize;
 }
 
@@ -3401,9 +3273,7 @@ footer a:hover {
   /* justify-content: center; */
   gap: 0.5rem;
   margin-top: 10px;
-
 }
-
 
 .assign-button {
   padding: 12px 50px;
@@ -3497,7 +3367,6 @@ footer a:hover {
   background: #fef3de;
 }
 
-
 /* ticket section status button propety changes dynamically start*/
 .assignColor {
   background: #fef3de;
@@ -3571,7 +3440,6 @@ footer a:hover {
 }
 
 /*----------------------------------------------------------------------------changes by aayush malviya end --------------------------------------------------------------------- */
-
 
 /*------------------------------------------------------ dashboard css ends ------------------------------------------------------------------------*/
 
@@ -3960,7 +3828,6 @@ element.style {
   from {
     margin-top: -100%;
 
-
     width: 100%;
     opacity: 0;
     transform: translateY(-20px);
@@ -3993,7 +3860,7 @@ element.style {
   /* background: #ffffff; */
   margin-top: -3px;
   margin-left: -15.1rem;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
 }
 
 .messagebox-heading {
@@ -4003,7 +3870,6 @@ element.style {
   align-items: center;
   padding: 5px 9px 0px 0px;
   border-radius: 5px;
-
 
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 14px 1px; */
 }
@@ -4016,7 +3882,6 @@ element.style {
   font-weight: 500;
   gap: 6px;
   color: #343434;
-
 }
 
 .featured-icon {
@@ -4028,27 +3893,21 @@ element.style {
   width: 100px;
   height: 30px;
 
-
   cursor: pointer;
 }
 
 .sender-side {
-
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
-
-
-
-
+  align-items: flex-end;
 }
 
 .reciver-side {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .reciver-message,
@@ -4076,7 +3935,7 @@ element.style {
   padding: 10px 6px;
   margin-top: 0.5rem;
   margin-right: 0.3rem;
-  word-wrap: break-word
+  word-wrap: break-word;
 }
 
 .reciver-message {
@@ -4085,7 +3944,7 @@ element.style {
   /* margin-left: 8.4rem; */
   margin-top: 0.5rem;
   margin-left: 0.3rem;
-  word-wrap: break-word
+  word-wrap: break-word;
 }
 
 .send-data {
@@ -4133,8 +3992,6 @@ element.style {
 .message-body {
   height: 21rem;
   overflow-x: scroll;
-
-
 }
 
 .loader {
@@ -4144,7 +4001,6 @@ element.style {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 /* set scroll behaviour  */
@@ -4355,7 +4211,6 @@ element.style {
   bottom: 15px;
   max-height: 10rem;
   width: 70%;
-
 }
 
 .text-area-message-whatsapp {
@@ -4625,7 +4480,6 @@ element.style {
 
 /* ------------------------KANBAN-SECTION ENDS------------------------------------ */
 
-
 /* -------------------------------- custom calender css starts ------------------------------------------ */
 
 .calendar-box {
@@ -4655,9 +4509,8 @@ element.style {
   height: 100%;
 }
 
-
 .header {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   color: #343434;
   display: flex;
   justify-content: space-around;
@@ -4666,7 +4519,7 @@ element.style {
   padding: 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  border-bottom: 1px solid #C1C1C180;
+  border-bottom: 1px solid #c1c1c180;
 }
 
 #prevBtn,
@@ -4703,17 +4556,17 @@ element.style {
 }
 
 .day:hover {
-  background: #F8AC1D;
+  background: #f8ac1d;
   border-radius: 50%;
 }
 
 .ui-datepicker-prev {
-  order: 1
+  order: 1;
 }
 
 .day.current {
   /* background-color: #FEF3DE; */
-  color: #F8AC1D;
+  color: #f8ac1d;
   border-radius: 50%;
   height: 30px;
   width: 30px;
@@ -4724,12 +4577,12 @@ element.style {
 }
 
 .ui-datepicker-next {
-  order: 3
+  order: 3;
 }
 
 .day.selected {
-  background-color: #FEF3DE;
-  color: #F8AC1D;
+  background-color: #fef3de;
+  color: #f8ac1d;
   border-radius: 50%;
   height: 30px;
   width: 30px;
@@ -4737,7 +4590,7 @@ element.style {
 }
 
 .ui-datepicker-title {
-  order: 2
+  order: 2;
 }
 
 #dateInput {
@@ -4750,8 +4603,8 @@ element.style {
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
-  font-family: 'Poppins';
-  outline-color: #F8AC1D;
+  font-family: "Poppins";
+  outline-color: #f8ac1d;
 }
 
 .ui-datepicker {
@@ -4759,23 +4612,19 @@ element.style {
 }
 
 #dateInput:hover {
-  box-shadow: 0px 0px 5px #F8AC1D80;
+  box-shadow: 0px 0px 5px #f8ac1d80;
   border: none;
 }
 
 /* -------------------------------- custom calender css ends ------------------------------------------ */
 
-
-
-
 .cover-image-skeleton {
-  background: linear-gradient(90deg, #EEEEEE 25%, #DEDEDE 50%, #EEEEEE 75%);
+  background: linear-gradient(90deg, #eeeeee 25%, #dedede 50%, #eeeeee 75%);
   background-size: 200% 100%;
   animation: loading 2s infinite ease-in-out;
   border-radius: 5px;
   position: relative;
   height: 18px;
-
 }
 
 @keyframes loading {
@@ -4791,7 +4640,7 @@ element.style {
 .task-dot-on-complete {
   height: 8px;
   width: 8px;
-  background-color: #46A70A;
+  background-color: #46a70a;
   border-radius: 50%;
 }
 
@@ -4802,7 +4651,6 @@ element.style {
   margin-bottom: 40px;
   background: rgba(0, 0, 0, 0.1);
 }
-
 
 .skill-box .skill-per-ontask {
   position: relative;
@@ -4816,7 +4664,6 @@ element.style {
   opacity: 0;
 }
 
-
 .tasks-heading-on-no-task {
   position: relative;
   top: 11px;
@@ -4825,21 +4672,17 @@ element.style {
   font-size: 1.1rem;
 }
 
-
 .timeout-data {
   color: red;
 }
 
-
 /* ---------------------------------------------------------Report Csss aayush malviya Start------------------------------------------------------------------------------------- */
-
 
 .ReportTable {
   height: 100%;
   width: 100%;
   position: relative;
 }
-
 
 .IssuesDoor {
   height: 100%;
@@ -4849,9 +4692,6 @@ element.style {
   flex-direction: column;
   justify-content: space-between;
   padding-top: 1rem;
-
-
-
 }
 
 .IssueDoors {
@@ -4864,21 +4704,18 @@ element.style {
 .IssuesDoor1 {
   height: 20%;
   width: 100%;
-  border: 2px solid #F8AC1DAD;
+  border: 2px solid #f8ac1dad;
   border-radius: 10px 10px 10px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-
-
 }
 
 .IssuesDoor1 h5 {
-  margin-bottom: .2rem;
+  margin-bottom: 0.2rem;
   margin-left: 1rem;
   text-align: left;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   letter-spacing: 0px;
   color: #444444;
   text-transform: capitalize;
@@ -4888,8 +4725,7 @@ element.style {
 }
 
 .RedIsue {
-
-  background: #C10000B0 0% 0% no-repeat padding-box;
+  background: #c10000b0 0% 0% no-repeat padding-box;
   border-radius: 0px 10px 0px 0px;
   opacity: 1;
   height: 40%;
@@ -4897,26 +4733,25 @@ element.style {
   display: flex;
   /* align-self: self-start; */
   margin-bottom: 2.3rem;
-  margin-right: -.1rem;
+  margin-right: -0.1rem;
   display: flex;
   align-items: center;
-
 }
 
-.RedIsue>h5 {
+.RedIsue > h5 {
   white-space: nowrap;
-  font-size: .8rem;
+  font-size: 0.8rem;
 
-  font-family: 'Poppins';
+  font-family: "Poppins";
   letter-spacing: 0px;
-  color: #FFFFFF;
+  color: #ffffff;
   text-transform: uppercase;
   font-weight: 200;
   opacity: 1;
 }
 
 .RedIsue h5 span {
-  margin-left: .1rem;
+  margin-left: 0.1rem;
   font-weight: 600;
 }
 
@@ -4926,38 +4761,33 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
   /* margin-top: 1em; */
-
-
 }
 
 .IssuesDoor2L {
   display: flex;
   gap: 1rem;
   width: 100%;
-
 }
 
 .ClientImg {
   height: 5rem;
   width: 17%;
-  background-color: #FEF3DE;
+  background-color: #fef3de;
   border-radius: 3px;
   opacity: 0.5;
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 }
 
 .ClientImg h5 {
-  font-size: .5rem;
+  font-size: 0.5rem;
   text-align: center;
   letter-spacing: 0px;
   color: #444444;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   opacity: 1;
   font-weight: 900;
 }
@@ -4967,26 +4797,20 @@ element.style {
   height: 100%;
   display: grid;
   grid-template-rows: repeat(4, 20%);
-  grid-gap: .2rem;
+  grid-gap: 0.2rem;
 }
 
 .ClientName h5 {
-
-  font-family: 'Poppins';
-  font-size: .8rem;
-  font-family: 'Poppins';
+  font-family: "Poppins";
+  font-size: 0.8rem;
+  font-family: "Poppins";
   font-weight: 400;
-  font-size: .9rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
-
 }
-
-
-
-
 
 /* 
 .ClientName h5 span{
@@ -4997,29 +4821,27 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: .3rem;
-  padding: .8rem;
-
+  margin-top: 0.3rem;
+  padding: 0.8rem;
 }
 
 .IssueDoor3L h5 {
-  font-family: 'Poppins';
-  font-size: .8rem;
+  font-family: "Poppins";
+  font-size: 0.8rem;
   font-weight: 400;
   text-align: center;
-  font-size: .9rem;
+  font-size: 0.9rem;
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
 }
 
-
 .IssueDoor3R h5 {
-  font-family: 'Poppins';
-  font-size: .9rem;
+  font-family: "Poppins";
+  font-size: 0.9rem;
   font-weight: 400;
   text-align: center;
-  font-size: .8rem;
+  font-size: 0.8rem;
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
@@ -5029,32 +4851,28 @@ element.style {
   text-align: left;
   letter-spacing: 0px;
   color: #444444;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 
 .IssuesDoor4 h5 {
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   font-weight: 500;
   text-align: start;
 }
 
 .IssuesDoor4 h5 span {
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   font-weight: 500;
   text-align: center;
 }
-
 
 .ReportNavigation {
   height: 100%;
   width: 100%;
   position: relative;
-
-
 }
-
 
 .CarouselButtons {
   width: 100%;
@@ -5062,16 +4880,15 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .0rem .5rem;
+  padding: 0rem 0.5rem;
   position: relative;
-
 }
 
 .CarouselButtonsL {
   height: 100%;
   width: 20%;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
 }
 
@@ -5080,15 +4897,13 @@ element.style {
   width: 20%;
 
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .cursor {
   cursor: pointer;
 }
-
-
 
 .McRoom {
   width: 100%;
@@ -5097,9 +4912,9 @@ element.style {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: .3rem;
+  gap: 0.3rem;
   position: relative;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
 }
 
 .McRoomCard {
@@ -5110,23 +4925,20 @@ element.style {
   display: flex;
   align-items: center;
   justify-content: center;
-
-
 }
 
 .McRoom h5 {
-  font-size: .9rem;
+  font-size: 0.9rem;
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   font-weight: 400;
 }
 
 .gallery {
   font-size: 5rem;
-  color: #F8AC1D;
-
+  color: #f8ac1d;
 }
 
 .CarTopShift {
@@ -5138,22 +4950,15 @@ element.style {
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
-
-
-
 }
-
 
 .CardShiftCards {
   height: 15%;
   width: 100%;
   position: relative;
-
-
 }
 
 .IssueNotResolved {
-
   display: flex;
   padding: 1rem 3rem;
   justify-content: space-between;
@@ -5161,10 +4966,9 @@ element.style {
 }
 
 .IssueResolved h5 {
-
   text-align: left;
-  font-family: 'Poppins';
-  font-size: .9rem;
+  font-family: "Poppins";
+  font-size: 0.9rem;
   letter-spacing: 0px;
   font-weight: 500;
   color: #444444;
@@ -5177,7 +4981,7 @@ element.style {
   letter-spacing: 0px;
   color: #444444;
   font-weight: 300;
-  font-size: .8rem;
+  font-size: 0.8rem;
   opacity: 1;
 }
 
@@ -5188,28 +4992,25 @@ element.style {
   align-items: center;
 }
 
-
 .IssueNotResolved h6 {
   text-align: left;
   /* font: normal normal normal 12px/20px Helvetica Neue; */
   letter-spacing: 0px;
   color: #444444;
   font-weight: 300;
-  font-size: .8rem;
+  font-size: 0.8rem;
   opacity: 1;
 }
 
 .IssueNotResolved h5 {
-
   text-align: left;
-  font-family: 'Poppins';
-  font-size: .9rem;
+  font-family: "Poppins";
+  font-size: 0.9rem;
   letter-spacing: 0px;
   font-weight: 500;
   color: #444444;
   opacity: 1;
 }
-
 
 .SparePartChange,
 .SparepartReq {
@@ -5220,13 +5021,12 @@ element.style {
   align-items: center;
 }
 
-
 .SparePartChange h5,
 .SparepartReq h5 {
   width: 100%;
   text-align: left;
-  font-family: 'Poppins';
-  font-size: .8rem;
+  font-family: "Poppins";
+  font-size: 0.8rem;
   letter-spacing: 0px;
   font-weight: 500;
   color: #444444;
@@ -5237,29 +5037,26 @@ element.style {
 .SparepartReqB {
   display: flex;
   width: 100%;
-
-
 }
 
 .SparePartChangeB h5,
 .SparepartReqB h5 {
   text-align: left;
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   letter-spacing: 0px;
   font-weight: 400;
   color: #444444;
   opacity: 1;
 }
 
-
 .SparePartChangeB h5 span,
 .SparepartReqB h5 span {
   text-align: left;
-  font-size: .8rem;
-  font-family: 'Poppins';
+  font-size: 0.8rem;
+  font-family: "Poppins";
   letter-spacing: 0px;
-  color: #F8AC1D;
+  color: #f8ac1d;
   font-weight: 500;
   opacity: 1;
 }
@@ -5278,15 +5075,15 @@ element.style {
   color: #444444;
   opacity: 1;
   font-weight: 450;
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
-.Amount>h5:nth-child(2) {
+.Amount > h5:nth-child(2) {
   text-align: left;
   /* font: normal normal medium 14px/21px Poppins; */
   font-weight: 500;
   letter-spacing: 0px;
-  color: #F8AC1D;
+  color: #f8ac1d;
   opacity: 1;
 }
 
@@ -5299,19 +5096,16 @@ element.style {
 .Invoice h5 {
   width: 100%;
   text-align: left;
-  font-family: 'Poppins';
-  font-size: .9rem;
+  font-family: "Poppins";
+  font-size: 0.9rem;
   letter-spacing: 0px;
   font-weight: 500;
   color: #444444;
   opacity: 1;
 }
 
-
 .InvoiceTable {
   width: 100%;
-
-
 }
 
 .InvoiceTableRow {
@@ -5320,19 +5114,17 @@ element.style {
 }
 
 .InvoiceTableRow h5 {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   text-align: left;
   letter-spacing: 0px;
   color: #444444;
   font-weight: 300;
-  font-size: .8rem;
+  font-size: 0.8rem;
   opacity: 1;
-
 }
 
-
 .InvoiceTableRow h5 span {
-  color: #F8AC1D;
+  color: #f8ac1d;
   font-weight: 500;
 }
 
@@ -5349,30 +5141,25 @@ element.style {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-
 }
 
 .InvoiceFooterR {
   display: flex;
-
 }
 
 .InvoiceFooterRow {
   display: flex;
-
 }
 
 .Yellow_Color {
-  color: #F8AC1D;
+  color: #f8ac1d;
   font-size: 2rem;
-
 }
 
 .Rating {
   height: 80%;
   width: 100%;
   position: relative;
-
 }
 
 .RatingStar {
@@ -5384,10 +5171,6 @@ element.style {
   gap: 1rem;
 }
 
-
-
-
-
 .RatingContainer {
   width: 100%;
   padding: 1rem 1rem;
@@ -5395,9 +5178,7 @@ element.style {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: .5rem;
-
-
+  gap: 0.5rem;
 }
 
 .RatingContainerRow {
@@ -5405,59 +5186,50 @@ element.style {
 
   display: flex;
   justify-content: space-between;
-  align-items: start;
-
+  align-items: flex-start;
 }
 
 .RatingContainerRowL {
   width: 70%;
   position: relative;
-
-
 }
-
-
 
 .RatingButton {
   display: flex;
-  gap: .5rem;
+  gap: 0.5rem;
   width: 25%;
   height: 25px;
 }
 
 .RatingButton button {
-  padding: 0rem .6rem;
+  padding: 0rem 0.6rem;
   text-transform: capitalize;
-  background-color: #F8AC1DDB;
-  border: 1px solid #F8AC1D;
+  background-color: #f8ac1ddb;
+  border: 1px solid #f8ac1d;
   opacity: 1;
   border-radius: 3px;
   text-align: left;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   /* font: normal normal normal 10px/16px Poppins; */
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
-  font-size: .6rem;
+  font-size: 0.6rem;
 }
 
-
-
-.RatingButton>button:nth-child(2) {
-  padding: 0rem .8rem;
-  border: 1px solid #F8AC1D;
+.RatingButton > button:nth-child(2) {
+  padding: 0rem 0.8rem;
+  border: 1px solid #f8ac1d;
   opacity: 1;
   background-color: transparent;
   text-transform: capitalize;
 }
 
-
-
 .RatingContainerRow h5 {
   position: relative;
   text-align: left;
-  font-size: .9rem;
-  font-family: 'Poppins';
+  font-size: 0.9rem;
+  font-family: "Poppins";
   font-weight: 400;
   letter-spacing: 0px;
   color: #444444;
@@ -5484,7 +5256,7 @@ element.style {
 
 .Progress2 {
   height: 100%;
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
   width: 16.66%;
   margin-left: 0%;
   position: relative;
@@ -5494,20 +5266,17 @@ element.style {
 .ComponentNames {
   width: 100%;
   display: flex;
-
-
 }
 
 .ComponentNames p {
   color: #444444;
-  font-size: .8rem;
+  font-size: 0.8rem;
   align-items: center;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   margin-left: 2.5rem;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   /* white-space:nowrap; */
 }
-
 
 .ticket-card {
   /* padding: 0 1em; */
@@ -5515,34 +5284,29 @@ element.style {
   height: 6rem;
   width: 100%;
   border-radius: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0.5px 1px 2px #00000029;
   border: 1px solid #00000029;
   border-radius: 10px;
 
   position: relative;
-  padding: .4rem;
+  padding: 0.4rem;
   position: relative;
-
 }
 
 .ticket-table {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   text-align: center;
-
-
 }
 
 .ticket-table tbody tr td,
 .ticket-table tbody tr th {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: #444444;
   text-transform: uppercase;
-
-
 }
 
 .ticket-table tbody tr th {
@@ -5555,36 +5319,35 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.2rem 0rem .2rem;
+  padding: 0 1.2rem 0rem 0.2rem;
 }
 
 .ticket-card-bottom h5 {
   text-align: left;
   /* font: normal normal medium 14px/21px Poppins; */
-  font-family: 'Poppins';
-  font-size: .8rem;
+  font-family: "Poppins";
+  font-size: 0.8rem;
   letter-spacing: 0px;
-  color: #F8AC1D;
+  color: #f8ac1d;
   opacity: 1;
   font-weight: 400;
 }
 
-.ticket-card-bottom>h5:nth-child(1) {
+.ticket-card-bottom > h5:nth-child(1) {
   color: #389300;
 }
 
-.ticket-card-bottom>h5:nth-child(2) {
-  color: #C10000;
+.ticket-card-bottom > h5:nth-child(2) {
+  color: #c10000;
 }
 
-.ticket-card-bottom>h5:nth-child(3) {
+.ticket-card-bottom > h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
 
 .yellow_color {
-  color: #F8AC1D;
-
+  color: #f8ac1d;
 }
 
 .service-card {
@@ -5593,34 +5356,29 @@ element.style {
   height: 6rem;
   width: 100%;
   border-radius: 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0.5px 1px 2px #00000029;
   border: 1px solid #00000029;
   border-radius: 10px;
 
   position: relative;
-  padding: .4rem;
+  padding: 0.4rem;
   position: relative;
-
 }
 
 .service-table {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
   text-align: center;
-
-
 }
 
 .service-table tbody tr td,
 .service-table tbody tr th {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: #444444;
   text-transform: uppercase;
-
-
 }
 
 .service-table tbody tr th {
@@ -5633,45 +5391,41 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.2rem 0rem .2rem;
+  padding: 0 1.2rem 0rem 0.2rem;
 }
 
 .service-card-bottom h5 {
   text-align: left;
   /* font: normal normal medium 14px/21px Poppins; */
-  font-family: 'Poppins';
-  font-size: .8rem;
+  font-family: "Poppins";
+  font-size: 0.8rem;
   letter-spacing: 0px;
-  color: #F8AC1D;
+  color: #f8ac1d;
   opacity: 1;
   font-weight: 400;
 }
 
-.service-card-bottom>h5:nth-child(1) {
+.service-card-bottom > h5:nth-child(1) {
   color: #389300;
 }
 
-.service-card-bottom>h5:nth-child(2) {
-  color: #C10000;
+.service-card-bottom > h5:nth-child(2) {
+  color: #c10000;
 }
 
-.service-card-bottom>h5:nth-child(3) {
+.service-card-bottom > h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
 
 .yellow_color {
-  color: #F8AC1D;
-
+  color: #f8ac1d;
 }
-
-
-
 
 .EngChatBox-Dash {
   width: 300px;
   height: 480px;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   border-radius: 5px;
   margin-top: 2px;
   margin-left: -260px;
@@ -5679,28 +5433,23 @@ element.style {
   z-index: 999;
 
   box-shadow: 10px 10px 25px #00000029;
-
-
 }
 
 .EngChatBoxHead-Dash {
   display: flex;
   align-items: center;
-  justify-content: end;
-  padding: .8rem;
+  justify-content: flex-end;
+  padding: 0.8rem;
   border-bottom: 1px solid #00000029;
-
 }
 
 .EngChatBoxIcons-Dash {
   width: 50%;
   display: flex;
   align-items: center;
-  justify-content: end;
-  gap: .4rem;
+  justify-content: flex-end;
+  gap: 0.4rem;
 }
-
-
 
 .EngChatBox-Dash h6 {
   text-wrap: nowrap;
@@ -5708,7 +5457,7 @@ element.style {
   font-size: 0.8rem;
   color: #444444;
   font-weight: 500;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   line-height: 1.3rem;
 }
 
@@ -5716,9 +5465,7 @@ element.style {
   height: 85%;
   width: 100%;
   position: relative;
-  padding: .5rem;
-
-
+  padding: 0.5rem;
 }
 
 .SubEngChatMsg-Dash {
@@ -5727,28 +5474,26 @@ element.style {
   padding: 0rem 0.4rem;
   padding-bottom: 2rem;
   overflow-y: auto;
-
 }
 
 .engchatmsg-sender-side-dash {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
-  margin-top: .4rem;
-
+  align-items: flex-end;
+  margin-top: 0.4rem;
 }
 
 .engchatmsg-reciver-message-dash,
 .engchatmsg-sender-message-dash {
   max-width: 70%;
   border-radius: 5px;
-  padding: .5rem .5rem;
+  padding: 0.5rem 0.5rem;
   font-size: 0.9rem;
   text-wrap: wrap;
   line-height: 1.1;
   text-align: start;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .engchatmsg-sender-message-dash {
@@ -5758,8 +5503,8 @@ element.style {
   margin-left: 8.4rem;
   margin-top: 0.2rem;
   word-wrap: break-word;
-  background-color: #FEF3DE;
-  font-family: 'Poppins';
+  background-color: #fef3de;
+  font-family: "Poppins";
   box-shadow: 1px 2px 5px #00000029;
   opacity: 1;
 }
@@ -5768,31 +5513,28 @@ element.style {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  margin-top: .4rem;
+  align-items: flex-start;
+  margin-top: 0.4rem;
 }
-
 
 .engchatmsg-reciver-side-dash {
   /* padding: 10px 6px; */
   margin-top: 0.5rem;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   margin-right: 0.3rem;
-  word-wrap: break-word
+  word-wrap: break-word;
 }
 
 .engchatmsg-reciver-message-dash {
   color: #000;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+  background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 1px 2px 5px #00000029;
   opacity: 1;
   margin-top: 0.5rem;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   margin-left: 0.3rem;
-  word-wrap: break-word
+  word-wrap: break-word;
 }
-
-
 
 .eng-card-message-text-dash {
   position: absolute;
@@ -5800,7 +5542,6 @@ element.style {
   max-height: 10rem;
   width: 100%;
   padding: 1rem;
-
 }
 
 .text-area-message-eng-card-dash {
@@ -5817,9 +5558,6 @@ element.style {
   color: #444444;
   padding-right: 80px;
   margin-bottom: 10px;
-
-
-
 }
 
 /* .text-area-message-eng-card:hover::-webkit-scrollbar-thumb {
@@ -5857,9 +5595,6 @@ element.style {
   /* padding: 20px; */
   position: relative;
   width: 100%;
-
-
-
 }
 
 .user-attachment4-eng-card-dash {
@@ -5877,10 +5612,6 @@ element.style {
   width: 20%;
   top: -65px;
   cursor: pointer;
-
-
-
-
 }
 
 .send-messsage-eng-card-dash {
@@ -5900,12 +5631,6 @@ element.style {
 }
 
 /* ---------------------------------------------------ayush css End  eng chat end aayush csss */
-
-
-
-
-
-
 
 /* css for thr message box inside the Engg crouser starts -------------------------------- */
 

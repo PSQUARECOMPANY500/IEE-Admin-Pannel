@@ -1,150 +1,19 @@
-// import React, { useState, useRef, useEffect } from "react";
-// import { FaStar, FaPrint } from "react-icons/fa";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getClientMembershipHistoryAction } from "../../../../ReduxSetup/Actions/AdminActions";
-
-// const ClientMembershipHistory = ({ isExpired, dataType }) => {
-//   const dispatch = useDispatch();
-//   const historyDetails = useSelector((state) => {
-//     if (
-//       state.AdminRootReducer &&
-//       state.AdminRootReducer.requestGetMemberShipHistoryReducer
-//     ) {
-//       return state?.AdminRootReducer.requestGetMemberShipHistoryReducer
-//         .membershipHistory;
-//     } else {
-//       return null;
-//     }
-//   });
-
-//   useEffect(() => {
-//     dispatch(getClientMembershipHistoryAction());
-//   }, [dispatch, dataType]);
-
-//   const [showHistory, setShowHistory] = useState([]);
-
-//   // Initialize showHistory when historyDetails changes
-//   useEffect(() => {
-//     if (historyDetails && Array.isArray(historyDetails.membershipHistory)) {
-//       setShowHistory(Array(historyDetails.membershipHistory.length).fill(false));
-//     }
-//   }, [historyDetails]);
-
-//   const historyRefs = useRef([]);
-
-//   const toggleHistory = (index) => {
-//     setShowHistory((prevState) =>
-//       prevState.map((value, i) => (i === index ? !value : value))
-//     );
-//   };
-
-//   const handleClickOutside = (event, index) => {
-//     if (
-//       historyRefs.current[index] &&
-//       !historyRefs.current[index].contains(event.target)
-//     ) {
-//       setShowHistory((prevState) =>
-//         prevState.map((value, i) => (i === index ? false : value))
-//       );
-//     }
-//   };
-
-//   useEffect(() => {
-//     const eventListeners = historyRefs.current.map((ref, index) => {
-//       return (event) => handleClickOutside(event, index);
-//     });
-//     eventListeners.forEach((listener) => {
-//       document.addEventListener("click", listener);
-//     });
-//     return () => {
-//       eventListeners.forEach((listener) => {
-//         document.removeEventListener("click", listener);
-//       });
-//     };
-//   }, []);
-
-//   return (
-//     <div>
-//       <div>
-//         <p>History</p>
-//       </div>
-//       <div
-//         className={`historyContainer ${isExpired && "historyExpiredScroll"}`}
-//       >
-//         {historyDetails.membershipHistory &&
-//           historyDetails.membershipHistory.map((detail, index) => (
-//             <div key={index}>
-//               <div
-//                 ref={(el) => (historyRefs.current[index] = el)}
-//                 className="history"
-//                 onClick={() => toggleHistory(index)}
-//                 style={{ cursor: "pointer", marginBottom: "10px" }}
-//               >
-//                 {showHistory[index] && (
-//                   <div className="historyDetails">
-//                     <div className="historyClings">
-//                       <span>Discount 5%</span>
-//                       <span>Amount paid: 42000</span>
-//                     </div>
-//                     <div className="historyClings">
-//                       <span>Callbacks: 2 </span>
-//                       <span>Services: 7</span>
-//                     </div>
-//                     <div className="historyClings">
-//                       <span>Spare Parts sold: 5 </span>
-//                       <span>Revenue: 21000</span>
-//                     </div>
-//                     <div className="historyClings">
-//                       <span>SOS calls: 3 </span>
-//                       <p className="rating">
-//                         <span>Rating: 4.2</span>
-//                         <span>
-//                           <FaStar className="ratingStar" />
-//                         </span>
-//                       </p>
-//                     </div>
-//                   </div>
-//                 )}
-//                 <div className="historyNumber">
-//                   <p>June 12, 2016</p>
-//                   <p>
-//                     <FaPrint />
-//                   </p>
-//                   <p>June 12, 2017</p>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ClientMembershipHistory;
-
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useRef, useEffect } from "react";
 import { FaStar, FaPrint } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { getClientMembershipHistoryAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { TbHistoryOff } from "react-icons/tb";
 
 const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getClientMembershipHistoryAction());
-  }, [dispatch,dataType]);
+  }, [dispatch, dataType]);
 
   const [showHistory, setShowHistory] = useState([]);
 
-  // Initialize showHistory when historyDetails changes
-  // useEffect(() => {
-  //   console.log(historyDetails);
-  //   if (historyDetails && Array.isArray(historyDetails.response
-  //     .historyData)) {
-  //     setShowHistory(Array(historyDetails.response
-  //       .historyData.length).fill(false));
-  //   }
-  // }, [historyDetails]);
   useEffect(() => {
     if (
       historyDetails &&
@@ -213,96 +82,109 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
       ? "historyNumberSilver"
       : "historyNumberWarrenty";
   };
+
   return (
     <div className="historyMain">
-      {historyDetails && historyDetails.response && (
+      {historyDetails && (
         <div>
           <p>History</p>
         </div>
       )}
-      <div
-        className={`historyContainer ${scrollBar} ${
-          isExpired && "historyExpiredScroll"
-        }`}
-      >
-        {historyDetails &&
-          historyDetails.response &&
-          historyDetails.response.historyData &&
-          historyDetails.response.historyData.map((detail, index) => (
-            <div key={index}>
-              <div
-                ref={(el) => (historyRefs.current[index] = el)}
-                className={`history ${membershipBorder(
-                  detail.MemebershipType
-                )}`}
-                onClick={() => toggleHistory(index)}
-                style={{ cursor: "pointer", marginBottom: "10px" }}
-              >
-                {showHistory[index] && (
-                  <div className="historyDetails">
-                    <div className="historyClings">
-                      <span>
-                        Discount {detail.Discount ? detail.Discount : 0}
-                      </span>
-                      <span>
-                        Amount paid: {detail.PricePaid ? detail.PricePaid : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        Callbacks:{" "}
-                        {detail.callbacksCount ? detail.callbacksCount : 0}{" "}
-                      </span>
-                      <span>
-                        Services:{" "}
-                        {detail.serviecsCount ? detail.serviecsCount : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        Spare Parts sold:{" "}
-                        {detail.sparePartsSoldCount
-                          ? detail.sparePartsSoldCount
-                          : 0}
-                      </span>
-                      <span>
-                        Revenue: {detail.revenue ? detail.revenue : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        SOS calls:{" "}
-                        {detail.SOScallsCount ? detail.SOScallsCount : 0}{" "}
-                      </span>
-                      <p className="rating">
+      {historyDetails &&
+      historyDetails.response &&
+      historyDetails.response.historyData.length !== 0 ? (
+        <div
+          className={`historyContainer ${scrollBar} ${
+            isExpired && "historyExpiredScroll"
+          }`}
+        >
+          {historyDetails &&
+            historyDetails.response &&
+            historyDetails.response.historyData &&
+            historyDetails.response.historyData.map((detail, index) => (
+              <div key={index}>
+                <div
+                  ref={(el) => (historyRefs.current[index] = el)}
+                  className={`history ${membershipBorder(
+                    detail.MemebershipType
+                  )}`}
+                  onClick={() => toggleHistory(index)}
+                >
+                  {showHistory[index] && (
+                    <div className="historyDetails">
+                      <div className="historyClings">
                         <span>
-                          Rating:{" "}
-                          {historyDetails.response.calculateRating
-                            ? historyDetails.response.calculateRating
+                          Discount {detail.Discount ? detail.Discount : 0}
+                        </span>
+                        <span>
+                          Amount paid: {detail.PricePaid ? detail.PricePaid : 0}
+                        </span>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          Callbacks:{" "}
+                          {detail.callbacksCount ? detail.callbacksCount : 0}{" "}
+                        </span>
+                        <span>
+                          Services:{" "}
+                          {detail.serviecsCount ? detail.serviecsCount : 0}
+                        </span>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          Spare Parts sold:{" "}
+                          {detail.sparePartsSoldCount
+                            ? detail.sparePartsSoldCount
                             : 0}
                         </span>
                         <span>
-                          <FaStar className="ratingStar" />
+                          Revenue: {detail.revenue ? detail.revenue : 0}
                         </span>
-                      </p>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          SOS calls:{" "}
+                          {detail.SOScallsCount ? detail.SOScallsCount : 0}{" "}
+                        </span>
+                        <p className="rating">
+                          <span>
+                            Rating:{" "}
+                            {historyDetails.response.calculateRating
+                              ? historyDetails.response.calculateRating
+                              : 0}
+                          </span>
+                          <span>
+                            <FaStar className="ratingStar" />
+                          </span>
+                        </p>
+                      </div>
                     </div>
+                  )}
+                  <div
+                    className={`historyNumber ${membershipbackground(
+                      detail.MemebershipType
+                    )}`}
+                  >
+                    <p>{formatDate(detail.StartDate)}</p>
+                    <p>
+                      <FaPrint />
+                    </p>
+                    <p>{formatDate(detail.EndDate)}</p>
                   </div>
-                )}
-                <div
-                  className={`historyNumber ${membershipbackground(
-                    detail.MemebershipType
-                  )}`}
-                >
-                  <p>{formatDate(detail.StartDate)}</p>
-                  <p>
-                    <FaPrint />
-                  </p>
-                  <p>{formatDate(detail.EndDate)}</p>
                 </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      ) : (
+        <>
+          <div className="no_history">
+          
+            <span className="no_history_subHeading">
+              Sorry no history avilable at this time.
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -10,7 +10,6 @@ body {
   cursor: default;
 
   -webkit-user-select: none;
-
   /* Safari */
   -ms-user-select: none;
   /* IE 10 and IE 11 */
@@ -18,7 +17,6 @@ body {
   /* Standard syntax */
   z-index: 0;
 }
-
 
 code {
   font-family: "Poppins", source-code-pro, Menlo, Monaco, Consolas,
@@ -30,36 +28,129 @@ code {
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
 
+/* membership loader start */
+
+.loder_Container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+/* .loaderMembership {
+  width: 1rem;
+  height: 1rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin-left: 10rem;
+  margin-right: 0;
+  animation: l5 1s infinite linear alternate;
+}
+@keyframes l5 {
+  0% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #000;
+  }
+  33% {
+    box-shadow: 20px 0 #000, -20px 0 #0002;
+    background: #0002;
+  }
+  66% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #0002;
+  }
+  100% {
+    box-shadow: 20px 0 #0002, -20px 0 #000;
+    background: #000;
+  }
+} */
+
+/* .loaderMembership{
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader{
+  width: 1rem;
+  height: 1rem;
+  background-color: black;
+  border-radius: 50%;
+  right: 0;
+}
+
+.dot1{
+  position: absolute;
+  left:100%
+} */
+.loaderMembership {
+  position: relative;
+  margin-left: 50%;
+  display: flex;
+}
+
+.dot_Loader {
+  width: 0.7rem;
+  height: 0.7rem;
+  background-color: #fef3de;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.dot1 {
+  animation: gooeyEffect1 0.5s infinite alternate;
+  /* left: 0; */
+}
+
+.dot2 {
+  animation: gooeyEffect2 0.5s infinite alternate;
+  left: 0.6rem;
+}
+
+@keyframes gooeyEffect1 {
+  0% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+@keyframes gooeyEffect2 {
+  0% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* membership loader ends */
+
 /* ----------------- Membership Card css --------------------------- */
 
 .membershipCards {
-  margin-top: 5.5rem;
-  transform: translateY(0);
-  /* Initial transform value */
+  margin-top: 5.4rem;
   transition: all 0.6s ease;
 }
 
 .non_expand_gap {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 49% 49%;
   justify-content: center;
   align-content: center;
-  gap: 2rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-bottom: 1.5rem;
+  /* gap: 2rem; */
+  /* margin-left: 2rem; */
+  /* margin-right: 2rem; */
+  /* margin-bottom: 1.5rem; */
 }
 
 .membership_card {
-  /* min-height: 30vh; */
   background-color: #ffffff;
-  padding: 2%;
+  padding: 1rem;
   margin: 1rem;
   border-radius: 0.8rem;
   border: 1px solid #ffffff;
   box-shadow: 2px 4px 10px #99886b66;
-  /* overflow-y: hidden;? */
-  /* width: 100%; */
   transition: box-shadow 0.3s ease;
   scale: 1;
 }
@@ -298,6 +389,28 @@ code {
   border-radius: 0.6rem;
   padding: 2%;
   position: relative;
+  cursor: pointer;
+}
+
+.selectedSubCardExpired {
+  background-color: #c10000;
+}
+
+.selecetedSubCardColor {
+  color: #ffffff !important;
+}
+
+.seleceted_SubCard_Background_Warrenty {
+  background-color: #0f351d;
+}
+.seleceted_SubCard_Background_Platinum {
+  background-color: #ff7f00;
+}
+.seleceted_SubCard_Background_Gold {
+  background-color: #f8ac1d;
+}
+.seleceted_SubCard_Background_Silver {
+  background-color: #b7b7b7;
 }
 
 .membership_card_data_display_expired_border {
@@ -478,12 +591,8 @@ code {
 }
 
 .expandCardName {
-  font-size: small;
+  font-size: 0.9rem;
   font-weight: 700;
-}
-
-.historyMain {
-  margin-top: 2rem;
 }
 
 @keyframes expandAnimation {
@@ -510,6 +619,10 @@ code {
   color: #ffffff;
   padding: 1% 1.5%;
   border-radius: 50%;
+}
+
+.expansion_labels {
+  margin-top: 1rem;
 }
 
 .after_expansion_labels {
@@ -583,7 +696,15 @@ code {
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
-  /* gap: 5%; */
+}
+
+.no_expire_membership {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25%;
+  color: #444444;
 }
 
 .headingCenter {
@@ -596,6 +717,10 @@ code {
   text-align: center;
   cursor: pointer;
   padding-bottom: 0.7rem;
+}
+
+.bottomheadingBorder {
+  border-bottom: 2px solid #0f351d;
 }
 
 /* --------------------------------------------- client details css -------------------------------------------- */
@@ -660,6 +785,28 @@ code {
   margin-top: 0.8rem;
 }
 
+.historyMain {
+  margin-top: 2rem;
+  margin-bottom: 10px;
+}
+
+.no_history {
+  border: 1px solid #444444;
+  text-align: center;
+  font-size: medium;
+  margin-top: 1rem;
+  cursor: default;
+  padding: 1rem 0rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  color: #444444;
+}
+
+.no_history_subHeading {
+  font-size: small;
+}
+
 .historyContainer {
   height: 20rem;
   overflow-y: scroll;
@@ -702,6 +849,7 @@ code {
   font-size: 0.8rem;
   margin-top: 0.9rem;
   border-radius: 0.3rem;
+  cursor: pointer;
 }
 
 .historyBorderWarrenty {
@@ -851,7 +999,7 @@ code {
   border-radius: 0.3rem;
   padding: 0.7% 2%;
   border: 1px solid #444444;
-  width: 93%;
+  width: 97%;
 }
 
 .clientCallInfo {
@@ -876,9 +1024,10 @@ code {
 
 .callButton {
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem;
   border-radius: 0.6rem;
   cursor: pointer;
+  font-family: "Poppins";
 }
 
 .callNowButton {
@@ -970,12 +1119,17 @@ code {
   background-color: #c10000;
 }
 
+.offerButtonContainer {
+  margin-top: 1rem;
+}
+
 .offerButton {
   background-color: #ffffff;
   color: #0f351d;
   font-weight: 600;
   border-radius: 0.5rem;
   border: 1px solid #0f351d;
+  font-family: "Poppins";
 }
 
 .offerButtonExpired {
@@ -1010,7 +1164,7 @@ code {
 .offerButtonMain {
   cursor: pointer;
   width: 100%;
-  padding: 0.6rem 0%;
+  padding: 1rem 0%;
   transition: all 0.6 ease;
 }
 
@@ -1094,11 +1248,10 @@ code {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 1rem;
 }
 
 .inputNotification {
-  padding: 01rem 1rem;
+  padding: 0.79rem 1rem;
   height: auto;
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
@@ -1116,6 +1269,7 @@ code {
   width: 100%;
   margin-right: 1.5rem;
   font-size: medium;
+  font-family: "Poppins";
 }
 
 .chevronDownMembership {
@@ -1156,7 +1310,7 @@ code {
 }
 
 .sendButton {
-  padding: 0.92rem 2rem;
+  padding: 0.95rem 2rem;
   border: 1px solid #0f351d;
   border-bottom-right-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
@@ -1199,23 +1353,11 @@ code {
   justify-content: center;
 }
 
-.Attendancecalendar {
-  margin-top: 0.8rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  display: block;
-  min-height: 20%;
-  background-color: #fffbf4;
-}
-
 .AttendancecalendarMembership {
-  width: 97%;
-  position: absolute;
-  top: 75%;
-  display: none;
+  position: absolute !important;
+  top: 75% !important;
+  width: 97% !important;
+  top: 0;
 }
 
 .Attendance {
@@ -1353,6 +1495,11 @@ code {
   /* gap: 1rem; */
 }
 
+.clear_section {
+  font-size: small;
+  font-weight: 600;
+}
+
 .clientCard {
   background-color: #ffffff;
   font-size: small;
@@ -1363,19 +1510,19 @@ code {
 }
 
 .clientCardShadowWarrenty {
-  box-shadow: inset 0px 0px 15px #0f351d;
+  box-shadow: inset 0px 0px 15px #0f351d, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowPlatinum {
-  box-shadow: inset 0px 0px 15px #ff7f0080;
+  box-shadow: inset 0px 0px 15px #ff7f0080, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowGold {
-  box-shadow: inset 0px 0px 15px #f8ac1d80;
+  box-shadow: inset 0px 0px 15px #f8ac1d80, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowSilver {
-  box-shadow: inset 0px 0px 15px #b7b7b7;
+  box-shadow: inset 0px 0px 15px #b7b7b7, 2px 4px 10px #00000029;
 }
 
 .noMembershipP {
@@ -1449,8 +1596,7 @@ code {
   position: relative;
   padding: 1.5rem;
   margin-top: 5%;
-  padding-bottom: .5rem;
-
+  padding-bottom: 0.5rem;
 }
 
 .sub_table_view {
@@ -1458,29 +1604,23 @@ code {
   width: 100%;
   background-color: white;
   position: relative;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 3px #C1C1C1;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px #c1c1c1;
   border-radius: 10px;
   padding: 1rem 2rem;
 }
-
 
 .client_table-container {
   max-height: 700px;
   overflow-y: auto;
   /* border-radius: 20px; */
   /* margin-top: 1rem; */
-
 }
-
 
 .client_table-container table {
   width: 100%;
   border-collapse: collapse;
-
 }
-
-
 
 .client_table-container thead {
   position: sticky;
@@ -1516,41 +1656,28 @@ code {
   border-radius: 20px;
   border: 1px solid #ffffff;
   transition: background-color 0.3s ease;
-
 }
 
-
-
-
 .client_table-container table th {
-
   font-weight: 600;
-  padding: 1rem .4rem;
-  font-size: .8rem;
+  padding: 1rem 0.4rem;
+  font-size: 0.8rem;
   text-align: left;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 
   color: #444444;
   opacity: 1;
- 
-
-
 }
-
 
 .client_table-container table td {
-
   text-align: start;
-  padding: 1.5rem .4rem;
-  border-bottom: 1px solid #C1C1C180; 
-  font-size: .9rem;
+  padding: 1.5rem 0.4rem;
+  border-bottom: 1px solid #c1c1c180;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 500;
-  font-family: 'Poppins';
-
-
+  font-family: "Poppins";
 }
-
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
 

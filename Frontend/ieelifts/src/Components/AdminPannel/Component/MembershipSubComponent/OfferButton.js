@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useRef, useEffect } from "react";
 
 const OfferButton = ({ isExpired, dataType }) => {
@@ -40,10 +41,13 @@ const OfferButton = ({ isExpired, dataType }) => {
       : "";
 
   return (
-    <div style={{ marginTop: 10 }}>
-      <div className="offerButtonContainer">
-        {showHistory && (
-          <div className="offerButtons">
+    <div className="offerButtonContainer">
+      <div>
+        {
+          <div
+            className="offerButtons"
+            style={showHistory ? { opacity: 1 } : { opacity: 0 }}
+          >
             <button
               className={`offerButton offer ${buttonClass} ${
                 isExpired && "offerButtonExpired"
@@ -73,7 +77,7 @@ const OfferButton = ({ isExpired, dataType }) => {
               other
             </button>
           </div>
-        )}
+        }
         <div onClick={toggleHistory} ref={historyRef}>
           <button
             className={`offerButton offerButtonMain ${buttonClass}  offerButtonMainGold${

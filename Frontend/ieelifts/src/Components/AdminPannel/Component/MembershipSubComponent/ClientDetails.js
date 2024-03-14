@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getClientMembershipDetails } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -12,10 +13,14 @@ const ClientDetails = ({ dataType, clientDetail }) => {
     clientDetail && (
       <div className="clientDetailContainer">
         <div className="clientDetailLeft">
-        {
-         clientDetail && clientDetail.responseData && (  <img src={clientDetail?.responseData?.profileImage} width={100} height={100} style={{borderRadius:"0.5rem"}} />
-          )
-        }
+          {clientDetail && clientDetail.responseData && (
+            <img
+              src={clientDetail?.responseData?.profileImage}
+              width={100}
+              height={100}
+              style={{ borderRadius: "0.5rem" }}
+            />
+          )}
         </div>
         <div className="clientDetailRight">
           <div>
@@ -27,16 +32,15 @@ const ClientDetails = ({ dataType, clientDetail }) => {
               </div>
             )}
             <p>{clientDetail?.responseData?.number}</p>
-            <p className="address" >{clientDetail?.responseData?.address}</p>
+            <p className="address">{clientDetail?.responseData?.address}</p>
           </div>
           <div className="clientDetail">
             {clientDetail?.responseData && (
               <div>
-                 <span className="jonHeading">DOH: </span>
-                 <span> {clientDetail?.responseData?.DOH}</span>
-           
+                <span className="jonHeading">DOH: </span>
+                <span> {clientDetail?.responseData?.DOH}</span>
               </div>
-           )}
+            )}
           </div>
         </div>
       </div>
