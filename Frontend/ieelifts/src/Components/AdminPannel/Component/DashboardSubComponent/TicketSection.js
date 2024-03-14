@@ -172,8 +172,6 @@ const TicketSection = ({ setTicketUpdate }) => {
       setCallbackId(callbackIdOnModel); // Set the callbackId here
       setEnggId(EngId)
       setIsAssigned(isAssigned)
-
-      // console.log("callbackId............")
       setShowTicketModal1(true);
     } else if (modalNumber === 2) {
       setShowTicketModal2(true);
