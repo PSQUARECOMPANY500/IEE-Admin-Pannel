@@ -3033,7 +3033,6 @@ footer a:hover {
 }
 
 .col75 textarea::placeholder {
-.col75 textarea::placeholder {
   font-size: 0.8rem;
   font-family: "Poppins";
   opacity: 0.6;
