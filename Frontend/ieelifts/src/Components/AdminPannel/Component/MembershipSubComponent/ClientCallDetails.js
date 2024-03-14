@@ -254,32 +254,42 @@ const ClientCallDetails = ({
           isExpired && "callScrollExpired"
         }`}
       >
-        {callDetails &&
+        <div>
+          {callDetails &&
           callDetails.clientCallData &&
-          pageData.map((detail, index) => (
-            <div
-              key={index}
-              ref={(el) => (historyRefs.current[index] = el)}
-              className={`clientDetailCalls ${
-                new Date(detail.callDate) < Date.now() &&
-                !detail.description &&
-                "callMissed"
-              }`}
-              onClick={() => toggleHistory(index)}
-              style={{ cursor: "pointer", marginBottom: "10px" }}
-            >
-              {showHistory[index] && detail.description && (
-                <div className="clientCallInfo ">
-                  <p>{detail.description}</p>
+          pageData.length !== 0 && !Mybutton  ? (
+            callDetails &&
+            callDetails.clientCallData &&
+            pageData.map((detail, index) => (
+              <div
+                key={index}
+                ref={(el) => (historyRefs.current[index] = el)}
+                className={`clientDetailCalls ${
+                  new Date(detail.callDate) < Date.now() &&
+                  !detail.description &&
+                  "callMissed"
+                }`}
+                onClick={() => toggleHistory(index)}
+                style={{ cursor: "pointer", marginBottom: "10px" }}
+              >
+                {showHistory[index] && detail.description && (
+                  <div className="clientCallInfo ">
+                    <p>{detail.description}</p>
+                  </div>
+                )}
+                <div className="clientNumber ">
+                  <p>Call {index + 1}</p>
+                  <p>{formatDate(detail.callDate)}</p>
+                  <p>{detail.discountOffered}% Off</p>
                 </div>
-              )}
-              <div className="clientNumber ">
-                <p>Call {index + 1}</p>
-                <p>{formatDate(detail.callDate)}</p>
-                <p>{detail.discountOffered}% Off</p>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <>
+              <div>There are no previous and scheduled calls</div>
+            </>
+          )}
+        </div>
       </div>
     </>
   );

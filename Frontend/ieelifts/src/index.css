@@ -91,7 +91,7 @@ code {
 .dot_Loader {
   width: 0.7rem;
   height: 0.7rem;
-  background-color: #FEF3DE;
+  background-color: #fef3de;
   border-radius: 50%;
   position: absolute;
 }
@@ -999,10 +999,10 @@ code {
 
 .callButton {
   width: 100%;
-  padding: 1rem ;
+  padding: 1rem;
   border-radius: 0.6rem;
   cursor: pointer;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .callNowButton {
@@ -1104,7 +1104,7 @@ code {
   font-weight: 600;
   border-radius: 0.5rem;
   border: 1px solid #0f351d;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .offerButtonExpired {
@@ -1223,7 +1223,6 @@ code {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 1rem;
 }
 
 .inputNotification {
@@ -1245,7 +1244,7 @@ code {
   width: 100%;
   margin-right: 1.5rem;
   font-size: medium;
-  font-family: "Poppins"
+  font-family: "Poppins";
 }
 
 .chevronDownMembership {
@@ -1486,19 +1485,19 @@ code {
 }
 
 .clientCardShadowWarrenty {
-  box-shadow: inset 0px 0px 15px #0f351d;
+  box-shadow: inset 0px 0px 15px #0f351d, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowPlatinum {
-  box-shadow: inset 0px 0px 15px #ff7f0080;
+  box-shadow: inset 0px 0px 15px #ff7f0080, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowGold {
-  box-shadow: inset 0px 0px 15px #f8ac1d80;
+  box-shadow: inset 0px 0px 15px #f8ac1d80, 2px 4px 10px #00000029;
 }
 
 .clientCardShadowSilver {
-  box-shadow: inset 0px 0px 15px #b7b7b7;
+  box-shadow: inset 0px 0px 15px #b7b7b7, 2px 4px 10px #00000029;
 }
 
 .noMembershipP {

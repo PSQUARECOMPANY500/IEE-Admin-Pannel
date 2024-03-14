@@ -84,10 +84,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setFilteredCD(getRequestDetail);
-  //   setallCD(getRequestDetail);
-  // }, [getRequestDetail]);
   useEffect(() => {
     setFilteredCD(getRequestDetail);
     setallCD(getRequestDetail);
@@ -144,19 +140,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
     }
   }, [filteredCD]);
 
-  // const handleCheckBoxAll = () => {
-  //   if (filteredCD) {
-  //     const allChecked = checkboxStates.every((isChecked) => isChecked);
-  //     setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
-  //   }
-  // };
-
-  // const handleCheckBoxAll = () => {
-  //   if (getRequestDetail) {
-  //     const allChecked = checkboxStates.every((isChecked) => isChecked);
-  //     setCheckboxStates(Array(getRequestDetail.length).fill(!allChecked));
-  //   }
-  // };
   const handleCheckBoxAll = () => {
     if (filteredCD) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
@@ -171,7 +154,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
       return newCheckboxStates;
     });
   };
-  console.log(checkboxStates);
   return (
     <div className="service-request-table">
       <table>
@@ -262,10 +244,10 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
+                checkboxStates[index] = true;
                 return null;
               }
 
-              console.log("this is index: ", index);
               return (
                 <tbody key={value._id}>
                   <tr className="selected">

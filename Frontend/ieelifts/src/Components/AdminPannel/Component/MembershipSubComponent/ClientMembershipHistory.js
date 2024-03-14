@@ -81,95 +81,104 @@ const ClientMembershipHistory = ({ isExpired, dataType, historyDetails }) => {
       ? "historyNumberSilver"
       : "historyNumberWarrenty";
   };
+
   return (
     <div className="historyMain">
-      {historyDetails && historyDetails.response && (
+      {historyDetails && (
         <div>
           <p>History</p>
         </div>
       )}
-      <div
-        className={`historyContainer ${scrollBar} ${
-          isExpired && "historyExpiredScroll"
-        }`}
-      >
-        {historyDetails &&
-          historyDetails.response &&
-          historyDetails.response.historyData &&
-          historyDetails.response.historyData.map((detail, index) => (
-            <div key={index}>
-              <div
-                ref={(el) => (historyRefs.current[index] = el)}
-                className={`history ${membershipBorder(
-                  detail.MemebershipType
-                )}`}
-                onClick={() => toggleHistory(index)}
-              >
-                {showHistory[index] && (
-                  <div className="historyDetails">
-                    <div className="historyClings">
-                      <span>
-                        Discount {detail.Discount ? detail.Discount : 0}
-                      </span>
-                      <span>
-                        Amount paid: {detail.PricePaid ? detail.PricePaid : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        Callbacks:{" "}
-                        {detail.callbacksCount ? detail.callbacksCount : 0}{" "}
-                      </span>
-                      <span>
-                        Services:{" "}
-                        {detail.serviecsCount ? detail.serviecsCount : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        Spare Parts sold:{" "}
-                        {detail.sparePartsSoldCount
-                          ? detail.sparePartsSoldCount
-                          : 0}
-                      </span>
-                      <span>
-                        Revenue: {detail.revenue ? detail.revenue : 0}
-                      </span>
-                    </div>
-                    <div className="historyClings">
-                      <span>
-                        SOS calls:{" "}
-                        {detail.SOScallsCount ? detail.SOScallsCount : 0}{" "}
-                      </span>
-                      <p className="rating">
+      {historyDetails &&
+      historyDetails.response &&
+      historyDetails.response.historyData.length !== 0 ? (
+        <div
+          className={`historyContainer ${scrollBar} ${
+            isExpired && "historyExpiredScroll"
+          }`}
+        >
+          {historyDetails &&
+            historyDetails.response &&
+            historyDetails.response.historyData &&
+            historyDetails.response.historyData.map((detail, index) => (
+              <div key={index}>
+                <div
+                  ref={(el) => (historyRefs.current[index] = el)}
+                  className={`history ${membershipBorder(
+                    detail.MemebershipType
+                  )}`}
+                  onClick={() => toggleHistory(index)}
+                >
+                  {showHistory[index] && (
+                    <div className="historyDetails">
+                      <div className="historyClings">
                         <span>
-                          Rating:{" "}
-                          {historyDetails.response.calculateRating
-                            ? historyDetails.response.calculateRating
+                          Discount {detail.Discount ? detail.Discount : 0}
+                        </span>
+                        <span>
+                          Amount paid: {detail.PricePaid ? detail.PricePaid : 0}
+                        </span>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          Callbacks:{" "}
+                          {detail.callbacksCount ? detail.callbacksCount : 0}{" "}
+                        </span>
+                        <span>
+                          Services:{" "}
+                          {detail.serviecsCount ? detail.serviecsCount : 0}
+                        </span>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          Spare Parts sold:{" "}
+                          {detail.sparePartsSoldCount
+                            ? detail.sparePartsSoldCount
                             : 0}
                         </span>
                         <span>
-                          <FaStar className="ratingStar" />
+                          Revenue: {detail.revenue ? detail.revenue : 0}
                         </span>
-                      </p>
+                      </div>
+                      <div className="historyClings">
+                        <span>
+                          SOS calls:{" "}
+                          {detail.SOScallsCount ? detail.SOScallsCount : 0}{" "}
+                        </span>
+                        <p className="rating">
+                          <span>
+                            Rating:{" "}
+                            {historyDetails.response.calculateRating
+                              ? historyDetails.response.calculateRating
+                              : 0}
+                          </span>
+                          <span>
+                            <FaStar className="ratingStar" />
+                          </span>
+                        </p>
+                      </div>
                     </div>
+                  )}
+                  <div
+                    className={`historyNumber ${membershipbackground(
+                      detail.MemebershipType
+                    )}`}
+                  >
+                    <p>{formatDate(detail.StartDate)}</p>
+                    <p>
+                      <FaPrint />
+                    </p>
+                    <p>{formatDate(detail.EndDate)}</p>
                   </div>
-                )}
-                <div
-                  className={`historyNumber ${membershipbackground(
-                    detail.MemebershipType
-                  )}`}
-                >
-                  <p>{formatDate(detail.StartDate)}</p>
-                  <p>
-                    <FaPrint />
-                  </p>
-                  <p>{formatDate(detail.EndDate)}</p>
                 </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      ) : (
+        <>
+          <div>There is no previous history.</div>
+        </>
+      )}
     </div>
   );
 };

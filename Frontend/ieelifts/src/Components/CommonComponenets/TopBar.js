@@ -121,7 +121,7 @@ const TopBar = (props) => {
 
       <div className="right-side-icons">
         {location.pathname === "/Clients" ? (
-          <span className="top-iconn ">
+          <span className="top-icon">
             <div className="search-box">
               <input
                 type="text"
@@ -168,7 +168,7 @@ const TopBar = (props) => {
                   {""}
                 </p>
                 {showTicketFilter && (
-                  <div ref={dropdownRef} style={{ position: "absolute" }}>
+                  <div ref={dropdownRef} style={{ position: "absolute",backgroundColor:"white" }}>
                     <ClientFilterDropdown />
                   </div>
                 )}

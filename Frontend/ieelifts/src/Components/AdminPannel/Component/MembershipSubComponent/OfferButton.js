@@ -43,8 +43,11 @@ const OfferButton = ({ isExpired, dataType }) => {
   return (
     <div className="offerButtonContainer">
       <div>
-        {showHistory && (
-          <div className="offerButtons">
+        {
+          <div
+            className="offerButtons"
+            style={showHistory ? { opacity: 1 } : { opacity: 0 }}
+          >
             <button
               className={`offerButton offer ${buttonClass} ${
                 isExpired && "offerButtonExpired"
@@ -74,7 +77,7 @@ const OfferButton = ({ isExpired, dataType }) => {
               other
             </button>
           </div>
-        )}
+        }
         <div onClick={toggleHistory} ref={historyRef}>
           <button
             className={`offerButton offerButtonMain ${buttonClass}  offerButtonMainGold${
