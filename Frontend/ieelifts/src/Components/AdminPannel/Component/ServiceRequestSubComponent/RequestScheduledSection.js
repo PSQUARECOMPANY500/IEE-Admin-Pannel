@@ -140,7 +140,8 @@ const RequestScheduledSection = ({setRenderTicket}) => {
             </div>
             {showTicketModal &&
              (
-              <AddTicketOnCallRequests      
+              <AddTicketOnCallRequests
+                   
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}

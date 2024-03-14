@@ -13,6 +13,8 @@ import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
+import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
+import AddTicketModals from "./AddTicketModals";
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
@@ -247,7 +249,7 @@ const TicketSection = ({ setTicketUpdate }) => {
               </p>
             </div>
             {showTicketModal && (
-              <AddTicketOnCallRequest
+              <AddTicketOnCallRequests
                 closeModal={closeModal}
                 showTicketModal={showTicketModal}
                 setRenderTicket={setRenderTicket}
@@ -262,8 +264,8 @@ const TicketSection = ({ setTicketUpdate }) => {
 
              
          
-          <div className="my_table-container">
-            <table>
+          <div className="my_table-container" >
+            <table >
             <thead>
                 <tr>
                   <th>
@@ -303,11 +305,11 @@ const TicketSection = ({ setTicketUpdate }) => {
               {/* TABLE BODY STARTS */}
 
       
-      <tbody  >
+      <tbody >
                 {isSearching ? (
                   <>
-                    <tr>
-                      <td colSpan="10">
+                    <tr  style={{overflowX: "hidden"}} >
+                      <td colSpan="10" >
                         <SkeltonLoader
                           width={"80vw"}
                           height={"38px"}
@@ -337,6 +339,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                     </tr>
                   </>
+                  
+                  
                 ) : (
                   filteredCD.map((data, index) => {
                     //console.log("mast ram", data)
@@ -404,7 +408,7 @@ const TicketSection = ({ setTicketUpdate }) => {
               </tbody>
      
               {showTicketModal1 && (
-                <AddTicketModal
+                <AddTicketModals
                   closeModal={() => setShowTicketModal1(false)}
                   showTicketModal={showTicketModal1}
                   callbackId={callbackId}

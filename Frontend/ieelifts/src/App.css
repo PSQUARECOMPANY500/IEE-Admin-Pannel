@@ -655,7 +655,7 @@ span::after {
 }
 
 .filter-icon {
-  box-shadow: none;
+  /* box-shadow: none; */
   padding: 12px 13px;
   font-size: 16px;
 }
@@ -2020,7 +2020,7 @@ footer a:hover {
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
-
+  overflow-x: hidden;
 }
 
 
@@ -2028,19 +2028,22 @@ footer a:hover {
   width: 100%;
   border-collapse: collapse;
 
+  position: relative;
+
+
+
 }
 
 
 
 .my_table-container thead {
   position: sticky;
-  top: 0;
+  top: 0%;
   background-color: white;
+  box-shadow: 0px 0px 3px #C1C1C1;
+
+ 
   z-index: 1;
-
-
-
-
 }
 
 /* set body scroll property starts */
@@ -2071,6 +2074,7 @@ footer a:hover {
 
 
 .my_table-container table th {
+
   font-size: 1rem;
   text-align: start;
   font-weight: 500;
@@ -2079,7 +2083,7 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #C1C1C180;
+  /* border-bottom: 1px solid #C1C1C180; */
   font-size: .9rem;
   color: #444444;
   font-weight: 490;
@@ -2114,8 +2118,7 @@ footer a:hover {
   border-radius: 20px;
   margin-top: 1rem;
   padding: 20x;
-
-
+  overflow-x: hidden;
 
 }
 
@@ -2135,6 +2138,7 @@ footer a:hover {
   background-color: white;
   z-index: 1;
   height: 50px;
+  box-shadow: 0px 0px 3px #C1C1C1;
 
 
 
@@ -2233,6 +2237,7 @@ footer a:hover {
   background-color: white;
   z-index: 1;
   height: 50px;
+  box-shadow: 0px 0px 3px #C1C1C1;
 
 
 
@@ -2309,9 +2314,6 @@ footer a:hover {
   padding: 30px;
   gap: 12px;
   position: relative;
-
-
-
 }
 
 .heading-icon-align {
@@ -2612,7 +2614,7 @@ footer a:hover {
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 4px;
   background-color: #fff;
-  top: 33%;
+  top: 14%;
 }
 
 
@@ -2746,7 +2748,7 @@ footer a:hover {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.1);
   z-index: 4;
   width: 100%;
 }
@@ -2757,7 +2759,7 @@ footer a:hover {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
   z-index: 4;
   width: 100%;
 }
@@ -3096,18 +3098,18 @@ footer a:hover {
 .col75 input[type="text"] {
   /* width: 80%; */
   /* padding: 0.5rem; */
-  width:220px;
+  width: 220px;
   padding: 0.6rem;
   border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
   font-family: 'Poppins';
-  outline-color:#F8AC1D;
- 
+  outline-color: #F8AC1D;
+
 
 }
 
@@ -3119,7 +3121,7 @@ footer a:hover {
   border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
@@ -3145,14 +3147,14 @@ footer a:hover {
   opacity:'0.6', */
   font-size: 0.9rem;
   font-family: "Poppins";
-
+  outline-color: #F8AC1D;
 }
 
-.col75 textarea::placeholder{
+.col75 textarea::placeholder {
   font-size: 0.8rem;
   font-family: "Poppins";
   opacity: 0.6;
-  
+
 }
 
 
@@ -3162,13 +3164,18 @@ footer a:hover {
 
 }
 
-.col75 input[type='text']:hover{
+.col75 input[type='text']:hover {
   box-shadow: 0px 0px 5px #f8ac1d80;
 }
-.col75 textarea:focus {
-  border: 1px solid #f8ac1d;
+
+.col75 input:hover {
+  box-shadow: 0px 0px 5px #f8ac1d80;
+}
+
+.col75 textarea:hover {
+  /* border: 1px solid #f8ac1d;
   border: none;
-  outline: none;
+  outline: none; */
   box-shadow: 0px 0px 5px #f8ac1d80;
 }
 
@@ -3280,18 +3287,18 @@ footer a:hover {
 .elevator-detail-row {
   display: flex;
   width: 100%;
-  justify-content:start;
+  justify-content: start;
   align-items: center;
   margin-left: 0px;
 }
 
 
-  .col-elevator25 label {
-    padding: 0px 0px 0px 0;
-    display: inline-block;
-    color: #343434;
-    font-size: 0.9rem;
-    font-weight: 500;
+.col-elevator25 label {
+  padding: 0px 0px 0px 0;
+  display: inline-block;
+  color: #343434;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .col-elevator25 {
@@ -3312,6 +3319,7 @@ footer a:hover {
   gap: 0.3rem;
   justify-content: space-around;
 }
+
 .grid-form-container2 {
   height: 90%;
   width: 50%;
@@ -3322,18 +3330,20 @@ footer a:hover {
   gap: 1.7rem;
 }
 
- .col75 input::placeholder{
+.col75 input::placeholder {
   opacity: 0.6;
   font-size: 0.8rem;
   font-family: 'Poppins';
   text-transform: capitalize;
 }
+
 .grid-form-container2 .buttons {
   display: flex;
   gap: 16px;
   width: 100%;
   /* margin-top: -1rem; */
 }
+
 .engg-form {
   display: flex;
 }
@@ -3389,7 +3399,7 @@ footer a:hover {
   display: flex;
   align-items: center;
   /* justify-content: center; */
-  gap:0.5rem;
+  gap: 0.5rem;
   margin-top: 10px;
 
 }
@@ -3815,7 +3825,7 @@ element.style {
 
 .name-jon {
   padding: 0px 0px;
-  margin-left: -35px;
+  margin-left: -25px;
 }
 
 .name-jon p {
@@ -4684,7 +4694,9 @@ element.style {
 .day {
   padding: 5px;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
   cursor: pointer;
   font-size: 0.9rem;
   color: black;
@@ -4703,6 +4715,8 @@ element.style {
   /* background-color: #FEF3DE; */
   color: #F8AC1D;
   border-radius: 50%;
+  height: 30px;
+  width: 30px;
 }
 
 .day.current:hover {
@@ -4717,6 +4731,9 @@ element.style {
   background-color: #FEF3DE;
   color: #F8AC1D;
   border-radius: 50%;
+  height: 30px;
+  width: 30px;
+
 }
 
 .ui-datepicker-title {
@@ -4729,7 +4746,7 @@ element.style {
   border: 1px solid #c1c1c1;
   border-radius: 4px;
   resize: vertical;
-  font-size: 15px;
+  font-size: 0.8rem;
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
@@ -5652,12 +5669,12 @@ element.style {
 
 
 .EngChatBox-Dash {
-  width: 350px;
+  width: 300px;
   height: 480px;
   background-color: #FFFBF4;
   border-radius: 5px;
-  margin-top: 10px;
-  margin-left: -295px;
+  margin-top: 2px;
+  margin-left: -260px;
   position: absolute;
   z-index: 999;
 
@@ -5707,7 +5724,7 @@ element.style {
 .SubEngChatMsg-Dash {
   height: 94%;
   width: 100%;
-  padding: 0rem 1rem;
+  padding: 0rem 0.4rem;
   padding-bottom: 2rem;
   overflow-y: auto;
 

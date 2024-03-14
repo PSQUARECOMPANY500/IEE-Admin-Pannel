@@ -329,7 +329,7 @@
   
                   <div className="row">
                     <div className="col25">
-                      <label>NAME:</label>
+                      <label>NAMhasdsddsfE:</label>
                     </div>
   
                     <div className="col75">

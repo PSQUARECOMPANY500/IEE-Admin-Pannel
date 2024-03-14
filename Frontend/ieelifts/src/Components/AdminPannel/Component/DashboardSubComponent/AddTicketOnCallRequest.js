@@ -13,7 +13,7 @@ import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/Client
 import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
 import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
@@ -26,12 +26,11 @@ const AddTicketOnCallRequest = ({
   showTicketModal,
   setRenderTicket,
   requestSection,
-  setTicketUpdate
+  setTicketUpdate,
 }) => {
   const dispatch = useDispatch();
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
-
 
   //  callback-request-state
   const [jon, setJon] = useState(""); //call-api-using-jon
@@ -39,15 +38,14 @@ const AddTicketOnCallRequest = ({
   const [name, setname] = useState(""); //-api
   const [number, setnumber] = useState(""); //-api
   const [address, setaddress] = useState(""); //-api
-  const [ModelType, setModelType] = useState("")
+  const [ModelType, setModelType] = useState("");
   const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
-  const [dtext, setdtext] = useState('') //-done
+  const [dtext, setdtext] = useState(""); //-done
 
   const [timer, setTimer] = useState(null);
-  const [engDate, setengDate] = useState("")
-
+  const [engDate, setengDate] = useState("");
 
   //assign-callbacks-state
   const [engDetails, setEngDetails] = useState({
@@ -57,13 +55,12 @@ const AddTicketOnCallRequest = ({
     enggAddress: "",
     enggLocation: "",
     enggRating: "",
-    enggPhoto: ""
+    enggPhoto: "",
   });
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
-
 
   const timeSlots = [
     {
@@ -80,24 +77,25 @@ const AddTicketOnCallRequest = ({
     },
   ];
   const bookedDateForEngg = useSelector((state) => {
-    if (state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg) {
-      return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg
+    ) {
+      return state.AdminRootReducer.getBookedSlotsforEnggsReducer
+        .bookedDatesEngg.BookedSlots;
     } else {
-      return null
+      return null;
     }
   });
-  // console.log('bookedDateForEngg',bookedDateForEngg)
 
-  const filteredSlots = timeSlots.filter(slot => {
-    const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
-    // console.log("bookedengg",engg)
+  const filteredSlots = timeSlots.filter((slot) => {
+    const engg = bookedDateForEngg?.find(
+      (engg) => engg.ServiceEnggId === selectedEnggId[0]
+    );
     const bookedSlots = engg ? engg.slots : [];
     return !bookedSlots.includes(slot.slot);
   });
-  // console.log("filteredSlots",filteredSlots)
-
-
-
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
@@ -127,7 +125,6 @@ const AddTicketOnCallRequest = ({
     }
   });
 
-
   const getEnggState = useSelector((state) => {
     if (
       state.AdminRootReducer &&
@@ -140,36 +137,30 @@ const AddTicketOnCallRequest = ({
     return;
   });
 
-
-
   const clientDetails = useSelector((state) => {
-    return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails?.client
-  })
-
-
+    return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
+      ?.client;
+  });
 
   useEffect(() => {
     if (clientDetails) {
       setname(clientDetails.name);
-      setnumber(clientDetails.PhoneNumber)
+      setnumber(clientDetails.PhoneNumber);
       setaddress(clientDetails.Address);
       setModelType(clientDetails.ModelType);
 
-
-      const currentDate = new Date()
-      const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
-      const updatedFormatedDate = currentDate.toLocaleDateString('en-GB');
-      console.log(updatedFormatedDate)
+      const currentDate = new Date();
+      const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
+      const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
       setDate(updatedFormatedDate);
 
       const hours = currentDate.getHours();
       const minutes = currentDate.getMinutes();
       const seconds = currentDate.getSeconds();
       const formattedTime = `${hours}:${minutes}:${seconds}`;
-      setTime(formattedTime)
+      setTime(formattedTime);
     }
-
-  }, [clientDetails])
+  }, [clientDetails]);
 
   useEffect(() => {
     if (timer) {
@@ -185,12 +176,11 @@ const AddTicketOnCallRequest = ({
     setTimer(newTimer);
 
     return () => {
-      dispatch(requestClientDetailsByJon())
+      dispatch(requestClientDetailsByJon());
       dispatch(requestCallBackByAdmin());
-      clearTimeout(newTimer)
-    }
+      clearTimeout(newTimer);
+    };
   }, [jon, dispatch]);
-
 
   useEffect(() => {
     dispatch(fetchAllClientDetailAction()); //allEng-Details
@@ -201,7 +191,6 @@ const AddTicketOnCallRequest = ({
     };
   }, []);
 
-
   useEffect(() => {
     //no problem
     if (getEnggState) {
@@ -210,11 +199,10 @@ const AddTicketOnCallRequest = ({
         enggName: getEnggState.EnggName,
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
-        enggPhoto: getEnggState.EnggPhoto
+        enggPhoto: getEnggState.EnggPhoto,
       });
     }
   }, [getEnggState]);
-
 
   useEffect(() => {
     //no problem
@@ -225,7 +213,7 @@ const AddTicketOnCallRequest = ({
   }, []);
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    setSelectedEnggId(selectedOptions)// selected Engg id 
+    setSelectedEnggId(selectedOptions); // selected Engg id
     dispatch(fetchEnggDetailAction(selectedOptions));
   };
 
@@ -238,41 +226,54 @@ const AddTicketOnCallRequest = ({
   };
 
   const handleTypeOfIssue = (selectedOption) => {
-    setTypeOfIssue(selectedOption)
-  }
+    setTypeOfIssue(selectedOption);
+  };
 
   const handleAssignDateChange = (selectedOption) => {
-    const formattedDate = selectedOption.toLocaleDateString('en-GB');
+    const formattedDate = selectedOption.toLocaleDateString("en-GB");
     setengDate(formattedDate);
 
     dispatch(getBookedSlotsforEnggsAction(formattedDate));
-
-
-  }
-
+  };
 
   const handleElevatorSectionDetails = async () => {
     if (requestSection) {
-      dispatch(requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext)).then((RequestId) => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
-          dispatch(assignserviceRequestByAdmin(
-            engDetails?.enggJon,
-            jon,
-            RequestId,
-            ClickListOnSelect.value,
-            selectedSlot,
-            engDate,
-            message,
-            engDetails?.enggName,
-            engDetails.enggJon
-          ))
+      dispatch(
+        requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext)
+      ).then((RequestId) => {
+        if (
+          engDetails.enggJon &&
+          ClickListOnSelect &&
+          selectedSlot &&
+          date &&
+          message
+        ) {
+          dispatch(
+            assignserviceRequestByAdmin(
+              engDetails?.enggJon,
+              jon,
+              RequestId,
+              ClickListOnSelect.value,
+              selectedSlot,
+              engDate,
+              message,
+              engDetails?.enggName,
+              engDetails.enggJon
+            )
+          );
         }
-      })
-    }
-    else {
-      dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)).then(callbackId => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
-
+      });
+    } else {
+      dispatch(
+        requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)
+      ).then((callbackId) => {
+        if (
+          engDetails.enggJon &&
+          ClickListOnSelect &&
+          selectedSlot &&
+          date &&
+          message
+        ) {
           dispatch(
             assignCallBackByAdminAction(
               engDetails?.enggJon,
@@ -287,18 +288,16 @@ const AddTicketOnCallRequest = ({
             )
           );
         } else {
-          toast.error("Please fill all the fields")
-          console.log("not valid input");
+          toast.error("Please fill all the fields");
         }
-      })
+      });
     }
     setRenderTicket((prev) => !prev);
     if (setTicketUpdate) {
       setTicketUpdate((prev) => !prev);
     }
     closeModal();
-  }
-
+  };
 
   return (
     <>
@@ -311,9 +310,9 @@ const AddTicketOnCallRequest = ({
 
         <div className="child-modal-container">
           <div className="client-section">
-            
             <div className="upload-photo-secton">
               <img
+                style={{ width: "200px", height: "200px" }}
                 src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
                 alt="lift"
               />
@@ -328,10 +327,14 @@ const AddTicketOnCallRequest = ({
                   </div>
 
                   <div className="col75">
-                    {/* <input className={``} type="text" name="name" placeholder="Enter-Client-Id"  onChange={(e)=>setJon(e.target.value)} /> */}
-                      <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter Jon Number" />
-                  
-                    </div>
+                    <input
+                      className={``}
+                      type="text"
+                      name="name"
+                      placeholder="Enter-Client-Id"
+                      onChange={(e) => setJon(e.target.value)}
+                    />
+                  </div>
                 </div>
                 {/* one row ends */}
 
@@ -341,15 +344,22 @@ const AddTicketOnCallRequest = ({
                   </div>
                   {name ? (
                     <div className="col75">
-
-                      <p type='text'>{name}</p>
+                      <input
+                        type="text"
+                        name="name"
+                        value={name}
+                        style={{ border: "none" }}
+                      />
                     </div>
                   ) : (
                     <div className="col75">
-                      <SkeltonLoader width="220px" height="17px" marginBottom="7px" />
+                      <SkeltonLoader
+                        width="220px"
+                        height="17px"
+                        marginBottom="7px"
+                      />
                     </div>
                   )}
-
                 </div>
                 <div className="row">
                   <div className="col25">
@@ -366,10 +376,13 @@ const AddTicketOnCallRequest = ({
                     </div>
                   ) : (
                     <div className="col75">
-                      <SkeltonLoader width="220px" height="17px" marginBottom="7px" />
+                      <SkeltonLoader
+                        width="220px"
+                        height="17px"
+                        marginBottom="7px"
+                      />
                     </div>
                   )}
-
                 </div>
                 <div className="row">
                   <div className="col25">
@@ -387,11 +400,14 @@ const AddTicketOnCallRequest = ({
                   ) : (
                     <div className="col75">
                       <div>
-                        <SkeltonLoader width="220px" height="17px" marginBottom="10px" />
+                        <SkeltonLoader
+                          width="220px"
+                          height="17px"
+                          marginBottom="10px"
+                        />
                       </div>
                     </div>
                   )}
-
                 </div>
 
                 <div className="row">
@@ -400,11 +416,20 @@ const AddTicketOnCallRequest = ({
                   </div>
 
                   <div className="col75">
-                    <SingleSetDropdown padding="8px" width="85%" placeholder={"Type Of Issue"}
-                      Details={[{ _id: 1, checklistName: 'Door' }, { _id: 2, checklistName: 'Light' },
-                      { _id: 3, checklistName: 'Fan' }, { _id: 4, checklistName: 'Buttons' },
-                      { _id: 5, checklistName: 'Lift' }, { _id: 6, checklistName: 'Other' }]}
-                      onStateChange={handleTypeOfIssue} />
+                    <SingleSetDropdown
+                      padding="8px"
+                      width="85%"
+                      placeholder={"Type Of Issue"}
+                      Details={[
+                        { _id: 1, checklistName: "Door" },
+                        { _id: 2, checklistName: "Light" },
+                        { _id: 3, checklistName: "Fan" },
+                        { _id: 4, checklistName: "Buttons" },
+                        { _id: 5, checklistName: "Lift" },
+                        { _id: 6, checklistName: "Other" },
+                      ]}
+                      onStateChange={handleTypeOfIssue}
+                    />
                   </div>
                 </div>
 
@@ -462,10 +487,13 @@ const AddTicketOnCallRequest = ({
                     </div>
                   ) : (
                     <div className="col75">
-                      <SkeltonLoader width="220px" height="17px" marginBottom="7px" />
+                      <SkeltonLoader
+                        width="220px"
+                        height="17px"
+                        marginBottom="7px"
+                      />
                     </div>
                   )}
-
                 </div>
                 <div className="row">
                   <div className="col25">
@@ -477,10 +505,13 @@ const AddTicketOnCallRequest = ({
                     </div>
                   ) : (
                     <div className="col75">
-                      <SkeltonLoader width="220px" height="17px" marginBottom="7px" />
+                      <SkeltonLoader
+                        width="220px"
+                        height="17px"
+                        marginBottom="7px"
+                      />
                     </div>
                   )}
-
                 </div>
               </form>
             </div>
@@ -505,7 +536,6 @@ const AddTicketOnCallRequest = ({
                       <SkeltonLoader width="80px" height="10px" />
                     </div>
                   )}
-
                 </div>
                 <div className="elevator-detail-row">
                   <div className="col-elevator25">
@@ -534,7 +564,13 @@ const AddTicketOnCallRequest = ({
                     <div>
                       {getEnggState ? (
                         <img
-                          style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
+                          style={{
+                            width: "90px",
+                            height: "90px",
+                            objectFit: "cover",
+                            objectPosition: "center",
+                            borderRadius: "2px",
+                          }}
                           src={engDetails.enggPhoto}
                           alt="lift"
                         />
@@ -656,40 +692,42 @@ const AddTicketOnCallRequest = ({
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" OnDateChange={handleAssignDateChange} />
+                        <ReactDatePickers
+                          className="date-picker-dropdown"
+                          OnDateChange={handleAssignDateChange}
+                        />
                       </div>
-
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-
-                      {engDate ? (<MultiSelectDropdown
-                        placeholder={"Select Enggineers"}
-                        Details={serviceEnggDetail}
-                        handleEnggSelectionChange={handleEnggSelectionChange}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Date First"
-                      />)}
-
+                      {engDate ? (
+                        <MultiSelectDropdown
+                          placeholder={"Select Enggineers"}
+                          Details={serviceEnggDetail}
+                          handleEnggSelectionChange={handleEnggSelectionChange}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Date First" />
+                      )}
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-
-                      {engDetails.enggName ? (<MultiSelectDropdown
-                        placeholder={"Select Slot"}
-                        slots={filteredSlots}
-                        handleEnggSelectionChange={handleEnggSelectionChange1}
-                      />) : ((<MultiSelectDropdown
-                        placeholder="Please Select Engg First"
-                      />))}
+                      {engDetails.enggName ? (
+                        <MultiSelectDropdown
+                          placeholder={"Select Slot"}
+                          slots={filteredSlots}
+                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Engg First" />
+                      )}
                     </div>
                   </div>
 
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-
                       <SingleSetDropdown
                         padding="6px"
                         width="100%"
@@ -710,7 +748,6 @@ const AddTicketOnCallRequest = ({
                       marginLeft: "10%",
                       resize: "none",
                     }}
-                    /* placeholder={isAssigned?message:"message"} */
                     onChange={(e) => {
                       setMessage(e.target.value);
                     }}
@@ -722,7 +759,7 @@ const AddTicketOnCallRequest = ({
 
           <div className="footer-section">
             <div className="buttons">
-              <button className={`edit-button`} >Edit</button>
+              <button className={`edit-button`}>Edit</button>
               <button
                 className="assign-button"
                 onClick={handleElevatorSectionDetails}

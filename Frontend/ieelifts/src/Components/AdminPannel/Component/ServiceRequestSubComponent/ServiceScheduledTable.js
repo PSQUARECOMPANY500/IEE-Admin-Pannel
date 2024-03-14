@@ -3,6 +3,7 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
 import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
+import AddTicketModals from "../DashboardSubComponent/AddTicketModals";
 
 const ServiceScheduledTable = () => {
   const [showTicketModal5, setShowTicketModal5] = useState(false);
@@ -127,7 +128,7 @@ const ServiceScheduledTable = () => {
                 <AssignDropdown customAssign="assignColor" name="Assign" />
               </td>
               {showTicketModal5 && (
-                <AddTicketModal
+                <AddTicketModals
                   closeModal={() => setShowTicketModal5(false)}
                   showTicketModal={showTicketModal5}
                   modalNumber={5}
