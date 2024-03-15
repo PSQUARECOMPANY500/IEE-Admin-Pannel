@@ -22,6 +22,8 @@ import {
   getfilteredData,
   searchClients,
 } from "../../ReduxSetup/Actions/AdminActions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -82,7 +84,7 @@ const TopBar = (props) => {
   );
 
   useEffect(() => {
-    if (membershipLayout == true) {
+    if (membershipLayout === true) {
       setIsGrid(!isGrid);
     }
     return () => {
@@ -129,6 +131,26 @@ const TopBar = (props) => {
       </div>
 
       <div className="right-side-icons">
+        <div>
+          <button
+            style={{ height: "70px", opacity: "0" }}
+            onClick={() => {
+              // toast("Wow so easy!")
+              toast.error("Callback requested by Mr. Michael", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                progress: undefined,
+                theme: "light",
+                style: { fontSize: "0.8rem" },
+              });
+            }}
+          >
+            Click Here
+          </button>
+        </div>
         {location.pathname === "/Clients" ? (
           <span className="top-icon">
             <div className="search-box">
