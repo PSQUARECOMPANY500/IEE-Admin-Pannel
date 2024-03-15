@@ -1611,7 +1611,8 @@ code {
 }
 
 .client_table-container {
-  max-height: 700px;
+  max-height: 830px;
+
   overflow-y: auto;
   /* border-radius: 20px; */
   /* margin-top: 1rem; */

@@ -174,10 +174,8 @@ const TicketSection = ({ setTicketUpdate }) => {
       <div className="child-ticket-div">
         <div className="heading-icon-align">
           <div className="ticket-section-heading">
-            <span>TICKETS</span>
-            <span>(</span>
-            <span> TAT 3 HOURS</span>
-            <span> )</span>
+            <span style={{textTransform:'capitalize'}}>Tickets</span>
+        
           </div>
           {/* ............................................................ax13-search...................................................... */}
 
@@ -263,7 +261,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 <th>
                   <div>
                     <span>ADDRESS</span>
-                    <HiChevronUpDown />
+                    {/* <HiChevronUpDown /> */}
                     <span></span>
                   </div>
                 </th>
@@ -275,7 +273,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <div>
                     {" "}
                     <span>STATUS</span>
-                    <HiChevronUpDown />
+                    {/* <HiChevronUpDown /> */}
                     <span></span>
                   </div>
                 </th>

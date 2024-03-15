@@ -90,7 +90,7 @@ export const loginServiceAdminAction = (AdminId, Password) => {
       toast.success("login successfully");
 
       setTimeout(() => {
-        window.location.href = "/dashboard";
+        window.location.href = "/Dashboard";
       }, 1000); // Delay in milliseconds
     } catch (error) {
       toast.error("Invalid Credientials");

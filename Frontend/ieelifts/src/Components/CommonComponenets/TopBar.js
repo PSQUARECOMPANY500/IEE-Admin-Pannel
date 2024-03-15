@@ -171,9 +171,9 @@ const TopBar = (props) => {
 
         {location.pathname === "/Clients" && (
           <>
-            <div className="top-icon">
+            <div className="top-icon" style={{boxShadow:'none'}}>
               {" "}
-              <div style={{ position: "relative" }} ref={dropdownClickRef}>
+              <div ref={dropdownClickRef}>
                 <p className="filter-icon" onClick={handleTicketFilter}>
                   <LuSettings2 />
                   {""}

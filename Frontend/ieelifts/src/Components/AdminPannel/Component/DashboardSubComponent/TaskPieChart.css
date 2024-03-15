@@ -2,39 +2,64 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
-  margin-top: 0.4rem;
-  margin-left: -0.2rem;
+  height: 70px;
+  width: 50px;
+   margin-top: -2.8rem;
+  margin-left: -0.7rem; 
+
+
 }
+.circular-progress-bar:hover .dropdown-menu {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: white;
+  opacity: 1;
+  visibility: visible;
+  top: 4%;
+  left: -15%;
+  /* transition: all 0.5s, background 2s 0.5s linear; */
+  border-radius: 10px;
+  width: 225px;
+  height: auto;
+  background-color: red;
+
+}
+
 
 .progress-ring {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
 }
 
 .progress-ring svg {
   transform: rotate(-90deg);
+
 }
 
 .progress-ring circle {
   fill: none;
   stroke-width: 5;
+  box-shadow: inset 1px 2px 3px #00000029;
+
 }
 
 .progress-ring .background {
   stroke: #fff9ef;
+  box-shadow: inset 1px 2px 3px #00000029;
+
 }
 
 .progress-ring .progress {
   stroke: #f8ac1d;
   transition: stroke-dasharray 0.3s;
+  box-shadow: inset 1px 2px 3px #00000029;
+  background-color: red;
 }
 
 .progress-text {
   position: absolute;
-  top: 30%;
-  left: 30%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
   font-size: 0.7rem;
 }

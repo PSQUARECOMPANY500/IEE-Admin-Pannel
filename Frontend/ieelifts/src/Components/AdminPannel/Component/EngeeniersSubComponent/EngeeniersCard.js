@@ -154,18 +154,18 @@ const EngeeniersCard = () => {
               <div className="SubPDetails">
                 <div className="Pimg"></div>
                 <h1>
-                  Name: <span>Aayush</span>
+                  Name: <span>Jack Smith</span>
                 </h1>
               </div>
 
               <h1>
-                ID: <span>123456</span>
+                ID: <span>1111</span>
               </h1>
               <h1>
-                Spare Parts: <span>96</span>
+                Spare Parts: <span>15</span>
               </h1>
               <h1>
-                Cash In Hand: <span>10,000</span>
+                Cash In Hand: <span>150,0000</span>
               </h1>
               <FaRegFileAlt className="Icon_Color" />
             </div>

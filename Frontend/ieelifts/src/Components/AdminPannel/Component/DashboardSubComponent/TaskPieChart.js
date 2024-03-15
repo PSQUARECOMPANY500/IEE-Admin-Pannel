@@ -28,6 +28,7 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
             style={{
               strokeDasharray: dashArray,
               strokeDashoffset: dashOffset,
+              boxShadow: 'inset 1px 2px 3px rgba(0, 0, 0, 0.29)'
             }}
           />
         </svg>

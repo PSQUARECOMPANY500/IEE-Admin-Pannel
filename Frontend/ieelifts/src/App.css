@@ -54,8 +54,7 @@ main {
   position: relative;
   position: sticky;
   top: 0;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  box-shadow: 2px 4px 10px #99886b66;
   display: flex;
   z-index: 4;
   justify-content: center;
@@ -137,6 +136,7 @@ main {
 
 .rotate {
   transform: rotateZ(180deg);
+  margin-top: -20px;
 }
 
 .toggle-button .menu-bar {
@@ -280,11 +280,11 @@ nav {
   padding: 0px 0px;
   background: #ffffff;
   color: #343434;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-variant: small-caps;
   cursor: pointer;
   display: block;
-  font-weight: 700;
+  font-weight: 500;
   transition: 0.5s ease;
 }
 
@@ -406,7 +406,7 @@ span::after {
   border-radius: 12px;
   position: relative;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 10px;
+  box-shadow: 1px 2px 5px #c1c1c1;
 
   transition: all 0.5s;
 
@@ -579,7 +579,7 @@ span::after {
   top: 0;
   z-index: 3;
   padding-left: 18rem;
-  box-shadow: rgba(99, 99, 99, 0.2) 6px 0px 8px 0px;
+  box-shadow: 2px 4px 10px #99886b66;
   /* gap: 65%; */
 }
 
@@ -632,10 +632,12 @@ span::after {
   justify-content: center;
   align-items: center;
   border-radius: 7px;
-  cursor: pointer;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  box-shadow: 1px 2px 5px #00000029;
   font-size: 25px;
   color: #343434;
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
 }
 
 .plus-icon {
@@ -643,8 +645,10 @@ span::after {
 }
 
 .filter-icon {
-  box-shadow: none;
+  height: 45px;
+  width: 45px;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 /* .filter-top-icon {
@@ -797,7 +801,7 @@ span::after {
   border-radius: 7px;
   cursor: pointer;
   height: 33px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  box-shadow: 1px 2px 5px #00000029;
 }
 
 .top-icon:hover .search-input {
@@ -870,8 +874,11 @@ footer a:hover {
 
 .main-crouser {
   width: 100%;
-  height: 175px;
+  height: 160px;
   background: #ffffff;
+  padding-top: 0.1rem;
+  padding-left: 0.5rem;
+  box-shadow: 2px 4px 10px #99886b66;
 }
 
 .carosel-Navigators-icon {
@@ -954,14 +961,16 @@ footer a:hover {
 }
 
 .engg-profile {
-  font-size: 14px;
+  font-size: 0.9rem;
   text-wrap: nowrap;
   font-weight: 500;
-  color: #343434;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  letter-spacing: 0px;
+  color: #444444;
+  font-family: "Poppins";
 }
 
 .star-icon {
@@ -1013,18 +1022,16 @@ footer a:hover {
 }
 
 .message-icon {
-  margin-top: 7px;
-  margin-right: 18px;
+  margin-right: 8px;
 }
 
 .message-icon span {
   font-size: 20px;
   padding: 2px 8px;
   border-radius: 6px;
-  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
   font-weight: 100;
   color: #343434;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+  box-shadow: 1px 2px 5px #00000029;
 }
 
 .message-dot {
@@ -1035,6 +1042,7 @@ footer a:hover {
   position: relative;
   top: -25px;
   right: -22px;
+  display: none;
 }
 
 .skill-box {
@@ -1095,7 +1103,7 @@ footer a:hover {
   top: -28px;
   font-size: 9px;
   font-weight: 500;
-  color: #fff;
+  color: #444;
   padding: 2px 6px;
   border-radius: 3px;
   background: #f8ac1d;
@@ -1117,14 +1125,14 @@ footer a:hover {
 
 .skill-box {
   position: relative;
-  width: 68%;
+  width: 90%;
   margin: 20px 0px;
   padding: 0px 14px;
   justify-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .dots2 {
@@ -1191,10 +1199,16 @@ footer a:hover {
 .hover-icon-service {
   display: flex;
   flex-direction: row;
-  font-size: 12px;
+  font-size: 0.8rem;
   align-items: center;
   width: 100%;
   margin-top: 10px;
+  letter-spacing: 0px;
+}
+
+.hover-icon-service span {
+  font-weight: 400;
+  color: #444444;
 }
 
 .initial-service {
@@ -1232,7 +1246,6 @@ footer a:hover {
 /* inside the table address hovering dropdown starts */
 .dropdown-address {
   background: white;
-  color: black;
   cursor: pointer;
   height: 25px;
   position: relative;
@@ -1240,10 +1253,11 @@ footer a:hover {
   text-align: center;
   text-decoration: none;
   z-index: 0;
-  transform: perspective(1000px);
+  /* transform: perspective(1000px); */
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  justify-content: center;
 }
 
 .dropdown-adddress-menu {
@@ -1257,6 +1271,7 @@ footer a:hover {
   text-align: center;
   top: 0;
   visibility: hidden;
+
   z-index: -99999;
 }
 
@@ -1278,14 +1293,15 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  transition: all 0.5s, background 2s 0.5s linear;
+  /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   z-index: 99999;
   width: 200px;
-  height: 77px;
+  min-height: 50px;
+  padding-top: 0.6rem;
   overflow: hidden;
-  top: -30px;
-  left: -30px;
+  top: -10px;
+  left: -20px;
 }
 
 .dropdown-adddress-menu .drop-address {
@@ -1314,7 +1330,6 @@ footer a:hover {
   align-items: center;
   width: 15%;
   margin-top: 16px;
-  position: relative;
 }
 
 .dropdown-menu {
@@ -1332,6 +1347,10 @@ footer a:hover {
   top: 0;
   visibility: hidden;
   z-index: -99999;
+  box-shadow: 0px 0px 20px #c1c1c1;
+
+  border-radius: 10px;
+  opacity: 1;
 }
 
 .dropdown-menu li:first-child {
@@ -1354,7 +1373,7 @@ footer a:hover {
   visibility: visible;
   top: 2%;
   left: -2px;
-  transition: all 0.5s, background 2s 0.5s linear;
+  /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   z-index: 99999;
   width: 166px;
@@ -1408,7 +1427,8 @@ footer a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+
   border-radius: 10px;
 }
 
@@ -1472,6 +1492,7 @@ footer a:hover {
 .main-head-div {
   display: flex;
   justify-content: center;
+  height: 122px;
   align-items: center;
   margin-top: -15px;
 }
@@ -1551,7 +1572,7 @@ footer a:hover {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border: 1px solid #c1c1c180;
   border-radius: 4px;
-  margin-top: 50px;
+  margin-top: 25px;
   /* padding-top: 5px; */
   background: #ffffff;
   z-index: -1;
@@ -1620,7 +1641,7 @@ footer a:hover {
   grid-template-columns: repeat(2, calc(50% - 1rem));
   justify-content: center;
   gap: 1rem;
-  height: 320px;
+  min-height: 200px;
   overflow-x: hidden;
   scroll-behavior: smooth;
   animation: changeText 0.7s linear forwards;
@@ -1818,10 +1839,6 @@ footer a:hover {
   display: none;
 }
 
-.switch-button {
-  display: flex;
-}
-
 .ticket-service-flex {
   display: flex;
 }
@@ -1915,6 +1932,10 @@ footer a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 1px 2px 5px #c1c1c180;
+  border-radius: 10px;
+  opacity: 1;
   /* padding: 14px 28px; */
 }
 
@@ -1996,7 +2017,8 @@ footer a:hover {
 
 /* tasks section css starts  */
 .my_table-container {
-  max-height: 300px;
+  height: 380px;
+  max-height: 380px;
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
@@ -2008,18 +2030,14 @@ footer a:hover {
   border-collapse: collapse;
 
   position: relative;
-
-
-
 }
 
 .my_table-container thead {
   position: sticky;
   top: 0%;
   background-color: white;
-  box-shadow: 0px 0px 3px #C1C1C1;
+  box-shadow: 0px 0px 3px #c1c1c1;
 
- 
   z-index: 1;
 }
 
@@ -2049,7 +2067,6 @@ footer a:hover {
 }
 
 .my_table-container table th {
-
   font-size: 1rem;
   text-align: start;
   font-weight: 500;
@@ -2059,7 +2076,7 @@ footer a:hover {
   font-weight: 500;
   padding: 20px 6px;
   /* border-bottom: 1px solid #C1C1C180; */
-  font-size: .9rem;
+  font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
@@ -2084,13 +2101,13 @@ footer a:hover {
 /* ------------------------------------------------------------------------------------sevice req table by aayush malviya start------------------------------------------------------- */
 
 .service-request-table {
-  max-height: 300px;
+  height: 380px;
+  max-height: 380px;
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
   padding: 20x;
   overflow-x: hidden;
-
 }
 
 .service-request-table table {
@@ -2104,10 +2121,7 @@ footer a:hover {
   background-color: white;
   z-index: 1;
   height: 50px;
-  box-shadow: 0px 0px 3px #C1C1C1;
-
-
-
+  box-shadow: 0px 0px 3px #c1c1c1;
 }
 
 /* set body scroll property starts */
@@ -2172,7 +2186,8 @@ footer a:hover {
 /*---------------------------------------------------------- service schedule  table start by aayush------------------------------------------------------------------  */
 
 .service-schedule-table {
-  max-height: 300px;
+  height: 380px;
+  max-height: 380px;
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
@@ -2190,10 +2205,7 @@ footer a:hover {
   background-color: white;
   z-index: 1;
   height: 50px;
-  box-shadow: 0px 0px 3px #C1C1C1;
-
-
-
+  box-shadow: 0px 0px 3px #c1c1c1;
 }
 
 /* set body scroll property starts */
@@ -2261,6 +2273,7 @@ footer a:hover {
   flex-direction: column;
   justify-content: center;
   padding: 30px;
+  padding-top: 8px;
   gap: 12px;
   position: relative;
 }
@@ -2288,14 +2301,17 @@ footer a:hover {
 
 .ticket-section-heading span:nth-child(1) {
   color: #191919;
+
+  font-size: 20px;
+  font-weight: 500;
+
+  margin-left: -4px;
+
+  font-family: "Poppins";
 }
 
 .ticket-section-heading span:nth-child(2) {
   color: #191919;
-}
-
-.ticket-section-heading span:nth-child(3) {
-  color: red;
 }
 
 .ticket-section-heading span:nth-child(4) {
@@ -2434,6 +2450,7 @@ footer a:hover {
   z-index: 3;
 }
 
+
 .search-icon-filter,
 .search-ticket-filter-icon {
   position: absolute;
@@ -2540,14 +2557,13 @@ footer a:hover {
   z-index: 1;
   margin-left: -5rem;
   width: 160px;
-
   overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 4px;
   background-color: #fff;
-  top: 14%;
+  top: 11%;
 }
 
 @media (min-width: 768px) and (max-width: 1064px) {
@@ -2565,20 +2581,8 @@ footer a:hover {
 @media (min-width: 1441px) {
 }
 
-.dropdown-content-filter {
-  position: absolute;
-  margin-top: 4rem;
-  background: rgb(253, 253, 253);
-  width: 160px;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  border-radius: 4px;
-  top: 0;
-  margin-left: -115px;
-  z-index: 3;
-}
+
+
 
 .search-icon-filter,
 .search-ticket-filter-icon {
@@ -2989,15 +2993,12 @@ footer a:hover {
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
-  font-family: 'Poppins';
-  outline-color: #F8AC1D;
-
-
+  font-family: "Poppins";
+  outline-color: #f8ac1d;
 }
 
-
 .col75 input {
-  width: 392px;
+  width: 405px;
   /* padding: 8px; */
   padding: 0.6rem;
   border: 1px solid #c1c1c1;
@@ -3007,9 +3008,8 @@ footer a:hover {
   font-weight: 400;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
   border: none;
-  font-family: 'Poppins';
-  outline-color: #F8AC1D;
-
+  font-family: "Poppins";
+  outline-color: #f8ac1d;
 }
 
 .col75 textarea {
@@ -3029,14 +3029,13 @@ footer a:hover {
   opacity:'0.6', */
   font-size: 0.9rem;
   font-family: "Poppins";
-  outline-color: #F8AC1D;
+  outline-color: #f8ac1d;
 }
 
 .col75 textarea::placeholder {
   font-size: 0.8rem;
   font-family: "Poppins";
   opacity: 0.6;
-
 }
 
 .col75 input[type="text"]:focus {
@@ -3044,7 +3043,7 @@ footer a:hover {
   /* outline: none; */
 }
 
-.col75 input[type='text']:hover {
+.col75 input[type="text"]:hover {
   box-shadow: 0px 0px 5px #f8ac1d80;
 }
 
@@ -3165,7 +3164,6 @@ footer a:hover {
   margin-left: 0px;
 }
 
-
 .col-elevator25 label {
   padding: 0px 0px 0px 0;
   display: inline-block;
@@ -3251,7 +3249,6 @@ footer a:hover {
 .col-elevator75 input {
   border: none;
   font-family: poppins;
-
 }
 
 .col-elevator75 input[type="text"]:focus {
@@ -4585,7 +4582,6 @@ element.style {
   border-radius: 50%;
   height: 30px;
   width: 30px;
-
 }
 
 .ui-datepicker-title {
@@ -4690,8 +4686,11 @@ element.style {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: 1rem;
+padding-top: 2rem;
+
+
 }
+
 
 .IssueDoors {
   height: 20%;
@@ -4728,11 +4727,10 @@ element.style {
   border-radius: 0px 10px 0px 0px;
   opacity: 1;
   height: 40%;
-  width: 22%;
+  width: 25%;
   display: flex;
-  /* align-self: self-start; */
   margin-bottom: 2.3rem;
-  margin-right: -0.1rem;
+
   display: flex;
   align-items: center;
 }
@@ -4770,15 +4768,28 @@ element.style {
   width: 100%;
 }
 
+.IssueDoor2 h5,.IssuesDoor2L h5{
+  margin-top: 0.6rem;
+}
 .ClientImg {
-  height: 5rem;
+  height: 4.5rem;
   width: 17%;
   background-color: #fef3de;
   border-radius: 3px;
-  opacity: 0.5;
+margin-top: 12px;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  object-fit: cover;
+  object-position: center;
+  position: relative;
   justify-content: center;
+}
+
+.ClientImg img{
+  height: 100%;
+
+  width: 100%;
 }
 
 .ClientImg h5 {
@@ -4805,7 +4816,7 @@ element.style {
   font-family: "Poppins";
   font-weight: 400;
   font-size: 0.9rem;
-  text-transform: uppercase;
+
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
@@ -4837,14 +4848,13 @@ element.style {
 
 .IssueDoor3R h5 {
   font-family: "Poppins";
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 400;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   letter-spacing: 0px;
   color: #444444;
-  opacity: 1;
-}
+  opacity: 1;}
 
 .IssuesDoor4 {
   text-align: left;
@@ -5282,15 +5292,24 @@ element.style {
 
   height: 6rem;
   width: 100%;
+  max-width: 100%;
   border-radius: 10px;
   background-color: #ffffff;
-  box-shadow: 0.5px 1px 2px #00000029;
-  border: 1px solid #00000029;
-  border-radius: 10px;
 
+  box-shadow: #00000029 3px 3px 5px -1px, #00000029 3px 5px 10px -1px;
+  border-radius: 10px;
+  opacity: 1;
   position: relative;
-  padding: 0.4rem;
+  padding-top: 1rem;
+  padding-left: 25px;
   position: relative;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.ticket-card:hover {
+  box-shadow: 0.5px 1px 2px #f8ac1d80;
+  border: 1px solid #f8ac1d80;
 }
 
 .ticket-table {
@@ -5318,7 +5337,7 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1.2rem 0rem 0.2rem;
+  padding: 0 1rem 0rem 0.2rem;
 }
 
 .ticket-card-bottom h5 {
@@ -5356,13 +5375,23 @@ element.style {
   width: 100%;
   border-radius: 10px;
   background-color: #ffffff;
-  box-shadow: 0.5px 1px 2px #00000029;
-  border: 1px solid #00000029;
+  box-shadow: #00000029 3px 3px 5px -1px, #00000029 3px 5px 10px -1px;
   border-radius: 10px;
+  position: relative;
+  padding: 1rem;
+  padding-left: 24px;
+  position: relative;
+  margin-bottom: 1rem;
+}
 
-  position: relative;
-  padding: 0.4rem;
-  position: relative;
+.service-card-selected {
+  box-shadow: 0.5px 1px 2px #f8ac1d80;
+  border: 1px solid #f8ac1d80;
+}
+
+.service-card:hover {
+  box-shadow: 0.5px 1px 2px #f8ac1d80;
+  border: 1px solid #f8ac1d80;
 }
 
 .service-table {
@@ -5662,7 +5691,6 @@ element.style {
 
 /* css for thr message box inside the Engg crouser ends -------------------------------- */
 
-
 /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */
 .add-Engg-button {
   font-size: 0.8rem;
@@ -5744,30 +5772,30 @@ element.style {
   padding: 10px 20px;
   margin-left: 18px;
   font-family: "poppins";
-} 
- .personalDetailSec .PersonalDetailInput input:focus {
-   border: 1px solid #fff;
-   outline: 1px solid #F8AC1DAD;
 }
-.personalDetailSec .PersonalDetailInputEmail input:focus{
+.personalDetailSec .PersonalDetailInput input:focus {
   border: 1px solid #fff;
-  outline: 1px solid #F8AC1DAD;
+  outline: 1px solid #f8ac1dad;
+}
+.personalDetailSec .PersonalDetailInputEmail input:focus {
+  border: 1px solid #fff;
+  outline: 1px solid #f8ac1dad;
 }
 .ExtraCiricularSectionInputFields .EnggAddressInput input:focus {
   border: 1px solid #fff;
-  outline: 1px solid #F8AC1DAD;
+  outline: 1px solid #f8ac1dad;
 }
 .ExtraCiricularSectionInputFields .PersonalDetailInput input:focus {
   border: 1px solid #fff;
-  outline: 1px solid #F8AC1DAD;
+  outline: 1px solid #f8ac1dad;
 }
 
 .inputWithAttachment.changeBorderInputColor {
-  border: 1px solid #F8AC1DAD;
+  border: 1px solid #f8ac1dad;
   /* outline: 1px solid red; */
 }
 
-.checkbox.style-c .input{
+.checkbox.style-c .input {
   outline: none;
   border: none;
 }
@@ -5837,7 +5865,6 @@ element.style {
   padding: 0px 3px;
   font-family: "poppins";
   width: 100%;
-  
 }
 .PersonalDetailInput .inputWithAttachment input {
   border: none;
@@ -5857,9 +5884,9 @@ element.style {
   bottom: 3%;
 }
 
-
 /* CSS */
-.button-69, .button-69-cancel {
+.button-69,
+.button-69-cancel {
   background-color: initial;
   border-radius: 5px;
   border-style: none;
@@ -5870,19 +5897,18 @@ element.style {
   font-weight: 500;
   height: 48px;
   text-align: center;
-  width: 128px;  
-  background: #F8AC1D;
+  width: 128px;
+  background: #f8ac1d;
   font-weight: 600;
-  font-style: 'poppins';
+  font-style: "poppins";
 }
-.button-69-cancel{
+.button-69-cancel {
   background: white;
-  border: 1px solid #F8AC1D;
-
+  border: 1px solid #f8ac1d;
 }
 
 .button-69:hover {
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .workExperienceCheckbox {
@@ -5890,26 +5916,24 @@ element.style {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   border-radius: 10px;
   width: 100%;
 }
 
+.checkboxes__item {
+  margin-top: 3px;
+  margin-right: -10px;
+}
 
- .checkboxes__item{
-    margin-top: 3px;
-    margin-right: -10px;
- }
-
-
- .smallifcCodeSuggestion{
+.smallifcCodeSuggestion {
   width: 100%;
   height: 9px;
- }
- .smallifcCodeSuggestion p{
+}
+.smallifcCodeSuggestion p {
   font-size: 0.8rem;
   font-weight: 500;
   margin-left: 6px;
- }
+}
 
- /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */
+/*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */

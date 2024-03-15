@@ -113,7 +113,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
             </div>
             <div className="skill-bar">
               <span className="skill-per reactjs">
-                {<span className="tooltip">70%</span>}
+                {<span className="tooltip">10 MINS</span>}
               </span>
             </div>
             <div className="hover-icon-service">
@@ -194,7 +194,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           />
           <div
             className="dropdown-menu"
-            style={{ left: len - 1 === index ? "-165px" : "-302%" }}
+            style={{ left: len - 1 === index ? "-165px" : "-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049'}}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>

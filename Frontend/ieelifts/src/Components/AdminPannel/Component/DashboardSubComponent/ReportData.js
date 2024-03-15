@@ -6,9 +6,12 @@ import Invoice from "./Invoice";
 import MCRoom from "./MCRoom";
 import PitArea from "./PitArea";
 import Rating from "./Rating";
+import ReportIssue from "./ReportIssue";
 
-function ReportTable() {
+function ReportTable({handleRedportData}) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showReport,setShowReport]=useState(true)
+
   const routes = [
     { name: "M/c Room", co: <MCRoom /> },
     { name: "Cabin,Floors", co: <CabinFloors /> },
@@ -34,8 +37,9 @@ function ReportTable() {
 
   return (
     <div className="ReportTable">
-      {/* <ReportIssue/> */}
-      <div className="ReportNavigation">
+
+     {handleRedportData?( <ReportIssue/>):(
+       <div className="ReportNavigation">
         <div className="CarouselButtons">
           <div className="CarouselButtonsL">
             {currentIndex !== 0 ? (
@@ -87,7 +91,7 @@ function ReportTable() {
         </div>
 
         {CurrentComponent}
-      </div>
+      </div>  )}
     </div>
   );
 }

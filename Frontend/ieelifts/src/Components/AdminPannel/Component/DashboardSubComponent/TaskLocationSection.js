@@ -15,6 +15,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [handleServiceSelection, setHandleServiceSelection] = useState([]);
+  const [handleCallbackSelection, setHandleCallbackSelection] = useState([]);
+  const [handleRedportData, setHandleReportData] = useState(true);
 
   //get current date service request
   const currentDateServiceRequest = useSelector((state) => {
@@ -31,6 +34,14 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
   });
 
+  useEffect(() => {
+    if (currentDateServiceRequest) {
+      setHandleServiceSelection(
+        Array(currentDateServiceRequest.length).fill(false)
+      );
+    }
+  }, [currentDateServiceRequest]);
+
   //get current date callback
   const currentDateCallback = useSelector((state) => {
     if (
@@ -45,6 +56,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return null;
     }
   });
+
+  useEffect(() => {
+    if (currentDateCallback) {
+      setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
+    }
+  }, [currentDateCallback]);
 
   const handlekanban = () => {
     props.handleKanbanToggle();
@@ -145,20 +162,38 @@ const TaskLocationSection = forwardRef((props, ref) => {
           </div>
 
           {props.kanban ? (
-            <div className="task-description-section">
+            <div
+              className="task-description-section"
+              style={{ paddingTop: "0.5rem" }}
+            >
               {/* -----------------------  araised ticker data here starts ------------------------------------- */}
               {ticket && (
                 <>
-                  {currentDateCallback?.map((value) => (
-                    <div className="ticket-card" onClick={passData}>
+                  {currentDateCallback?.map((value, index) => (
+                    <div
+                      className={`ticket-card ${
+                        handleCallbackSelection[index] &&
+                        "service-card-selected"
+                      }`}
+                      // onClick={() => {
+                      //   setHandleCallbackSelection((prevStates) => {
+                      //     prevStates.map((stateValue, valueIndex) => {
+                      //       if (valueIndex !== index) {
+                      //         stateValue = !stateValue;
+                      //       }
+                      //       stateValue = false;
+                      //     });
+                      //   });
+                      // }}
+                    >
                       <table className="ticket-table">
                         <tbody>
                           <tr>
-                            <th>CN :</th>
+                            <th style={{ textAlign: "start" }}>NAME :</th>
                             <td>{value.clientName.toUpperCase()}</td>
                           </tr>
                           <tr>
-                            <th>EN:</th>
+                            <th style={{ textAlign: "start" }}>ENGINEER:</th>
                             <td>{value.enggName.toUpperCase()}</td>
                           </tr>
                         </tbody>
@@ -174,16 +209,27 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
               {services && (
                 <>
-                  {currentDateServiceRequest?.map((serviceData) => (
-                    <div className="service-card" onClick={passData}>
+                  {currentDateServiceRequest?.map((serviceData, index) => (
+                    <div
+                      className={`service-card ${
+                        handleServiceSelection[index] && "service-card-selected"
+                      }`}
+                      // onClick={() => {
+                      //   setHandleServiceSelection((prevStates) => {
+                      //     const newCheckboxStates = [...prevStates];
+                      //     newCheckboxStates[index] = !prevStates[index];
+                      //     return newCheckboxStates;
+                      //   });
+                      // }}
+                    >
                       <table className="service-table">
                         <tbody>
                           <tr>
-                            <th>CN:</th>
+                            <th style={{ textAlign: "start" }}>NAME:</th>
                             <td>{serviceData.clientName.toUpperCase()}</td>
                           </tr>
                           <tr>
-                            <th>EN:</th>
+                            <th style={{ textAlign: "start" }}>ENGINEER:</th>
                             <td>{serviceData.enggName.toUpperCase()}</td>
                           </tr>
                         </tbody>
@@ -202,14 +248,20 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
         {props.kanban ? (
           <div className="Report-section">
-            <div className="task-top-section">
+            <div
+              className="task-top-section"
+              onClick={() => {
+                setHandleReportData(false);
+              }}
+              style={{cursor:"pointer"}}
+            >
               <p>Report</p>
             </div>
 
             <div className="report-description-section">
               <div className="more-descriptive-report">
                 <div className="child-descriptive">
-                  <ReportData />
+                  <ReportData handleRedportData={handleRedportData} />
                 </div>
               </div>
             </div>

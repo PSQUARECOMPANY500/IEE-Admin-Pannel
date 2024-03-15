@@ -172,8 +172,8 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
             <th>
               <div>
                 <span>ADDRESS</span>
-                <HiChevronUpDown />
-                <span></span>
+                {/* <HiChevronUpDown /> */}
+                {/* <span></span> */}
               </div>
             </th>
             <th>TYPE</th>
@@ -181,8 +181,8 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
               {" "}
               <div>
                 <span>MEMBERSHIP</span>
-                <HiChevronUpDown />
-                <span></span>
+                {/* <HiChevronUpDown /> */}
+                {/* <span></span> */}
               </div>
             </th>
             <th>DATE</th>
@@ -191,8 +191,8 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
               <div>
                 {" "}
                 <span>STATUS</span>
-                <HiChevronUpDown />
-                <span></span>
+                {/* <HiChevronUpDown />
+                <span></span> */}
               </div>
             </th>
           </tr>

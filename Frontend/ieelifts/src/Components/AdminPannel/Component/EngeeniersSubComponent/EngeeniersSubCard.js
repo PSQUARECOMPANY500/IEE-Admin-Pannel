@@ -8,8 +8,9 @@ const EngeeniersSubCard = (props) => {
     {
       Spare: 15,
       Cash: 150000,
-      NAME: "John",
-      ID: "123456",
+      NAME: "Jack",
+      ID: "1111",
+    
       RATING: "A",
       ADDRESS: "123 Main St",
       LEAVES: "2",
@@ -113,7 +114,9 @@ const EngeeniersSubCard = (props) => {
         {data.map((e, index) => (
           <div className="EngCards" onClick={() => setIsChatOpen(false)}>
             <div className="EngCardDetails">
-              <div className="EngCardDetailsL"></div>
+              <div className="EngCardDetailsL">
+          
+              </div>
               <div className="EngCardDetailsR">
                 <div class="table-container">
                   <div class="table-item">NAME</div>
