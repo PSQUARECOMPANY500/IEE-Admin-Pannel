@@ -652,7 +652,9 @@ span::after {
   box-shadow: 1px 2px 5px #00000029;
   
 }
-
+.search-box{
+  cursor: pointer;
+}
 /* .filter-top-icon {
   padding: 2px 6px;
 } */
@@ -798,7 +800,7 @@ span::after {
   padding: 1.4rem 0.7rem;
   display: flex;
   justify-content: center;
-
+cursor: pointer;
   align-items: center;
   border-radius: 7px;
   cursor: pointer;
@@ -809,6 +811,8 @@ span::after {
 .top-icon:hover .search-input {
   width: 240px;
   padding: 0.8rem 0.1rem;
+
+
 }
 
 .search-input::selection {
