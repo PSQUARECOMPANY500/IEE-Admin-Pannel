@@ -296,7 +296,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
 //api for the engg app i.e seduled with the daily task
 module.exports.getEngScheduleData = async (req, res) => {
   try {
-    const { ServiceEnggId } = req.body;
+    const { ServiceEnggId } = req.params;
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString('en-GB');
 
@@ -320,17 +320,17 @@ module.exports.getEngScheduleData = async (req, res) => {
     const clientDetailsCallbackRequest = await Promise.all(serviceAssignments.map(async (data) => {
       const callbackid = data.callbackId;
       const value = await clientRequestImidiateVisit.findOne({ callbackId: callbackid });
-      return { ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
+      return { serviceId:data.callbackId , ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
     }));
 
     const clientDetailsServiceRequest = await Promise.all(assignScheduleRequests.map(async (data) => {
       const callbackid = data.callbackId;
       const value = await serviceRequest.findOne({ callbackId: callbackid });
-      return { ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
+      return { serviceId:data.RequestId , ServiceEnggId: data.ServiceEnggId, JobOrderNumber: data.JobOrderNumber, Slot: data.Slot, Message: data.Message, TaskStatus: data.ServiceProcess, Date: data.Date, TypeOfIssue: value.TypeOfIssue, Description: value.Description, Type: value.Type };
     }));
 
     const mainDetails = clientDetailsCallbackRequest.concat(clientDetailsServiceRequest).map((data) => ({
-
+      serviceId:data.serviceId,
       ServiceEnggId: data.ServiceEnggId,
       JobOrderNumber: data.JobOrderNumber,
       Slot: data.Slot,

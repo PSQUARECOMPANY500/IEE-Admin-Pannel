@@ -44,10 +44,10 @@ router.get(
   "/getRequestDetailByRequestid/:RequestId",
   adminContoller.getRequestDetailByRequestId
 );
-router.get(
-  "/getAssignCallbackDetail/:callbackId",
-  adminContoller.getAssignCallbackByCallbackId
-);
+// router.get(
+//   "/getAssignCallbackDetail/:callbackId",
+//   adminContoller.getAssignCallbackByCallbackId
+// );
 
 router.get(
   "/getAssignRequestDetail/:RequestId",

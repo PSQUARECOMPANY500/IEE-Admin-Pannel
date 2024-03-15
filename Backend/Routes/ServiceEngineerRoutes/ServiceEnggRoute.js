@@ -19,13 +19,13 @@ router.post("/createEnggLocationOnAttendance", serviceEnggContoller.CreateEnggLo
 // router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
 // router.get("/getAllServices/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignedServices);
 // router.get('/getServiceEngg/:EnggId', verifyEnggToken, serviceEnggContoller.getEnggDetail);
-// router.get('/getEngScheduleData', verifyEnggToken, serviceEnggContoller.getEngScheduleData);
+// router.get('/getEngScheduleData', verifyEnggTokrven, seiceEnggContoller.getEngScheduleData);
 
 //comment the below section and uuncomment the upper section (below section is only for the ease for pankaj sir)
 router.get("/getAllCallbacks/:ServiceEnggId", serviceEnggContoller.getAssignCallbacks);
 router.get("/getAllServices/:ServiceEnggId", serviceEnggContoller.getAssignedServices);
 router.get('/getServiceEngg/:EnggId', serviceEnggContoller.getEnggDetail);
-router.get('/getEngScheduleData', serviceEnggContoller.getEngScheduleData);
+router.get('/getEngScheduleData/:ServiceEnggId', serviceEnggContoller.getEngScheduleData);
 
 
 const storage = multer.diskStorage({

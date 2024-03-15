@@ -1,5 +1,5 @@
 const config = {
-    apiUrl : 'https://iee-admin-pannel.onrender.com',
+    apiUrl : 'https://ieelifts.in/api',
     // apiUrl : 'http://localhost:8000',
 
 };
