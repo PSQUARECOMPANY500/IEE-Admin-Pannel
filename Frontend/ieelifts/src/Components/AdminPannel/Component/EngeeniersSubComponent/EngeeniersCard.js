@@ -9,18 +9,17 @@ import Ratings from "./Ratings";
 import TaskHistory from "./TaskHistory";
 import SpareParts from "./SpareParts";
 import { MdSend } from "react-icons/md";
-
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
-
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
 const EngeeniersCard = () => {
-  const [isChatOpen, setIsChatOpen] = useState(true);
-  const [currentComponent, setCurrentComponent] = useState(null);
 
+  const [currentComponent, setCurrentComponent] = useState(null);
+  const [isFirst,setIsFirst]=useState(false);
+  const [isSecond,setIsSecond]=useState(false);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -138,16 +137,14 @@ const EngeeniersCard = () => {
 
   return (
     <>
-      <div className={isChatOpen ? "EngeeniersCardT" : "EngeeniersCardF"}>
-        {isChatOpen && (
-          <EngeeniersSubCard
-            isChatOpen={isChatOpen}
-            setIsChatOpen={setIsChatOpen}
-          />
-        )}
+      <div className="EngeeniersCard" style={{gridTemplateColumns:isFirst||isSecond?'2fr 1fr':'1fr',   gridTemplateAreas:isSecond&&"'SingleEng'"}} >
+      
+          <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond}/>
+   
         <div
           className="SingleEng"
-          style={{ display: isChatOpen ? "none" : "block" }}
+          style={{display:isSecond&&'block'}}
+        
         >
           <div className="SubSingleEng">
             <div className="PDetails">
@@ -177,7 +174,7 @@ const EngeeniersCard = () => {
           </div>
         </div>
 
-        <div className={isChatOpen ? "EngeeniersChatT" : "EngeeniersChatF"}>
+        <div className= "EngeeniersChatF" style={{display:isFirst||isSecond?'block':'none'}}>
           <EngChatNav />
           <div className="EngChatBox">
             <div className="EngChatBoxHead">

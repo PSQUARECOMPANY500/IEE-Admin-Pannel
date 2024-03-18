@@ -626,6 +626,7 @@ span::after {
 .top-icon-bell,
 .filter-icon,
 .filter-top-icon,
+.admin-filter-top-icon,
 .plus-icon {
   padding: 9px 9px;
   display: flex;
@@ -638,7 +639,9 @@ span::after {
   height: 45px;
   width: 45px;
   cursor: pointer;
+
 }
+
 
 .plus-icon {
   background: #f8ac1d;
@@ -649,8 +652,7 @@ span::after {
   width: 45px;
   font-size: 1.2rem;
   cursor: pointer;
-  box-shadow: 1px 2px 5px #00000029;
-  
+
 }
 .search-box{
   cursor: pointer;
@@ -755,7 +757,35 @@ span::after {
   font-family: sans-serif;
   border-radius: 9px;
 }
+/* 
+.admin-search-input{
+  color: #343434;
+  outline: none;
+  border: none;
+  width: 0px;
+  float: left;
+  font-size: 14px;
+  transition: 0.7s ease;
+  font-family: sans-serif;
+  border-radius: 9px;
+width: 300px;
+padding: 0.5rem;
+display: none;
+} */
 
+.admin-filter-search-box{
+  padding: 9px 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  box-shadow: 1px 2px 5px #00000029;
+  font-size: 25px;
+  color: #343434;
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+}
 .search-btn {
   display: flex;
   justify-content: center;
@@ -767,34 +797,19 @@ span::after {
   color: #343434;
   transition: 0.4s ease;
   font-size: 1.5rem;
+ 
 }
 
 .iconColor {
   color: #343434;
 }
 
-.search-btn-ticket-section {
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  background: #fffdfd;
-  padding: 8px 2px 4px 1px;
-
-  border-radius: 4%;
-  float: left;
-  color: #343434;
-  transition: 0.4s ease;
-  font-size: 22px;
-  margin-top: 0px;
-  height: 38px;
-  width: 26px;
-}
 
 .search-box {
   display: flex;
+
 }
+
 
 .top-icon {
   padding: 1.4rem 0.7rem;
@@ -814,6 +829,8 @@ cursor: pointer;
 
 
 }
+
+.filter-icon
 
 .search-input::selection {
   width: 240px;
@@ -1751,7 +1768,7 @@ footer a:hover {
 .sub-components p {
   font-size: 14px;
   margin-right: 10px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+ 
 }
 
 .more-descriptive .detail {
@@ -2029,9 +2046,17 @@ footer a:hover {
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
-  overflow-x: hidden;
-}
 
+
+}
+.table-shadow{
+  height: 3.7rem;
+  width: 96.5%;
+  box-shadow: 0px 0px 5px #C1C1C180;
+  position: absolute;
+  z-index: 3;
+  border-radius: 10px;
+}
 .my_table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -2043,21 +2068,20 @@ footer a:hover {
   position: sticky;
   top: 0%;
   background-color: white;
-  box-shadow: 0px 0px 3px #c1c1c1;
-
-  z-index: 1;
+  z-index: 9999;
+  border-radius: 10px;
 }
 
-/* set body scroll property starts */
+
 .my_table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  /* Change the color to your desired hover color */
+
 }
 
-/* set scroll behaviour  */
+
 .my_table-container::-webkit-scrollbar {
   width: 2px;
-  /* width of the entire scrollbar */
+
 }
 
 .my_table-container::-webkit-scrollbar-track {
@@ -2082,7 +2106,7 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  /* border-bottom: 1px solid #C1C1C180; */
+
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
@@ -2113,7 +2137,6 @@ footer a:hover {
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
-  padding: 20x;
   overflow-x: hidden;
 }
 
@@ -2127,8 +2150,7 @@ footer a:hover {
   top: 0;
   background-color: white;
   z-index: 1;
-  height: 50px;
-  box-shadow: 0px 0px 3px #c1c1c1;
+
 }
 
 /* set body scroll property starts */
@@ -2165,13 +2187,10 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #c1c1c180;
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
-
   line-height: 0.9rem;
 }
 
@@ -2211,8 +2230,8 @@ footer a:hover {
   top: 0;
   background-color: white;
   z-index: 1;
-  height: 50px;
-  box-shadow: 0px 0px 3px #c1c1c1;
+
+
 }
 
 /* set body scroll property starts */
@@ -2249,7 +2268,6 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #c1c1c180;
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
@@ -2366,9 +2384,11 @@ footer a:hover {
 
 .checkbox.style-c .checkbox__checkmark {
   position: absolute;
-  top: 2px;
+  /* top: 2px; */
+  top: -23%;
   left: 0;
   height: 20px;
+  margin-left: 0.4rem;
   width: 20px;
   transition: background-color 0.25s ease;
   border-radius: 4px;
@@ -2454,7 +2474,7 @@ footer a:hover {
   border-radius: 4px;
   top: 0;
   margin-left: -115px;
-  z-index: 3;
+  z-index: 99999;
 }
 
 
@@ -2548,21 +2568,19 @@ footer a:hover {
   padding: 10px;
   position: relative;
   max-height: 300px;
-  /* background-color: red;
-  background: rgb(253, 253, 253);
-  background-color: red; */
+
 }
 
 .child-filter-dropdown {
   padding: 10px;
   position: relative;
-  max-height: 1000px;
+ 
 }
 
 .dropdown-content {
   position: absolute;
   z-index: 1;
-  margin-left: -5rem;
+  margin-left: -7rem;
   width: 160px;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -2570,7 +2588,8 @@ footer a:hover {
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 4px;
   background-color: #fff;
-  top: 11%;
+  top: 12%;
+
 }
 
 @media (min-width: 768px) and (max-width: 1064px) {
@@ -5723,9 +5742,9 @@ margin-top: 12px;
   width: 100%;
 }
 .add-engg-modal {
-  position: absolute;
-  top: 8%;
-  left: 3%;
+  position: fixed;
+  top: 15%;
+  left: 10%;
   width: 85%;
   /* height: 85%; */
   background: white;
@@ -5754,6 +5773,7 @@ margin-top: 12px;
   align-items: start;
   gap: 2rem;
   padding: 22px 10px;
+ 
 }
 
 .EnggDetailInputField {

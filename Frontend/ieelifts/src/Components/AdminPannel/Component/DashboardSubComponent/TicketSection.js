@@ -13,6 +13,7 @@ import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminAct
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
 import AddTicketModals from "./AddTicketModals";
+import { RiSearchLine } from "react-icons/ri";
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
@@ -174,37 +175,37 @@ const TicketSection = ({ setTicketUpdate }) => {
       <div className="child-ticket-div">
         <div className="heading-icon-align">
           <div className="ticket-section-heading">
-            <span style={{textTransform:'capitalize'}}>Tickets</span>
-        
+            <span style={{ textTransform: 'capitalize' }}>Tickets</span>
+
           </div>
           {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-            <div className="right-side-icons" style={{ display: "grid" }}>
-              <span className="filter-top-icon">
-                <div className="search-box">
-                  <input
-                    type="text"
-                    placeholder="Search anything"
-                    className="search-input"
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                    }}
-                  />
-                  <button
-                    className="search-btn-ticket-section"
-                    onClick={() => {
-                      const data = filtersearch(searchText, allCD);
-                      setFilteredCD(data);
-                    }}
-                  >
-                    <i>
-                      <CiSearch />
-                    </i>
-                  </button>
-                </div>
-              </span>
-            </div>
+
+            <span className="top-icon">
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder="Search anything"
+                  className={`search-input ${
+                    searchText.length > 0 && "inputSearchWritten"
+                  }`}
+                  onChange={(e) => {
+                    setSearchText(e.target.value);
+                  }}
+                  
+                  value={searchText}
+                />
+
+                <i className="search-btn "       onClick={() => {
+                    const data = filtersearch(searchText, allCD);
+                    setFilteredCD(data);
+                  }}>
+            
+                  <RiSearchLine className="iconColor" />
+                </i>
+              </div>
+            </span>
 
             {/* ............................................................ax13-search...................................................... */}
 
@@ -244,6 +245,7 @@ const TicketSection = ({ setTicketUpdate }) => {
         </div>
 
         <div className="my_table-container">
+          <div className="table-shadow"></div>
           <table>
             <thead>
               <tr>

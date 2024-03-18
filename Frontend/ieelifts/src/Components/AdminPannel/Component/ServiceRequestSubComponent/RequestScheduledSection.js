@@ -8,6 +8,7 @@ import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequ
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
 import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
+import { RiSearchLine } from "react-icons/ri";
 
 const RequestScheduledSection = ({ setRenderTicket }) => {
   const dropdownRef = useRef(null);
@@ -89,28 +90,34 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
 
           <div className="icon-align-div">
             <div className="right-side-icons">
-              <span className="filter-top-icon">
+
+              <span className="top-icon">
                 <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className="search-input"
+                    className={`search-input ${
+                      searchText.length > 0 && "inputSearchWritten"
+                    }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
+                    value={searchText}
                   />
-                  <button
-                    className="search-btn-ticket-section" /*  onClick={() => {
-                    const data = filtersearch(searchText, allCD)
-                    setFilteredCD(data);
-                  }} */
+
+                  <i className="search-btn " 
+                  // onClick={() => {
+                  //   const data = filtersearch(searchText, allCD);
+                  //   setFilteredCD(data);
+                  // }}
+                  
                   >
-                    <i>
-                      <CiSearch />
-                    </i>
-                  </button>
+
+                    <RiSearchLine className="iconColor" />
+                  </i>
                 </div>
               </span>
+
             </div>
 
             <div className="sub-components-ticket-filter">
@@ -137,17 +144,17 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               </p>
             </div>
             {showTicketModal &&
-             (
-              <AddTicketOnCallRequests
-                   
-                closeModal={closeModal}
-                showTicketModal={showTicketModal}
-                setRenderTicket={setRenderTicket}
-                requestSection={true}
-              />
+              (
+                <AddTicketOnCallRequests
 
-            )
-            
+                  closeModal={closeModal}
+                  showTicketModal={showTicketModal}
+                  setRenderTicket={setRenderTicket}
+                  requestSection={true}
+                />
+
+              )
+
             }
           </div>
         </div>

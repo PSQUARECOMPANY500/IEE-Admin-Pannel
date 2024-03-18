@@ -2,8 +2,11 @@ import React from "react";
 import { useState } from "react";
 
 const EngeeniersSubCard = (props) => {
-  const { isChatOpen, setIsChatOpen, hideCard, setHideCard } = props;
-  const [isActive, setIsActive] = useState();
+
+  const [singleClickTimeout, setSingleClickTimeout] = useState(null);
+  const [isDoubleClick, setIsDoubleClick] = useState(false);
+const{isFirst,setIsFirst,isSecond,setIsSecond}=props;
+
   const data = [
     {
       Spare: 15,
@@ -107,15 +110,45 @@ const EngeeniersSubCard = (props) => {
       DOOR: "White",
     },
   ];
+  
+
+
+
+  const handleSingleClick = () => {
+ 
+    if (!isDoubleClick) {
+      setIsDoubleClick(false);
+      clearTimeout(singleClickTimeout);
+      setSingleClickTimeout(null);
+    }
+
+    setIsDoubleClick(false);
+    const timeout = setTimeout(() => {
+     setIsFirst(true);
+      setSingleClickTimeout(null);
+    }, 200);
+
+    setSingleClickTimeout(timeout);
+  }
+
+  const handleDoubleClick = () => {
+    setIsDoubleClick(true);
+    clearTimeout(singleClickTimeout);
+    setSingleClickTimeout(null);
+    setIsSecond(true);
+    console.log(isSecond,'isSecond')
+   
+  };
+
+
 
   return (
-    <div className="EngeeniersSubCard" style={{ cursor: "pointer" }}>
-      <div className={isChatOpen ? "AllCardsT" : "AllCardsF"}>
+    <div className="EngeeniersSubCard" style={{ cursor: "pointer",display:isSecond&&'none' }}>
+      <div className= "AllCards" style={{gridTemplateColumns:isFirst&&'1fr 1fr'}} >
         {data.map((e, index) => (
-          <div className="EngCards" onClick={() => setIsChatOpen(false)}>
+          <div className="EngCards" onDoubleClick={()=>handleDoubleClick()} onClick={()=> handleSingleClick ()}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-          
               </div>
               <div className="EngCardDetailsR">
                 <div class="table-container">
