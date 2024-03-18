@@ -2772,8 +2772,8 @@ footer a:hover {
   height: 100%;
   position: relative;
   display: flex;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   padding-left: 8.2rem;
 }
 
@@ -3166,7 +3166,7 @@ footer a:hover {
 .elevator-detail-row {
   display: flex;
   width: 100%;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   margin-left: 0px;
 }
@@ -5751,7 +5751,7 @@ margin-top: 12px;
 .outerMainMoodule {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-startF;
   gap: 2rem;
   padding: 22px 10px;
 }
@@ -5885,7 +5885,7 @@ margin-top: 12px;
   margin-left: 26%;
   display: flex;
   justify-content: flex-end;
-  align-items: end;
+  align-items: flex-end;
   gap: 10px;
   position: absolute;
   bottom: 3%;
