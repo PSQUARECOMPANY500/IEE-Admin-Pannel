@@ -46,73 +46,85 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const EnggDetail = await ServiceEnggData.find({});
     const currentDate = new Date();
 
-    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({
-        ServiceEnggId: item.EnggId
-      });
-      const ratingsCount = enggRating.length;
-      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
-      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
-
-      const ServiceEnggId = item.EnggId;
-
-      const serviceAssignments = await ServiceAssigntoEngg.find({
-        ServiceEnggId
-      });
-      const assignScheduleRequests = await AssignSecheduleRequest.find({
-        ServiceEnggId
-      });
-
-      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        Date: data.Date,
-        TaskStatus: data.ServiceProcess,
-      }));
-
-      const filteredServiceAssignments = mainDetails.filter(item => {
-        return item.Date === currentDate.toLocaleDateString('en-GB');
-      });
-
-      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
-        const client = await clientDetailSchema.findOne({
-          JobOrderNumber: assignment.JobOrderNumber
+    const BasicDetail = await Promise.all(
+      EnggDetail.map(async (item) => {
+        const enggRating = await EnggRating.find({
+          ServiceEnggId: item.EnggId,
         });
+        const ratingsCount = enggRating.length;
+        const ratingsSum = enggRating.reduce(
+          (sum, rating) => sum + rating.Rating,
+          0
+        );
+        const averageRating =
+          ratingsCount > 0
+            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
+            : 0;
+
+        const ServiceEnggId = item.EnggId;
+
+        const serviceAssignments = await ServiceAssigntoEngg.find({
+          ServiceEnggId,
+        });
+        const assignScheduleRequests = await AssignSecheduleRequest.find({
+          ServiceEnggId,
+        });
+
+        const mainDetails = serviceAssignments
+          .concat(assignScheduleRequests)
+          .map((data) => ({
+            ServiceEnggId: data.ServiceEnggId,
+            JobOrderNumber: data.JobOrderNumber,
+            Slot: data.Slot,
+            Date: data.Date,
+            TaskStatus: data.ServiceProcess,
+          }));
+
+        const filteredServiceAssignments = mainDetails.filter((item) => {
+          return item.Date === currentDate.toLocaleDateString("en-GB");
+        });
+
+        const filteredServiceAssignmentsWithClientName = await Promise.all(
+          filteredServiceAssignments.map(async (assignment) => {
+            const client = await clientDetailSchema.findOne({
+              JobOrderNumber: assignment.JobOrderNumber,
+            });
+            return {
+              ...assignment,
+              ClientName: client?.name,
+              ClientNumber: client?.PhoneNumber,
+              ClientAddress: client?.Address,
+            };
+          })
+        );
+
+        filteredServiceAssignmentsWithClientName.sort((a, b) => {
+          const timeA = convertTimeToSortableFormat(a.Slot[0]);
+          const timeB = convertTimeToSortableFormat(b.Slot[0]);
+          return timeA - timeB;
+        });
+
         return {
-          ...assignment,
-          ClientName: client?.name,
-          ClientNumber: client?.PhoneNumber,
-          ClientAddress: client?.Address
+          EnggObjId: item._id,
+          ServiceEnggId: item.EnggId,
+          ServiceEnggName: item.EnggName,
+          ServiceEnggPic: item.EnggPhoto,
+          averageRating,
+          filteredServiceAssignmentsWithClientName,
         };
-      }));
-
-      filteredServiceAssignmentsWithClientName.sort((a, b) => {
-        const timeA = convertTimeToSortableFormat(a.Slot[0]);
-        const timeB = convertTimeToSortableFormat(b.Slot[0]);
-        return timeA - timeB;
-      });
-
-      return {
-        EnggObjId: item._id,
-        ServiceEnggId: item.EnggId,
-        ServiceEnggName: item.EnggName,
-        ServiceEnggPic: item.EnggPhoto,
-        averageRating,
-        filteredServiceAssignmentsWithClientName
-      };
-    }));
+      })
+    );
 
     res.status(200).json({
-      BasicDetailForCrouser: BasicDetail.filter(item => !item.error)
+      BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
+};
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
@@ -480,19 +492,22 @@ module.exports.assignCallbacks = async (req, res) => {
 
     if (existingCallback) {
       // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate({
-        callbackId
-      }, {
-        ServiceEnggId,
-        JobOrderNumber,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-        ServiceProcess,
-      }, {
-        new: true
-      } // Return the updated document
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        {
+          callbackId,
+        },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        {
+          new: true,
+        } // Return the updated document
       );
     } else {
       // Create a new entry
@@ -945,33 +960,34 @@ module.exports.getClientMemebership = async (req, res) => {
 //function to get all booked dates {amit-features}
 
 module.exports.getBookedDates = async (req, res) => {
-  const timeSlots = [{
-    slot: "9:00-10:00",
-  },
-  {
-    slot: "10:00-11:00",
-  },
-  {
-    slot: "11:00-12:00",
-  },
-  {
-    slot: "12:00-13:00",
-  },
-  {
-    slot: "13:00-14:00",
-  },
-  {
-    slot: "14:00-15:00",
-  },
-  {
-    slot: "15:00-16:00",
-  },
-  {
-    slot: "16:00-17:00",
-  },
-  {
-    slot: "17:00-18:00",
-  },
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
   ];
 
   try {
@@ -1102,7 +1118,6 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Admin,
       token,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1146,35 +1161,40 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     if (ServiceEnggId) {
       const len = 5;
       console.log(selectedDate);
-      const today = new Date(selectedDate)
+      const today = new Date(selectedDate);
 
-      const dates = Array.from({
-        length: len
-      }, (_, i) => {
-        const previousDay = new Date(today);
-        previousDay.setDate(today.getDate() - 3 + i);
-        return previousDay.toLocaleDateString("en-GB");
-      });
+      const dates = Array.from(
+        {
+          length: len,
+        },
+        (_, i) => {
+          const previousDay = new Date(today);
+          previousDay.setDate(today.getDate() - 3 + i);
+          return previousDay.toLocaleDateString("en-GB");
+        }
+      );
 
-      const attendanceData = await Promise.all(dates.map(async (date) => {
-        const response = await EnggAttendanceServiceRecord.findOne({
-          ServiceEnggId,
-          Date: date
+      const attendanceData = await Promise.all(
+        dates.map(async (date) => {
+          const response = await EnggAttendanceServiceRecord.findOne({
+            ServiceEnggId,
+            Date: date,
+          });
+          return response;
         })
-        return response;
-      }))
+      );
 
       //console.log(attendanceData)
 
       return res.status(200).json({
-        attendanceData
+        attendanceData,
       });
     }
 
     return res.status(500).json({
       error: "Invalid Input",
-      message: error.message
-    })
+      message: error.message,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1343,88 +1363,242 @@ module.exports.getMembershipHistory = async (req, res) => {
   }
 };
 
+// module.exports.filterClient = async (req, res) => {
+//   try {
+//     const { type, condition } = req.query;
+//     switch (type) {
+//       case "membership":
+//         const membership = await clientDetailSchema.find({
+//           MembershipType: {
+//             $regex: new RegExp(condition, "i"),
+//           },
+//         });
+//         res.status(201).json({
+//           success: true,
+//           data: membership,
+//         });
+//         break;
+//       case "elevatorType":
+//         const elevatorType = await clientDetailSchema.find({
+//           ModelType: {
+//             $regex: new RegExp(condition, "i"),
+//           },
+//         });
+//         res.status(201).json({
+//           success: true,
+//           data: elevatorType,
+//         });
+//         break;
+//       case "location":
+//         const clientsInCity = await clientDetailSchema.find({
+//           Address: {
+//             $regex: new RegExp(condition, "i"),
+//           },
+//         });
+//         res.status(200).json({
+//           success: true,
+//           data: clientsInCity,
+//         });
+//         break;
+//       case "date":
+//         let clients;
+//         if (condition === "newest") {
+//           clients = await clientDetailSchema
+//             .find()
+//             .sort({ DateOfHandover: -1 });
+//         } else if (condition === "oldest") {
+//           clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
+//         } else {
+//           res.status(400).json({
+//             success: false,
+//             message: "Invalid date condition",
+//           });
+//           return;
+//         }
+//         res.status(200).json({
+//           success: true,
+//           data: clients,
+//         });
+//         break;
+//       case "name":
+//         let sortedClients;
+//         if (condition === "a-z") {
+//           sortedClients = await clientDetailSchema.find().sort({ name: 1 });
+//         } else if (condition === "z-a") {
+//           sortedClients = await clientDetailSchema.find().sort({ name: -1 });
+//         } else {
+//           res.status(400).json({
+//             success: false,
+//             message: "Invalid name condition",
+//           });
+//           return;
+//         }
+//         res.status(200).json({
+//           success: true,
+//           data: sortedClients,
+//         });
+//         break;
+//       default:
+//         res.status(400).json({
+//           success: false,
+//           message: "Invalid filter type",
+//         });
+//         break;
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({
+//       error: "Internal server Error",
+//       message: error.message,
+//     });
+//   }
+// };
+
 module.exports.filterClient = async (req, res) => {
   try {
-    const { type, condition } = req.query;
-    switch (type) {
-      case "membership":
-        const membership = await clientDetailSchema.find({
-          MembershipType: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(201).json({
-          success: true,
-          data: membership,
-        });
-        break;
-      case "elevatorType":
-        const elevatorType = await clientDetailSchema.find({
-          ModelType: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(201).json({
-          success: true,
-          data: elevatorType,
-        });
-        break;
-      case "location":
-        const clientsInCity = await clientDetailSchema.find({
-          Address: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(200).json({
-          success: true,
-          data: clientsInCity,
-        });
-        break;
-      case "date":
-        let clients;
-        if (condition === "newest") {
-          clients = await clientDetailSchema
-            .find()
-            .sort({ DateOfHandover: -1 });
-        } else if (condition === "oldest") {
-          clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
-        } else {
-          res.status(400).json({
+    const filters = req.body.filterCondition;
+    const clientData = await clientDetailSchema.find();
+    let filterClient = clientData;
+    let responseData = [];
+
+    filters.sort((a, b) => {
+      const order = ["membership", "elevatorType", "location", "date", "name"];
+      return order.indexOf(a.type) - order.indexOf(b.type);
+    });
+
+    console.log(filters);
+    for (const filter of filters) {
+      const { type, condition } = filter;
+
+      switch (type) {
+        case "membership":
+          let membershipData = filterClient.filter(
+            (client) =>
+              client.MembershipType &&
+              client.MembershipType.toLowerCase() === condition.toLowerCase()
+          );
+          responseData = [...responseData, ...membershipData];
+          filterClient = [...clientData];
+          break;
+        case "elevatorType":
+          if (responseData.length) {
+            let elevatorData = responseData.filter(
+              (client) =>
+                client.ModelType &&
+                client.ModelType.toLowerCase() === condition.toLowerCase()
+            );
+            responseData = [...elevatorData];
+          } else {
+            let elevatorData = filterClient.filter(
+              (client) =>
+                client.ModelType &&
+                client.ModelType.toLowerCase() === condition.toLowerCase()
+            );
+            responseData = [...elevatorData];
+            filterClient = [...clientData];
+          }
+          break;
+        case "location":
+          if (responseData.length) {
+            let locationData = responseData.filter(
+              (client) =>
+                client.Address &&
+                client.Address.toLowerCase() === condition.toLowerCase()
+            );
+            responseData = [...locationData];
+          } else {
+            let locationData = clientData.filter(
+              (client) =>
+                client.Address &&
+                client.Address.toLowerCase() === condition.toLowerCase()
+            );
+            responseData = [...locationData];
+            filterClient = [...clientData];
+          }
+          break;
+        case "date":
+          if (responseData.length) {
+            if (condition === "newest") {
+              responseData.sort(
+                (a, b) =>
+                  new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+              );
+            } else if (condition === "oldest") {
+              responseData.sort(
+                (a, b) =>
+                  new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+              );
+            } else {
+              return res.status(400).json({
+                success: false,
+                message: "Invalid date condition",
+              });
+            }
+          } else {
+            if (condition === "newest") {
+              filterClient.sort(
+                (a, b) =>
+                  new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+              );
+              responseData = [...filterClient];
+              filterClient = [...clientData];
+            } else if (condition === "oldest") {
+              filterClient.sort(
+                (a, b) =>
+                  new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+              );
+              responseData = [...filterClient];
+              filterClient = [...clientData];
+            } else {
+              return res.status(400).json({
+                success: false,
+                message: "Invalid date condition",
+              });
+            }
+          }
+          break;
+        case "name":
+          if (responseData.length) {
+            if (condition === "a-z") {
+              responseData.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (condition === "z-a") {
+              responseData.sort((a, b) => b.name.localeCompare(a.name));
+            } else {
+              return res.status(400).json({
+                success: false,
+                message: "Invalid name condition",
+              });
+            }
+          } else {
+            if (condition === "a-z") {
+              filterClient.sort((a, b) => a.name.localeCompare(b.name));
+              responseData = [...filterClient];
+              filterClient = [...clientData];
+            } else if (condition === "z-a") {
+              filterClient.sort((a, b) => b.name.localeCompare(a.name));
+              responseData = [...filterClient];
+              filterClient = [...clientData];
+            } else {
+              return res.status(400).json({
+                success: false,
+                message: "Invalid name condition",
+              });
+            }
+          }
+          break;
+
+        default:
+          return res.status(400).json({
             success: false,
-            message: "Invalid date condition",
+            message: "Invalid filter type",
           });
-          return;
-        }
-        res.status(200).json({
-          success: true,
-          data: clients,
-        });
-        break;
-      case "name":
-        let sortedClients;
-        if (condition === "a-z") {
-          sortedClients = await clientDetailSchema.find().sort({ name: 1 });
-        } else if (condition === "z-a") {
-          sortedClients = await clientDetailSchema.find().sort({ name: -1 });
-        } else {
-          res.status(400).json({
-            success: false,
-            message: "Invalid name condition",
-          });
-          return;
-        }
-        res.status(200).json({
-          success: true,
-          data: sortedClients,
-        });
-        break;
-      default:
-        res.status(400).json({
-          success: false,
-          message: "Invalid filter type",
-        });
-        break;
+      }
     }
+
+    res.status(200).json({
+      success: true,
+      data: responseData,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1433,6 +1607,98 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
+
+// for (const filter of filters) {
+//   const { type, condition } = filter;
+//   let filteredData;
+
+//   switch (type) {
+//     case "membership":
+//       filteredData = await clientDetailSchema.find({
+//         MembershipType: { $regex: new RegExp(condition, "i") },
+//       });
+//       break;
+//     case "elevatorType":
+//       filteredData = await clientDetailSchema.find({
+//         ModelType: { $regex: new RegExp(condition, "i") },
+//       });
+//       break;
+//     case "location":
+//       filteredData = await clientDetailSchema.find({
+//         Address: { $regex: new RegExp(condition, "i") },
+//       });
+//       break;
+//     case "date":
+//       if (responseData.length !== 0) {
+//         if (condition === "newest") {
+//           responseData.sort(
+//             (a, b) =>
+//               new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+//           );
+//         } else if (condition === "oldest") {
+//           responseData.sort(
+//             (a, b) =>
+//               new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+//           );
+//         } else {
+//           return res.status(400).json({
+//             success: false,
+//             message: "Invalid date condition",
+//           });
+//         }
+//       } else {
+//         if (condition === "newest") {
+//           filteredData = await clientDetailSchema
+//             .find()
+//             .sort({ DateOfHandover: -1 });
+//         } else if (condition === "oldest") {
+//           filteredData = await clientDetailSchema
+//             .find()
+//             .sort({ DateOfHandover: 1 });
+//         } else {
+//           return res.status(400).json({
+//             success: false,
+//             message: "Invalid date condition",
+//           });
+//         }
+//       }
+//       break;
+//     case "name":
+//       if (responseData.length !== 0) {
+//         if (condition === "a-z") {
+//           responseData.sort((a, b) => a.name.localeCompare(b.name));
+//         } else if (condition === "z-a") {
+//           responseData.sort((a, b) => b.name.localeCompare(a.name));
+//         } else {
+//           return res.status(400).json({
+//             success: false,
+//             message: "Invalid name condition",
+//           });
+//         }
+//       } else {
+//         if (condition === "a-z") {
+//           filteredData = await clientDetailSchema.find().sort({ name: 1 });
+//         } else if (condition === "z-a") {
+//           filteredData = await clientDetailSchema.find().sort({ name: -1 });
+//         } else {
+//           return res.status(400).json({
+//             success: false,
+//             message: "Invalid name condition",
+//           });
+//         }
+//       }
+//       break;
+//     default:
+//       return res.status(400).json({
+//         success: false,
+//         message: "Invalid filter type",
+//       });
+//   }
+
+//   if (filteredData) {
+//     responseData = [...responseData, ...filteredData];
+//   }
+// }
 
 module.exports.searchClients = async (req, res) => {
   try {
@@ -1748,15 +2014,16 @@ module.exports.createSpearParts = async (req, res) => {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
         subcategoryName: subcategoryName,
-      })
-      return res.status(200).json({ response })
+      });
+      return res.status(200).json({ response });
     }
-    return res.status(500).json({ error: "Please fill all fields in createSpearParts" })
-
+    return res
+      .status(500)
+      .json({ error: "Please fill all fields in createSpearParts" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({
-      error: "Internal server error in createSpearParts"
+      error: "Internal server error in createSpearParts",
     });
   }
 };

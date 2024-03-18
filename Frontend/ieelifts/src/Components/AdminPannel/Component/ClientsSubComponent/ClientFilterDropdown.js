@@ -1,4 +1,3 @@
-// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { IoChevronDownSharp } from "react-icons/io5";
@@ -12,11 +11,11 @@ import {
 const ClientFilterDropdown = () => {
   const dispatch = useDispatch();
   const [openFilter, setOpenFilter] = useState(null);
-  const [filterSelection, setFilterSelection] = useState();
+  const [filterSelections, setFilterSelections] = useState([]);
 
   const handleFilter = (filterName) => {
     if (filterName === "clear") {
-      setFilterSelection(null);
+      setFilterSelections([]); // Clear the filter selections
     } else {
       setOpenFilter((prevFilter) =>
         prevFilter === filterName ? null : filterName
@@ -31,16 +30,53 @@ const ClientFilterDropdown = () => {
     (state) => state?.AdminRootReducer?.filteringLocationsReducer
   );
 
+  // const handleOptionSelection = (type, condition) => {
+  //   const existingFilterIndex = filterSelections.findIndex(
+  //     (filter) => filter.type === type && filter.condition === condition
+  //   );
+
+  //   if (existingFilterIndex === -1) {
+  //     setFilterSelections((prevSelections) => [
+  //       ...prevSelections,
+  //       { type, condition },
+  //     ]);
+  //   }
+  // };
+
   const handleOptionSelection = (type, condition) => {
-    setFilterSelection({ type, condition });
+    // Check if the selected type is 'name' or 'date'
+    if (type === "name" || type === "date") {
+      // Filter out existing selections for 'name' or 'date'
+      const filteredSelections = filterSelections.filter(
+        (filter) => filter.type !== "name" && filter.type !== "date"
+      );
+
+      // Add the new selection for 'name' or 'date'
+      setFilterSelections([...filteredSelections, { type, condition }]);
+    } else {
+      // For other types, handle as before
+      const existingFilterIndex = filterSelections.findIndex(
+        (filter) => filter.type === type && filter.condition === condition
+      );
+
+      if (existingFilterIndex === -1) {
+        setFilterSelections((prevSelections) => [
+          ...prevSelections,
+          { type, condition },
+        ]);
+      }
+    }
+    console.log("these are filter selection:",filterSelections);
   };
 
   useEffect(() => {
-    dispatch(getfilteredData(filterSelection));
-    if (filterSelection !== null) {
+    // Dispatch filtered data when filter selections change
+    dispatch(getfilteredData(filterSelections));
+    if (filterSelections.length > 0) {
       dispatch(searchClients(null));
     }
-  }, [dispatch, filterSelection]);
+  }, [dispatch, filterSelections]);
+
   const filters = [
     {
       type: "membership",
@@ -74,17 +110,15 @@ const ClientFilterDropdown = () => {
     },
   ];
   return (
-    
     <div className="filter-dropdown">
-      <div className="child-filter-dropdown" style={{maxHeight:'1000px',width:'200px', boxShadow: 'rgba(0, 0, 0, 0.05) 0px 6px 24px 0px'
-}}>
-        {/* <div className="search-bar-div">
-          <span className="search-icon-filter">
-            <CiSearch />
-          </span>
-          <input type="text" placeholder="search" />
-        </div> */}
-
+      <div
+        className="child-filter-dropdown"
+        style={{
+          maxHeight: "1000px",
+          width: "200px",
+          boxShadow: "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px",
+        }}
+      >
         {filters.map((filter, index) => (
           <div key={index} className="filter-dropdowns">
             <div

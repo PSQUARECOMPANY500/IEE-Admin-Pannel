@@ -3,8 +3,6 @@ import config from "../../config";
 
 import { toast } from "react-hot-toast";
 
-import { Navigate } from "react-router-dom";
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
 export const GET_ALL_CALLBACK = "GET_ALL_CALLBACK";
@@ -484,10 +482,10 @@ export const requestAssignCallbackDetail = (callbackId) => {
     } catch (error) {
       console.log("error while fetching data", error);
     }
-  }
-}
+  };
+};
 
-export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */) => {
+export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
@@ -676,31 +674,30 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
 export const getfilteredData = (filterCondition) => {
   return async (dispatch) => {
     try {
-      if (filterCondition === null) {
+      console.log("this is filters: ", filterCondition);
+      if (!filterCondition.length) {
         dispatch({
           type: GET_FILTER_DATA,
           payload: [],
         });
         return;
       }
-      const response = await axios.get(`${config.apiUrl}/admin/filterClient`, {
-        params: {
-          type: filterCondition.type,
-          condition: filterCondition.condition,
-        },
+      const response = await axios.post(`${config.apiUrl}/admin/filterClient`, {
+       filterCondition,
       });
+      console.log(response.data);
       dispatch({
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 

@@ -34,8 +34,8 @@ import { GET_FILTER_LOCATIONS } from "../Actions/AdminActions";
 import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
 import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
-import { OPEN_MODAL } from "../Actions/AdminActions";
-import { CLOSE_MODAL } from "../Actions/AdminActions";
+// import { OPEN_MODAL } from "../Actions/AdminActions";
+// import { CLOSE_MODAL } from "../Actions/AdminActions";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ export const getFilterDataReducer = (state = intialState22, action) => {
   }
 };
 const intialState21 = {
-  clients: null,
+  clients: [],
 };
 export const getClientsReducer = (state = intialState21, action) => {
   switch (action.type) {

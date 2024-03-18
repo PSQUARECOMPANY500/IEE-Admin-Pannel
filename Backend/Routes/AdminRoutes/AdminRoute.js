@@ -91,7 +91,7 @@ router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
-router.get("/filterClient", adminContoller.filterClient);
+router.post("/filterClient", adminContoller.filterClient);
 router.get("/serchingClient", adminContoller.searchClients);
 router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
 router.get("/getClientDataForMembership", adminContoller.getClientData);

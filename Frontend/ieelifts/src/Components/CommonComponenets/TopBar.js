@@ -11,7 +11,7 @@ import { CiGrid41 } from "react-icons/ci";
 import { TbListTree } from "react-icons/tb";
 import { useLocation } from "react-router-dom";
 import NotificationSection from "../AdminPannel/Component/DashboardSubComponent/NotificationSection";
-import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/AddEnggModal";
+// import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/AddEnggModal";
 
 import { openAddEngggModalAction } from "../../ReduxSetup/Actions/AdminActions";
 import { LuSettings2 } from "react-icons/lu";
@@ -48,10 +48,11 @@ const TopBar = (props) => {
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
 
-  const [openEnggModal, setOpenEnggModal] = useState(false);
+  // const [openEnggModal, setOpenEnggModal] = useState(false);
 
   const handleNotificationBox = () => {
     setShowNotification(!showNotification);
@@ -61,12 +62,11 @@ const TopBar = (props) => {
     if (searchValue !== "") {
       dispatch(searchClients(searchValue));
     }
-  }, [searchValue]);
+  }, [searchValue, dispatch]);
 
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
   );
-
   useEffect(() => {
     if (filteredData) {
       setSearchValue("");
@@ -85,7 +85,7 @@ const TopBar = (props) => {
 
   useEffect(() => {
     if (membershipLayout === true) {
-      setIsGrid(!isGrid);
+      setIsGrid((prevIsGrid) => !prevIsGrid);
     }
     return () => {
       setIsGrid(false);
@@ -98,7 +98,7 @@ const TopBar = (props) => {
   };
 
   const handleTicketFilter = () => {
-    if (filteredData !== null && showTicketFilter == false) {
+    if (filteredData !== null && showTicketFilter === false) {
       dispatch(getfilteredData(null));
       setSearchValue("");
     }
@@ -160,7 +160,7 @@ const TopBar = (props) => {
                 className={`search-input ${
                   searchValue.length > 0 && "inputSearchWritten"
                 }`}
-                value={searchValue}
+                value={searchValue || ""}
                 onChange={handleSearchChange}
               />
 
@@ -193,7 +193,7 @@ const TopBar = (props) => {
 
         {location.pathname === "/Clients" && (
           <>
-            <div className="top-icon" style={{boxShadow:'none'}}>
+            <div className="top-icon" style={{ boxShadow: "none" }}>
               {" "}
               <div ref={dropdownClickRef}>
                 <p className="filter-icon" onClick={handleTicketFilter}>

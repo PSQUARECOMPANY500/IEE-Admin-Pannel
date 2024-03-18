@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
@@ -73,7 +73,7 @@ const ClientTableView = ({ clientData }) => {
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={checkboxStates[index] || false}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
