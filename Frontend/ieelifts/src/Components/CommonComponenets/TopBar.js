@@ -43,19 +43,16 @@ const useClickOutside = (ref, handler) => {
 const TopBar = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const notificationRef = useRef(null);
+  const notificationClickRef = useRef();
   const [showNotification, setShowNotification] = useState(false);
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
-
   const [openEnggModal, setOpenEnggModal] = useState(false);
 
-  const handleNotificationBox = () => {
-    setShowNotification(!showNotification);
-  };
 
   useLayoutEffect(() => {
     if (searchValue !== "") {
@@ -118,6 +115,32 @@ const TopBar = (props) => {
   const openModalHandle = () => {
     dispatch(openAddEngggModalAction());
   };
+
+
+  // -------notification popup box code--------------------------------------------------------------------
+  const useClickOutsidenotification = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutsidenotification = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown",handleClickOutsidenotification );
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutsidenotification);
+      };
+    }, [ref, handler]);
+  };
+  const handleNotfication= () => {
+    setShowNotification(prevState => !prevState);
+  };
+  const handleOutsideClicknotification = useCallback(() => {
+    setShowNotification(false);
+  }, []);
+
+  useClickOutsidenotification(notificationClickRef, handleOutsideClicknotification);
+
 
   return (
     <div className="top-bar">
@@ -216,8 +239,8 @@ const TopBar = (props) => {
           </>
         )}
 
-        <div style={{ display: "flex" }}>
-          <span className="top-icon-bell" onClick={handleNotificationBox}>
+        <div style={{ display: "flex" }} ref={notificationClickRef}>
+          <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
             <HiOutlineBell />{" "}
           </span>
 

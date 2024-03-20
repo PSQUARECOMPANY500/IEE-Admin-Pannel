@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { CiSearch } from "react-icons/ci";
 import { LuSettings2 } from "react-icons/lu";
@@ -12,6 +12,7 @@ import { RiSearchLine } from "react-icons/ri";
 
 const RequestScheduledSection = ({ setRenderTicket }) => {
   const dropdownRef = useRef(null);
+  const dropdownClickRef = useRef();
   // modal manage states
 
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -20,29 +21,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
 
-  const handleTicketFilter = () => {
-    setShowTicketFilter(!showTicketFilter);
-  };
 
   const closeModal = () => setShowTicketModal(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.classList.contains("filter-icon")
-      ) {
-        setShowTicketFilter(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
 
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -60,6 +42,32 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [searchText, setSearchText] = useState("");
 
   //.................................................................ax13-search-func-starts----------------------------------------------------------
+  //aayush code start here for filter
+
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+  const handleFilter = () => {
+    setShowTicketFilter(prevState => !prevState);
+  };
+  const handleOutsideClick = useCallback(() => {
+    setShowTicketFilter(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
+  //aayush code end for filter
 
   return (
     <div className="parent-full-div">
@@ -120,8 +128,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
 
             </div>
 
-            <div className="sub-components-ticket-filter">
-              <p className="filter-icon" onClick={handleTicketFilter}>
+            <div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon" 
+              onClick={handleFilter}
+              >
                 <LuSettings2 />
                 {""}
               </p>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
@@ -11,6 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
+  const dropdownClickRef = useRef();
+
+
   const dispatch = useDispatch();
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
@@ -76,12 +79,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
-  const passData = () => {};
+  const passData = () => { };
 
-  const handleFilter = () => {
-    setShowFilter(!showFilter);
-  };
-
+// -------------------------filter dropdown code start from here---------------------------
   useEffect(() => {
     setTimeout(() => {
       dispatch(getCurrentDateAssignCalbackAction());
@@ -89,19 +89,32 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }, 1500);
   }, [dispatch, props.ticketUpdate]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowFilter(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+  const handleFilter = () => {
+    setShowFilter(prevState => !prevState);
+  };
+  const handleOutsideClick = useCallback(() => {
+    setShowFilter(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
+  // -------------------------filter dropdown end--------------------------
+
 
   const extractStartTime = (slots) => {
     return slots[0].split("-")[0];
@@ -147,8 +160,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
             </div>
 
             {props.kanban ? (
-              <div className="sub-components">
-                <p className="filter-icon" onClick={handleFilter}>
+              <div className="sub-components" ref={dropdownClickRef}>
+                <p className="filter-icon"
+                  onClick={handleFilter}
+
+
+                >
                   <LuSettings2 />
                   {""}
                 </p>
@@ -171,20 +188,19 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {currentDateCallback?.map((value, index) => (
                     <div
-                      className={`ticket-card ${
-                        handleCallbackSelection[index] &&
+                      className={`ticket-card ${handleCallbackSelection[index] &&
                         "service-card-selected"
-                      }`}
-                      // onClick={() => {
-                      //   setHandleCallbackSelection((prevStates) => {
-                      //     prevStates.map((stateValue, valueIndex) => {
-                      //       if (valueIndex !== index) {
-                      //         stateValue = !stateValue;
-                      //       }
-                      //       stateValue = false;
-                      //     });
-                      //   });
-                      // }}
+                        }`}
+                    // onClick={() => {
+                    //   setHandleCallbackSelection((prevStates) => {
+                    //     prevStates.map((stateValue, valueIndex) => {
+                    //       if (valueIndex !== index) {
+                    //         stateValue = !stateValue;
+                    //       }
+                    //       stateValue = false;
+                    //     });
+                    //   });
+                    // }}
                     >
                       <table className="ticket-table">
                         <tbody>
@@ -211,16 +227,15 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {currentDateServiceRequest?.map((serviceData, index) => (
                     <div
-                      className={`service-card ${
-                        handleServiceSelection[index] && "service-card-selected"
-                      }`}
-                      // onClick={() => {
-                      //   setHandleServiceSelection((prevStates) => {
-                      //     const newCheckboxStates = [...prevStates];
-                      //     newCheckboxStates[index] = !prevStates[index];
-                      //     return newCheckboxStates;
-                      //   });
-                      // }}
+                      className={`service-card ${handleServiceSelection[index] && "service-card-selected"
+                        }`}
+                    // onClick={() => {
+                    //   setHandleServiceSelection((prevStates) => {
+                    //     const newCheckboxStates = [...prevStates];
+                    //     newCheckboxStates[index] = !prevStates[index];
+                    //     return newCheckboxStates;
+                    //   });
+                    // }}
                     >
                       <table className="service-table">
                         <tbody>
@@ -253,7 +268,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
               onClick={() => {
                 setHandleReportData(false);
               }}
-              style={{cursor:"pointer"}}
+              style={{ cursor: "pointer" }}
             >
               <p>Report</p>
             </div>

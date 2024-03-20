@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "./CheckBox";
 import { CiSearch } from "react-icons/ci";
@@ -18,6 +18,7 @@ import { RiSearchLine } from "react-icons/ri";
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
+  const dropdownClickRef = useRef();
   const [callbackId, setCallbackId] = useState();
   const [enggId, setEnggId] = useState();
   const [isAssigned, setIsAssigned] = useState();
@@ -103,9 +104,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   const limitAddress = (address, limit) => {
     return address?.slice(0, limit) + (address?.length > limit ? "..." : "");
   };
-  const handleTicketFilter = () => {
-    setShowTicketFilter(!showTicketFilter);
-  };
+
   //............................................................{amit}...................
   const [renderTicket, setRenderTicket] = useState(true);
   useEffect(() => {
@@ -136,25 +135,35 @@ const TicketSection = ({ setTicketUpdate }) => {
       return newCheckboxStates;
     });
   };
+
+  //aayush code for filter start from here--------------------------------------------------------------------------
+
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+  const handleFilter = () => {
+    setShowTicketFilter(prevState => !prevState);
+  };
+  const handleOutsideClick = useCallback(() => {
+    setShowTicketFilter(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
+  //aayush code for filter end--------------------------------------------------------------------------
   //.............................................................{/armaan}.................
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.classList.contains("filter-icon")
-      ) {
-        setShowTicketFilter(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
   const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
@@ -209,8 +218,8 @@ const TicketSection = ({ setTicketUpdate }) => {
 
             {/* ............................................................ax13-search...................................................... */}
 
-            <div className="sub-components-ticket-filter">
-              <p className="filter-icon" onClick={handleTicketFilter}>
+            <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
+              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
                 <LuSettings2 />
                 {""}
               </p>
