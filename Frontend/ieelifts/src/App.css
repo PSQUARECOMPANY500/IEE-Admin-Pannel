@@ -650,9 +650,8 @@ span::after {
   font-size: 1.2rem;
   cursor: pointer;
   box-shadow: 1px 2px 5px #00000029;
-  
 }
-.search-box{
+.search-box {
   cursor: pointer;
 }
 /* .filter-top-icon {
@@ -800,7 +799,7 @@ span::after {
   padding: 1.4rem 0.7rem;
   display: flex;
   justify-content: center;
-cursor: pointer;
+  cursor: pointer;
   align-items: center;
   border-radius: 7px;
   cursor: pointer;
@@ -811,8 +810,6 @@ cursor: pointer;
 .top-icon:hover .search-input {
   width: 240px;
   padding: 0.8rem 0.1rem;
-
-
 }
 
 .search-input::selection {
@@ -1745,7 +1742,6 @@ footer a:hover {
   background: #fef3de;
   transition: all 0.5s;
   cursor: pointer;
-
 }
 
 .sub-components p {
@@ -2457,7 +2453,6 @@ footer a:hover {
   z-index: 3;
 }
 
-
 .search-icon-filter,
 .search-ticket-filter-icon {
   position: absolute;
@@ -2588,9 +2583,6 @@ footer a:hover {
 @media (min-width: 1441px) {
 }
 
-
-
-
 .search-icon-filter,
 .search-ticket-filter-icon {
   position: absolute;
@@ -2655,16 +2647,21 @@ footer a:hover {
 
 .filter-lists li {
   padding: 2px;
-}
-
-.filter-lists li:hover {
-  background: #fef3de;
-  color: #f8ac1d;
   width: 100%;
   align-items: center;
   display: flex;
   justify-content: center;
   border-radius: 6px;
+}
+
+.selected-filter {
+  background: #fef3de;
+  color: #f8ac1d;
+}
+
+.filter-lists li:hover {
+  background: #fef3de;
+  color: #f8ac1d;
 }
 
 .search-bar-div {
@@ -4693,11 +4690,8 @@ element.style {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-padding-top: 2rem;
-
-
+  padding-top: 2rem;
 }
-
 
 .IssueDoors {
   height: 20%;
@@ -4775,7 +4769,8 @@ padding-top: 2rem;
   width: 100%;
 }
 
-.IssueDoor2 h5,.IssuesDoor2L h5{
+.IssueDoor2 h5,
+.IssuesDoor2L h5 {
   margin-top: 0.6rem;
 }
 .ClientImg {
@@ -4783,7 +4778,7 @@ padding-top: 2rem;
   width: 17%;
   background-color: #fef3de;
   border-radius: 3px;
-margin-top: 12px;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -4793,7 +4788,7 @@ margin-top: 12px;
   justify-content: center;
 }
 
-.ClientImg img{
+.ClientImg img {
   height: 100%;
 
   width: 100%;
@@ -4861,7 +4856,8 @@ margin-top: 12px;
   font-size: 0.9rem;
   letter-spacing: 0px;
   color: #444444;
-  opacity: 1;}
+  opacity: 1;
+}
 
 .IssuesDoor4 {
   text-align: left;

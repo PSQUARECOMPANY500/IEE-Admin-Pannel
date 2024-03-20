@@ -681,7 +681,6 @@ export const getClients = () => {
 export const getfilteredData = (filterCondition) => {
   return async (dispatch) => {
     try {
-      console.log("this is filters: ", filterCondition);
       if (!filterCondition.length) {
         dispatch({
           type: GET_FILTER_DATA,
@@ -690,7 +689,7 @@ export const getfilteredData = (filterCondition) => {
         return;
       }
       const response = await axios.post(`${config.apiUrl}/admin/filterClient`, {
-       filterCondition,
+        filterCondition,
       });
       console.log(response.data);
       dispatch({

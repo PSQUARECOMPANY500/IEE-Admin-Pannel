@@ -1363,241 +1363,201 @@ module.exports.getMembershipHistory = async (req, res) => {
   }
 };
 
-// module.exports.filterClient = async (req, res) => {
-//   try {
-//     const { type, condition } = req.query;
-//     switch (type) {
-//       case "membership":
-//         const membership = await clientDetailSchema.find({
-//           MembershipType: {
-//             $regex: new RegExp(condition, "i"),
-//           },
-//         });
-//         res.status(201).json({
-//           success: true,
-//           data: membership,
-//         });
-//         break;
-//       case "elevatorType":
-//         const elevatorType = await clientDetailSchema.find({
-//           ModelType: {
-//             $regex: new RegExp(condition, "i"),
-//           },
-//         });
-//         res.status(201).json({
-//           success: true,
-//           data: elevatorType,
-//         });
-//         break;
-//       case "location":
-//         const clientsInCity = await clientDetailSchema.find({
-//           Address: {
-//             $regex: new RegExp(condition, "i"),
-//           },
-//         });
-//         res.status(200).json({
-//           success: true,
-//           data: clientsInCity,
-//         });
-//         break;
-//       case "date":
-//         let clients;
-//         if (condition === "newest") {
-//           clients = await clientDetailSchema
-//             .find()
-//             .sort({ DateOfHandover: -1 });
-//         } else if (condition === "oldest") {
-//           clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
-//         } else {
-//           res.status(400).json({
-//             success: false,
-//             message: "Invalid date condition",
-//           });
-//           return;
-//         }
-//         res.status(200).json({
-//           success: true,
-//           data: clients,
-//         });
-//         break;
-//       case "name":
-//         let sortedClients;
-//         if (condition === "a-z") {
-//           sortedClients = await clientDetailSchema.find().sort({ name: 1 });
-//         } else if (condition === "z-a") {
-//           sortedClients = await clientDetailSchema.find().sort({ name: -1 });
-//         } else {
-//           res.status(400).json({
-//             success: false,
-//             message: "Invalid name condition",
-//           });
-//           return;
-//         }
-//         res.status(200).json({
-//           success: true,
-//           data: sortedClients,
-//         });
-//         break;
-//       default:
-//         res.status(400).json({
-//           success: false,
-//           message: "Invalid filter type",
-//         });
-//         break;
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       error: "Internal server Error",
-//       message: error.message,
-//     });
-//   }
-// };
-
 module.exports.filterClient = async (req, res) => {
   try {
     const filters = req.body.filterCondition;
-    const clientData = await clientDetailSchema.find();
-    let filterClient = clientData;
-    let responseData = [];
+    const membershipFilter = filters.filter(
+      (type) => type.type === "membership"
+    );
+    const elevatorTypeFilter = filters.filter(
+      (type) => type.type === "elevatorType"
+    );
+    const locationFilter = filters.filter((type) => type.type === "location");
 
-    filters.sort((a, b) => {
-      const order = ["membership", "elevatorType", "location", "date", "name"];
-      return order.indexOf(a.type) - order.indexOf(b.type);
+    const sortFilter = filters.filter(
+      (type) => type.type === "date" || type.type === "name"
+    );
+
+    let membershipData,
+      elevatorData,
+      locationData = [];
+    const clientData = await clientDetailSchema.find();
+
+    membershipFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        let membership = clientData.filter(
+          (client) =>
+            client.MembershipType &&
+            client.MembershipType.toLowerCase() === condition.toLowerCase()
+        );
+        if (membershipData && membershipData.length) {
+          membershipData = [...membershipData, ...membership];
+        } else {
+          membershipData = [...membership];
+        }
+      } catch (error) {
+        console.error("Error fetching membership:", error);
+      }
     });
 
-    console.log(filters);
-    for (const filter of filters) {
-      const { type, condition } = filter;
-
-      switch (type) {
-        case "membership":
-          let membershipData = filterClient.filter(
-            (client) =>
-              client.MembershipType &&
-              client.MembershipType.toLowerCase() === condition.toLowerCase()
-          );
-          responseData = [...responseData, ...membershipData];
-          filterClient = [...clientData];
-          break;
-        case "elevatorType":
-          if (responseData.length) {
-            let elevatorData = responseData.filter(
-              (client) =>
-                client.ModelType &&
-                client.ModelType.toLowerCase() === condition.toLowerCase()
-            );
-            responseData = [...elevatorData];
-          } else {
-            let elevatorData = filterClient.filter(
-              (client) =>
-                client.ModelType &&
-                client.ModelType.toLowerCase() === condition.toLowerCase()
-            );
-            responseData = [...elevatorData];
-            filterClient = [...clientData];
-          }
-          break;
-        case "location":
-          if (responseData.length) {
-            let locationData = responseData.filter(
-              (client) =>
-                client.Address &&
-                client.Address.toLowerCase() === condition.toLowerCase()
-            );
-            responseData = [...locationData];
-          } else {
-            let locationData = clientData.filter(
-              (client) =>
-                client.Address &&
-                client.Address.toLowerCase() === condition.toLowerCase()
-            );
-            responseData = [...locationData];
-            filterClient = [...clientData];
-          }
-          break;
-        case "date":
-          if (responseData.length) {
-            if (condition === "newest") {
-              responseData.sort(
-                (a, b) =>
-                  new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
-              );
-            } else if (condition === "oldest") {
-              responseData.sort(
-                (a, b) =>
-                  new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
-              );
-            } else {
-              return res.status(400).json({
-                success: false,
-                message: "Invalid date condition",
-              });
-            }
-          } else {
-            if (condition === "newest") {
-              filterClient.sort(
-                (a, b) =>
-                  new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
-              );
-              responseData = [...filterClient];
-              filterClient = [...clientData];
-            } else if (condition === "oldest") {
-              filterClient.sort(
-                (a, b) =>
-                  new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
-              );
-              responseData = [...filterClient];
-              filterClient = [...clientData];
-            } else {
-              return res.status(400).json({
-                success: false,
-                message: "Invalid date condition",
-              });
-            }
-          }
-          break;
-        case "name":
-          if (responseData.length) {
-            if (condition === "a-z") {
-              responseData.sort((a, b) => a.name.localeCompare(b.name));
-            } else if (condition === "z-a") {
-              responseData.sort((a, b) => b.name.localeCompare(a.name));
-            } else {
-              return res.status(400).json({
-                success: false,
-                message: "Invalid name condition",
-              });
-            }
-          } else {
-            if (condition === "a-z") {
-              filterClient.sort((a, b) => a.name.localeCompare(b.name));
-              responseData = [...filterClient];
-              filterClient = [...clientData];
-            } else if (condition === "z-a") {
-              filterClient.sort((a, b) => b.name.localeCompare(a.name));
-              responseData = [...filterClient];
-              filterClient = [...clientData];
-            } else {
-              return res.status(400).json({
-                success: false,
-                message: "Invalid name condition",
-              });
-            }
-          }
-          break;
-
-        default:
-          return res.status(400).json({
-            success: false,
-            message: "Invalid filter type",
-          });
+    elevatorTypeFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        let elevatorClient = clientData.filter(
+          (client) =>
+            client.ModelType &&
+            client.ModelType.toLowerCase() === condition.toLowerCase()
+        );
+        if (elevatorData && elevatorData.length) {
+          elevatorData = [...elevatorData, ...elevatorClient];
+        } else {
+          elevatorData = [...elevatorClient];
+        }
+      } catch (error) {
+        console.error("Error fetching membership:", error);
       }
-    }
+    });
 
+    locationFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        const locationClient = clientData.filter(
+          (client) =>
+            client.Address &&
+            client.Address.toLowerCase().includes(condition.toLowerCase())
+        );
+        if (locationData && locationData.length) {
+          locationData = [...locationData, ...locationClient];
+        } else {
+          locationData = [...locationClient];
+        }
+      } catch (error) {
+        console.error("Error fetching membership:", error);
+      }
+    });
+
+    let commonData = [];
+
+    if (
+      membershipData &&
+      membershipData.length &&
+      elevatorData &&
+      elevatorData.length &&
+      locationData &&
+      locationData.length
+    ) {
+      commonData = membershipData.filter(
+        (membership) =>
+          elevatorData.some((elevator) => elevator._id === membership._id) &&
+          locationData.some((location) => location._id === membership._id)
+      );
+    } else if (
+      ((membershipData && membershipData.length) ||
+        membershipFilter.length !== 0) &&
+      ((elevatorData && elevatorData.length) || elevatorTypeFilter.length !== 0)
+    ) {
+      commonData = membershipData.filter((membership) =>
+        elevatorData.some((elevator) => elevator._id === membership._id)
+      );
+    } else if (
+      ((elevatorData && elevatorData.length) ||
+        elevatorTypeFilter.length !== 0) &&
+      ((locationData && locationData.length) || locationFilter.length !== 0)
+    ) {
+      commonData = elevatorData.filter((elevator) =>
+        locationData.some((location) => location._id === elevator._id)
+      );
+    } else if (
+      ((membershipData && membershipData.length) ||
+        membershipFilter.length !== 0) &&
+      ((locationData && locationData.length) || locationFilter.length !== 0)
+    ) {
+      commonData = membershipData.filter((membership) =>
+        locationData.some((location) => location._id === membership._id)
+      );
+    } else {
+      commonData =
+        membershipData && membershipData.length > 0
+          ? membershipData
+          : elevatorData && elevatorData.length > 0
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
+    }
+    let sortType, sortcondition;
+    if (sortFilter && sortFilter.length) {
+      sortType = sortFilter[0].type;
+      sortcondition = sortFilter[0].condition;
+    }
+    switch (sortType) {
+      case "date":
+        if (commonData.length) {
+          if (sortcondition === "newest") {
+            commonData.sort(
+              (a, b) => new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+            );
+          } else if (sortcondition === "oldest") {
+            commonData.sort(
+              (a, b) => new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+            );
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid date condition",
+            });
+          }
+        } else {
+          if (sortcondition === "newest") {
+            clientData.sort(
+              (a, b) => new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+            );
+            commonData = clientData;
+          } else if (sortcondition === "oldest") {
+            clientData.sort(
+              (a, b) => new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+            );
+            commonData = clientData;
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid date condition",
+            });
+          }
+        }
+        break;
+      case "name":
+        if (commonData.length) {
+          if (sortcondition === "a-z") {
+            commonData.sort((a, b) => a.name.localeCompare(b.name));
+          } else if (sortcondition === "z-a") {
+            commonData.sort((a, b) => b.name.localeCompare(a.name));
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid name condition",
+            });
+          }
+        } else {
+          if (sortcondition === "a-z") {
+            clientData.sort((a, b) => a.name.localeCompare(b.name));
+            commonData = clientData;
+          } else if (sortcondition === "z-a") {
+            clientData.sort((a, b) => b.name.localeCompare(a.name));
+            commonData = clientData;
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid name condition",
+            });
+          }
+        }
+        break;
+    }
     res.status(200).json({
       success: true,
-      data: responseData,
+      data: commonData,
     });
   } catch (error) {
     console.log(error);
@@ -1607,98 +1567,6 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
-
-// for (const filter of filters) {
-//   const { type, condition } = filter;
-//   let filteredData;
-
-//   switch (type) {
-//     case "membership":
-//       filteredData = await clientDetailSchema.find({
-//         MembershipType: { $regex: new RegExp(condition, "i") },
-//       });
-//       break;
-//     case "elevatorType":
-//       filteredData = await clientDetailSchema.find({
-//         ModelType: { $regex: new RegExp(condition, "i") },
-//       });
-//       break;
-//     case "location":
-//       filteredData = await clientDetailSchema.find({
-//         Address: { $regex: new RegExp(condition, "i") },
-//       });
-//       break;
-//     case "date":
-//       if (responseData.length !== 0) {
-//         if (condition === "newest") {
-//           responseData.sort(
-//             (a, b) =>
-//               new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
-//           );
-//         } else if (condition === "oldest") {
-//           responseData.sort(
-//             (a, b) =>
-//               new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
-//           );
-//         } else {
-//           return res.status(400).json({
-//             success: false,
-//             message: "Invalid date condition",
-//           });
-//         }
-//       } else {
-//         if (condition === "newest") {
-//           filteredData = await clientDetailSchema
-//             .find()
-//             .sort({ DateOfHandover: -1 });
-//         } else if (condition === "oldest") {
-//           filteredData = await clientDetailSchema
-//             .find()
-//             .sort({ DateOfHandover: 1 });
-//         } else {
-//           return res.status(400).json({
-//             success: false,
-//             message: "Invalid date condition",
-//           });
-//         }
-//       }
-//       break;
-//     case "name":
-//       if (responseData.length !== 0) {
-//         if (condition === "a-z") {
-//           responseData.sort((a, b) => a.name.localeCompare(b.name));
-//         } else if (condition === "z-a") {
-//           responseData.sort((a, b) => b.name.localeCompare(a.name));
-//         } else {
-//           return res.status(400).json({
-//             success: false,
-//             message: "Invalid name condition",
-//           });
-//         }
-//       } else {
-//         if (condition === "a-z") {
-//           filteredData = await clientDetailSchema.find().sort({ name: 1 });
-//         } else if (condition === "z-a") {
-//           filteredData = await clientDetailSchema.find().sort({ name: -1 });
-//         } else {
-//           return res.status(400).json({
-//             success: false,
-//             message: "Invalid name condition",
-//           });
-//         }
-//       }
-//       break;
-//     default:
-//       return res.status(400).json({
-//         success: false,
-//         message: "Invalid filter type",
-//       });
-//   }
-
-//   if (filteredData) {
-//     responseData = [...responseData, ...filteredData];
-//   }
-// }
 
 module.exports.searchClients = async (req, res) => {
   try {

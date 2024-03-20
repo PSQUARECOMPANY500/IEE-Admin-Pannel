@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -16,12 +15,10 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
 
-
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
-
-const Sidebar = ( {children} ) => {
+const Sidebar = ({ children }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
   const [toogleOpen, settoogleClose] = useState(true);
@@ -99,8 +96,12 @@ const Sidebar = ( {children} ) => {
     },
     {
       Path: "/Engeeniers",
-      Path: "/Engeeniers",
       name: "Engineers",
+      icon: <MdEngineering />,
+    },
+    {
+      Path: "/SOS",
+      name: "sos",
       icon: <MdEngineering />,
     },
   ];
@@ -154,15 +155,13 @@ const Sidebar = ( {children} ) => {
     },
   ];
 
-
- const handleLogout = () => {
-  localStorage.removeItem("adminData");
-  Navigate('/')
-}
+  const handleLogout = () => {
+    localStorage.removeItem("adminData");
+    Navigate("/");
+  };
 
   return (
     <div className="container">
-    
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
@@ -198,17 +197,24 @@ const Sidebar = ( {children} ) => {
               {/* hamburger animationa and functionality */}
               <div
                 // className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
-                style={{ height: isOpen ? ".8rem" : ".6rem", top: isOpen ? '40px' : '35px' }}
+                style={{
+                  height: isOpen ? ".8rem" : ".6rem",
+                  top: isOpen ? "40px" : "35px",
+                }}
                 className="toggle-button-menu"
                 onClick={handleToggleClick}
               >
                 <div className="wrapper">
-                  <div className="menu-bar menu-bar-top" style={{ transform: isOpen ? 'none' : 'rotate(40deg)' }}
+                  <div
+                    className="menu-bar menu-bar-top"
+                    style={{ transform: isOpen ? "none" : "rotate(40deg)" }}
                   ></div>
 
-                  <div className="menu-bar menu-bar-bottom" style={{ transform: isOpen ? 'none' : 'rotate(-40deg)' }}></div>
+                  <div
+                    className="menu-bar menu-bar-bottom"
+                    style={{ transform: isOpen ? "none" : "rotate(-40deg)" }}
+                  ></div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -306,7 +312,7 @@ const Sidebar = ( {children} ) => {
             <input type="checkbox" id="touch" />
             <ul
               className="slide"
-              style={{ height: mainMenuOpen ? "250px" : "" }}
+              style={{ height: mainMenuOpen ? "26rem" : "" }}
             >
               <li
                 style={{
@@ -320,10 +326,10 @@ const Sidebar = ( {children} ) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                  // ClassName={
-                  //   location.pathname === item.Path ? "active-link" : ""
-                  // }
-                  // not know the reason of commenting todo - uncomment if there is some problem exist
+                    // ClassName={
+                    //   location.pathname === item.Path ? "active-link" : ""
+                    // }
+                    // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div
@@ -390,6 +396,7 @@ const Sidebar = ( {children} ) => {
 
             {/* OFFICE MENUE items goes here ends */}
           </nav>
+          <div className="circle">SOS</div>
         </div>
       </div>
       <main>{children}</main>

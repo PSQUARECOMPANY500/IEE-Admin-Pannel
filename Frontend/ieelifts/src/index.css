@@ -36,52 +36,6 @@ code {
   align-items: center;
 }
 
-/* .loaderMembership {
-  width: 1rem;
-  height: 1rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  margin-left: 10rem;
-  margin-right: 0;
-  animation: l5 1s infinite linear alternate;
-}
-@keyframes l5 {
-  0% {
-    box-shadow: 20px 0 #000, -20px 0 #0002;
-    background: #000;
-  }
-  33% {
-    box-shadow: 20px 0 #000, -20px 0 #0002;
-    background: #0002;
-  }
-  66% {
-    box-shadow: 20px 0 #0002, -20px 0 #000;
-    background: #0002;
-  }
-  100% {
-    box-shadow: 20px 0 #0002, -20px 0 #000;
-    background: #000;
-  }
-} */
-
-/* .loaderMembership{
-  position: relative;
-  margin-left: 50%;
-  display: flex;
-}
-
-.dot_Loader{
-  width: 1rem;
-  height: 1rem;
-  background-color: black;
-  border-radius: 50%;
-  right: 0;
-}
-
-.dot1{
-  position: absolute;
-  left:100%
-} */
 .loaderMembership {
   position: relative;
   margin-left: 50%;
@@ -98,7 +52,6 @@ code {
 
 .dot1 {
   animation: gooeyEffect1 0.5s infinite alternate;
-  /* left: 0; */
 }
 
 .dot2 {
@@ -1482,6 +1435,30 @@ code {
 
 /* <-------------------------------Clients CSS Start------------------------------------> */
 
+/* client filter css start  */
+
+.client-filter-option-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  /* gap: 0.5rem; */
+}
+
+.client-filter-option {
+  margin-top: 0.5rem;
+  width: fit-content;
+  padding: 0.2rem 0.1rem;
+  font-size: 0.6rem;
+  margin-left: 1rem;
+  background-color: #fef3de;
+  color: #f8ac1d;
+  border-radius: 6px;
+}
+
+/* client filter css ends  */
+
 .ClientCatainer {
   margin-top: 5.5rem;
   width: 95%;
@@ -1628,10 +1605,7 @@ code {
   top: 0;
   background-color: white;
   z-index: 1;
-  box-shadow: 0px 0px 3px #C1C1C1;
-
-
-
+  box-shadow: 0px 0px 3px #c1c1c1;
 }
 
 /* set body scroll property starts */
@@ -1681,5 +1655,76 @@ code {
 }
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
+
+/* sidebar SOS button css start */
+
+.circle {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: #fd2424;
+  color: #F8AC1D;
+  text-align: center;
+  line-height: 80px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  &:hover {
+    cursor: pointer;
+  }
+  &::after,
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    background: #fd242499;
+
+    border-radius: 50%;
+    z-index: -1;
+    animation: grow 1.3s ease-in-out infinite;
+  }
+  &::after {
+    background: #fd242480;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80px;
+      height: 80px;
+      background: #fd242499;
+      border-radius: 50%;
+      z-index: -1;
+      animation: grow 1.3s ease-in-out infinite;
+    }
+  }
+  &::before {
+    background: #fd242499;
+    animation-delay: -0.5s;
+  }
+}
+@keyframes grow {
+  0% {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8, 1.8);
+    opacity: 0;
+  }
+}
+
+/* sidebar SOS button css ends */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/

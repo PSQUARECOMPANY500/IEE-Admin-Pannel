@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { CiSearch } from "react-icons/ci";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,7 +14,7 @@ const ClientFilterDropdown = () => {
 
   const handleFilter = (filterName) => {
     if (filterName === "clear") {
-      setFilterSelections([]); // Clear the filter selections
+      setFilterSelections([]);
     } else {
       setOpenFilter((prevFilter) =>
         prevFilter === filterName ? null : filterName
@@ -30,31 +29,14 @@ const ClientFilterDropdown = () => {
     (state) => state?.AdminRootReducer?.filteringLocationsReducer
   );
 
-  // const handleOptionSelection = (type, condition) => {
-  //   const existingFilterIndex = filterSelections.findIndex(
-  //     (filter) => filter.type === type && filter.condition === condition
-  //   );
-
-  //   if (existingFilterIndex === -1) {
-  //     setFilterSelections((prevSelections) => [
-  //       ...prevSelections,
-  //       { type, condition },
-  //     ]);
-  //   }
-  // };
-
   const handleOptionSelection = (type, condition) => {
-    // Check if the selected type is 'name' or 'date'
     if (type === "name" || type === "date") {
-      // Filter out existing selections for 'name' or 'date'
       const filteredSelections = filterSelections.filter(
         (filter) => filter.type !== "name" && filter.type !== "date"
       );
 
-      // Add the new selection for 'name' or 'date'
       setFilterSelections([...filteredSelections, { type, condition }]);
     } else {
-      // For other types, handle as before
       const existingFilterIndex = filterSelections.findIndex(
         (filter) => filter.type === type && filter.condition === condition
       );
@@ -64,9 +46,13 @@ const ClientFilterDropdown = () => {
           ...prevSelections,
           { type, condition },
         ]);
+      } else {
+        const newSelections = filterSelections.filter(
+          (filter, index) => index !== existingFilterIndex
+        );
+        setFilterSelections(newSelections);
       }
     }
-    console.log("these are filter selection:",filterSelections);
   };
 
   useEffect(() => {
@@ -109,6 +95,7 @@ const ClientFilterDropdown = () => {
       options: [],
     },
   ];
+
   return (
     <div className="filter-dropdown">
       <div
@@ -139,6 +126,10 @@ const ClientFilterDropdown = () => {
                   maxHeight: openFilter === filter.type ? "200px" : "0",
                   opacity: openFilter === filter.type ? 1 : 0,
                   overflow: "hidden",
+                  width: "100%",
+                  // background:"#fef3de",
+                  // color:"#f8ac1d",
+                  borderRadius: "6px",
                   transition:
                     "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
                 }}
@@ -157,11 +148,36 @@ const ClientFilterDropdown = () => {
                               : option
                           )
                         }
+                        className={`${
+                          filterSelections.some(
+                            (selection) =>
+                              selection.type === filter.type &&
+                              selection.condition ===
+                                (filter.type === "location"
+                                  ? option.location
+                                  : option)
+                          )
+                            ? "selected-filter"
+                            : ""
+                        }`}
                       >
                         {filter.type === "location" ? option.location : option}
                       </li>
                     ))}
                 </ul>
+              </div>
+            )}
+            {openFilter !== filter.type && (
+              <div className="client-filter-option-container">
+                {filterSelections.map((selection) => {
+                  if (selection.type === filter.type) {
+                    return (
+                      <div className="client-filter-option">
+                        <span>{selection.condition}</span>
+                      </div>
+                    );
+                  }
+                })}
               </div>
             )}
           </div>
