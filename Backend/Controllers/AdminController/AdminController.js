@@ -32,9 +32,13 @@ const SpearParts = require("../../Modals/SpearParts/SpearParts");
 
 const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilter");
 
+const ForgetPassOTP = require("../../Modals/OTP/ForgetPasswordOtp");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
+
+const nodemailer = require("nodemailer");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -46,73 +50,85 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const EnggDetail = await ServiceEnggData.find({});
     const currentDate = new Date();
 
-    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({
-        ServiceEnggId: item.EnggId
-      });
-      const ratingsCount = enggRating.length;
-      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
-      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
-
-      const ServiceEnggId = item.EnggId;
-
-      const serviceAssignments = await ServiceAssigntoEngg.find({
-        ServiceEnggId
-      });
-      const assignScheduleRequests = await AssignSecheduleRequest.find({
-        ServiceEnggId
-      });
-
-      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        Date: data.Date,
-        TaskStatus: data.ServiceProcess,
-      }));
-
-      const filteredServiceAssignments = mainDetails.filter(item => {
-        return item.Date === currentDate.toLocaleDateString('en-GB');
-      });
-
-      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
-        const client = await clientDetailSchema.findOne({
-          JobOrderNumber: assignment.JobOrderNumber
+    const BasicDetail = await Promise.all(
+      EnggDetail.map(async (item) => {
+        const enggRating = await EnggRating.find({
+          ServiceEnggId: item.EnggId,
         });
+        const ratingsCount = enggRating.length;
+        const ratingsSum = enggRating.reduce(
+          (sum, rating) => sum + rating.Rating,
+          0
+        );
+        const averageRating =
+          ratingsCount > 0
+            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
+            : 0;
+
+        const ServiceEnggId = item.EnggId;
+
+        const serviceAssignments = await ServiceAssigntoEngg.find({
+          ServiceEnggId,
+        });
+        const assignScheduleRequests = await AssignSecheduleRequest.find({
+          ServiceEnggId,
+        });
+
+        const mainDetails = serviceAssignments
+          .concat(assignScheduleRequests)
+          .map((data) => ({
+            ServiceEnggId: data.ServiceEnggId,
+            JobOrderNumber: data.JobOrderNumber,
+            Slot: data.Slot,
+            Date: data.Date,
+            TaskStatus: data.ServiceProcess,
+          }));
+
+        const filteredServiceAssignments = mainDetails.filter((item) => {
+          return item.Date === currentDate.toLocaleDateString("en-GB");
+        });
+
+        const filteredServiceAssignmentsWithClientName = await Promise.all(
+          filteredServiceAssignments.map(async (assignment) => {
+            const client = await clientDetailSchema.findOne({
+              JobOrderNumber: assignment.JobOrderNumber,
+            });
+            return {
+              ...assignment,
+              ClientName: client?.name,
+              ClientNumber: client?.PhoneNumber,
+              ClientAddress: client?.Address,
+            };
+          })
+        );
+
+        filteredServiceAssignmentsWithClientName.sort((a, b) => {
+          const timeA = convertTimeToSortableFormat(a.Slot[0]);
+          const timeB = convertTimeToSortableFormat(b.Slot[0]);
+          return timeA - timeB;
+        });
+
         return {
-          ...assignment,
-          ClientName: client?.name,
-          ClientNumber: client?.PhoneNumber,
-          ClientAddress: client?.Address
+          EnggObjId: item._id,
+          ServiceEnggId: item.EnggId,
+          ServiceEnggName: item.EnggName,
+          ServiceEnggPic: item.EnggPhoto,
+          averageRating,
+          filteredServiceAssignmentsWithClientName,
         };
-      }));
-
-      filteredServiceAssignmentsWithClientName.sort((a, b) => {
-        const timeA = convertTimeToSortableFormat(a.Slot[0]);
-        const timeB = convertTimeToSortableFormat(b.Slot[0]);
-        return timeA - timeB;
-      });
-
-      return {
-        EnggObjId: item._id,
-        ServiceEnggId: item.EnggId,
-        ServiceEnggName: item.EnggName,
-        ServiceEnggPic: item.EnggPhoto,
-        averageRating,
-        filteredServiceAssignmentsWithClientName
-      };
-    }));
+      })
+    );
 
     res.status(200).json({
-      BasicDetailForCrouser: BasicDetail.filter(item => !item.error)
+      BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
+};
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
@@ -480,19 +496,22 @@ module.exports.assignCallbacks = async (req, res) => {
 
     if (existingCallback) {
       // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate({
-        callbackId
-      }, {
-        ServiceEnggId,
-        JobOrderNumber,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-        ServiceProcess,
-      }, {
-        new: true
-      } // Return the updated document
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        {
+          callbackId,
+        },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        {
+          new: true,
+        } // Return the updated document
       );
     } else {
       // Create a new entry
@@ -945,33 +964,34 @@ module.exports.getClientMemebership = async (req, res) => {
 //function to get all booked dates {amit-features}
 
 module.exports.getBookedDates = async (req, res) => {
-  const timeSlots = [{
-    slot: "9:00-10:00",
-  },
-  {
-    slot: "10:00-11:00",
-  },
-  {
-    slot: "11:00-12:00",
-  },
-  {
-    slot: "12:00-13:00",
-  },
-  {
-    slot: "13:00-14:00",
-  },
-  {
-    slot: "14:00-15:00",
-  },
-  {
-    slot: "15:00-16:00",
-  },
-  {
-    slot: "16:00-17:00",
-  },
-  {
-    slot: "17:00-18:00",
-  },
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
   ];
 
   try {
@@ -1008,7 +1028,7 @@ module.exports.getBookedDates = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // This is the api for fetching Eng details acc to current Date for engg crousel
 
 const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
@@ -1076,7 +1096,7 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
   }
 };
 
-//.......................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------...
 
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
@@ -1102,7 +1122,6 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Admin,
       token,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1112,7 +1131,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.createServiceAdmin = async (req, res) => {
   try {
@@ -1138,7 +1157,7 @@ module.exports.createServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
@@ -1146,35 +1165,40 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     if (ServiceEnggId) {
       const len = 5;
       console.log(selectedDate);
-      const today = new Date(selectedDate)
+      const today = new Date(selectedDate);
 
-      const dates = Array.from({
-        length: len
-      }, (_, i) => {
-        const previousDay = new Date(today);
-        previousDay.setDate(today.getDate() - 3 + i);
-        return previousDay.toLocaleDateString("en-GB");
-      });
+      const dates = Array.from(
+        {
+          length: len,
+        },
+        (_, i) => {
+          const previousDay = new Date(today);
+          previousDay.setDate(today.getDate() - 3 + i);
+          return previousDay.toLocaleDateString("en-GB");
+        }
+      );
 
-      const attendanceData = await Promise.all(dates.map(async (date) => {
-        const response = await EnggAttendanceServiceRecord.findOne({
-          ServiceEnggId,
-          Date: date
+      const attendanceData = await Promise.all(
+        dates.map(async (date) => {
+          const response = await EnggAttendanceServiceRecord.findOne({
+            ServiceEnggId,
+            Date: date,
+          });
+          return response;
         })
-        return response;
-      }))
+      );
 
       //console.log(attendanceData)
 
       return res.status(200).json({
-        attendanceData
+        attendanceData,
       });
     }
 
     return res.status(500).json({
       error: "Invalid Input",
-      message: error.message
-    })
+      message: error.message,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1183,6 +1207,8 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.approveLeaveByAdmin = async (req, res) => {
   try {
@@ -1220,7 +1246,7 @@ module.exports.approveLeaveByAdmin = async (req, res) => {
   }
 };
 
-// -----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // {armaan-dev}
 module.exports.createClientCallDetails = async (req, res) => {
   try {
@@ -1252,6 +1278,8 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.getClientCalls = async (req, res) => {
   try {
@@ -1302,6 +1330,8 @@ module.exports.getClientData = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1342,6 +1372,8 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.filterClient = async (req, res) => {
   try {
@@ -1433,6 +1465,8 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.searchClients = async (req, res) => {
   try {
@@ -1703,6 +1737,8 @@ const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MembershipType === type);
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
@@ -1748,15 +1784,154 @@ module.exports.createSpearParts = async (req, res) => {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
         subcategoryName: subcategoryName,
-      })
-      return res.status(200).json({ response })
+      });
+      return res.status(200).json({ response });
     }
-    return res.status(500).json({ error: "Please fill all fields in createSpearParts" })
-
+    return res
+      .status(500)
+      .json({ error: "Please fill all fields in createSpearParts" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({
-      error: "Internal server error in createSpearParts"
+      error: "Internal server error in createSpearParts",
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//by Preet-----
+
+//function to handle send Password reset otp on Email.
+
+module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const emailVerify = await serviceAdmin.findOne({ email });
+
+    let otp = await ForgetPassOTP.findOne({ email });
+
+    console.log(emailVerify);
+
+    if (!emailVerify) {
+      return res
+        .status(401)
+        .json({ message: "Enter Email is not Associated With Any Account" });
+    }
+
+    // Generate OTP
+    const otpValue = Math.floor(1000 + Math.random() * 9000);
+
+    if (otp) {
+      otp.otp = otpValue.toString(); 
+    } else {
+      otp = new ForgetPassOTP({
+        email: email,
+        otp: otpValue.toString(),
+      });
+    }
+
+    await otp.save();
+
+    //nodemailer logic ---------- starts ----------
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "psqrco@gmail.com",
+        pass: "tczb rxil pioe nrgd",
+      },
+    });
+
+    const message = `
+    <h1>Password Reset OTP</h1>
+    <p>Your OTP for password reset is: <strong>${otpValue}</strong></p>
+    <p>Please use this OTP to reset your password.</p>
+    <p>OTP valid for 5 minutes.</p>
+  `;
+
+    const info = await transporter.sendMail({
+      from: '"IEE LIFTS" <psqrco@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: "Password Reset OTP", // Subject line
+      text: "Hello world?", // plain text body
+      html: message, // html body
+    });
+    res.status(200).json({ message: "Email sent successfully", email });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server error while sending the email",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle send Password reset otp on Phone Number.
+// module.exports.sendPasswordResetOTPOnPhoneNumber = (req,res) =>{
+//   try {
+
+//   } catch (error) {
+
+//   }
+// }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle validate Forget Password OTP
+
+module.exports.ValidateOTPForgetPassword = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const verifyOTP = await ForgetPassOTP.find({ email });
+    if (!verifyOTP) {
+      return res
+        .status(404)
+        .json({ message: "no OPT is found in databse for this Email id" });
+    }
+
+    if (otp === verifyOTP[0].otp) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(200).json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({
+      error: "Internal server error while validatin the OTP",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle update password
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { newPassword, email } = req.body;
+
+    const updatedUser = await serviceAdmin.findOneAndUpdate(
+      { email: email },
+      { Password: newPassword },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error while updating the password" });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

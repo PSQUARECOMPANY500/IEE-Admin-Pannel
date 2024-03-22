@@ -71,6 +71,10 @@ export const CLOSE_MODAL = "CLOSE_MODAL";
 
 export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
 
+export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
+
+export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
 export const loginServiceAdminAction = (AdminId, Password) => {
@@ -93,7 +97,7 @@ export const loginServiceAdminAction = (AdminId, Password) => {
         window.location.href = "/Dashboard";
       }, 1000); // Delay in milliseconds
     } catch (error) {
-      toast.error("Invalid Credientials");
+      toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
     }
   };
@@ -484,10 +488,10 @@ export const requestAssignCallbackDetail = (callbackId) => {
     } catch (error) {
       console.log("error while fetching data", error);
     }
-  }
-}
+  };
+};
 
-export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */) => {
+export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
@@ -676,7 +680,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -700,7 +704,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -740,6 +744,8 @@ export const getFilterLocation = () => {
     } catch (error) {}
   };
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export const searchClients = (searchTerm) => {
   return async (dispatch) => {
@@ -812,6 +818,79 @@ export const getDetailByPinCode = async (pincode) => {
     const response = await axios.get(
       `https://api.postalpincode.in/pincode/${pincode}`
     );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ---by preet ---
+
+//action to handle sendOTP action
+
+export const sendOTPAction = async (email) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/SendOtpEmail`, {
+      email,
+    });
+    // console.log(response.data)
+    toast.success("Email Sent. Please check your inbox");
+    setTimeout(() => {
+      window.location.href = "/enterOTP";
+    }, 1000);
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+    toast.error("Please fill correct Details");
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle verify OTP
+
+export const VerifyOTPPasswordAction = (email, otp) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/veriyfyOTP`, {
+        email,
+        otp,
+      });
+      console.log(response.data);
+      dispatch({
+        type: VERIFY_OTP_PASSWORD,
+        payload: response.data,
+      });
+
+      if (response.data.success) {
+        toast.success("otp verified!! wait for Redirect...");
+      } else {
+        toast.error("Please Provide correct OTP Details");
+      }
+    } catch (error) {
+      console.log("error while fetching data", error);
+      toast.error("!!! something went Wrong");
+    }
+  };
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle update Passsword  (custom hooks)
+
+export const updatePassswordAction = async (email, newPassword) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/updatePassword`, {
+      email,
+      newPassword,
+    });
+    toast.success("Password updated Successfully, wait while redirecting...")
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 2000);
+
     return response.data;
   } catch (error) {
     console.log("error while fetching data", error);

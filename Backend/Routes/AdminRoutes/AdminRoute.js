@@ -107,8 +107,22 @@ router.post("/createSpearParts", adminContoller.createSpearParts);
 
 
 
-
+// ---- by preet 15/03/2024
 router.post("/loginAdmin",adminContoller.loginServiceAdmin);
+
+// ---- by preet 18/03/2024 
+
+
+//route to handle send the opt through email for performing the action of forgetting password
+router.post("/SendOtpEmail", adminContoller.sendPasswordResetOTPOnEmail);
+
+router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
+
+
+router.post("/updatePassword",adminContoller.updatePassword);
+
+
+
 
 
 module.exports = router;
