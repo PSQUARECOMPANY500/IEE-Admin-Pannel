@@ -291,14 +291,7 @@ const Sidebar = ( {children} ) => {
                   style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                  {/* {menuIcon ? (
-                    <FiChevronUp style={{ fontSize: "20px" }} />
-                  ) : (
-                  
-                    <FiChevronUp style={{ fontSize: "20px" }} />
-                  )} */}
-
-                  <FiChevronUp style={{ fontSize: "20px" }} />
+                     <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -349,7 +342,7 @@ const Sidebar = ( {children} ) => {
                 >
                   OFFICE
                 </span>
-                <span
+                {/* <span
                   style={{ fontSize: isOpen ? "16px" : "0px" }}
                   className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
                 >
@@ -358,6 +351,13 @@ const Sidebar = ( {children} ) => {
                   ) : (
                     <FaAngleDown />
                   )}
+                </span> */}
+
+<span
+                  style={{ fontSize: isOpen ? "16px" : "0px" }}
+                  className={`menu-icon ${officeMenuOpen  ? "rotate" : ""}` }   
+                >
+                     <FiChevronUp style={{ fontSize: "20px"}} />
                 </span>
               </label>
             </div>

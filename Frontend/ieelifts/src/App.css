@@ -262,6 +262,7 @@ li a {
 
 .fixed-content-navbar {
   position: fixed;
+top: 0;
   padding: 0px 15px;
   display: flex;
   flex-direction: column;
@@ -1604,11 +1605,10 @@ footer a:hover {
 }
 
 .parent-full-div {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-top: 25px;
   /* padding-top: 5px; */
+
   background: #ffffff;
   z-index: -1;
 }
@@ -1618,6 +1618,9 @@ footer a:hover {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
+box-shadow: 1px 2px 5px #99886B66;
+  border-radius: 10px;
+  
 }
 
 .tasks-section {
@@ -1671,12 +1674,12 @@ footer a:hover {
 }
 
 .task-description-section {
-  margin-top: 1rem;
-  display: grid;
+    display: grid;
+margin-top: 0.5rem;
   grid-template-columns: repeat(2, calc(50% - 1rem));
   justify-content: center;
   gap: 1rem;
-  min-height: 200px;
+  max-height: 300px;
   overflow-x: hidden;
   scroll-behavior: smooth;
   animation: changeText 0.7s linear forwards;
@@ -1686,7 +1689,7 @@ footer a:hover {
 
 .task-description-section:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  /* Change the color to your desired hover color */
+  
 }
 
 .task-description-section::-webkit-scrollbar {
@@ -2062,15 +2065,18 @@ footer a:hover {
 
 }
 
-.table-shadow {
-  height: 3.7rem;
+.table-shadow , .eng-table-shadow {
+  height:3.4rem;
   width: 96.5%;
   box-shadow: 0px 0px 5px #C1C1C180;
   position: absolute;
   z-index: 3;
   border-radius: 10px;
 }
-
+.eng-table-shadow {
+  width: 100%;
+  border-radius: 5px;
+}
 .my_table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -2125,7 +2131,7 @@ footer a:hover {
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px; */
 
   line-height: 0.9rem;
 }
@@ -2286,7 +2292,7 @@ footer a:hover {
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px; */
 
   line-height: 0.9rem;
 }
@@ -2378,6 +2384,7 @@ footer a:hover {
   cursor: pointer;
   height: 0;
   width: 0;
+  opacity: 0;
 }
 
 .checkbox.style-c input:checked~.checkbox__checkmark {

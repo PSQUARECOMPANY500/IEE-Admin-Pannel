@@ -180,7 +180,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
           {props.kanban ? (
             <div
-              className="task-description-section"
+              className="task-description-section Yello_Scrollbar"
               style={{ paddingTop: "0.5rem" }}
             >
               {/* -----------------------  araised ticker data here starts ------------------------------------- */}

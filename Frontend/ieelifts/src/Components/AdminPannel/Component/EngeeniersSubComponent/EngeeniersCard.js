@@ -18,8 +18,8 @@ import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActi
 const EngeeniersCard = () => {
 
   const [currentComponent, setCurrentComponent] = useState(null);
-  const [isFirst,setIsFirst]=useState(false);
-  const [isSecond,setIsSecond]=useState(false);
+  const [isFirst,setIsFirst]=useState(true);
+  const [isSecond,setIsSecond]=useState(true);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -32,7 +32,7 @@ const EngeeniersCard = () => {
       case "c4":
         return <SpareParts />;
       default:
-        return <Attendance />;
+        return <SpareParts />;
     }
   };
 
@@ -169,6 +169,8 @@ const EngeeniersCard = () => {
             <div className="ODetailsColumn">
               <h5 onClick={() => setCurrentComponent("c1")}>Task History</h5>
               <h5 onClick={() => setCurrentComponent("c2")}>Attendence</h5>
+              <h5 onClick={() => setCurrentComponent("c3")}>Rating</h5>
+              <h5 onClick={() => setCurrentComponent("c4")}>Spare parts</h5>
             </div>
             <div className="ODetails">{renderSelectedComponent()}</div>
           </div>

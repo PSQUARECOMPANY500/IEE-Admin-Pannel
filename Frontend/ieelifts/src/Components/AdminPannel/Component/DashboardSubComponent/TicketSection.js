@@ -253,7 +253,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-        <div className="my_table-container">
+        <div className="my_table-container Yello_Scrollbar">
           <div className="table-shadow"></div>
           <table>
             <thead>
