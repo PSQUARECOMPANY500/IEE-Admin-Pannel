@@ -34,8 +34,14 @@ const ClientFilterDropdown = () => {
       const filteredSelections = filterSelections.filter(
         (filter) => filter.type !== "name" && filter.type !== "date"
       );
-
-      setFilterSelections([...filteredSelections, { type, condition }]);
+      let select = filterSelections.filter(
+        (filter) => filter.type === "name" || filter.type === "date"
+      );
+      if (select.length && select[0].condition === condition) {
+        setFilterSelections([...filteredSelections]);
+      } else {
+        setFilterSelections([...filteredSelections, { type, condition }]);
+      }
     } else {
       const existingFilterIndex = filterSelections.findIndex(
         (filter) => filter.type === type && filter.condition === condition
@@ -177,6 +183,7 @@ const ClientFilterDropdown = () => {
                       </div>
                     );
                   }
+                  return null;
                 })}
               </div>
             )}

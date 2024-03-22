@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
 
-
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
@@ -103,12 +102,8 @@ router.get("/getMembership", adminContoller.getClientMembership);
 router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
+router.get("/getEngineerNames", adminContoller.getEngineerNames);
 
-
-
-
-
-router.post("/loginAdmin",adminContoller.loginServiceAdmin);
-
+router.post("/loginAdmin", adminContoller.loginServiceAdmin);
 
 module.exports = router;

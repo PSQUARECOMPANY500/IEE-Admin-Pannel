@@ -34,6 +34,7 @@ import { GET_FILTER_LOCATIONS } from "../Actions/AdminActions";
 import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
 import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
+import { GET_Engineer_Name } from "../Actions/AdminActions";
 // import { OPEN_MODAL } from "../Actions/AdminActions";
 // import { CLOSE_MODAL } from "../Actions/AdminActions";
 
@@ -543,6 +544,23 @@ export const filteringLocationsReducer = (state = locationsState, action) => {
       return {
         ...state,
         locations: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const engineerNameState = {
+  engineers: null,
+};
+
+export const engineersReducer = (state = engineerNameState, action) => {
+  switch (action.type) {
+    case GET_Engineer_Name:
+      return {
+        ...state,
+        engineers: action.payload,
       };
 
     default:

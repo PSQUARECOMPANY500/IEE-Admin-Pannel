@@ -36,6 +36,7 @@ import { membershipButtonLayoutReducer } from "../Reducers/AdminReducer";
 import { modalOpenerReducer } from "../Reducers/AdminReducer";
 // import { loginServiceAdminReducer } from "../Reducers/AdminReducer";
 import { loginAdminReducer } from "../Reducers/AdminReducer";
+import { engineersReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -73,6 +74,7 @@ const AdminRootReducer = combineReducers({
   membershipButtonLayoutReducer: membershipButtonLayoutReducer,
   modalOpenerReducer: modalOpenerReducer,
   loginAdminReducer: loginAdminReducer,
+  engineersReducer: engineersReducer,
 });
 
 export default AdminRootReducer;

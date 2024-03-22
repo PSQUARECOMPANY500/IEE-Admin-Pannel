@@ -25,7 +25,7 @@ const Sidebar = ({ children }) => {
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
 
-  const [isButtonOpen, setIsButtonOpen] = useState(false);
+  // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
   const [topBarHeading, setTopBarHeading] = useState("Default Heading");
@@ -35,7 +35,7 @@ const Sidebar = ({ children }) => {
   const [officeMenuOpen, setOfficeMenuOpen] = useState(false);
 
   const handleToggleClick = () => {
-    setIsButtonOpen((prevState) => !prevState);
+    // setIsButtonOpen((prevState) => !prevState);
     setIsOpen(!isOpen);
   };
 
@@ -49,7 +49,7 @@ const Sidebar = ({ children }) => {
     console.log("image clicked");
     setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
-    setIsButtonOpen((prevState) => !prevState);
+    // setIsButtonOpen((prevState) => !prevState);
   };
 
   const mainToogle = () => {
@@ -396,8 +396,8 @@ const Sidebar = ({ children }) => {
 
             {/* OFFICE MENUE items goes here ends */}
           </nav>
-          <div className="circle">SOS</div>
         </div>
+          <div className="circle">SOS</div>
       </div>
       <main>{children}</main>
     </div>

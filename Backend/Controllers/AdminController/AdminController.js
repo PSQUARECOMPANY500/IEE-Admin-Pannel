@@ -1438,7 +1438,6 @@ module.exports.filterClient = async (req, res) => {
     });
 
     let commonData = [];
-
     if (
       membershipData &&
       membershipData.length &&
@@ -1493,7 +1492,11 @@ module.exports.filterClient = async (req, res) => {
     }
     switch (sortType) {
       case "date":
-        if (commonData.length) {
+        if (
+          membershipFilter.length ||
+          elevatorTypeFilter.length ||
+          locationFilter.filter
+        ) {
           if (sortcondition === "newest") {
             commonData.sort(
               (a, b) => new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
@@ -1528,7 +1531,11 @@ module.exports.filterClient = async (req, res) => {
         }
         break;
       case "name":
-        if (commonData.length) {
+        if (
+          membershipFilter.length ||
+          elevatorTypeFilter.length ||
+          locationFilter.filter
+        ) {
           if (sortcondition === "a-z") {
             commonData.sort((a, b) => a.name.localeCompare(b.name));
           } else if (sortcondition === "z-a") {
@@ -1863,6 +1870,24 @@ module.exports.getFilteringLocations = async (req, res) => {
     const locations = await LocationSchema.find();
 
     res.status(201).json({ success: true, locations });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+module.exports.getEngineerNames = async (req, res) => {
+  try {
+    const engineerDetails = await ServiceEnggData.find();
+    let engineerNames = [];
+
+    console.log(engineerNames);
+    engineerDetails.forEach((engineer) => {
+      engineerNames.push(engineer.EnggName);
+    });
+
+    res.status(200).json({ success: true, engineerNames });
   } catch (error) {
     res.status(500).json({
       error: "Internal server error",

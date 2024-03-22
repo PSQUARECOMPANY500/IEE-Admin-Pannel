@@ -13,6 +13,10 @@ import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminAct
 import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
 import AddTicketModals from "./AddTicketModals";
+import {
+  getFilterLocation,
+  getEngineerNames,
+} from "../../../../ReduxSetup/Actions/AdminActions";
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
@@ -46,6 +50,121 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [allCD, setallCD] = useState([]);
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [filterConditions, setfilterConditions] = useState();
+
+  useEffect(() => {
+    const fetchData = () => {
+      dispatch(getFilterLocation());
+      dispatch(getEngineerNames());
+    };
+    fetchData();
+  }, [dispatch]);
+  const locations = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
+  );
+  const engineers = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.engineersReducer?.engineers?.engineerNames
+  );
+
+  const filterDropdowns = [
+    { name: "status", options: ["Unassigned", "Assigned", "Resolved"] },
+    {
+      name: "engineers",
+      options: engineers,
+    },
+    { name: "location", options: locations },
+    {
+      name: "type",
+      options: ["Door", "Lights", "Fan", "Buttons", "Lift", "Others"],
+    },
+  ];
+
+  useEffect(() => {
+    if (filterConditions) {
+      let data = filteredCD;
+      const statusFilter = filterConditions.filter(
+        (filter) => filter.type === "status"
+      );
+      const engineerFilter = filterConditions.filter(
+        (filter) => filter.type === "engineers"
+      );
+      const locationFilter = filterConditions.filter(
+        (filter) => filter.type === "location"
+      );
+      const typeFilter = filterConditions.filter(
+        (filter) => filter.type === "type"
+      );
+      let statusData,
+        engineerData,
+        locationData,
+        typeData = [];
+      if (statusFilter) {
+        statusFilter.forEach(async (status) => {
+          const { condition } = status;
+          let sData = [];
+          if (condition.toLowerCase() === "assigned") {
+            sData = data.filter((d) => d.isAssigned === true);
+          }
+          if (condition.toLowerCase() === "unassigned") {
+            sData = data.filter((d) => d.isAssigned === false);
+          }
+          // let sData = data.filter(
+          //   (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
+          // );
+          if (statusData) {
+            statusData = [...statusData, ...sData];
+          } else {
+            statusData = [...sData];
+          }
+        });
+      }
+
+      if (engineerFilter) {
+        engineerFilter.forEach((engineer) => {
+          const { condition } = engineer;
+          let eData = data.filter(
+            (d) => d.AssignedEng.name === condition
+            // console.log(d);
+          );
+          if (engineerData) {
+            engineerData = [...engineerData, ...eData];
+          } else {
+            engineerData = [...eData];
+          }
+        });
+      }
+
+      if (typeFilter) {
+        typeFilter.forEach((type) => {
+          const { condition } = type;
+          let tData = data.filter(
+            (d) => d.Type.toLowerCase() === condition.toLowerCase()
+          );
+          if (typeData) {
+            typeData = [...typeData, ...tData];
+          } else {
+            typeData = [...tData];
+          }
+        });
+        console.log("typeData: ", typeData);
+      }
+      // data.filter(
+      //   (client) =>
+      //     statusData.some((statusClient) => statusClient._id === client._id) &&
+      //     engineerData.some(
+      //       (engineerClient) => engineerClient._id === client._id
+      //     ) &&
+      //     locationData.some(
+      //       (locationClient) => locationClient._id === client._id
+      //     ) &&
+      //     typeData.some((typeClient) => typeClient._id === client._id)
+      // );
+      let responseData = [];
+      // console.log("this is response Data", responseData);
+    }
+  }, [filterConditions]);
 
   useEffect(() => {
     setFilteredCD(fetchCallbacks);
@@ -174,8 +293,7 @@ const TicketSection = ({ setTicketUpdate }) => {
       <div className="child-ticket-div">
         <div className="heading-icon-align">
           <div className="ticket-section-heading">
-            <span style={{textTransform:'capitalize'}}>Tickets</span>
-        
+            <span style={{ textTransform: "capitalize" }}>Tickets</span>
           </div>
           {/* ............................................................ax13-search...................................................... */}
 
@@ -215,7 +333,11 @@ const TicketSection = ({ setTicketUpdate }) => {
               </p>
               {showTicketFilter && (
                 <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown className="search-ticket-filter-icon" />
+                  <FilterDropdown
+                    className="search-ticket-filter-icon"
+                    filterDropdowns={filterDropdowns}
+                    setfilterConditions={setfilterConditions}
+                  />
                 </div>
               )}
             </div>

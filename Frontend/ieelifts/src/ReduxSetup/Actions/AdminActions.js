@@ -60,6 +60,7 @@ export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
 export const GET_FILTER_LOCATIONS = "GET_FILTER_LOCATIONS";
+export const GET_Engineer_Name = "GET_Engineer_Name";
 export const GET_SEARCHED_CLIENTS = "GET_SEARCHED_CLIENTS";
 export const CHANGE_MEMBERSHIP_LAYOUT_BUTTON =
   "CHANGE_MEMBERSHIP_LAYOUT_BUTTON";
@@ -731,6 +732,20 @@ export const getFilterLocation = () => {
       );
       dispatch({
         type: GET_FILTER_LOCATIONS,
+        payload: response.data,
+      });
+    } catch (error) {}
+  };
+};
+
+export const getEngineerNames = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerNames`
+      );
+      dispatch({
+        type: GET_Engineer_Name,
         payload: response.data,
       });
     } catch (error) {}

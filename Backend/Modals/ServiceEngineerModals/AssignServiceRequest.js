@@ -35,8 +35,8 @@ const AssignRequest = new Schema(
     },
     ServiceProcess: {
       type: String,
-      enum: ["onGoing", "completed", "InCompleted"],
-      default: "InCompleted",
+      enum: ["onGoing", "completed", "scheduled"],
+      default: "scheduled",
     },
   },
   {
