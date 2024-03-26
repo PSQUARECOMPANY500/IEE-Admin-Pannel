@@ -8,8 +8,14 @@ import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequ
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
 import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
+import {
+  getFilterLocation,
+  getEngineerNames,
+} from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const RequestScheduledSection = ({ setRenderTicket }) => {
+  const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   // modal manage states
 
@@ -19,6 +25,36 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
 
+  const [filterConditions, setfilterConditions] = useState();
+ 
+  useEffect(() => {
+    const fetchData = () => {
+      dispatch(getFilterLocation());
+      dispatch(getEngineerNames());
+    };
+    fetchData();
+  }, [dispatch]);
+  const locations = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
+  );
+  const engineers = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.engineersReducer?.engineers?.engineerNames
+  );
+  const filterDropdowns = [
+    { name: "status", options: ["Unassigned", "Assigned", "Resolved"] },
+    {
+      name: "engineers",
+      options: engineers,
+    },
+    { name: "location", options: locations },
+    {
+      name: "type",
+      options: ["Door", "Light", "Fan", "Buttons", "Lift", "Others"],
+    },
+    { name: "clear", options: [] }
+  ];
   const handleTicketFilter = () => {
     setShowTicketFilter(!showTicketFilter);
   };
@@ -120,7 +156,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               </p>
               {showTicketFilter && (
                 <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown className="search-ticket-filter-icon" />
+                  <FilterDropdown className="search-ticket-filter-icon"
+                    filterDropdowns={filterDropdowns}
+                    setfilterConditions={setfilterConditions}
+                  />
                 </div>
               )}
             </div>
@@ -137,17 +176,17 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               </p>
             </div>
             {showTicketModal &&
-             (
-              <AddTicketOnCallRequests
-                   
-                closeModal={closeModal}
-                showTicketModal={showTicketModal}
-                setRenderTicket={setRenderTicket}
-                requestSection={true}
-              />
+              (
+                <AddTicketOnCallRequests
 
-            )
-            
+                  closeModal={closeModal}
+                  showTicketModal={showTicketModal}
+                  setRenderTicket={setRenderTicket}
+                  requestSection={true}
+                />
+
+              )
+
             }
           </div>
         </div>
@@ -159,6 +198,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             <ServiceRequestTable
               setRenderTicket2={setRenderTicket}
               searchText={searchText}
+              filterConditions={filterConditions}
             />
           ) : (
             <ServiceScheduledTable searchText={searchText} />
