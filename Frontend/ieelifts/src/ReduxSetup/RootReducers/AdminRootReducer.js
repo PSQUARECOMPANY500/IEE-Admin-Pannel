@@ -36,6 +36,7 @@ import { membershipButtonLayoutReducer } from "../Reducers/AdminReducer";
 import { modalOpenerReducer } from "../Reducers/AdminReducer";
 // import { loginServiceAdminReducer } from "../Reducers/AdminReducer";
 import { loginAdminReducer } from "../Reducers/AdminReducer";
+import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
 import { engineersReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
@@ -74,6 +75,7 @@ const AdminRootReducer = combineReducers({
   membershipButtonLayoutReducer: membershipButtonLayoutReducer,
   modalOpenerReducer: modalOpenerReducer,
   loginAdminReducer: loginAdminReducer,
+  VerifyOTPPasswordReducer:VerifyOTPPasswordReducer,
   engineersReducer: engineersReducer,
 });
 

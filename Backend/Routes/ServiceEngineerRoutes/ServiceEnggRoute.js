@@ -18,7 +18,7 @@ router.post("/createEnggLocationOnAttendance", serviceEnggContoller.CreateEnggLo
 //------------------------------------- All Get Requests -----------------------------------------
 // router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
 // router.get("/getAllServices/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignedServices);
-// router.get('/getServiceEngg/:EnggId', verifyEnggToken, serviceEnggContoller.getEnggDetail);
+// router.get('/getServiceEngg/:EnggId', verifyEnggToken, serviceEnggContoller.getEnggDetail);  
 // router.get('/getEngScheduleData', verifyEnggTokrven, seiceEnggContoller.getEngScheduleData);
 
 //comment the below section and uuncomment the upper section (below section is only for the ease for pankaj sir)
@@ -71,9 +71,6 @@ const checkInAttendance = async (req, res, next) => {
   }
 };
 
-
-
-
 const checkOutAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
   if (Id) {
@@ -108,12 +105,29 @@ router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLu
 router.post("/enggLeaveServiceRequest", serviceEnggContoller.enggLeaveServiceRequest)
 router.get("/enggLeaveRecord", serviceEnggContoller.enggLeaveRecord)
 router.post("/generateOtpForClient", serviceEnggContoller.generateOtpForClient)
-router.get("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
+router.post("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
 
 router.post("/EnggReportResponse", serviceEnggContoller.EnggReportResponse)
 router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFetch)
 router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance)
 router.get("/EnggCheckInCheckOutDetals/:ServiceEnggId", serviceEnggContoller.EnggCheckInCheckOutDetals)
+
+
+// --- by preet 15/03/2024 ---
+router.get("/getAssignCalbackDetailForEnggApp/:callbackId",serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId);
+router.get("/getAssignServiceRequestDetailForEnggApp/:RequestId",serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId);
+
+// --- by preet 18/03/2024 ---
+router.get("/getAssignedChecklist/:checklistId",serviceEnggContoller.getChecklistByIdAndServiceType);
+
+//-----by preet 21/03/2024 ---
+
+router.get("/getSparePart",serviceEnggContoller.getAllSparePartdetails);
+
+//----by preet 22/03/2024 ---
+
+router.post("/generateReport", serviceEnggContoller.GenerateReportByEngg);
+
 
 
 module.exports = router;

@@ -38,6 +38,25 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 // import { OPEN_MODAL } from "../Actions/AdminActions";
 // import { CLOSE_MODAL } from "../Actions/AdminActions";
 
+import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+//reducer to handle VerifyOTPPasswordReducer
+
+const initialState24 = {
+  isSuccess:null,
+}
+
+export const VerifyOTPPasswordReducer = (state=initialState24, action) => {
+  switch (action.type) {
+    case VERIFY_OTP_PASSWORD:
+      return {...state, isSuccess:action.payload};
+      default:
+      return state
+  }
+
+} 
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
 const initialStates = {
@@ -618,3 +637,5 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+

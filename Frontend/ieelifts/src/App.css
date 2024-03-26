@@ -5720,14 +5720,14 @@ element.style {
   width: 100%;
 }
 .add-engg-modal {
-  position: absolute;
-  top: 8%;
-  left: 3%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
   width: 85%;
-  /* height: 85%; */
   background: white;
   z-index: 6;
   border-radius: 5px;
+  transform: translate(-50%, -50%);
 }
 /*-------------add engg button  css in the top bar end --------------------------------- */
 

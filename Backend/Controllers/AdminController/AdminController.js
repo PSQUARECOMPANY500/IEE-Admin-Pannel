@@ -32,9 +32,13 @@ const SpearParts = require("../../Modals/SpearParts/SpearParts");
 
 const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilter");
 
+const ForgetPassOTP = require("../../Modals/OTP/ForgetPasswordOtp");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
+
+const nodemailer = require("nodemailer");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -125,7 +129,6 @@ module.exports.getEnggCrouserData = async (req, res) => {
     });
   }
 };
-
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
     slot
@@ -1024,7 +1027,7 @@ module.exports.getBookedDates = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // This is the api for fetching Eng details acc to current Date for engg crousel
 
 const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
@@ -1092,7 +1095,7 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
   }
 };
 
-//.......................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------...
 
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
@@ -1127,7 +1130,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.createServiceAdmin = async (req, res) => {
   try {
@@ -1153,7 +1156,7 @@ module.exports.createServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
@@ -1204,6 +1207,8 @@ module.exports.fetchEnggAttendance = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.approveLeaveByAdmin = async (req, res) => {
   try {
     const { id, IsApproved } = req.body;
@@ -1240,7 +1245,7 @@ module.exports.approveLeaveByAdmin = async (req, res) => {
   }
 };
 
-// -----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // {armaan-dev}
 module.exports.createClientCallDetails = async (req, res) => {
   try {
@@ -1272,6 +1277,8 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.getClientCalls = async (req, res) => {
   try {
@@ -1322,6 +1329,8 @@ module.exports.getClientData = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1362,6 +1371,8 @@ module.exports.getMembershipHistory = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.filterClient = async (req, res) => {
   try {
@@ -1574,6 +1585,8 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.searchClients = async (req, res) => {
   try {
@@ -1844,6 +1857,8 @@ const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MembershipType === type);
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
@@ -1920,3 +1935,141 @@ module.exports.createSpearParts = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//by Preet-----
+
+//function to handle send Password reset otp on Email.
+
+module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const emailVerify = await serviceAdmin.findOne({ email });
+
+    let otp = await ForgetPassOTP.findOne({ email });
+
+    console.log(emailVerify);
+
+    if (!emailVerify) {
+      return res
+        .status(401)
+        .json({ message: "Enter Email is not Associated With Any Account" });
+    }
+
+    // Generate OTP
+    const otpValue = Math.floor(1000 + Math.random() * 9000);
+
+    if (otp) {
+      otp.otp = otpValue.toString(); 
+    } else {
+      otp = new ForgetPassOTP({
+        email: email,
+        otp: otpValue.toString(),
+      });
+    }
+
+    await otp.save();
+
+    //nodemailer logic ---------- starts ----------
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "psqrco@gmail.com",
+        pass: "tczb rxil pioe nrgd",
+      },
+    });
+
+    const message = `
+    <h1>Password Reset OTP</h1>
+    <p>Your OTP for password reset is: <strong>${otpValue}</strong></p>
+    <p>Please use this OTP to reset your password.</p>
+    <p>OTP valid for 5 minutes.</p>
+  `;
+
+    const info = await transporter.sendMail({
+      from: '"IEE LIFTS" <psqrco@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: "Password Reset OTP", // Subject line
+      text: "Hello world?", // plain text body
+      html: message, // html body
+    });
+    res.status(200).json({ message: "Email sent successfully", email });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server error while sending the email",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle send Password reset otp on Phone Number.
+// module.exports.sendPasswordResetOTPOnPhoneNumber = (req,res) =>{
+//   try {
+
+//   } catch (error) {
+
+//   }
+// }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle validate Forget Password OTP
+
+module.exports.ValidateOTPForgetPassword = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const verifyOTP = await ForgetPassOTP.find({ email });
+    if (!verifyOTP) {
+      return res
+        .status(404)
+        .json({ message: "no OPT is found in databse for this Email id" });
+    }
+
+    if (otp === verifyOTP[0].otp) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(200).json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).json({
+      error: "Internal server error while validatin the OTP",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle update password
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { newPassword, email } = req.body;
+
+    const updatedUser = await serviceAdmin.findOneAndUpdate(
+      { email: email },
+      { Password: newPassword },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error while updating the password" });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
