@@ -12,6 +12,10 @@ const FilterDropdown = ({
   const [filterSelections, setFilterSelections] = useState([]);
 
   const handleFilter = (filterName) => {
+    if (filterName === "clear") {
+      setFilterSelections([]);
+      setfilterConditions([]);
+    }
     setOpenFilter((prevFilter) =>
       prevFilter === filterName ? null : filterName
     );
@@ -66,12 +70,13 @@ const FilterDropdown = ({
                   className="filter-icons"
                   onClick={() => handleFilter(dropdown.name)}
                 >
-                  <span>{`By ${
-                    dropdown.name === "engineers" ? "SE Names" : dropdown.name
-                  }`}</span>
-                  <span>
-                    <IoChevronDownSharp />
-                  </span>
+                  <span>{`By ${dropdown.name === "engineers" ? "SE Names" : dropdown.name
+                    }`}</span>
+                  {
+                    dropdown.name !== "clear" && (<span>
+                      <IoChevronDownSharp />
+                    </span>)
+                  }
                 </div>
                 <div
                   className="listing-filter"
@@ -93,18 +98,17 @@ const FilterDropdown = ({
                               : option
                           );
                         }}
-                        className={`${
-                          filterSelections.some(
-                            (selection) =>
-                              selection.type === dropdown.name &&
-                              selection.condition ===
-                                (dropdown.name === "location"
-                                  ? option.location
-                                  : option)
-                          )
-                            ? "selected-filter"
-                            : ""
-                        }`}
+                        className={`${filterSelections.some(
+                          (selection) =>
+                            selection.type === dropdown.name &&
+                            selection.condition ===
+                            (dropdown.name === "location"
+                              ? option.location
+                              : option)
+                        )
+                          ? "selected-filter"
+                          : ""
+                          }`}
                       >
                         {dropdown.name === "location"
                           ? option.location

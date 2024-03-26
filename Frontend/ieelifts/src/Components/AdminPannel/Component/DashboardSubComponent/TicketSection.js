@@ -50,12 +50,17 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [allCD, setallCD] = useState([]);
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+
+  // ----------------------------------------------{/armaan}-------------------------------------------------------------
   const [filterConditions, setfilterConditions] = useState();
+  const [filterData, setFilterData] = useState([]);
+  const [getFilterConditions, setGetFilterConditions] = useState(false);
 
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
       dispatch(getEngineerNames());
+      setGetFilterConditions(false);
     };
     fetchData();
   }, [dispatch]);
@@ -77,12 +82,17 @@ const TicketSection = ({ setTicketUpdate }) => {
     { name: "location", options: locations },
     {
       name: "type",
-      options: ["Door", "Lights", "Fan", "Buttons", "Lift", "Others"],
+      options: ["Door", "Light", "Fan", "Buttons", "Lift", "Others"],
     },
+    { name: "clear", options: [] }
   ];
 
   useEffect(() => {
-    if (filterConditions) {
+    if (filterConditions && filterConditions.length === 0) {
+      setGetFilterConditions(false);
+      setFilterData([]);
+    }
+    if (filterConditions && filterConditions.length > 0) {
       let data = filteredCD;
       const statusFilter = filterConditions.filter(
         (filter) => filter.type === "status"
@@ -110,9 +120,6 @@ const TicketSection = ({ setTicketUpdate }) => {
           if (condition.toLowerCase() === "unassigned") {
             sData = data.filter((d) => d.isAssigned === false);
           }
-          // let sData = data.filter(
-          //   (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
-          // );
           if (statusData) {
             statusData = [...statusData, ...sData];
           } else {
@@ -122,11 +129,12 @@ const TicketSection = ({ setTicketUpdate }) => {
       }
 
       if (engineerFilter) {
+        let eData = []
         engineerFilter.forEach((engineer) => {
           const { condition } = engineer;
-          let eData = data.filter(
+          eData = data.filter(
             (d) => d.AssignedEng.name === condition
-            // console.log(d);
+
           );
           if (engineerData) {
             engineerData = [...engineerData, ...eData];
@@ -137,10 +145,11 @@ const TicketSection = ({ setTicketUpdate }) => {
       }
 
       if (typeFilter) {
+        let tData = [];
         typeFilter.forEach((type) => {
           const { condition } = type;
-          let tData = data.filter(
-            (d) => d.Type.toLowerCase() === condition.toLowerCase()
+          tData = data.filter(
+            (d) => d.TypeOfIssue.toLowerCase() === condition.toLowerCase()
           );
           if (typeData) {
             typeData = [...typeData, ...tData];
@@ -148,27 +157,69 @@ const TicketSection = ({ setTicketUpdate }) => {
             typeData = [...tData];
           }
         });
-        console.log("typeData: ", typeData);
       }
-      // data.filter(
-      //   (client) =>
-      //     statusData.some((statusClient) => statusClient._id === client._id) &&
-      //     engineerData.some(
-      //       (engineerClient) => engineerClient._id === client._id
-      //     ) &&
-      //     locationData.some(
-      //       (locationClient) => locationClient._id === client._id
-      //     ) &&
-      //     typeData.some((typeClient) => typeClient._id === client._id)
-      // );
+      if (locationFilter) {
+        let lData = [];
+        locationFilter.forEach((location) => {
+          const { condition } = location;
+          lData = data.filter(
+            (d) => d.clientDetail.Address.toLowerCase().includes(condition.toLowerCase())
+          );
+          if (locationData) {
+            locationData = [...locationData, ...lData];
+          } else {
+            locationData = [...lData];
+          }
+        });
+      }
+
       let responseData = [];
-      // console.log("this is response Data", responseData);
+      if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
+        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
+      }
+      else if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (locationData && locationData.length > 0)) {
+        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => locationData.includes(d));
+      }
+      else if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (typeData && typeData.length > 0)) {
+        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => typeData.includes(d));
+      }
+      else if ((statusData && statusData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
+        responseData = statusData.filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
+      }
+      else if ((engineerData && engineerData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
+        responseData = engineerData.filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
+      }
+      else if (statusData && statusData.length > 0 && engineerData && engineerData.length > 0) {
+        responseData = statusData.filter((d) => engineerData.includes(d));
+      }
+      else if (statusData && statusData.length > 0 && locationData && locationData.length > 0) {
+        responseData = statusData.filter((d) => locationData.includes(d));
+      }
+      else if (statusData && statusData.length > 0 && typeData && typeData.length > 0) {
+        responseData = statusData.filter((d) => typeData.includes(d));
+      }
+      else if (engineerData && engineerData.length > 0 && locationData && locationData.length > 0) {
+        responseData = engineerData.filter((d) => locationData.includes(d));
+      }
+      else if (engineerData && engineerData.length > 0 && typeData && typeData.length > 0) {
+        responseData = engineerData.filter((d) => typeData.includes(d));
+      }
+      else if (locationData && locationData.length > 0 && typeData && typeData.length > 0) {
+        responseData = locationData.filter((d) => typeData.includes(d));
+      }
+      else {
+        responseData = statusData || engineerData || locationData || typeData;
+      }
+      setFilterData(responseData);
+      setGetFilterConditions(true);
     }
   }, [filterConditions]);
 
+  // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
+    setGetFilterConditions(false);
   }, [fetchCallbacks]);
 
   useEffect(() => {
@@ -237,14 +288,21 @@ const TicketSection = ({ setTicketUpdate }) => {
   //.............................................................{/armaan}.................
 
   useEffect(() => {
-    if (fetchCallbacks) {
+    if (fetchCallbacks && !getFilterConditions) {
       setCheckboxStates(Array(fetchCallbacks.length).fill(false));
+    }
+    if (getFilterConditions) {
+      setCheckboxStates(Array(filterData.length).fill(false));
     }
   }, [fetchCallbacks]);
   const handleCheckBoxAll = () => {
-    if (fetchCallbacks) {
+    if (fetchCallbacks && !getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(fetchCallbacks.length).fill(!allChecked));
+    }
+    if (getFilterConditions) {
+      const allChecked = checkboxStates.every((isChecked) => isChecked);
+      setCheckboxStates(Array(filterData.length).fill(!allChecked));
     }
   };
   const handleCheckBoxSingle = (index) => {
@@ -439,134 +497,264 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </tr>
                 </>
               ) : (
-                filteredCD.map((data, index) => {
-                  const currentCallbackId = data.callbackId;
-                  const EngName = data.AssignedEng?.name;
-                  const EngId = data.AssignedEng?.id;
-                  const isAssigned = data.isAssigned;
-                  const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
-                  const currentTime = new Date();
-                  // Calculate time difference in milliseconds
-                  const timeDifference = currentTime - createdAtTime;
-                  const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
+                getFilterConditions ? (
+                  filterData.map((data, index) => {
+                    const currentCallbackId = data.callbackId;
+                    const EngName = data.AssignedEng?.name;
+                    const EngId = data.AssignedEng?.id;
+                    const isAssigned = data.isAssigned;
+                    const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
+                    const currentTime = new Date();
+                    // Calculate time difference in milliseconds
+                    const timeDifference = currentTime - createdAtTime;
+                    const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-                  // Check if the time difference is greater than or equal to 30 minutes
-                  const isTimeoutData =
-                    timeDifference >= thirtyMinutesInMilliseconds;
-                  return (
-                    <tr className="selected" key={index}>
-                      <td>
-                        {" "}
-                        <CheckBox
-                          id={`checkbox-${index}`}
-                          checked={checkboxStates[index]}
-                          handleCheckboxChange={() =>
-                            handleCheckBoxSingle(index)
-                          }
-                        />
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data.JobOrderNumber}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data?.clientDetail?.name}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data?.clientDetail?.PhoneNumber}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        <div className="dropdown-address">
-                          <span
-                            className={
-                              !isAssigned && isTimeoutData ? "timeout-data" : ""
+                    // Check if the time difference is greater than or equal to 30 minutes
+                    const isTimeoutData =
+                      timeDifference >= thirtyMinutesInMilliseconds;
+                    return (
+                      <tr className="selected" key={index}>
+                        <td>
+                          {" "}
+                          <CheckBox
+                            id={`checkbox-${index}`}
+                            checked={checkboxStates[index]}
+                            handleCheckboxChange={() =>
+                              handleCheckBoxSingle(index)
                             }
-                          >
-                            {limitAddress(data?.clientDetail?.Address, 15)}
-                          </span>
+                          />
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.JobOrderNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.name}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.PhoneNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          <div className="dropdown-address">
+                            <span
+                              className={
+                                !isAssigned && isTimeoutData ? "timeout-data" : ""
+                              }
+                            >
+                              {limitAddress(data?.clientDetail?.Address, 15)}
+                            </span>
 
-                          <div className="dropdown-adddress-menu">
-                            <div className="drop-address">
-                              <p
-                                className={
-                                  !isAssigned && isTimeoutData
-                                    ? "timeout-data"
-                                    : ""
-                                }
-                              >
-                                {data?.clientDetail?.Address}
-                              </p>
+                            <div className="dropdown-adddress-menu">
+                              <div className="drop-address">
+                                <p
+                                  className={
+                                    !isAssigned && isTimeoutData
+                                      ? "timeout-data"
+                                      : ""
+                                  }
+                                >
+                                  {data?.clientDetail?.Address}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data.Description}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data.TypeOfIssue}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data.callbackDate}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
-                        {data.callbackTime}
-                      </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                        onClick={() =>
-                          openModal(1, currentCallbackId, EngId, isAssigned)
-                        }
-                      >
-                        {isAssigned ? (
-                          <AssignDropdown
-                            customAssignName="assignNameColor"
-                            name={EngName}
-                            isAssigned={isAssigned}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.Description}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.TypeOfIssue}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackDate}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackTime}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                          onClick={() =>
+                            openModal(1, currentCallbackId, EngId, isAssigned)
+                          }
+                        >
+                          {isAssigned ? (
+                            <AssignDropdown
+                              customAssignName="assignNameColor"
+                              name={EngName}
+                              isAssigned={isAssigned}
+                            />
+                          ) : (
+                            <AssignDropdown
+                              customAssign="assignColor"
+                              name="Assign"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )
+                  : filteredCD.map((data, index) => {
+                    const currentCallbackId = data.callbackId;
+                    const EngName = data.AssignedEng?.name;
+                    const EngId = data.AssignedEng?.id;
+                    const isAssigned = data.isAssigned;
+                    const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
+                    const currentTime = new Date();
+                    // Calculate time difference in milliseconds
+                    const timeDifference = currentTime - createdAtTime;
+                    const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+                    // Check if the time difference is greater than or equal to 30 minutes
+                    const isTimeoutData =
+                      timeDifference >= thirtyMinutesInMilliseconds;
+                    return (
+                      <tr className="selected" key={index}>
+                        <td>
+                          {" "}
+                          <CheckBox
+                            id={`checkbox-${index}`}
+                            checked={checkboxStates[index]}
+                            handleCheckboxChange={() =>
+                              handleCheckBoxSingle(index)
+                            }
                           />
-                        ) : (
-                          <AssignDropdown
-                            customAssign="assignColor"
-                            name="Assign"
-                          />
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.JobOrderNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.name}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data?.clientDetail?.PhoneNumber}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          <div className="dropdown-address">
+                            <span
+                              className={
+                                !isAssigned && isTimeoutData ? "timeout-data" : ""
+                              }
+                            >
+                              {limitAddress(data?.clientDetail?.Address, 15)}
+                            </span>
+
+                            <div className="dropdown-adddress-menu">
+                              <div className="drop-address">
+                                <p
+                                  className={
+                                    !isAssigned && isTimeoutData
+                                      ? "timeout-data"
+                                      : ""
+                                  }
+                                >
+                                  {data?.clientDetail?.Address}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.Description}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.TypeOfIssue}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackDate}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                        >
+                          {data.callbackTime}
+                        </td>
+                        <td
+                          className={
+                            !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          }
+                          onClick={() =>
+                            openModal(1, currentCallbackId, EngId, isAssigned)
+                          }
+                        >
+                          {isAssigned ? (
+                            <AssignDropdown
+                              customAssignName="assignNameColor"
+                              name={EngName}
+                              isAssigned={isAssigned}
+                            />
+                          ) : (
+                            <AssignDropdown
+                              customAssign="assignColor"
+                              name="Assign"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
               )}
             </tbody>
 
