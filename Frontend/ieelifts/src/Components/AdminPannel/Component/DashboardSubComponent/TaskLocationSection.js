@@ -113,9 +113,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   const passData = () => { };
 
-  const handleFilter = () => {
-    setShowFilter(!showFilter);
-  };
 
   useEffect(() => {
     // console.log("in useEffect of task for filter: ", filterConditions);
