@@ -16,6 +16,7 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
           height="50"
           viewBox={viewBox}
           xmlns="http://www.w3.org/2000/svg"
+        
         >
           <circle className="background" cx="25" cy="25" r={radius} />
 
@@ -28,7 +29,7 @@ const TaskPieChart = ({ totalTasks, completedTasks }) => {
             style={{
               strokeDasharray: dashArray,
               strokeDashoffset: dashOffset,
-              boxShadow: 'inset 1px 2px 3px rgba(0, 0, 0, 0.29)'
+     
             }}
           />
         </svg>

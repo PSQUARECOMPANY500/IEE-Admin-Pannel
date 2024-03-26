@@ -29,8 +29,10 @@ const ClientTableView = ({ clientData }) => {
 
   return (
     <div className="table_view">
+
       <div className="sub_table_view">
         <div className="client_table-container">
+          <div className="table-shadow"></div>
           <table>
             <thead>
               <tr>

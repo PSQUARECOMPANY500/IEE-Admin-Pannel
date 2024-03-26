@@ -68,10 +68,12 @@ code {
     transform: scale(0.8);
   }
 }
+
 @keyframes gooeyEffect2 {
   0% {
     transform: scale(0.8);
   }
+
   100% {
     transform: scale(1.2);
   }
@@ -356,12 +358,15 @@ code {
 .seleceted_SubCard_Background_Warrenty {
   background-color: #0f351d;
 }
+
 .seleceted_SubCard_Background_Platinum {
   background-color: #ff7f00;
 }
+
 .seleceted_SubCard_Background_Gold {
   background-color: #f8ac1d;
 }
+
 .seleceted_SubCard_Background_Silver {
   background-color: #b7b7b7;
 }
@@ -1567,57 +1572,90 @@ code {
 
 /* Table View  */
 
-.table_view {
+.table_view,
+.spare-part-table_view {
   width: 100%;
-  height: 90%;
+  height: 85%;
   position: relative;
   padding: 1.5rem;
   margin-top: 5%;
   padding-bottom: 0.5rem;
 }
 
-.sub_table_view {
+.spare-part-table_view {
+  padding: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+
+}
+
+.sub_table_view,
+.spare-part-sub-table-view {
   height: 100%;
   width: 100%;
   background-color: white;
   position: relative;
+  background-color: yellow;
   background: #ffffff;
   box-shadow: 0px 0px 3px #c1c1c1;
   border-radius: 10px;
   padding: 1rem 2rem;
+
 }
 
-.client_table-container {
-  max-height: 830px;
+.spare-part-sub-table-view {
+  box-shadow: none;
+  padding: 0rem 0rem;
+}
 
+.client_table-container,
+.spare-part-table-container {
+  max-height: 77vh;
   overflow-y: auto;
-  /* border-radius: 20px; */
-  /* margin-top: 1rem; */
+  width: 100%;
+
 }
 
-.client_table-container table {
+.spare-part-table-container {
+  max-height: 60vh;
+  overflow-y: auto;
+  width: 100%;
+
+}
+
+.client_table-container table,
+.spare-part-table-container table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.client_table-container thead {
+
+.client_table-container thead,
+.spare-part-table-container thead {
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 1;
-  box-shadow: 0px 0px 3px #c1c1c1;
+  z-index: 9;
+  height: 4rem;
+
+
+
+
+}
+.spare-part-table-container thead{
+  height: 3.5rem;
 }
 
 /* set body scroll property starts */
 .client_table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  /* Change the color to your desired hover color */
+
 }
 
 /* set scroll behaviour  */
 .client_table-container::-webkit-scrollbar {
   width: 2px;
-  /* width of the entire scrollbar */
+
 }
 
 .client_table-container::-webkit-scrollbar-track {
@@ -1626,7 +1664,32 @@ code {
   margin-bottom: 10px;
 }
 
-.client_table-container::-webkit-scrollbar-thumb {
+.spare-part-table-container::-webkit-scrollbar-thumb {
+  background-color: #f8ac1d;
+  border-radius: 20px;
+  border: 1px solid #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+
+.spare-part-table-container:hover::-webkit-scrollbar-thumb {
+  border: 1px solid #f8ac1d;
+
+}
+
+/* set scroll behaviour  */
+.spare-part-table-container::-webkit-scrollbar {
+  width: 2px;
+
+}
+
+.spare-part-table-container::-webkit-scrollbar-track {
+  background: 0;
+  /* margin-top: 4rem;
+  margin-bottom: 10px; */
+}
+
+.spare-part-table-container::-webkit-scrollbar-thumb {
   background-color: #f8ac1d;
   border-radius: 20px;
   border: 1px solid #ffffff;
@@ -1639,7 +1702,6 @@ code {
   font-size: 0.8rem;
   text-align: left;
   font-family: "Poppins";
-
   color: #444444;
   opacity: 1;
 }
@@ -1651,6 +1713,32 @@ code {
   font-size: 0.9rem;
   color: #444444;
   font-weight: 500;
+  font-family: "Poppins";
+}
+
+
+.spare-part-table-container table th {
+  font-weight: 600;
+  padding: 1rem 0.4rem;
+  font-size: 0.9rem;
+  text-align: left;
+  font-family: "Poppins";
+  letter-spacing: 0px;
+  color: #1D1D1D;
+  text-align: center;
+  font-weight: 600;
+  text-transform: capitalize;
+
+
+}
+
+.spare-part-table-container table td {
+  text-align: center;
+  padding: 1rem 0.4rem;
+  border-bottom: 1px solid #c1c1c12c;
+  font-size: 0.8rem;
+  color: #1D1D1D;
+  font-weight: 400;
   font-family: "Poppins";
 }
 

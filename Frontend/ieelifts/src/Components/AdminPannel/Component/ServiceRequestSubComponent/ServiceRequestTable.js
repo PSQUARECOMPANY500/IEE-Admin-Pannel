@@ -288,6 +288,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
   };
   return (
     <div className="service-request-table">
+      <div className="table-shadow"></div>
       <table>
         <thead>
           <tr>

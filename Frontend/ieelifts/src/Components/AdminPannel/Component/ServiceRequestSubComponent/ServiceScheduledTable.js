@@ -61,6 +61,7 @@ const ServiceScheduledTable = () => {
 
   return (
     <div className="service-schedule-table">
+      <div className="table-shadow"></div>
       <table>
         <thead>
           <tr>

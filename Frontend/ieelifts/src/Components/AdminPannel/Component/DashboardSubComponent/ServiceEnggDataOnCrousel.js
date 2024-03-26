@@ -1,42 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { LiaStarSolid } from "react-icons/lia";
 import { TbMessage2 } from "react-icons/tb";
 import TaskChart from "./TaskPieChart";
 import MessageBox from "./MessageBox";
 
 const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
+
+  const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
-  const [showMessage, setShowMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState([false]);
   const renderArray = [];
   const renderArrayon = [];
 
-  const handleMesageBox = (index) => {
-    setShowMessage((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
+
 
   const handleMessageBoxClose = () => {
     setShowMessage(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        MessageBoxRef.current &&
-        !MessageBoxRef.current.contains(event.target)
-      ) {
-        setShowMessage(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [MessageBoxRef]);
 
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
@@ -50,6 +31,39 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
     }
   };
   assignArray(item);
+
+
+  
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+ 
+   
+  const handleMesageBox = (index) => {
+    setShowMessage((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+     
+    }));
+  };
+
+
+  const handleOutsideClick = useCallback(() => {
+    setShowMessage(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
 
   return (
     <div className="main-crouser" key={index}>
@@ -74,28 +88,27 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           </div>
         </div>
 
-        <div className="message-icon">
-          <span onClick={() => handleMesageBox(index)}>
-            <TbMessage2 className="message-box-crouser" />
-          </span>
-          <div className="message-dot"></div>
-          {showMessage[index] && (
-            <div
-              ref={MessageBoxRef}
-              style={{
-                left: len - 1 === index ? "0px" : "0",
-                position: "relative",
-              }}
-              className="engg-message"
-            >
-              <MessageBox
-                onClose={handleMessageBoxClose}
-                EnggId={item.EnggObjId}
-              />
-            </div>
-          )}
-        </div>
+  <div className="message-icon"  ref={dropdownClickRef}>
+    <span  onClick={() => handleMesageBox(index)} >
+      <TbMessage2 className="message-box-crouser"  />
+    </span>
+    {/* <div className="message-dot"></div> */}
+    {showMessage[index] && (
+      <div
+        ref={MessageBoxRef}
+        style={{
+          left: len - 1 === index ? "0px" : "0",
+          position: "relative",
+        }}
+        className="engg-message"
+      >
+        <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
       </div>
+    )}
+  </div>
+</div>
+
+ 
 
       <div className="main-head-div">
         {renderArray.length == 0 ? (
@@ -118,7 +131,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
             </div>
             <div className="hover-icon-service">
               <div className="dropdown">
-                <span>{renderArray[0].ClientName.split(" ")[0]}</span>
+               <span>{renderArray[0].ClientName.split(" ")[0]}</span>
                 <span>service E1</span>
                 <div className="dropdown-menu">
                   <div className="drop-parent">

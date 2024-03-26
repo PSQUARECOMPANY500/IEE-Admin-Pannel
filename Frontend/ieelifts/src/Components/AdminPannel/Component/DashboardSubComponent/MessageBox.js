@@ -184,9 +184,9 @@ useEffect(() => {
         <div className="EngChatBoxHead-Dash">
           <h6>online</h6>
           <div className="EngChatBoxIcons-Dash">
-            <IoCallOutline />
-            <CiVideoOn />
-            <RxCross2 onClick={onClose} />
+            <IoCallOutline className="cursor"/>
+            <CiVideoOn  className="cursor"/>
+            <RxCross2 onClick={onClose}  className="cursor"/>
           </div>
         </div>
         <div className="EngChatMsg-Dash"  >

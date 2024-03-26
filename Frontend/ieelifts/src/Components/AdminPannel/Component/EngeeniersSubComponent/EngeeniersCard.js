@@ -9,18 +9,17 @@ import Ratings from "./Ratings";
 import TaskHistory from "./TaskHistory";
 import SpareParts from "./SpareParts";
 import { MdSend } from "react-icons/md";
-
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
-
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
 const EngeeniersCard = () => {
-  const [isChatOpen, setIsChatOpen] = useState(true);
-  const [currentComponent, setCurrentComponent] = useState(null);
 
+  const [currentComponent, setCurrentComponent] = useState(null);
+  const [isFirst,setIsFirst]=useState(false);
+  const [isSecond,setIsSecond]=useState(false);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -33,7 +32,7 @@ const EngeeniersCard = () => {
       case "c4":
         return <SpareParts />;
       default:
-        return <Attendance />;
+        return <TaskHistory />;
     }
   };
 
@@ -138,16 +137,14 @@ const EngeeniersCard = () => {
 
   return (
     <>
-      <div className={isChatOpen ? "EngeeniersCardT" : "EngeeniersCardF"}>
-        {isChatOpen && (
-          <EngeeniersSubCard
-            isChatOpen={isChatOpen}
-            setIsChatOpen={setIsChatOpen}
-          />
-        )}
+      <div className="EngeeniersCard" style={{gridTemplateColumns:isFirst||isSecond?'2fr 1fr':'1fr',   gridTemplateAreas:isSecond&&"'SingleEng'"}} >
+      
+          <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond}/>
+   
         <div
           className="SingleEng"
-          style={{ display: isChatOpen ? "none" : "block" }}
+          style={{display:isSecond&&'block'}}
+        
         >
           <div className="SubSingleEng">
             <div className="PDetails">
@@ -172,12 +169,14 @@ const EngeeniersCard = () => {
             <div className="ODetailsColumn">
               <h5 onClick={() => setCurrentComponent("c1")}>Task History</h5>
               <h5 onClick={() => setCurrentComponent("c2")}>Attendence</h5>
+              <h5 onClick={() => setCurrentComponent("c3")}>Rating</h5>
+              <h5 onClick={() => setCurrentComponent("c4")}>Spare parts</h5>
             </div>
             <div className="ODetails">{renderSelectedComponent()}</div>
           </div>
         </div>
 
-        <div className={isChatOpen ? "EngeeniersChatT" : "EngeeniersChatF"}>
+        <div className= "EngeeniersChatF" style={{display:isFirst||isSecond?'block':'none'}}>
           <EngChatNav />
           <div className="EngChatBox">
             <div className="EngChatBoxHead">

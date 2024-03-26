@@ -262,6 +262,7 @@ li a {
 
 .fixed-content-navbar {
   position: fixed;
+top: 0;
   padding: 0px 15px;
   display: flex;
   flex-direction: column;
@@ -626,6 +627,7 @@ span::after {
 .top-icon-bell,
 .filter-icon,
 .filter-top-icon,
+.admin-filter-top-icon,
 .plus-icon {
   padding: 9px 9px;
   display: flex;
@@ -638,7 +640,9 @@ span::after {
   height: 45px;
   width: 45px;
   cursor: pointer;
+
 }
+
 
 .plus-icon {
   background: #f8ac1d;
@@ -651,9 +655,11 @@ span::after {
   cursor: pointer;
   box-shadow: 1px 2px 5px #00000029;
 }
+
 .search-box {
   cursor: pointer;
 }
+
 /* .filter-top-icon {
   padding: 2px 6px;
 } */
@@ -755,6 +761,36 @@ span::after {
   border-radius: 9px;
 }
 
+/* 
+.admin-search-input{
+  color: #343434;
+  outline: none;
+  border: none;
+  width: 0px;
+  float: left;
+  font-size: 14px;
+  transition: 0.7s ease;
+  font-family: sans-serif;
+  border-radius: 9px;
+width: 300px;
+padding: 0.5rem;
+display: none;
+} */
+
+.admin-filter-search-box {
+  padding: 9px 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  box-shadow: 1px 2px 5px #00000029;
+  font-size: 25px;
+  color: #343434;
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+}
+
 .search-btn {
   display: flex;
   justify-content: center;
@@ -766,34 +802,19 @@ span::after {
   color: #343434;
   transition: 0.4s ease;
   font-size: 1.5rem;
+
 }
 
 .iconColor {
   color: #343434;
 }
 
-.search-btn-ticket-section {
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  background: #fffdfd;
-  padding: 8px 2px 4px 1px;
-
-  border-radius: 4%;
-  float: left;
-  color: #343434;
-  transition: 0.4s ease;
-  font-size: 22px;
-  margin-top: 0px;
-  height: 38px;
-  width: 26px;
-}
 
 .search-box {
   display: flex;
+
 }
+
 
 .top-icon {
   padding: 1.4rem 0.7rem;
@@ -812,7 +833,7 @@ span::after {
   padding: 0.8rem 0.1rem;
 }
 
-.search-input::selection {
+.filter-icon .search-input::selection {
   width: 240px;
   padding: 0.8rem 0.1rem;
 }
@@ -871,17 +892,13 @@ footer a:hover {
 /* dashboard carosel css starts */
 
 .main-crouser {
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
-  border-radius: 9px;
-}
-
-.main-crouser {
   width: 100%;
   height: 160px;
   background: #ffffff;
   padding-top: 0.1rem;
   padding-left: 0.5rem;
-  box-shadow: 2px 4px 10px #99886b66;
+  border-radius: 9px;
+
 }
 
 .carosel-Navigators-icon {
@@ -953,9 +970,9 @@ footer a:hover {
   padding: 10px 8px;
 }
 
-.second-carusel:hover {
+/* .second-carusel:hover {
   cursor: pointer;
-}
+} */
 
 .ineer-engg-crouser {
   display: flex;
@@ -997,12 +1014,19 @@ footer a:hover {
   gap: 4rem;
   display: flex;
   position: relative;
+  box-shadow: 2px 4px 10px #99886B66;
+  /* border-width: 1px; */
+
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
 }
 
 .slick-slide:hover {
-  box-shadow: rgba(248, 172, 29, 0.5) 0px 0px 5px;
+  box-shadow: 1px 2px 5px #F8AC1D80;
+  border-color: solid #F8AC1D80;
+  ;
+
+
 }
 
 .slick-slider .slick-track {
@@ -1026,6 +1050,7 @@ footer a:hover {
 
 .message-icon {
   margin-right: 8px;
+
 }
 
 .message-icon span {
@@ -1033,6 +1058,7 @@ footer a:hover {
   padding: 2px 8px;
   border-radius: 6px;
   font-weight: 100;
+  cursor: pointer;
   color: #343434;
   box-shadow: 1px 2px 5px #00000029;
 }
@@ -1183,7 +1209,6 @@ footer a:hover {
   height: 2px;
   width: calc(100% - 40px);
   border-radius: 6px;
-  margin-top: 20px;
   background: #c1c1c1;
 }
 
@@ -1204,14 +1229,20 @@ footer a:hover {
   flex-direction: row;
   font-size: 0.8rem;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   margin-top: 10px;
   letter-spacing: 0px;
+
+
+
+
 }
 
 .hover-icon-service span {
   font-weight: 400;
   color: #444444;
+
 }
 
 .initial-service {
@@ -1231,12 +1262,10 @@ footer a:hover {
 
 .dropdown,
 .dropdown2 {
-  background: white;
+  background-color: white;
   color: black;
   cursor: pointer;
-  height: 50px;
   position: relative;
-  width: 100%;
   text-align: center;
   text-decoration: none;
   z-index: 0;
@@ -1296,7 +1325,7 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  /* transition: all 0.5s, background 2s 0.5s linear; */
+  transition: all 0.5s, background 2s 0.5s linear;
   border-radius: 10px;
   z-index: 99999;
   width: 200px;
@@ -1322,22 +1351,24 @@ footer a:hover {
   justify-content: flex-start;
   align-items: flex-end;
   z-index: 1;
-  width: 50%;
+
 }
 
 .dropdown3 {
   cursor: pointer;
-  z-index: 1;
-  transform: perspective(1000px);
+  z-index: 9999;
+  position: relative;
   display: flex;
   align-items: center;
-  width: 15%;
-  margin-top: 16px;
+  width: 14%;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -2rem;
+  margin-right: 1rem;
 }
 
 .dropdown-menu {
   width: 166px;
-
   overflow: hidden;
   background-color: #fff;
   list-style-type: none;
@@ -1375,8 +1406,7 @@ footer a:hover {
   opacity: 1;
   visibility: visible;
   top: 2%;
-  left: -2px;
-  /* transition: all 0.5s, background 2s 0.5s linear; */
+  margin-left: -0.2rem;
   border-radius: 10px;
   z-index: 99999;
   width: 166px;
@@ -1390,12 +1420,11 @@ footer a:hover {
   opacity: 1;
   visibility: visible;
   top: 4%;
-  transition: all 0.5s, left 0s 0s linear;
   border-radius: 10px;
   z-index: 99999;
   width: 166px;
   height: auto;
-  left: -80px;
+  margin-left: -6.2rem;
 }
 
 .dropdown3:hover .dropdown-menu {
@@ -1403,11 +1432,13 @@ footer a:hover {
   background: white;
   opacity: 1;
   visibility: visible;
-  top: 4%;
-  left: -15%;
+  top: 75%;
+  margin-left: 2rem;
+ 
   /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   width: 225px;
+
   height: auto;
 }
 
@@ -1572,11 +1603,10 @@ footer a:hover {
 }
 
 .parent-full-div {
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  border: 1px solid #c1c1c180;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-top: 25px;
   /* padding-top: 5px; */
+
   background: #ffffff;
   z-index: -1;
 }
@@ -1586,6 +1616,9 @@ footer a:hover {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
+box-shadow: 1px 2px 5px #99886B66;
+  border-radius: 10px;
+  
 }
 
 .tasks-section {
@@ -1639,12 +1672,12 @@ footer a:hover {
 }
 
 .task-description-section {
-  margin-top: 1rem;
-  display: grid;
+    display: grid;
+margin-top: 0.5rem;
   grid-template-columns: repeat(2, calc(50% - 1rem));
   justify-content: center;
   gap: 1rem;
-  min-height: 200px;
+  max-height: 300px;
   overflow-x: hidden;
   scroll-behavior: smooth;
   animation: changeText 0.7s linear forwards;
@@ -1654,7 +1687,7 @@ footer a:hover {
 
 .task-description-section:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  /* Change the color to your desired hover color */
+  
 }
 
 .task-description-section::-webkit-scrollbar {
@@ -1747,7 +1780,7 @@ footer a:hover {
 .sub-components p {
   font-size: 14px;
   margin-right: 10px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px;
+
 }
 
 .more-descriptive .detail {
@@ -2025,9 +2058,22 @@ footer a:hover {
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
-  overflow-x: hidden;
+
+
 }
 
+.table-shadow , .eng-table-shadow {
+  height:3.4rem;
+  width: 96.5%;
+  box-shadow: 0px 0px 5px #C1C1C180;
+  position: absolute;
+  z-index: 3;
+  border-radius: 10px;
+}
+.eng-table-shadow {
+  width: 100%;
+  border-radius: 5px;
+}
 .my_table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -2039,21 +2085,20 @@ footer a:hover {
   position: sticky;
   top: 0%;
   background-color: white;
-  box-shadow: 0px 0px 3px #c1c1c1;
-
-  z-index: 1;
+  z-index: 999;
+  border-radius: 10px;
 }
 
-/* set body scroll property starts */
+
 .my_table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  /* Change the color to your desired hover color */
+
 }
 
-/* set scroll behaviour  */
+
 .my_table-container::-webkit-scrollbar {
   width: 2px;
-  /* width of the entire scrollbar */
+
 }
 
 .my_table-container::-webkit-scrollbar-track {
@@ -2078,12 +2123,12 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  /* border-bottom: 1px solid #C1C1C180; */
+
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px; */
 
   line-height: 0.9rem;
 }
@@ -2109,7 +2154,6 @@ footer a:hover {
   overflow-y: auto;
   border-radius: 20px;
   margin-top: 1rem;
-  padding: 20x;
   overflow-x: hidden;
 }
 
@@ -2122,9 +2166,8 @@ footer a:hover {
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 1;
-  height: 50px;
-  box-shadow: 0px 0px 3px #c1c1c1;
+  z-index: 9;
+
 }
 
 /* set body scroll property starts */
@@ -2161,13 +2204,10 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #c1c1c180;
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
-
   line-height: 0.9rem;
 }
 
@@ -2206,9 +2246,9 @@ footer a:hover {
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 1;
-  height: 50px;
-  box-shadow: 0px 0px 3px #c1c1c1;
+  z-index: 9;
+
+
 }
 
 /* set body scroll property starts */
@@ -2245,12 +2285,11 @@ footer a:hover {
   text-align: start;
   font-weight: 500;
   padding: 20px 6px;
-  border-bottom: 1px solid #c1c1c180;
   font-size: 0.9rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
-  box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 8px 2px 8px 0px; */
 
   line-height: 0.9rem;
 }
@@ -2342,13 +2381,14 @@ footer a:hover {
   cursor: pointer;
   height: 0;
   width: 0;
+  opacity: 0;
 }
 
-.checkbox.style-c input:checked ~ .checkbox__checkmark {
+.checkbox.style-c input:checked~.checkbox__checkmark {
   background-color: #ffffff;
 }
 
-.checkbox.style-c input:checked ~ .checkbox__checkmark:after {
+.checkbox.style-c input:checked~.checkbox__checkmark:after {
   opacity: 1;
 }
 
@@ -2356,15 +2396,17 @@ footer a:hover {
   /* background-color: #eee; */
 /* }  */
 
-.checkbox.style-c:hover input:checked ~ .checkbox__checkmark {
+.checkbox.style-c:hover input:checked~.checkbox__checkmark {
   background-color: #ffffff;
 }
 
 .checkbox.style-c .checkbox__checkmark {
   position: absolute;
-  top: 2px;
+  /* top: 2px; */
+  top: -23%;
   left: 0;
   height: 20px;
+  margin-left: 0.4rem;
   width: 20px;
   transition: background-color 0.25s ease;
   border-radius: 4px;
@@ -2450,7 +2492,7 @@ footer a:hover {
   border-radius: 4px;
   top: 0;
   margin-left: -115px;
-  z-index: 3;
+  z-index: 99999;
 }
 
 .search-icon-filter,
@@ -2544,21 +2586,19 @@ footer a:hover {
   padding: 10px;
   position: relative;
   max-height: 300px;
-  /* background-color: red;
-  background: rgb(253, 253, 253);
-  background-color: red; */
+
 }
 
 .child-filter-dropdown {
   padding: 10px;
   position: relative;
-  max-height: 1000px;
+
 }
 
 .dropdown-content {
   position: absolute;
   z-index: 1;
-  margin-left: -5rem;
+  margin-left: -7rem;
   width: 160px;
   overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -2566,7 +2606,8 @@ footer a:hover {
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 4px;
   background-color: #fff;
-  top: 11%;
+  top: 12%;
+
 }
 
 @media (min-width: 768px) and (max-width: 1064px) {
@@ -2581,8 +2622,10 @@ footer a:hover {
   }
 }
 
-@media (min-width: 1441px) {
-}
+@media (min-width: 1441px) {}
+
+
+
 
 .search-icon-filter,
 .search-ticket-filter-icon {
@@ -2681,7 +2724,7 @@ footer a:hover {
   bottom: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.1);
-  z-index: 4;
+  z-index: 9999;
   width: 100%;
 }
 
@@ -2871,7 +2914,7 @@ footer a:hover {
   width: 80%;
   height: 80%;
   background: white;
-  z-index: 4;
+  z-index: 9999;
 }
 
 .cross-icon {
@@ -3003,7 +3046,8 @@ footer a:hover {
 }
 
 .col75 input {
-  width: 405px;
+  /* width: 405px; */
+  width: 92.5%;
   /* padding: 8px; */
   padding: 0.6rem;
   border: 1px solid #c1c1c1;
@@ -3067,11 +3111,7 @@ footer a:hover {
   border: 1px solid #f8ac1d;
 }
 
-.req-client-information-section
-  .req-client-form
-  .row
-  .col75
-  select[type="text"]:focus {
+.req-client-information-section .req-client-form .row .col75 select[type="text"]:focus {
   border: 1px solid #f8ac1d;
   outline: none;
 }
@@ -4692,6 +4732,8 @@ element.style {
   flex-direction: column;
   justify-content: space-between;
   padding-top: 2rem;
+
+
 }
 
 .IssueDoors {
@@ -4737,7 +4779,7 @@ element.style {
   align-items: center;
 }
 
-.RedIsue > h5 {
+.RedIsue>h5 {
   white-space: nowrap;
   font-size: 0.8rem;
 
@@ -4774,6 +4816,7 @@ element.style {
 .IssuesDoor2L h5 {
   margin-top: 0.6rem;
 }
+
 .ClientImg {
   height: 4.5rem;
   width: 17%;
@@ -5091,7 +5134,7 @@ element.style {
   font-size: 0.9rem;
 }
 
-.Amount > h5:nth-child(2) {
+.Amount>h5:nth-child(2) {
   text-align: left;
   /* font: normal normal medium 14px/21px Poppins; */
   font-weight: 500;
@@ -5230,7 +5273,7 @@ element.style {
   font-size: 0.6rem;
 }
 
-.RatingButton > button:nth-child(2) {
+.RatingButton>button:nth-child(2) {
   padding: 0rem 0.8rem;
   border: 1px solid #f8ac1d;
   opacity: 1;
@@ -5355,15 +5398,15 @@ element.style {
   font-weight: 400;
 }
 
-.ticket-card-bottom > h5:nth-child(1) {
+.ticket-card-bottom>h5:nth-child(1) {
   color: #389300;
 }
 
-.ticket-card-bottom > h5:nth-child(2) {
+.ticket-card-bottom>h5:nth-child(2) {
   color: #c10000;
 }
 
-.ticket-card-bottom > h5:nth-child(3) {
+.ticket-card-bottom>h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
@@ -5437,15 +5480,15 @@ element.style {
   font-weight: 400;
 }
 
-.service-card-bottom > h5:nth-child(1) {
+.service-card-bottom>h5:nth-child(1) {
   color: #389300;
 }
 
-.service-card-bottom > h5:nth-child(2) {
+.service-card-bottom>h5:nth-child(2) {
   color: #c10000;
 }
 
-.service-card-bottom > h5:nth-child(3) {
+.service-card-bottom>h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
@@ -5462,7 +5505,7 @@ element.style {
   margin-top: 2px;
   margin-left: -260px;
   position: absolute;
-  z-index: 999;
+  z-index: 99999;
 
   box-shadow: 10px 10px 25px #00000029;
 }
@@ -5506,6 +5549,7 @@ element.style {
   padding: 0rem 0.4rem;
   padding-bottom: 2rem;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .engchatmsg-sender-side-dash {
@@ -5597,7 +5641,7 @@ element.style {
 } */
 /* set scroll behaviour  */
 .text-area-message-eng-card-dash::-webkit-scrollbar {
-  width: 2px;
+  width: 1px;
   /* width of the entire scrollbar */
 }
 
@@ -5719,16 +5763,18 @@ element.style {
   height: 100%;
   width: 100%;
 }
+
 .add-engg-modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 15%;
+  left: 10%;
   width: 85%;
   background: white;
   z-index: 6;
   border-radius: 5px;
   transform: translate(-50%, -50%);
 }
+
 /*-------------add engg button  css in the top bar end --------------------------------- */
 
 .EnggAddressSection {
@@ -5751,6 +5797,7 @@ element.style {
   align-items: flex-startF;
   gap: 2rem;
   padding: 22px 10px;
+
 }
 
 .EnggDetailInputField {
@@ -5766,6 +5813,7 @@ element.style {
   height: 150px;
   width: 150px;
 }
+
 .EnggDetailInputField .imageUploadDiv input {
   display: none;
 }
@@ -5777,18 +5825,22 @@ element.style {
   margin-left: 18px;
   font-family: "poppins";
 }
+
 .personalDetailSec .PersonalDetailInput input:focus {
   border: 1px solid #fff;
   outline: 1px solid #f8ac1dad;
 }
+
 .personalDetailSec .PersonalDetailInputEmail input:focus {
   border: 1px solid #fff;
   outline: 1px solid #f8ac1dad;
 }
+
 .ExtraCiricularSectionInputFields .EnggAddressInput input:focus {
   border: 1px solid #fff;
   outline: 1px solid #f8ac1dad;
 }
+
 .ExtraCiricularSectionInputFields .PersonalDetailInput input:focus {
   border: 1px solid #fff;
   outline: 1px solid #f8ac1dad;
@@ -5803,6 +5855,7 @@ element.style {
   outline: none;
   border: none;
 }
+
 .personalDetailSec .PersonalDetailInputEmail input {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
@@ -5845,6 +5898,7 @@ element.style {
   width: 100%;
   gap: 10px;
 }
+
 .ExtraCiricularSectionInputFields .PersonalDetailInput input {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
@@ -5852,6 +5906,7 @@ element.style {
   font-family: "poppins";
   width: 100%;
 }
+
 .mainPersonalDetialSection {
   display: flex;
   justify-content: center;
@@ -5870,9 +5925,11 @@ element.style {
   font-family: "poppins";
   width: 100%;
 }
+
 .PersonalDetailInput .inputWithAttachment input {
   border: none;
 }
+
 .inputWithAttachment .css-b62m3t-container {
   width: 100%;
 }
@@ -5906,6 +5963,7 @@ element.style {
   font-weight: 600;
   font-style: "poppins";
 }
+
 .button-69-cancel {
   background: white;
   border: 1px solid #f8ac1d;
@@ -5934,6 +5992,7 @@ element.style {
   width: 100%;
   height: 9px;
 }
+
 .smallifcCodeSuggestion p {
   font-size: 0.8rem;
   font-weight: 500;

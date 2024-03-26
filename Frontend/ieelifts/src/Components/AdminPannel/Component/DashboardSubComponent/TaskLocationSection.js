@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
@@ -15,6 +15,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
+  const dropdownClickRef = useRef();
+
+
   const dispatch = useDispatch();
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
@@ -108,7 +111,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
-  const passData = () => {};
+  const passData = () => { };
 
   const handleFilter = () => {
     setShowFilter(!showFilter);
@@ -195,19 +198,32 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }, 1500);
   }, [dispatch, props.ticketUpdate]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowFilter(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+  const handleFilter = () => {
+    setShowFilter(prevState => !prevState);
+  };
+  const handleOutsideClick = useCallback(() => {
+    setShowFilter(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
+  // -------------------------filter dropdown end--------------------------
+
 
   const extractStartTime = (slots) => {
     return slots[0].split("-")[0];
@@ -253,8 +269,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
             </div>
 
             {props.kanban ? (
-              <div className="sub-components">
-                <p className="filter-icon" onClick={handleFilter}>
+              <div className="sub-components" ref={dropdownClickRef}>
+                <p className="filter-icon"
+                  onClick={handleFilter}
+
+
+                >
                   <LuSettings2 />
                   {""}
                 </p>
@@ -272,7 +292,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
           {props.kanban ? (
             <div
-              className="task-description-section"
+              className="task-description-section Yello_Scrollbar"
               style={{ paddingTop: "0.5rem" }}
             >
               {/* -----------------------  araised ticker data here starts ------------------------------------- */}
