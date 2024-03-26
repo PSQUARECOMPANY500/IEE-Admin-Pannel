@@ -18,8 +18,8 @@ import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActi
 const EngeeniersCard = () => {
 
   const [currentComponent, setCurrentComponent] = useState(null);
-  const [isFirst,setIsFirst]=useState(true);
-  const [isSecond,setIsSecond]=useState(true);
+  const [isFirst,setIsFirst]=useState(false);
+  const [isSecond,setIsSecond]=useState(false);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -32,7 +32,7 @@ const EngeeniersCard = () => {
       case "c4":
         return <SpareParts />;
       default:
-        return <SpareParts />;
+        return <TaskHistory />;
     }
   };
 
