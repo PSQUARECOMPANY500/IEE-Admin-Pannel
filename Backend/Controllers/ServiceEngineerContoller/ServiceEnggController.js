@@ -1086,10 +1086,6 @@ module.exports.getChecklistByIdAndServiceType = async (req, res) => {
       return res.status(400).json({ message: "Current No CheckList found" });
     }
 
-
-    
-
-
     return res.status(200).json({ checkList });
   } catch (error) {
     return res.status(500).json({
@@ -1111,7 +1107,7 @@ module.exports.getAllSparePartdetails = async (req, res) => {
       return res.status(401).json({ message: "Spare Part is not Present" });
     }
 
-    console.log(spareParts)
+    console.log(spareParts);
 
     return res.status(200).json({ spareParts });
   } catch (error) {
