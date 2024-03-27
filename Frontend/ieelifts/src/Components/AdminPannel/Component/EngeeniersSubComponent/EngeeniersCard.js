@@ -3,7 +3,7 @@ import EngeeniersSubCard from "./EngeeniersSubCard";
 import EngChatNav from "./EngChatNav";
 import { CiVideoOn } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
-import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFileAlt, FaSadCry } from "react-icons/fa";
 import Attendance from "./Attendance";
 import Ratings from "./Ratings";
 import TaskHistory from "./TaskHistory";
@@ -15,11 +15,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 
+
 const EngeeniersCard = () => {
 
   const [currentComponent, setCurrentComponent] = useState(null);
-  const [isFirst,setIsFirst]=useState(false);
-  const [isSecond,setIsSecond]=useState(false);
+  const [isFirst,setIsFirst]=useState(true);
+  const [isSecond,setIsSecond]=useState(true);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -32,7 +33,7 @@ const EngeeniersCard = () => {
       case "c4":
         return <SpareParts />;
       default:
-        return <TaskHistory />;
+        return <SpareParts />;
     }
   };
 

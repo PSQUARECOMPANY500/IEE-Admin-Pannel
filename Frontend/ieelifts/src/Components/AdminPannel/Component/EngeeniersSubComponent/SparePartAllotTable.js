@@ -13,6 +13,7 @@ const SparePartAllotTable = () => {
               <th>Type</th>
               <th>Name</th>
               <th>Quantity</th>
+              
             </tr>
           </thead>
           <tbody>
