@@ -5,6 +5,7 @@ const EngeeniersSubCard = (props) => {
 
   const [singleClickTimeout, setSingleClickTimeout] = useState(null);
   const [isDoubleClick, setIsDoubleClick] = useState(false);
+  const [isActive ,setIsActive]=useState(null);
 const{isFirst,setIsFirst,isSecond,setIsSecond}=props;
 
   const data = [
@@ -114,8 +115,8 @@ const{isFirst,setIsFirst,isSecond,setIsSecond}=props;
 
 
 
-  const handleSingleClick = () => {
- 
+  const handleSingleClick = (index) => {
+
     if (!isDoubleClick) {
       setIsDoubleClick(false);
       clearTimeout(singleClickTimeout);
@@ -127,17 +128,19 @@ const{isFirst,setIsFirst,isSecond,setIsSecond}=props;
      setIsFirst(true);
       setSingleClickTimeout(null);
     }, 200);
-
+ 
     setSingleClickTimeout(timeout);
+    setIsActive(index);
+ 
   }
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (index) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    console.log(isSecond,'isSecond')
-   
+  
+
   };
 
 
@@ -146,7 +149,7 @@ const{isFirst,setIsFirst,isSecond,setIsSecond}=props;
     <div className="EngeeniersSubCard" style={{ cursor: "pointer",display:isSecond&&'none' }}>
       <div className= "AllCards" style={{gridTemplateColumns:isFirst&&'1fr 1fr'}} >
         {data.map((e, index) => (
-          <div className="EngCards" onDoubleClick={()=>handleDoubleClick()} onClick={()=> handleSingleClick ()}>
+          <div className="EngCards" onDoubleClick={()=>handleDoubleClick()} onClick={()=> handleSingleClick (index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
               </div>
