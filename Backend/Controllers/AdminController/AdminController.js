@@ -2140,11 +2140,13 @@ module.exports.takeActionOnLeave = async (req, res) => {
       last.IsApproved = "Approved";
       if (secondLast) {
         last.UsedLeave += secondLast.UsedLeave;
-        console.log("leave", leaves);
       }
       last.UsedLeave += diffDays;
     } else {
       last.IsApproved = "Rejected";
+      if (secondLast) {
+        last.UsedLeave += secondLast.UsedLeave;
+      }
     }
     
     await last.save(); // Save the modified document
