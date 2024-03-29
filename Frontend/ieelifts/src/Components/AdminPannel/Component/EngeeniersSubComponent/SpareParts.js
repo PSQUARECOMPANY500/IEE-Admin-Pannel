@@ -15,7 +15,7 @@ const SpareParts = () => {
       case "c3":
         return <Revenue />;
       default:
-        return < AllottedSpareParts />;
+        return <Revenue />;
     }
   };
 
