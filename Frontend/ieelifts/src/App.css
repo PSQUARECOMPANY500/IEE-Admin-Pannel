@@ -262,7 +262,7 @@ li a {
 
 .fixed-content-navbar {
   position: fixed;
-top: 0;
+  top: 0;
   padding: 0px 15px;
   display: flex;
   flex-direction: column;
@@ -1434,7 +1434,7 @@ footer a:hover {
   visibility: visible;
   top: 75%;
   margin-left: 2rem;
- 
+
   /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   width: 225px;
@@ -1530,6 +1530,7 @@ footer a:hover {
   align-items: center;
   margin-top: -15px;
 }
+
 /* comment for resolve conflict of recharts libary comment by aayush */
 /* .recharts-responsive-container {
   width: 74px !important;
@@ -1616,9 +1617,9 @@ footer a:hover {
   flex-direction: row;
   padding: 10px;
   gap: 10px;
-box-shadow: 1px 2px 5px #99886B66;
+  box-shadow: 1px 2px 5px #99886B66;
   border-radius: 10px;
-  
+
 }
 
 .tasks-section {
@@ -1672,8 +1673,8 @@ box-shadow: 1px 2px 5px #99886B66;
 }
 
 .task-description-section {
-    display: grid;
-margin-top: 0.5rem;
+  display: grid;
+  margin-top: 0.5rem;
   grid-template-columns: repeat(2, calc(50% - 1rem));
   justify-content: center;
   gap: 1rem;
@@ -1687,7 +1688,7 @@ margin-top: 0.5rem;
 
 .task-description-section:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
-  
+
 }
 
 .task-description-section::-webkit-scrollbar {
@@ -2062,18 +2063,21 @@ margin-top: 0.5rem;
 
 }
 
-.table-shadow , .eng-table-shadow {
-  height:3.4rem;
+.table-shadow,
+.eng-table-shadow {
+  height: 3.4rem;
   width: 96.5%;
   box-shadow: 0px 0px 5px #C1C1C180;
   position: absolute;
   z-index: 3;
   border-radius: 10px;
 }
+
 .eng-table-shadow {
   width: 100%;
   border-radius: 5px;
 }
+
 .my_table-container table {
   width: 100%;
   border-collapse: collapse;
@@ -5758,16 +5762,19 @@ element.style {
   position: fixed;
   left: 0px;
   z-index: 5;
-  top: 0;
-  left: 0;
+  top: 0%;
+  left: 0%;
   height: 100%;
   width: 100%;
+
 }
 
 .add-engg-modal {
+  height: 80%;
+  width: 100%;
   position: fixed;
-  top: 15%;
-  left: 10%;
+  top: 50%;
+  left: 50%;
   width: 85%;
   background: white;
   z-index: 6;
@@ -5780,8 +5787,25 @@ element.style {
 .EnggAddressSection {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 1.2rem;
   width: 45%;
+  height: 100%;
+  position: relative;
+ 
+}
+
+.EnggDetailSection {
+  width: 100%;
+  height: 30%;
+  position: relative;
+}
+
+
+
+.EnggDetailHeading {
+  height: 25px;
+  width: 100%;
+  position: relative;
 }
 
 .BankWorkSection {
@@ -5796,7 +5820,11 @@ element.style {
   justify-content: center;
   align-items: flex-startF;
   gap: 2rem;
-  padding: 22px 10px;
+  padding: 1rem 0.7rem;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
 
 }
 
@@ -5804,14 +5832,29 @@ element.style {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 24px;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  gap: 2rem;
+}
+
+.personalDetailSec {
+
+  height: 100%;
+  width: 70%;
+  display: flex;
+  /* align-items: center; */
+  white-space: nowrap;
+  justify-content: center;
 }
 
 .EnggDetailInputField .imageUploadDiv {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
-  height: 150px;
-  width: 150px;
+  height: 70%;
+  width: 20%;
+  position: relative;
+
 }
 
 .EnggDetailInputField .imageUploadDiv input {
@@ -5856,6 +5899,8 @@ element.style {
   border: none;
 }
 
+
+
 .personalDetailSec .PersonalDetailInputEmail input {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
@@ -5884,6 +5929,8 @@ element.style {
   gap: 10px;
   margin-top: 22px;
 }
+
+
 
 .ExtraCiricularSectionInputFields .EnggAddressInput input {
   border: 1px solid #8e8e8e;
@@ -5934,16 +5981,24 @@ element.style {
   width: 100%;
 }
 
+
 .addEnggButtons {
-  /* margin-top: 14rem; */
   margin-left: 26%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
   gap: 10px;
+  height: 5vh;
+  width: 30;
   position: absolute;
   bottom: 3%;
+  right: 5%;
+
+
 }
+
+
+
 
 /* CSS */
 .button-69,
@@ -5954,11 +6009,10 @@ element.style {
   color: #444444;
   cursor: pointer;
   display: inline-block;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
-  height: 48px;
+  padding: 0.8rem 2.5rem;
   text-align: center;
-  width: 128px;
   background: #f8ac1d;
   font-weight: 600;
   font-style: "poppins";

@@ -16,27 +16,38 @@ import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActi
 import Rating from "./Rating";
 
 
+
 const EngeeniersCard = () => {
 
-  const [currentComponent, setCurrentComponent] = useState(null);
+  const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
   const [isSecond, setIsSecond] = useState(false);
-  const [borderMergin, setBorderMargin] = useState(20);
+  const [borderMergin, setBorderMargin] = useState(0);
+  const [engID, setEngID] = useState(null);
+  const [currentEngName, setCurrentEngName] = useState(null);
+  const [currentengImg, setCurrentEngImg] = useState(null);
+
+  const handleEnggNameDoubleClick = (engId,engName,engImg) => {
+    setEngID(engId);
+    setCurrentEngName(engName);
+    setCurrentEngImg(engImg);
+  };
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
       case "c1":
-        return <TaskHistory />;
+        return <TaskHistory engID={engID} />;
       case "c2":
-        return <Attendance />;
+        return <Attendance engID={engID} />;
       case "c3":
         return <Rating />;
       case "c4":
         return <SpareParts />;
       default:
-        return <SpareParts />;
+        return <TaskHistory engID={engID} />;
     }
   };
+
 
   const dispatch = useDispatch();
 
@@ -48,6 +59,7 @@ const EngeeniersCard = () => {
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
+  
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -135,15 +147,21 @@ const EngeeniersCard = () => {
   useLayoutEffect(() => {
     scroll();
   }, [getMessages]);
+
+
   const handleCurrentComponent = (c, m) => {
     setCurrentComponent(c);
     setBorderMargin(m)
 
   }
+
+
+
   return (
     <>
       <div className="EngeeniersCard" style={{ gridTemplateColumns: isFirst || isSecond ? '2fr 1fr' : '1fr', gridTemplateAreas: isSecond && "'SingleEng'" }} >
-        <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond} />
+        <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond}
+          handleEnggNameDoubleClick={handleEnggNameDoubleClick} />
 
         <div
           className="SingleEng"
@@ -153,14 +171,16 @@ const EngeeniersCard = () => {
           <div className="SubSingleEng">
             <div className="PDetails">
               <div className="SubPDetails">
-                <div className="Pimg"></div>
+                <div className="Pimg">
+                  <img src={currentengImg} alt="eng persnol image"/>
+                </div>
                 <h1>
-                  Name: <span>Jack Smith</span>
+                  Name:<span>{currentEngName}</span>
                 </h1>
               </div>
 
               <h1>
-                ID: <span>1111</span>
+                ID: <span>{engID}</span>
               </h1>
               <h1>
                 Spare Parts: <span>15</span>

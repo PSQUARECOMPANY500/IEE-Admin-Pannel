@@ -39,7 +39,7 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 // import { CLOSE_MODAL } from "../Actions/AdminActions";
 
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
-
+import { FETCH_ENG_DETAILS } from "../Actions/AdminActions";
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
@@ -639,3 +639,19 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+const fetchengdetails = {
+  engdetails: null,
+};
+
+export const reducerfetchengdetails = (state = fetchengdetails, action) => {
+  switch (action.type) {
+    case FETCH_ENG_DETAILS:
+      return {
+        ...state,
+        engdetails: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
