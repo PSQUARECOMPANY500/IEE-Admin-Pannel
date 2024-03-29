@@ -13,7 +13,7 @@ const ReportInfo = new Schema({
         type: String,
       },
       questionId: {
-        Type: String,
+        type: String,
       },
       questionResponse: {
         isResolved: {
@@ -22,13 +22,24 @@ const ReportInfo = new Schema({
         },
         isSparePartRequest: {
           type: Boolean,
+          default:false
+        },
+        SparePartDescription: {
+          type: String,
+          default:""
+        },
+        Reason: {
+          type: String,
+          default:""
         },
         sparePartDetail: {
-          typeId: {
+          sparePartsType: {
             type: String,
+            default:""
           },
-          subTypeId: {
+          subsparePartspartid: {
             type: String,
+            default:""
           },
         },
       },
@@ -43,10 +54,12 @@ const ReportInfo = new Schema({
   paymentMode: {
     type: String,
     enum: ["online", "cash"],
+    default:"cash"
   },
   // to do  ==>  entring payment Detail while razor pay is approving...
   paymentDetils: {
     type: String,
+    default:""
   },
   isVerify: {
     type: Boolean,

@@ -793,12 +793,11 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, document } =
       req.body;
+
+    console.log(req.body);
+
     if (
-      ServiceEnggId &&
-      TypeOfLeave &&
-      From &&
-      To &&
-      Leave_Reason &&
+      (ServiceEnggId && TypeOfLeave && From && To && Leave_Reason) ||
       document
     ) {
       const response = await EnggLeaveServiceRecord.create({
@@ -808,6 +807,8 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
         Leave_Reason,
         Document: document,
       });
+
+      console.log(response);
 
       return res.status(201).json({ response });
     } else {
@@ -1161,3 +1162,83 @@ module.exports.GenerateReportByEngg = async (req, res) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Date => 28/03/2024
+
+// ------------------------  function to handle getFinalReportData ------------------------
+
+module.exports.getFinalReportDetails = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    const reportData = await ReportInfoModel.findOne({ serviceId });
+
+    if (!reportData) {
+      return res.status(400).json({ message: "Report Not Found" });
+    }
+
+    const filteredData = reportData.questionsDetails.filter(
+      (question) =>
+        (question.questionResponse.isResolved &&
+          question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+          question.questionResponse.sparePartDetail.subsparePartspartid !=="") ||
+        !question.questionResponse.isResolved
+    );
+
+    // console.log(filteredData);
+    const IssuesResolved = [];
+    const IssuesNotResolved = [];
+    const SparePartsChanged = [];
+    const SparePartsRequested = [];
+    const TotalAmount = [];
+
+    filteredData.forEach((element) => {
+      if (
+        element.questionResponse.isResolved &&
+        element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+        element.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+        !element.questionResponse.isSparePartRequest
+      ) {
+        IssuesResolved.push(element);
+      }
+
+      if (
+        !element.questionResponse.isResolved &&
+        !element.questionResponse.isSparePartRequest
+      ) {
+        IssuesNotResolved.push(element);
+      }
+
+      if (
+        !element.questionResponse.isSparePartRequest &&
+        element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+        element.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+        element.questionResponse.isResolved
+      ) {
+        SparePartsChanged.push(element);
+      }
+
+      if (
+        element.questionResponse.isSparePartRequest &&
+        element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+        element.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+        !element.questionResponse.isResolved
+      ) {
+        SparePartsRequested.push(element);
+      }
+    });
+
+
+    res.status(200).json({
+      IssuesResolved,
+      IssuesNotResolved,
+      SparePartsChanged,
+      SparePartsRequested,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error fetching Report by Engg",
+    });
+  }
+};

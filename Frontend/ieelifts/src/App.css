@@ -2403,7 +2403,7 @@ margin-top: 0.5rem;
 .checkbox.style-c .checkbox__checkmark {
   position: absolute;
   /* top: 2px; */
-  top: -23%;
+  top: 0%;
   left: 0;
   height: 20px;
   margin-left: 0.4rem;
@@ -5766,8 +5766,8 @@ element.style {
 
 .add-engg-modal {
   position: fixed;
-  top: 15%;
-  left: 10%;
+  top: 50%;
+  left: 50%;
   width: 85%;
   background: white;
   z-index: 6;
@@ -5897,6 +5897,8 @@ element.style {
   display: flex;
   width: 100%;
   gap: 10px;
+  align-items: baseline;
+
 }
 
 .ExtraCiricularSectionInputFields .PersonalDetailInput input {
@@ -5997,6 +5999,19 @@ element.style {
   font-size: 0.8rem;
   font-weight: 500;
   margin-left: 6px;
+}
+
+.addFileName{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.addFileName p {  
+  color: #f8ac1d;
+  font-size: 0.7rem;
 }
 
 /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */

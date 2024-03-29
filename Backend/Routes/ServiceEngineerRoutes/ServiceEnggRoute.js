@@ -7,8 +7,22 @@ const { verifyEnggToken } = require("../../Middleware/ServiceEnggAuthMiddleware"
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 
+
+const uploaded = require('../../Multer/EnggAttachmentUpload')
+
+
 //-------------------------------------- All Post Requests -------------------------------
-router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg);
+router.post("/registerServiceEngg",uploaded.fields([{
+    name: 'enggAttachments',
+    maxCount: 5
+  }
+]),
+ serviceEnggContoller.RegisterServiceEngg);
+
+
+
+
+
 router.post("/loginEngg", serviceEnggContoller.loginEngg)
 
 //location service
@@ -52,8 +66,6 @@ const uploadImg = upload.fields([
 
 const checkInAttendance = async (req, res, next) => {
   const  Id  = req.params.ServiceEnggId;
-  //console.log(Id);
-  //console.log(req.params.ServiceEnggId);
   if (Id) {
     const date = new Date().toLocaleDateString('en-GB');
 
@@ -127,6 +139,15 @@ router.get("/getSparePart",serviceEnggContoller.getAllSparePartdetails);
 //----by preet 22/03/2024 ---
 
 router.post("/generateReport", serviceEnggContoller.GenerateReportByEngg);
+
+//----by preet 28/03/2024 ---
+router.get("/fetchFinalReport/:serviceId",serviceEnggContoller.getFinalReportDetails);
+
+
+
+// --by amit 29/03/2024 ------------
+router.get("/enggHistory/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
 
 
 
