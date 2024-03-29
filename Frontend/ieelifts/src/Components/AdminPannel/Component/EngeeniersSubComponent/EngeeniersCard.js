@@ -3,9 +3,8 @@ import EngeeniersSubCard from "./EngeeniersSubCard";
 import EngChatNav from "./EngChatNav";
 import { CiVideoOn } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
-import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFileAlt, FaSadCry } from "react-icons/fa";
 import Attendance from "./Attendance";
-import Ratings from "./Ratings";
 import TaskHistory from "./TaskHistory";
 import SpareParts from "./SpareParts";
 import { MdSend } from "react-icons/md";
@@ -14,12 +13,15 @@ import { MdOutlineAttachFile } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import Rating from "./Rating";
+
 
 const EngeeniersCard = () => {
 
   const [currentComponent, setCurrentComponent] = useState(null);
-  const [isFirst,setIsFirst]=useState(false);
-  const [isSecond,setIsSecond]=useState(false);
+  const [isFirst, setIsFirst] = useState(false);
+  const [isSecond, setIsSecond] = useState(false);
+  const [borderMergin, setBorderMargin] = useState(20);
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
@@ -28,11 +30,11 @@ const EngeeniersCard = () => {
       case "c2":
         return <Attendance />;
       case "c3":
-        return <Ratings />;
+        return <Rating />;
       case "c4":
         return <SpareParts />;
       default:
-        return <TaskHistory />;
+        return <SpareParts />;
     }
   };
 
@@ -41,7 +43,6 @@ const EngeeniersCard = () => {
   const fileInputField = useRef(null);
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
-
   const [messageData, setMessageData] = useState();
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
@@ -116,7 +117,7 @@ const EngeeniersCard = () => {
         messageData,
         chatCreated?._id
       )
-    ); //todo - in future the id is dynamic as come from login user
+    );
     setMessageData("");
 
     if (textareaRef.current) {
@@ -134,17 +135,20 @@ const EngeeniersCard = () => {
   useLayoutEffect(() => {
     scroll();
   }, [getMessages]);
+  const handleCurrentComponent = (c, m) => {
+    setCurrentComponent(c);
+    setBorderMargin(m)
 
+  }
   return (
     <>
-      <div className="EngeeniersCard" style={{gridTemplateColumns:isFirst||isSecond?'2fr 1fr':'1fr',   gridTemplateAreas:isSecond&&"'SingleEng'"}} >
-      
-          <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond}/>
-   
+      <div className="EngeeniersCard" style={{ gridTemplateColumns: isFirst || isSecond ? '2fr 1fr' : '1fr', gridTemplateAreas: isSecond && "'SingleEng'" }} >
+        <EngeeniersSubCard isFirst={isFirst} setIsFirst={setIsFirst} isSecond={isSecond} setIsSecond={setIsSecond} />
+
         <div
           className="SingleEng"
-          style={{display:isSecond&&'block'}}
-        
+          style={{ display: isSecond && 'block' }}
+
         >
           <div className="SubSingleEng">
             <div className="PDetails">
@@ -167,16 +171,19 @@ const EngeeniersCard = () => {
               <FaRegFileAlt className="Icon_Color" />
             </div>
             <div className="ODetailsColumn">
-              <h5 onClick={() => setCurrentComponent("c1")}>Task History</h5>
-              <h5 onClick={() => setCurrentComponent("c2")}>Attendence</h5>
-              <h5 onClick={() => setCurrentComponent("c3")}>Rating</h5>
-              <h5 onClick={() => setCurrentComponent("c4")}>Spare parts</h5>
+              <h5 onClick={() => { handleCurrentComponent("c1", 0) }} style={{ color: borderMergin === 0 && '#F8AC1DAD' }}>Task History</h5>
+              <h5 onClick={() => handleCurrentComponent("c2", 17)} style={{ color: borderMergin === 17 && '#F8AC1DAD' }}>Attendence</h5>
+              <h5 onClick={() => handleCurrentComponent("c3", 32)} style={{ color: borderMergin === 32 && '#F8AC1DAD' }}>Rating</h5>
+              <h5 onClick={() => handleCurrentComponent("c4", 49)} style={{ color: borderMergin === 49 && '#F8AC1DAD' }}>Spare parts</h5>
+            </div>
+            <div className="vertical-line">
+              <div className="overlay-vertical-line" style={{ marginLeft: borderMergin + 'rem' }}></div>
             </div>
             <div className="ODetails">{renderSelectedComponent()}</div>
           </div>
         </div>
 
-        <div className= "EngeeniersChatF" style={{display:isFirst||isSecond?'block':'none'}}>
+        <div className="EngeeniersChatF" style={{ display: isFirst || isSecond ? 'block' : 'none' }}>
           <EngChatNav />
           <div className="EngChatBox">
             <div className="EngChatBoxHead">
@@ -254,7 +261,7 @@ const EngeeniersCard = () => {
                     <MdOutlineAttachFile />
                   </div>
                 </div>
-
+                ``
                 <p
                   className="send-messsage-eng-card "
                   onClick={handleSendMessage}
@@ -262,6 +269,7 @@ const EngeeniersCard = () => {
                   {swapIcon ? <MdOutlineMic /> : <MdSend />}
                 </p>
               </div>
+
             </div>
           </div>
         </div>
