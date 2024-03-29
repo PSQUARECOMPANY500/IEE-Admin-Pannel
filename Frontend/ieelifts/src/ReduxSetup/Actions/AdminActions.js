@@ -74,6 +74,8 @@ export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
 
+export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
 export const loginServiceAdminAction = (AdminId, Password) => {
@@ -907,3 +909,17 @@ export const updatePassswordAction = async (email, newPassword) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//emit code for the enggpage task-section 
+export const assignedEnggDetails = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/assignedEnggDetails/${ServiceEnggId}`)
+      dispatch({
+        type: GET_ASSIGNED_ENGG_DETAILS,
+        payload: response.data,
+    });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}

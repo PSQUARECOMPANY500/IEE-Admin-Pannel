@@ -38,6 +38,7 @@ import { modalOpenerReducer } from "../Reducers/AdminReducer";
 import { loginAdminReducer } from "../Reducers/AdminReducer";
 import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
 import { engineersReducer } from "../Reducers/AdminReducer";
+import {fetchassignedEnggDetailsReducer} from "../Reducers/AdminReducer"
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -77,6 +78,7 @@ const AdminRootReducer = combineReducers({
   loginAdminReducer: loginAdminReducer,
   VerifyOTPPasswordReducer:VerifyOTPPasswordReducer,
   engineersReducer: engineersReducer,
+  fetchassignedEnggDetailsReducer:fetchassignedEnggDetailsReducer,
 });
 
 export default AdminRootReducer;

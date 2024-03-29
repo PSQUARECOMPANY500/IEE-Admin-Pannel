@@ -105,5 +105,7 @@ router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+//api for assignedEnggDetails
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
 module.exports = router;

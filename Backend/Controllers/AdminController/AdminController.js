@@ -2072,4 +2072,103 @@ module.exports.updatePassword = async (req, res) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//This is emit api for the get all Details form assignCallback and assignServiceRequest for Engg page
+module.exports.assignedEnggDetails = async (req, res) => {
+  try {
+    const {ServiceEnggId} = req.params;
+    if(ServiceEnggId){
+      const assignCallbacks = await ServiceAssigntoEngg.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess:"completed"
+      });
+  
+      const assignServiceRequests = await AssignSecheduleRequest.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess:"completed"
+      });
+  
+      const assignCallbacksWithClientName = await Promise.all(
+        assignCallbacks.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc, 
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };  
+        }) 
+      );
+      const assignServiceRequestsWithClientName = await Promise.all(
+        assignServiceRequests.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc, 
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };  
+        }) 
+      );
+  
+      const assignCallbacksDetails = assignCallbacksWithClientName.map((data) => 
+      ({
+        date: data.Date,
+        ServiceId:data.callbackId,
+        ServiceEnggId: data.ServiceEnggId,
+        JobOrderNumber: data.JobOrderNumber,
+        Slot: data.Slot,
+        name: data?.ClientName,
+        address: data?.ClientAddress,
+      }));
+  
+      const assignServiceRequestsDetails = assignServiceRequestsWithClientName.map((data) => 
+      ({
+        date: data.Date,
+        ServiceId:data.RequestId,
+        ServiceEnggId: data.ServiceEnggId,
+        JobOrderNumber: data.JobOrderNumber,
+        Slot: data.Slot,
+        name: data?.ClientName,
+        address: data?.ClientAddress,
+      }));
+  
+  
+      const assignCallbacksWithRating = await Promise.all(
+        assignCallbacksDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment, 
+            rating:Rating.Rating
+          };  
+        }) 
+      );
+  
+      const assignServiceRequestsWithRating = await Promise.all(
+        assignServiceRequestsDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment, 
+            rating:Rating.Rating
+          };  
+        }) 
+      );
+      return res
+      .status(200)
+      .json({  assignServiceRequests: assignServiceRequestsWithRating , assignCallbacks: assignCallbacksWithRating });
+    }
+    return res.status(400).json({message:"ServiceEnggId not found"})
 
+  } catch (error) {
+   console.log(error)
+   return res
+   .status(500)
+   .json({ error: "Internal server error in assignedEnggDetails" });
+
+  }
+};

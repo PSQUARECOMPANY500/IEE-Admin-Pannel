@@ -40,6 +40,7 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
 
+import {GET_ASSIGNED_ENGG_DETAILS} from "../Actions/AdminActions"
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
@@ -637,5 +638,17 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//emit reducer for  enggpage task-section 
 
+const assignedEnggDetails = {
+  EnggDetails: null,
+};
+export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, action) => {
+  switch (action.type) {
+    case GET_ASSIGNED_ENGG_DETAILS:
+      return { ...state, EnggDetails: action.payload };
+    default:
+      return state;
+  }
+};
 
