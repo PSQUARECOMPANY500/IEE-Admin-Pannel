@@ -43,7 +43,7 @@ const TicketSection = ({ setTicketUpdate }) => {
     ) {
       return state.AdminRootReducer.fetchAllCallbackReducer.callbacks.Callbacks;
     } else {
-      return [];
+      return null;
     }
   });
   //.................................................................ax13-search-func-starts----------------------------------------------------------
@@ -219,6 +219,7 @@ const TicketSection = ({ setTicketUpdate }) => {
 
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
+    console.log("re-rendering ho rahi hai")
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);
@@ -289,7 +290,7 @@ const TicketSection = ({ setTicketUpdate }) => {
 
   useEffect(() => {
     if (fetchCallbacks && !getFilterConditions) {
-      setCheckboxStates(Array(fetchCallbacks.length).fill(false));
+      setCheckboxStates(Array(fetchCallbacks?.length).fill(false));
     }
     if (getFilterConditions) {
       setCheckboxStates(Array(filterData.length).fill(false));
@@ -298,7 +299,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   const handleCheckBoxAll = () => {
     if (fetchCallbacks && !getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
-      setCheckboxStates(Array(fetchCallbacks.length).fill(!allChecked));
+      setCheckboxStates(Array(fetchCallbacks?.length).fill(!allChecked));
     }
     if (getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
@@ -373,21 +374,20 @@ const TicketSection = ({ setTicketUpdate }) => {
                 <input
                   type="text"
                   placeholder="Search anything"
-                  className={`search-input ${
-                    searchText.length > 0 && "inputSearchWritten"
-                  }`}
+                  className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                    }`}
                   onChange={(e) => {
                     setSearchText(e.target.value);
                   }}
-                  
+
                   value={searchText}
                 />
 
-                <i className="search-btn "       onClick={() => {
-                    const data = filtersearch(searchText, allCD);
-                    setFilteredCD(data);
-                  }}>
-            
+                <i className="search-btn " onClick={() => {
+                  const data = filtersearch(searchText, allCD);
+                  setFilteredCD(data);
+                }}>
+
                   <RiSearchLine className="iconColor" />
                 </i>
               </div>
@@ -395,8 +395,8 @@ const TicketSection = ({ setTicketUpdate }) => {
 
             {/* ............................................................ax13-search...................................................... */}
 
-            <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
-              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
+            <div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon" onClick={handleFilter} style={{ cursor: 'pointer' }}>
                 <LuSettings2 />
                 {""}
               </p>
@@ -639,7 +639,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                     );
                   })
                 )
-                  : filteredCD.map((data, index) => {
+                  : filteredCD?.map((data, index) => {
                     const currentCallbackId = data.callbackId;
                     const EngName = data.AssignedEng?.name;
                     const EngId = data.AssignedEng?.id;

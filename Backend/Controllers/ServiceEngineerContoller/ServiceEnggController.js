@@ -788,18 +788,22 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
+// changes by armaan
 module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
-    const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason, document } =
+    const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } =
       req.body;
+    let document = null;
+    if (req.file) {
+      document = req.file.filename;
+    }
+
     if (
       ServiceEnggId &&
       TypeOfLeave &&
       From &&
       To &&
-      Leave_Reason &&
-      document
+      Leave_Reason
     ) {
       const response = await EnggLeaveServiceRecord.create({
         ServiceEnggId,
@@ -810,7 +814,19 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       });
 
       return res.status(201).json({ response });
-    } else {
+    } else if (ServiceEnggId &&
+      TypeOfLeave &&
+      From &&
+      To &&
+      Leave_Reason) {
+      const response = await EnggLeaveServiceRecord.create({
+        ServiceEnggId,
+        TypeOfLeave,
+        Duration: { From: From, To: To },
+        Leave_Reason,
+      });
+    }
+    else {
       return res.status(404).json({ message: "Please Provide Valid Details" });
     }
   } catch (error) {
@@ -820,6 +836,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       .json({ error: "Internal server error in enggLeaveServiceRequest" });
   }
 };
+// changes by armaan
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1158,6 +1175,33 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     });
   }
 };
+// {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+module.exports.getEngineerLeaves = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
 
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    res.status(200).json({ leaves });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in getEngineerLeaves" });
+  }
+}
+
+module.exports.getEngineerLeveCount = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
+    if (!leaves || leaves.length === 0) {
+      return res.status(404).json({ message: "No leaves found" });
+    }
+    const count = leaves[leaves.length - 1].UsedLeave;
+    res.status(200).json({ success: true, leavesUsed: count, totalLeave: leaves[0].TotalLeave });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error in getEngineerLeaveCount" });
+  }
+};
+
+// {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

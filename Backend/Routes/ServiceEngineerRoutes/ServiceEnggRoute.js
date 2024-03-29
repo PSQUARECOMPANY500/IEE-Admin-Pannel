@@ -29,13 +29,25 @@ router.get('/getEngScheduleData/:ServiceEnggId', serviceEnggContoller.getEngSche
 
 
 const storage = multer.diskStorage({
-  destination : (req, file, cb) => {
+  destination: (req, file, cb) => {
     cb(null, './public/uplodes');
   },
-  filename :(req, file, cb) => {
+  filename: (req, file, cb) => {
     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
   },
 });
+const storage2 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/uplodes/leaveAttachment');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.originalname.split(".");
+    const extension = parts[parts.length - 1];
+    const fileName = `leaveAttachment-${Date.now()}.${extension}`
+    cb(null, fileName);
+  },
+});
+const upload2 = multer({ storage: storage2 });
 
 const upload = multer({ storage: storage });
 
@@ -45,13 +57,14 @@ const uploadImg = upload.fields([
     maxCount: 1
   },
   {
+
     name: 'backimage',
     maxCount: 1
   }
 ]);
 
 const checkInAttendance = async (req, res, next) => {
-  const  Id  = req.params.ServiceEnggId;
+  const Id = req.params.ServiceEnggId;
   //console.log(Id);
   //console.log(req.params.ServiceEnggId);
   if (Id) {
@@ -61,7 +74,7 @@ const checkInAttendance = async (req, res, next) => {
       ServiceEnggId: Id,
       Date: date,
     });
-    
+
     if (checksum) {
       return res.status(403).json({ message: "Engg already CheckedIN" });
     }
@@ -89,7 +102,7 @@ const checkOutAttendance = async (req, res, next) => {
 
 router.get('/getTime', serviceEnggContoller.EnggTime);
 router.post('/enggCheckIn/:ServiceEnggId', checkInAttendance, uploadImg, serviceEnggContoller.EnggCheckIn);
-router.put('/enggCheckOut/:ServiceEnggId',checkOutAttendance, uploadImg, serviceEnggContoller.EnggCheckOut);
+router.put('/enggCheckOut/:ServiceEnggId', checkOutAttendance, uploadImg, serviceEnggContoller.EnggCheckOut);
 router.put('/enggOnFirstHalfBreak', serviceEnggContoller.EnggOnFirstHalfBreak);
 router.put('/enggOnSecondHalfBreak', serviceEnggContoller.EnggOnSecondHalfBreak);
 router.put('/enggOnLunchBreak', serviceEnggContoller.EnggOnLunchBreak);
@@ -102,7 +115,6 @@ router.post('/gnggOnSecondHalfBreak', verifyEnggToken,  serviceEnggContoller.Eng
 router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLunchBreak);
  */
 
-router.post("/enggLeaveServiceRequest", serviceEnggContoller.enggLeaveServiceRequest)
 router.get("/enggLeaveRecord", serviceEnggContoller.enggLeaveRecord)
 router.post("/generateOtpForClient", serviceEnggContoller.generateOtpForClient)
 router.post("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
@@ -112,17 +124,20 @@ router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFe
 router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance)
 router.get("/EnggCheckInCheckOutDetals/:ServiceEnggId", serviceEnggContoller.EnggCheckInCheckOutDetals)
 
-
+// by armaan 29/03/2024
+router.post("/enggLeaveServiceRequest", upload2.single('document'), serviceEnggContoller.enggLeaveServiceRequest)
+router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount)
+router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves)
 // --- by preet 15/03/2024 ---
-router.get("/getAssignCalbackDetailForEnggApp/:callbackId",serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId);
-router.get("/getAssignServiceRequestDetailForEnggApp/:RequestId",serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId);
+router.get("/getAssignCalbackDetailForEnggApp/:callbackId", serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId);
+router.get("/getAssignServiceRequestDetailForEnggApp/:RequestId", serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId);
 
 // --- by preet 18/03/2024 ---
-router.get("/getAssignedChecklist/:checklistId",serviceEnggContoller.getChecklistByIdAndServiceType);
+router.get("/getAssignedChecklist/:checklistId", serviceEnggContoller.getChecklistByIdAndServiceType);
 
 //-----by preet 21/03/2024 ---
 
-router.get("/getSparePart",serviceEnggContoller.getAllSparePartdetails);
+router.get("/getSparePart", serviceEnggContoller.getAllSparePartdetails);
 
 //----by preet 22/03/2024 ---
 

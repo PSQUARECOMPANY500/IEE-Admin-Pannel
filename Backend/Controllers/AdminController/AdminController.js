@@ -1491,10 +1491,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1962,7 +1962,7 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
     const otpValue = Math.floor(1000 + Math.random() * 9000);
 
     if (otp) {
-      otp.otp = otpValue.toString(); 
+      otp.otp = otpValue.toString();
     } else {
       otp = new ForgetPassOTP({
         email: email,
@@ -2037,7 +2037,7 @@ module.exports.ValidateOTPForgetPassword = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({
       error: "Internal server error while validatin the OTP",
     });
@@ -2072,4 +2072,91 @@ module.exports.updatePassword = async (req, res) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// {/armaan-dev}
 
+// get engineer leaves History
+module.exports.getEngineerLeaveHistory = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved !== "false");
+    res.status(200).json({
+      success: true,
+      sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+}
+
+// get engineer leaves requests
+module.exports.getEngineerRequestedLeave = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+    res.status(200).json({
+      success: true,
+      leaves: sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+}
+
+// take action on leave (approve or reject)
+module.exports.takeActionOnLeave = async (req, res) => {
+  try {
+    const { IsApproved, ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
+
+    if (!leaves || leaves.length === 0) {
+      return res.status(404).json({ error: "Leave not found" });
+    }
+
+    let last = leaves[leaves.length - 1];
+    let secondLast;
+    if (leaves.length > 1) {
+      secondLast = leaves[leaves.length - 2];
+    }
+
+    if (IsApproved === "Approved") {
+      const fromDate = new Date(last.Duration.From);
+      const toDate = new Date(last.Duration.To);
+      const diffTime = Math.abs(toDate - fromDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      last.IsApproved = "Approved";
+      if (secondLast) {
+        last.UsedLeave += secondLast.UsedLeave;
+        console.log("leave", leaves);
+      }
+      last.UsedLeave += diffDays;
+    } else {
+      last.IsApproved = "Rejected";
+    }
+    
+    await last.save(); // Save the modified document
+    res.status(200).json({
+      success: true,
+      message: "Leave status updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+// {/armaan-dev}

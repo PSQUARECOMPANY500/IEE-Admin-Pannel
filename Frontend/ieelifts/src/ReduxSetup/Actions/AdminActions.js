@@ -73,6 +73,9 @@ export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
 export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
+export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
+export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
+export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
@@ -679,7 +682,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -701,7 +704,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -724,7 +727,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -738,7 +741,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -752,7 +755,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -778,7 +781,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -789,7 +792,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -907,3 +910,66 @@ export const updatePassswordAction = async (email, newPassword) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// {/armaan-dev}
+export const getEngineerLeaveHistory = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerLeaveHistory/${ServiceEnggId}`
+      );
+      dispatch({
+        type: "GET_ENGINEER_LEAVE_HISTORY",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+export const approveLeaveByAdmin = (_id, IsApproved) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerRequestedLeave`,
+        {
+          params: {
+            _id,
+            IsApproved,
+          }
+        }
+      );
+      dispatch({
+        type: "APPROVE_LEAVE_BY_ADMIN",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const getRequstedLeaves = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerRequestedLeave`,{
+          params:{
+            ServiceEnggId
+          }
+        }
+      );
+      dispatch({
+        type: "GET_ENGINEER_REQUESTED_LEAVE",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// {/armaan-dev}
