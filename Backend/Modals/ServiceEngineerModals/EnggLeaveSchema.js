@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
-
 const EnggLeaveRecord = new Schema({
     IsApproved: {
         type: String,
@@ -14,7 +12,6 @@ const EnggLeaveRecord = new Schema({
             const now = new Date().toLocaleDateString('en-GB');
             return now;
         }
-
     },
     ServiceEnggId: {
         type: String,
@@ -49,9 +46,6 @@ const EnggLeaveRecord = new Schema({
     Document: {
         type: String,
     }
-
 });
-
 const EnggLeaveServiceRecord = mongoose.model("EnggLeaveRecord", EnggLeaveRecord);
-
 module.exports = EnggLeaveServiceRecord;

@@ -73,6 +73,7 @@ export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
 export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
+export const FETCH_ENG_DETAILS = "FETCH_ENG_DETAILS";
 export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
@@ -910,7 +911,21 @@ export const updatePassswordAction = async (email, newPassword) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// {/armaan-dev}
+export const fetchEngDetails = (email, otp) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getAllEngDetails`);
+      dispatch({
+        type: FETCH_ENG_DETAILS,
+        payload: response.data,
+      });
+
+      
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};// {/armaan-dev}
 export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
