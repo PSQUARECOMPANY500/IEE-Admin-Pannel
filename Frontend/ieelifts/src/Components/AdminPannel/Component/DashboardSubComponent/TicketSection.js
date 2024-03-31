@@ -219,7 +219,6 @@ const TicketSection = ({ setTicketUpdate }) => {
 
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
-    console.log("re-rendering ho rahi hai")
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);

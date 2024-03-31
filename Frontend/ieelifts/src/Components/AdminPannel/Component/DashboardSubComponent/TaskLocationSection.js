@@ -27,6 +27,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [handleRedportData, setHandleReportData] = useState(true);
   const [filterConditions, setfilterConditions] = useState();
   const [filterData, setFilterData] = useState();
+  const [RedportData, setReportData] = useState();
+
 
   useEffect(() => {
     const fetchData = () => {
@@ -68,6 +70,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return null;
     }
   });
+
 
   useEffect(() => {
     if (currentDateServiceRequest) {
@@ -115,7 +118,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
 
   useEffect(() => {
-    // console.log("in useEffect of task for filter: ", filterConditions);
     if (filterConditions) {
       let data;
       if (services) {
@@ -155,7 +157,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
           const { condition } = engineer;
           let eData = data.filter(
             (d) => d.enggName === condition
-            // console.log(d);
           );
           if (engineerData) {
             engineerData = [...engineerData, ...eData];
@@ -164,15 +165,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
           }
         });
       }
-
-      // if (locationFilter) {
-      //   locationFilter.forEach((location) => {
-      //     const { condition } = location;
-      //     let lData = data.filter((d)=>{
-
-      //     })
-      //   });
-      // }]
       let filteredData = [];
 
       if (statusData && engineerData) {
@@ -228,7 +220,19 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const extractEndTime = (slots) => {
     return slots[slots.length - 1].split("-")[1];
   };
-
+/*.......................................................... apX13 code by emit ................................................................ */
+    function handleReportSectionData(reportData){
+    //setHandleReportData
+    if(reportData.ServiceProcess === "completed"){
+      setHandleReportData(false)
+      setReportData("no-data")
+    }else{
+      //console.log(reportData)
+      setHandleReportData(true)
+      setReportData(reportData)
+    }
+    
+     }
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"child-div"}>
@@ -296,22 +300,46 @@ const TaskLocationSection = forwardRef((props, ref) => {
               {ticket && (
                 <>
                   {!filterData
-                    ? currentDateCallback?.map((value, index) => (
+                    ? currentDateCallback?.map((value, index) => {
+                      const reportData = value
+                      
+                      return(
                         <div
                           className={`ticket-card ${
                             handleCallbackSelection[index] &&
                             "service-card-selected"
                           }`}
-                          // onClick={() => {
-                          //   setHandleCallbackSelection((prevStates) => {
-                          //     prevStates.map((stateValue, valueIndex) => {
-                          //       if (valueIndex !== index) {
-                          //         stateValue = !stateValue;
-                          //       }
-                          //       stateValue = false;
-                          //     });
-                          //   });
-                          // }}
+                          onClick={()=>handleReportSectionData(reportData)}
+                        >
+                          <table className="ticket-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME :</th>
+                                <td>{value.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{value.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="ticket-card-bottom">
+                            <h5>{extractStartTime(value.Slot)}</h5>
+                            <h5>{extractEndTime(value.Slot)}</h5>
+                          </div>
+                        </div>)
+                      })
+                    : filterData?.map((value, index) => {
+                      const reportData = value
+                      return(
+                        <div
+                          className={`ticket-card ${
+                            handleCallbackSelection[index] &&
+                            "service-card-selected"
+                          }`}
+                          onClick={()=>handleReportSectionData(reportData)}
                         >
                           <table className="ticket-table">
                             <tbody>
@@ -332,63 +360,53 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             <h5>{extractEndTime(value.Slot)}</h5>
                           </div>
                         </div>
-                      ))
-                    : filterData?.map((value, index) => (
-                        <div
-                          className={`ticket-card ${
-                            handleCallbackSelection[index] &&
-                            "service-card-selected"
-                          }`}
-                          // onClick={() => {
-                          //   setHandleCallbackSelection((prevStates) => {
-                          //     prevStates.map((stateValue, valueIndex) => {
-                          //       if (valueIndex !== index) {
-                          //         stateValue = !stateValue;
-                          //       }
-                          //       stateValue = false;
-                          //     });
-                          //   });
-                          // }}
-                        >
-                          <table className="ticket-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME :</th>
-                                <td>{value.clientName.toUpperCase()}</td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{value.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div className="ticket-card-bottom">
-                            <h5>{extractStartTime(value.Slot)}</h5>
-                            <h5>{extractEndTime(value.Slot)}</h5>
-                          </div>
-                        </div>
-                      ))}
+                    )})}
                 </>
               )}
 
               {services && (
                 <>
                   {filterData
-                    ? filterData?.map((serviceData, index) => (
+                    ? filterData?.map((serviceData, index) => {
+                      const reportData = serviceData
+                      return(
                         <div
                           className={`service-card ${
                             handleServiceSelection[index] &&
                             "service-card-selected"
                           }`}
-                          // onClick={() => {
-                          //   setHandleServiceSelection((prevStates) => {
-                          //     const newCheckboxStates = [...prevStates];
-                          //     newCheckboxStates[index] = !prevStates[index];
-                          //     return newCheckboxStates;
-                          //   });
-                          // }}
+                          onClick={()=>handleReportSectionData(reportData)}
+                        >
+                          <table className="service-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME:</th>
+                                <td>{serviceData.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{serviceData.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          </div>
+                        </div>)}
+                      )
+                    : currentDateServiceRequest?.map((serviceData, index) =>  {
+                      const reportServiceData = serviceData
+                     
+                      return(
+                        <div
+                          className={`service-card ${
+                            handleServiceSelection[index] &&
+                            "service-card-selected"
+                          }`}
+                          onClick={()=>handleReportSectionData(reportServiceData)}
                         >
                           <table className="service-table">
                             <tbody>
@@ -409,41 +427,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
                           </div>
                         </div>
-                      ))
-                    : currentDateServiceRequest?.map((serviceData, index) => (
-                        <div
-                          className={`service-card ${
-                            handleServiceSelection[index] &&
-                            "service-card-selected"
-                          }`}
-                          // onClick={() => {
-                          //   setHandleServiceSelection((prevStates) => {
-                          //     const newCheckboxStates = [...prevStates];
-                          //     newCheckboxStates[index] = !prevStates[index];
-                          //     return newCheckboxStates;
-                          //   });
-                          // }}
-                        >
-                          <table className="service-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME:</th>
-                                <td>{serviceData.clientName.toUpperCase()}</td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{serviceData.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <div className="service-card-bottom">
-                            <h5>{extractStartTime(serviceData.Slot)}</h5>
-                            <h5>{extractEndTime(serviceData.Slot)}</h5>
-                          </div>
-                        </div>
-                      ))}
+                      )})}
                 </>
               )}
             </div>
@@ -454,9 +438,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
           <div className="Report-section">
             <div
               className="task-top-section"
-              onClick={() => {
-                setHandleReportData(false);
-              }}
               style={{ cursor: "pointer" }}
             >
               <p>Report</p>
@@ -465,7 +446,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
             <div className="report-description-section">
               <div className="more-descriptive-report">
                 <div className="child-descriptive">
-                  <ReportData handleRedportData={handleRedportData} />
+                  <ReportData handleRedportData={handleRedportData} RedportData={RedportData} />
                 </div>
               </div>
             </div>

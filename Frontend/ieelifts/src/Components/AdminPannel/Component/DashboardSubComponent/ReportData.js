@@ -8,9 +8,10 @@ import PitArea from "./PitArea";
 import Rating from "./Rating";
 import ReportIssue from "./ReportIssue";
 
-function ReportTable({handleRedportData}) {
+function ReportTable({handleRedportData ,RedportData}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showReport,setShowReport]=useState(true)
+  
 
   const routes = [
     { name: "M/c Room", co: <MCRoom /> },
@@ -38,7 +39,7 @@ function ReportTable({handleRedportData}) {
   return (
     <div className="ReportTable">
 
-     {handleRedportData?( <ReportIssue/>):(
+     {handleRedportData?( <ReportIssue RedportData={RedportData}/>):(
        <div className="ReportNavigation">
         <div className="CarouselButtons">
           <div className="CarouselButtonsL">

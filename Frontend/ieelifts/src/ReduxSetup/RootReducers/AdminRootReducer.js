@@ -39,6 +39,8 @@ import { loginAdminReducer } from "../Reducers/AdminReducer";
 import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
 import { engineersReducer } from "../Reducers/AdminReducer";
 import {fetchassignedEnggDetailsReducer} from "../Reducers/AdminReducer"
+import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
+import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -79,6 +81,8 @@ const AdminRootReducer = combineReducers({
   VerifyOTPPasswordReducer:VerifyOTPPasswordReducer,
   engineersReducer: engineersReducer,
   fetchassignedEnggDetailsReducer:fetchassignedEnggDetailsReducer,
+  onClickEnggCartEnggLocationReducer:onClickEnggCartEnggLocationReducer,
+  onClickEnggPinEnggLocationReducer:onClickEnggPinEnggLocationReducer
 });
 
 export default AdminRootReducer;

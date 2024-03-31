@@ -75,6 +75,8 @@ export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
 
 export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
+export const UPDATE_ENGG_LOCATION = "UPDATE_ENGG_LOCATION";
+export const UPDATE_ENGG_CART_LOCATION = "UPDATE_ENGG_CART_LOCATION";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
@@ -920,6 +922,34 @@ export const assignedEnggDetails = (ServiceEnggId) => {
     });
     } catch (error) {
       console.log("error while fetching data", error);
+    }
+  };
+}
+
+//emit action for engg location
+export const onClickEnggCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
+    }
+  };
+}
+
+//emit action for updating engg cart on click of pin
+export const onClickPinCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_CART_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
     }
   };
 }

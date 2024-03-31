@@ -41,6 +41,8 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
 
 import {GET_ASSIGNED_ENGG_DETAILS} from "../Actions/AdminActions"
+import {UPDATE_ENGG_LOCATION} from "../Actions/AdminActions"
+import {UPDATE_ENGG_CART_LOCATION} from "../Actions/AdminActions"
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
@@ -652,3 +654,29 @@ export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, act
   }
 };
 
+//emit reducer for updating location
+const EnggLocation = {
+  enggLocation: null,
+};
+export const onClickEnggCartEnggLocationReducer = (state = EnggLocation, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_LOCATION:
+      return { ...state, enggLocation: action.payload };
+    default:
+      return state;
+  }
+};
+
+
+//emit reducer for updating location onClick of pin
+const EnggLocationPin = {
+  enggLocationOnPin: null,
+};
+export const onClickEnggPinEnggLocationReducer = (state = EnggLocationPin, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_CART_LOCATION:
+      return { ...state, enggLocationOnPin: action.payload };
+    default:
+      return state;
+  }
+};

@@ -232,18 +232,33 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
-        //extract only specific field
-
+        const ServiceRequestdetail = await getAllServiceRequest.findOne({
+          RequestId: item.RequestId,
+        });
+        // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientDetail ? clientDetail.name : null;
-
+        const ClientPhoto = clientDetail ? clientDetail.ProfileImage : null;
+        const ClientAddress = clientDetail ? clientDetail.Address : null;
+        const ClientPhoneNumber = clientDetail ? clientDetail.PhoneNumber : null;
+        const ClientTypeOfIssue = ServiceRequestdetail ? ServiceRequestdetail.TypeOfIssue : null;
+        const ClientDescription = ServiceRequestdetail ? ServiceRequestdetail.Description : null;
+        const RepresentativeName = ServiceRequestdetail.RepresentativeName || null;
+        const RepresentativeNumber = ServiceRequestdetail.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber
         };
-      })
+        }
+      )
     );
     return res.status(200).json({
       serviceRequestDetail,
@@ -269,7 +284,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-
+console.log("currentDetailCallback",currentDetailCallback)
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const enggDetail = await ServiceEnggData.findOne({
@@ -278,15 +293,30 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
+        const callbackdetail = await getAllCalbacks.findOne({
+          callbackId: item.callbackId,
+        });
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientdetail ? clientdetail.name : null;
-
+        const ClientPhoto = clientdetail ? clientdetail.ProfileImage : null;
+        const ClientAddress = clientdetail ? clientdetail.Address : null;
+        const ClientPhoneNumber = clientdetail ? clientdetail.PhoneNumber : null;
+        const ClientTypeOfIssue = callbackdetail ? callbackdetail.TypeOfIssue : null;
+        const ClientDescription = callbackdetail ? callbackdetail.Description : null;
+        const RepresentativeName = callbackdetail ? callbackdetail.RepresentativeName : null;
+        const RepresentativeNumber = callbackdetail ? callbackdetail.RepresentativeNumber : null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber
         };
       })
     );
@@ -522,7 +552,7 @@ module.exports.assignCallbacks = async (req, res) => {
         Slot,
         Date,
         Message,
-        ServiceProcess,
+        ServiceProcess
       });
     }
 
@@ -555,7 +585,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Slot,
       Date,
       Message,
-      ServiceProcess,
+      ServiceProcess
     } = req.body;
 
     let callback;
@@ -576,7 +606,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Slot,
           Date,
           Message,
-          ServiceProcess,
+          ServiceProcess
         },
         {
           new: true,
@@ -591,7 +621,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Slot,
         Date,
         Message,
-        ServiceProcess,
+        ServiceProcess
       });
     }
 
@@ -1163,7 +1193,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     const { ServiceEnggId, selectedDate } = req.body;
     if (ServiceEnggId) {
       const len = 5;
-      console.log(selectedDate);
+      //console.log(selectedDate);
       const today = new Date(selectedDate);
 
       const dates = Array.from(
@@ -1172,7 +1202,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         },
         (_, i) => {
           const previousDay = new Date(today);
-          previousDay.setDate(today.getDate() - 3 + i);
+          previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
       );
