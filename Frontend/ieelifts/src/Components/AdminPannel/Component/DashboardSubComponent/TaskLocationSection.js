@@ -32,15 +32,15 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   useEffect(() => {
     const fetchData = () => {
-      dispatch(getFilterLocation());
+      // dispatch(getFilterLocation());
       dispatch(getEngineerNames());
     };
     fetchData();
   }, [dispatch]);
-  const locations = useSelector(
-    (state) =>
-      state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
-  );
+  // const locations = useSelector(
+  //   (state) =>
+  //     state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
+  // );
   const engineers = useSelector(
     (state) =>
       state?.AdminRootReducer?.engineersReducer?.engineers?.engineerNames
@@ -52,7 +52,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
       name: "engineers",
       options: engineers,
     },
-    { name: "location", options: locations },
+    // { name: "location", options: locations },
+    { name: "clear", options: [] }
     // { name: "location", options: [] },
   ];
 
@@ -177,6 +178,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
         filteredData = engineerData;
       }
       setFilterData(filteredData);
+    }
+    else {
+      setFilterData(null);
     }
   }, [filterConditions, ticket]);
 

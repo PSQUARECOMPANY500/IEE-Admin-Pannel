@@ -40,6 +40,7 @@ router.get("/getAllCallbacks/:ServiceEnggId", serviceEnggContoller.getAssignCall
 router.get("/getAllServices/:ServiceEnggId", serviceEnggContoller.getAssignedServices);
 router.get('/getServiceEngg/:EnggId', serviceEnggContoller.getEnggDetail);
 router.get('/getEngScheduleData/:ServiceEnggId', serviceEnggContoller.getEngScheduleData);
+router.get('/getAllEngDetails', serviceEnggContoller.getAllEngDetails);
 
 
 const storage = multer.diskStorage({

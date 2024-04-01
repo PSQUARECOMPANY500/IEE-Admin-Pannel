@@ -56,17 +56,20 @@ body {
   background-color: transparent;
   border: 1px solid #707070;
   border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+}
+
+img {
+  height: 100%;
+  width: 100%;
 }
 
 .ODetailsColumn {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-  /* border-bottom: 2px solid #5353533b;
-  border-radius: 2px; */
-
-
-
 }
 
 .ODetails {
@@ -115,24 +118,13 @@ body {
 .EngeeniersChatF {
   border-radius: 1.2rem;
   position: relative;
-  /* margin-top: 5rem; */
   height: 790px;
   margin-bottom: 1.2rem;
   display: none;
 }
 
 
-/* .EngeeniersChatT {
 
-  border-radius: 1.2rem;
-  position: relative;
-  margin-top: 5rem;
-  display: none;
-  margin-bottom: 1.2rem;
-  height: 790px;
-  margin-bottom: 1.2rem;
-
-} */
 
 
 .AllCards::-webkit-scrollbar-track {
@@ -193,6 +185,17 @@ body {
   background-color: transparent;
   border: 1px solid #707070;
   border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+}
+
+.EngCardDetailsL img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+
+
 }
 
 
@@ -1162,6 +1165,24 @@ tr>td:nth-child(2) {
   border-radius: 5px;
 }
 
+/* armaan */
+.leave_Details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  text-transform: capitalize;
+  gap: 2rem;
+}
+
+.leave_dates {
+  font-size: 0.8rem;
+  color: #444444;
+}
+
+/* armaan */
+
 .OldCardData h5 {
   font-family: 'Poppins';
   font-weight: 500;
@@ -1173,12 +1194,16 @@ tr>td:nth-child(2) {
 }
 
 .OldCardData:nth-child(1) {
-
   background-color: #FEF3DE;
   box-shadow: inset 1px 2px 3px #99886B66;
   width: 60px;
   height: 50px;
   border-radius: 5px;
+}
+
+.RejecTedCard {
+  background-color: #C10000 !important;
+  color: white !important;
 }
 
 .OldLeaveCard>.OldCardData:nth-child(2) {
@@ -1246,11 +1271,8 @@ tr>td:nth-child(2) {
   width: 100%;
   border: 1px solid #00000029;
   border-radius: 10px;
-
-
-
-
 }
+
 
 .SubLeaveHistoryBottom h5 {
   color: #1D1D1D;
@@ -1340,13 +1362,16 @@ tr>td:nth-child(2) {
   color: #1D1D1D;
 }
 
+/* armaan */
 .ResContainer {
   padding: 1rem 1rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
-
+  color: #444444;
 }
+
+/* armaan */
 
 .Buttons {
   width: 100%;
@@ -2234,6 +2259,6 @@ tr>td:nth-child(2) {
 }
 
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 
-/*------------------------------------------------------ Rating code ending point--------------------------------------------------------- */                                                                                                                                                                                                                               
+
+/*------------------------------------------------------ Rating code ending point--------------------------------------------------------- */

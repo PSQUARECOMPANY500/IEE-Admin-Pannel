@@ -3,6 +3,7 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const callbackAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
 const serviceAssigtoEngg = require("../../Modals/ServiceEngineerModals/AssignServiceRequest");
+const engineerRating = require("../../Modals/Rating/Rating")
 
 const {
   generateEnggToken,
@@ -95,7 +96,7 @@ module.exports.RegisterServiceEngg = async (req, res) => {
     } = req.body;
 
     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
-      EnggId,
+      EnggId
     });
     if (ExistingServiceEngg) {
       return res
@@ -536,11 +537,12 @@ module.exports.EnggTime = async (req, res) => {
 module.exports.EnggCheckIn = async (req, res) => {
   //console.log("req of checkin",req.params.ServiceEnggId)
   try {
+    const ServiceEnggId = req.params.ServiceEnggId;
+    console.log("ServiceEnggId", ServiceEnggId);
     const images = req.files;
     const frontimagename = images?.frontimage[0].filename;
     const backimagename = images?.backimage[0].filename;
     const { IsAttendance } = req.body;
-    const ServiceEnggId = req.params.ServiceEnggId;
     if (IsAttendance && ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;
       const time = new Date().toLocaleTimeString("en-IN", {
@@ -1244,6 +1246,94 @@ module.exports.getEngineerLeveCount = async (req, res) => {
 
 // {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+
+// @route name-getAllEngDetails
+// @route type-private
+// @route work-get eng details leave rating etc....
+
+
+
+module.exports.getAllEngDetails = async (req, res) => {
+  try {
+    const ServiceEnggId = req.params.ServiceEnggId;
+    const engDetails = await ServiceEnggBasicSchema.find().select('-EnggPassword');
+    const engRatings = await engineerRating.find({}).select("Rating ServiceEnggId");
+
+    // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
+
+
+    const combinedData = engDetails.map(eng => {
+      const engineerRatings = engRatings.filter(rating => rating.ServiceEnggId === eng.EnggId);
+      let sum = 0;
+      engineerRatings.forEach(elem => {
+        sum = sum + elem.Rating;
+      })
+      const averageRating = engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
+      // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
+      return {
+        ...eng.toObject(),
+        averageRating,
+        // engleaveRecord
+
+      };
+    });
+
+    res.status(200).json({ combinedData });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error in get service eng details",
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+
+// @route name-getAllEngDetails
+// @route type-private
+// @route work-get eng details leave rating etc....
+
+
+
+module.exports.getAllEngDetails = async (req, res) => {
+  try {
+    const ServiceEnggId = req.params.ServiceEnggId;
+    const engDetails = await ServiceEnggBasicSchema.find().select('-EnggPassword');
+    const engRatings = await engineerRating.find({}).select("Rating ServiceEnggId");
+
+    // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
+
+
+    const combinedData = engDetails.map(eng => {
+      const engineerRatings = engRatings.filter(rating => rating.ServiceEnggId === eng.EnggId);
+      let sum = 0;
+      engineerRatings.forEach(elem => {
+        sum = sum + elem.Rating;
+      })
+      const averageRating = engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
+      // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
+      return {
+        ...eng.toObject(),
+        averageRating,
+        // engleaveRecord
+
+      };
+    });
+
+    res.status(200).json({ combinedData });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error in get service eng details",
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+
 
 //Date => 28/03/2024
 

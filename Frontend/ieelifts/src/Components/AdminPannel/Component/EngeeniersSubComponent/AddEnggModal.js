@@ -244,9 +244,9 @@ const AddEnggModal = () => {
 
   return (
     <>
-      <div className="add-engg-wrapper" onClick={closeModal}></div>
+      <div className="add-engg-wrapper" onClick={closeModal}>
       <div className="add-engg-modal" ref={mainDivRef}>
-        <div className="cross-icon" onClick={closeModal}>
+        <div className="cross-icon" onClick={closeModal} style={{cursor:'pointer'}}>
           <RxCross2 />
         </div>
 
@@ -604,6 +604,8 @@ const AddEnggModal = () => {
         </div>
         {/* -------------------------------------------------------------------------------------------------------------------------------- */}
       </div>
+      </div>
+    
     </>
   );
 };

@@ -240,11 +240,19 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const clientName = clientDetail ? clientDetail.name : null;
         const ClientPhoto = clientDetail ? clientDetail.ProfileImage : null;
         const ClientAddress = clientDetail ? clientDetail.Address : null;
-        const ClientPhoneNumber = clientDetail ? clientDetail.PhoneNumber : null;
-        const ClientTypeOfIssue = ServiceRequestdetail ? ServiceRequestdetail.TypeOfIssue : null;
-        const ClientDescription = ServiceRequestdetail ? ServiceRequestdetail.Description : null;
-        const RepresentativeName = ServiceRequestdetail.RepresentativeName || null;
-        const RepresentativeNumber = ServiceRequestdetail.RepresentativeNumber || null;
+        const ClientPhoneNumber = clientDetail
+          ? clientDetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = ServiceRequestdetail
+          ? ServiceRequestdetail.TypeOfIssue
+          : null;
+        const ClientDescription = ServiceRequestdetail
+          ? ServiceRequestdetail.Description
+          : null;
+        const RepresentativeName =
+          ServiceRequestdetail.RepresentativeName || null;
+        const RepresentativeNumber =
+          ServiceRequestdetail.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
@@ -255,10 +263,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ClientTypeOfIssue,
           ClientDescription,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         };
-        }
-      )
+      })
     );
     return res.status(200).json({
       serviceRequestDetail,
@@ -284,7 +291,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-console.log("currentDetailCallback",currentDetailCallback)
+    console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const enggDetail = await ServiceEnggData.findOne({
@@ -301,11 +308,21 @@ console.log("currentDetailCallback",currentDetailCallback)
         const clientName = clientdetail ? clientdetail.name : null;
         const ClientPhoto = clientdetail ? clientdetail.ProfileImage : null;
         const ClientAddress = clientdetail ? clientdetail.Address : null;
-        const ClientPhoneNumber = clientdetail ? clientdetail.PhoneNumber : null;
-        const ClientTypeOfIssue = callbackdetail ? callbackdetail.TypeOfIssue : null;
-        const ClientDescription = callbackdetail ? callbackdetail.Description : null;
-        const RepresentativeName = callbackdetail ? callbackdetail.RepresentativeName : null;
-        const RepresentativeNumber = callbackdetail ? callbackdetail.RepresentativeNumber : null;
+        const ClientPhoneNumber = clientdetail
+          ? clientdetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = callbackdetail
+          ? callbackdetail.TypeOfIssue
+          : null;
+        const ClientDescription = callbackdetail
+          ? callbackdetail.Description
+          : null;
+        const RepresentativeName = callbackdetail
+          ? callbackdetail.RepresentativeName
+          : null;
+        const RepresentativeNumber = callbackdetail
+          ? callbackdetail.RepresentativeNumber
+          : null;
         return {
           ...item._doc,
           enggName,
@@ -316,7 +333,7 @@ console.log("currentDetailCallback",currentDetailCallback)
           ClientTypeOfIssue,
           ClientDescription,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         };
       })
     );
@@ -552,7 +569,7 @@ module.exports.assignCallbacks = async (req, res) => {
         Slot,
         Date,
         Message,
-        ServiceProcess
+        ServiceProcess,
       });
     }
 
@@ -585,7 +602,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Slot,
       Date,
       Message,
-      ServiceProcess
+      ServiceProcess,
     } = req.body;
 
     let callback;
@@ -606,7 +623,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Slot,
           Date,
           Message,
-          ServiceProcess
+          ServiceProcess,
         },
         {
           new: true,
@@ -621,7 +638,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Slot,
         Date,
         Message,
-        ServiceProcess
+        ServiceProcess,
       });
     }
 
@@ -1190,10 +1207,10 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const { ServiceEnggId, selectedDate } = req.params;
+    const { ServiceEnggId, selectedDate } = req.body;
+    console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
-      //console.log(selectedDate);
       const today = new Date(selectedDate);
 
       const dates = Array.from(
@@ -1202,7 +1219,6 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         },
         (_, i) => {
           const previousDay = new Date(today);
-          previousDay.setDate(today.getDate() - 2 + i);
           previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
@@ -1218,7 +1234,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         })
       );
 
-      // console.log(attendanceData)
+      //console.log(attendanceData)
 
       return res.status(200).json({
         attendanceData,
@@ -1522,10 +1538,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1893,7 +1909,6 @@ const filterMembershipByType = (data, type) => {
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
-    console.log("this is location: ", location);
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -1928,7 +1943,6 @@ module.exports.getEngineerNames = async (req, res) => {
     const engineerDetails = await ServiceEnggData.find();
     let engineerNames = [];
 
-    console.log(engineerNames);
     engineerDetails.forEach((engineer) => {
       engineerNames.push(engineer.EnggName);
     });
@@ -1948,7 +1962,6 @@ module.exports.getEngineerNames = async (req, res) => {
 module.exports.createSpearParts = async (req, res) => {
   try {
     const { SpearPart, subcategoryName } = req.body;
-    //console.log("chutiye",SpearPart , subcategoryName);
     if (SpearPart && subcategoryName) {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
@@ -1980,8 +1993,6 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
     const emailVerify = await serviceAdmin.findOne({ email });
 
     let otp = await ForgetPassOTP.findOne({ email });
-
-    console.log(emailVerify);
 
     if (!emailVerify) {
       return res
@@ -2103,29 +2114,29 @@ module.exports.updatePassword = async (req, res) => {
 };
 module.exports.assignedEnggDetails = async (req, res) => {
   try {
-    const {ServiceEnggId} = req.params;
-    if(ServiceEnggId){
+    const { ServiceEnggId } = req.params;
+    if (ServiceEnggId) {
       const assignCallbacks = await ServiceAssigntoEngg.find({
         ServiceEnggId: ServiceEnggId,
-        ServiceProcess:"completed"
+        ServiceProcess: "completed",
       });
-  
+
       const assignServiceRequests = await AssignSecheduleRequest.find({
         ServiceEnggId: ServiceEnggId,
-        ServiceProcess:"completed"
+        ServiceProcess: "completed",
       });
-  
+
       const assignCallbacksWithClientName = await Promise.all(
         assignCallbacks.map(async (assignment) => {
           const client = await clientDetailSchema.findOne({
             JobOrderNumber: assignment.JobOrderNumber,
           });
           return {
-            ...assignment._doc, 
+            ...assignment._doc,
             ClientName: client?.name,
             ClientAddress: client?.Address,
-          };  
-        }) 
+          };
+        })
       );
       const assignServiceRequestsWithClientName = await Promise.all(
         assignServiceRequests.map(async (assignment) => {
@@ -2133,77 +2144,74 @@ module.exports.assignedEnggDetails = async (req, res) => {
             JobOrderNumber: assignment.JobOrderNumber,
           });
           return {
-            ...assignment._doc, 
+            ...assignment._doc,
             ClientName: client?.name,
             ClientAddress: client?.Address,
-          };  
-        }) 
+          };
+        })
       );
-  
-      const assignCallbacksDetails = assignCallbacksWithClientName.map((data) => 
-      ({
-        date: data.Date,
-        ServiceId:data.callbackId,
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        name: data?.ClientName,
-        address: data?.ClientAddress,
-      }));
-  
-      const assignServiceRequestsDetails = assignServiceRequestsWithClientName.map((data) => 
-      ({
-        date: data.Date,
-        ServiceId:data.RequestId,
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        name: data?.ClientName,
-        address: data?.ClientAddress,
-      }));
-  
-  
+
+      const assignCallbacksDetails = assignCallbacksWithClientName.map(
+        (data) => ({
+          date: data.Date,
+          ServiceId: data.callbackId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        })
+      );
+
+      const assignServiceRequestsDetails =
+        assignServiceRequestsWithClientName.map((data) => ({
+          date: data.Date,
+          ServiceId: data.RequestId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        }));
+
       const assignCallbacksWithRating = await Promise.all(
         assignCallbacksDetails.map(async (assignment) => {
           const Rating = await EnggRating.findOne({
             ServiceId: assignment.ServiceId,
           });
           return {
-            ...assignment, 
-            rating:Rating.Rating
-          };  
-        }) 
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
       );
-  
+
       const assignServiceRequestsWithRating = await Promise.all(
         assignServiceRequestsDetails.map(async (assignment) => {
           const Rating = await EnggRating.findOne({
             ServiceId: assignment.ServiceId,
           });
           return {
-            ...assignment, 
-            rating:Rating.Rating
-          };  
-        }) 
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
       );
-      return res
-      .status(200)
-      .json({  assignServiceRequests: assignServiceRequestsWithRating , assignCallbacks: assignCallbacksWithRating });
+      return res.status(200).json({
+        assignServiceRequests: assignServiceRequestsWithRating,
+        assignCallbacks: assignCallbacksWithRating,
+      });
     }
-    return res.status(400).json({message:"ServiceEnggId not found"})
-
+    return res.status(400).json({ message: "ServiceEnggId not found" });
   } catch (error) {
-   console.log(error)
-   return res
-   .status(500)
-   .json({ error: "Internal server error in assignedEnggDetails" });
-
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in assignedEnggDetails" });
   }
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // {/armaan-dev}
@@ -2227,7 +2235,7 @@ module.exports.getEngineerLeaveHistory = async (req, res) => {
       error: "Internal server error",
     });
   }
-}
+};
 
 // get engineer leaves requests
 module.exports.getEngineerRequestedLeave = async (req, res) => {
@@ -2248,45 +2256,71 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
       error: "Internal server error",
     });
   }
-}
+};
 
 // take action on leave (approve or reject)
 module.exports.takeActionOnLeave = async (req, res) => {
   try {
-    const { IsApproved, ServiceEnggId } = req.query;
-    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
-
+    const { IsApproved, _id } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find();
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ error: "Leave not found" });
     }
-
-    let last = leaves[leaves.length - 1];
-    let secondLast;
-    if (leaves.length > 1) {
-      secondLast = leaves[leaves.length - 2];
+    const last = leaves.find((leave) => leave._id == _id);
+    if (!last) {
+      return res.status(404).json({ error: "Leave not found" });
     }
+
+    // const approvedLeaves = leaves
+    //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
+    //   .sort((leaveA, leaveB) => {
+    //     const dateA = new Date(leaveA.Date);
+    //     const dateB = new Date(leaveB.Date);
+    //     return dateA - dateB;
+    //   });
+
+    const approvedLeaves = leaves
+      .filter(
+        (leave) =>
+          leave.IsApproved === "Approved" &&
+          leave.ServiceEnggId === last.ServiceEnggId
+      )
+      .sort((leaveA, leaveB) => {
+        const [monthA, dateA, yearA] = new Date(leaveA.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const [monthB, dateB, yearB] = new Date(leaveB.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const dateStrA = `${monthA}/${dateA}/${yearA}`;
+        const dateStrB = `${monthB}/${dateB}/${yearB}`;
+        return new Date(dateStrA) - new Date(dateStrB);
+      });
 
     if (IsApproved === "Approved") {
-      const [day,month,year] = last.Duration.From.split("/").map(Number);
-      const [day1,month1,year1] =last.Duration.To.split("/").map(Number);
-      const fromDate = new Date(year,month-1,day);
-      const toDate =  new Date(year1,month1-1,day1);
-      console.log(fromDate,toDate);
+      last.IsApproved = "Approved";
+      const [fromDay, fromMonth, fromYear] = last.Duration.From.split("/");
+      const [toDay, toMonth, toYear] = last.Duration.To.split("/");
+
+      const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
+      const toDate = new Date(toYear, toMonth - 1, toDay);
       const diffTime = Math.abs(toDate - fromDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      last.IsApproved = "Approved";
-      if (secondLast) {
-        last.UsedLeave += secondLast.UsedLeave;
+
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave =
+          approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
+      } else {
+        last.UsedLeave = diffDays + 1;
       }
-      last.UsedLeave += diffDays;
     } else {
       last.IsApproved = "Rejected";
-      if (secondLast) {
-        last.UsedLeave += secondLast.UsedLeave;
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave;
       }
     }
-    
-    await last.save(); // Save the modified document
+    console.log(last);
+    await last.save();
     res.status(200).json({
       success: true,
       message: "Leave status updated successfully",
@@ -2297,10 +2331,7 @@ module.exports.takeActionOnLeave = async (req, res) => {
   }
 };
 
-
 // {/armaan-dev}
-
-
 
 // amit api // 29/03/2024
 
@@ -2308,15 +2339,15 @@ module.exports.takeActionOnLeave = async (req, res) => {
 //controller to handdle get task histroy of service engg
 module.exports.assignedEnggDetails = async (req, res) => {
   try {
-    const {ServiceEnggId} = req.params;
-    if(ServiceEnggId){
+    const { ServiceEnggId } = req.params;
+    if (ServiceEnggId) {
       const assignCallbacks = await ServiceAssigntoEngg.find({
         ServiceEnggId: ServiceEnggId,
-        ServiceProcess:"completed"
+        ServiceProcess: "completed",
       });
       const assignServiceRequests = await AssignSecheduleRequest.find({
         ServiceEnggId: ServiceEnggId,
-        ServiceProcess:"completed"
+        ServiceProcess: "completed",
       });
       const assignCallbacksWithClientName = await Promise.all(
         assignCallbacks.map(async (assignment) => {
@@ -2342,26 +2373,27 @@ module.exports.assignedEnggDetails = async (req, res) => {
           };
         })
       );
-      const assignCallbacksDetails = assignCallbacksWithClientName.map((data) =>
-      ({
-        date: data.Date,
-        ServiceId:data.callbackId,
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        name: data?.ClientName,
-        address: data?.ClientAddress,
-      }));
-      const assignServiceRequestsDetails = assignServiceRequestsWithClientName.map((data) =>
-      ({
-        date: data.Date,
-        ServiceId:data.RequestId,
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        name: data?.ClientName,
-        address: data?.ClientAddress,
-      }));
+      const assignCallbacksDetails = assignCallbacksWithClientName.map(
+        (data) => ({
+          date: data.Date,
+          ServiceId: data.callbackId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        })
+      );
+      const assignServiceRequestsDetails =
+        assignServiceRequestsWithClientName.map((data) => ({
+          date: data.Date,
+          ServiceId: data.RequestId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        }));
       const assignCallbacksWithRating = await Promise.all(
         assignCallbacksDetails.map(async (assignment) => {
           const Rating = await EnggRating.findOne({
@@ -2369,7 +2401,7 @@ module.exports.assignedEnggDetails = async (req, res) => {
           });
           return {
             ...assignment,
-            rating:Rating.Rating
+            rating: Rating.Rating,
           };
         })
       );
@@ -2380,20 +2412,21 @@ module.exports.assignedEnggDetails = async (req, res) => {
           });
           return {
             ...assignment,
-            rating:Rating.Rating
+            rating: Rating.Rating,
           };
         })
       );
-      return res
-      .status(200)
-      .json({  assignServiceRequests: assignServiceRequestsWithRating , assignCallbacks: assignCallbacksWithRating });
+      return res.status(200).json({
+        assignServiceRequests: assignServiceRequestsWithRating,
+        assignCallbacks: assignCallbacksWithRating,
+      });
     }
-    return res.status(400).json({message:"ServiceEnggId not found"})
+    return res.status(400).json({ message: "ServiceEnggId not found" });
   } catch (error) {
-   console.log(error)
-   return res
-   .status(500)
-   .json({ error: "Internal server error in assignedEnggDetails" });
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in assignedEnggDetails" });
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -87,7 +87,7 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
+router.post("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 

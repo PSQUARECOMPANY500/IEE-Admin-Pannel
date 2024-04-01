@@ -73,6 +73,7 @@ export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
 export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
+export const FETCH_ENG_DETAILS = "FETCH_ENG_DETAILS";
 
 export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
 export const UPDATE_ENGG_LOCATION = "UPDATE_ENGG_LOCATION";
@@ -80,6 +81,7 @@ export const UPDATE_ENGG_CART_LOCATION = "UPDATE_ENGG_CART_LOCATION";
 export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
+export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
@@ -874,7 +876,6 @@ export const VerifyOTPPasswordAction = (email, otp) => {
         email,
         otp,
       });
-      console.log(response.data);
       dispatch({
         type: VERIFY_OTP_PASSWORD,
         payload: response.data,
@@ -914,6 +915,23 @@ export const updatePassswordAction = async (email, newPassword) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+export const fetchEngDetails = (email, otp) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getAllEngDetails`);
+      dispatch({
+        type: FETCH_ENG_DETAILS,
+        payload: response.data,
+      });
+
+
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+
 //emit code for the enggpage task-section 
 export const assignedEnggDetails = (ServiceEnggId) => {
   return async (dispatch) => {
@@ -960,7 +978,11 @@ export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `${config.apiUrl}/admin/getEngineerLeaveHistory/${ServiceEnggId}`
+        `${config.apiUrl}/admin/getEngineerLeaveHistory`, {
+        params: {
+          ServiceEnggId
+        }
+      }
       );
       dispatch({
         type: "GET_ENGINEER_LEAVE_HISTORY",
@@ -977,7 +999,7 @@ export const approveLeaveByAdmin = (_id, IsApproved) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `${config.apiUrl}/admin/getEngineerRequestedLeave`,
+        `${config.apiUrl}/admin/takeActionOnLeave`,
         {
           params: {
             _id,
@@ -985,6 +1007,7 @@ export const approveLeaveByAdmin = (_id, IsApproved) => {
           }
         }
       );
+      console.log(response.data);
       dispatch({
         type: "APPROVE_LEAVE_BY_ADMIN",
         payload: response.data,
@@ -1001,14 +1024,34 @@ export const getRequstedLeaves = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `${config.apiUrl}/admin/getEngineerRequestedLeave`,{
-          params:{
-            ServiceEnggId
-          }
+        `${config.apiUrl}/admin/getEngineerRequestedLeave`, {
+        params: {
+          ServiceEnggId
         }
+      }
       );
       dispatch({
         type: "GET_ENGINEER_REQUESTED_LEAVE",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
+  return async (dispatch) => {
+    try {
+
+      const response = await axios.post(
+        `${config.apiUrl}/admin/fetchEnggAttendance`, {
+        ServiceEnggId: ServiceEnggId,
+        selectedDate: selectedDate
+      }
+      );
+      dispatch({
+        type: "GET_ENGINEER_ATTENDANCE",
         payload: response.data,
       });
     } catch (error) {

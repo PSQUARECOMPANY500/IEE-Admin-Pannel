@@ -443,7 +443,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                   {" "}
                   <CheckBox
                     id="checkbox1"
-                    checked={checkboxStates.every((isChecked) => isChecked)}
+                    checked={filteredCD && (filteredCD.length > 0 || getFilterConditions.length > 0) && checkboxStates.every((isChecked) => isChecked)}
                     handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>
