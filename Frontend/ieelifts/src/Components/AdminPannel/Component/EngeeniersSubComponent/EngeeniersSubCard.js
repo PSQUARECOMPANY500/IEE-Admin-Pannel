@@ -152,7 +152,7 @@ const EngeeniersSubCard = (props) => {
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    // handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
+    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
   };
 
 

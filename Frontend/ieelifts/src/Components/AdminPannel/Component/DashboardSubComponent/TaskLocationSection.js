@@ -219,27 +219,28 @@ const TaskLocationSection = forwardRef((props, ref) => {
   // -------------------------filter dropdown end--------------------------
 
 
+
   const extractStartTime = (slots) => {
     return slots[0].split("-")[0];
   };
   const extractEndTime = (slots) => {
     return slots[slots.length - 1].split("-")[1];
   };
-/*.......................................................... apX13 code by emit ................................................................ */
-    function handleReportSectionData(reportData){
+  /*.......................................................... apX13 code by emit ................................................................ */
+  function handleReportSectionData(reportData) {
     //setHandleReportData
-    if(reportData.ServiceProcess === "completed"){
+    if (reportData.ServiceProcess === "completed") {
       setHandleReportData(false)
       setReportData("no-data")
-    }else{
+    } else {
       //console.log(reportData)
       setHandleReportData(true)
       setReportData(reportData)
     }
-    
-     }
+
+  }
   return (
-    <div className={"parent-full-div"}ref={ref} >
+    <div className={"parent-full-div"} ref={ref} >
       <div className={"task-child-div"} >
         <div
           className={
@@ -307,65 +308,65 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
                       const reportData = value
-                      
-                      return(
+
+                      return (
                         <div
-                          className={`ticket-card ${
-                            handleCallbackSelection[index] &&
+                          className={`ticket-card ${handleCallbackSelection[index] &&
                             "service-card-selected"
-                          }`}
-                          onClick={()=>handleReportSectionData(reportData)}
+                            }`}
+                          onClick={() => handleReportSectionData(reportData)}
                         >
-                          <table className="ticket-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME :</th>
-                                <td></td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{value.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+
+                          <div className="ticket-sub-card-row" >
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{value.clientName.toUpperCase()}</h5></div>
+                          </div>
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{value.enggName.toUpperCase()}</h5></div>
+                          </div>
+                         
                           <div className="ticket-card-bottom">
                             <h5>{extractStartTime(value.Slot)}</h5>
                             <h5>{extractEndTime(value.Slot)}</h5>
                           </div>
                         </div>)
-                      })
+                    })
                     : filterData?.map((value, index) => {
                       const reportData = value
-                      return(
+                      return (
                         <div
-                          className={`ticket-card ${
-                            handleCallbackSelection[index] &&
+                          className={`ticket-card ${handleCallbackSelection[index] &&
                             "service-card-selected"
-                          }`}
-                          onClick={()=>handleReportSectionData(reportData)}
+                            }`}
+                          onClick={() => handleReportSectionData(reportData)}
                         >
-                          <table className="ticket-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME :</th>
-                                <td>{value.clientName.toUpperCase()}</td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{value.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                          {/* {console.log("this is value", value)} */}
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{value.clientName.toUpperCase()}</h5></div>
+                          </div>
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{value.enggName.toUpperCase()}</h5></div>
+                          </div>
                           <div className="ticket-card-bottom">
                             <h5>{extractStartTime(value.Slot)}</h5>
                             <h5>{extractEndTime(value.Slot)}</h5>
                           </div>
                         </div>
-                    )})}
+                      )
+                    })}
                 </>
               )}
 
@@ -374,65 +375,66 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   {filterData
                     ? filterData?.map((serviceData, index) => {
                       const reportData = serviceData
-                      return(
+                      return (
                         <div
-                          className={`service-card ${
-                            handleServiceSelection[index] &&
+                          className={`service-card ${handleServiceSelection[index] &&
                             "service-card-selected"
-                          }`}
-                          onClick={()=>handleReportSectionData(reportData)}
+                            }`}
+                          onClick={() => handleReportSectionData(reportData)}
                         >
-                          <table className="service-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME:</th>
-                                <td>{serviceData.clientName.toUpperCase()}</td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{serviceData.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{serviceData.clientName.toUpperCase()}</h5></div>
+                          </div>
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left"><h5>{serviceData.enggName.toUpperCase()}</h5></div>
+                          </div>
+
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
                           </div>
-                        </div>)}
-                      )
-                    : currentDateServiceRequest?.map((serviceData, index) =>  {
+                        </div>)
+                    }
+                    )
+                    : currentDateServiceRequest?.map((serviceData, index) => {
                       const reportServiceData = serviceData
-                     
-                      return(
+
+                      return (
                         <div
-                          className={`service-card ${
-                            handleServiceSelection[index] &&
+                          className={`service-card ${handleServiceSelection[index] &&
                             "service-card-selected"
-                          }`}
-                          onClick={()=>handleReportSectionData(reportServiceData)}
+                            }`}
+                          onClick={() => handleReportSectionData(reportServiceData)}
                         >
-                          <table className="service-table">
-                            <tbody>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>NAME:</th>
-                                <td>{serviceData.clientName.toUpperCase()}</td>
-                              </tr>
-                              <tr>
-                                <th style={{ textAlign: "start" }}>
-                                  ENGINEER:
-                                </th>
-                                <td>{serviceData.enggName.toUpperCase()}</td>
-                              </tr>
-                            </tbody>
-                          </table>
+                              <div className="ticket-sub-card-row">
+                          <div className="ticket-sub-card-row-right">
+                            <h5>Name:</h5>
+                          </div>
+                          <div className="ticket-sub-card-row-left"><h5>{serviceData.clientName.toUpperCase()}</h5></div>
+                        </div>
+
+                        <div className="ticket-sub-card-row">
+                          <div className="ticket-sub-card-row-right">
+                            <h5> ENGINEER:</h5>
+                          </div>
+                          <div className="ticket-sub-card-row-left"><h5>{serviceData.enggName.toUpperCase()}</h5></div>
+                        </div>
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
                           </div>
                         </div>
-                      )})}
+                      )
+                    })}
                 </>
               )}
             </div>
@@ -460,7 +462,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
         <div
           className={props.kanban ? "location-section" : "kanban-Click-section"}
-    
+
         >
           <div className="task-top-section">
             <p>Location</p>

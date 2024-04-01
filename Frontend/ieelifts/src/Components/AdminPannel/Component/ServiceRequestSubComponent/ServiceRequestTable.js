@@ -10,8 +10,8 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import ServiceRequestModals from "./ServiceRequestModals";
 
-const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions,setReqCheckboxStates, reqCheckboxStates }) => {
-  const dropdownRef = useRef(null);
+
+const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, setReqCheckboxStates, reqCheckboxStates }) => {
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
   const [enggId, setEnggId] = useState();
@@ -25,6 +25,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions,se
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (filterConditions && filterConditions.length === 0) {
@@ -228,7 +229,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions,se
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={filteredCD && checkboxStates.every((isChecked) => isChecked)}
+                checked={filteredCD && reqCheckboxStates.every((isChecked) => isChecked)}
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>
