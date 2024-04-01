@@ -21,16 +21,16 @@ app.use(morgan('dev'));
 
 // ------ Routes ------
 // ---------service engg routes---------
-app.use("/serviceEngg", router);
+app.use("/api/serviceEngg", router);
 
 // -------------client routes----------
-app.use("/client", clientRoutes);
+app.use("/api/client", clientRoutes);
 
 // ---------------AdminRoutes-----------
-app.use("/admin", AdminRoutes);
+app.use("/api/admin", AdminRoutes);
 
 // ------------chatRoute-------------
-app.use("/chat", chatRoute);
+app.use("/api/chat", chatRoute);
 
 main().catch((err) => console.log(err));
 
