@@ -447,7 +447,7 @@ const ServiceRequestModals = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
 
@@ -459,7 +459,7 @@ const ServiceRequestModals = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
                   </div>

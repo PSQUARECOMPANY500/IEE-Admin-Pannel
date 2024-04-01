@@ -35,25 +35,24 @@ const ReportIssue = () => {
       <div className="IssueDoors IssuesDoor3" style={{ paddingLeft: "1rem" }}>
         <div className="IssueDoor3L">
           <h5>Representative Name</h5>
-          <h5 style={{ fontWeight: "600" }}>JOHN</h5>
+          <h5>JOHN</h5>
         </div>
         <div className="IssueDoor3R">
           <h5>Representative Number</h5>
-          <h5 style={{ fontWeight: "600" }}>+61-7-1234 5678</h5>
+          <h5 >+61-7-1234 5678</h5>
         </div>
       </div>
 
       <div className="IssueDoors IssuesDoor4" style={{ paddingLeft: "rem" }}>
         <h5>
-          <span>
-            The door is experiencing difficulty in closing properly. It seems to
-            get stuck halfway.
-          </span>
+     
+            The door is experiencing difficulty in closing properly. It seems to get stuck halfway.
+    
         </h5>
       </div>
 
       <div className="IssueDoors IssuesDoor1">
-        <h5 style={{ fontSize: "0.8rem" }}>
+        <h5 >
           check the door motor first, apply some lubricant and restart the
           elevator.{" "}
         </h5>

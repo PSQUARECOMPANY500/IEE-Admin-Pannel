@@ -3,8 +3,12 @@ import { LiaStarSolid } from "react-icons/lia";
 import { TbMessage2 } from "react-icons/tb";
 import TaskChart from "./TaskPieChart";
 import MessageBox from "./MessageBox";
+import { useMediaQuery } from "@react-hook/media-query";
+
 
 const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
+  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+
 
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -207,7 +211,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           />
           <div
             className="dropdown-menu"
-            style={{ left: len - 1 === index ? "-165px" : "-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049'}}
+            style={{ left: len - 1 === index ? "-165px" : smallLaptopSizes ?"-440%":"-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049', }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>

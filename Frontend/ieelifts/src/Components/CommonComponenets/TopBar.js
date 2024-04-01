@@ -210,29 +210,26 @@ const TopBar = (props) => {
 
         {location.pathname === "/Memberships" && (
           <div className="top-icon" onClick={toggleGrid}>
-            {isGrid ? <CiGrid41 /> : <TbListTree />}
+            {isGrid ? <CiGrid41  /> : <TbListTree />}
           </div>
         )}
 
         {location.pathname === "/Clients" && (
-          <>
-            <div className="top-icon" style={{ boxShadow: "none" }}>
+          <> 
+
+            <div className="sub-components-ticket-filter" style={{ boxShadow: "none" }} ref={dropdownClickRef}>
               {" "}
-              <div ref={dropdownClickRef}>
                 <p className="filter-icon" onClick={handleTicketFilter}>
                   <LuSettings2 />
                   {""}
                 </p>
                 {showTicketFilter && (
-                  <div
-                    ref={dropdownRef}
-                    style={{ position: "absolute", backgroundColor: "white" }}
-                  >
                     <ClientFilterDropdown />
-                  </div>
+            
                 )}
-              </div>
+          
             </div>
+
             <div className="top-icon" onClick={clienttoggleGrid}>
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
@@ -241,7 +238,7 @@ const TopBar = (props) => {
 
         <div style={{ display: "flex" }} ref={notificationClickRef}>
           <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
-            <HiOutlineBell />{" "}
+            <HiOutlineBell className="iconColor"/>{" "}
           </span>
 
           <div className="dot"></div>

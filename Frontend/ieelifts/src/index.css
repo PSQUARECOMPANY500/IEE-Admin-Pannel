@@ -93,6 +93,7 @@ code {
   grid-template-columns: 49% 49%;
   justify-content: center;
   align-content: center;
+  margin-top: 4.8rem;
   /* gap: 2rem; */
   /* margin-left: 2rem; */
   /* margin-right: 2rem; */
@@ -261,13 +262,13 @@ code {
 
 .membership_card_expiring {
   width: 47%;
-  height: 17rem;
+  height: 20rem;
 }
 
 .membership_card_expiring_expanded {
   width: 32%;
   height: 17rem;
-  margin-left: 2rem;
+
 }
 
 .membership_card_expiring-title {
@@ -490,11 +491,17 @@ code {
   width: 60%;
 }
 
+.membership_card_scrollable {
+  height: 19rem;
+  max-height: 18rem;
+  overflow-y: auto;
+}
+
 /* <-------------------------------media query for membership card ---------------------------------------> */
 @media (max-width: 1920px) {
-  .membership_card_scrollable {
-    height: 15rem;
-  }
+  /* .membership_card_scrollable {
+    height: 20rem;
+  } */
 
   .membership_card_scrollable_expanded {
     height: 39rem;
@@ -536,7 +543,7 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 51rem;
+  height: 57rem;
   transition: border 1s ease;
 }
 
@@ -551,6 +558,10 @@ code {
 .expandCardName {
   font-size: 0.9rem;
   font-weight: 700;
+  width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @keyframes expandAnimation {
@@ -1642,7 +1653,8 @@ code {
 
 
 }
-.spare-part-table-container thead{
+
+.spare-part-table-container thead {
   height: 3.5rem;
 }
 
@@ -1760,9 +1772,11 @@ code {
   line-height: 6rem;
   border-radius: 50%;
   font-size: 1.3rem;
+
   &:hover {
     cursor: pointer;
   }
+
   &::after,
   &::before {
     content: "";
@@ -1778,6 +1792,7 @@ code {
     z-index: -1;
     animation: grow 1.3s ease-in-out infinite;
   }
+
   &::after {
     background: #fd242480;
 
@@ -1795,21 +1810,106 @@ code {
       animation: grow 1.3s ease-in-out infinite;
     }
   }
+
   &::before {
     background: #fd242499;
     animation-delay: -0.5s;
   }
 }
+
 @keyframes grow {
   0% {
     transform: scale(1, 1);
     opacity: 1;
   }
+
   100% {
     transform: scale(1.5, 1.5);
     opacity: 0;
   }
 }
+
+
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+
+  .client_table-container {
+    max-height: 80vh;
+
+
+  }
+
+  .ClientCatainer {
+    grid-template-columns: 30% 30% 30%;
+  }
+
+  .client_table-container table td,
+  .client_table-container table th {
+    font-size: 0.6rem;
+  }
+
+  .sub_table_view {
+    height: 85vh;
+  }
+
+  .JON {
+    font-size: 0.7rem;
+  }
+
+
+  .membership_card_title {
+    font-size: medium;
+  }
+
+  .membership_card_revenue,
+  .membership_card_expiring-title,
+  .expandCardName {
+    font-size: 0.8rem;
+    width: 130px;
+  }
+
+  .headingCenter {
+    font-size: 1rem;
+  }
+
+  .clientDetailRight {
+    margin-left: 1rem;
+  }
+
+  .clientName {
+    font-size: small;
+  }
+
+  .JOB {
+    font-size: small;
+  }
+
+  .clientsContaine p {
+    font-size: 0.7rem;
+  }
+
+  .non_expand_gap .membership_card {
+    height: 18rem;
+  }
+
+  .membership_card_expand{
+    height: 42rem;
+  }
+
+  .membership_card_scrollable {
+    height: 10rem;
+    max-height: 10rem;
+    overflow-y: auto;
+  }
+
+
+  .membershipCards_expand .membership_card {
+    margin: 0rem;
+    margin-top: 0;
+
+  }
+}
+
 
 /* sidebar SOS button css ends */
 

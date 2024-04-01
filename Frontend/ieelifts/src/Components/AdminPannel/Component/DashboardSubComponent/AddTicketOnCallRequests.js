@@ -471,7 +471,7 @@ const AddTicketOnCallRequests = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
 
@@ -483,7 +483,7 @@ const AddTicketOnCallRequests = ({
                     {time ? (<div className="membership-form-col2">
                       <p>{time}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px"  />
+                      <SkeltonLoader width="100px"  />
                     </div>)}
 
                   </div>

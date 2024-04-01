@@ -10,7 +10,7 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import ServiceRequestModals from "./ServiceRequestModals";
 
-const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions }) => {
+const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions,setReqCheckboxStates, reqCheckboxStates }) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
@@ -23,7 +23,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
   const [isSearching, setIsSearching] = useState(false);
   const [showTicketModal4, setShowTicketModal4] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
 
@@ -268,24 +267,26 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
   }
   useEffect(() => {
     if (filteredCD) {
-      setCheckboxStates(Array(filteredCD.length).fill(false));
+      setReqCheckboxStates(Array(filteredCD.length).fill(false));
     }
   }, [filteredCD]);
 
   const handleCheckBoxAll = () => {
     if (filteredCD) {
-      const allChecked = checkboxStates.every((isChecked) => isChecked);
-      setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+      const allChecked = reqCheckboxStates.every((isChecked) => isChecked);
+      setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
     }
   };
 
   const handleCheckBoxSingle = (index) => {
-    setCheckboxStates((prevStates) => {
+    setReqCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
   };
+
+
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -295,7 +296,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={checkboxStates.every((isChecked) => isChecked)}
+                checked={reqCheckboxStates.every((isChecked) => isChecked)}
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>
@@ -377,7 +378,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
-                checkboxStates[index] = true;
+                reqCheckboxStates[index] = true;
                 return null;
               }
 
@@ -387,7 +388,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
                     <td>
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={reqCheckboxStates[index]}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
@@ -445,7 +446,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
-                checkboxStates[index] = true;
+                reqCheckboxStates[index] = true;
                 return null;
               }
 
@@ -455,7 +456,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
                     <td>
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={reqCheckboxStates[index]}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
