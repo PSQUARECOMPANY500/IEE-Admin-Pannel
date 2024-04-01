@@ -39,6 +39,10 @@ import { loginAdminReducer } from "../Reducers/AdminReducer";
 import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
 import { engineersReducer } from "../Reducers/AdminReducer";
 import { reducerfetchengdetails } from "../Reducers/AdminReducer";
+import { approveLeaveByAdminReducer } from "../Reducers/AdminReducer";
+import { engineerLeaveHistoryReducer } from "../Reducers/AdminReducer";
+import { engineerAttendanceReducer } from "../Reducers/AdminReducer";
+import { engineerRequestedLeaveReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -76,9 +80,13 @@ const AdminRootReducer = combineReducers({
   membershipButtonLayoutReducer: membershipButtonLayoutReducer,
   modalOpenerReducer: modalOpenerReducer,
   loginAdminReducer: loginAdminReducer,
-  VerifyOTPPasswordReducer:VerifyOTPPasswordReducer,
+  VerifyOTPPasswordReducer: VerifyOTPPasswordReducer,
   engineersReducer: engineersReducer,
-  reducerfetchengdetails:reducerfetchengdetails
+  reducerfetchengdetails: reducerfetchengdetails,
+  engineerRequestedLeaveReducer: engineerRequestedLeaveReducer,
+  approveLeaveByAdminReducer: approveLeaveByAdminReducer,
+  engineerLeaveHistoryReducer: engineerLeaveHistoryReducer,
+  engineerAttendanceReducer: engineerAttendanceReducer
 });
 
 export default AdminRootReducer;

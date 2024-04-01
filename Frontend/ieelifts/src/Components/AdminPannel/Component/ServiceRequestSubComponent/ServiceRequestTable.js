@@ -34,70 +34,30 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
     }
     if (filterConditions && filterConditions.length > 0) {
       let data = filteredCD;
-      const statusFilter = filterConditions.filter(
-        (filter) => filter.type === "status"
-      );
-      const engineerFilter = filterConditions.filter(
-        (filter) => filter.type === "engineers"
+      const membershipFilter = filterConditions.filter(
+        (filter) => filter.type === "membership"
       );
       const locationFilter = filterConditions.filter(
         (filter) => filter.type === "location"
       );
-      const typeFilter = filterConditions.filter(
-        (filter) => filter.type === "type"
-      );
-      let statusData,
-        engineerData,
-        locationData,
-        typeData = [];
-      if (statusFilter) {
-        statusFilter.forEach(async (status) => {
-          const { condition } = status;
-          let sData = [];
-          if (condition.toLowerCase() === "assigned") {
-            sData = data.filter((d) => d.isAssigned === true);
-          }
-          if (condition.toLowerCase() === "unassigned") {
-            sData = data.filter((d) => d.isAssigned === false);
-          }
-          if (statusData) {
-            statusData = [...statusData, ...sData];
-          } else {
-            statusData = [...sData];
-          }
-        });
-      }
 
-      if (engineerFilter) {
-        let eData = []
-        engineerFilter.forEach((engineer) => {
-          const { condition } = engineer;
-          eData = data.filter(
-            (d) => d.AssignedEng.name === condition
-
+      let membershipData,
+        locationData = [];
+      if (membershipFilter) {
+        let mData = [];
+        membershipFilter.forEach((membership) => {
+          const { condition } = membership;
+          mData = data.filter(
+            (d) => d.clientDetail.Membership.toLowerCase() === condition.toLowerCase()
           );
-          if (engineerData) {
-            engineerData = [...engineerData, ...eData];
+          if (membershipData) {
+            membershipData = [...membershipData, ...mData];
           } else {
-            engineerData = [...eData];
+            membershipData = [...mData];
           }
         });
       }
 
-      if (typeFilter) {
-        let tData = [];
-        typeFilter.forEach((type) => {
-          const { condition } = type;
-          tData = data.filter(
-            (d) => d.TypeOfIssue.toLowerCase() === condition.toLowerCase()
-          );
-          if (typeData) {
-            typeData = [...typeData, ...tData];
-          } else {
-            typeData = [...tData];
-          }
-        });
-      }
       if (locationFilter) {
         let lData = [];
         locationFilter.forEach((location) => {
@@ -114,42 +74,14 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
       }
 
       let responseData = [];
-      if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
-        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
+      if (membershipData.length > 0 && locationData.length > 0) {
+        responseData = membershipData.filter((d) => locationData.includes(d));
+      } else if (membershipData.length > 0) {
+        responseData = membershipData;
+      } else if (locationData.length > 0) {
+        responseData = locationData;
       }
-      else if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (locationData && locationData.length > 0)) {
-        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => locationData.includes(d));
-      }
-      else if ((statusData && statusData.length > 0) && (engineerData && engineerData.length > 0) && (typeData && typeData.length > 0)) {
-        responseData = statusData.filter((d) => engineerData.includes(d)).filter((d) => typeData.includes(d));
-      }
-      else if ((statusData && statusData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
-        responseData = statusData.filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
-      }
-      else if ((engineerData && engineerData.length > 0) && (locationData && locationData.length > 0) && (typeData && typeData.length > 0)) {
-        responseData = engineerData.filter((d) => locationData.includes(d)).filter((d) => typeData.includes(d));
-      }
-      else if (statusData && statusData.length > 0 && engineerData && engineerData.length > 0) {
-        responseData = statusData.filter((d) => engineerData.includes(d));
-      }
-      else if (statusData && statusData.length > 0 && locationData && locationData.length > 0) {
-        responseData = statusData.filter((d) => locationData.includes(d));
-      }
-      else if (statusData && statusData.length > 0 && typeData && typeData.length > 0) {
-        responseData = statusData.filter((d) => typeData.includes(d));
-      }
-      else if (engineerData && engineerData.length > 0 && locationData && locationData.length > 0) {
-        responseData = engineerData.filter((d) => locationData.includes(d));
-      }
-      else if (engineerData && engineerData.length > 0 && typeData && typeData.length > 0) {
-        responseData = engineerData.filter((d) => typeData.includes(d));
-      }
-      else if (locationData && locationData.length > 0 && typeData && typeData.length > 0) {
-        responseData = locationData.filter((d) => typeData.includes(d));
-      }
-      else {
-        responseData = statusData || engineerData || locationData || typeData;
-      }
+
       setFilterData(responseData);
       setGetFilterConditions(true);
     }
@@ -295,7 +227,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={checkboxStates.every((isChecked) => isChecked)}
+                checked={filteredCD && checkboxStates.every((isChecked) => isChecked)}
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>

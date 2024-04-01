@@ -11,7 +11,6 @@ import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallReq
 import { RiSearchLine } from "react-icons/ri";
 import {
   getFilterLocation,
-  getEngineerNames,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,11 +27,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
     useState(true);
 
   const [filterConditions, setfilterConditions] = useState();
- 
+
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
-      dispatch(getEngineerNames());
     };
     fetchData();
   }, [dispatch]);
@@ -40,21 +38,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
     (state) =>
       state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
   );
-  const engineers = useSelector(
-    (state) =>
-      state?.AdminRootReducer?.engineersReducer?.engineers?.engineerNames
-  );
+
   const filterDropdowns = [
-    { name: "status", options: ["Unassigned", "Assigned", "Resolved"] },
-    {
-      name: "engineers",
-      options: engineers,
-    },
+    { name: "membership", options: ["Warrenty", "Platinum", "Gold", "Silver"] },
     { name: "location", options: locations },
-    {
-      name: "type",
-      options: ["Door", "Light", "Fan", "Buttons", "Lift", "Others"],
-    },
     { name: "clear", options: [] }
   ];
   const handleTicketFilter = () => {
@@ -143,21 +130,20 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className={`search-input ${
-                      searchText.length > 0 && "inputSearchWritten"
-                    }`}
+                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                      }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
                     value={searchText}
                   />
 
-                  <i className="search-btn " 
+                  <i className="search-btn "
                   // onClick={() => {
                   //   const data = filtersearch(searchText, allCD);
                   //   setFilteredCD(data);
                   // }}
-                  
+
                   >
 
                     <RiSearchLine className="iconColor" />
@@ -168,8 +154,8 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             </div>
 
             <div className="sub-components-ticket-filter" ref={dropdownClickRef}>
-              <p className="filter-icon" 
-              onClick={handleFilter}
+              <p className="filter-icon"
+                onClick={handleFilter}
               >
                 <LuSettings2 />
                 {""}

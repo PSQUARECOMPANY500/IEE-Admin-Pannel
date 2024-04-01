@@ -56,15 +56,15 @@ export default function EnggLocation() {
                 data.currentLocation.coordinates?.[1]
               );
               const position = { lat: latitude, lng: longitude };
-              const engname = data.serviceEnggIdDetails.EnggName;
-              const imgurl = data.serviceEnggIdDetails.EnggPhoto;
+             // const engname = data.serviceEnggIdDetails.EnggName;
+              //const imgurl = data.serviceEnggIdDetails.EnggPhoto;
               return (
                 <React.Fragment key={index}>
                   <AdvancedMarker
                     position={position}
                     onClick={() => setOpen(index)}
                   >
-                    <img
+                    {/* <img
                       style={{
                         transform:
                           "perspective(40px) rotateX(20deg) rotateZ(-45deg)",
@@ -75,14 +75,14 @@ export default function EnggLocation() {
                       }}
                       src={imgurl}
                       alt="Pin"
-                    />
+                    /> */}
                   </AdvancedMarker>
                   {open === index && (
                     <InfoWindow
                       position={position}
                       onCloseClick={() => setOpen(null)}
                     >
-                      <p>{engname}</p>
+                      {/* <p>{engname}</p> */}
                     </InfoWindow>
                   )}
                 </React.Fragment>

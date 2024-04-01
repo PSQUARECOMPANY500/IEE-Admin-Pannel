@@ -8,31 +8,20 @@ import LeaveHistoryBottom from "./LeaveHistoryBottom";
 
 const Attendance = (props) => {
   const { engID } = props;
-  console.log(engID)
-  const ACalendarRef = useRef(null);
-  const AMonthyearRef = useRef(null);
-  const ADayContainerRef = useRef(null);
 
-  const [acurrentDate, setACurrentDate] = useState(new Date());
-  const [aselectedDate, setASelectedDate] = useState(null);
-  var surroundingDates = [];
-
-  
+  const [date, setTodayDate] = useState();
+  const [leaveRequested, setleaveRequested] = useState(null);
   return (
     <div className="Attendance">
-          <div className="CalendarHistory">
-          <AttendanceCalendar/>
-          <AttendanceDateConatiner/>
-
-          </div>
-
-
+      <div className="CalendarHistory">
+        <AttendanceCalendar setTodayDate={setTodayDate} />
+        <AttendanceDateConatiner engID={engID} date={date} />
+      </div>
       <div className="LeaveHistory">
         <div className="SubLeaveHistory">
-        < LeaveHistory/>
-
+          <LeaveHistory engID={engID} leaveRequested={leaveRequested} />
           <div className="VerticalLinelarge "></div>
-         <LeaveHistoryBottom/>
+          <LeaveHistoryBottom engID={engID} setleaveRequested={setleaveRequested} />
         </div>
       </div>
     </div>

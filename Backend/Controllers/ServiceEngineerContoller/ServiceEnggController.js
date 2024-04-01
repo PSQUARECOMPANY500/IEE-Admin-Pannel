@@ -493,11 +493,12 @@ module.exports.EnggTime = async (req, res) => {
 module.exports.EnggCheckIn = async (req, res) => {
   //console.log("req of checkin",req.params.ServiceEnggId)
   try {
+    const ServiceEnggId = req.params.ServiceEnggId;
+    console.log("ServiceEnggId", ServiceEnggId);
     const images = req.files;
     const frontimagename = images?.frontimage[0].filename;
     const backimagename = images?.backimage[0].filename;
     const { IsAttendance } = req.body;
-    const ServiceEnggId = req.params.ServiceEnggId;
     if (IsAttendance && ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;
       const time = new Date().toLocaleTimeString("en-IN", {
@@ -804,7 +805,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       TypeOfLeave &&
       From &&
       To &&
-      Leave_Reason
+      Leave_Reason && document
     ) {
       const response = await EnggLeaveServiceRecord.create({
         ServiceEnggId,
@@ -826,6 +827,8 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
         Duration: { From: From, To: To },
         Leave_Reason,
       });
+      console.log(req.body, req.file);
+      return res.status(201).json({ response });
     }
     else {
       return res.status(404).json({ message: "Please Provide Valid Details" });
@@ -1240,7 +1243,7 @@ module.exports.getAllEngDetails = async (req, res) => {
       };
     });
 
-    res.status(200).json({combinedData});
+    res.status(200).json({ combinedData });
   } catch (error) {
     return res.status(500).json({
       error: "Internal server error in get service eng details",

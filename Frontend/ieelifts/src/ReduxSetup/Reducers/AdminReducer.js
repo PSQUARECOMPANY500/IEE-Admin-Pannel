@@ -39,8 +39,9 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 // import { CLOSE_MODAL } from "../Actions/AdminActions";
 
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
-import { FETCH_ENG_DETAILS } from "../Actions/AdminActions";import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
+import { FETCH_ENG_DETAILS } from "../Actions/AdminActions"; import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
 import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
+import { GET_ENGINEER_ATTENDANCE } from "../Actions/AdminActions";
 import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -670,6 +671,18 @@ export const engineerRequestedLeaveReducer = (state = requestedLeave, action) =>
       return state;
   }
 }
+
+export const engineerAttendanceReducer = (state = { attendance: null }, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_ATTENDANCE:
+      return {
+        attendance: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
 
 // armaan-dev ends
 

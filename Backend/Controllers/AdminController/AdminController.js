@@ -1161,9 +1161,9 @@ module.exports.createServiceAdmin = async (req, res) => {
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
     const { ServiceEnggId, selectedDate } = req.body;
+    console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
-      console.log(selectedDate);
       const today = new Date(selectedDate);
 
       const dates = Array.from(
@@ -1172,7 +1172,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         },
         (_, i) => {
           const previousDay = new Date(today);
-          previousDay.setDate(today.getDate() - 3 + i);
+          previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
       );
@@ -1862,7 +1862,6 @@ const filterMembershipByType = (data, type) => {
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
-    console.log("this is location: ", location);
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -1897,7 +1896,6 @@ module.exports.getEngineerNames = async (req, res) => {
     const engineerDetails = await ServiceEnggData.find();
     let engineerNames = [];
 
-    console.log(engineerNames);
     engineerDetails.forEach((engineer) => {
       engineerNames.push(engineer.EnggName);
     });
@@ -1917,7 +1915,6 @@ module.exports.getEngineerNames = async (req, res) => {
 module.exports.createSpearParts = async (req, res) => {
   try {
     const { SpearPart, subcategoryName } = req.body;
-    //console.log("chutiye",SpearPart , subcategoryName);
     if (SpearPart && subcategoryName) {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
@@ -1949,8 +1946,6 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
     const emailVerify = await serviceAdmin.findOne({ email });
 
     let otp = await ForgetPassOTP.findOne({ email });
-
-    console.log(emailVerify);
 
     if (!emailVerify) {
       return res
@@ -2119,37 +2114,62 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
 // take action on leave (approve or reject)
 module.exports.takeActionOnLeave = async (req, res) => {
   try {
-    const { IsApproved, ServiceEnggId } = req.query;
-    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
-
+    const { IsApproved, _id } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find();
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ error: "Leave not found" });
     }
-
-    let last = leaves[leaves.length - 1];
-    let secondLast;
-    if (leaves.length > 1) {
-      secondLast = leaves[leaves.length - 2];
+    const last = leaves.find(leave => leave._id == _id);
+    if (!last) {
+      return res.status(404).json({ error: "Leave not found" });
     }
+
+
+
+    // const approvedLeaves = leaves
+    //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
+    //   .sort((leaveA, leaveB) => {
+    //     const dateA = new Date(leaveA.Date);
+    //     const dateB = new Date(leaveB.Date);
+    //     return dateA - dateB;
+    //   });
+
+    const approvedLeaves = leaves
+      .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
+      .sort((leaveA, leaveB) => {
+        const [monthA, dateA, yearA] = new Date(leaveA.Date).toLocaleDateString('en-US').split('/');
+        const [monthB, dateB, yearB] = new Date(leaveB.Date).toLocaleDateString('en-US').split('/');
+        const dateStrA = `${monthA}/${dateA}/${yearA}`;
+        const dateStrB = `${monthB}/${dateB}/${yearB}`;
+        return new Date(dateStrA) - new Date(dateStrB);
+      });
 
     if (IsApproved === "Approved") {
-      const fromDate = new Date(last.Duration.From);
-      const toDate = new Date(last.Duration.To);
+      last.IsApproved = "Approved";
+      const [fromDay, fromMonth, fromYear] = last.Duration.From.split('/');
+      const [toDay, toMonth, toYear] = last.Duration.To.split('/');
+
+      const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
+      const toDate = new Date(toYear, toMonth - 1, toDay);
       const diffTime = Math.abs(toDate - fromDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      last.IsApproved = "Approved";
-      if (secondLast) {
-        last.UsedLeave += secondLast.UsedLeave;
+
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
       }
-      last.UsedLeave += diffDays;
+      else {
+        last.UsedLeave = diffDays + 1;
+      }
+
     } else {
       last.IsApproved = "Rejected";
-      if (secondLast) {
-        last.UsedLeave += secondLast.UsedLeave;
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave;
       }
+
     }
-    
-    await last.save(); // Save the modified document
+    console.log(last);
+    await last.save();
     res.status(200).json({
       success: true,
       message: "Leave status updated successfully",
