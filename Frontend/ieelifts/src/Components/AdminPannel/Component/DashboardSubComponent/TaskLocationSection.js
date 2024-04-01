@@ -12,6 +12,7 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import { useDispatch, useSelector } from "react-redux";
+import { FaRegStar } from "react-icons/fa";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
@@ -238,8 +239,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
     
      }
   return (
-    <div className={"parent-full-div"} ref={ref}>
-      <div className={"child-div"}>
+    <div className={"parent-full-div"}ref={ref} >
+      <div className={"task-child-div"} >
         <div
           className={
             props.kanban ? "tasks-section" : "tasks-section-on-kanban "
@@ -319,7 +320,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             <tbody>
                               <tr>
                                 <th style={{ textAlign: "start" }}>NAME :</th>
-                                <td>{value.clientName.toUpperCase()}</td>
+                                <td></td>
                               </tr>
                               <tr>
                                 <th style={{ textAlign: "start" }}>
@@ -439,7 +440,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
         </div>
 
         {props.kanban ? (
-          <div className="Report-section">
+          <div className="Report-section" >
             <div
               className="task-top-section"
               style={{ cursor: "pointer" }}
@@ -459,6 +460,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
         <div
           className={props.kanban ? "location-section" : "kanban-Click-section"}
+    
         >
           <div className="task-top-section">
             <p>Location</p>
@@ -466,7 +468,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
               <span>KANBAN</span>
             </div>
           </div>
-          <div className="report-description-section">
+          <div className="report-description-section" >
             <div className="more-descriptive">
               <EnggLocation />
             </div>

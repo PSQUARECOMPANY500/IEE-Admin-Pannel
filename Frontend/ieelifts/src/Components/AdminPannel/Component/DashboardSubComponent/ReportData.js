@@ -44,7 +44,7 @@ function ReportTable({handleRedportData ,RedportData}) {
         <div className="CarouselButtons">
           <div className="CarouselButtonsL">
             {currentIndex !== 0 ? (
-              <FaChevronLeft onClick={goToPrev} className="cursor" />
+              <FaChevronLeft onClick={goToPrev} className="cursor iconSize"  />
             ) : (
               ""
             )}
@@ -58,12 +58,7 @@ function ReportTable({handleRedportData ,RedportData}) {
               )}
               <div className="CurrentComponentName">
                 <p
-                  style={{
-                    color: "#F8AC1D",
-                    fontSize: ".9rem",
-                    textAlign: "center",
-                    whiteSpace: "nowrap",
-                  }}
+               
                 >
                   {routes[currentIndex].name}
                 </p>
@@ -78,7 +73,7 @@ function ReportTable({handleRedportData ,RedportData}) {
 
           <div className="CarouselButtonsR">
             {currentIndex !== routes.length - 1 && (
-              <FaChevronRight onClick={goToNext} className="cursor" />
+              <FaChevronRight onClick={goToNext} className="cursor  iconSize" />
             )}
           </div>
         </div>

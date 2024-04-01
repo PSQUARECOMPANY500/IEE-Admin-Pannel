@@ -36,6 +36,7 @@ const SingleSetDropdown = ({
       fontSize:'0.8rem',
       height:'30px',
       fontFamily:'Poppins',
+       paddingTop:'0.3rem',
      
     
       width: width,
@@ -76,6 +77,7 @@ const SingleSetDropdown = ({
       },
 
     }),
+
  
   };
 

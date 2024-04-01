@@ -4,6 +4,8 @@
   text-decoration: none;
 }
 
+
+
 /* set body scroll property starts */
 /* set scroll behaviour  */
 body::-webkit-scrollbar {
@@ -60,7 +62,28 @@ main {
   justify-content: center;
   align-items: baseline;
   height: 100vh;
+
+
+
 }
+
+.sidebar2 {
+  background: #ffffff;
+  color: rgb(20, 19, 19);
+  /* height: auto; */
+  transition: all 0.5s;
+  position: relative;
+  position: sticky;
+  top: 0;
+  box-shadow: 2px 4px 10px #99886b66;
+  display: flex;
+  z-index: 4;
+  justify-content: center;
+  align-items: baseline;
+  height: 100vh;
+  display: none;
+}
+
 
 .logo-image {
   justify-content: center;
@@ -79,6 +102,8 @@ main {
 
 .logo {
   margin-top: 22px;
+
+
   /* margin-left: -45px !important; */
 }
 
@@ -89,6 +114,7 @@ main {
   margin-bottom: 30px;
   margin-left: 80px;
 }
+
 
 /* hamburger css starts */
 /* .toggle-button {
@@ -201,7 +227,9 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
 }
+
 
 .menu-bar {
   height: 2px;
@@ -408,12 +436,29 @@ span::after {
   position: relative;
   align-items: center;
   box-shadow: 1px 2px 5px #c1c1c1;
-
   transition: all 0.5s;
-
   animation-duration: 0.5s all;
   animation-timing-function: ease-in 0.5s all;
   /* animation: sliders; */
+}
+
+.user-info2 {
+  display: flex;
+  margin-top: 16px;
+  cursor: pointer;
+  background: #ffffff;
+  flex-direction: column;
+  align-items: center;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 12px;
+  position: relative;
+  align-items: center;
+  box-shadow: 1px 2px 5px #c1c1c1;
+  transition: all 0.5s;
+  animation-duration: 0.5s all;
+  animation-timing-function: ease-in 0.5s all;
+  display: none;
 }
 
 /* .user-info{
@@ -586,7 +631,7 @@ span::after {
 
 .left-side-heading {
   color: #191919;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 500;
   transition: 0.5s ease;
   /* margin-left: 12%; */
@@ -596,7 +641,7 @@ span::after {
   color: #191919;
   font-size: 26px;
   font-weight: 600;
-  gap: 16px;
+  gap: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -807,6 +852,7 @@ display: none;
 
 .iconColor {
   color: #343434;
+
 }
 
 
@@ -1019,6 +1065,10 @@ footer a:hover {
 
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+}
+
+.slick-dots {
+  display: none !important;
 }
 
 .slick-slide:hover {
@@ -1365,6 +1415,7 @@ footer a:hover {
   cursor: pointer;
   margin-top: -2rem;
   margin-right: 1rem;
+
 }
 
 .dropdown-menu {
@@ -1461,6 +1512,7 @@ footer a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
 
   border-radius: 10px;
@@ -1576,6 +1628,7 @@ footer a:hover {
   align-items: center;
   gap: 20px;
   margin-top: 5px;
+
 }
 
 .tasks-heading {
@@ -1607,7 +1660,7 @@ footer a:hover {
   border-radius: 10px;
   margin-top: 25px;
   /* padding-top: 5px; */
-
+  background-color: red;
   background: #ffffff;
   z-index: -1;
 }
@@ -1620,10 +1673,21 @@ footer a:hover {
   box-shadow: 1px 2px 5px #99886B66;
   border-radius: 10px;
 
+
+}
+
+.task-child-div {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  gap: 10px;
+  box-shadow: 1px 2px 5px #99886B66;
+  border-radius: 10px;
+
 }
 
 .tasks-section {
-  width: 40%;
+  width: 33%;
 }
 
 .tasks-section-on-kanban {
@@ -1647,12 +1711,17 @@ footer a:hover {
 }
 
 .Report-section {
-  width: 30%;
+  width: 33%;
   animation: changeText 1s linear forwards;
 }
 
+/* .task-child-div {
+  height: 41vh;
+} */
+
+
 .location-section {
-  width: 30%;
+  width: 33%;
   animation: changeText 1s linear forwards;
 }
 
@@ -1754,9 +1823,9 @@ footer a:hover {
 
 .task-top-section p {
   color: #191919;
-  font-size: 20px;
+  font-size: 1.2rem;
   font-weight: 500;
-  margin-left: 14px;
+  margin-left: 0.8rem;
 }
 
 .sub-components span {
@@ -2065,11 +2134,12 @@ footer a:hover {
 
 .table-shadow,
 .eng-table-shadow {
-  height: 3.4rem;
+  height: 3.7rem;
   width: 96.5%;
   box-shadow: 0px 0px 5px #C1C1C180;
   position: absolute;
-  z-index: 3;
+
+  background-color: white;
   border-radius: 10px;
 }
 
@@ -2089,8 +2159,9 @@ footer a:hover {
   position: sticky;
   top: 0%;
   background-color: white;
-  z-index: 999;
   border-radius: 10px;
+  z-index: 1;
+
 }
 
 
@@ -2614,19 +2685,10 @@ footer a:hover {
 
 }
 
-@media (min-width: 768px) and (max-width: 1064px) {
-  .dropdown-content {
-    top: 30%;
-  }
-}
 
-@media (min-width: 1025px) and (max-width: 1440px) {
-  .dropdown-content {
-    top: 31%;
-  }
-}
 
-@media (min-width: 1441px) {}
+
+
 
 
 
@@ -3063,7 +3125,9 @@ footer a:hover {
   border: none;
   font-family: "Poppins";
   outline-color: #f8ac1d;
+
 }
+
 
 .col75 textarea {
   width: 80%;
@@ -3084,6 +3148,16 @@ footer a:hover {
   font-family: "Poppins";
   outline-color: #f8ac1d;
 }
+
+.css-mohuvp-dummyInput-DummyInput {
+  height: 1px;
+  position: absolute;
+  margin-top: -3rem;
+
+  /* ---------------------------------------------------------------------------------------------------set height  0 for solve conflict of multipl dropdown by aayush -------------------------------------------------------------------------------------------- */
+}
+
+
 
 .col75 textarea::placeholder {
   font-size: 0.8rem;
@@ -4726,6 +4800,7 @@ element.style {
   height: 100%;
   width: 100%;
   position: relative;
+
 }
 
 .IssuesDoor {
@@ -4743,6 +4818,8 @@ element.style {
 .IssueDoors {
   height: 20%;
   width: 100%;
+
+
   /* background-color: red; */
   /* background-color: red; */
 }
@@ -4767,7 +4844,7 @@ element.style {
   text-transform: capitalize;
   opacity: 1;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .RedIsue {
@@ -4778,15 +4855,15 @@ element.style {
   width: 25%;
   display: flex;
   margin-bottom: 2.3rem;
-
   display: flex;
-  align-items: start;
+  align-items: center;
+  justify-content: center;
+  padding: 0.1rem;
 }
 
 .RedIsue>h5 {
   white-space: nowrap;
   font-size: 0.8rem;
-
   font-family: "Poppins";
   letter-spacing: 0px;
   color: #ffffff;
@@ -4807,7 +4884,6 @@ element.style {
   justify-content: space-between;
   align-items: center;
   padding-left: 0.5rem;
-  /* margin-top: 1em; */
 }
 
 .IssuesDoor2L {
@@ -4862,7 +4938,7 @@ element.style {
 
 .ClientName h5 {
   font-family: "Poppins";
-  font-size: 0.8rem;
+  /* font-size: 0.8rem; */
   font-family: "Poppins";
   font-weight: 400;
   font-size: 0.9rem;
@@ -4896,6 +4972,14 @@ element.style {
   opacity: 1;
 }
 
+.IssueDoor3L h5:nth-child(2) {
+  font-weight: 600;
+}
+
+.IssueDoor3R h5:nth-child(2) {
+  font-weight: 600;
+}
+
 .IssueDoor3R h5 {
   font-family: "Poppins";
   font-size: 0.8rem;
@@ -4912,6 +4996,7 @@ element.style {
   letter-spacing: 0px;
   color: #444444;
   padding: 0.5rem;
+
 }
 
 .IssuesDoor4 h5 {
@@ -4921,7 +5006,7 @@ element.style {
   text-align: start;
 }
 
-.IssuesDoor4 h5 span {
+.IssuesDoor4 h5 {
   font-size: 0.9rem;
   font-family: "Poppins";
   font-weight: 500;
@@ -4932,6 +5017,7 @@ element.style {
   height: 100%;
   width: 100%;
   position: relative;
+
 }
 
 .CarouselButtons {
@@ -4940,7 +5026,7 @@ element.style {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   position: relative;
 }
 
@@ -4948,7 +5034,7 @@ element.style {
   height: 100%;
   width: 20%;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -4957,7 +5043,7 @@ element.style {
   width: 20%;
 
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -5346,13 +5432,12 @@ element.style {
   max-width: 100%;
   border-radius: 10px;
   background-color: #ffffff;
-
   box-shadow: #00000029 3px 3px 5px -1px, #00000029 3px 5px 10px -1px;
   border-radius: 10px;
   opacity: 1;
   position: relative;
   padding-top: 1rem;
-  padding-left: 25px;
+  padding-left: 1rem;
   position: relative;
   margin-bottom: 1.5rem;
   cursor: pointer;
@@ -5371,14 +5456,42 @@ element.style {
   text-align: center;
 }
 
-.ticket-table tbody tr td,
-.ticket-table tbody tr th {
-  font-size: 0.8rem;
+.ticket-sub-card-row-left {
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+
+}
+
+.ticket-sub-card-row-right {
+  width: 25%;
+}
+
+.ticket-sub-card-row {
+  display: flex;
+  gap: 1rem;
+
+
+}
+
+.ticket-sub-card-row-right h5,
+.ticket-sub-card-row-left h5 {
+  font-size: 0.7rem;
   color: #444444;
   text-transform: uppercase;
 }
 
-.ticket-table tbody tr th {
+.ticket-sub-card-row-left h5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.ticket-sub-card-row-right h5,
+.ticket-sub-card-row-left h5 {
   font-weight: 500;
 }
 
@@ -5789,15 +5902,18 @@ element.style {
   flex-direction: column;
   gap: 1.2rem;
   width: 45%;
-  height: 100%;
+  height: 75vh;
   position: relative;
- 
+
+
 }
+
 
 .EnggDetailSection {
   width: 100%;
   height: 30%;
   position: relative;
+
 }
 
 
@@ -5826,6 +5942,7 @@ element.style {
   width: 100%;
 
 
+
 }
 
 .EnggDetailInputField {
@@ -5834,18 +5951,25 @@ element.style {
   align-items: center;
   height: 100%;
   width: 100%;
-  position: relative;
+  position: absolute;
   gap: 2rem;
 }
 
 .personalDetailSec {
 
-  height: 100%;
+  height: 80%;
   width: 70%;
   display: flex;
-  /* align-items: center; */
+  gap: 0.8rem;
   white-space: nowrap;
   justify-content: center;
+  flex-direction: column;
+
+}
+
+.personalDetailSec .PersonalDetailInput {
+  display: flex;
+  gap: 1rem;
 }
 
 .EnggDetailInputField .imageUploadDiv {
@@ -5864,9 +5988,9 @@ element.style {
 .personalDetailSec .PersonalDetailInput input {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
-  padding: 10px 20px;
-  margin-left: 18px;
+  padding: 10px;
   font-family: "poppins";
+  width: 50%;
 }
 
 .personalDetailSec .PersonalDetailInput input:focus {
@@ -5905,16 +6029,10 @@ element.style {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
   padding: 10px;
-  margin-left: 18px;
   font-family: "poppins";
-  width: 96%;
+  width: 100%;
 }
 
-.personalDetailSec {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
 
 .EnggDetailHeading {
   border-bottom: 1px solid #444444;
@@ -5943,8 +6061,7 @@ element.style {
 .ExtraCiricularSectionInputFields .PersonalDetailInput {
   display: flex;
   width: 100%;
-  gap: 10px;
-  align-items: baseline;
+  gap: 0.5rem;
 
 }
 
@@ -6055,6 +6172,34 @@ element.style {
   margin-left: 6px;
 }
 
+/* pdf container for client table */
+
+.doc-container {
+  height: 50px;
+  width: 100px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  top: 3%;
+  right: 2%;
+  z-index: 99999;
+}
+
+.doc-container img {
+  height: 30px;
+  width: 30px;
+}
+
+.CurrentComponentName p {
+  color: #F8AC1D;
+  font-size: 0.9rem;
+  text-align: center;
+  white-space: nowrap;
+
+}
+
 .addFileName{
     width: 100%;
     display: flex;
@@ -6069,3 +6214,285 @@ element.style {
 }
 
 /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */
+
+/* -------------------------------------------------------------------------all media query here bro ----------------------------------------------------------------------------------- */
+
+/* @media only screen and (min-width: 769px) and (max-width: 1280) {
+  .wrapper {
+    display: none;
+  }
+
+} */
+
+
+
+
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+
+  /* if create problem then use 1280px  */
+  .wrapper {
+    display: none;
+  }
+
+  .bars {
+    display: none;
+  }
+
+  .logo {
+    margin-right: -1.5rem;
+  }
+
+  .tasks-section {
+    width: 35%;
+  }
+
+
+  .Report-section {
+    width: 33%;
+    animation: changeText 1s linear forwards;
+  }
+
+  .location-section {
+    width: 33%;
+    animation: changeText 1s linear forwards;
+  }
+
+
+  .ticket-card {
+    margin-bottom: 0;
+  }
+
+  .ticket-table tbody tr td,
+  .ticket-table tbody tr th {
+    font-size: 0.7rem;
+  }
+
+  .left-side-heading {
+    font-size: 1.2rem;
+  }
+
+  .top-icon-bell,
+  .filter-icon,
+  .filter-top-icon,
+  .admin-filter-top-icon,
+  .plus-icon {
+    padding: 7px 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    box-shadow: 1px 2px 5px #00000029;
+    font-size: 25px;
+    color: #343434;
+    height: 38px;
+    width: 38px;
+    cursor: pointer;
+  }
+
+  .top-icon {
+    padding: 1.2rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 7px;
+    cursor: pointer;
+    height: 35px;
+    box-shadow: 1px 2px 5px #00000029;
+  }
+
+  .right-side-icons {
+    gap: 0.7rem;
+  }
+
+  .top-icon:hover .search-input {
+    padding: 0rem 0.1rem;
+  }
+
+  .inputSearchWritten {
+    padding: 0 0;
+  }
+
+  .iconColor {
+    color: #343434;
+    height: 1.2rem;
+
+  }
+
+  .ticket-card {
+    padding: 1rem;
+    padding-right: 1rem;
+  }
+
+  .ticket-card-bottom {
+    margin-top: 1rem;
+    padding: 0rem;
+  }
+
+  .service-card-bottom {
+    margin-top: 1rem;
+    padding: 0rem;
+  }
+
+  .ticket-sub-card-row {
+    gap: 1.5rem;
+  }
+
+  .ticket-sub-card-row-right h5,
+  .ticket-sub-card-row-left h5 {
+    font-size: 0.6rem;
+  }
+
+  .task-top-section p {
+    font-size: 1rem;
+  }
+
+
+  .task-description-section {
+    max-height: 240px;
+  }
+
+
+  .more-descriptive-report {
+    height: 240px;
+  }
+
+  .ClientName h5 {
+    font-size: 0.7rem;
+  }
+
+  .IssueDoor3L h5 {
+    font-size: 0.7rem;
+
+  }
+
+  .IssueDoor3R h5 {
+    font-size: 0.7rem;
+
+  }
+
+  .IssuesDoor4 h5 {
+    font-size: 0.7rem;
+    text-align: start;
+  }
+
+  .IssueDoors {
+    height: 20%;
+    width: 100%;
+
+  }
+
+  .IssuesDoor4 {
+    height: 20%;
+
+  }
+
+  .IssuesDoor1 h5 {
+    font-size: 0.6rem;
+  }
+
+  .RedIsue {
+    margin-bottom: 1.4rem;
+
+  }
+
+  .ticket-card {
+    height: 5.5rem;
+  }
+
+  .service-card {
+    height: 5.5rem;
+  }
+
+  .CarouselButtons {
+    width: 90%;
+  }
+
+  .ComponentNames p {
+    font-size: 0.6rem;
+  }
+
+  .CurrentComponentName p {
+    font-size: 0.7rem;
+  }
+
+  .iconSize {
+    height: 0.8rem;
+  }
+
+  .location-section .more-descriptive {
+    height: 230px;
+  }
+
+  .ReportTable h5 {
+    font-size: 0.6rem;
+  }
+
+  .ReportTable h6 {
+    font-size: 0.5rem;
+  }
+
+  .ReportTable h5 span {
+    font-size: 0.6rem;
+  }
+
+  .membership-form-row p {
+    white-space: nowrap;
+  }
+
+  .membership-form-col1 {
+    width: 50%;
+  }
+
+  .req-elevator-row p {
+    white-space: nowrap;
+  }
+
+
+  .req-elevator-col1 {
+
+    width: 33%;
+  }
+
+  .doc-container {
+    height: 30px;
+    width: 40px;
+    top: 4%;
+    right: 3%;
+  }
+
+  .doc-container img {
+    height: 20px;
+    width: 20px;
+  }
+
+
+
+  .my_table-container table th,
+  .service-request-table table td,
+  .my_table-container table td,
+  .service-request-table table th,
+  .service-schedule-table table td,
+  .service-schedule-table table th {
+    font-size: 0.7rem;
+  }
+
+  .dropdown-content {
+    top: 10%;
+  }
+  /* media query for eng page eng css */
+
+
+
+}
+
+
+
+/* 
+  @media only screen and (min-width: 1201px) and (max-width:1280px){
+  
+  .wrapper{
+    display: none;
+  }
+  }  */

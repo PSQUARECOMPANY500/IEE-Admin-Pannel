@@ -14,16 +14,21 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
+import { useMediaQuery } from '@react-hook/media-query';
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
 const Sidebar = ({ children }) => {
+  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(true);
+  const initialIsOpen=smallLaptopSizes?false:true
+  const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [toogleOpen, settoogleClose] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
+ 
+
 
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
@@ -36,18 +41,18 @@ const Sidebar = ({ children }) => {
 
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
-    setIsOpen(!isOpen);
+    !smallLaptopSizes&& setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
     console.log("clicked");
     settoogleClose(!toogleOpen);
-    setIsOpen(isOpen);
+    !smallLaptopSizes&& setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
     console.log("image clicked");
-    setIsOpen(!isOpen);
+    !smallLaptopSizes&& setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
@@ -166,7 +171,7 @@ const Sidebar = ({ children }) => {
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
-          {!toogleOpen && <div className="overlay" onClick={toogleMenue}></div>}
+          {!toogleOpen&& !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
 
           <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
             <h1
@@ -175,7 +180,7 @@ const Sidebar = ({ children }) => {
             >
               <img
                 className="logo-image"
-                style={{ width: isOpen ? "100px" : "60px" }}
+                style={{ width:smallLaptopSizes?'80px':isOpen ? "100px" : "60px" }}
                 src={logo}
                 alt="logo"
               />
@@ -255,7 +260,7 @@ const Sidebar = ({ children }) => {
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" : "sub-menu-wrap open-menu"
+                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu":"sub-menu-wrap"
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
@@ -399,6 +404,7 @@ const Sidebar = ({ children }) => {
         </div>
           <div className="circle">SOS</div>
       </div>
+  
       <main>{children}</main>
     </div>
   );
