@@ -103,6 +103,10 @@ router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
 

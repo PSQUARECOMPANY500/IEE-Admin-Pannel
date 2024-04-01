@@ -374,21 +374,20 @@ const TicketSection = ({ setTicketUpdate }) => {
                 <input
                   type="text"
                   placeholder="Search anything"
-                  className={`search-input ${
-                    searchText.length > 0 && "inputSearchWritten"
-                  }`}
+                  className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                    }`}
                   onChange={(e) => {
                     setSearchText(e.target.value);
                   }}
-                  
+
                   value={searchText}
                 />
 
-                <i className="search-btn "       onClick={() => {
-                    const data = filtersearch(searchText, allCD);
-                    setFilteredCD(data);
-                  }}>
-            
+                <i className="search-btn " onClick={() => {
+                  const data = filtersearch(searchText, allCD);
+                  setFilteredCD(data);
+                }}>
+
                   <RiSearchLine className="iconColor" />
                 </i>
               </div>
@@ -396,8 +395,8 @@ const TicketSection = ({ setTicketUpdate }) => {
 
             {/* ............................................................ax13-search...................................................... */}
 
-            <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
-              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
+            <div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon" onClick={handleFilter} style={{ cursor: 'pointer' }}>
                 <LuSettings2 />
                 {""}
               </p>

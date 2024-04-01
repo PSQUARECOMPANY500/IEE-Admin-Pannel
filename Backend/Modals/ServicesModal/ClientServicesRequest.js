@@ -26,11 +26,12 @@ const Services = new Schema(
     TypeOfIssue: {
       type: String,
       required: true,
+      default:"Service"
     },
-    Description: {
-      type: String,
-      required: true,
-    },
+    // Description: {
+    //   type: String,
+    //   required: true,
+    // },
     Type: {
       type: String,
       default: "ImediateVisit",

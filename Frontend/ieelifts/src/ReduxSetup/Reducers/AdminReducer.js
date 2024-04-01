@@ -39,23 +39,26 @@ import { GET_Engineer_Name } from "../Actions/AdminActions";
 // import { CLOSE_MODAL } from "../Actions/AdminActions";
 
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
+import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
+import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
+import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
 const initialState24 = {
-  isSuccess:null,
+  isSuccess: null,
 }
 
-export const VerifyOTPPasswordReducer = (state=initialState24, action) => {
+export const VerifyOTPPasswordReducer = (state = initialState24, action) => {
   switch (action.type) {
     case VERIFY_OTP_PASSWORD:
-      return {...state, isSuccess:action.payload};
-      default:
+      return { ...state, isSuccess: action.payload };
+    default:
       return state
   }
 
-} 
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -619,6 +622,54 @@ export const membershipButtonLayoutReducer = (state = buttonLayout, action) => {
       return state;
   }
 };
+
+const engineerLeaveHistory = {
+  leaveHistory: null,
+}
+
+export const engineerLeaveHistoryReducer = (state = engineerLeaveHistory, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_LEAVE_HISTORY:
+      return {
+        leaveHistory: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const approveLeave = {
+  leaveStatus: null,
+}
+
+export const approveLeaveByAdminReducer = (state = approveLeave, action) => {
+  switch (action.type) {
+    case APPROVE_LEAVE_BY_ADMIN:
+      return {
+        leaveStatus: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const requestedLeave = {
+  requestedLeave: null,
+}
+
+export const engineerRequestedLeaveReducer = (state = requestedLeave, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_REQUESTED_LEAVE:
+      return {
+        requestedLeave: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
 
 // armaan-dev ends
 

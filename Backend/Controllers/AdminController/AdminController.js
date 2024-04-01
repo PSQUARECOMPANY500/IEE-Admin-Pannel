@@ -1160,7 +1160,7 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const { ServiceEnggId, selectedDate } = req.body;
+    const { ServiceEnggId, selectedDate } = req.params;
     if (ServiceEnggId) {
       const len = 5;
       console.log(selectedDate);
@@ -1172,7 +1172,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         },
         (_, i) => {
           const previousDay = new Date(today);
-          previousDay.setDate(today.getDate() - 3 + i);
+          previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
       );
@@ -1187,7 +1187,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         })
       );
 
-      //console.log(attendanceData)
+      // console.log(attendanceData)
 
       return res.status(200).json({
         attendanceData,
@@ -1491,10 +1491,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1962,7 +1962,7 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
     const otpValue = Math.floor(1000 + Math.random() * 9000);
 
     if (otp) {
-      otp.otp = otpValue.toString(); 
+      otp.otp = otpValue.toString();
     } else {
       otp = new ForgetPassOTP({
         email: email,
@@ -2037,7 +2037,7 @@ module.exports.ValidateOTPForgetPassword = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({
       error: "Internal server error while validatin the OTP",
     });
@@ -2076,9 +2076,8 @@ module.exports.updatePassword = async (req, res) => {
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// {/armaan-dev}
 
-// {/armaan-dev}   // 29/03/2024
 // get engineer leaves History
 module.exports.getEngineerLeaveHistory = async (req, res) => {
   try {
@@ -2086,12 +2085,12 @@ module.exports.getEngineerLeaveHistory = async (req, res) => {
     const leaves = await EnggLeaveServiceRecord.find({
       ServiceEnggId,
     });
+
     const sentLeaves = leaves.filter((leave) => leave.IsApproved !== "false");
     res.status(200).json({
       success: true,
       sentLeaves,
     });
-    console.log(sentLeaves)
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -2099,7 +2098,7 @@ module.exports.getEngineerLeaveHistory = async (req, res) => {
     });
   }
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // get engineer leaves requests
 module.exports.getEngineerRequestedLeave = async (req, res) => {
   try {
@@ -2107,6 +2106,7 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
     const leaves = await EnggLeaveServiceRecord.find({
       ServiceEnggId,
     });
+
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
     res.status(200).json({
       success: true,
@@ -2119,41 +2119,56 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
     });
   }
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // take action on leave (approve or reject)
 module.exports.takeActionOnLeave = async (req, res) => {
   try {
-    const { IsApproved, _id } = req.query;
-    const leave = await EnggLeaveServiceRecord.findById({
-      _id,
-    });
-    if (!leave) {
-      return res.status(404).json({
-        error: "Leave not found",
-      });
-    } else if (IsApproved === "Approved") {
-      leave.IsApproved = "Approved";
-      // console.log(leave);
-      leave.UsedLeave += 1;
-      // console.log(leave.UsedLeave);
-    } else {
-      leave.IsApproved = "Rejected";
+    const { IsApproved, ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
+
+    if (!leaves || leaves.length === 0) {
+      return res.status(404).json({ error: "Leave not found" });
     }
-    leave.save();
+
+    let last = leaves[leaves.length - 1];
+    let secondLast;
+    if (leaves.length > 1) {
+      secondLast = leaves[leaves.length - 2];
+    }
+
+    if (IsApproved === "Approved") {
+      const [day,month,year] = last.Duration.From.split("/").map(Number);
+      const [day1,month1,year1] =last.Duration.To.split("/").map(Number);
+      const fromDate = new Date(year,month-1,day);
+      const toDate =  new Date(year1,month1-1,day1);
+      console.log(fromDate,toDate);
+      const diffTime = Math.abs(toDate - fromDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      last.IsApproved = "Approved";
+      if (secondLast) {
+        last.UsedLeave += secondLast.UsedLeave;
+      }
+      last.UsedLeave += diffDays;
+    } else {
+      last.IsApproved = "Rejected";
+      if (secondLast) {
+        last.UsedLeave += secondLast.UsedLeave;
+      }
+    }
+    
+    await last.save(); // Save the modified document
     res.status(200).json({
       success: true,
       message: "Leave status updated successfully",
     });
   } catch (error) {
-    res.status(500).json({
-      error: "Internal server error",
-    });
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
-}
+};
+
+
 // {/armaan-dev}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 
 

@@ -1530,8 +1530,8 @@ footer a:hover {
   align-items: center;
   margin-top: -15px;
 }
-
-.recharts-responsive-container {
+/* comment for resolve conflict of recharts libary comment by aayush */
+/* .recharts-responsive-container {
   width: 74px !important;
   height: 85px !important;
   display: flex !important;
@@ -1553,7 +1553,7 @@ footer a:hover {
   max-height: 118px;
   max-width: 160px;
   cursor: pointer !important;
-}
+} */
 
 .task-dot {
   height: 8px;

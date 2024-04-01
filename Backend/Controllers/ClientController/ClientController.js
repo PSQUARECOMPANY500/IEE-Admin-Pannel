@@ -331,16 +331,16 @@ module.exports.imediateServiceRequest = async (req, res) => {
       RequestDate,
       RequestTime,
       TypeOfIssue,
-      Description,
+      // Description,
     } = req.body;
 
     const newRequest = await serviceRequest.create({
-      JobOrderNumber,
+      JobOrderNumber, 
       RequestId,
       RequestDate,
       RequestTime,
       TypeOfIssue,
-      Description,
+      // Description,
     });
     res.status(201).json({
       message: "Client raised imidiate Request ticket successfully",
