@@ -32,9 +32,13 @@ const SpearParts = require("../../Modals/SpearParts/SpearParts");
 
 const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilter");
 
+const ForgetPassOTP = require("../../Modals/OTP/ForgetPasswordOtp");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
+
+const nodemailer = require("nodemailer");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -46,74 +50,85 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const EnggDetail = await ServiceEnggData.find({});
     const currentDate = new Date();
 
-    const BasicDetail = await Promise.all(EnggDetail.map(async (item) => {
-      const enggRating = await EnggRating.find({
-        ServiceEnggId: item.EnggId
-      });
-      const ratingsCount = enggRating.length;
-      const ratingsSum = enggRating.reduce((sum, rating) => sum + rating.Rating, 0);
-      const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
-
-      const ServiceEnggId = item.EnggId;
-
-      const serviceAssignments = await ServiceAssigntoEngg.find({
-        ServiceEnggId
-      });
-      const assignScheduleRequests = await AssignSecheduleRequest.find({
-        ServiceEnggId
-      });
-
-      const mainDetails = serviceAssignments.concat(assignScheduleRequests).map(data => ({
-        ServiceEnggId: data.ServiceEnggId,
-        JobOrderNumber: data.JobOrderNumber,
-        Slot: data.Slot,
-        Date: data.Date,
-        TaskStatus: data.ServiceProcess,
-      }));
-
-      const filteredServiceAssignments = mainDetails.filter(item => {
-        return item.Date === currentDate.toLocaleDateString('en-GB');
-      });
-
-      const filteredServiceAssignmentsWithClientName = await Promise.all(filteredServiceAssignments.map(async (assignment) => {
-        const client = await clientDetailSchema.findOne({
-          JobOrderNumber: assignment.JobOrderNumber
+    const BasicDetail = await Promise.all(
+      EnggDetail.map(async (item) => {
+        const enggRating = await EnggRating.find({
+          ServiceEnggId: item.EnggId,
         });
+        const ratingsCount = enggRating.length;
+        const ratingsSum = enggRating.reduce(
+          (sum, rating) => sum + rating.Rating,
+          0
+        );
+        const averageRating =
+          ratingsCount > 0
+            ? parseFloat((ratingsSum / ratingsCount).toFixed(1))
+            : 0;
+
+        const ServiceEnggId = item.EnggId;
+
+        const serviceAssignments = await ServiceAssigntoEngg.find({
+          ServiceEnggId,
+        });
+        const assignScheduleRequests = await AssignSecheduleRequest.find({
+          ServiceEnggId,
+        });
+
+        const mainDetails = serviceAssignments
+          .concat(assignScheduleRequests)
+          .map((data) => ({
+            ServiceEnggId: data.ServiceEnggId,
+            JobOrderNumber: data.JobOrderNumber,
+            Slot: data.Slot,
+            Date: data.Date,
+            TaskStatus: data.ServiceProcess,
+          }));
+
+        const filteredServiceAssignments = mainDetails.filter((item) => {
+          return item.Date === currentDate.toLocaleDateString("en-GB");
+        });
+
+        const filteredServiceAssignmentsWithClientName = await Promise.all(
+          filteredServiceAssignments.map(async (assignment) => {
+            const client = await clientDetailSchema.findOne({
+              JobOrderNumber: assignment.JobOrderNumber,
+            });
+            return {
+              ...assignment,
+              ClientName: client?.name,
+              ClientNumber: client?.PhoneNumber,
+              ClientAddress: client?.Address,
+            };
+          })
+        );
+
+        filteredServiceAssignmentsWithClientName.sort((a, b) => {
+          const timeA = convertTimeToSortableFormat(a.Slot[0]);
+          const timeB = convertTimeToSortableFormat(b.Slot[0]);
+          return timeA - timeB;
+        });
+
         return {
-          ...assignment,
-          ClientName: client?.name,
-          ClientNumber: client?.PhoneNumber,
-          ClientAddress: client?.Address
+          EnggObjId: item._id,
+          ServiceEnggId: item.EnggId,
+          ServiceEnggName: item.EnggName,
+          ServiceEnggPic: item.EnggPhoto,
+          averageRating,
+          filteredServiceAssignmentsWithClientName,
         };
-      }));
-
-      filteredServiceAssignmentsWithClientName.sort((a, b) => {
-        const timeA = convertTimeToSortableFormat(a.Slot[0]);
-        const timeB = convertTimeToSortableFormat(b.Slot[0]);
-        return timeA - timeB;
-      });
-
-      return {
-        EnggObjId: item._id,
-        ServiceEnggId: item.EnggId,
-        ServiceEnggName: item.EnggName,
-        ServiceEnggPic: item.EnggPhoto,
-        averageRating,
-        filteredServiceAssignmentsWithClientName
-      };
-    }));
+      })
+    );
 
     res.status(200).json({
-      BasicDetailForCrouser: BasicDetail.filter(item => !item.error)
+      BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
-}
-
+};
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
     slot
@@ -217,16 +232,38 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
-        //extract only specific field
-
+        const ServiceRequestdetail = await getAllServiceRequest.findOne({
+          RequestId: item.RequestId,
+        });
+        // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientDetail ? clientDetail.name : null;
-
+        const ClientPhoto = clientDetail ? clientDetail.ProfileImage : null;
+        const ClientAddress = clientDetail ? clientDetail.Address : null;
+        const ClientPhoneNumber = clientDetail
+          ? clientDetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = ServiceRequestdetail
+          ? ServiceRequestdetail.TypeOfIssue
+          : null;
+        const ClientDescription = ServiceRequestdetail
+          ? ServiceRequestdetail.Description
+          : null;
+        const RepresentativeName =
+          ServiceRequestdetail.RepresentativeName || null;
+        const RepresentativeNumber =
+          ServiceRequestdetail.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber,
         };
       })
     );
@@ -254,7 +291,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-
+    console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const enggDetail = await ServiceEnggData.findOne({
@@ -263,15 +300,40 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
+        const callbackdetail = await getAllCalbacks.findOne({
+          callbackId: item.callbackId,
+        });
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientdetail ? clientdetail.name : null;
-
+        const ClientPhoto = clientdetail ? clientdetail.ProfileImage : null;
+        const ClientAddress = clientdetail ? clientdetail.Address : null;
+        const ClientPhoneNumber = clientdetail
+          ? clientdetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = callbackdetail
+          ? callbackdetail.TypeOfIssue
+          : null;
+        const ClientDescription = callbackdetail
+          ? callbackdetail.Description
+          : null;
+        const RepresentativeName = callbackdetail
+          ? callbackdetail.RepresentativeName
+          : null;
+        const RepresentativeNumber = callbackdetail
+          ? callbackdetail.RepresentativeNumber
+          : null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber,
         };
       })
     );
@@ -480,19 +542,22 @@ module.exports.assignCallbacks = async (req, res) => {
 
     if (existingCallback) {
       // Update existing data
-      callback = await ServiceAssigntoEngg.findOneAndUpdate({
-        callbackId
-      }, {
-        ServiceEnggId,
-        JobOrderNumber,
-        AllotAChecklist,
-        Slot,
-        Date,
-        Message,
-        ServiceProcess,
-      }, {
-        new: true
-      } // Return the updated document
+      callback = await ServiceAssigntoEngg.findOneAndUpdate(
+        {
+          callbackId,
+        },
+        {
+          ServiceEnggId,
+          JobOrderNumber,
+          AllotAChecklist,
+          Slot,
+          Date,
+          Message,
+          ServiceProcess,
+        },
+        {
+          new: true,
+        } // Return the updated document
       );
     } else {
       // Create a new entry
@@ -945,33 +1010,34 @@ module.exports.getClientMemebership = async (req, res) => {
 //function to get all booked dates {amit-features}
 
 module.exports.getBookedDates = async (req, res) => {
-  const timeSlots = [{
-    slot: "9:00-10:00",
-  },
-  {
-    slot: "10:00-11:00",
-  },
-  {
-    slot: "11:00-12:00",
-  },
-  {
-    slot: "12:00-13:00",
-  },
-  {
-    slot: "13:00-14:00",
-  },
-  {
-    slot: "14:00-15:00",
-  },
-  {
-    slot: "15:00-16:00",
-  },
-  {
-    slot: "16:00-17:00",
-  },
-  {
-    slot: "17:00-18:00",
-  },
+  const timeSlots = [
+    {
+      slot: "9:00-10:00",
+    },
+    {
+      slot: "10:00-11:00",
+    },
+    {
+      slot: "11:00-12:00",
+    },
+    {
+      slot: "12:00-13:00",
+    },
+    {
+      slot: "13:00-14:00",
+    },
+    {
+      slot: "14:00-15:00",
+    },
+    {
+      slot: "15:00-16:00",
+    },
+    {
+      slot: "16:00-17:00",
+    },
+    {
+      slot: "17:00-18:00",
+    },
   ];
 
   try {
@@ -1008,7 +1074,7 @@ module.exports.getBookedDates = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // This is the api for fetching Eng details acc to current Date for engg crousel
 
 const getClientDetailsByJobOrderNumbers = async (jobOrderNumbers) => {
@@ -1076,7 +1142,7 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
   }
 };
 
-//.......................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------...
 
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
@@ -1102,7 +1168,6 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Admin,
       token,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1112,7 +1177,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.createServiceAdmin = async (req, res) => {
   try {
@@ -1138,43 +1203,48 @@ module.exports.createServiceAdmin = async (req, res) => {
   }
 };
 
-//....................................................................................................................................................................
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
     const { ServiceEnggId, selectedDate } = req.body;
+    console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
-      console.log(selectedDate);
-      const today = new Date(selectedDate)
+      const today = new Date(selectedDate);
 
-      const dates = Array.from({
-        length: len
-      }, (_, i) => {
-        const previousDay = new Date(today);
-        previousDay.setDate(today.getDate() - 3 + i);
-        return previousDay.toLocaleDateString("en-GB");
-      });
+      const dates = Array.from(
+        {
+          length: len,
+        },
+        (_, i) => {
+          const previousDay = new Date(today);
+          previousDay.setDate(today.getDate() - 2 + i);
+          return previousDay.toLocaleDateString("en-GB");
+        }
+      );
 
-      const attendanceData = await Promise.all(dates.map(async (date) => {
-        const response = await EnggAttendanceServiceRecord.findOne({
-          ServiceEnggId,
-          Date: date
+      const attendanceData = await Promise.all(
+        dates.map(async (date) => {
+          const response = await EnggAttendanceServiceRecord.findOne({
+            ServiceEnggId,
+            Date: date,
+          });
+          return response;
         })
-        return response;
-      }))
+      );
 
       //console.log(attendanceData)
 
       return res.status(200).json({
-        attendanceData
+        attendanceData,
       });
     }
 
     return res.status(500).json({
       error: "Invalid Input",
-      message: error.message
-    })
+      message: error.message,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1183,6 +1253,8 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.approveLeaveByAdmin = async (req, res) => {
   try {
@@ -1220,7 +1292,7 @@ module.exports.approveLeaveByAdmin = async (req, res) => {
   }
 };
 
-// -----------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // {armaan-dev}
 module.exports.createClientCallDetails = async (req, res) => {
   try {
@@ -1252,6 +1324,8 @@ module.exports.createClientCallDetails = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.getClientCalls = async (req, res) => {
   try {
@@ -1302,6 +1376,8 @@ module.exports.getClientData = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.getMembershipHistory = async (req, res) => {
   try {
     const { jobOrderNumber } = req.query;
@@ -1343,88 +1419,211 @@ module.exports.getMembershipHistory = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.filterClient = async (req, res) => {
   try {
-    const { type, condition } = req.query;
-    switch (type) {
-      case "membership":
-        const membership = await clientDetailSchema.find({
-          MembershipType: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(201).json({
-          success: true,
-          data: membership,
-        });
-        break;
-      case "elevatorType":
-        const elevatorType = await clientDetailSchema.find({
-          ModelType: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(201).json({
-          success: true,
-          data: elevatorType,
-        });
-        break;
-      case "location":
-        const clientsInCity = await clientDetailSchema.find({
-          Address: {
-            $regex: new RegExp(condition, "i"),
-          },
-        });
-        res.status(200).json({
-          success: true,
-          data: clientsInCity,
-        });
-        break;
-      case "date":
-        let clients;
-        if (condition === "newest") {
-          clients = await clientDetailSchema
-            .find()
-            .sort({ DateOfHandover: -1 });
-        } else if (condition === "oldest") {
-          clients = await clientDetailSchema.find().sort({ DateOfHandover: 1 });
+    const filters = req.body.filterCondition;
+    const membershipFilter = filters.filter(
+      (type) => type.type === "membership"
+    );
+    const elevatorTypeFilter = filters.filter(
+      (type) => type.type === "elevatorType"
+    );
+    const locationFilter = filters.filter((type) => type.type === "location");
+
+    const sortFilter = filters.filter(
+      (type) => type.type === "date" || type.type === "name"
+    );
+
+    let membershipData,
+      elevatorData,
+      locationData = [];
+    const clientData = await clientDetailSchema.find();
+
+    membershipFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        let membership = clientData.filter(
+          (client) =>
+            client.MembershipType &&
+            client.MembershipType.toLowerCase() === condition.toLowerCase()
+        );
+        if (membershipData && membershipData.length) {
+          membershipData = [...membershipData, ...membership];
         } else {
-          res.status(400).json({
-            success: false,
-            message: "Invalid date condition",
-          });
-          return;
+          membershipData = [...membership];
         }
-        res.status(200).json({
-          success: true,
-          data: clients,
-        });
+      } catch (error) {
+        console.error("Error fetching membership:", error);
+      }
+    });
+
+    elevatorTypeFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        let elevatorClient = clientData.filter(
+          (client) =>
+            client.ModelType &&
+            client.ModelType.toLowerCase() === condition.toLowerCase()
+        );
+        if (elevatorData && elevatorData.length) {
+          elevatorData = [...elevatorData, ...elevatorClient];
+        } else {
+          elevatorData = [...elevatorClient];
+        }
+      } catch (error) {
+        console.error("Error fetching membership:", error);
+      }
+    });
+
+    locationFilter.forEach(async (member) => {
+      const { condition } = member;
+      try {
+        const locationClient = clientData.filter(
+          (client) =>
+            client.Address &&
+            client.Address.toLowerCase().includes(condition.toLowerCase())
+        );
+        if (locationData && locationData.length) {
+          locationData = [...locationData, ...locationClient];
+        } else {
+          locationData = [...locationClient];
+        }
+      } catch (error) {
+        console.error("Error fetching membership:", error);
+      }
+    });
+
+    let commonData = [];
+    if (
+      membershipData &&
+      membershipData.length &&
+      elevatorData &&
+      elevatorData.length &&
+      locationData &&
+      locationData.length
+    ) {
+      commonData = membershipData.filter(
+        (membership) =>
+          elevatorData.some((elevator) => elevator._id === membership._id) &&
+          locationData.some((location) => location._id === membership._id)
+      );
+    } else if (
+      ((membershipData && membershipData.length) ||
+        membershipFilter.length !== 0) &&
+      ((elevatorData && elevatorData.length) || elevatorTypeFilter.length !== 0)
+    ) {
+      commonData = membershipData.filter((membership) =>
+        elevatorData.some((elevator) => elevator._id === membership._id)
+      );
+    } else if (
+      ((elevatorData && elevatorData.length) ||
+        elevatorTypeFilter.length !== 0) &&
+      ((locationData && locationData.length) || locationFilter.length !== 0)
+    ) {
+      commonData = elevatorData.filter((elevator) =>
+        locationData.some((location) => location._id === elevator._id)
+      );
+    } else if (
+      ((membershipData && membershipData.length) ||
+        membershipFilter.length !== 0) &&
+      ((locationData && locationData.length) || locationFilter.length !== 0)
+    ) {
+      commonData = membershipData.filter((membership) =>
+        locationData.some((location) => location._id === membership._id)
+      );
+    } else {
+      commonData =
+        membershipData && membershipData.length > 0
+          ? membershipData
+          : elevatorData && elevatorData.length > 0
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
+    }
+    let sortType, sortcondition;
+    if (sortFilter && sortFilter.length) {
+      sortType = sortFilter[0].type;
+      sortcondition = sortFilter[0].condition;
+    }
+    switch (sortType) {
+      case "date":
+        if (
+          membershipFilter.length ||
+          elevatorTypeFilter.length ||
+          locationFilter.filter
+        ) {
+          if (sortcondition === "newest") {
+            commonData.sort(
+              (a, b) => new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+            );
+          } else if (sortcondition === "oldest") {
+            commonData.sort(
+              (a, b) => new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+            );
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid date condition",
+            });
+          }
+        } else {
+          if (sortcondition === "newest") {
+            clientData.sort(
+              (a, b) => new Date(b.DateOfHandover) - new Date(a.DateOfHandover)
+            );
+            commonData = clientData;
+          } else if (sortcondition === "oldest") {
+            clientData.sort(
+              (a, b) => new Date(a.DateOfHandover) - new Date(b.DateOfHandover)
+            );
+            commonData = clientData;
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid date condition",
+            });
+          }
+        }
         break;
       case "name":
-        let sortedClients;
-        if (condition === "a-z") {
-          sortedClients = await clientDetailSchema.find().sort({ name: 1 });
-        } else if (condition === "z-a") {
-          sortedClients = await clientDetailSchema.find().sort({ name: -1 });
+        if (
+          membershipFilter.length ||
+          elevatorTypeFilter.length ||
+          locationFilter.filter
+        ) {
+          if (sortcondition === "a-z") {
+            commonData.sort((a, b) => a.name.localeCompare(b.name));
+          } else if (sortcondition === "z-a") {
+            commonData.sort((a, b) => b.name.localeCompare(a.name));
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid name condition",
+            });
+          }
         } else {
-          res.status(400).json({
-            success: false,
-            message: "Invalid name condition",
-          });
-          return;
+          if (sortcondition === "a-z") {
+            clientData.sort((a, b) => a.name.localeCompare(b.name));
+            commonData = clientData;
+          } else if (sortcondition === "z-a") {
+            clientData.sort((a, b) => b.name.localeCompare(a.name));
+            commonData = clientData;
+          } else {
+            return res.status(400).json({
+              success: false,
+              message: "Invalid name condition",
+            });
+          }
         }
-        res.status(200).json({
-          success: true,
-          data: sortedClients,
-        });
-        break;
-      default:
-        res.status(400).json({
-          success: false,
-          message: "Invalid filter type",
-        });
         break;
     }
+    res.status(200).json({
+      success: true,
+      data: commonData,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1433,6 +1632,8 @@ module.exports.filterClient = async (req, res) => {
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 module.exports.searchClients = async (req, res) => {
   try {
@@ -1703,10 +1904,11 @@ const filterMembershipByType = (data, type) => {
   return data.filter((member) => member.MembershipType === type);
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
-    console.log("this is location: ", location);
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -1736,6 +1938,23 @@ module.exports.getFilteringLocations = async (req, res) => {
   }
 };
 
+module.exports.getEngineerNames = async (req, res) => {
+  try {
+    const engineerDetails = await ServiceEnggData.find();
+    let engineerNames = [];
+
+    engineerDetails.forEach((engineer) => {
+      engineerNames.push(engineer.EnggName);
+    });
+
+    res.status(200).json({ success: true, engineerNames });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
 // {armaan-dev}
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------
@@ -1743,20 +1962,472 @@ module.exports.getFilteringLocations = async (req, res) => {
 module.exports.createSpearParts = async (req, res) => {
   try {
     const { SpearPart, subcategoryName } = req.body;
-    //console.log("chutiye",SpearPart , subcategoryName);
     if (SpearPart && subcategoryName) {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
         subcategoryName: subcategoryName,
-      })
-      return res.status(200).json({ response })
+      });
+      return res.status(200).json({ response });
     }
-    return res.status(500).json({ error: "Please fill all fields in createSpearParts" })
-
+    return res
+      .status(500)
+      .json({ error: "Please fill all fields in createSpearParts" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({
-      error: "Internal server error in createSpearParts"
+      error: "Internal server error in createSpearParts",
     });
   }
 };
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//by Preet-----
+
+//function to handle send Password reset otp on Email.
+
+module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const emailVerify = await serviceAdmin.findOne({ email });
+
+    let otp = await ForgetPassOTP.findOne({ email });
+
+    if (!emailVerify) {
+      return res
+        .status(401)
+        .json({ message: "Enter Email is not Associated With Any Account" });
+    }
+
+    // Generate OTP
+    const otpValue = Math.floor(1000 + Math.random() * 9000);
+
+    if (otp) {
+      otp.otp = otpValue.toString();
+    } else {
+      otp = new ForgetPassOTP({
+        email: email,
+        otp: otpValue.toString(),
+      });
+    }
+
+    await otp.save();
+
+    //nodemailer logic ---------- starts ----------
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use `true` for port 465, `false` for all other ports
+      auth: {
+        user: "psqrco@gmail.com",
+        pass: "tczb rxil pioe nrgd",
+      },
+    });
+
+    const message = `
+    <h1>Password Reset OTP</h1>
+    <p>Your OTP for password reset is: <strong>${otpValue}</strong></p>
+    <p>Please use this OTP to reset your password.</p>
+    <p>OTP valid for 5 minutes.</p>
+  `;
+
+    const info = await transporter.sendMail({
+      from: '"IEE LIFTS" <psqrco@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: "Password Reset OTP", // Subject line
+      text: "Hello world?", // plain text body
+      html: message, // html body
+    });
+    res.status(200).json({ message: "Email sent successfully", email });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Internal server error while sending the email",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//function to handle send Password reset otp on Phone Number.
+// module.exports.sendPasswordResetOTPOnPhoneNumber = (req,res) =>{
+//   try {
+
+//   } catch (error) {
+
+//   }
+// }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle validate Forget Password OTP
+
+module.exports.ValidateOTPForgetPassword = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const verifyOTP = await ForgetPassOTP.find({ email });
+    if (!verifyOTP) {
+      return res
+        .status(404)
+        .json({ message: "no OPT is found in databse for this Email id" });
+    }
+
+    if (otp === verifyOTP[0].otp) {
+      return res.status(200).json({ success: true });
+    } else {
+      return res.status(200).json({ success: false });
+    }
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      error: "Internal server error while validatin the OTP",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle update password
+
+module.exports.updatePassword = async (req, res) => {
+  try {
+    const { newPassword, email } = req.body;
+
+    const updatedUser = await serviceAdmin.findOneAndUpdate(
+      { email: email },
+      { Password: newPassword },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error while updating the password" });
+  }
+};
+module.exports.assignedEnggDetails = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+    if (ServiceEnggId) {
+      const assignCallbacks = await ServiceAssigntoEngg.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+
+      const assignServiceRequests = await AssignSecheduleRequest.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+
+      const assignCallbacksWithClientName = await Promise.all(
+        assignCallbacks.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+      const assignServiceRequestsWithClientName = await Promise.all(
+        assignServiceRequests.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+
+      const assignCallbacksDetails = assignCallbacksWithClientName.map(
+        (data) => ({
+          date: data.Date,
+          ServiceId: data.callbackId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        })
+      );
+
+      const assignServiceRequestsDetails =
+        assignServiceRequestsWithClientName.map((data) => ({
+          date: data.Date,
+          ServiceId: data.RequestId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        }));
+
+      const assignCallbacksWithRating = await Promise.all(
+        assignCallbacksDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+
+      const assignServiceRequestsWithRating = await Promise.all(
+        assignServiceRequestsDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+      return res.status(200).json({
+        assignServiceRequests: assignServiceRequestsWithRating,
+        assignCallbacks: assignCallbacksWithRating,
+      });
+    }
+    return res.status(400).json({ message: "ServiceEnggId not found" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in assignedEnggDetails" });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// {/armaan-dev}
+
+// get engineer leaves History
+module.exports.getEngineerLeaveHistory = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved !== "false");
+    res.status(200).json({
+      success: true,
+      sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+// get engineer leaves requests
+module.exports.getEngineerRequestedLeave = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+    res.status(200).json({
+      success: true,
+      leaves: sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+// take action on leave (approve or reject)
+module.exports.takeActionOnLeave = async (req, res) => {
+  try {
+    const { IsApproved, _id } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find();
+    if (!leaves || leaves.length === 0) {
+      return res.status(404).json({ error: "Leave not found" });
+    }
+    const last = leaves.find((leave) => leave._id == _id);
+    if (!last) {
+      return res.status(404).json({ error: "Leave not found" });
+    }
+
+    // const approvedLeaves = leaves
+    //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
+    //   .sort((leaveA, leaveB) => {
+    //     const dateA = new Date(leaveA.Date);
+    //     const dateB = new Date(leaveB.Date);
+    //     return dateA - dateB;
+    //   });
+
+    const approvedLeaves = leaves
+      .filter(
+        (leave) =>
+          leave.IsApproved === "Approved" &&
+          leave.ServiceEnggId === last.ServiceEnggId
+      )
+      .sort((leaveA, leaveB) => {
+        const [monthA, dateA, yearA] = new Date(leaveA.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const [monthB, dateB, yearB] = new Date(leaveB.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const dateStrA = `${monthA}/${dateA}/${yearA}`;
+        const dateStrB = `${monthB}/${dateB}/${yearB}`;
+        return new Date(dateStrA) - new Date(dateStrB);
+      });
+
+    if (IsApproved === "Approved") {
+      last.IsApproved = "Approved";
+      const [fromDay, fromMonth, fromYear] = last.Duration.From.split("/");
+      const [toDay, toMonth, toYear] = last.Duration.To.split("/");
+
+      const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
+      const toDate = new Date(toYear, toMonth - 1, toDay);
+      const diffTime = Math.abs(toDate - fromDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave =
+          approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
+      } else {
+        last.UsedLeave = diffDays + 1;
+      }
+    } else {
+      last.IsApproved = "Rejected";
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave;
+      }
+    }
+    console.log(last);
+    await last.save();
+    res.status(200).json({
+      success: true,
+      message: "Leave status updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// {/armaan-dev}
+
+// amit api // 29/03/2024
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//controller to handdle get task histroy of service engg
+module.exports.assignedEnggDetails = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+    if (ServiceEnggId) {
+      const assignCallbacks = await ServiceAssigntoEngg.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+      const assignServiceRequests = await AssignSecheduleRequest.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+      const assignCallbacksWithClientName = await Promise.all(
+        assignCallbacks.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+      const assignServiceRequestsWithClientName = await Promise.all(
+        assignServiceRequests.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+      const assignCallbacksDetails = assignCallbacksWithClientName.map(
+        (data) => ({
+          date: data.Date,
+          ServiceId: data.callbackId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        })
+      );
+      const assignServiceRequestsDetails =
+        assignServiceRequestsWithClientName.map((data) => ({
+          date: data.Date,
+          ServiceId: data.RequestId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        }));
+      const assignCallbacksWithRating = await Promise.all(
+        assignCallbacksDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+      const assignServiceRequestsWithRating = await Promise.all(
+        assignServiceRequestsDetails.map(async (assignment) => {
+          const Rating = await EnggRating.findOne({
+            ServiceId: assignment.ServiceId,
+          });
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+      return res.status(200).json({
+        assignServiceRequests: assignServiceRequestsWithRating,
+        assignCallbacks: assignCallbacksWithRating,
+      });
+    }
+    return res.status(400).json({ message: "ServiceEnggId not found" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in assignedEnggDetails" });
+  }
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------

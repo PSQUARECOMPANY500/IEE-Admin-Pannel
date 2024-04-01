@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { CiSearch } from "react-icons/ci";
 import { LuSettings2 } from "react-icons/lu";
@@ -8,40 +8,53 @@ import AddTicketOnCallRequest from "../DashboardSubComponent/AddTicketOnCallRequ
 import ServiceRequestTable from "./ServiceRequestTable";
 import ServiceScheduledTable from "./ServiceScheduledTable";
 import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
+import { RiSearchLine } from "react-icons/ri";
+import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
+import execelIcon from "../../../../Assets/Images/execel-icon.png";
+import {
+  getFilterLocation,
+} from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const RequestScheduledSection = ({ setRenderTicket }) => {
+  const dispatch = useDispatch();
   const dropdownRef = useRef(null);
+  const dropdownClickRef = useRef();
   // modal manage states
 
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-
+  const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
 
+  console.log(reqCheckboxStates)
+  const [filterConditions, setfilterConditions] = useState();
+
+
+  useEffect(() => {
+    const fetchData = () => {
+      dispatch(getFilterLocation());
+    };
+    fetchData();
+  }, [dispatch]);
+  const locations = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
+  );
+
+  const filterDropdowns = [
+    { name: "membership", options: ["Warrenty", "Platinum", "Gold", "Silver"] },
+    { name: "location", options: locations },
+    { name: "clear", options: [] }
+  ];
   const handleTicketFilter = () => {
     setShowTicketFilter(!showTicketFilter);
   };
 
   const closeModal = () => setShowTicketModal(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        !event.target.classList.contains("filter-icon")
-      ) {
-        setShowTicketFilter(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [dropdownRef]);
 
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -59,6 +72,32 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [searchText, setSearchText] = useState("");
 
   //.................................................................ax13-search-func-starts----------------------------------------------------------
+  //aayush code start here for filter
+
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+  const handleFilter = () => {
+    setShowTicketFilter(prevState => !prevState);
+  };
+  const handleOutsideClick = useCallback(() => {
+    setShowTicketFilter(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
+  //aayush code end for filter
 
   return (
     <div className="parent-full-div">
@@ -89,45 +128,91 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
 
           <div className="icon-align-div">
             <div className="right-side-icons">
-              <span className="filter-top-icon">
+
+              {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<span className="top-icon">
                 <div className="search-box">
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className="search-input"
+                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                      }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
+                    value={searchText}
                   />
-                  <button
-                    className="search-btn-ticket-section" /*  onClick={() => {
-                    const data = filtersearch(searchText, allCD)
-                    setFilteredCD(data);
-                  }} */
+
+                  <i className="search-btn "
+
+
                   >
-                    <i>
-                      <CiSearch />
-                    </i>
-                  </button>
+
+                    <RiSearchLine className="iconColor" />
+                  </i>
                 </div>
-              </span>
+              </span>) : (<img src={pdfIcon}/>)) : (<span className="top-icon">
+                <div className="search-box">
+                  <input
+                    type="text"
+                    placeholder="Search anything"
+                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                      }`}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                    value={searchText}
+                  />
+
+                  <i className="search-btn "
+                  // onClick={() => {
+                  //   const data = filtersearch(searchText, allCD);
+                  //   setFilteredCD(data);
+                  // }}
+
+                  >
+
+                    <RiSearchLine className="iconColor" />
+                  </i>
+                </div>
+              </span>)}
+
             </div>
 
-            <div className="sub-components-ticket-filter">
-              <p className="filter-icon" onClick={handleTicketFilter}>
+            {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon"
+                onClick={handleFilter}
+              >
                 <LuSettings2 />
                 {""}
               </p>
               {showTicketFilter && (
                 <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown className="search-ticket-filter-icon" />
+                  <FilterDropdown className="search-ticket-filter-icon"
+                    filterDropdowns={filterDropdowns}
+                    setfilterConditions={setfilterConditions}
+                  />
                 </div>
               )}
-            </div>
+            </div>) : (<img src={execelIcon} />)) : (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon"
+                onClick={handleFilter}
+              >
+                <LuSettings2 />
+                {""}
+              </p>
+              {showTicketFilter && (
+                <div className="dropdown-content-filter" ref={dropdownRef}>
+                  <FilterDropdown className="search-ticket-filter-icon"
+                    filterDropdowns={filterDropdowns}
+                    setfilterConditions={setfilterConditions}
+                  />
+                </div>
+              )}
+            </div>)}
 
-            {/* add  ticket +icon */}
 
-            <div
+            {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? ((<div
+
               className="sub-components-ticket-filter"
               onClick={() => openModal(0)}
             >
@@ -135,19 +220,30 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                 <GoPlus />
                 {""}
               </p>
-            </div>
-            {showTicketModal &&
-             (
-              <AddTicketOnCallRequests
-                   
-                closeModal={closeModal}
-                showTicketModal={showTicketModal}
-                setRenderTicket={setRenderTicket}
-                requestSection={true}
-              />
+            </div>)) : ('')) : (<div
 
-            )
-            
+              className="sub-components-ticket-filter"
+              onClick={() => openModal(0)}
+            >
+              <p className="plus-icon">
+                <GoPlus />
+                {""}
+              </p>
+            </div>)}
+
+
+            {showTicketModal &&
+              (
+                <AddTicketOnCallRequests
+
+                  closeModal={closeModal}
+                  showTicketModal={showTicketModal}
+                  setRenderTicket={setRenderTicket}
+                  requestSection={true}
+                />
+
+              )
+
             }
           </div>
         </div>
@@ -159,6 +255,9 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             <ServiceRequestTable
               setRenderTicket2={setRenderTicket}
               searchText={searchText}
+              filterConditions={filterConditions}
+              reqCheckboxStates={reqCheckboxStates}
+              setReqCheckboxStates={setReqCheckboxStates}
             />
           ) : (
             <ServiceScheduledTable searchText={searchText} />

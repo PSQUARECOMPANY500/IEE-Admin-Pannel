@@ -34,8 +34,35 @@ import { GET_FILTER_LOCATIONS } from "../Actions/AdminActions";
 import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
 import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
-import { OPEN_MODAL } from "../Actions/AdminActions";
-import { CLOSE_MODAL } from "../Actions/AdminActions";
+import { GET_Engineer_Name } from "../Actions/AdminActions";
+// import { OPEN_MODAL } from "../Actions/AdminActions";
+// import { CLOSE_MODAL } from "../Actions/AdminActions";
+
+import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
+import { FETCH_ENG_DETAILS } from "../Actions/AdminActions"; import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
+import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
+import { GET_ENGINEER_ATTENDANCE } from "../Actions/AdminActions";
+import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
+
+import {GET_ASSIGNED_ENGG_DETAILS} from "../Actions/AdminActions"
+import {UPDATE_ENGG_LOCATION} from "../Actions/AdminActions"
+import {UPDATE_ENGG_CART_LOCATION} from "../Actions/AdminActions"
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+//reducer to handle VerifyOTPPasswordReducer
+
+const initialState24 = {
+  isSuccess: null,
+}
+
+export const VerifyOTPPasswordReducer = (state = initialState24, action) => {
+  switch (action.type) {
+    case VERIFY_OTP_PASSWORD:
+      return { ...state, isSuccess: action.payload };
+    default:
+      return state
+  }
+
+}
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +93,7 @@ export const getFilterDataReducer = (state = intialState22, action) => {
   }
 };
 const intialState21 = {
-  clients: null,
+  clients: [],
 };
 export const getClientsReducer = (state = intialState21, action) => {
   switch (action.type) {
@@ -550,6 +577,23 @@ export const filteringLocationsReducer = (state = locationsState, action) => {
   }
 };
 
+const engineerNameState = {
+  engineers: null,
+};
+
+export const engineersReducer = (state = engineerNameState, action) => {
+  switch (action.type) {
+    case GET_Engineer_Name:
+      return {
+        ...state,
+        engineers: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const searchingState = {
   clients: null,
 };
@@ -583,6 +627,66 @@ export const membershipButtonLayoutReducer = (state = buttonLayout, action) => {
   }
 };
 
+const engineerLeaveHistory = {
+  leaveHistory: null,
+}
+
+export const engineerLeaveHistoryReducer = (state = engineerLeaveHistory, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_LEAVE_HISTORY:
+      return {
+        leaveHistory: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const approveLeave = {
+  leaveStatus: null,
+}
+
+export const approveLeaveByAdminReducer = (state = approveLeave, action) => {
+  switch (action.type) {
+    case APPROVE_LEAVE_BY_ADMIN:
+      return {
+        leaveStatus: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
+const requestedLeave = {
+  requestedLeave: null,
+}
+
+export const engineerRequestedLeaveReducer = (state = requestedLeave, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_REQUESTED_LEAVE:
+      return {
+        requestedLeave: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
+export const engineerAttendanceReducer = (state = { attendance: null }, action) => {
+  switch (action.type) {
+    case GET_ENGINEER_ATTENDANCE:
+      return {
+        attendance: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 // armaan-dev ends
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -600,3 +704,59 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//emit reducer for  enggpage task-section 
+
+const assignedEnggDetails = {
+  EnggDetails: null,
+};
+export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, action) => {
+  switch (action.type) {
+    case GET_ASSIGNED_ENGG_DETAILS:
+      return { ...state, EnggDetails: action.payload };
+    default:
+      return state;
+  }
+};
+
+//emit reducer for updating location
+const EnggLocation = {
+  enggLocation: null,
+};
+export const onClickEnggCartEnggLocationReducer = (state = EnggLocation, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_LOCATION:
+      return { ...state, enggLocation: action.payload };
+    default:
+      return state;
+  }
+};
+
+
+//emit reducer for updating location onClick of pin
+const EnggLocationPin = {
+  enggLocationOnPin: null,
+};
+export const onClickEnggPinEnggLocationReducer = (state = EnggLocationPin, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_CART_LOCATION:
+      return { ...state, enggLocationOnPin: action.payload };
+    default:
+      return state;
+  }
+};
+const fetchengdetails = {
+  engdetails: null,
+};
+
+export const reducerfetchengdetails = (state = fetchengdetails, action) => {
+  switch (action.type) {
+    case FETCH_ENG_DETAILS:
+      return {
+        ...state,
+        engdetails: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};

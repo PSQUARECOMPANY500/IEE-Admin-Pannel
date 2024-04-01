@@ -42,30 +42,33 @@ async function main() {
 // Create HTTP server for Express app
 const httpServer = createHttpServer(app);
 
-// Create Socket.IO server using the same HTTP server instance
-const io = new SocketServer(httpServer, {cors: {origin: "*"}});
-// console.log("index.js",io)
+// Listen on separate ports for HTTP and Socket.IO
+const httpPort = process.env.PORT || 3000;
+const socketPort = process.env.SOCKET_PORT || 4000;
+
+httpServer.listen(httpPort, () => {
+  console.log(`HTTP server listening on port ${httpPort}`);
+});
+
+const io = new SocketServer();
+io.listen(socketPort);
+console.log(`Socket.IO server listening on port ${socketPort}`);
 
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
   socket.on("aloo",(recivedMessaege) => { 
-  console.log("message si recives",recivedMessaege)
-  io.emit('messagerecieved',recivedMessaege)
+    console.log("message si recives",recivedMessaege)
+    io.emit('messagerecieved',recivedMessaege)
+  });
+
+  socket.on('newEnggmessage', (messageRecives)=>{
+    console.log("pankaj side" , messageRecives);
+    io.emit("EnggNewMessage",messageRecives)
+  })
 });
-
-
-socket.on('newEnggmessage', (messageRecives)=>{
-  console.log("pankaj side" , messageRecives);
-  io.emit("EnggNewMessage",messageRecives)
-})
-})
 
 // Listen for disconnections
 io.on("disconnect", () => {
   console.log(`A user disconnected:`);
-});
-
-httpServer.listen(process.env.PORT, () => {
-  console.log(`Server listening on port ${process.env.PORT}`);
 });

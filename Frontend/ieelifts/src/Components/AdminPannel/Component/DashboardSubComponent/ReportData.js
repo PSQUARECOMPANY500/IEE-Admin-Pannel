@@ -8,9 +8,10 @@ import PitArea from "./PitArea";
 import Rating from "./Rating";
 import ReportIssue from "./ReportIssue";
 
-function ReportTable({handleRedportData}) {
+function ReportTable({handleRedportData ,RedportData}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showReport,setShowReport]=useState(true)
+  
 
   const routes = [
     { name: "M/c Room", co: <MCRoom /> },
@@ -38,12 +39,12 @@ function ReportTable({handleRedportData}) {
   return (
     <div className="ReportTable">
 
-     {handleRedportData?( <ReportIssue/>):(
+     {handleRedportData?( <ReportIssue RedportData={RedportData}/>):(
        <div className="ReportNavigation">
         <div className="CarouselButtons">
           <div className="CarouselButtonsL">
             {currentIndex !== 0 ? (
-              <FaChevronLeft onClick={goToPrev} className="cursor" />
+              <FaChevronLeft onClick={goToPrev} className="cursor iconSize"  />
             ) : (
               ""
             )}
@@ -57,12 +58,7 @@ function ReportTable({handleRedportData}) {
               )}
               <div className="CurrentComponentName">
                 <p
-                  style={{
-                    color: "#F8AC1D",
-                    fontSize: ".9rem",
-                    textAlign: "center",
-                    whiteSpace: "nowrap",
-                  }}
+               
                 >
                   {routes[currentIndex].name}
                 </p>
@@ -77,7 +73,7 @@ function ReportTable({handleRedportData}) {
 
           <div className="CarouselButtonsR">
             {currentIndex !== routes.length - 1 && (
-              <FaChevronRight onClick={goToNext} className="cursor" />
+              <FaChevronRight onClick={goToNext} className="cursor  iconSize" />
             )}
           </div>
         </div>

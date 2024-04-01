@@ -38,13 +38,15 @@ const MessageBox = ({ onClose, EnggId }) => {
   }, []);
   //socket implemantation starts ---------------------------------------------
   // const socket = io('http://localhost:8000');
-  const socket = io("https://iee-admin-pannel.onrender.com");
+  // const socket = io("https://iee-admin-pannel.onrender.com");
+  const socket = io('https://ieelifts.in/api');
   useEffect(() => {
     socket.on("connect", () => [
       console.log("socket is connected successfully"),
     ]);
     return () => {
       socket.off("connect");
+      socket.disconnect()
     };
   }, []);
   const chatCreated = useSelector((state) => {
@@ -183,9 +185,9 @@ useEffect(() => {
         <div className="EngChatBoxHead-Dash">
           <h6>online</h6>
           <div className="EngChatBoxIcons-Dash">
-            <IoCallOutline />
-            <CiVideoOn />
-            <RxCross2 onClick={onClose} />
+            <IoCallOutline className="cursor"/>
+            <CiVideoOn  className="cursor"/>
+            <RxCross2 onClick={onClose}  className="cursor"/>
           </div>
         </div>
         <div className="EngChatMsg-Dash"  >

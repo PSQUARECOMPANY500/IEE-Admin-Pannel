@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useEffect, useState } from "react";
 import { getClients } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,7 +11,7 @@ const Clients = () => {
 
   useEffect(() => {
     dispatch(getClients());
-  }, [dispatch]);
+  },[dispatch]);
 
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients

@@ -1,16 +1,32 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const EngeeniersSubCard = (props) => {
-  const { isChatOpen, setIsChatOpen, hideCard, setHideCard } = props;
-  const [isActive, setIsActive] = useState();
+
+  const [singleClickTimeout, setSingleClickTimeout] = useState(null);
+  const [isDoubleClick, setIsDoubleClick] = useState(false);
+  const [isActive, setIsActive] = useState(null);
+  const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick } = props;
+
+  const dispatch = useDispatch();
+  const engData = useSelector((state) => {
+    return state?.AdminRootReducer?.reducerfetchengdetails
+  });
+
+  useEffect(() => {
+    dispatch(fetchEngDetails());
+  }, [])
+
+
   const data = [
     {
       Spare: 15,
       Cash: 150000,
       NAME: "Jack",
       ID: "1111",
-    
+
       RATING: "A",
       ADDRESS: "123 Main St",
       LEAVES: "2",
@@ -108,25 +124,57 @@ const EngeeniersSubCard = (props) => {
     },
   ];
 
+
+
+
+  const handleSingleClick = (index) => {
+
+    if (!isDoubleClick) {
+      setIsDoubleClick(false);
+      clearTimeout(singleClickTimeout);
+      setSingleClickTimeout(null);
+    }
+
+    setIsDoubleClick(false);
+    const timeout = setTimeout(() => {
+      setIsFirst(true);
+      setSingleClickTimeout(null);
+    }, 200);
+
+    setSingleClickTimeout(timeout);
+    setIsActive(index);
+
+
+  }
+
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto) => {
+    setIsDoubleClick(true);
+    clearTimeout(singleClickTimeout);
+    setSingleClickTimeout(null);
+    setIsSecond(true);
+    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
+  };
+
+
   return (
-    <div className="EngeeniersSubCard" style={{ cursor: "pointer" }}>
-      <div className={isChatOpen ? "AllCardsT" : "AllCardsF"}>
-        {data.map((e, index) => (
-          <div className="EngCards" onClick={() => setIsChatOpen(false)}>
+    <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
+      <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
+        {engData.engdetails && engData.engdetails.combinedData.map((e, index) => (
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-          
+              <img src={e.EnggPhoto} alt={`Image for ID`} />
               </div>
               <div className="EngCardDetailsR">
                 <div class="table-container">
                   <div class="table-item">NAME</div>
-                  <div class="table-item">{e.NAME}</div>
+                  <div class="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
                   <div class="table-item">ID</div>
-                  <div class="table-item">{e.ID}</div>
+                  <div class="table-item">{e.EnggId}</div>
                   <div class="table-item">RATING</div>
-                  <div class="table-item">{e.RATING}</div>
+                  <div class="table-item">{e.averageRating}</div>
                   <div class="table-item">LEAVES</div>
-                  <div class="table-item">{e.LEAVES}</div>
+                  <div class="table-item">LEAVES</div>
                 </div>
               </div>
             </div>

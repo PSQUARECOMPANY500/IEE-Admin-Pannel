@@ -36,6 +36,16 @@ import { membershipButtonLayoutReducer } from "../Reducers/AdminReducer";
 import { modalOpenerReducer } from "../Reducers/AdminReducer";
 // import { loginServiceAdminReducer } from "../Reducers/AdminReducer";
 import { loginAdminReducer } from "../Reducers/AdminReducer";
+import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
+import { engineersReducer } from "../Reducers/AdminReducer";
+import { reducerfetchengdetails } from "../Reducers/AdminReducer";
+import { approveLeaveByAdminReducer } from "../Reducers/AdminReducer";
+import { engineerLeaveHistoryReducer } from "../Reducers/AdminReducer";
+import { engineerAttendanceReducer } from "../Reducers/AdminReducer";
+import { engineerRequestedLeaveReducer } from "../Reducers/AdminReducer";
+import {fetchassignedEnggDetailsReducer} from "../Reducers/AdminReducer"
+import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
+import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -73,6 +83,16 @@ const AdminRootReducer = combineReducers({
   membershipButtonLayoutReducer: membershipButtonLayoutReducer,
   modalOpenerReducer: modalOpenerReducer,
   loginAdminReducer: loginAdminReducer,
+  VerifyOTPPasswordReducer: VerifyOTPPasswordReducer,
+  engineersReducer: engineersReducer,
+  reducerfetchengdetails: reducerfetchengdetails,
+  engineerRequestedLeaveReducer: engineerRequestedLeaveReducer,
+  approveLeaveByAdminReducer: approveLeaveByAdminReducer,
+  engineerLeaveHistoryReducer: engineerLeaveHistoryReducer,
+  engineerAttendanceReducer: engineerAttendanceReducer,
+  fetchassignedEnggDetailsReducer:fetchassignedEnggDetailsReducer,
+  onClickEnggCartEnggLocationReducer:onClickEnggCartEnggLocationReducer,
+  onClickEnggPinEnggLocationReducer:onClickEnggPinEnggLocationReducer
 });
 
 export default AdminRootReducer;

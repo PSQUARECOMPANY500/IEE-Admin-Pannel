@@ -1,16 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiEyeOff } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+
+import { updatePassswordAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const EnterNewPassword = () => {
+  const location = useLocation();
+  const Navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+
+  const [firstPassword, setFirstPassword] = useState();
+  const [secondPassword, setSecondPassword] = useState();
+
+  const [passswordMessage, setPasswordMessage] = useState();
 
   const handlePasswordShow = () => {
     setShowPassword(!showPassword);
   };
   const handlePasswordShow2 = () => {
     setShowPassword2(!showPassword2);
+  };
+
+  useEffect(() => {
+    const value = location?.state?.success;
+    console.log(value);
+    if (!value) {
+      Navigate("/");
+    }
+  }, [location]);
+
+  const handlePasswordUpdate = async () => {
+    if (!firstPassword || !secondPassword) {
+      toast.error("Please Fill The Fields");
+    }
+
+    if (firstPassword !== secondPassword) {
+      toast.error("Password Not Matched");
+    }
+
+    const email = sessionStorage.getItem("ForgeteEmail");
+    const data = await updatePassswordAction(email, firstPassword);
+    sessionStorage.removeItem("ForgeteEmail");
+
+
+    console.log(data);
+  };
+
+  const handlePasswordChange = (passsword) => {
+    setFirstPassword(passsword);
+
+    const passwordPattern =
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
+    if (!passwordPattern.test(firstPassword)) {
+      setPasswordMessage(
+        "Password must contain at least one letter, one number, and be at least 6 characters long."
+      );
+      return;
+    } else {
+      setPasswordMessage("");
+    }
   };
 
   return (
@@ -24,6 +76,8 @@ const EnterNewPassword = () => {
         <input
           type={showPassword ? "text" : "password"}
           placeholder="New password"
+          value={firstPassword}
+          onChange={(e) => handlePasswordChange(e.target.value)}
         ></input>
         {showPassword ? (
           <FiEye
@@ -35,12 +89,14 @@ const EnterNewPassword = () => {
           <FiEyeOff className="passwordEyeIcon" onClick={handlePasswordShow} />
         )}
       </div>
-      <p className="insideP">Passwords must be at least 6 characters.</p>
+      <p className="insideP">{passswordMessage}</p>
 
       <div className="ReEnterPasswordInpuitField">
         <input
           type={showPassword2 ? "text" : "password"}
           placeholder="New password"
+          value={secondPassword}
+          onChange={(e) => setSecondPassword(e.target.value)}
         ></input>
         {showPassword2 ? (
           <FiEye
@@ -54,7 +110,12 @@ const EnterNewPassword = () => {
       </div>
 
       <div className="loginButton">
-        <button style={{ width: "30%", fontSize:"1.1rem", fontWeight:"400"}}>Save Changes And Log in</button>
+        <button
+          style={{ width: "30%", fontSize: "1.1rem", fontWeight: "400" }}
+          onClick={handlePasswordUpdate}
+        >
+          Save Changes And Log in
+        </button>
       </div>
     </div>
   );

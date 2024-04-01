@@ -12,7 +12,7 @@ const clientCardView = ({ clientData }) => {
       ? "clientCardShadowPlatinum"
       : type === "gold"
       ? "clientCardShadowGold"
-      : type === "silver" 
+      : type === "silver"
       ? "clientCardShadowSilver"
       : "noMembershipP";
   }
@@ -26,7 +26,7 @@ const clientCardView = ({ clientData }) => {
           >
             <div className="clientInfo">
               <div className="clientCards">
-                <div className="client ">
+                <div className="client">
                   <p>
                     <GoPerson />
                   </p>
@@ -35,15 +35,15 @@ const clientCardView = ({ clientData }) => {
                     : client.name}
                 </div>
 
-                <div className="client ">
+                <div className="client">
                   <p>
                     <IoCallOutline />
                   </p>
                   <p>{client.PhoneNumber}</p>
                 </div>
               </div>
-              <div className="clientCards ">
-                <div className="client ">
+              <div className="clientCards">
+                <div className="client">
                   <p>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ const clientCardView = ({ clientData }) => {
                   </p>
                   <p>{client.JobOrderNumber}</p>
                 </div>
-                <div className="client ">
+                <div className="client">
                   <p>
                     <GrHomeRounded />
                   </p>
@@ -83,7 +83,7 @@ const clientCardView = ({ clientData }) => {
                 <p className="Info">
                   {client.CallbackCount ? client.CallbackCount : 0}
                 </p>
-                <p cla>CallBack</p>
+                <p>CallBack</p>
               </div>
               <div className="client2">
                 <p className="Info">{client.DateOfHandover}</p>

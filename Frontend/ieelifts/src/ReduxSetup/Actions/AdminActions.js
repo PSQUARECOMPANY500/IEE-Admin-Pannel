@@ -3,8 +3,6 @@ import config from "../../config";
 
 import { toast } from "react-hot-toast";
 
-import { Navigate } from "react-router-dom";
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
 export const GET_ALL_CALLBACK = "GET_ALL_CALLBACK";
@@ -62,6 +60,7 @@ export const GET_LIMITED_CLIENT_DATA = "GET_LIMITED_CLIENT_DATA";
 export const GET_LIMITED_CLIENT_DATA_EXPIRED =
   "GET_LIMITED_CLIENT_DATA_EXPIRED";
 export const GET_FILTER_LOCATIONS = "GET_FILTER_LOCATIONS";
+export const GET_Engineer_Name = "GET_Engineer_Name";
 export const GET_SEARCHED_CLIENTS = "GET_SEARCHED_CLIENTS";
 export const CHANGE_MEMBERSHIP_LAYOUT_BUTTON =
   "CHANGE_MEMBERSHIP_LAYOUT_BUTTON";
@@ -70,6 +69,19 @@ export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 
 export const LOGIN_SERVICE_ADMIN = "LOGIN_SERVICE_ADMIN";
+
+export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
+
+export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
+export const FETCH_ENG_DETAILS = "FETCH_ENG_DETAILS";
+
+export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
+export const UPDATE_ENGG_LOCATION = "UPDATE_ENGG_LOCATION";
+export const UPDATE_ENGG_CART_LOCATION = "UPDATE_ENGG_CART_LOCATION";
+export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
+export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
+export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
+export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
@@ -93,7 +105,7 @@ export const loginServiceAdminAction = (AdminId, Password) => {
         window.location.href = "/Dashboard";
       }, 1000); // Delay in milliseconds
     } catch (error) {
-      toast.error("Invalid Credientials");
+      toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
     }
   };
@@ -484,10 +496,10 @@ export const requestAssignCallbackDetail = (callbackId) => {
     } catch (error) {
       console.log("error while fetching data", error);
     }
-  }
-}
+  };
+};
 
-export const EnggLocationDetailsFetch = ( /* {ServiceEnggId} */) => {
+export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
@@ -683,19 +695,17 @@ export const getClients = () => {
 export const getfilteredData = (filterCondition) => {
   return async (dispatch) => {
     try {
-      if (filterCondition === null) {
+      if (!filterCondition.length) {
         dispatch({
           type: GET_FILTER_DATA,
           payload: [],
         });
         return;
       }
-      const response = await axios.get(`${config.apiUrl}/admin/filterClient`, {
-        params: {
-          type: filterCondition.type,
-          condition: filterCondition.condition,
-        },
+      const response = await axios.post(`${config.apiUrl}/admin/filterClient`, {
+        filterCondition,
       });
+      console.log(response.data);
       dispatch({
         type: GET_FILTER_DATA,
         payload: response.data,
@@ -723,7 +733,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -737,7 +747,21 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
+  };
+};
+
+export const getEngineerNames = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerNames`
+      );
+      dispatch({
+        type: GET_Engineer_Name,
+        payload: response.data,
+      });
+    } catch (error) { }
   };
 };
 
@@ -763,7 +787,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -774,7 +798,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -819,3 +843,221 @@ export const getDetailByPinCode = async (pincode) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ---by preet ---
+
+//action to handle sendOTP action
+
+export const sendOTPAction = async (email) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/SendOtpEmail`, {
+      email,
+    });
+    // console.log(response.data)
+    toast.success("Email Sent. Please check your inbox");
+    setTimeout(() => {
+      window.location.href = "/enterOTP";
+    }, 1000);
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+    toast.error("Please fill correct Details");
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle verify OTP
+
+export const VerifyOTPPasswordAction = (email, otp) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/veriyfyOTP`, {
+        email,
+        otp,
+      });
+      dispatch({
+        type: VERIFY_OTP_PASSWORD,
+        payload: response.data,
+      });
+
+      if (response.data.success) {
+        toast.success("otp verified!! wait for Redirect...");
+      } else {
+        toast.error("Please Provide correct OTP Details");
+      }
+    } catch (error) {
+      console.log("error while fetching data", error);
+      toast.error("!!! something went Wrong");
+    }
+  };
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle update Passsword  (custom hooks)
+
+export const updatePassswordAction = async (email, newPassword) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/updatePassword`, {
+      email,
+      newPassword,
+    });
+    toast.success("Password updated Successfully, wait while redirecting...")
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 2000);
+
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+export const fetchEngDetails = (email, otp) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getAllEngDetails`);
+      dispatch({
+        type: FETCH_ENG_DETAILS,
+        payload: response.data,
+      });
+
+
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+
+//emit code for the enggpage task-section 
+export const assignedEnggDetails = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/assignedEnggDetails/${ServiceEnggId}`)
+      dispatch({
+        type: GET_ASSIGNED_ENGG_DETAILS,
+        payload: response.data,
+    });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+//emit action for engg location
+export const onClickEnggCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
+    }
+  };
+}
+
+//emit action for updating engg cart on click of pin
+export const onClickPinCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_CART_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
+    }
+  };
+}// {/armaan-dev}
+export const getEngineerLeaveHistory = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerLeaveHistory`, {
+        params: {
+          ServiceEnggId
+        }
+      }
+      );
+      dispatch({
+        type: "GET_ENGINEER_LEAVE_HISTORY",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+export const approveLeaveByAdmin = (_id, IsApproved) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/takeActionOnLeave`,
+        {
+          params: {
+            _id,
+            IsApproved,
+          }
+        }
+      );
+      console.log(response.data);
+      dispatch({
+        type: "APPROVE_LEAVE_BY_ADMIN",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const getRequstedLeaves = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEngineerRequestedLeave`, {
+        params: {
+          ServiceEnggId
+        }
+      }
+      );
+      dispatch({
+        type: "GET_ENGINEER_REQUESTED_LEAVE",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
+  return async (dispatch) => {
+    try {
+
+      const response = await axios.post(
+        `${config.apiUrl}/admin/fetchEnggAttendance`, {
+        ServiceEnggId: ServiceEnggId,
+        selectedDate: selectedDate
+      }
+      );
+      dispatch({
+        type: "GET_ENGINEER_ATTENDANCE",
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+// {/armaan-dev}

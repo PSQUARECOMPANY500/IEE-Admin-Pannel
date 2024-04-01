@@ -11,7 +11,7 @@ import { CiGrid41 } from "react-icons/ci";
 import { TbListTree } from "react-icons/tb";
 import { useLocation } from "react-router-dom";
 import NotificationSection from "../AdminPannel/Component/DashboardSubComponent/NotificationSection";
-import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/AddEnggModal";
+// import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/";
 
 import { openAddEngggModalAction } from "../../ReduxSetup/Actions/AdminActions";
 import { LuSettings2 } from "react-icons/lu";
@@ -22,6 +22,8 @@ import {
   getfilteredData,
   searchClients,
 } from "../../ReduxSetup/Actions/AdminActions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -41,30 +43,27 @@ const useClickOutside = (ref, handler) => {
 const TopBar = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const notificationRef = useRef(null);
+  const notificationClickRef = useRef();
   const [showNotification, setShowNotification] = useState(false);
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
-
   const [openEnggModal, setOpenEnggModal] = useState(false);
 
-  const handleNotificationBox = () => {
-    setShowNotification(!showNotification);
-  };
 
   useLayoutEffect(() => {
     if (searchValue !== "") {
       dispatch(searchClients(searchValue));
     }
-  }, [searchValue]);
+  }, [searchValue, dispatch]);
 
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
   );
-
   useEffect(() => {
     if (filteredData) {
       setSearchValue("");
@@ -82,8 +81,8 @@ const TopBar = (props) => {
   );
 
   useEffect(() => {
-    if (membershipLayout == true) {
-      setIsGrid(!isGrid);
+    if (membershipLayout === true) {
+      setIsGrid((prevIsGrid) => !prevIsGrid);
     }
     return () => {
       setIsGrid(false);
@@ -96,7 +95,7 @@ const TopBar = (props) => {
   };
 
   const handleTicketFilter = () => {
-    if (filteredData !== null && showTicketFilter == false) {
+    if (filteredData !== null && showTicketFilter === false) {
       dispatch(getfilteredData(null));
       setSearchValue("");
     }
@@ -117,6 +116,32 @@ const TopBar = (props) => {
     dispatch(openAddEngggModalAction());
   };
 
+
+  // -------notification popup box code--------------------------------------------------------------------
+  const useClickOutsidenotification = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutsidenotification = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown",handleClickOutsidenotification );
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutsidenotification);
+      };
+    }, [ref, handler]);
+  };
+  const handleNotfication= () => {
+    setShowNotification(prevState => !prevState);
+  };
+  const handleOutsideClicknotification = useCallback(() => {
+    setShowNotification(false);
+  }, []);
+
+  useClickOutsidenotification(notificationClickRef, handleOutsideClicknotification);
+
+
   return (
     <div className="top-bar">
       <div
@@ -129,6 +154,26 @@ const TopBar = (props) => {
       </div>
 
       <div className="right-side-icons">
+        <div>
+          <button
+            style={{ height: "70px", opacity: "0" }}
+            onClick={() => {
+              // toast("Wow so easy!")
+              toast.error("Callback requested by Mr. Michael", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                progress: undefined,
+                theme: "light",
+                style: { fontSize: "0.8rem" },
+              });
+            }}
+          >
+            Click Here
+          </button>
+        </div>
         {location.pathname === "/Clients" ? (
           <span className="top-icon">
             <div className="search-box">
@@ -138,7 +183,7 @@ const TopBar = (props) => {
                 className={`search-input ${
                   searchValue.length > 0 && "inputSearchWritten"
                 }`}
-                value={searchValue}
+                value={searchValue || ""}
                 onChange={handleSearchChange}
               />
 
@@ -165,38 +210,35 @@ const TopBar = (props) => {
 
         {location.pathname === "/Memberships" && (
           <div className="top-icon" onClick={toggleGrid}>
-            {isGrid ? <CiGrid41 /> : <TbListTree />}
+            {isGrid ? <CiGrid41  /> : <TbListTree />}
           </div>
         )}
 
         {location.pathname === "/Clients" && (
-          <>
-            <div className="top-icon" style={{boxShadow:'none'}}>
+          <> 
+
+            <div className="sub-components-ticket-filter" style={{ boxShadow: "none" }} ref={dropdownClickRef}>
               {" "}
-              <div ref={dropdownClickRef}>
                 <p className="filter-icon" onClick={handleTicketFilter}>
                   <LuSettings2 />
                   {""}
                 </p>
                 {showTicketFilter && (
-                  <div
-                    ref={dropdownRef}
-                    style={{ position: "absolute", backgroundColor: "white" }}
-                  >
                     <ClientFilterDropdown />
-                  </div>
+            
                 )}
-              </div>
+          
             </div>
+
             <div className="top-icon" onClick={clienttoggleGrid}>
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
           </>
         )}
 
-        <div style={{ display: "flex" }}>
-          <span className="top-icon-bell" onClick={handleNotificationBox}>
-            <HiOutlineBell />{" "}
+        <div style={{ display: "flex" }} ref={notificationClickRef}>
+          <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+            <HiOutlineBell className="iconColor"/>{" "}
           </span>
 
           <div className="dot"></div>

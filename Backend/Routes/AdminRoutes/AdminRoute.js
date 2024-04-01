@@ -2,13 +2,13 @@ const express = require("express");
 const router = express.Router();
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
 
-
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
+
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
@@ -44,10 +44,10 @@ router.get(
   "/getRequestDetailByRequestid/:RequestId",
   adminContoller.getRequestDetailByRequestId
 );
-router.get(
-  "/getAssignCallbackDetail/:callbackId",
-  adminContoller.getAssignCallbackByCallbackId
-);
+// router.get(
+//   "/getAssignCallbackDetail/:callbackId",
+//   adminContoller.getAssignCallbackByCallbackId
+// );
 
 router.get(
   "/getAssignRequestDetail/:RequestId",
@@ -87,11 +87,11 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
+router.post("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
-router.get("/filterClient", adminContoller.filterClient);
+router.post("/filterClient", adminContoller.filterClient);
 router.get("/serchingClient", adminContoller.searchClients);
 router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
 router.get("/getClientDataForMembership", adminContoller.getClientData);
@@ -103,12 +103,33 @@ router.get("/getMembership", adminContoller.getClientMembership);
 router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
+router.get("/getEngineerNames", adminContoller.getEngineerNames);
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+
+
+router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+//api for assignedEnggDetails
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+// --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+// --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
+
+
+// --by amit 29/03/2024 ------------
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
 
 
 
 
-router.post("/loginAdmin",adminContoller.loginServiceAdmin);
+
 
 
 module.exports = router;

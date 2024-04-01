@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { NavLink, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -15,20 +14,23 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
-
+import { useMediaQuery } from '@react-hook/media-query';
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
-
-const Sidebar = ( {children} ) => {
+const Sidebar = ({ children }) => {
+  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
-  const [isOpen, setIsOpen] = useState(true);
+  const initialIsOpen=smallLaptopSizes?false:true
+  const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [toogleOpen, settoogleClose] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
+ 
 
-  const [isButtonOpen, setIsButtonOpen] = useState(false);
+
+  // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
   const [topBarHeading, setTopBarHeading] = useState("Default Heading");
@@ -38,21 +40,21 @@ const Sidebar = ( {children} ) => {
   const [officeMenuOpen, setOfficeMenuOpen] = useState(false);
 
   const handleToggleClick = () => {
-    setIsButtonOpen((prevState) => !prevState);
-    setIsOpen(!isOpen);
+    // setIsButtonOpen((prevState) => !prevState);
+    !smallLaptopSizes&& setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
     console.log("clicked");
     settoogleClose(!toogleOpen);
-    setIsOpen(isOpen);
+    !smallLaptopSizes&& setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
     console.log("image clicked");
-    setIsOpen(!isOpen);
+    !smallLaptopSizes&& setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
-    setIsButtonOpen((prevState) => !prevState);
+    // setIsButtonOpen((prevState) => !prevState);
   };
 
   const mainToogle = () => {
@@ -99,8 +101,12 @@ const Sidebar = ( {children} ) => {
     },
     {
       Path: "/Engeeniers",
-      Path: "/Engeeniers",
       name: "Engineers",
+      icon: <MdEngineering />,
+    },
+    {
+      Path: "/SOS",
+      name: "sos",
       icon: <MdEngineering />,
     },
   ];
@@ -154,20 +160,18 @@ const Sidebar = ( {children} ) => {
     },
   ];
 
-
- const handleLogout = () => {
-  localStorage.removeItem("adminData");
-  Navigate('/')
-}
+  const handleLogout = () => {
+    localStorage.removeItem("adminData");
+    Navigate("/");
+  };
 
   return (
     <div className="container">
-    
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
-          {!toogleOpen && <div className="overlay" onClick={toogleMenue}></div>}
+          {!toogleOpen&& !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
 
           <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
             <h1
@@ -176,7 +180,7 @@ const Sidebar = ( {children} ) => {
             >
               <img
                 className="logo-image"
-                style={{ width: isOpen ? "100px" : "60px" }}
+                style={{ width:smallLaptopSizes?'80px':isOpen ? "100px" : "60px" }}
                 src={logo}
                 alt="logo"
               />
@@ -198,17 +202,24 @@ const Sidebar = ( {children} ) => {
               {/* hamburger animationa and functionality */}
               <div
                 // className={`toggle-button ${isButtonOpen ? "button-open" : ""}`}
-                style={{ height: isOpen ? ".8rem" : ".6rem", top: isOpen ? '40px' : '35px' }}
+                style={{
+                  height: isOpen ? ".8rem" : ".6rem",
+                  top: isOpen ? "40px" : "35px",
+                }}
                 className="toggle-button-menu"
                 onClick={handleToggleClick}
               >
                 <div className="wrapper">
-                  <div className="menu-bar menu-bar-top" style={{ transform: isOpen ? 'none' : 'rotate(40deg)' }}
+                  <div
+                    className="menu-bar menu-bar-top"
+                    style={{ transform: isOpen ? "none" : "rotate(40deg)" }}
                   ></div>
 
-                  <div className="menu-bar menu-bar-bottom" style={{ transform: isOpen ? 'none' : 'rotate(-40deg)' }}></div>
+                  <div
+                    className="menu-bar menu-bar-bottom"
+                    style={{ transform: isOpen ? "none" : "rotate(-40deg)" }}
+                  ></div>
                 </div>
-
               </div>
             </div>
           </div>
@@ -249,7 +260,7 @@ const Sidebar = ( {children} ) => {
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" : "sub-menu-wrap open-menu"
+                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu":"sub-menu-wrap"
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
@@ -291,14 +302,7 @@ const Sidebar = ( {children} ) => {
                   style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                  {/* {menuIcon ? (
-                    <FiChevronUp style={{ fontSize: "20px" }} />
-                  ) : (
-                  
-                    <FiChevronUp style={{ fontSize: "20px" }} />
-                  )} */}
-
-                  <FiChevronUp style={{ fontSize: "20px" }} />
+                     <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -306,7 +310,7 @@ const Sidebar = ( {children} ) => {
             <input type="checkbox" id="touch" />
             <ul
               className="slide"
-              style={{ height: mainMenuOpen ? "250px" : "" }}
+              style={{ height: mainMenuOpen ? "26rem" : "" }}
             >
               <li
                 style={{
@@ -320,10 +324,10 @@ const Sidebar = ( {children} ) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                  // ClassName={
-                  //   location.pathname === item.Path ? "active-link" : ""
-                  // }
-                  // not know the reason of commenting todo - uncomment if there is some problem exist
+                    // ClassName={
+                    //   location.pathname === item.Path ? "active-link" : ""
+                    // }
+                    // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div
@@ -349,7 +353,7 @@ const Sidebar = ( {children} ) => {
                 >
                   OFFICE
                 </span>
-                <span
+                {/* <span
                   style={{ fontSize: isOpen ? "16px" : "0px" }}
                   className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
                 >
@@ -358,6 +362,13 @@ const Sidebar = ( {children} ) => {
                   ) : (
                     <FaAngleDown />
                   )}
+                </span> */}
+
+<span
+                  style={{ fontSize: isOpen ? "16px" : "0px" }}
+                  className={`menu-icon ${officeMenuOpen  ? "rotate" : ""}` }   
+                >
+                     <FiChevronUp style={{ fontSize: "20px"}} />
                 </span>
               </label>
             </div>
@@ -391,7 +402,9 @@ const Sidebar = ( {children} ) => {
             {/* OFFICE MENUE items goes here ends */}
           </nav>
         </div>
+          <div className="circle">SOS</div>
       </div>
+  
       <main>{children}</main>
     </div>
   );

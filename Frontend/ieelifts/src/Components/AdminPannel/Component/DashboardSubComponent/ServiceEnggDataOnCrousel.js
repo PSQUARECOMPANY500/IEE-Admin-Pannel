@@ -1,42 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { LiaStarSolid } from "react-icons/lia";
 import { TbMessage2 } from "react-icons/tb";
 import TaskChart from "./TaskPieChart";
 import MessageBox from "./MessageBox";
+import { useMediaQuery } from "@react-hook/media-query";
 
-const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
+import { useSelector } from "react-redux";
+
+const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick }) => {
+  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+
+
+  const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
-  const [showMessage, setShowMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState([false]);
   const renderArray = [];
   const renderArrayon = [];
-
-  const handleMesageBox = (index) => {
-    setShowMessage((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
-  };
 
   const handleMessageBoxClose = () => {
     setShowMessage(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        MessageBoxRef.current &&
-        !MessageBoxRef.current.contains(event.target)
-      ) {
-        setShowMessage(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [MessageBoxRef]);
 
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
@@ -51,8 +35,41 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   };
   assignArray(item);
 
+
+
+  const useClickOutside = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref, handler]);
+  };
+
+
+  const handleMesageBox = (index) => {
+    setShowMessage((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+
+    }));
+  };
+
+
+  const handleOutsideClick = useCallback(() => {
+    setShowMessage(false);
+  }, []);
+
+  useClickOutside(dropdownClickRef, handleOutsideClick);
+
   return (
-    <div className="main-crouser" key={index}>
+    <div className="main-crouser"  key={index} onClick={() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}>
       <div className="second-carusel">
         <div className="basic-info">
           <img
@@ -74,11 +91,11 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           </div>
         </div>
 
-        <div className="message-icon">
-          <span onClick={() => handleMesageBox(index)}>
+        <div className="message-icon" ref={dropdownClickRef}>
+          <span onClick={() => handleMesageBox(index)} >
             <TbMessage2 className="message-box-crouser" />
           </span>
-          <div className="message-dot"></div>
+          {/* <div className="message-dot"></div> */}
           {showMessage[index] && (
             <div
               ref={MessageBoxRef}
@@ -88,14 +105,13 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
               }}
               className="engg-message"
             >
-              <MessageBox
-                onClose={handleMessageBoxClose}
-                EnggId={item.EnggObjId}
-              />
+              <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
             </div>
           )}
         </div>
       </div>
+
+
 
       <div className="main-head-div">
         {renderArray.length == 0 ? (
@@ -194,7 +210,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           />
           <div
             className="dropdown-menu"
-            style={{ left: len - 1 === index ? "-165px" : "-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049'}}
+            style={{ left: len - 1 === index ? "-165px" : smallLaptopSizes ?"-440%":"-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049', }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
