@@ -37,7 +37,7 @@ const AssignService = new Schema(
       type: String,
       enum: ["onGoing", "completed", "InCompleted"],
       default: "InCompleted",
-    },
+    }
   },
   {
     timestamps: true,

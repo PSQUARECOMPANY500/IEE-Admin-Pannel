@@ -43,6 +43,12 @@ const Services = new Schema(
     AssignedEng:{
       name: String,
       id:String,
+    },
+    RepresentativeName:{
+      type:String,
+    },
+    RepresentativeNumber:{
+      type:String,
     }
   },
   {

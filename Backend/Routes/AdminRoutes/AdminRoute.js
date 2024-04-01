@@ -8,6 +8,7 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
+
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
@@ -109,6 +110,8 @@ router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+//api for assignedEnggDetails
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
 
 

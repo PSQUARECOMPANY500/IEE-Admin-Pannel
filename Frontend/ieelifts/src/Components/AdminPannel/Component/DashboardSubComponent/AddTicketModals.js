@@ -28,6 +28,7 @@ const AddTicketModals = ({
   isAssigned,
   setTicketUpdate,
 }) => {
+
   const dispatch = useDispatch();
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
@@ -102,7 +103,7 @@ const AddTicketModals = ({
     return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
       ?.callbackData?.callback;
   });
-
+console.log("userCallBackDetail",userCallBackDetail)
   //get eng state by use selector hook
 
   const getEnggState = useSelector((state) => {
@@ -117,12 +118,12 @@ const AddTicketModals = ({
     return;
   });
 
-  console.log("emit -=--=-=", getEnggState)
-
   const getAssignedCallbackDetails = useSelector((state) => {
     return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
   })
 
+ // console.log("getAssignedCallbackDetails",getAssignedCallbackDetails)
+ 
 
   useEffect(() => {
     if (isAssigned) {
@@ -157,6 +158,9 @@ const AddTicketModals = ({
     }
   }, [getEnggState]);
 
+  const [rn , setrn] = useState("Enter Representative Name (Optional)")
+  const [rnum , setrum] = useState("Enter Representative Number (Optional)")
+
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
     setName(userCallBackDetail?.clientDetail?.name || "");
@@ -166,7 +170,8 @@ const AddTicketModals = ({
     setDescription(userCallBackDetail?.Description || "");
     setDate(userCallBackDetail?.callbackDate || "");
     setTime(userCallBackDetail?.callbackTime || "");
-
+    setrn(userCallBackDetail?.RepresentativeName || "Enter Representative Name (Optional)");
+    setrum(userCallBackDetail?.RepresentativeNumber || "Enter Representative Number (Optional)");
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
@@ -204,7 +209,7 @@ const AddTicketModals = ({
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
-    console.log(selectedOptions)
+   // console.log(selectedOptions)
   };
 
 
@@ -699,12 +704,12 @@ const AddTicketModals = ({
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Name (Optional)" />
+                    <input placeholder={`${rn}`} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Number (Optional)" />
+                    <input placeholder={`${rnum}`} />
                   </div>
 
                   <div className="col75">

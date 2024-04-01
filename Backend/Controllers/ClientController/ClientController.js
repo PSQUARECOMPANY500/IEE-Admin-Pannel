@@ -248,6 +248,8 @@ module.exports.RequestCallbacks = async (req, res) => {
       TypeOfIssue,
       Description,
       AssignedEng,
+      RepresentativeName,
+      RepresentativeNumber
     } = req.body;
 
     const newCallback = await clientRequestCallback.create({
@@ -258,6 +260,8 @@ module.exports.RequestCallbacks = async (req, res) => {
       TypeOfIssue,
       Description,
       AssignedEng,
+      RepresentativeName,
+      RepresentativeNumber
     });
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
