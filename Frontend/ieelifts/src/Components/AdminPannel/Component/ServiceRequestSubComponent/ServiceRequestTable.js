@@ -27,9 +27,9 @@ const ServiceRequestTable = ({
   const [isSearching, setIsSearching] = useState(false);
   const [showTicketModal4, setShowTicketModal4] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
+  const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
 
   useEffect(() => {
     if (filterConditions && filterConditions.length === 0) {
@@ -217,24 +217,27 @@ const ServiceRequestTable = ({
   }
   useEffect(() => {
     if (filteredCD) {
-      setCheckboxStates(Array(filteredCD.length).fill(false));
+      setReqCheckboxStates(Array(filteredCD.length).fill(false));
     }
   }, [filteredCD]);
 
   const handleCheckBoxAll = () => {
     if (filteredCD) {
-      const allChecked = checkboxStates.every((isChecked) => isChecked);
-      setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+      const allChecked =
+        filteredCD && reqCheckboxStates?.every((isChecked) => isChecked);
+
+      setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
     }
   };
 
   const handleCheckBoxSingle = (index) => {
-    setCheckboxStates((prevStates) => {
+    setReqCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
   };
+
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -245,7 +248,8 @@ const ServiceRequestTable = ({
               <CheckBox
                 id="checkbox1"
                 checked={
-                  filteredCD && checkboxStates.every((isChecked) => isChecked)
+                  filteredCD &&
+                  reqCheckboxStates.every((isChecked) => isChecked)
                 }
                 handleCheckboxChange={handleCheckBoxAll}
               />
@@ -328,7 +332,7 @@ const ServiceRequestTable = ({
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
-                checkboxStates[index] = true;
+                reqCheckboxStates[index] = true;
                 return null;
               }
 
@@ -338,7 +342,7 @@ const ServiceRequestTable = ({
                     <td>
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={reqCheckboxStates[index]}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
@@ -398,7 +402,7 @@ const ServiceRequestTable = ({
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
-                checkboxStates[index] = true;
+                reqCheckboxStates[index] = true;
                 return null;
               }
 
@@ -408,7 +412,7 @@ const ServiceRequestTable = ({
                     <td>
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={reqCheckboxStates[index]}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>

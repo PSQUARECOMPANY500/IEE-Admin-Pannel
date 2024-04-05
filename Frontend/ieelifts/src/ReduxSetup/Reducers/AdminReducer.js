@@ -44,6 +44,9 @@ import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
 import { GET_ENGINEER_ATTENDANCE } from "../Actions/AdminActions";
 import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 
+import {GET_ASSIGNED_ENGG_DETAILS} from "../Actions/AdminActions"
+import {UPDATE_ENGG_LOCATION} from "../Actions/AdminActions"
+import {UPDATE_ENGG_CART_LOCATION} from "../Actions/AdminActions"
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
@@ -701,8 +704,46 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//emit reducer for  enggpage task-section 
+
+const assignedEnggDetails = {
+  EnggDetails: null,
+};
+export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, action) => {
+  switch (action.type) {
+    case GET_ASSIGNED_ENGG_DETAILS:
+      return { ...state, EnggDetails: action.payload };
+    default:
+      return state;
+  }
+};
+
+//emit reducer for updating location
+const EnggLocation = {
+  enggLocation: null,
+};
+export const onClickEnggCartEnggLocationReducer = (state = EnggLocation, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_LOCATION:
+      return { ...state, enggLocation: action.payload };
+    default:
+      return state;
+  }
+};
 
 
+//emit reducer for updating location onClick of pin
+const EnggLocationPin = {
+  enggLocationOnPin: null,
+};
+export const onClickEnggPinEnggLocationReducer = (state = EnggLocationPin, action) => {
+  switch (action.type) {
+    case UPDATE_ENGG_CART_LOCATION:
+      return { ...state, enggLocationOnPin: action.payload };
+    default:
+      return state;
+  }
+};
 const fetchengdetails = {
   engdetails: null,
 };

@@ -74,6 +74,10 @@ export const SEND_OTP_ACTION = "SEND_OTP_ACTION";
 
 export const VERIFY_OTP_PASSWORD = "VERIFY_OTP_PASSWORD";
 export const FETCH_ENG_DETAILS = "FETCH_ENG_DETAILS";
+
+export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
+export const UPDATE_ENGG_LOCATION = "UPDATE_ENGG_LOCATION";
+export const UPDATE_ENGG_CART_LOCATION = "UPDATE_ENGG_CART_LOCATION";
 export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
@@ -928,7 +932,48 @@ export const fetchEngDetails = (email, otp) => {
 };
 
 
-// {/armaan-dev}
+//emit code for the enggpage task-section 
+export const assignedEnggDetails = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/assignedEnggDetails/${ServiceEnggId}`)
+      dispatch({
+        type: GET_ASSIGNED_ENGG_DETAILS,
+        payload: response.data,
+    });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+}
+
+//emit action for engg location
+export const onClickEnggCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
+    }
+  };
+}
+
+//emit action for updating engg cart on click of pin
+export const onClickPinCart = (ServiceEnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_ENGG_CART_LOCATION,
+        payload: ServiceEnggId,
+    });
+    } catch (error) {
+      console.log("error while UPDATE_ENGG_LOCATION", error);
+    }
+  };
+}// {/armaan-dev}
 export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
     try {

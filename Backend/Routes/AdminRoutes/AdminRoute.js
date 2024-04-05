@@ -8,6 +8,7 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
+
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
@@ -109,5 +110,26 @@ router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+//api for assignedEnggDetails
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+// --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+// --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
+
+
+// --by amit 29/03/2024 ------------
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+
+
+
+
 
 module.exports = router;

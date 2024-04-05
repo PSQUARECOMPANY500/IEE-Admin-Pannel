@@ -248,6 +248,8 @@ module.exports.RequestCallbacks = async (req, res) => {
       TypeOfIssue,
       Description,
       AssignedEng,
+      RepresentativeName,
+      RepresentativeNumber
     } = req.body;
 
     const newCallback = await clientRequestCallback.create({
@@ -258,6 +260,8 @@ module.exports.RequestCallbacks = async (req, res) => {
       TypeOfIssue,
       Description,
       AssignedEng,
+      RepresentativeName,
+      RepresentativeNumber
     });
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -331,16 +335,16 @@ module.exports.imediateServiceRequest = async (req, res) => {
       RequestDate,
       RequestTime,
       TypeOfIssue,
-      Description,
+      // Description,
     } = req.body;
 
     const newRequest = await serviceRequest.create({
-      JobOrderNumber,
+      JobOrderNumber, 
       RequestId,
       RequestDate,
       RequestTime,
       TypeOfIssue,
-      Description,
+      // Description,
     });
     res.status(201).json({
       message: "Client raised imidiate Request ticket successfully",

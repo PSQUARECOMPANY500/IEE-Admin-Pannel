@@ -6,6 +6,7 @@ import {
   getfilteredData,
   searchClients,
 } from "../../../../ReduxSetup/Actions/AdminActions";
+import { CiSearch } from "react-icons/ci";
 
 const ClientFilterDropdown = () => {
   const dispatch = useDispatch();
@@ -103,13 +104,17 @@ const ClientFilterDropdown = () => {
   ];
 
   return (
-    <div className="filter-dropdown">
+    <div className="filter-dropdown" style={{ zIndex: "9999999" }}>
       <div
         className="child-filter-dropdown"
         style={{
           maxHeight: "1000px",
           width: "200px",
           boxShadow: "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px",
+          position: "absolute",
+          background: "#fff",
+          marginLeft: "-5rem",
+          marginTop: "0.5rem",
         }}
       >
         {filters.map((filter, index) => (

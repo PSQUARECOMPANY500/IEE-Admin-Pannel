@@ -64,7 +64,8 @@ const AddTicketOnCallRequests = ({
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
 
-
+  const [reName , setreName] = useState("Enter Representative Name (Optional)")
+  const [reNumber , setreNumber] = useState("Enter Representative Number (Optional)")
   const timeSlots = [
     {
       slot: "9:00-11:00",
@@ -259,7 +260,7 @@ const AddTicketOnCallRequests = ({
 
   const handleElevatorSectionDetails = async () => {
     if (requestSection) {
-      dispatch(requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext)).then((RequestId) => {
+      dispatch(requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext,reName,reNumber)).then((RequestId) => {
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
           dispatch(assignserviceRequestByAdmin(
             engDetails?.enggJon,
@@ -276,7 +277,7 @@ const AddTicketOnCallRequests = ({
       })
     }
     else {
-      dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)).then(callbackId => {
+      dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext ,reName,reNumber)).then(callbackId => {
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
           
           dispatch(
@@ -471,7 +472,7 @@ const AddTicketOnCallRequests = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
 
@@ -483,7 +484,7 @@ const AddTicketOnCallRequests = ({
                     {time ? (<div className="membership-form-col2">
                       <p>{time}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px"  />
+                      <SkeltonLoader width="100px"  />
                     </div>)}
 
                   </div>
@@ -722,12 +723,12 @@ const AddTicketOnCallRequests = ({
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input  placeholder="Enter Representative Name (Optional)" />
+                    <input  placeholder={reName} onChange={(e)=>{setreName(e.target.value)}} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Number (Optional)" />
+                    <input placeholder={reNumber} onChange={(e)=>{setreNumber(e.target.value)}}/>
                   </div>
 
                   <div className="col75">

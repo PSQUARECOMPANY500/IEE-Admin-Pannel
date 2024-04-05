@@ -8,6 +8,7 @@ import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions
 
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
+import { onClickEnggCart } from "../../../../ReduxSetup/Actions/AdminActions";
 const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const dispatch = useDispatch();
 
@@ -40,6 +41,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       return null;
     }
   });
+
 
   useEffect(() => {
     if (getBasicData) {
@@ -123,6 +125,40 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const handleBeforeChange = (oldIndex, newIndex) => {
     setCurrentSlide(newIndex);
   };
+  //onClick location section 
+  const [click, setClick] = useState("")
+  const [hitclick, setHitClick] = useState(null)
+  const [onclick, setOnClick] = useState(false)
+ 
+  useEffect(() => {
+ 
+    if (hitclick === click) {
+      dispatch(onClickEnggCart(""))
+      setHitClick(null)
+    }
+    else {
+      setHitClick(click)
+      dispatch(onClickEnggCart(click))
+    }
+
+  }, [onclick])
+
+
+  const dataOnPin = useSelector((state) => {
+    return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer?.enggLocationOnPin
+  })
+//console.log("data",dataOnPin)
+  useEffect(() => {
+    if (getBasicData) {
+      getBasicData.forEach((data) => {
+        if (data.ServiceEnggId === dataOnPin) {
+          console.log(data.ServiceEnggId)
+        }
+      });
+    }
+
+  }, [dataOnPin])
+
   return (
     <div style={{ marginTop: "20px" }} className="parent-div">
       <div className="carosel-Navigators-icon">
@@ -159,12 +195,20 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           {...settings}
           beforeChange={handleBeforeChange}
         >
-          {assignedArray?.map((item, index) => (
-            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-          ))}
-          {notAssignedArray?.map((item, index) => (
-            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-          ))}
+          {assignedArray?.map((item, index) => {
+            if(item.ServiceEnggId === dataOnPin){
+              return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  /> //preet sir please add border 
+            }else{
+              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+            }
+          })}
+          {notAssignedArray?.map((item, index) => {
+           if(item.ServiceEnggId === dataOnPin){
+            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />//preet sir please add border 
+          }else{
+            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+          }
+        })}
         </Slider>
       )}
     </div>

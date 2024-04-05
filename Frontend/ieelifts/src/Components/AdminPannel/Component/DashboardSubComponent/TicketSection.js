@@ -14,6 +14,9 @@ import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
 import AddTicketModals from "./AddTicketModals";
 import { RiSearchLine } from "react-icons/ri";
+import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
+import execelIcon from "../../../../Assets/Images/execel-icon.png";
+
 import {
   getFilterLocation,
   getEngineerNames,
@@ -46,6 +49,7 @@ const TicketSection = ({ setTicketUpdate }) => {
       return null;
     }
   });
+
   //.................................................................ax13-search-func-starts----------------------------------------------------------
   const [searchText, setSearchText] = useState("");
   const [filteredCD, setFilteredCD] = useState([]);
@@ -438,7 +442,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-            <span className="top-icon">
+{!checkboxStates.includes(true)?(<span className="top-icon">
               <div className="search-box">
                 <input
                   type="text"
@@ -462,20 +466,14 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <RiSearchLine className="iconColor" />
                 </i>
               </div>
-            </span>
+            </span>):(<img src={pdfIcon}/>)}
+            
 
             {/* ............................................................ax13-search...................................................... */}
 
-            <div
-              className="sub-components-ticket-filter"
-              ref={dropdownClickRef}
-            >
-              <p
-                className="filter-icon"
-                onClick={handleFilter}
-                style={{ cursor: "pointer" }}
-              >
-                <LuSettings2 />
+            {!checkboxStates.includes(true)?(  <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
+              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
+                <LuSettings2 className="iconColor" />
                 {""}
               </p>
               {showTicketFilter && (
@@ -487,19 +485,19 @@ const TicketSection = ({ setTicketUpdate }) => {
                   />
                 </div>
               )}
-            </div>
+            </div> ):(<img src={execelIcon} style={{boxShadow: '0px 3px 6px #00000029'}}/>)}
 
             {/* add  ticket +icon */}
 
-            <div
+            {!checkboxStates.includes(true)?(  <div
               className="sub-components-ticket-filter"
               onClick={() => openModal(0)}
             >
               <p className="plus-icon">
-                <GoPlus />
+                <GoPlus className="iconColor" />
                 {""}
               </p>
-            </div>
+            </div> ):('')}
             {showTicketModal && (
               <AddTicketOnCallRequests
                 closeModal={closeModal}

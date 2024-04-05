@@ -7,8 +7,22 @@ const { verifyEnggToken } = require("../../Middleware/ServiceEnggAuthMiddleware"
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 
+
+const uploaded = require('../../Multer/EnggAttachmentUpload')
+
+
 //-------------------------------------- All Post Requests -------------------------------
-router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg);
+router.post("/registerServiceEngg",uploaded.fields([{
+    name: 'enggAttachments',
+    maxCount: 5
+  }
+]),
+ serviceEnggContoller.RegisterServiceEngg);
+
+
+
+
+
 router.post("/loginEngg", serviceEnggContoller.loginEngg)
 
 //location service
@@ -31,7 +45,7 @@ router.get('/getAllEngDetails', serviceEnggContoller.getAllEngDetails);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/uplodes');
+    cb(null, './public/uplodes/');
   },
   filename: (req, file, cb) => {
     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
@@ -42,9 +56,8 @@ const storage2 = multer.diskStorage({
     cb(null, './public/uplodes/leaveAttachment');
   },
   filename: (req, file, cb) => {
-    const parts = file.originalname.split(".");
-    const extension = parts[parts.length - 1];
-    const fileName = `leaveAttachment-${Date.now()}.${extension}`
+    const parts = file.mimetype.split("/")[1];
+    const fileName = `leaveAttachment-${Date.now()}.${parts}`
     cb(null, fileName);
   },
 });
@@ -65,9 +78,7 @@ const uploadImg = upload.fields([
 ]);
 
 const checkInAttendance = async (req, res, next) => {
-  const Id = req.params.ServiceEnggId;
-  //console.log(Id);
-  //console.log(req.params.ServiceEnggId);
+  const  Id  = req.params.ServiceEnggId;
   if (Id) {
     const date = new Date().toLocaleDateString('en-GB');
 
@@ -88,18 +99,50 @@ const checkInAttendance = async (req, res, next) => {
 const checkOutAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
   if (Id) {
-    const date = new Date().toLocaleDateString('en-GB');
+    const date = new Date().toLocaleDateString("en-GB");
 
     const checksum = await EnggAttendanceServiceRecord.findOne({
       ServiceEnggId: Id,
       Date: date,
     });
-    if (checksum?.Check_Out?.engPhoto) {
+    // Checking if engg directly checked out without checking in -- Pankaj_Saini
+    if (!checksum?.Check_In?.time) {
+      return res
+        .status(403)
+        .json({ status: "Error", message: "Engg not CheckedIN" });
+    }
+    if (checksum?.Check_Out?.time) {
       return res.status(403).json({ message: "Engg already CheckedOUT" });
     }
     next();
   }
-}
+};
+
+
+const checkInorOutAttendance = async (req, res, next) => {
+  const { ServiceEnggId } = req.body;
+  if (ServiceEnggId) {
+    const date = new Date().toLocaleDateString("en-GB");
+    const checkIn = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId: ServiceEnggId,
+      Date: date,
+    });
+    if (!checkIn?.Check_In?.time) {
+      return res.status(403).json({
+        status: "Error",
+        message: "You can take break after CheckIn only",
+      });
+    }
+    if (checkIn?.Check_In?.time && checkIn?.Check_Out?.time) {
+      return res
+        .status(403)
+        .json({ message: "Break is not applicable after CheckedOut" });
+    }
+    if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
+      next();
+    }
+  }
+};
 
 router.get('/getTime', serviceEnggContoller.EnggTime);
 router.post('/enggCheckIn/:ServiceEnggId', checkInAttendance, uploadImg, serviceEnggContoller.EnggCheckIn);
@@ -122,12 +165,29 @@ router.post("/validateOtpForClient", serviceEnggContoller.validateOtpForClient)
 
 router.post("/EnggReportResponse", serviceEnggContoller.EnggReportResponse)
 router.get("/EnggReportQuestionFetch", serviceEnggContoller.EnggReportQuestionFetch)
-router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance)
+router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance)
 router.get("/EnggCheckInCheckOutDetals/:ServiceEnggId", serviceEnggContoller.EnggCheckInCheckOutDetals)
 
 // by armaan 29/03/2024
-router.post("/enggLeaveServiceRequest", upload2.single('document'), serviceEnggContoller.enggLeaveServiceRequest)
+
+
+// router.post("/pankaj", upload2.fields([{
+//   name: 'document',
+//   maxCount: 1
+// }
+// ]), serviceEnggContoller.enggLeaveServiceRequest);
+
+router.post("/pankaj",upload2.fields([
+  {
+    name: 'document',
+    maxCount: 1
+  }]), serviceEnggContoller.enggLeaveServiceRequest);
+// router.post("/pankaj", serviceEnggContoller.testingApi);
+
+
 router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount)
+
+
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves)
 // --- by preet 15/03/2024 ---
 router.get("/getAssignCalbackDetailForEnggApp/:callbackId", serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId);
@@ -143,6 +203,73 @@ router.get("/getSparePart", serviceEnggContoller.getAllSparePartdetails);
 //----by preet 22/03/2024 ---
 
 router.post("/generateReport", serviceEnggContoller.GenerateReportByEngg);
+
+//----by preet 28/03/2024 ---
+router.get("/fetchFinalReport/:serviceId",serviceEnggContoller.getFinalReportDetails);
+
+
+
+// --by amit 29/03/2024 ------------
+router.get("/enggHistory/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+
+// --by Preet 31/03/2024 ------------
+router.get("/getEnggIdForReport/:EnggId", serviceEnggContoller.getServiceIdOfLatestReportByServiceEngg);
+
+
+// --by Preet 31/03/2024 ------------
+//route to handle update paymanet details and update spare part request also.
+router.post("/upadatePaymentDetails", serviceEnggContoller.UpdatePaymentDetilsAndSparePartRequested)
+
+
+
+//=================================================================================
+//=================================================================================
+// Api to get information of the breaks -- dhan dhan shri pankaj preet ji maharaj
+// 31/03/2024
+router.get(
+  "/getfirsthalftime/:ServiceEnggId",
+  serviceEnggContoller.EnggFirsthalfinfo
+);
+
+router.get(
+  "/getsecondhalftime/:ServiceEnggId",
+  serviceEnggContoller.EnggSecondhalfinfo
+);
+
+router.get(
+  "/getLunchBreaktime/:ServiceEnggId",
+  serviceEnggContoller.EnggLunchBreakinfo
+);
+
+router.put(
+  "/enggOnFirstHalfBreak",
+  checkInorOutAttendance,
+  serviceEnggContoller.EnggOnFirstHalfBreak
+);
+
+router.put(
+  "/enggOnSecondHalfBreak",
+  checkInorOutAttendance,
+  serviceEnggContoller.EnggOnSecondHalfBreak
+);
+
+router.put(
+  "/enggOnLunchBreak",
+  checkInorOutAttendance,
+  serviceEnggContoller.EnggOnLunchBreak
+);
+
+//=================================================================================//=================================================================================
+
+
+
+
+
+
+
 
 
 
