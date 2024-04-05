@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useCallback,
+} from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
@@ -16,7 +22,6 @@ import { useDispatch, useSelector } from "react-redux";
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
   const dropdownClickRef = useRef();
-
 
   const dispatch = useDispatch();
   const [ticket, setTicket] = useState(true);
@@ -50,7 +55,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       options: engineers,
     },
     // { name: "location", options: locations },
-    { name: "clear", options: [] }
+    { name: "clear", options: [] },
     // { name: "location", options: [] },
   ];
 
@@ -111,17 +116,24 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
-  const passData = () => { };
-
+  // const passData = () => {};
 
   useEffect(() => {
-    // console.log("in useEffect of task for filter: ", filterConditions);
+    console.log("in useEffect of task for filter: ", filterConditions);
     if (filterConditions) {
       let data;
       if (services) {
+        if (currentDateServiceRequest.length === 0) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateServiceRequest;
       }
       if (ticket) {
+        if (currentDateCallback.length === 0) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateCallback;
       }
       const statusFilter = filterConditions.filter(
@@ -133,9 +145,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
       const locationFilter = filterConditions.filter(
         (type) => type.type === "location"
       );
-      let statusData,
-        engineerData,
-        locationData = [];
+      let statusData, engineerData;
+
       if (statusFilter) {
         statusFilter.forEach(async (status) => {
           const { condition } = status;
@@ -185,8 +196,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
         filteredData = engineerData;
       }
       setFilterData(filteredData);
-    }
-    else {
+    } else {
       setFilterData(null);
     }
   }, [filterConditions, ticket]);
@@ -197,7 +207,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
       dispatch(getCurrentDateAssignServiceRequestAction());
     }, 1500);
   }, [dispatch, props.ticketUpdate]);
-
 
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
@@ -214,7 +223,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }, [ref, handler]);
   };
   const handleFilter = () => {
-    setShowFilter(prevState => !prevState);
+    setShowFilter((prevState) => !prevState);
   };
   const handleOutsideClick = useCallback(() => {
     setShowFilter(false);
@@ -223,7 +232,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
   // -------------------------filter dropdown end--------------------------
-
 
   const extractStartTime = (slots) => {
     return slots[0].split("-")[0];
@@ -270,11 +278,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
             {props.kanban ? (
               <div className="sub-components" ref={dropdownClickRef}>
-                <p className="filter-icon"
-                  onClick={handleFilter}
-
-
-                >
+                <p className="filter-icon" onClick={handleFilter}>
                   <LuSettings2 />
                   {""}
                 </p>
@@ -300,77 +304,79 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => (
-                      <div
-                        className={`ticket-card ${handleCallbackSelection[index] &&
-                          "service-card-selected"
+                        <div
+                          className={`ticket-card ${
+                            handleCallbackSelection[index] &&
+                            "service-card-selected"
                           }`}
-                      // onClick={() => {
-                      //   setHandleCallbackSelection((prevStates) => {
-                      //     prevStates.map((stateValue, valueIndex) => {
-                      //       if (valueIndex !== index) {
-                      //         stateValue = !stateValue;
-                      //       }
-                      //       stateValue = false;
-                      //     });
-                      //   });
-                      // }}
-                      >
-                        <table className="ticket-table">
-                          <tbody>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>NAME :</th>
-                              <td>{value.clientName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>
-                                ENGINEER:
-                              </th>
-                              <td>{value.enggName.toUpperCase()}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="ticket-card-bottom">
-                          <h5>{extractStartTime(value.Slot)}</h5>
-                          <h5>{extractEndTime(value.Slot)}</h5>
+                          // onClick={() => {
+                          //   setHandleCallbackSelection((prevStates) => {
+                          //     prevStates.map((stateValue, valueIndex) => {
+                          //       if (valueIndex !== index) {
+                          //         stateValue = !stateValue;
+                          //       }
+                          //       stateValue = false;
+                          //     });
+                          //   });
+                          // }}
+                        >
+                          <table className="ticket-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME :</th>
+                                <td>{value.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{value.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="ticket-card-bottom">
+                            <h5>{extractStartTime(value.Slot)}</h5>
+                            <h5>{extractEndTime(value.Slot)}</h5>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      ))
                     : filterData?.map((value, index) => (
-                      <div
-                        className={`ticket-card ${handleCallbackSelection[index] &&
-                          "service-card-selected"
+                        <div
+                          className={`ticket-card ${
+                            handleCallbackSelection[index] &&
+                            "service-card-selected"
                           }`}
-                      // onClick={() => {
-                      //   setHandleCallbackSelection((prevStates) => {
-                      //     prevStates.map((stateValue, valueIndex) => {
-                      //       if (valueIndex !== index) {
-                      //         stateValue = !stateValue;
-                      //       }
-                      //       stateValue = false;
-                      //     });
-                      //   });
-                      // }}
-                      >
-                        <table className="ticket-table">
-                          <tbody>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>NAME :</th>
-                              <td>{value.clientName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>
-                                ENGINEER:
-                              </th>
-                              <td>{value.enggName.toUpperCase()}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="ticket-card-bottom">
-                          <h5>{extractStartTime(value.Slot)}</h5>
-                          <h5>{extractEndTime(value.Slot)}</h5>
+                          // onClick={() => {
+                          //   setHandleCallbackSelection((prevStates) => {
+                          //     prevStates.map((stateValue, valueIndex) => {
+                          //       if (valueIndex !== index) {
+                          //         stateValue = !stateValue;
+                          //       }
+                          //       stateValue = false;
+                          //     });
+                          //   });
+                          // }}
+                        >
+                          <table className="ticket-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME :</th>
+                                <td>{value.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{value.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="ticket-card-bottom">
+                            <h5>{extractStartTime(value.Slot)}</h5>
+                            <h5>{extractEndTime(value.Slot)}</h5>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                 </>
               )}
 
@@ -378,71 +384,73 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => (
-                      <div
-                        className={`service-card ${handleServiceSelection[index] &&
-                          "service-card-selected"
+                        <div
+                          className={`service-card ${
+                            handleServiceSelection[index] &&
+                            "service-card-selected"
                           }`}
-                      // onClick={() => {
-                      //   setHandleServiceSelection((prevStates) => {
-                      //     const newCheckboxStates = [...prevStates];
-                      //     newCheckboxStates[index] = !prevStates[index];
-                      //     return newCheckboxStates;
-                      //   });
-                      // }}
-                      >
-                        <table className="service-table">
-                          <tbody>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>NAME:</th>
-                              <td>{serviceData.clientName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>
-                                ENGINEER:
-                              </th>
-                              <td>{serviceData.enggName.toUpperCase()}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="service-card-bottom">
-                          <h5>{extractStartTime(serviceData.Slot)}</h5>
-                          <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          // onClick={() => {
+                          //   setHandleServiceSelection((prevStates) => {
+                          //     const newCheckboxStates = [...prevStates];
+                          //     newCheckboxStates[index] = !prevStates[index];
+                          //     return newCheckboxStates;
+                          //   });
+                          // }}
+                        >
+                          <table className="service-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME:</th>
+                                <td>{serviceData.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{serviceData.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      ))
                     : currentDateServiceRequest?.map((serviceData, index) => (
-                      <div
-                        className={`service-card ${handleServiceSelection[index] &&
-                          "service-card-selected"
+                        <div
+                          className={`service-card ${
+                            handleServiceSelection[index] &&
+                            "service-card-selected"
                           }`}
-                      // onClick={() => {
-                      //   setHandleServiceSelection((prevStates) => {
-                      //     const newCheckboxStates = [...prevStates];
-                      //     newCheckboxStates[index] = !prevStates[index];
-                      //     return newCheckboxStates;
-                      //   });
-                      // }}
-                      >
-                        <table className="service-table">
-                          <tbody>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>NAME:</th>
-                              <td>{serviceData.clientName.toUpperCase()}</td>
-                            </tr>
-                            <tr>
-                              <th style={{ textAlign: "start" }}>
-                                ENGINEER:
-                              </th>
-                              <td>{serviceData.enggName.toUpperCase()}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <div className="service-card-bottom">
-                          <h5>{extractStartTime(serviceData.Slot)}</h5>
-                          <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          // onClick={() => {
+                          //   setHandleServiceSelection((prevStates) => {
+                          //     const newCheckboxStates = [...prevStates];
+                          //     newCheckboxStates[index] = !prevStates[index];
+                          //     return newCheckboxStates;
+                          //   });
+                          // }}
+                        >
+                          <table className="service-table">
+                            <tbody>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>NAME:</th>
+                                <td>{serviceData.clientName.toUpperCase()}</td>
+                              </tr>
+                              <tr>
+                                <th style={{ textAlign: "start" }}>
+                                  ENGINEER:
+                                </th>
+                                <td>{serviceData.enggName.toUpperCase()}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                 </>
               )}
             </div>

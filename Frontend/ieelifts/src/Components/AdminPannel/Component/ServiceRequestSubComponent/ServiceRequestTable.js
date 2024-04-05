@@ -10,7 +10,11 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import ServiceRequestModals from "./ServiceRequestModals";
 
-const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions }) => {
+const ServiceRequestTable = ({
+  setRenderTicket2,
+  searchText,
+  filterConditions,
+}) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
@@ -33,6 +37,10 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
       setFilterData([]);
     }
     if (filterConditions && filterConditions.length > 0) {
+      if (filteredCD.length === 0) {
+        setGetFilterConditions(false);
+        setFilterData([]);
+      }
       let data = filteredCD;
       const membershipFilter = filterConditions.filter(
         (filter) => filter.type === "membership"
@@ -47,8 +55,11 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
         let mData = [];
         membershipFilter.forEach((membership) => {
           const { condition } = membership;
+
           mData = data.filter(
-            (d) => d.clientDetail.Membership.toLowerCase() === condition.toLowerCase()
+            (d) =>
+              d.clientDetail.Membership.toLowerCase() ===
+              condition.toLowerCase()
           );
           if (membershipData) {
             membershipData = [...membershipData, ...mData];
@@ -62,8 +73,10 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
         let lData = [];
         locationFilter.forEach((location) => {
           const { condition } = location;
-          lData = data.filter(
-            (d) => d.clientDetail.Address.toLowerCase().includes(condition.toLowerCase())
+          lData = data.filter((d) =>
+            d.clientDetail.Address.toLowerCase().includes(
+              condition.toLowerCase()
+            )
           );
           if (locationData) {
             locationData = [...locationData, ...lData];
@@ -74,11 +87,16 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
       }
 
       let responseData = [];
-      if (membershipData.length > 0 && locationData.length > 0) {
+      if (
+        membershipData &&
+        membershipData.length > 0 &&
+        locationData &&
+        locationData.length > 0
+      ) {
         responseData = membershipData.filter((d) => locationData.includes(d));
-      } else if (membershipData.length > 0) {
+      } else if (membershipData && membershipData.length > 0) {
         responseData = membershipData;
-      } else if (locationData.length > 0) {
+      } else if (locationData && locationData.length > 0) {
         responseData = locationData;
       }
 
@@ -87,7 +105,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
     }
     console.log("filterData", filterData);
   }, [filterConditions]);
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -227,7 +244,9 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={filteredCD && checkboxStates.every((isChecked) => isChecked)}
+                checked={
+                  filteredCD && checkboxStates.every((isChecked) => isChecked)
+                }
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>
@@ -298,8 +317,8 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
                 </td>
               </tr>
             </>
-          ) : (
-            getFilterConditions ? filterData?.map((value, index) => {
+          ) : getFilterConditions ? (
+            filterData?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
@@ -367,7 +386,9 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions })
                   </tr>
                 </tbody>
               );
-            }) : filteredCD?.map((value, index) => {
+            })
+          ) : (
+            filteredCD?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
