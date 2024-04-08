@@ -98,6 +98,7 @@ const TicketSection = ({ setTicketUpdate }) => {
       setGetFilterConditions(false);
       setFilterData([]);
     }
+   
     if (filterConditions && filterConditions.length > 0) {
       if (filteredCD.length === 0) {
         setGetFilterConditions(false);
@@ -442,62 +443,83 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-{!checkboxStates.includes(true)?(<span className="top-icon">
-              <div className="search-box">
-                <input
-                  type="text"
-                  placeholder="Search anything"
-                  className={`search-input ${
-                    searchText.length > 0 && "inputSearchWritten"
-                  }`}
-                  onChange={(e) => {
-                    setSearchText(e.target.value);
-                  }}
-                  value={searchText}
-                />
+            {!checkboxStates.includes(true) ? (
+              <span className="top-icon">
+                <div className="search-box">
+                  <input
+                    type="text"
+                    placeholder="Search anything"
+                    className={`search-input ${
+                      searchText.length > 0 && "inputSearchWritten"
+                    }`}
+                    onChange={(e) => {
+                      setSearchText(e.target.value);
+                    }}
+                    value={searchText}
+                  />
 
-                <i
-                  className="search-btn "
-                  onClick={() => {
-                    const data = filtersearch(searchText, allCD);
-                    setFilteredCD(data);
-                  }}
-                >
-                  <RiSearchLine className="iconColor" />
-                </i>
-              </div>
-            </span>):(<img src={pdfIcon}/>)}
-            
+                  <i
+                    className="search-btn "
+                    onClick={() => {
+                      const data = filtersearch(searchText, allCD);
+                      setFilteredCD(data);
+                    }}
+                  >
+                    <RiSearchLine className="iconColor" />
+                  </i>
+                </div>
+              </span>
+            ) : (
+              <img src={pdfIcon} />
+            )}
 
             {/* ............................................................ax13-search...................................................... */}
 
-            {!checkboxStates.includes(true)?(  <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
-              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
-                <LuSettings2 className="iconColor" />
-                {""}
-              </p>
-              {showTicketFilter && (
-                <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown
-                    className="search-ticket-filter-icon"
-                    filterDropdowns={filterDropdowns}
-                    setfilterConditions={setfilterConditions}
-                  />
-                </div>
-              )}
-            </div> ):(<img src={execelIcon} style={{boxShadow: '0px 3px 6px #00000029'}}/>)}
+            {!checkboxStates.includes(true) ? (
+              <div
+                className="sub-components-ticket-filter"
+                ref={dropdownClickRef}
+              >
+                <p
+                  className="filter-icon"
+                  onClick={handleFilter}
+                  style={{ cursor: "pointer" }}
+                >
+                  <LuSettings2 className="iconColor" />
+                  {""}
+                </p>
+                {showTicketFilter && (
+                  <div className="dropdown-content-filter" ref={dropdownRef}>
+                    <FilterDropdown
+                      className="search-ticket-filter-icon"
+                      filterDropdowns={filterDropdowns}
+                      setfilterConditions={setfilterConditions}
+                    />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <img
+                src={execelIcon}
+                style={{ boxShadow: "0px 3px 6px #00000029" }}
+              />
+            )}
 
             {/* add  ticket +icon */}
 
-            {!checkboxStates.includes(true)?(  <div
-              className="sub-components-ticket-filter"
-              onClick={() => openModal(0)}
-            >
-              <p className="plus-icon">
-                <GoPlus className="iconColor" />
-                {""}
-              </p>
-            </div> ):('')}
+            {!checkboxStates.includes(true) ? (
+              <div
+                className="sub-components-ticket-filter"
+                onClick={() => openModal(0)}
+              >
+                <p className="plus-icon">
+                  <GoPlus className="iconColor" />
+                  {""}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
             {showTicketModal && (
               <AddTicketOnCallRequests
                 closeModal={closeModal}
