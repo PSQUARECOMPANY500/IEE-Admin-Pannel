@@ -98,7 +98,7 @@ const TicketSection = ({ setTicketUpdate }) => {
       setGetFilterConditions(false);
       setFilterData([]);
     }
-   
+
     if (filterConditions && filterConditions.length > 0) {
       if (filteredCD.length === 0) {
         setGetFilterConditions(false);
@@ -126,10 +126,18 @@ const TicketSection = ({ setTicketUpdate }) => {
         statusFilter.forEach(async (status) => {
           const { condition } = status;
           let sData = [];
-          if (condition.toLowerCase() === "assigned") {
+          if (
+            data &&
+            data.length !== 0 &&
+            condition.toLowerCase() === "assigned"
+          ) {
             sData = data.filter((d) => d.isAssigned === true);
           }
-          if (condition.toLowerCase() === "unassigned") {
+          if (
+            data &&
+            data.length !== 0 &&
+            condition.toLowerCase() === "unassigned"
+          ) {
             sData = data.filter((d) => d.isAssigned === false);
           }
           if (statusData) {
@@ -144,7 +152,9 @@ const TicketSection = ({ setTicketUpdate }) => {
         let eData = [];
         engineerFilter.forEach((engineer) => {
           const { condition } = engineer;
-          eData = data.filter((d) => d.AssignedEng.name === condition);
+          if (data && data.length !== 0) {
+            eData = data.filter((d) => d.AssignedEng.name === condition);
+          }
           if (engineerData) {
             engineerData = [...engineerData, ...eData];
           } else {
@@ -157,9 +167,11 @@ const TicketSection = ({ setTicketUpdate }) => {
         let tData = [];
         typeFilter.forEach((type) => {
           const { condition } = type;
-          tData = data.filter(
-            (d) => d.TypeOfIssue.toLowerCase() === condition.toLowerCase()
-          );
+          if (data && data.length !== 0) {
+            tData = data.filter(
+              (d) => d.TypeOfIssue.toLowerCase() === condition.toLowerCase()
+            );
+          }
           if (typeData) {
             typeData = [...typeData, ...tData];
           } else {
@@ -171,11 +183,13 @@ const TicketSection = ({ setTicketUpdate }) => {
         let lData = [];
         locationFilter.forEach((location) => {
           const { condition } = location;
-          lData = data.filter((d) =>
-            d.clientDetail.Address.toLowerCase().includes(
-              condition.toLowerCase()
-            )
-          );
+          if (data && data.length !== 0) {
+            lData = data.filter((d) =>
+              d.clientDetail.Address.toLowerCase().includes(
+                condition.toLowerCase()
+              )
+            );
+          }
           if (locationData) {
             locationData = [...locationData, ...lData];
           } else {

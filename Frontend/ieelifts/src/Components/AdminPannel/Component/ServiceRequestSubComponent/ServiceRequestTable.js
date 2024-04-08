@@ -40,6 +40,7 @@ const ServiceRequestTable = ({
       if (filteredCD.length === 0) {
         setGetFilterConditions(false);
         setFilterData([]);
+        return;
       }
       let data = filteredCD;
       const membershipFilter = filterConditions.filter(
@@ -56,11 +57,13 @@ const ServiceRequestTable = ({
         membershipFilter.forEach((membership) => {
           const { condition } = membership;
 
-          mData = data.filter(
-            (d) =>
-              d.clientDetail.Membership.toLowerCase() ===
-              condition.toLowerCase()
-          );
+          if (data && data.length !== 0) {
+            mData = data.filter(
+              (d) =>
+                d.clientDetail.Membership.toLowerCase() ===
+                condition.toLowerCase()
+            );
+          }
           if (membershipData) {
             membershipData = [...membershipData, ...mData];
           } else {
@@ -73,11 +76,13 @@ const ServiceRequestTable = ({
         let lData = [];
         locationFilter.forEach((location) => {
           const { condition } = location;
-          lData = data.filter((d) =>
-            d.clientDetail.Address.toLowerCase().includes(
-              condition.toLowerCase()
-            )
-          );
+          if (data && data.length !== 0) {
+            lData = data.filter((d) =>
+              d.clientDetail.Address.toLowerCase().includes(
+                condition.toLowerCase()
+              )
+            );
+          }
           if (locationData) {
             locationData = [...locationData, ...lData];
           } else {
