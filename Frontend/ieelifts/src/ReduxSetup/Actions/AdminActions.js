@@ -907,9 +907,10 @@ export const updatePassswordAction = async (email, newPassword) => {
   }
 };
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-export const fetchEngDetails = (email, otp) => {
+//---------------------------------------------------------------------------------fetchEngDetailsf-----------------------------------------------------------------------------
+export const fetchEngDetails = () => {
   return async (dispatch) => {
+    console.log(dispatch);
     try {
       const response = await axios.get(`${config.apiUrl}/serviceEngg/getAllEngDetails`);
       dispatch({

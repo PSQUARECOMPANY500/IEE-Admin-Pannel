@@ -2783,7 +2783,8 @@ footer a:hover {
 
 /* assign ticket modal css starts */
 /*----------------------------------------------------------------------------changes by aayush malviya start from here---------------------------------------------------------------------- */
-.modal-wrapper {
+.modal-wrapper,
+.client-modal-wrapper {
   position: fixed;
   left: 0;
   right: 0;
@@ -2792,6 +2793,30 @@ footer a:hover {
   background: rgba(0, 0, 0, 0.1);
   z-index: 9999;
   width: 100%;
+}
+
+.client-modal-wrapper {
+  text-transform: lowercase;
+}
+
+.modal-container,
+.client-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  z-index: 9999;
+
+}
+
+.client-modal-container {
+  top: 15%;
+  border-radius: 15px;
+  left: 15%;
+  width: 80%;
+
 }
 
 .modal-wrapper1 {
@@ -2805,12 +2830,24 @@ footer a:hover {
   width: 100%;
 }
 
-.child-modal-container {
+.child-modal-container,
+.client-child-modal-container {
   height: 45rem;
   width: 100%;
   position: relative;
   border-radius: 8px;
+
 }
+
+
+
+.client-child-modal-container {
+  text-transform: lowercase;
+  padding: 1.5rem;
+  height: 100%;
+
+}
+
 
 .sub-child-modal-container {
   height: 100%;
@@ -2973,15 +3010,9 @@ footer a:hover {
   justify-content: center;
 }
 
-.modal-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  height: 80%;
-  background: white;
-  z-index: 9999;
-}
+
+
+
 
 .cross-icon {
   right: 17px;
@@ -6202,6 +6233,119 @@ element.style {
 
 /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */
 
+
+/* -------------------------------------------------------css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------end of css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
+.client-modal-profile-container {
+  height: 15%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.client-modal-card-container {
+  height: 85%;
+  width: 100%;
+  position: relative;
+  padding: 1rem;
+}
+
+.client-modal-profile-container-left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+.client-modal-profile-container-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+
+}
+
+.client-modal-img-container {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 10px;
+  background: #000;
+}
+
+.client-modal-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.client-modal-dropdown {
+  height: 2.5rem;
+  width: 6rem;
+  border: 1px solid #000;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-icon-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+
+.icon-size {
+  font-size: 2rem;
+  color: #000;
+}
+
+.client-modal-drodown-options {
+  min-height: 100px;
+  width: 100%;
+  background: #ffffff;
+  z-index: 99999;
+  position: absolute;
+  border: 1px solid #8E8E8E;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  padding: 1rem;
+
+
+}
+
+.dropdown-icon-container p {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.client-modal-dropdown-option p {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
 /* -------------------------------------------------------------------------all media query here bro ----------------------------------------------------------------------------------- */
 
 /* @media only screen and (min-width: 769px) and (max-width: 1280) {
@@ -6210,9 +6354,6 @@ element.style {
   }
 
 } */
-
-
-
 
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
@@ -6468,6 +6609,7 @@ element.style {
   .dropdown-content {
     top: 10%;
   }
+
   /* media query for eng page eng css */
 
 
