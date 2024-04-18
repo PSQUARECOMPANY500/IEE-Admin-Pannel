@@ -71,6 +71,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+
     if (currentDateServiceRequest) {
       setHandleServiceSelection(
         Array(currentDateServiceRequest.length).fill(false)
@@ -80,6 +81,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   //get current date callback
   const currentDateCallback = useSelector((state) => {
+
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getCurrentDateAssignCalbackAction &&
@@ -94,6 +96,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+console.log(handleCallbackSelection)
     if (currentDateCallback) {
       setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     }
@@ -229,6 +232,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const extractEndTime = (slots) => {
     return slots[slots.length - 1].split("-")[1];
   };
+
 
   return (
     <div className={"parent-full-div"}ref={ref} >
