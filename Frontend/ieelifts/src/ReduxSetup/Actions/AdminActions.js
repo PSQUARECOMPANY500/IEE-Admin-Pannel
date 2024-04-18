@@ -82,6 +82,7 @@ export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY";
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
+export const GET_ADMIN_REPORT_DATA="GET_ADMIN_REPORT_DATA"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -1138,4 +1139,28 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
   };
 };
 
-// {/armaan-dev}
+//===============================create by aayush for admin report data change end point and pass callback id=============================================================================
+
+export const getadminReportData = (callbackId) => {
+  
+    //if any problem occur then call from useEffect and some change are lefts also update end point and check for callback id
+
+
+  return async (dispatch) => {
+
+    try {
+
+      const response = await axios.get(
+        `http://192.168.29.29:8000/api/admin/getReportForAdmin/bebce6dd-8294-4f97-a1d2-0e151300f078`
+      );
+ 
+      dispatch({
+        type: GET_ADMIN_REPORT_DATA,
+        payload: response.data,
+      });
+     
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};

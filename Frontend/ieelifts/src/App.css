@@ -5127,10 +5127,11 @@ element.style {
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
+  overflow-y: auto;
+
 }
 
 .CardShiftCards {
-  height: 15%;
   width: 100%;
   position: relative;
 }
@@ -5196,6 +5197,7 @@ element.style {
   /* justify-content: space-between; */
   flex-direction: column;
   align-items: center;
+
 }
 
 .SparePartChange h5,
@@ -5214,6 +5216,7 @@ element.style {
 .SparepartReqB {
   display: flex;
   width: 100%;
+
 }
 
 .SparePartChangeB h5,
@@ -5242,7 +5245,7 @@ element.style {
   display: flex;
   justify-content: space-between;
   padding: 1rem 8rem 1rem 3rem;
-  height: 17%;
+
 }
 
 .Amount h5 {
@@ -5379,27 +5382,25 @@ element.style {
 }
 
 .RatingButton button {
-  padding: 0rem 0.6rem;
+  width: 3rem;
   text-transform: capitalize;
-  background-color: #f8ac1ddb;
+  background-color: transparent;
   border: 1px solid #f8ac1d;
   opacity: 1;
   border-radius: 3px;
-  text-align: left;
+  text-align: center;
   font-family: "Poppins";
-  /* font: normal normal normal 10px/16px Poppins; */
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
   font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.RatingButton>button:nth-child(2) {
-  padding: 0rem 0.8rem;
-  border: 1px solid #f8ac1d;
-  opacity: 1;
-  background-color: transparent;
-  text-transform: capitalize;
+.RatingButton .active-button{
+  background-color:#f8ac1ddb ;
 }
 
 .RatingContainerRow h5 {
@@ -6231,15 +6232,15 @@ element.style {
 
 }
 
-.addFileName{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+.addFileName {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.addFileName p {  
+.addFileName p {
   color: #f8ac1d;
   font-size: 0.7rem;
 }

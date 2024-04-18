@@ -1542,10 +1542,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2467,6 +2467,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
     const { serviceId } = req.params;
 
     const ReportData = await ReportTable.findOne({ serviceId });
+    
+    const rating = await EnggRating.findOne({ ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2502,7 +2504,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2561,7 +2563,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       PitArea,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages });
+
+    res.status(200).json({ finalReportedData, ReportImages,rating});
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2575,3 +2578,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// by aayush for rating admin=================================
+
+
+ 

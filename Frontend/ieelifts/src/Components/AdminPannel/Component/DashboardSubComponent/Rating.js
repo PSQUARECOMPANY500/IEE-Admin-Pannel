@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
-const Rating = ({serviceId}) => {
-  console.log("serviceId",serviceId)
+
+const Rating = () => {
+  const [adminRating, setAdminRating] = useState()
+  const [rating, setRating] = useState([]);
+  
+
+
+  const AdminReportData = useSelector((state) => {
+    return state?.AdminRootReducer?.getAdminReportDataReducer
+  });
+
+  const ratingValue = AdminReportData?.AdminReportData?.Rating?.Rating || 0
+  useEffect(() => {
+    setAdminRating(AdminReportData?.AdminReportData?.Rating)
+  }, [AdminReportData])
+
+  useEffect(() => {
+    setRating(Array(5).fill(ratingValue))
+  }, [ratingValue])
+
+
+
+
   return (
     <div className="Rating">
-      <div className="RatingStar">
-        <CiStar className="Yellow_Color" />
-        <CiStar className="Yellow_Color" />
-        <CiStar className="Yellow_Color" />
-        <CiStar className="Yellow_Color" />
-        <CiStar className="Yellow_Color" />
+    { adminRating ? <><div className="RatingStar">
+        {rating?.map((e,i) => (
+            (i+1<=ratingValue?(<FaStar className="Yellow_Color" style={{fontSize:'1.7rem'}} />):(<CiStar className="Yellow_Color" /> ))
+        ))}
+
       </div>
       <div className="RatingContainer">
         <div className="RatingContainerRow">
@@ -19,8 +41,8 @@ const Rating = ({serviceId}) => {
           </div>
 
           <div className="RatingButton">
-            <button>yes</button>
-            <button>No</button>
+            <button className={adminRating?.Questions?.Question1?'active-button':''}> yes</button>
+            <button className={!(adminRating?.Questions?.Question1)?'active-button':''}>No</button>
           </div>
         </div>
 
@@ -29,35 +51,35 @@ const Rating = ({serviceId}) => {
             <h5>Was the service agent wearing clean cloths ?</h5>
           </div>
           <div className="RatingButton">
-            <button>yes</button>
-            <button>No</button>
+          <button className={adminRating?.Questions?.Question2?'active-button':''}> yes</button>
+            <button className={!(adminRating?.Questions?.Question2)?'active-button':''}>No</button>
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Was the service agent professional ?</h5>
           <div className="RatingButton">
-            <button>yes</button>
-            <button>No</button>
+          <button className={adminRating?.Questions?.Question3?'active-button':''}> yes</button>
+            <button className={!(adminRating?.Questions?.Question3)?'active-button':''}>No</button>
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Were all the issues resolved ?</h5>
           <div className="RatingButton">
-            <button>yes</button>
-            <button>No</button>
+          <button className={adminRating?.Questions?.Question4?'active-button':''}> yes</button>
+            <button className={!(adminRating?.Questions?.Question4)?'active-button':''}>No</button>
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Would you recommend us ?</h5>
           <div className="RatingButton">
-            <button>yes</button>
-            <button>No</button>
+          <button className={adminRating?.Questions?.Question5?'active-button':''}> yes</button>
+            <button className={!(adminRating?.Questions?.Question5)?'active-button':''}>No</button>
           </div>
         </div>
-      </div>
+      </div> </>:<p>No Rating Here.............</p>}
     </div>
   );
 };

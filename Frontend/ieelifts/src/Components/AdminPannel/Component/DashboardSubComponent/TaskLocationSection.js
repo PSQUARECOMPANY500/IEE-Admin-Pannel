@@ -10,7 +10,7 @@ import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 import EnggLocation from "./EnggLocationSection/EnggLocation";
-import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
+import { getCurrentDateAssignServiceRequestAction, getadminReportData } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import {
   getFilterLocation,
@@ -35,8 +35,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
-  console.log("rteportdata", RedportData);
 
+
+  
   useEffect(() => {
     const fetchData = () => {
       // dispatch(getFilterLocation());
@@ -105,7 +106,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
-console.log(handleCallbackSelection)
+
     if (currentDateCallback) {
       setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     }
@@ -227,16 +228,24 @@ console.log(handleCallbackSelection)
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
+
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
+
       setHandleReportData(false);
       setReportData(reportData?.callbackId);
+  
     } else {
       //console.log(reportData)
       setHandleReportData(true);
       setReportData(reportData);
     }
+    //may be change logic in future make by aayush
+    dispatch(getadminReportData(reportData.callbackId));
+    
   }
+
+
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
@@ -469,6 +478,7 @@ console.log(handleCallbackSelection)
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
+              
                   />
                 </div>
               </div>
