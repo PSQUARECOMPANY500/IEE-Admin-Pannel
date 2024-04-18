@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, forwardRef, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useCallback,
+} from "react";
 import { LuSettings2 } from "react-icons/lu";
 import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
@@ -18,7 +24,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
   const dropdownClickRef = useRef();
 
-
   const dispatch = useDispatch();
   const [ticket, setTicket] = useState(true);
   const [services, setSrvice] = useState(false);
@@ -30,6 +35,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
+  console.log("rteportdata", RedportData);
 
   useEffect(() => {
     const fetchData = () => {
@@ -54,7 +60,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       options: engineers,
     },
     // { name: "location", options: locations },
-    { name: "clear", options: [] }
+    { name: "clear", options: [] },
     // { name: "location", options: [] },
   ];
 
@@ -72,7 +78,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return null;
     }
   });
-
 
   useEffect(() => {
     if (currentDateServiceRequest) {
@@ -116,9 +121,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
-  const passData = () => { };
-
-
   useEffect(() => {
     if (filterConditions) {
       let data;
@@ -157,9 +159,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       if (engineerFilter) {
         engineerFilter.forEach((engineer) => {
           const { condition } = engineer;
-          let eData = data.filter(
-            (d) => d.enggName === condition
-          );
+          let eData = data.filter((d) => d.enggName === condition);
           if (engineerData) {
             engineerData = [...engineerData, ...eData];
           } else {
@@ -179,8 +179,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
         filteredData = engineerData;
       }
       setFilterData(filteredData);
-    }
-    else {
+    } else {
       setFilterData(null);
     }
   }, [filterConditions, ticket]);
@@ -191,7 +190,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
       dispatch(getCurrentDateAssignServiceRequestAction());
     }, 1500);
   }, [dispatch, props.ticketUpdate]);
-
 
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
@@ -208,7 +206,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }, [ref, handler]);
   };
   const handleFilter = () => {
-    setShowFilter(prevState => !prevState);
+    setShowFilter((prevState) => !prevState);
   };
   const handleOutsideClick = useCallback(() => {
     setShowFilter(false);
@@ -217,8 +215,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
   // -------------------------filter dropdown end--------------------------
-
-
 
   const extractStartTime = (slots) => {
     return slots[0].split("-")[0];
@@ -230,18 +226,17 @@ const TaskLocationSection = forwardRef((props, ref) => {
   function handleReportSectionData(reportData) {
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
-      setHandleReportData(false)
-      setReportData("no-data")
+      setHandleReportData(false);
+      setReportData(reportData?.callbackId);
     } else {
       //console.log(reportData)
-      setHandleReportData(true)
-      setReportData(reportData)
+      setHandleReportData(true);
+      setReportData(reportData);
     }
-
   }
   return (
-    <div className={"parent-full-div"} ref={ref} >
-      <div className={"task-child-div"} >
+    <div className={"parent-full-div"} ref={ref}>
+      <div className={"task-child-div"}>
         <div
           className={
             props.kanban ? "tasks-section" : "tasks-section-on-kanban "
@@ -277,11 +272,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
             {props.kanban ? (
               <div className="sub-components" ref={dropdownClickRef}>
-                <p className="filter-icon"
-                  onClick={handleFilter}
-
-
-                >
+                <p className="filter-icon" onClick={handleFilter}>
                   <LuSettings2 />
                   {""}
                 </p>
@@ -307,66 +298,78 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                      const reportData = value
+                        const reportData = value;
 
-                      return (
-                        <div
-                          className={`ticket-card ${handleCallbackSelection[index] &&
-                            "service-card-selected"
+                        // console.log("ticket", value);
+
+                        return (
+                          <div
+                            className={`ticket-card ${
+                              handleCallbackSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportData)}
-                        >
-
-                          <div className="ticket-sub-card-row" >
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() => handleReportSectionData(reportData)}
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{value.clientName.toUpperCase()}</h5></div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{value.enggName.toUpperCase()}</h5></div>
+
+                            <div className="ticket-card-bottom">
+                              <h5>{extractStartTime(value.Slot)}</h5>
+                              <h5>{extractEndTime(value.Slot)}</h5>
+                            </div>
                           </div>
-                         
-                          <div className="ticket-card-bottom">
-                            <h5>{extractStartTime(value.Slot)}</h5>
-                            <h5>{extractEndTime(value.Slot)}</h5>
-                          </div>
-                        </div>)
-                    })
+                        );
+                      })
                     : filterData?.map((value, index) => {
-                      const reportData = value
-                      return (
-                        <div
-                          className={`ticket-card ${handleCallbackSelection[index] &&
-                            "service-card-selected"
+                        const reportData = value;
+                        return (
+                          <div
+                            className={`ticket-card ${
+                              handleCallbackSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportData)}
-                        >
-                          {/* {console.log("this is value", value)} */}
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() => handleReportSectionData(reportData)}
+                          >
+                            {/* {console.log("this is value", value)} */}
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{value.clientName.toUpperCase()}</h5></div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{value.enggName.toUpperCase()}</h5></div>
+                            <div className="ticket-card-bottom">
+                              <h5>{extractStartTime(value.Slot)}</h5>
+                              <h5>{extractEndTime(value.Slot)}</h5>
+                            </div>
                           </div>
-                          <div className="ticket-card-bottom">
-                            <h5>{extractStartTime(value.Slot)}</h5>
-                            <h5>{extractEndTime(value.Slot)}</h5>
-                          </div>
-                        </div>
-                      )
-                    })}
+                        );
+                      })}
                 </>
               )}
 
@@ -374,67 +377,77 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                      const reportData = serviceData
-                      return (
-                        <div
-                          className={`service-card ${handleServiceSelection[index] &&
-                            "service-card-selected"
+                        const reportData = serviceData;
+                        return (
+                          <div
+                            className={`service-card ${
+                              handleServiceSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportData)}
-                        >
-
-
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() => handleReportSectionData(reportData)}
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{serviceData.clientName.toUpperCase()}</h5></div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left"><h5>{serviceData.enggName.toUpperCase()}</h5></div>
-                          </div>
 
-                          <div className="service-card-bottom">
-                            <h5>{extractStartTime(serviceData.Slot)}</h5>
-                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            <div className="service-card-bottom">
+                              <h5>{extractStartTime(serviceData.Slot)}</h5>
+                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            </div>
                           </div>
-                        </div>)
-                    }
-                    )
+                        );
+                      })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                      const reportServiceData = serviceData
+                        const reportServiceData = serviceData;
 
-                      return (
-                        <div
-                          className={`service-card ${handleServiceSelection[index] &&
-                            "service-card-selected"
+                        return (
+                          <div
+                            className={`service-card ${
+                              handleServiceSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportServiceData)}
-                        >
-                              <div className="ticket-sub-card-row">
-                          <div className="ticket-sub-card-row-right">
-                            <h5>Name:</h5>
-                          </div>
-                          <div className="ticket-sub-card-row-left"><h5>{serviceData.clientName.toUpperCase()}</h5></div>
-                        </div>
+                            onClick={() =>
+                              handleReportSectionData(reportServiceData)
+                            }
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                              </div>
+                            </div>
 
-                        <div className="ticket-sub-card-row">
-                          <div className="ticket-sub-card-row-right">
-                            <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                              </div>
+                            </div>
+                            <div className="service-card-bottom">
+                              <h5>{extractStartTime(serviceData.Slot)}</h5>
+                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            </div>
                           </div>
-                          <div className="ticket-sub-card-row-left"><h5>{serviceData.enggName.toUpperCase()}</h5></div>
-                        </div>
-                          <div className="service-card-bottom">
-                            <h5>{extractStartTime(serviceData.Slot)}</h5>
-                            <h5>{extractEndTime(serviceData.Slot)}</h5>
-                          </div>
-                        </div>
-                      )
-                    })}
+                        );
+                      })}
                 </>
               )}
             </div>
@@ -442,18 +455,18 @@ const TaskLocationSection = forwardRef((props, ref) => {
         </div>
 
         {props.kanban ? (
-          <div className="Report-section" >
-            <div
-              className="task-top-section"
-              style={{ cursor: "pointer" }}
-            >
+          <div className="Report-section">
+            <div className="task-top-section" style={{ cursor: "pointer" }}>
               <p>Report</p>
             </div>
 
             <div className="report-description-section">
               <div className="more-descriptive-report">
                 <div className="child-descriptive">
-                  <ReportData handleRedportData={handleRedportData} RedportData={RedportData} />
+                  <ReportData
+                    handleRedportData={handleRedportData}
+                    RedportData={RedportData}
+                  />
                 </div>
               </div>
             </div>
@@ -462,7 +475,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
         <div
           className={props.kanban ? "location-section" : "kanban-Click-section"}
-
         >
           <div className="task-top-section">
             <p>Location</p>
@@ -470,7 +482,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
               <span>KANBAN</span>
             </div>
           </div>
-          <div className="report-description-section" >
+          <div className="report-description-section">
             <div className="more-descriptive">
               <EnggLocation />
             </div>

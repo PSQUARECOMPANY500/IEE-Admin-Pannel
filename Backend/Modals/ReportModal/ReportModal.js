@@ -116,7 +116,7 @@ const ReportInfo = new Schema({
           type: String,
           default:""
         },
-        Reason: {
+        reason: {
           type: String,
           default:""
         },
@@ -163,9 +163,9 @@ const ReportInfo = new Schema({
     type: Boolean,
     default: false,
   },
-  isActive:{
-    type:Boolean,
-    default:true
+  isActive: {
+    type: Boolean,
+    default: true,
   }
 });
 

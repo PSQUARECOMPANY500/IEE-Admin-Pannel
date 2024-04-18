@@ -35,34 +35,33 @@ import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
 import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
 import { GET_Engineer_Name } from "../Actions/AdminActions";
-// import { OPEN_MODAL } from "../Actions/AdminActions";
-// import { CLOSE_MODAL } from "../Actions/AdminActions";
-
 import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
-import { FETCH_ENG_DETAILS } from "../Actions/AdminActions"; import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
+import { FETCH_ENG_DETAILS } from "../Actions/AdminActions";
+import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
 import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
 import { GET_ENGINEER_ATTENDANCE } from "../Actions/AdminActions";
 import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 
-import {GET_ASSIGNED_ENGG_DETAILS} from "../Actions/AdminActions"
-import {UPDATE_ENGG_LOCATION} from "../Actions/AdminActions"
-import {UPDATE_ENGG_CART_LOCATION} from "../Actions/AdminActions"
+import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
+import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
+import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
+
+//----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
 
 const initialState24 = {
   isSuccess: null,
-}
+};
 
 export const VerifyOTPPasswordReducer = (state = initialState24, action) => {
   switch (action.type) {
     case VERIFY_OTP_PASSWORD:
       return { ...state, isSuccess: action.payload };
     default:
-      return state
+      return state;
   }
-
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -629,9 +628,12 @@ export const membershipButtonLayoutReducer = (state = buttonLayout, action) => {
 
 const engineerLeaveHistory = {
   leaveHistory: null,
-}
+};
 
-export const engineerLeaveHistoryReducer = (state = engineerLeaveHistory, action) => {
+export const engineerLeaveHistoryReducer = (
+  state = engineerLeaveHistory,
+  action
+) => {
   switch (action.type) {
     case GET_ENGINEER_LEAVE_HISTORY:
       return {
@@ -641,11 +643,11 @@ export const engineerLeaveHistoryReducer = (state = engineerLeaveHistory, action
     default:
       return state;
   }
-}
+};
 
 const approveLeave = {
   leaveStatus: null,
-}
+};
 
 export const approveLeaveByAdminReducer = (state = approveLeave, action) => {
   switch (action.type) {
@@ -657,13 +659,16 @@ export const approveLeaveByAdminReducer = (state = approveLeave, action) => {
     default:
       return state;
   }
-}
+};
 
 const requestedLeave = {
   requestedLeave: null,
-}
+};
 
-export const engineerRequestedLeaveReducer = (state = requestedLeave, action) => {
+export const engineerRequestedLeaveReducer = (
+  state = requestedLeave,
+  action
+) => {
   switch (action.type) {
     case GET_ENGINEER_REQUESTED_LEAVE:
       return {
@@ -673,9 +678,12 @@ export const engineerRequestedLeaveReducer = (state = requestedLeave, action) =>
     default:
       return state;
   }
-}
+};
 
-export const engineerAttendanceReducer = (state = { attendance: null }, action) => {
+export const engineerAttendanceReducer = (
+  state = { attendance: null },
+  action
+) => {
   switch (action.type) {
     case GET_ENGINEER_ATTENDANCE:
       return {
@@ -704,12 +712,15 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
   }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//emit reducer for  enggpage task-section 
+//emit reducer for  enggpage task-section
 
 const assignedEnggDetails = {
   EnggDetails: null,
 };
-export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, action) => {
+export const fetchassignedEnggDetailsReducer = (
+  state = assignedEnggDetails,
+  action
+) => {
   switch (action.type) {
     case GET_ASSIGNED_ENGG_DETAILS:
       return { ...state, EnggDetails: action.payload };
@@ -722,7 +733,10 @@ export const fetchassignedEnggDetailsReducer = (state = assignedEnggDetails, act
 const EnggLocation = {
   enggLocation: null,
 };
-export const onClickEnggCartEnggLocationReducer = (state = EnggLocation, action) => {
+export const onClickEnggCartEnggLocationReducer = (
+  state = EnggLocation,
+  action
+) => {
   switch (action.type) {
     case UPDATE_ENGG_LOCATION:
       return { ...state, enggLocation: action.payload };
@@ -731,12 +745,14 @@ export const onClickEnggCartEnggLocationReducer = (state = EnggLocation, action)
   }
 };
 
-
 //emit reducer for updating location onClick of pin
 const EnggLocationPin = {
   enggLocationOnPin: null,
 };
-export const onClickEnggPinEnggLocationReducer = (state = EnggLocationPin, action) => {
+export const onClickEnggPinEnggLocationReducer = (
+  state = EnggLocationPin,
+  action
+) => {
   switch (action.type) {
     case UPDATE_ENGG_CART_LOCATION:
       return { ...state, enggLocationOnPin: action.payload };

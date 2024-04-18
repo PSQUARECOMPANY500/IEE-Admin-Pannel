@@ -3,7 +3,7 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const callbackAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
 const serviceAssigtoEngg = require("../../Modals/ServiceEngineerModals/AssignServiceRequest");
-const engineerRating = require("../../Modals/Rating/Rating")
+const engineerRating = require("../../Modals/Rating/Rating");
 
 const {
   generateEnggToken,
@@ -40,11 +40,6 @@ const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestM
 const axios = require("axios");
 require("dotenv").config();
 
-
-
-
-
-
 const calculateTimedifference = (timetogetdiff, valuediff) => {
   const time = new Date().toLocaleTimeString("en-IN", {
     timeZone: "Asia/Kolkata",
@@ -76,11 +71,6 @@ const calculateTwotimedifference = (
   return remaintime;
 };
 
-
-
-
-
-
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
 module.exports.RegisterServiceEngg = async (req, res) => {
@@ -96,7 +86,7 @@ module.exports.RegisterServiceEngg = async (req, res) => {
     } = req.body;
 
     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
-      EnggId
+      EnggId,
     });
     if (ExistingServiceEngg) {
       return res
@@ -127,17 +117,83 @@ module.exports.RegisterServiceEngg = async (req, res) => {
     }
   }
 };
+//===========\\=\\\\\\\\\\\====\=\=\=\==\=\=\=\=\=\=\=
+module.exports.RegisterServiceEngg2 = async (req, res) => {
+  try {
+    const formData = req.files;
+    const bodyData = req.body;
+
+    console.log(formData);
+    console.log(req.files);
+
+    const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
+      PhoneNumber: bodyData.mobileNumber,
+    });
+
+    if (!EnggAlreadyExist) {
+      return res
+        .status(400)
+        .json({ message: "Engg is Already Exist with thius Mobile Number" });
+    }
+
+    const enggData = await ServiceEnggBasicSchema.create({
+      EnggName: bodyData.firstName,
+      EnggLastName: bodyData.lastName,
+      PhoneNumber: bodyData.mobileNumber,
+      EnggAddress: bodyData.address,
+      EnggPhoto: formData.profilePhoto[0].filename,
+      DateOfBirth: bodyData.dateOfBirth,
+      Email: bodyData.email,
+      PinCode: bodyData.pinCode,
+      City: bodyData.city,
+      District: bodyData.district,
+      State: bodyData.state,
+      AddharCardNo: bodyData.addharCardNumber,
+      DrivingLicenseNo: bodyData.drivingLisience,
+      PanCardNo: bodyData.pancards,
+      Qualification: bodyData.qualification,
+      AdditionalCourse: bodyData.additionalCourse,
+      AccountHolderName: bodyData.accountHolderName,
+      BranchName: bodyData.branchName,
+      AccountNumber: bodyData.accountNumber,
+      IFSCcode: bodyData.IFSCcode,
+      AddharPhoto: formData.addharPhoto[0].filename,
+      DrivingLicensePhoto: formData.drivingLicensePhoto[0].filename,
+      PancardPhoto: formData.pancardPhoto[0].filename,
+      QualificationPhoto: formData.qualificationPhoto[0].filename,
+      AdditionalCoursePhoto: formData.additionalCoursePhoto[0].filename,
+      DurationOfJob: bodyData.jobDuration,
+      CompanyName: bodyData.companyName,
+      JobTitle: bodyData.jobTitle,
+      ManagerName: bodyData.managerName,
+      ManagerNo: bodyData.managerNumber,
+    });
+
+    res
+      .status(201)
+      .json({ message: "service Engg Register Succesfully2", user: enggData });
+  } catch (error) {
+    console.error("Error registring in service Engg:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+//===========\\=\\\\\\\\\\\====\=\=\=\==\=\=\=\=\=\=\=
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //function to handle serviceEngg Login
 module.exports.loginEngg = async (req, res) => {
   try {
     const { EnggId, password } = req.body;
-
-    // console.log(EnggId,password)
-
     //firstly check the Engg is exist or not
     const Engg = await ServiceEnggBasicSchema.findOne({ EnggId });
+
+    const rating = await engineerRating.find({ ServiceEnggId: EnggId });
+
+    console.log("enggId", rating);
+    let count = 0;
+
+    rating.map((item) => (count += item.Rating));
+    const Rating = Math.floor((count / rating.length) * 10) / 10;
 
     if (!Engg || Engg.EnggPassword !== password) {
       return res.status(401).json({ message: "Invalid Credentials" });
@@ -149,6 +205,7 @@ module.exports.loginEngg = async (req, res) => {
       success: true,
       allotedAdmin: "65e0103005fd2695f3aaf6d4",
       adminName: "Parabh Simaran",
+      Rating,
       token,
     });
   } catch (error) {
@@ -830,7 +887,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       Leave_Reason,
       Document: document,
     });
-    console.log("document",document)
+    console.log("document", document);
     res
       .status(200)
       .json({ success: true, message: "Leave Created successfully", response });
@@ -1159,45 +1216,41 @@ module.exports.getAllSparePartdetails = async (req, res) => {
 
 module.exports.GenerateReportByEngg = async (req, res) => {
   try {
-    const {
-      serviceId,
-      EnggId,
-      questionsDetails,
-      subCategoriesphotos,
-      paymentMode,
-      paymentDetils,
-      isActive,
-    } = req.body;
-
-    // console.log("pankaj mera bhai",req.body.questionsDetails[0].questionResponse);
-    // console.log("pankaj mera bhai1", req.body.questionsDetails);
-    // console.log("pankaj mera bhai 2 ", req.body.questionsDetails[0]);
-    // console.log("pankaj mera bhai 3 ", req.body);
-
-    // return;
-
+    const reqs = req.body;
+    const file = req.files;
     let ReportData;
 
-    const serviceExist = await ReportInfoModel.findOne({ serviceId });
+    const serviceExist = await ReportInfoModel.findOne({
+      serviceId: reqs.serviceId,
+    });
+    const QuestionResponse = JSON.parse(reqs.questionsDetails);
 
+    const photoFileNames = file.photoss.map((file) => file.filename);
+    const uploaddata = [
+      {
+        subCategoriesPhotosId: reqs.subCategoriesphotos?.subCategoriesPhotosId,
+        photo: photoFileNames,
+      },
+    ];
     if (serviceExist) {
-      serviceExist.questionsDetails.push(...questionsDetails);
-      serviceExist.subCategoriesphotos.push(...subCategoriesphotos);
+      serviceExist.questionsDetails.push(...QuestionResponse);
+      serviceExist.subCategoriesphotos.push(...uploaddata);
       ReportData = await serviceExist.save();
     } else {
       ReportData = await ReportInfoModel.create({
-        serviceId,
-        EnggId,
-        questionsDetails,
-        subCategoriesphotos,
-        paymentMode,
-        paymentDetils,
-        isActive,
+        serviceId: reqs.serviceId,
+        EnggId: reqs.EnggId,
+        questionsDetails: QuestionResponse,
+        subCategoriesphotos: uploaddata,
+        paymentMode: "cash",
+        paymentDetils: "paymentDetils",
+        // isActive: true,
       });
     }
 
     res.status(201).json({ ReportData });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: "Internal server error Genrating Report by Engg",
     });
@@ -1222,7 +1275,7 @@ module.exports.getEngineerLeaves = async (req, res) => {
 module.exports.getEngineerLeveCount = async (req, res) => {
   try {
     const { ServiceEnggId } = req.query;
-    console.log("working inside this");
+    // console.log("working inside this");
     console.log(ServiceEnggId);
     const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
     console.log("leaves", leaves);
@@ -1247,36 +1300,39 @@ module.exports.getEngineerLeveCount = async (req, res) => {
 // {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//-------------------------------------------------------------------------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
 // @route name-getAllEngDetails
 // @route type-private
 // @route work-get eng details leave rating etc....
 
-
-
 module.exports.getAllEngDetails = async (req, res) => {
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
-    const engDetails = await ServiceEnggBasicSchema.find().select('-EnggPassword');
-    const engRatings = await engineerRating.find({}).select("Rating ServiceEnggId");
+    const engDetails = await ServiceEnggBasicSchema.find().select(
+      "-EnggPassword"
+    );
+    const engRatings = await engineerRating
+      .find({})
+      .select("Rating ServiceEnggId");
 
     // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
 
-
-    const combinedData = engDetails.map(eng => {
-      const engineerRatings = engRatings.filter(rating => rating.ServiceEnggId === eng.EnggId);
+    const combinedData = engDetails.map((eng) => {
+      const engineerRatings = engRatings.filter(
+        (rating) => rating.ServiceEnggId === eng.EnggId
+      );
       let sum = 0;
-      engineerRatings.forEach(elem => {
+      engineerRatings.forEach((elem) => {
         sum = sum + elem.Rating;
-      })
-      const averageRating = engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
+      });
+      const averageRating =
+        engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
       // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
       return {
         ...eng.toObject(),
         averageRating,
         // engleaveRecord
-
       };
     });
 
@@ -1290,37 +1346,39 @@ module.exports.getAllEngDetails = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
-
 //-------------------------------------------------------------------------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
 // @route name-getAllEngDetails
 // @route type-private
 // @route work-get eng details leave rating etc....
 
-
-
 module.exports.getAllEngDetails = async (req, res) => {
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
-    const engDetails = await ServiceEnggBasicSchema.find().select('-EnggPassword');
-    const engRatings = await engineerRating.find({}).select("Rating ServiceEnggId");
+    const engDetails = await ServiceEnggBasicSchema.find().select(
+      "-EnggPassword"
+    );
+    const engRatings = await engineerRating
+      .find({})
+      .select("Rating ServiceEnggId");
 
     // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
 
-
-    const combinedData = engDetails.map(eng => {
-      const engineerRatings = engRatings.filter(rating => rating.ServiceEnggId === eng.EnggId);
+    const combinedData = engDetails.map((eng) => {
+      const engineerRatings = engRatings.filter(
+        (rating) => rating.ServiceEnggId === eng.EnggId
+      );
       let sum = 0;
-      engineerRatings.forEach(elem => {
+      engineerRatings.forEach((elem) => {
         sum = sum + elem.Rating;
-      })
-      const averageRating = engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
+      });
+      const averageRating =
+        engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
       // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
       return {
         ...eng.toObject(),
         averageRating,
         // engleaveRecord
-
       };
     });
 
@@ -1333,7 +1391,6 @@ module.exports.getAllEngDetails = async (req, res) => {
 };
 
 //-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
-
 
 //Date => 28/03/2024
 
@@ -1355,10 +1412,11 @@ module.exports.getFinalReportDetails = async (req, res) => {
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
             "") ||
+        (question.questionResponse.isResolved &&
+          question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
     );
 
-    // console.log(filteredData);
     const IssuesResolved = [];
     const IssuesNotResolved = [];
     const SparePartsChanged = [];
@@ -1366,19 +1424,9 @@ module.exports.getFinalReportDetails = async (req, res) => {
     const TotalAmount = [];
 
     filteredData.forEach((element) => {
-      if (
-        element.questionResponse.isResolved &&
-        element.questionResponse.sparePartDetail.sparePartsType !== "" &&
-        element.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
-        !element.questionResponse.isSparePartRequest
-      ) {
+      if (element.questionResponse.isResolved) {
         IssuesResolved.push(element);
-      }
-
-      if (
-        !element.questionResponse.isResolved &&
-        !element.questionResponse.isSparePartRequest
-      ) {
+      } else {
         IssuesNotResolved.push(element);
       }
 
@@ -1432,13 +1480,28 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
         .json({ message: "no Report found With This Engg Id" });
     }
 
-    if (getData.isActive === true) {
-      return res.status(200).json({ getData });
+    if (getData.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No reports found for this Engg Id" });
     }
 
-    const serviceId = getData[0].serviceId;
-    console.log(serviceId);
-    return res.status(200).json({ serviceId });
+    const FianlData = getData?.filter((data) => data.isActive === true);
+
+    if (FianlData.length === 0) {
+      return res
+        .status(200)
+        .json({ message: "No Active Report Found With This Engg Id" });
+    }
+
+    const ServiceId = getData[0].serviceId;
+    const ReEvaluateData =
+      FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
+    res.status(200).json({
+      ServiceId: ServiceId,
+      subCategoriesId: ReEvaluateData.subCategoriesId,
+      subcategoryname: ReEvaluateData.subcategoryname,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1509,27 +1572,6 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //==================================================================
 //==================================================================
@@ -1633,8 +1675,6 @@ module.exports.EnggSecondhalfinfo = async (req, res) => {
   }
 };
 
-
-
 module.exports.EnggLunchBreakinfo = async (req, res) => {
   try {
     const { ServiceEnggId } = req.params;
@@ -1682,3 +1722,51 @@ module.exports.EnggLunchBreakinfo = async (req, res) => {
       .json({ error: "Internal server error ! Contact Developer." });
   }
 };
+
+//==================================================================
+//==================================================================
+
+module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+    const ReportData = await ReportInfoModel.findOne({ serviceId });
+    if (!ReportData) {
+      res.status(400).json({ message: "Report not Found" });
+    }
+
+    const transformedData = ReportData.questionsDetails.reduce((acc, item) => {
+      if (!acc[item.subcategoryname]) {
+        acc[item.subcategoryname] = [];
+      }
+
+      let resolved = "";
+
+      if (
+        item.questionResponse.sparePartDetail.sparePartsType === "" &&
+        item.questionResponse.sparePartDetail.subsparePartspartid === "" &&
+        item.questionResponse.isResolved
+      ) {
+        resolved = "Already resolved";
+      } else {
+        resolved = item.questionResponse.isResolved ? "Yes" : "No";
+      }
+
+      acc[item.subcategoryname].push({
+        questionId: item.questionId,
+        questionname: item.questionResponse.questionName,
+        resolvedstatus: resolved,
+      });
+
+      return acc;
+    }, {});
+
+    res.json(transformedData);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal server error ! Contact Developer." });
+  }
+};
+
+//==================================================================
+//==================================================================

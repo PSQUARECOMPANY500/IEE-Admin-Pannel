@@ -1,10 +1,11 @@
 import React from 'react'
 import SparePartAllotTable from './SparePartAllotTable'
 
-const AllottedSpareParts = () => {
+const AllottedSpareParts = (props) => {
+  const { engID } = props
   return (
   <>
-  <SparePartAllotTable/>
+  <SparePartAllotTable engID={engID}/>
   </>
   )
 }

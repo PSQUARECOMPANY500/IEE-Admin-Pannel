@@ -78,10 +78,87 @@ export const FETCH_ENG_DETAILS = "FETCH_ENG_DETAILS";
 export const GET_ASSIGNED_ENGG_DETAILS = "GET_ASSIGNED_ENGG_DETAILS";
 export const UPDATE_ENGG_LOCATION = "UPDATE_ENGG_LOCATION";
 export const UPDATE_ENGG_CART_LOCATION = "UPDATE_ENGG_CART_LOCATION";
-export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY"
-export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN"
-export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE"
-export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE"
+export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY";
+export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
+export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
+export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// by preet 05/04/2024
+//function to handle Registraction Engginers  (hook)
+
+export const RegistrationEnggDetails = async (formData) => {
+  try {
+    const response = await axios.post(
+      `${config.apiUrl}/serviceEngg/RegistrationServiceEngg`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(response.data);
+    return response;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// by preet 04/04/2024
+//function to handle get alloted SparePart  (hook)
+export const fetchAllotedSparePartToSpecificEngg = async (EnggId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/fetchAllotedSparePart/${EnggId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//by preet 03/04/2024
+//function to handle Approve Deny Spare part Request  (Hook)
+export const ApproveDenySparepartAction = async (
+  RequestId,
+  isApproved,
+  isDenied
+) => {
+  try {
+    const response = await axios.post(
+      `${config.apiUrl}/admin/ApproveDenySparepart`,
+      {
+        RequestId,
+        isApproved,
+        isDenied,
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+// by preet 02/04/2024
+//handle getSparepartRequest by engg Id  (Hook)
+
+export const getSparePartRequestedByEnggIdAction = async (EnggId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getSparePartRequest/${EnggId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
@@ -688,7 +765,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -710,7 +787,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -733,7 +810,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -747,7 +824,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -761,7 +838,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -787,7 +864,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -798,7 +875,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -903,7 +980,7 @@ export const updatePassswordAction = async (email, newPassword) => {
       email,
       newPassword,
     });
-    toast.success("Password updated Successfully, wait while redirecting...")
+    toast.success("Password updated Successfully, wait while redirecting...");
     setTimeout(() => {
       window.location.href = "/";
     }, 2000);
@@ -918,34 +995,36 @@ export const updatePassswordAction = async (email, newPassword) => {
 export const fetchEngDetails = (email, otp) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/serviceEngg/getAllEngDetails`);
+      const response = await axios.get(
+        `${config.apiUrl}/serviceEngg/getAllEngDetails`
+      );
       dispatch({
         type: FETCH_ENG_DETAILS,
         payload: response.data,
       });
-
-
     } catch (error) {
       console.log("error while fetching data", error);
     }
   };
 };
 
-
-//emit code for the enggpage task-section 
+//emit code for the enggpage task-section
 export const assignedEnggDetails = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/assignedEnggDetails/${ServiceEnggId}`)
+      const response = await axios.get(
+        `${config.apiUrl}/admin/assignedEnggDetails/${ServiceEnggId}`
+      );
       dispatch({
         type: GET_ASSIGNED_ENGG_DETAILS,
         payload: response.data,
-    });
+      });
+      console.log(response.data);
     } catch (error) {
       console.log("error while fetching data", error);
     }
   };
-}
+};
 
 //emit action for engg location
 export const onClickEnggCart = (ServiceEnggId) => {
@@ -954,12 +1033,12 @@ export const onClickEnggCart = (ServiceEnggId) => {
       dispatch({
         type: UPDATE_ENGG_LOCATION,
         payload: ServiceEnggId,
-    });
+      });
     } catch (error) {
       console.log("error while UPDATE_ENGG_LOCATION", error);
     }
   };
-}
+};
 
 //emit action for updating engg cart on click of pin
 export const onClickPinCart = (ServiceEnggId) => {
@@ -968,21 +1047,22 @@ export const onClickPinCart = (ServiceEnggId) => {
       dispatch({
         type: UPDATE_ENGG_CART_LOCATION,
         payload: ServiceEnggId,
-    });
+      });
     } catch (error) {
       console.log("error while UPDATE_ENGG_LOCATION", error);
     }
   };
-}// {/armaan-dev}
+}; // {/armaan-dev}
 export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `${config.apiUrl}/admin/getEngineerLeaveHistory`, {
-        params: {
-          ServiceEnggId
+        `${config.apiUrl}/admin/getEngineerLeaveHistory`,
+        {
+          params: {
+            ServiceEnggId,
+          },
         }
-      }
       );
       dispatch({
         type: "GET_ENGINEER_LEAVE_HISTORY",
@@ -992,7 +1072,7 @@ export const getEngineerLeaveHistory = (ServiceEnggId) => {
       console.log("error while fetching data", error);
     }
   };
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const approveLeaveByAdmin = (_id, IsApproved) => {
@@ -1004,7 +1084,7 @@ export const approveLeaveByAdmin = (_id, IsApproved) => {
           params: {
             _id,
             IsApproved,
-          }
+          },
         }
       );
       console.log(response.data);
@@ -1016,7 +1096,7 @@ export const approveLeaveByAdmin = (_id, IsApproved) => {
       console.log("error while fetching data", error);
     }
   };
-}
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1024,11 +1104,12 @@ export const getRequstedLeaves = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(
-        `${config.apiUrl}/admin/getEngineerRequestedLeave`, {
-        params: {
-          ServiceEnggId
+        `${config.apiUrl}/admin/getEngineerRequestedLeave`,
+        {
+          params: {
+            ServiceEnggId,
+          },
         }
-      }
       );
       dispatch({
         type: "GET_ENGINEER_REQUESTED_LEAVE",
@@ -1038,17 +1119,13 @@ export const getRequstedLeaves = (ServiceEnggId) => {
       console.log("error while fetching data", error);
     }
   };
-}
+};
 
 export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
   return async (dispatch) => {
     try {
-
-      const response = await axios.post(
-        `${config.apiUrl}/admin/fetchEnggAttendance`, {
-        ServiceEnggId: ServiceEnggId,
-        selectedDate: selectedDate
-      }
+      const response = await axios.get(
+        `${config.apiUrl}/admin/fetchEnggAttendance/${ServiceEnggId}/${selectedDate}`
       );
       dispatch({
         type: "GET_ENGINEER_ATTENDANCE",
@@ -1058,6 +1135,6 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
       console.log("error while fetching data", error);
     }
   };
-}
+};
 
 // {/armaan-dev}

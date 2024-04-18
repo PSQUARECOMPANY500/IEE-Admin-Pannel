@@ -1,7 +1,8 @@
 import React from "react";
 import { CiStar } from "react-icons/ci";
 
-const Rating = () => {
+const Rating = ({serviceId}) => {
+  console.log("serviceId",serviceId)
   return (
     <div className="Rating">
       <div className="RatingStar">

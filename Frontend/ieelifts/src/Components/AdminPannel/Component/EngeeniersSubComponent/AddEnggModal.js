@@ -8,6 +8,8 @@ import { getBankDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import { SlLink } from "react-icons/sl";
 import AddEnggAttachment from "../DashboardSubComponent/DropdownCollection/AddEnggAttachment";
 import CheckBox from "../DashboardSubComponent/CheckBox";
+import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+
 
 const AddEnggModal = () => {
   const dispatch = useDispatch();
@@ -15,22 +17,15 @@ const AddEnggModal = () => {
   const mainDivRef = useRef(null);
 
   const fileInputRef = useRef(null); // Define fileInputRef
-  const fileInputRef1 = useRef(null); // Define fileInputRef
-  const fileInputRef2 = useRef(null); // Define fileInputRef
-  const fileInputRef3 = useRef(null); // Define fileInputRef
-  const fileInputRef4 = useRef(null); // Define fileInputRef
-  const fileInputRef5 = useRef(null); // Define fileInputRef
+  const fileInputRef1 = useRef(null);
+  const fileInputRef2 = useRef(null);
+  const fileInputRef3 = useRef(null);
+  const fileInputRef4 = useRef(null);
+  const fileInputRef5 = useRef(null);
 
   const [showWorkExperience, setShowWorkExperience] = useState(false);
-  console.log(showWorkExperience);
-
-  //example
-  // const [File, setfile] = useState("");
-  // console.log(File)
-  //example
 
   const [profilePhoto, setProfilePhoto] = useState("");
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -64,7 +59,6 @@ const AddEnggModal = () => {
   const [qualificationPhoto, SetQualificationPhoto] = useState("");
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
-  console.log(drivingLicensePhoto)
   const [addharPhoto, SetAddharPhoto] = useState("");
 
   useEffect(() => {
@@ -74,7 +68,8 @@ const AddEnggModal = () => {
     };
   }, []);
 
-  const closeModal = () => {
+  const closeModal = (e) => {
+    e.stopPropagation();
     dispatch(closeAddEngggModalAction());
   };
 
@@ -95,7 +90,6 @@ const AddEnggModal = () => {
 
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
-    console.log(newEvent);
     setPinCode(newEvent);
 
     const data = await getDetailByPinCode(newEvent);
@@ -129,48 +123,8 @@ const AddEnggModal = () => {
     setShowWorkExperience(e.target.checked);
   };
 
-
   const onStateChange = (value) => {
-    setQualification(value.value)
-  }
-
-
-
-
-  const handleUpload = (e, documentType) => {
-    console.log("documentType", documentType);
-    const file = e.target.files[0];
-    const fileName = file.name;
-
-    console.log(fileName);
-
-    switch (documentType) {
-      case "addhar":
-        SetAddharPhoto(fileName);
-        break;
-      case "panCard":
-        SetPancardPhoto(fileName);
-        break;
-      case "drivingLicense":
-        SetDrivingLicensePhoto(fileName);
-        break;
-
-      case "QualificationPhoto":
-        SetQualificationPhoto(fileName);
-        break;
-
-      case "AdditionalCoursePhoto":
-        SetAdditionalCoursePhoto(fileName);
-        break;
-
-      case "profilePhoto":
-        setProfilePhoto(fileName);
-        break;
-
-
-      default:
-        break;
-    }
+    setQualification(value.value);
   };
 
   const handleUploadClick = (documentType) => {
@@ -202,410 +156,547 @@ const AddEnggModal = () => {
         break;
     }
   };
- 
 
-  const handleSaveEnggProfileData = () => {
-    console.log(profilePhoto)
-    console.log(firstName)
-    console.log(lastName)
-    console.log(mobileNumber)
-    console.log(dateOfBirth)
-    console.log(email)
-    console.log(address)
-    console.log(pinCode)
-    console.log(city)
-    console.log(district)
-    console.log(state)
-    console.log(addharCardNumber)
-    console.log(drivingLisience)
-    console.log(pancards)
-    console.log(addharPhoto)
-    console.log(pancardPhoto)
-    console.log(drivingLicensePhoto)
-    console.log(additionalCourse)
-    console.log(additionalCoursePhoto)
-    console.log(qualificationPhoto)
-    console.log(qualification)
-    console.log(accountHolderName)
-    console.log(branchName)
-    console.log(accountNumber)
-    console.log(IFSCcode)
-    console.log(jobDuration)
-    console.log(companyName)
-    console.log(jobTitle)
-    console.log(managerName)
-    console.log(managerNumber)
+  const handleSaveEnggProfileData = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("profilePhoto", profilePhoto);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("mobileNumber", mobileNumber);
+    formData.append("dateOfBirth", dateOfBirth);
+    formData.append("email", email);
+    formData.append("address", address);
+    formData.append("pinCode", pinCode);
+    formData.append("city", city);
+    formData.append("district", district);
+    formData.append("state", state);
+    formData.append("addharCardNumber", addharCardNumber);
+    formData.append("drivingLisience", drivingLisience);
+    formData.append("pancards", pancards);
+    formData.append("addharPhoto", addharPhoto);
+    formData.append("pancardPhoto", pancardPhoto);
+    formData.append("drivingLicensePhoto", drivingLicensePhoto);
+    formData.append("additionalCourse", additionalCourse);
+    formData.append("additionalCoursePhoto", additionalCoursePhoto);
+    formData.append("qualificationPhoto", qualificationPhoto);
+    formData.append("qualification", qualification);
+    formData.append("accountHolderName", accountHolderName);
+    formData.append("branchName", branchName);
+    formData.append("accountNumber", accountNumber);
+    formData.append("IFSCcode", IFSCcode);
+    formData.append("jobDuration", jobDuration);
+    formData.append("companyName", companyName);
+    formData.append("jobTitle", jobTitle);
+    formData.append("managerName", managerName);
+    formData.append("managerNumber", managerNumber);
+    const response = await RegistrationEnggDetails(formData);
+    console.log("response", response);
 
-
-
-  }
-
-
+    if (response?.status === 201) {
+      setProfilePhoto("");
+      setFirstName("");
+      setLastName("");
+      setMobileNumber("");
+      setDateOfBirth("");
+      setEmail("");
+      setAddress("");
+      setCity("");
+      setAddharCardNumber("");
+      setDrivingLisience("");
+      setPancard("");
+      setQualification("");
+      setAdditionalCourse("");
+      setAccountHolderName("");
+      setBranchName("");
+      setAccountNumber("");
+      setJobDuration("");
+      setCompanyName("");
+      setJobTitle("");
+      setManagerName("");
+      setManagerNumber("");
+      setPinCode("");
+      setDistrict("");
+      setState("");
+      setIFSCcode("");
+      setfetchIFSCCode("");
+      SetAdditionalCoursePhoto("");
+      SetQualificationPhoto("");
+      SetPancardPhoto("");
+      SetDrivingLicensePhoto("");
+      SetAddharPhoto("");
+    }
+  };
 
   return (
     <>
       <div className="add-engg-wrapper" onClick={closeModal}>
-      <div className="add-engg-modal" ref={mainDivRef}>
-        <div className="cross-icon" onClick={closeModal} style={{cursor:'pointer'}}>
-          <RxCross2 />
-        </div>
+        <div
+          className="add-engg-modal"
+          ref={mainDivRef}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div
+            className="cross-icon"
+            onClick={closeModal}
+            style={{ cursor: "pointer" }}
+          >
+            <RxCross2 />
+          </div>
 
-        {/* --------------------------------------------------------------------------- Engineer Personal details section starts--------------------------------------------------------------------------- */}
-        <div className="outerMainMoodule">
-          <div className="EnggAddressSection">
-            <div className="EnggDetailSection">
-              <div className="EnggDetailHeading">Engineer details</div>
-              <div className="EnggDetailInputField">
-                <div
-                  className="imageUploadDiv"
-                  onClick={() => handleUploadClick("profilePhoto")}
-                  style={{ cursor: "pointer" }}
-                >
-                  <input
-                    type="file"
-                    onChange={(e) => handleUpload(e, "profilePhoto")}
-                    style={{ display: "none" }}
-                    ref={fileInputRef5} // Attach fileInputRef to the input element
-                    data-documentType="profilePhoto"
-                  />
+          {/* --------------------------------------------------------------------------- Engineer Personal details section starts--------------------------------------------------------------------------- */}
+          <div className="outerMainMoodule">
+            <div className="EnggAddressSection">
+              <div className="EnggDetailSection">
+                <div className="EnggDetailHeading">Engineer details</div>
+                <div className="EnggDetailInputField">
+                  <div
+                    className="imageUploadDiv"
+                    onClick={() => handleUploadClick("profilePhoto")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "8px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        objectFit: "contain",
+                        border: "none",
+                      }}
+                      src={
+                        profilePhoto
+                          ? URL.createObjectURL(profilePhoto)
+                          : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                      }
+                    ></img>
+                    <input
+                      type="file"
+                      name="fields[]"
+                      onChange={(e) => setProfilePhoto(e.target.files[0])}
+                      style={{ display: "none" }}
+                      ref={fileInputRef5} // Attach fileInputRef to the input element
+                    />
+                  </div>
+                  <div className="personalDetailSec">
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="text"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Last Name"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </div>
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="text"
+                        placeholder="Mobile no"
+                        required
+                        value={mobileNumber}
+                        onChange={(e) => setMobileNumber(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Date of Birth"
+                        required
+                        value={dateOfBirth}
+                        onChange={(e) => setDateOfBirth(e.target.value)}
+                      />
+                    </div>
+                    <div className="PersonalDetailInputEmail">
+                      <input
+                        type="text"
+                        placeholder="Email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="personalDetailSec">
-                  <div className="PersonalDetailInput">
-                    <input type="text" placeholder="First Name" required value={firstName} onChange={(e)=> setFirstName(e.target.value)}/>
-                    <input type="text" placeholder="Last Name" required value={lastName} onChange={(e)=> setLastName(e.target.value)} />
+              </div>
+              {/* --------------------------------------------------------------------------- Address details section starts--------------------------------------------------------------------------- */}
+
+              <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Address details</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="EnggAddressInput">
+                    <input
+                      type="text"
+                      placeholder="Address"
+                      required
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
                   </div>
-                  <div className="PersonalDetailInput">
-                    <input type="text" placeholder="Mobile no" required  value={mobileNumber} onChange={(e)=> setMobileNumber(e.target.value)}/>
-                    <input type="text" placeholder="Date of Birth" required  value={dateOfBirth} onChange={(e)=> setDateOfBirth(e.target.value)}/>
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="number"
+                        placeholder="Pincode"
+                        required
+                        value={pinCode}
+                        onChange={handlePinCodeInput}
+                      />
+                      <input
+                        type="text"
+                        placeholder="City"
+                        required
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      />
+                    </div>
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="text"
+                        placeholder="District"
+                        required
+                        value={district}
+                      />
+                      <input
+                        type="text"
+                        placeholder="State"
+                        required
+                        value={state}
+                      />
+                    </div>
                   </div>
-                  <div className="PersonalDetailInputEmail">
-                    <input type="text" placeholder="Email" required  value={email} onChange={(e)=> setEmail(e.target.value)}/>
+                </div>
+              </div>
+              {/* ---------------------------------------------------------------------------  Government IDs section starts--------------------------------------------------------------------------- */}
+              <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Government IDs</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[0] = el)}
+                          onClick={() => handleClick(0)}
+                          style={{ outline: "none" }}
+                        >
+                          <input
+                            type="text"
+                            placeholder="Aadhaar Card No"
+                            required
+                            style={{ outline: "none" }}
+                            value={addharCardNumber}
+                            onChange={(e) =>
+                              setAddharCardNumber(e.target.value)
+                            }
+                          />
+                          <input
+                            type="file"
+                            onChange={(e) => SetAddharPhoto(e.target.files[0])}
+                            style={{ display: "none" }}
+                            ref={fileInputRef} // Attach fileInputRef to the input element
+                          />
+                          <SlLink
+                            style={{ marginRight: "18px", cursor: "pointer" }}
+                            onClick={() => handleUploadClick("aadhar")}
+                          />
+                        </div>
+                        <p>{addharPhoto.name}</p>
+                      </div>
+
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[1] = el)}
+                          onClick={() => handleClick(1)}
+                          style={{ outline: "none" }}
+                        >
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) => SetPancardPhoto(e.target.files[0])}
+                            style={{ display: "none" }}
+                            ref={fileInputRef1} // Attach fileInputRef to the input element
+                          />
+                          <input
+                            type="text"
+                            placeholder="Pancard No"
+                            required
+                            style={{ outline: "none" }}
+                            value={pancards}
+                            onChange={(e) => setPancard(e.target.value)}
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() => handleUploadClick("panCard")}
+                          />
+                        </div>
+                        <p>{pancardPhoto.name}</p>
+                      </div>
+                    </div>
+
+                    <div className="addFileName">
+                      <div className="PersonalDetailInput">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[2] = el)}
+                          onClick={() => handleClick(2)}
+                          style={{ outline: "none", width: "49%" }}
+                        >
+                          <input
+                            type="text"
+                            placeholder="Driving License No"
+                            required
+                            style={{ outline: "none" }}
+                            value={drivingLisience}
+                            onChange={(e) => setDrivingLisience(e.target.value)}
+                          />
+
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetDrivingLicensePhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef2} // Attach fileInputRef to the input element
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() => handleUploadClick("drivingLicense")}
+                          />
+                        </div>
+                      </div>
+                      <p>{drivingLicensePhoto.name}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
+
+              <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Educational details</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <AddEnggAttachment
+                            width="100%"
+                            placeholder="Select Qualification"
+                            Details={QualificationData}
+                            padding="4px"
+                            onStateChange={onStateChange}
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetQualificationPhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef3} // Attach fileInputRef to the input element
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("QualificationPhoto")
+                            }
+                          />
+                        </div>
+                        <p>{qualificationPhoto.name}</p>
+                      </div>
+
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <input
+                            type="text"
+                            placeholder="Additional Course"
+                            required
+                            style={{ outline: "none" }}
+                            value={additionalCourse}
+                            onChange={(e) =>
+                              setAdditionalCourse(e.target.value)
+                            }
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetAdditionalCoursePhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef4} // Attach fileInputRef to the input element\
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("AdditionalCoursePhoto")
+                            }
+                          />
+                        </div>
+                        <p>{additionalCoursePhoto.name}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            {/* --------------------------------------------------------------------------- Address details section starts--------------------------------------------------------------------------- */}
+            {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 
-            <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Address details</div>
-              <div className="ExtraCiricularSectionInputFields">
-                <div className="EnggAddressInput">
-                  <input type="text" placeholder="Address" required value={address} onChange={(e) => setAddress(e.target.value)}/>
-                </div>
-                <div className="mainPersonalDetialSection">
-                  <div className="PersonalDetailInput">
-                    <input
-                      type="number"
-                      placeholder="Pincode"
-                      required
-                      value={pinCode}
-                      onChange={handlePinCodeInput}
-                    />
-                    <input type="text" placeholder="City" required value={city} onChange={(e) => setCity(e.target.value)}/>
-                  </div>
-                  <div className="PersonalDetailInput">
-                    <input
-                      type="text"
-                      placeholder="District"
-                      required
-                      value={district}
-                    />
-                    <input
-                      type="text"
-                      placeholder="State"
-                      required
-                      value={state}
-                    />
+            <div className="BankWorkSection">
+              <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Banking Details</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="text"
+                        placeholder="Account Holder Name"
+                        required
+                        value={accountHolderName}
+                        onChange={(e) => setAccountHolderName(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Branch Name"
+                        required
+                        value={branchName}
+                        onChange={(e) => setBranchName(e.target.value)}
+                      />
+                    </div>
+                    <div className="PersonalDetailInput">
+                      <input
+                        type="text"
+                        placeholder="Account Number"
+                        required
+                        value={accountNumber}
+                        onChange={(e) => setAccountNumber(e.target.value)}
+                      />
+                      <div className="smallifcCodeSuggestion">
+                        <input
+                          type="text"
+                          placeholder="IFSC Code"
+                          required
+                          value={IFSCcode}
+                          onChange={handleIFSCcode}
+                        />
+                        <p>{fetchIFSCCode}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* ---------------------------------------------------------------------------  Government IDs section starts--------------------------------------------------------------------------- */}
-            <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Government IDs</div>
-              <div className="ExtraCiricularSectionInputFields">
-                <div className="mainPersonalDetialSection">
-                  <div className="PersonalDetailInput">
-                    <div className="addFileName">
-                      <div
-                        className="inputWithAttachment"
-                        ref={(el) => (divRef.current[0] = el)}
-                        onClick={() => handleClick(0)}
-                        style={{ outline: "none" }}
-                      >
-                        <input
-                          type="text"
-                          placeholder="Aadhaar Card No"
-                          required
-                          style={{ outline: "none" }}
-                          value={addharCardNumber}
-                          onChange={(e) => setAddharCardNumber(e.target.value)}
-                        />
-                        <input
-                          type="file"
-                          onChange={(e) => handleUpload(e, "addhar")}
-                          style={{ display: "none" }}
-                          ref={fileInputRef} // Attach fileInputRef to the input element
-                          data-documentType="aadhar"
-                        />
-                        <SlLink
-                          style={{ marginRight: "18px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("aadhar")}
-                        />
-                      </div>
-                      <p>{addharPhoto}</p>
-                    </div>
+              <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Work Experience</div>
 
-                    <div className="addFileName">
-                      <div
-                        className="inputWithAttachment"
-                        ref={(el) => (divRef.current[1] = el)}
-                        onClick={() => handleClick(1)}
-                        style={{ outline: "none" }}
-                      >
-                        <input
-                          type="file"
-                          onChange={(e) => handleUpload(e, "panCard")}
-                          style={{ display: "none" }}
-                          ref={fileInputRef1} // Attach fileInputRef to the input element
-                          data-documentType="panCard"
-                        />
-                        <input
-                          type="text"
-                          placeholder="Pancard No"
-                          required
-                          style={{ outline: "none" }}
-                          value={pancards}
-                          onChange={(e) => setPancard(e.target.value)}
-                        />
-                        <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("panCard")}
-                        />
-                      </div>
-                      <p>{pancardPhoto}</p>
-                    </div>
-                  </div>
-
-                  <div className="addFileName">
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
                     <div className="PersonalDetailInput">
                       <div
-                        className="inputWithAttachment"
-                        ref={(el) => (divRef.current[2] = el)}
-                        onClick={() => handleClick(2)}
-                        style={{ outline: "none", width: "49%" }}
+                        className="workExperienceCheckbox"
+                        style={{ width: showWorkExperience ? "100%" : "50%" }}
                       >
                         <input
                           type="text"
-                          placeholder="Driving License No"
+                          placeholder="Previos Work Experience"
                           required
-                          style={{ outline: "none" }}
-                          value={drivingLisience}
-                          onChange={(e) => setDrivingLisience(e.target.value)}
+                          style={{ border: "none", outline: "none" }}
                         />
-
-                        <input
-                          type="file"
-                          onChange={(e) => handleUpload(e, "drivingLicense")}
-                          style={{ display: "none" }}
-                          ref={fileInputRef2} // Attach fileInputRef to the input element
-                          data-documentType="drivingLicense"
-                        />
-                        <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("drivingLicense")}
+                        <CheckBox
+                          style={{ marginTop: "4px" }}
+                          handleCheckboxChange={handleCheckboxChange}
                         />
                       </div>
-                    </div>
-                    <p>{drivingLicensePhoto}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
-
-            <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Educational details</div>
-              <div className="ExtraCiricularSectionInputFields">
-                <div className="mainPersonalDetialSection">
-                  <div className="PersonalDetailInput">
-                    <div className="addFileName">
-                      <div
-                        className="inputWithAttachment"
-                        ref={(el) => (divRef.current[4] = el)}
-                        onClick={() => handleClick(4)}
-                        style={{ outline: "none" }}
-                      >
-                        <AddEnggAttachment
-                          width="100%"
-                          placeholder="Select Qualification"
-                          Details={QualificationData}
-                          padding="4px"
-                          onStateChange={onStateChange}
-                        />
-                        <input
-                          type="file"
-                          onChange={(e) =>
-                            handleUpload(e, "QualificationPhoto")
-                          }
-                          style={{ display: "none" }}
-                          ref={fileInputRef3} // Attach fileInputRef to the input element
-                          data-documentType="QualificationPhoto"
-                        />
-                        <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() =>
-                            handleUploadClick("QualificationPhoto")
-                          }
-                        />
-                      </div>
-                      <p>{qualificationPhoto}</p>
-                    </div>
-
-                    <div className="addFileName">
-                      <div
-                        className="inputWithAttachment"
-                        ref={(el) => (divRef.current[4] = el)}
-                        onClick={() => handleClick(4)}
-                        style={{ outline: "none" }}
-                      >
+                      {showWorkExperience && (
                         <input
                           type="text"
-                          placeholder="Additional Course"
+                          placeholder="Duration of Job"
                           required
-                          style={{ outline: "none" }}
-                          value={additionalCourse}
-                          onChange={(e) => setAdditionalCourse(e.target.value)}
+                          value={jobDuration}
+                          onChange={(e) => setJobDuration(e.target.value)}
                         />
+                      )}
+                    </div>
+
+                    <div className="PersonalDetailInput">
+                      {showWorkExperience && (
                         <input
-                          type="file"
-                          onChange={(e) =>
-                            handleUpload(e, "AdditionalCoursePhoto")
-                          }
-                          style={{ display: "none" }}
-                          ref={fileInputRef4} // Attach fileInputRef to the input element
-                          data-documentType="AdditionalCoursePhoto"
+                          type="text"
+                          placeholder="Company Name"
+                          required
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
                         />
-                        <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() =>
-                            handleUploadClick("AdditionalCoursePhoto")
-                          }
+                      )}
+                      {showWorkExperience && (
+                        <input
+                          type="text"
+                          placeholder="Job title"
+                          required
+                          value={jobTitle}
+                          onChange={(e) => setJobTitle(e.target.value)}
                         />
-                      </div>
-                      <p>{additionalCoursePhoto}</p>
+                      )}
+                    </div>
+                    <div className="PersonalDetailInput">
+                      {showWorkExperience && (
+                        <input
+                          type="text"
+                          placeholder="Manager Name"
+                          required
+                          value={managerName}
+                          onChange={(e) => setManagerName(e.target.value)}
+                        />
+                      )}
+                      {showWorkExperience && (
+                        <input
+                          type="text"
+                          placeholder="Manager No"
+                          required
+                          value={managerNumber}
+                          onChange={(e) => setManagerNumber(e.target.value)}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="addEnggButtons">
+                <button class="button-69-cancel" role="button">
+                  Cancel
+                </button>
+                <button
+                  class="button-69"
+                  role="button"
+                  onClick={(e) => handleSaveEnggProfileData(e)}
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
-          {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
-
-          <div className="BankWorkSection">
-            <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Banking Details</div>
-              <div className="ExtraCiricularSectionInputFields">
-                <div className="mainPersonalDetialSection">
-                  <div className="PersonalDetailInput">
-                    <input
-                      type="text"
-                      placeholder="Account Holder Name"
-                      required
-                      value={accountHolderName}
-                      onChange={(e) => setAccountHolderName(e.target.value)}
-                    />
-                    <input type="text" placeholder="Branch Name" required value={branchName} onChange={(e) => setBranchName(e.target.value)}
-/>
-                  </div>
-                  <div className="PersonalDetailInput">
-                    <input type="text" placeholder="Account Number" required value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)}/>
-                    <div className="smallifcCodeSuggestion">
-                      <input
-                        type="text"
-                        placeholder="IFSC Code"
-                        required
-                        value={IFSCcode}
-                        onChange={handleIFSCcode}
-                      />
-                      <p>{fetchIFSCCode}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Work Experience</div>
-
-              <div className="ExtraCiricularSectionInputFields">
-                <div className="mainPersonalDetialSection">
-                  <div className="PersonalDetailInput">
-                    <div
-                      className="workExperienceCheckbox"
-                      style={{ width: showWorkExperience ? "100%" : "50%" }}
-                    >
-                      <input
-                        type="text"
-                        placeholder="Previos Work Experience"
-                        required
-                        style={{ border: "none", outline: "none" }}
-                      />
-                      <CheckBox
-                        style={{ marginTop: "4px" }}
-                        handleCheckboxChange={handleCheckboxChange}
-                      />
-                    </div>
-
-                    {showWorkExperience && (
-                      <input
-                        type="text"
-                        placeholder="Duration of Job"
-                        required
-                        value={jobDuration}
-                        onChange={(e) => setJobDuration(e.target.value)}
-                      />
-                    )}
-                  </div>
-
-                  <div className="PersonalDetailInput">
-                    {showWorkExperience && (
-                      <input type="text" placeholder="Company Name" required  value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}/>
-                    )}
-                    {showWorkExperience && (
-                      <input type="text" placeholder="Job title" required  value={jobTitle}
-                      onChange={(e) => setJobTitle(e.target.value)}/>
-                    )}
-                  </div>
-                  <div className="PersonalDetailInput">
-                    {showWorkExperience && (
-                      <input type="text" placeholder="Manager Name" required  value={managerName}
-                      onChange={(e) => setManagerName(e.target.value)}/>
-                    )}
-                    {showWorkExperience && (
-                      <input type="text" placeholder="Manager No" required  value={managerNumber}
-                      onChange={(e) => setManagerNumber(e.target.value)}/>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="addEnggButtons">
-              <button class="button-69-cancel" role="button">
-                Cancel
-              </button>
-              <button class="button-69" role="button" onClick={handleSaveEnggProfileData}>
-                Save
-              </button>
-            </div>
-          </div>
+          {/* -------------------------------------------------------------------------------------------------------------------------------- */}
         </div>
-        {/* -------------------------------------------------------------------------------------------------------------------------------- */}
       </div>
-      </div>
-    
     </>
   );
 };

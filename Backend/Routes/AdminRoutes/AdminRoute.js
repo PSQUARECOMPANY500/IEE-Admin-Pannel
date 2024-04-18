@@ -87,7 +87,7 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.post("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
+router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);  
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
@@ -110,8 +110,9 @@ router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+
 //api for assignedEnggDetails
-router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+// router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
 
 
@@ -127,8 +128,27 @@ router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDeta
 
 
 
+// --by Preet 02/04/2024 ------------
+router.get("/getSparePartRequest/:EnggId",adminContoller.getSparePartRequestByEngg); 
+//--- by Preet 03/04/2024
+router.post("/ApproveDenySparepart", adminContoller.ApproveDenySparePartRequest);
+router.get("/fetchAllotedSparePart/:EnggId", adminContoller.fetchAllotedSparePart);
+router.get("/fetchDeniedSparePart/:EnggId", adminContoller.fetchDeniedSparePart);
 
 
+//--- by Preet 10/04/2024
+router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
+
+
+
+
+
+
+
+// retain routes again 03/04/2024   ------------
+router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
+router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
+router.post("/updatePassword",adminContoller.updatePassword);
 
 
 

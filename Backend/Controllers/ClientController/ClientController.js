@@ -10,6 +10,13 @@ const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSche
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
+const assignService = require("../../Modals/ServiceEngineerModals/AssignServiceRequest")
+const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks")
+
+const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
+
+const ReportTable = require("../../Modals/ReportModal/ReportModal");
+
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -548,3 +555,63 @@ module.exports.Rating = async (req, res) => {
     res.status(500).json({ error: "Error for creating service Request" });
   }
 }; */
+
+
+
+//==================================================================
+//==================================================================
+//function to handle fetch Client Service history past and previos history
+
+module.exports.fetchClientServiceHistory = async (req,res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const currentDate = new Date().toLocaleDateString("en-GB");
+
+    const callbackHistory = await assignCallback.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber callbackId Message Date")
+  const serviceRequestHistory = await assignService.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber RequestId Message Date")
+
+  const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
+
+   // Fetching engineer names for ServiceEnggId
+   const enggIds = combinedHistory.map(entry => entry.ServiceEnggId);
+   const enggNames = await ServiceEnggBasicSchema.find({ EnggId: { $in: enggIds } }).select("EnggId  EnggName");
+   const enggNameMap = enggNames.reduce((acc, curr) => {
+     acc[curr.EnggId] = curr.EnggName;
+     return acc;
+   }, {});
+
+
+     // Fetching payment details for callbackIds
+     const callbackIds = callbackHistory.map(entry => entry.callbackId);
+     const paymentDetails = await ReportTable.find({ serviceId: { $in: callbackIds } }).select("paymentDetils");
+     const paymentDetailsMap = paymentDetails.reduce((acc, curr) => {
+       acc[curr.serviceId] = curr.paymentDetils;
+       return acc;
+     }, {});
+
+
+       // Enriching history with engineer names and payment details
+       const enrichedHistory = combinedHistory.map(entry => ({
+        ...entry._doc,
+        enggName: enggNameMap[entry.ServiceEnggId],
+        paymentDetails: paymentDetailsMap[entry.callbackId]
+      }));
+
+
+  const latestDateEntry = enrichedHistory.filter(entry => entry.Date === currentDate);
+  const previousHistory = enrichedHistory.filter(entry => entry.Date !== currentDate);
+
+  const pastHistory = previousHistory.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+
+  res.status(200).json({ previousHistory: latestDateEntry, pastHistory});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while fetching client service History" });
+  }
+}
+
+
+//==================================================================
+//==================================================================

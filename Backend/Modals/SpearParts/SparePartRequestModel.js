@@ -7,34 +7,42 @@ const SparePartsRequestSchema = new Schema({
   },
   sparePartId: {
     type: String,
-    // required: true,
+    // required: true,   (todo - in future)
   },
   quantity: {
     type: String,
   },
   Type: {
     type: String,
-    // required: true,
+    // required: true,  (todo - in future)
   },
   Description: {
     type: String,
   },
   RequestType: {
     type: String,
-    // required: true,
+    // required: true,  (todo - in future)
   },
   sparePartName: {
     type: String,
-    // required: true,
+    // required: true,   (todo - in future)
   },
 
   SubSparePartName: {
     type: String,
-    // required: true,
+    // required: true,   (todo - in future)
   },
   Date: {
     type: String,
     required: true,
+  },
+  isApproved: {
+    type: Boolean,
+    default: false,
+  },
+  isDenied: {
+    type: Boolean,
+    default: false,
   },
 });
 

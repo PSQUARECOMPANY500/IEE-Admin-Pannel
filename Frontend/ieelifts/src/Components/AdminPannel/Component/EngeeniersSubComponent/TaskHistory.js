@@ -3,7 +3,9 @@ import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { assignedEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const TaskHistory = () => {
+const TaskHistory = (props) => {
+  const { engID } = props;
+  console.log(engID)
   const [serviceData, setServiceData] = useState([]);
   const [callBackData, setCallBackData] = useState([]);
   const [isLoadData, setIsLoadData] = useState(false);
@@ -11,7 +13,7 @@ const TaskHistory = () => {
   const Data = useSelector((state) => state?.AdminRootReducer?.fetchassignedEnggDetailsReducer?.EnggDetails);
 
   useEffect(() => {
-    dispatch(assignedEnggDetails("20001005"));//hard coded data will be fixed by aayush
+    dispatch(assignedEnggDetails(engID));
   }, []);
 
   useEffect(() => {

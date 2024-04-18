@@ -11,7 +11,7 @@ const ClientReferals = new Schema({
         required:true
     },
     Number:{
-        type:Number,
+        type:String,
         required:true
     },
     City:{
