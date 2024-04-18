@@ -3,17 +3,18 @@ import AllottedSpareParts from "./AllottedSpareParts";
 import SparePartRequests from "./SparePartRequests";
 import Revenue from "./Revenue";
 
-const SpareParts = () => {
+const SpareParts = (props) => {
+  const {engID}=props;
 
   const [currentComponent, setCurrentComponent] = useState(null)
   const renderSelectedComponent = () => {
     switch (currentComponent) {
       case "c1":
-        return < AllottedSpareParts />;
+        return < AllottedSpareParts  engID={engID} />;
       case "c2":
-        return <SparePartRequests />;
+        return <SparePartRequests  engID={engID}/>;
       case "c3":
-        return <Revenue />;
+        return <Revenue  />;
       default:
         return <Revenue />;
     }

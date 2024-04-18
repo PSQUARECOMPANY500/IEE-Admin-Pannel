@@ -49,7 +49,7 @@ const EngeeniersSubCard = (props) => {
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    // handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
+    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
   };
 
 
@@ -71,7 +71,7 @@ const EngeeniersSubCard = (props) => {
                   <div class="table-item">RATING</div>
                   <div class="table-item">{e.averageRating}</div>
                   <div class="table-item">LEAVES</div>
-                  <div class="table-item">LEAVES</div>
+                  <div class="table-item">0</div>
                 </div>
               </div>
             </div>

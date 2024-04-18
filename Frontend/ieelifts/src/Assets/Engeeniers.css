@@ -1166,6 +1166,24 @@ tr>td:nth-child(2) {
   border-radius: 5px;
 }
 
+/* armaan */
+.leave_Details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  text-transform: capitalize;
+  gap: 2rem;
+}
+
+.leave_dates {
+  font-size: 0.8rem;
+  color: #444444;
+}
+
+/* armaan */
+
 .OldCardData h5 {
   font-family: 'Poppins';
   font-weight: 500;
@@ -1177,12 +1195,16 @@ tr>td:nth-child(2) {
 }
 
 .OldCardData:nth-child(1) {
-
   background-color: #FEF3DE;
   box-shadow: inset 1px 2px 3px #99886B66;
   width: 60px;
   height: 50px;
   border-radius: 5px;
+}
+
+.RejecTedCard {
+  background-color: #C10000 !important;
+  color: white !important;
 }
 
 .OldLeaveCard>.OldCardData:nth-child(2) {
@@ -1250,11 +1272,8 @@ tr>td:nth-child(2) {
   width: 100%;
   border: 1px solid #00000029;
   border-radius: 10px;
-
-
-
-
 }
+
 
 .SubLeaveHistoryBottom h5 {
   color: #1D1D1D;
@@ -1344,13 +1363,16 @@ tr>td:nth-child(2) {
   color: #1D1D1D;
 }
 
+/* armaan */
 .ResContainer {
   padding: 1rem 1rem;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
-
+  color: #444444;
 }
+
+/* armaan */
 
 .Buttons {
   width: 100%;
@@ -1901,12 +1923,14 @@ tr>td:nth-child(2) {
 .spare-part-req-card-container {
   height: 100%;
   width: 100%;
+  max-height: 670px;
+  overflow-y: auto;
 
 }
 
 .spare-part-req-card {
   height: 20vh;
-  width: 100%;
+  width: 98%;
   border: 1px solid #E5E5E5;
   border-radius: 19px;
   position: relative;
@@ -1914,6 +1938,7 @@ tr>td:nth-child(2) {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  margin-top: 1rem;
 
 }
 
@@ -1928,9 +1953,17 @@ tr>td:nth-child(2) {
 
 .spare-part-req-card-col1 {
   width: 12%;
-
-
 }
+
+/* center the warning  by -> preet*/
+.center-warning {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+ 
+/* center the warning */
 
 
 
@@ -2058,6 +2091,7 @@ tr>td:nth-child(2) {
   border: 1px solid #F8AC1D;
   border-radius: 5px;
   opacity: 1;
+  cursor: pointer;
 }
 
 .spare-part-colums button:nth-child(2) {

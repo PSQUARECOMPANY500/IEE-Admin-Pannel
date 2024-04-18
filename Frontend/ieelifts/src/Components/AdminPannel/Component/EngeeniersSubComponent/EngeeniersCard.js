@@ -27,7 +27,7 @@ const EngeeniersCard = () => {
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
 
-  const handleEnggNameDoubleClick = (engId,engName,engImg) => {
+  const handleEnggNameDoubleClick = (engId, engName, engImg) => {
     setEngID(engId);
     setCurrentEngName(engName);
     setCurrentEngImg(engImg);
@@ -42,7 +42,7 @@ const EngeeniersCard = () => {
       case "c3":
         return <Rating />;
       case "c4":
-        return <SpareParts />;
+        return <SpareParts engID={engID}/>;
       default:
         return <TaskHistory engID={engID} />;
     }
@@ -59,7 +59,7 @@ const EngeeniersCard = () => {
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
-  
+
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -172,7 +172,7 @@ const EngeeniersCard = () => {
             <div className="PDetails">
               <div className="SubPDetails">
                 <div className="Pimg">
-                  <img src={currentengImg} alt="eng persnol image"/>
+                  <img src={currentengImg} alt="eng persnol image" />
                 </div>
                 <h1>
                   Name:<span>{currentEngName}</span>

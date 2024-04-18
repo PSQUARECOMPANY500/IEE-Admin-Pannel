@@ -46,6 +46,7 @@ const MessageBox = ({ onClose, EnggId }) => {
     ]);
     return () => {
       socket.off("connect");
+      socket.disconnect()
     };
   }, []);
   const chatCreated = useSelector((state) => {

@@ -34,6 +34,10 @@ const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilte
 
 const ForgetPassOTP = require("../../Modals/OTP/ForgetPasswordOtp");
 
+const SparePartTable = require("../../Modals/SpearParts/SparePartRequestModel");
+
+const ReportTable = require("../../Modals/ReportModal/ReportModal");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -232,16 +236,38 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
-        //extract only specific field
-
+        const ServiceRequestdetail = await getAllServiceRequest.findOne({
+          RequestId: item.RequestId,
+        });
+        // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientDetail ? clientDetail.name : null;
-
+        const ClientPhoto = clientDetail ? clientDetail.ProfileImage : null;
+        const ClientAddress = clientDetail ? clientDetail.Address : null;
+        const ClientPhoneNumber = clientDetail
+          ? clientDetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = ServiceRequestdetail
+          ? ServiceRequestdetail.TypeOfIssue
+          : null;
+        const ClientDescription = ServiceRequestdetail
+          ? ServiceRequestdetail.Description
+          : null;
+        const RepresentativeName =
+          ServiceRequestdetail.RepresentativeName || null;
+        const RepresentativeNumber =
+          ServiceRequestdetail.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber,
         };
       })
     );
@@ -269,7 +295,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-
+    // console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const enggDetail = await ServiceEnggData.findOne({
@@ -278,15 +304,40 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
+        const callbackdetail = await getAllCalbacks.findOne({
+          callbackId: item.callbackId,
+        });
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientdetail ? clientdetail.name : null;
-
+        const ClientPhoto = clientdetail ? clientdetail.ProfileImage : null;
+        const ClientAddress = clientdetail ? clientdetail.Address : null;
+        const ClientPhoneNumber = clientdetail
+          ? clientdetail.PhoneNumber
+          : null;
+        const ClientTypeOfIssue = callbackdetail
+          ? callbackdetail.TypeOfIssue
+          : null;
+        const ClientDescription = callbackdetail
+          ? callbackdetail.Description
+          : null;
+        const RepresentativeName = callbackdetail
+          ? callbackdetail.RepresentativeName
+          : null;
+        const RepresentativeNumber = callbackdetail
+          ? callbackdetail.RepresentativeNumber
+          : null;
         return {
           ...item._doc,
           enggName,
           clientName,
+          ClientPhoto,
+          ClientAddress,
+          ClientPhoneNumber,
+          ClientTypeOfIssue,
+          ClientDescription,
+          RepresentativeName,
+          RepresentativeNumber,
         };
       })
     );
@@ -1160,10 +1211,10 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const { ServiceEnggId, selectedDate } = req.body;
+    const { ServiceEnggId, selectedDate } = req.params;
+    // console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
-      console.log(selectedDate);
       const today = new Date(selectedDate);
 
       const dates = Array.from(
@@ -1172,7 +1223,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         },
         (_, i) => {
           const previousDay = new Date(today);
-          previousDay.setDate(today.getDate() - 3 + i);
+          previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
       );
@@ -1862,7 +1913,6 @@ const filterMembershipByType = (data, type) => {
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
-    console.log("this is location: ", location);
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -1897,7 +1947,6 @@ module.exports.getEngineerNames = async (req, res) => {
     const engineerDetails = await ServiceEnggData.find();
     let engineerNames = [];
 
-    console.log(engineerNames);
     engineerDetails.forEach((engineer) => {
       engineerNames.push(engineer.EnggName);
     });
@@ -1917,7 +1966,6 @@ module.exports.getEngineerNames = async (req, res) => {
 module.exports.createSpearParts = async (req, res) => {
   try {
     const { SpearPart, subcategoryName } = req.body;
-    //console.log("chutiye",SpearPart , subcategoryName);
     if (SpearPart && subcategoryName) {
       const response = await SpearParts.create({
         SpearPart: SpearPart,
@@ -1950,8 +1998,6 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
 
     let otp = await ForgetPassOTP.findOne({ email });
 
-    console.log(emailVerify);
-
     if (!emailVerify) {
       return res
         .status(401)
@@ -1962,7 +2008,7 @@ module.exports.sendPasswordResetOTPOnEmail = async (req, res) => {
     const otpValue = Math.floor(1000 + Math.random() * 9000);
 
     if (otp) {
-      otp.otp = otpValue.toString(); 
+      otp.otp = otpValue.toString();
     } else {
       otp = new ForgetPassOTP({
         email: email,
@@ -2037,7 +2083,7 @@ module.exports.ValidateOTPForgetPassword = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({
       error: "Internal server error while validatin the OTP",
     });
@@ -2073,3 +2119,459 @@ module.exports.updatePassword = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// {/armaan-dev}
+
+// get engineer leaves History
+module.exports.getEngineerLeaveHistory = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved !== "false");
+    res.status(200).json({
+      success: true,
+      sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+// get engineer leaves requests
+module.exports.getEngineerRequestedLeave = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find({
+      ServiceEnggId,
+    });
+
+    const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+    res.status(200).json({
+      success: true,
+      leaves: sentLeaves,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Internal server error",
+    });
+  }
+};
+
+// take action on leave (approve or reject)
+module.exports.takeActionOnLeave = async (req, res) => {
+  try {
+    const { IsApproved, _id } = req.query;
+    const leaves = await EnggLeaveServiceRecord.find();
+    if (!leaves || leaves.length === 0) {
+      return res.status(404).json({ error: "Leave not found" });
+    }
+    const last = leaves.find((leave) => leave._id == _id);
+    if (!last) {
+      return res.status(404).json({ error: "Leave not found" });
+    }
+
+    // const approvedLeaves = leaves
+    //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
+    //   .sort((leaveA, leaveB) => {
+    //     const dateA = new Date(leaveA.Date);
+    //     const dateB = new Date(leaveB.Date);
+    //     return dateA - dateB;
+    //   });
+
+    const approvedLeaves = leaves
+      .filter(
+        (leave) =>
+          leave.IsApproved === "Approved" &&
+          leave.ServiceEnggId === last.ServiceEnggId
+      )
+      .sort((leaveA, leaveB) => {
+        const [monthA, dateA, yearA] = new Date(leaveA.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const [monthB, dateB, yearB] = new Date(leaveB.Date)
+          .toLocaleDateString("en-US")
+          .split("/");
+        const dateStrA = `${monthA}/${dateA}/${yearA}`;
+        const dateStrB = `${monthB}/${dateB}/${yearB}`;
+        return new Date(dateStrA) - new Date(dateStrB);
+      });
+
+    if (IsApproved === "Approved") {
+      last.IsApproved = "Approved";
+      const [fromDay, fromMonth, fromYear] = last.Duration.From.split("/");
+      const [toDay, toMonth, toYear] = last.Duration.To.split("/");
+
+      const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
+      const toDate = new Date(toYear, toMonth - 1, toDay);
+      const diffTime = Math.abs(toDate - fromDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave =
+          approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
+      } else {
+        last.UsedLeave = diffDays + 1;
+      }
+    } else {
+      last.IsApproved = "Rejected";
+      if (approvedLeaves.length > 0) {
+        last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave;
+      }
+    }
+    // console.log(last);
+    await last.save();
+    res.status(200).json({
+      success: true,
+      message: "Leave status updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// {/armaan-dev}
+
+// amit api // 29/03/2024
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//controller to handdle get task histroy of service engg
+module.exports.assignedEnggDetails = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+    // console.log(ServiceEnggId)
+    if (ServiceEnggId) {
+      const assignCallbacks = await ServiceAssigntoEngg.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+      const assignServiceRequests = await AssignSecheduleRequest.find({
+        ServiceEnggId: ServiceEnggId,
+        ServiceProcess: "completed",
+      });
+      const assignCallbacksWithClientName = await Promise.all(
+        assignCallbacks.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+      const assignServiceRequestsWithClientName = await Promise.all(
+        assignServiceRequests.map(async (assignment) => {
+          const client = await clientDetailSchema.findOne({
+            JobOrderNumber: assignment.JobOrderNumber,
+          });
+          return {
+            ...assignment._doc,
+            ClientName: client?.name,
+            ClientAddress: client?.Address,
+          };
+        })
+      );
+      const assignCallbacksDetails = assignCallbacksWithClientName.map(
+        (data) => ({
+          date: data.Date,
+          ServiceId: data.callbackId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        })
+      );
+      const assignServiceRequestsDetails =
+        assignServiceRequestsWithClientName.map((data) => ({
+          date: data.Date,
+          ServiceId: data.RequestId,
+          ServiceEnggId: data.ServiceEnggId,
+          JobOrderNumber: data.JobOrderNumber,
+          Slot: data.Slot,
+          name: data?.ClientName,
+          address: data?.ClientAddress,
+        }));
+      const assignCallbacksWithRating = await Promise.all(
+        assignCallbacksDetails.map(async (assignment) => {
+          const Rating = await EnggRating.find({
+            ServiceEnggId: assignment.ServiceId,
+          });
+          console.log("rating", Rating);
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+      const assignServiceRequestsWithRating = await Promise.all(
+        assignServiceRequestsDetails.map(async (assignment) => {
+          const Rating = await EnggRating.find({
+            ServiceEnggId: assignment.ServiceId,
+          });
+          return {
+            ...assignment,
+            rating: Rating.Rating,
+          };
+        })
+      );
+      return res.status(200).json({
+        assignServiceRequests: assignServiceRequestsWithRating,
+        assignCallbacks: assignCallbacksWithRating,
+      });
+    }
+    return res.status(400).json({ message: "ServiceEnggId not found" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in assignedEnggDetails" });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle fetchSpare Part Request By the Engg
+//by preet 02/04/2024
+
+module.exports.getSparePartRequestByEngg = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+    const spareParts = await SparePartTable.find({ EnggId });
+
+    const filteredSpareParts = spareParts.filter(
+      (sparePart) =>
+        sparePart.isApproved === false && sparePart.isDenied === false
+    );
+
+    return res.status(200).json({ filteredSpareParts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while Fetching The Spare Part Details",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+
+//function to handle Deny, Approve spare part Request.
+
+module.exports.ApproveDenySparePartRequest = async (req, res) => {
+  try {
+    const { RequestId, isApproved, isDenied } = req.body;
+
+    const sparePartData = await SparePartTable.findOneAndUpdate(
+      { _id: RequestId },
+      { isApproved: isApproved, isDenied: isDenied },
+      { new: true }
+    );
+
+    if (!sparePartData) {
+      return res
+        .status(400)
+        .json({ message: "No SparePart Request fing this Id" });
+    }
+
+    res.status(200).json({
+      message: "SparePart Request Updated Successfully",
+      sparePartData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while handling Approved and Deny Request",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+// function to handle fetch alloted spare part in Admin Pannel
+
+module.exports.fetchAllotedSparePart = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const allotedSparePart = await SparePartTable.find({ EnggId });
+
+    if (allotedSparePart.length < 0) {
+      return res
+        .status(400)
+        .json({ message: "No sparePart Data is found to this EggId" });
+    }
+
+    const FilterAllotedSparePart = allotedSparePart.filter(
+      (data) => data.isApproved === true && data.isDenied === false
+    );
+
+    res.status(200).json({ FilterAllotedSparePart });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Alloted Spare Part",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+// function to handle fetch denied sparePart
+
+module.exports.fetchDeniedSparePart = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const deniedSparePart = await SparePartTable.find({ EnggId });
+
+    if (deniedSparePart.length < 0) {
+      return res
+        .status(400)
+        .json({ message: "No Denied sparePart Data is found to this EggId" });
+    }
+
+    const FilterDeniedSparePartRequest = deniedSparePart.filter(
+      (data) => data.isApproved === false && data.isDenied === true
+    );
+
+    res.status(200).json({ FilterDeniedSparePartRequest });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Alloted Spare Part",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// 10/04/2024 - preet
+// function to fetch Report For Admin (Complex API I think)   ( toDo - Integration in admin pannel)
+
+module.exports.fetchReportForAdmin = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    const ReportData = await ReportTable.findOne({ serviceId });
+
+    const MCRoom = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+
+    const CabinFloors = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+    const CartopShaft = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+    const PitArea = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+
+    const ReportImages = ReportData.subCategoriesphotos;
+
+    const sortedData = (keys, arr) => {
+      const arrData = arr.filter(
+        (question) =>
+          (question.questionResponse.isResolved &&
+            question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+            question.questionResponse.sparePartDetail.subsparePartspartid !==
+              "") ||
+          (question.questionResponse.isResolved &&
+            question.questionResponse.SparePartDescription !== "") ||
+          !question.questionResponse.isResolved
+      );
+
+      arrData.forEach((item) => {
+        if (item.questionResponse.isResolved) {
+          keys.IssuesResolved.push(item);
+        } else {
+          keys.IssuesNotResolved.push(item);
+        }
+        if (
+          !item.questionResponse.isSparePartRequest &&
+          item.questionResponse.sparePartDetail.sparePartsType !== "" &&
+          item.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+          item.questionResponse.isResolved
+        ) {
+          keys.SparePartsChanged.push(item);
+        }
+
+        if (
+          item.questionResponse.isSparePartRequest &&
+          item.questionResponse.sparePartDetail.sparePartsType !== "" &&
+          item.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+          !item.questionResponse.isResolved
+        ) {
+          keys.SparePartsRequested.push(item);
+        }
+      });
+    };
+    const transformedData = ReportData.questionsDetails.reduce((acc, item) => {
+      if (!acc[item.subcategoryname]) {
+        acc[item.subcategoryname] = [];
+      }
+      acc[item.subcategoryname].push(item);
+
+      return acc;
+    }, {});
+
+    Object.keys(transformedData).forEach((key) => {
+      if (key === "M/C Room") {
+        sortedData(MCRoom, transformedData[key]);
+      } else if (key === "Cabin, Floors") {
+        sortedData(CabinFloors, transformedData[key]);
+      } else if (key === "Cartop ,Shaft") {
+        sortedData(CartopShaft, transformedData[key]);
+      } else if (key === "Pit Area") {
+        sortedData(PitArea, transformedData[key]);
+      }
+    });
+
+    const finalReportedData = {
+      MCRoom,
+      CabinFloors,
+      CartopShaft,
+      PitArea,
+    };
+
+    res.status(200).json({ finalReportedData, ReportImages });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Report For Admin",
+    });
+  }
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------

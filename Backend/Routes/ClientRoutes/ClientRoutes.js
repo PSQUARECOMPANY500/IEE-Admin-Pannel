@@ -39,6 +39,9 @@ router.get("/verifyclient",clientController.verifyClient);
 
 //-------------------------rating{amit}--------------------------------------------------
 
+// ----------- 17/04/2024 Preet -------------------------------
+router.get("/fetchClientServiceHistory/:JobOrderNumber", clientController.fetchClientServiceHistory)
+
 
 
 // ------------------------all Put Requests ----------------------------------------------------

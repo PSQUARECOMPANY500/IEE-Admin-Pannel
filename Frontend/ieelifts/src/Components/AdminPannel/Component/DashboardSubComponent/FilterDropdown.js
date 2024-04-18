@@ -56,12 +56,12 @@ const FilterDropdown = ({
   return (
     <div className="filter-dropdown">
       <div className="child-filter-dropdown">
-        <div className="search-bar-div">
+        {/* <div className="search-bar-div">
           <span className={`search-icon-filter ${className}`}>
             <CiSearch />
           </span>
           <input type="text" placeholder="Search" />
-        </div>
+        </div> */}
         {filterDropdowns &&
           filterDropdowns.map((dropdown, index) => (
             <div key={index}>

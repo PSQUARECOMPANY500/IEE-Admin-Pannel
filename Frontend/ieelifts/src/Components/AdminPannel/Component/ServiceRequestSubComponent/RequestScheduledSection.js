@@ -13,7 +13,6 @@ import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
 import {
   getFilterLocation,
-  getEngineerNames,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -32,10 +31,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   console.log(reqCheckboxStates)
   const [filterConditions, setfilterConditions] = useState();
 
+
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
-      dispatch(getEngineerNames());
     };
     fetchData();
   }, [dispatch]);
@@ -43,21 +42,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
     (state) =>
       state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
   );
-  const engineers = useSelector(
-    (state) =>
-      state?.AdminRootReducer?.engineersReducer?.engineers?.engineerNames
-  );
+
   const filterDropdowns = [
-    { name: "status", options: ["Unassigned", "Assigned", "Resolved"] },
-    {
-      name: "engineers",
-      options: engineers,
-    },
+    { name: "membership", options: ["Warrenty", "Platinum", "Gold", "Silver"] },
     { name: "location", options: locations },
-    {
-      name: "type",
-      options: ["Door", "Light", "Fan", "Buttons", "Lift", "Others"],
-    },
     { name: "clear", options: [] }
   ];
   const handleTicketFilter = () => {
@@ -176,7 +164,10 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                   />
 
                   <i className="search-btn "
-
+                  // onClick={() => {
+                  //   const data = filtersearch(searchText, allCD);
+                  //   setFilteredCD(data);
+                  // }}
 
                   >
 

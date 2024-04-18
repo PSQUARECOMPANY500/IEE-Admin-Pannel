@@ -33,7 +33,6 @@ const ClientTableView = ({ clientData }) => {
 
   return (
     <div className="table_view">
-
       <div className="sub_table_view">
         <div className="client_table-container">
           <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
@@ -43,7 +42,7 @@ const ClientTableView = ({ clientData }) => {
                 <th className="checkbox">
                   <CheckBox
                     id="checkbox1"
-                    checked={checkboxStates.every((isChecked) => isChecked)}
+                    checked={clientData && clientData.length > 0 && checkboxStates.every((isChecked) => isChecked)}
                     handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>

@@ -1,7 +1,7 @@
-import {useEffect,useRef,useState,React }from 'react'
-import { FaChevronLeft } from "react-icons/fa";
-import { FaChevronRight } from "react-icons/fa";
-const AttendanceCalendar = () => {
+import { useEffect, useRef, useState } from 'react';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+const AttendanceCalendar = ({ setTodayDate }) => {
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
@@ -9,13 +9,13 @@ const AttendanceCalendar = () => {
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
   var surroundingDates = [];
+
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
       newDate.setMonth(prevDate.getMonth() - 1);
       return newDate;
     });
-    ArenderCalendar();
   };
 
   const AhandleNextClick = () => {
@@ -24,19 +24,22 @@ const AttendanceCalendar = () => {
       newDate.setMonth(prevDate.getMonth() + 1);
       return newDate;
     });
-    ArenderCalendar();
   };
 
   const ahandleDayClick = (day) => {
     const newSelectedDate = new Date(
-      acurrentDate.getFullYear(),
-      acurrentDate.getMonth(),
-      day
+      Date.UTC(
+        acurrentDate.getFullYear(),
+        acurrentDate.getMonth(),
+        day
+      )
     );
     setASelectedDate(newSelectedDate);
-
-    ArenderCalendar();
+    const formattedDate = newSelectedDate.toISOString().split('T')[0];
+    setTodayDate(formattedDate);
   };
+
+
 
   const acreateDayElement = (day) => {
     const date = new Date(
@@ -50,7 +53,7 @@ const AttendanceCalendar = () => {
     if (date.toDateString() === new Date().toDateString()) {
       dayElement.classList.add("current");
     }
-    if (aselectedDate && date.toDateString() === aselectedDate.toDateString()) {
+    if (aselectedDate && date.toDateString() === new Date(aselectedDate).toDateString()) {
       dayElement.classList.add("selected");
     }
 
@@ -116,7 +119,7 @@ const AttendanceCalendar = () => {
       return;
     }
 
-    // // // Calculate the preceding dates
+    // Calculate the preceding dates
     for (let i = 2; i > 0; i--) {
       const precedingDate = new Date(aselectedDate);
       precedingDate.setDate(aselectedDate.getDate() - i);
@@ -124,7 +127,7 @@ const AttendanceCalendar = () => {
     }
 
     // Add the selected date
-    surroundingDates.push(aselectedDate);
+    surroundingDates.push(new Date(aselectedDate));
 
     // Calculate the following dates
     for (let i = 1; i <= 2; i++) {
@@ -132,17 +135,13 @@ const AttendanceCalendar = () => {
       followingDate.setDate(aselectedDate.getDate() + i);
       surroundingDates.push(followingDate);
     }
-
-    // Display the surrounding dates
-    surroundingDates.forEach((date) => {
-      // console.log(date.toDateString());
-    });
   };
 
   useEffect(() => {
     ArenderCalendar();
     DateSelect();
   }, [acurrentDate, aselectedDate]);
+
   return (
     <div className="CalendarHistory">
       <div
@@ -151,14 +150,14 @@ const AttendanceCalendar = () => {
         ref={ACalendarRef}
       >
         <div className="header Attendacne-header">
-          <button id="aprevBtn">
-            <FaChevronLeft onClick={AhandlePrevClick} />
+          <button id="aprevBtn" onClick={AhandlePrevClick}>
+            <FaChevronLeft />
           </button>
           <h2 id="monthYear" ref={AMonthyearRef}>
             Month Year
           </h2>
-          <button id="anextBtn">
-            <FaChevronRight onClick={AhandleNextClick} id="ArrowSize" />
+          <button id="anextBtn" onClick={AhandleNextClick}>
+            <FaChevronRight id="ArrowSize" />
           </button>
         </div>
         <div
@@ -167,10 +166,8 @@ const AttendanceCalendar = () => {
           ref={ADayContainerRef}
         ></div>
       </div>
-   
-    
     </div>
-  )
-}
+  );
+};
 
-export default AttendanceCalendar
+export default AttendanceCalendar;

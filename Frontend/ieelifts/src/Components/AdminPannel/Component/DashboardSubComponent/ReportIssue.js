@@ -1,16 +1,19 @@
 import React from "react";
 
-const ReportIssue = () => {
-  return (
+const ReportIssue = ({ RedportData }) => {
+ // console.log(RedportData);
+  const src = RedportData?.ClientPhoto;
+
+  return RedportData ? (
     <div className="IssuesDoor">
       <div className="IssueDoors IssuesDoor2" style={{ paddingLeft: "1rem" }}>
         <div className="IssuesDoor2L">
           <div className="ClientImg">
-            <img src="https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+            <img src={src} alt="Client" />
           </div>
           <div className="ClientName">
             <h5>
-              <span>2024131</span>
+              <span>{RedportData?.JobOrderNumber}</span>
             </h5>
             <h5
               style={{
@@ -20,13 +23,13 @@ const ReportIssue = () => {
                 fontWeight: "500",
               }}
             >
-              <span>Michael Wilson</span>
+              <span>{RedportData?.clientName}</span>
             </h5>
             <h5>
-              <span>+61-4-09234567</span>
+              <span>{RedportData?.ClientPhoneNumber}</span>
             </h5>
             <h5>
-              <span>S28,oak Avenue Melbourne, Vic 3000</span>
+              <span>{RedportData?.ClientAddress}</span>
             </h5>
           </div>
         </div>
@@ -43,27 +46,22 @@ const ReportIssue = () => {
         </div>
       </div>
 
-      <div className="IssueDoors IssuesDoor4" style={{ paddingLeft: "rem" }}>
+      <div className="IssueDoors IssuesDoor4" style={{ paddingLeft: "1rem" }}>
         <h5>
-     
-            The door is experiencing difficulty in closing properly. It seems to get stuck halfway.
-    
+          <span>{RedportData?.ClientDescription}</span>
         </h5>
       </div>
 
       <div className="IssueDoors IssuesDoor1">
-        <h5 >
-          check the door motor first, apply some lubricant and restart the
-          elevator.{" "}
-        </h5>
+        <h5 style={{ fontSize: "0.8rem" }}>{RedportData?.Message}</h5>
         <div className="RedIsue">
           <h5>
-            Issue: <span>Door</span>
+            Issue: <span>{RedportData?.ClientTypeOfIssue}</span>
           </h5>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default ReportIssue;

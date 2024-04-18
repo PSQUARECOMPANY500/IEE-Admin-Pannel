@@ -37,7 +37,7 @@ const AssignRequest = new Schema(
       type: String,
       enum: ["onGoing", "completed", "scheduled"],
       default: "scheduled",
-    },
+    }
   },
   {
     timestamps: true,

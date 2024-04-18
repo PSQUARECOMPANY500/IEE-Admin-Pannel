@@ -8,6 +8,7 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
+
 router.post("/assignRequest", adminContoller.AssignServiceRequests);
 
 router.post("/createMembership", adminContoller.createClientMemebership);
@@ -86,7 +87,7 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance", adminContoller.fetchEnggAttendance);
+router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);  
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
@@ -103,7 +104,52 @@ router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
+
+//api for assignedEnggDetails
+// router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+// --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
+router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
+router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+// --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
+
+
+// --by amit 29/03/2024 ------------
+router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+
+
+
+// --by Preet 02/04/2024 ------------
+router.get("/getSparePartRequest/:EnggId",adminContoller.getSparePartRequestByEngg); 
+//--- by Preet 03/04/2024
+router.post("/ApproveDenySparepart", adminContoller.ApproveDenySparePartRequest);
+router.get("/fetchAllotedSparePart/:EnggId", adminContoller.fetchAllotedSparePart);
+router.get("/fetchDeniedSparePart/:EnggId", adminContoller.fetchDeniedSparePart);
+
+
+//--- by Preet 10/04/2024
+router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
+
+
+
+
+
+
+
+// retain routes again 03/04/2024   ------------
+router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
+router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
+router.post("/updatePassword",adminContoller.updatePassword);
+
+
 
 module.exports = router;

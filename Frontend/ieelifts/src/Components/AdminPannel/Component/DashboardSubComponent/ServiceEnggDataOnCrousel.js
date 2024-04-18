@@ -5,8 +5,9 @@ import TaskChart from "./TaskPieChart";
 import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 
+import { useSelector } from "react-redux";
 
-const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
+const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick }) => {
   const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
 
 
@@ -15,8 +16,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   const [showMessage, setShowMessage] = useState([false]);
   const renderArray = [];
   const renderArrayon = [];
-
-
 
   const handleMessageBoxClose = () => {
     setShowMessage(false);
@@ -37,7 +36,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   assignArray(item);
 
 
-  
+
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
@@ -52,13 +51,13 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
       };
     }, [ref, handler]);
   };
- 
-   
+
+
   const handleMesageBox = (index) => {
     setShowMessage((prev) => ({
       ...prev,
       [index]: !prev[index],
-     
+
     }));
   };
 
@@ -70,7 +69,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
   return (
-    <div className="main-crouser" key={index}>
+    <div className="main-crouser"  key={index} onClick={() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}>
       <div className="second-carusel">
         <div className="basic-info">
           <img
@@ -92,27 +91,27 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
           </div>
         </div>
 
-  <div className="message-icon"  ref={dropdownClickRef}>
-    <span  onClick={() => handleMesageBox(index)} >
-      <TbMessage2 className="message-box-crouser"  />
-    </span>
-    {/* <div className="message-dot"></div> */}
-    {showMessage[index] && (
-      <div
-        ref={MessageBoxRef}
-        style={{
-          left: len - 1 === index ? "0px" : "0",
-          position: "relative",
-        }}
-        className="engg-message"
-      >
-        <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
+        <div className="message-icon" ref={dropdownClickRef}>
+          <span onClick={() => handleMesageBox(index)} >
+            <TbMessage2 className="message-box-crouser" />
+          </span>
+          {/* <div className="message-dot"></div> */}
+          {showMessage[index] && (
+            <div
+              ref={MessageBoxRef}
+              style={{
+                left: len - 1 === index ? "0px" : "0",
+                position: "relative",
+              }}
+              className="engg-message"
+            >
+              <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
+            </div>
+          )}
+        </div>
       </div>
-    )}
-  </div>
-</div>
 
- 
+
 
       <div className="main-head-div">
         {renderArray.length == 0 ? (
@@ -135,7 +134,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
             </div>
             <div className="hover-icon-service">
               <div className="dropdown">
-               <span>{renderArray[0].ClientName.split(" ")[0]}</span>
+                <span>{renderArray[0].ClientName.split(" ")[0]}</span>
                 <span>service E1</span>
                 <div className="dropdown-menu">
                   <div className="drop-parent">

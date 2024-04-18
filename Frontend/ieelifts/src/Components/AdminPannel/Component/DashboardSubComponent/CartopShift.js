@@ -1,7 +1,8 @@
 import React from "react";
 import { GrGallery } from "react-icons/gr";
 
-const CartopShift = () => {
+const CartopShift = ({serviceId}) => {
+  console.log('serviceId',serviceId)
   return (
     <div className="CarTopShift">
       <div className="IssueResolved CardShiftCards">

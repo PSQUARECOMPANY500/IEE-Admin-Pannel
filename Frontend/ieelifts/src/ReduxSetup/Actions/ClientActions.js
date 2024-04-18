@@ -4,7 +4,7 @@ export const GET_Client_DETAILS = "GET_Client_DETAILS"
 export const REQUEST_CALLBACK_BY_ADMIN_REDUCERS = "REQUEST_CALLBACK_BY_ADMIN_REDUCERS"
 
 
-export const requestCallBackByAdmin = (JobOrderNumber,callbackDate,callbackTime,TypeOfIssue,Description) => {
+export const requestCallBackByAdmin = (JobOrderNumber,callbackDate,callbackTime,TypeOfIssue,Description ,RepresentativeName , RepresentativeNumber) => {
   return async()=>{
     //console.log("job",JobOrderNumber,"call",callbackDate,"backtime",callbackTime,"Type",TypeOfIssue,"Des",Description);
       try {
@@ -16,6 +16,8 @@ export const requestCallBackByAdmin = (JobOrderNumber,callbackDate,callbackTime,
             callbackTime,
             TypeOfIssue,
             Description,
+            RepresentativeName,
+            RepresentativeNumber
           }
         );
         const newCallbackData = response?.data?.Requests?.
@@ -35,7 +37,7 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
   try{
     if(JobOrderNumber){
       const response = await axios.get(`${config.apiUrl}/admin/clientDetail/${JobOrderNumber}`)
-      console.log("fetchingClientDetails: ",response.data)
+      //console.log("fetchingClientDetails: ",response.data)
       dispatch({
         type: GET_Client_DETAILS,
         payload: response.data,
@@ -55,10 +57,10 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
 
 //-----------------------------------------------------------------------------------------------------------
 //function to fetch all the RequestId by admin
-export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description) => {
+export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description ,RepresentativeName , RepresentativeNumber) => {
   return async()=>{
       try {
-        console.log(JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description)
+        //console.log(JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description)
         if(JobOrderNumber&&RequestDate&&RequestTime&&TypeOfIssue&&Description){
           const response = await axios.post(`${config.apiUrl}/client/imediateServiceRequest`,
           {
@@ -67,10 +69,12 @@ export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestT
             RequestTime,
             TypeOfIssue,
             Description,
+            RepresentativeName,
+            RepresentativeNumber
           }
         );
         const newCallbackData = response?.data?.imidiateRequest?.RequestId;
-        console.log("this is the new requestId",newCallbackData);
+        //console.log("this is the new requestId",newCallbackData);
         return newCallbackData;
         }
       }catch (error) {
