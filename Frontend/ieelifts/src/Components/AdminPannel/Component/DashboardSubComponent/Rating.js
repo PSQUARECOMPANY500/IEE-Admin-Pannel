@@ -16,6 +16,7 @@ const Rating = () => {
 
   const ratingValue = AdminReportData?.AdminReportData?.Rating?.Rating || 0
   useEffect(() => {
+    console.log(AdminReportData?.AdminReportData?.Rating)
     setAdminRating(AdminReportData?.AdminReportData?.Rating)
   }, [AdminReportData])
 
@@ -30,7 +31,7 @@ const Rating = () => {
     <div className="Rating">
     { adminRating ? <><div className="RatingStar">
         {rating?.map((e,i) => (
-            (i+1<=ratingValue?(<FaStar className="Yellow_Color" style={{fontSize:'1.7rem'}} />):(<CiStar className="Yellow_Color" /> ))
+            (i+1<=ratingValue?(<FaStar className="Yellow_Color" style={{fontSize:'1.7rem'}} key={i}/>):(<CiStar className="Yellow_Color" key={i} /> ))
         ))}
 
       </div>

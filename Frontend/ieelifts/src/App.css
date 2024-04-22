@@ -5095,14 +5095,71 @@ element.style {
 }
 
 .McRoomCard {
+    height: 90%;
+    width: 40%;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 50px 50px;
+    grid-column-gap: 2rem;
+    position: relative;
+    align-items: center; 
+    justify-content: center; 
+
+}
+
+.McRoomCardSingle{
   height: 90%;
   width: 40%;
-  border: 1px solid #707070;
-  border-radius: 4px;
+  border-radius: 5px;
+}
+.single-card{
+  height: 100%;
+  width: 100%;
+  background: #000;
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.single-card img{
+  height: 100%;
+  width: 100%;
+  
+}
+
+.report-img-cards {
+  height: 50px;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  position: relative;
+
+
+}
+.report-img-cards img{
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+
+}
+.McRoomCard p{
+  font-size: 0.8rem;
+  white-space: nowrap;
+  text-decoration:underline;
+  font-weight: 600;
+
+}
+
+.last-card{
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
 }
+
 
 .McRoom h5 {
   font-size: 0.9rem;
@@ -5399,8 +5456,8 @@ element.style {
   justify-content: center;
 }
 
-.RatingButton .active-button{
-  background-color:#f8ac1ddb ;
+.RatingButton .active-button {
+  background-color: #f8ac1ddb;
 }
 
 .RatingContainerRow h5 {
@@ -6360,6 +6417,257 @@ element.style {
   cursor: pointer;
 }
 
+/* ---------------------------------------------------------------make by aayush for report image preview----------------------------------------------------------------------------------- */
+.report-image {
+  width: 100%;
+  background: #0000000c;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+}
+
+.image-container {
+  height: 500px;
+  width: 500px;
+  position: relative;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+
+}
+
+.image-container img {
+  height: 100%;
+  width: 100%;
+}
+
+
+.report-image-prev,
+.report-image-next {
+  height: 40px;
+  width: 40px;
+  background:transparent;
+  cursor: pointer;
+
+}
+
+
+.report-image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+}
+
+.image-container-bottom {
+  height: 50px;
+  width: 100%;
+  background-color: #1D1D1D80;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.image-container p {
+  color: #F5F5F5;
+  font-family: 'Poppins';
+  text-align: right;
+  width: 430px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+button {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+ }
+ 
+ button.learn-more {
+  width: 12rem;
+  height: auto;
+ }
+ 
+ button.learn-more .circlenext {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  background: #282936;
+  border-radius: 1.625rem;
+ }
+ 
+ button.learn-more .circlenext .icon {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: #fff;
+ }
+ 
+ button.learn-more .circlenext .icon.arrow {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  left: 0.625rem;
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+  tranform:rotate(-90deg);
+ }
+ 
+ button.learn-more .circlenext .icon.arrow::before {
+  position: absolute;
+  content: "";
+  top: -0.29rem;
+  right: 0.0625rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #fff;
+  border-right: 0.125rem solid #fff;
+  transform: rotate(45deg);
+ }
+ 
+ button.learn-more .button-text {
+   position: absolute;
+   left: 40%;
+   top:25%;
+   white-space:nowrap;
+   width: 0%;
+   opacity: 0;
+   color: white;
+   font-size: 1.2em;
+   font-weight: 600;
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  
+ }
+ 
+ button:hover .circlenext {
+  width: 80%;
+ }
+ 
+ button:hover .circlenext .icon.arrow {
+  background:#fff;
+  transform: translate(1rem, 0);
+ }
+ 
+ button:hover .button-text {
+  color: #fff;
+  opacity:1;
+ }
+
+ .learn-previous {
+  width: 10rem;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  left: -150px;
+}
+
+.learn-previous .circleprev {
+  transition: all 0.60s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  background: #282936; /* Changed from background: red; */
+  right: -110px;
+  border-radius: 1.625rem;
+}
+
+.learn-previous .circleprev .iconprev {
+  transition: all 0.60s cubic-bezier(0.30, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: #fff;
+}
+
+.learn-previous .circleprev .iconprev.arrowprev {
+  transition: all 0.60s cubic-bezier(0.65, 0, 0.076, 1);
+  left: calc(100% - 1.625rem - 0.125rem);
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+}
+
+.learn-previous .circleprev .iconprev.arrowprev::before {
+  position: absolute;
+  content: "";
+  top: -0.29rem;
+  left: -0.009rem;
+  right: 0.1rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #fff;
+  border-right: 0.125rem solid #fff;
+  transform: rotate(-135deg);
+}
+
+.learn-previous .button-text-prev {
+position: absolute;
+  left:20px;
+  top: 25%;
+  white-space: nowrap;
+  width: 0%;
+  opacity:0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition: all 0.40s cubic-bezier(0.75, 0, 0.076, 1);
+}
+
+.learn-previous:hover .circleprev {
+  width: 100%;
+  right: 0;
+}
+
+.learn-previous:hover .circleprev .iconprev.arrowprev {
+  background: #fff;
+  transform: translate(-1rem, 0);
+}
+.learn-previous:hover .button-text-prev {
+  color: #fff;
+  opacity: 1;
+ transition: all 0.90s cubic-bezier(0.75, 0, 0.076, 1);
+}
+
+
 /* -------------------------------------------------------------------------all media query here bro ----------------------------------------------------------------------------------- */
 
 /* @media only screen and (min-width: 769px) and (max-width: 1280) {
@@ -6624,18 +6932,7 @@ element.style {
     top: 10%;
   }
 
-  /* media query for eng page eng css */
 
 
 
 }
-
-
-
-/* 
-  @media only screen and (min-width: 1201px) and (max-width:1280px){
-  
-  .wrapper{
-    display: none;
-  }
-  }  */

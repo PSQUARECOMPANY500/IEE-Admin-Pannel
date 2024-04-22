@@ -1151,9 +1151,9 @@ export const getadminReportData = (callbackId) => {
     try {
 
       const response = await axios.get(
-        `http://192.168.29.29:8000/api/admin/getReportForAdmin/bebce6dd-8294-4f97-a1d2-0e151300f078`
+        `${config.apiUrl}/admin/getReportForAdmin/cdac44b3-1501-48f2-b3ad-fa9e87d0f657`
       );
- 
+      console.log(response)
       dispatch({
         type: GET_ADMIN_REPORT_DATA,
         payload: response.data,

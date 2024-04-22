@@ -2465,18 +2465,14 @@ module.exports.fetchDeniedSparePart = async (req, res) => {
 module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
-
     const ReportData = await ReportTable.findOne({ serviceId });
-    
-    const rating = await EnggRating.findOne({ ServiceId: serviceId });
-
+    const Rating=await EnggRating.findOne({ServiceId: serviceId });
     const MCRoom = {
       IssuesResolved: [],
       IssuesNotResolved: [],
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const CabinFloors = {
       IssuesResolved: [],
       IssuesNotResolved: [],
@@ -2495,21 +2491,18 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const ReportImages = ReportData.subCategoriesphotos;
-
     const sortedData = (keys, arr) => {
       const arrData = arr.filter(
         (question) =>
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+              "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
       );
-
       arrData.forEach((item) => {
         if (item.questionResponse.isResolved) {
           keys.IssuesResolved.push(item);
@@ -2524,7 +2517,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         ) {
           keys.SparePartsChanged.push(item);
         }
-
         if (
           item.questionResponse.isSparePartRequest &&
           item.questionResponse.sparePartDetail.sparePartsType !== "" &&
@@ -2540,10 +2532,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         acc[item.subcategoryname] = [];
       }
       acc[item.subcategoryname].push(item);
-
       return acc;
     }, {});
-
     Object.keys(transformedData).forEach((key) => {
       if (key === "M/C Room") {
         sortedData(MCRoom, transformedData[key]);
@@ -2555,16 +2545,13 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         sortedData(PitArea, transformedData[key]);
       }
     });
-
     const finalReportedData = {
       MCRoom,
       CabinFloors,
       CartopShaft,
       PitArea,
     };
-
-
-    res.status(200).json({ finalReportedData, ReportImages,rating});
+    res.status(200).json({ finalReportedData, ReportImages,Rating});
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2572,7 +2559,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
     });
   }
 };
-
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------

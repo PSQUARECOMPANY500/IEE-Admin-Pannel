@@ -4,15 +4,15 @@ import { useSelector } from "react-redux";
 
 const PitArea = () => {
   const [adminReportData, setAdminReportData] = useState('')
+  const [images, setImages] = useState();
 
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
 
   useEffect(() => {
-
+    setImages(AdminReportData?.AdminReportData?.ReportImages[3]?.photo);
     setAdminReportData(AdminReportData?.AdminReportData?.finalReportedData?.PitArea
-
     )
   }, [AdminReportData])
   return (
@@ -82,9 +82,18 @@ const PitArea = () => {
         </div> :
         <>
           <h5>All areas are working well</h5>
-          <div className="McRoomCard">
-            <GrGallery className="gallery" />
-          </div>
+          {images ? <div className={images.length===1?'McRoomCardSingle':'McRoomCard'}>
+            {images?.length > 1 ? (
+              images.map((e, i) => (
+                i < 4 &&  (i===3||i===images.length-1?<div key={i} className='report-img-cards last-card'><p> View More </p></div>:(<div key={i} className='report-img-cards'>
+                  <img src='https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg' />
+                </div>))
+              ))
+            ) : <div className='single-card'>
+                         <img src='https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg' />
+              </div>}
+
+          </div> : <p>Nothing Is Here</p>}
         </>
       }
 

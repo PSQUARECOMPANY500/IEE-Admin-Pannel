@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReportIssue from "./ReportIssue";
 import ReportCrouserData from "./ReportCrouserData";
+import RepotImage from "./RepotImage";
 
 function ReportTable({ handleRedportData, RedportData }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,14 +14,22 @@ function ReportTable({ handleRedportData, RedportData }) {
 
 
   return (
-    <div className="ReportTable">
 
-      {handleRedportData ? (
-      // <ReportIssue RedportData={RedportData} />
-      <ReportCrouserData />
-    ) : (
-        <ReportCrouserData />)}
-    </div>
+    <>
+      <div className="ReportTable">
+
+        {handleRedportData ? (
+
+          <ReportCrouserData />
+        ) : (
+          <ReportCrouserData />)}
+      </div>
+
+      {false&& <RepotImage />}
+
+    </>
+
+
   );
 }
 
