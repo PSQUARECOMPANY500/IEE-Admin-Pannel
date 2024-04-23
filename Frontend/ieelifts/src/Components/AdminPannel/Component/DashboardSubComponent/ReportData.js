@@ -8,24 +8,21 @@ function ReportTable({ handleRedportData, RedportData }) {
   const [showReport, setShowReport] = useState(true)
 
 
-
-  const serviceId = RedportData;
-
-
-
   return (
 
     <>
+
       <div className="ReportTable">
 
         {handleRedportData ? (
 
+ 
           <ReportCrouserData />
+          
         ) : (
           <ReportCrouserData />)}
       </div>
 
-      {false&& <RepotImage />}
 
     </>
 

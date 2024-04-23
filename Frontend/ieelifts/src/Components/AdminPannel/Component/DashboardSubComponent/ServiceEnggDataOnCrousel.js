@@ -6,6 +6,7 @@ import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 
 import { useSelector } from "react-redux";
+import RepotImage from "./RepotImage";
 
 const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick }) => {
   const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
@@ -70,6 +71,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick }) =>
 
   return (
     <div className="main-crouser"  key={index} onClick={() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}>
+  
       <div className="second-carusel">
         <div className="basic-info">
           <img

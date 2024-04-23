@@ -3859,7 +3859,8 @@ element.style {
 }
 
 .parent-div {
-  z-index: 2;
+  /* zindex 2 to 0 by aayush creating problem in report image crouser */
+  /* z-index: 2; */
   position: relative;
 }
 
@@ -5095,65 +5096,101 @@ element.style {
 }
 
 .McRoomCard {
-    height: 90%;
-    width: 40%;
-    border-radius: 4px;
-    display: grid;
-    grid-template-columns: 50px 50px;
-    grid-column-gap: 2rem;
-    position: relative;
-    align-items: center; 
-    justify-content: center; 
-
-}
-
-.McRoomCardSingle{
   height: 90%;
   width: 40%;
-  border-radius: 5px;
+  border-radius: 4px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+
 }
-.single-card{
+
+
+.single-card {
   height: 100%;
   width: 100%;
-  background: #000;
-  border-radius: 5px;
   object-fit: cover;
   object-position: center;
   cursor: pointer;
+  position: relative;
   overflow: hidden;
-  position: relative;
+  border-radius: 10px;
+
+
+
 }
 
-.single-card img{
+.single-card img {
   height: 100%;
   width: 100%;
-  
+  border-radius: 13px;
 }
 
-.report-img-cards {
+.report-img-count {
+  height: 28px;
+  width: 50px;
+  background: #F8AC1D;
+  position: absolute;
+  left: 76%;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+
+}
+
+.single-card-overlay {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background: #0000006b;
+  border-radius: 13px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.single-card:hover .single-card-overlay {
+  display: flex;
+  transition: 0.45s ease;
+}
+
+.single-card-overlay img {
+  width: 60%;
+  height: 60%;
+
+}
+
+.report-icon-container {
   height: 50px;
+  width: 50px;
+  position: relative;
+  background-color: #F8AC1D;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 2px 5px #00000029;
+  justify-content: center;
   object-fit: cover;
   object-position: center;
-  cursor: pointer;
-  position: relative;
-
-
 }
-.report-img-cards img{
-  height: 100%;
-  width: 100%;
-  border-radius: 5px;
 
-}
-.McRoomCard p{
+.McRoomCard p {
   font-size: 0.8rem;
   white-space: nowrap;
-  text-decoration:underline;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #444444;
+  text-align: center;
 
 }
 
-.last-card{
+.last-card {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6396,7 +6433,7 @@ element.style {
   min-height: 100px;
   width: 100%;
   background: #ffffff;
-  z-index: 99999;
+  z-index: 9;
   position: absolute;
   border: 1px solid #8E8E8E;
   border-radius: 10px;
@@ -6418,21 +6455,24 @@ element.style {
 }
 
 /* ---------------------------------------------------------------make by aayush for report image preview----------------------------------------------------------------------------------- */
-.report-image {
+.images {
+  height: 100vh;
   width: 100%;
-  background: #0000000c;
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 999;
+  background-color: #00000029;
 
 
 }
+
+
 
 .image-container {
   height: 500px;
@@ -6456,11 +6496,20 @@ element.style {
 .report-image-next {
   height: 40px;
   width: 40px;
-  background:transparent;
+  background: transparent;
   cursor: pointer;
+  cursor: pointer;
+
 
 }
 
+.report-image-next {
+  margin-left: 1rem;
+}
+
+.report-image-prev {
+  margin-right: 5.6rem;
+}
 
 .report-image-container {
   display: flex;
@@ -6493,7 +6542,7 @@ element.style {
   overflow: hidden;
 }
 
-button {
+.learn-next {
   position: relative;
   display: inline-block;
   cursor: pointer;
@@ -6505,84 +6554,88 @@ button {
   padding: 0;
   font-size: inherit;
   font-family: inherit;
- }
- 
- button.learn-more {
+  cursor: pointer;
+
+}
+
+.learn-next {
   width: 12rem;
   height: auto;
- }
- 
- button.learn-more .circlenext {
+  cursor: pointer;
+}
+
+.learn-next .circlenext {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   position: relative;
   display: block;
   margin: 0;
   width: 3rem;
   height: 3rem;
-  background: #282936;
+  background: #F8AC1D;
   border-radius: 1.625rem;
- }
- 
- button.learn-more .circlenext .icon {
+  cursor: pointer;
+}
+
+.learn-next .circlenext .icon {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   position: absolute;
   top: 0;
   bottom: 0;
   margin: auto;
-  background: #fff;
- }
- 
- button.learn-more .circlenext .icon.arrow {
+  background-color: #444444;
+}
+
+.learn-next .circlenext .icon.arrow {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   left: 0.625rem;
   width: 1.125rem;
   height: 0.125rem;
   background: none;
-  tranform:rotate(-90deg);
- }
- 
- button.learn-more .circlenext .icon.arrow::before {
+  tranform: rotate(-90deg);
+}
+
+.learn-next .circlenext .icon.arrow::before {
   position: absolute;
   content: "";
   top: -0.29rem;
   right: 0.0625rem;
   width: 0.625rem;
   height: 0.625rem;
-  border-top: 0.125rem solid #fff;
-  border-right: 0.125rem solid #fff;
+  border-top: 0.125rem solid #444444;
+  border-right: 0.125rem solid #444444;
   transform: rotate(45deg);
- }
- 
- button.learn-more .button-text {
-   position: absolute;
-   left: 40%;
-   top:25%;
-   white-space:nowrap;
-   width: 0%;
-   opacity: 0;
-   color: white;
-   font-size: 1.2em;
-   font-weight: 600;
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  
- }
- 
- button:hover .circlenext {
-  width: 80%;
- }
- 
- button:hover .circlenext .icon.arrow {
-  background:#fff;
-  transform: translate(1rem, 0);
- }
- 
- button:hover .button-text {
-  color: #fff;
-  opacity:1;
- }
+}
 
- .learn-previous {
-  width: 10rem;
+.learn-next .button-text-next {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  white-space: nowrap;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+
+}
+
+.learn-next:hover .circlenext {
+  width: 60%;
+}
+
+.learn-next:hover .circlenext .icon.arrow {
+  background-color: #444444;
+  transform: translate(1rem, 0);
+}
+
+.learn-next:hover .button-text-next {
+  color: #444444;
+  opacity: 1;
+}
+
+.learn-previous {
+  width: 7.2rem;
   height: auto;
   display: block;
   cursor: pointer;
@@ -6594,23 +6647,23 @@ button {
   padding: 0;
   font-size: inherit;
   font-family: inherit;
-  left: -150px;
+  left: -25px;
 }
 
 .learn-previous .circleprev {
-  transition: all 0.60s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   position: relative;
   display: block;
   margin: 0;
   width: 3rem;
   height: 3rem;
-  background: #282936; /* Changed from background: red; */
-  right: -110px;
+  background: #F8AC1D;
+  right: -67px;
   border-radius: 1.625rem;
 }
 
 .learn-previous .circleprev .iconprev {
-  transition: all 0.60s cubic-bezier(0.30, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   position: absolute;
   top: 0;
   bottom: 0;
@@ -6619,7 +6672,7 @@ button {
 }
 
 .learn-previous .circleprev .iconprev.arrowprev {
-  transition: all 0.60s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   left: calc(100% - 1.625rem - 0.125rem);
   width: 1.125rem;
   height: 0.125rem;
@@ -6634,22 +6687,22 @@ button {
   right: 0.1rem;
   width: 0.625rem;
   height: 0.625rem;
-  border-top: 0.125rem solid #fff;
-  border-right: 0.125rem solid #fff;
+  border-top: 0.125rem solid #444444;
+  border-right: 0.125rem solid #444444;
   transform: rotate(-135deg);
 }
 
 .learn-previous .button-text-prev {
-position: absolute;
-  left:20px;
+  position: absolute;
+  left: 18px;
   top: 25%;
   white-space: nowrap;
   width: 0%;
-  opacity:0;
+  opacity: 0;
   color: white;
-  font-size: 1.2em;
+  font-size: 0.8em;
   font-weight: 600;
-  transition: all 0.40s cubic-bezier(0.75, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.75, 0, 0.076, 1);
 }
 
 .learn-previous:hover .circleprev {
@@ -6658,13 +6711,14 @@ position: absolute;
 }
 
 .learn-previous:hover .circleprev .iconprev.arrowprev {
-  background: #fff;
+  background: #444444;
   transform: translate(-1rem, 0);
 }
+
 .learn-previous:hover .button-text-prev {
-  color: #fff;
+  color: #444444;
   opacity: 1;
- transition: all 0.90s cubic-bezier(0.75, 0, 0.076, 1);
+
 }
 
 

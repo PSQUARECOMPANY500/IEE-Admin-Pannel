@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { GrGallery } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ReportImageIcon from '../../../../Assets/Images/repotimage.png'
+import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
+import RepotImage from "./RepotImage";
+
 
 const CartopShift = () => {
   const [adminReportData, setAdminReportData] = useState('')
   const [images, setImages] = useState();
+  const [showReportImage, setShowReportImage] = useState(false);
+  const dispatch=useDispatch();
 
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
@@ -15,6 +21,10 @@ const CartopShift = () => {
     setAdminReportData(AdminReportData?.AdminReportData?.finalReportedData?.CartopShaft
     )
   }, [AdminReportData])
+  const handleReport=()=>{
+    dispatch(ReportCrouserHandler(1,true));
+  
+  }
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 || adminReportData?.IssuesNotResolved?.length > 0 ||
@@ -82,20 +92,24 @@ const CartopShift = () => {
         </div> :
         <>
           <h5>All areas are working well</h5>
-          {images ? <div className={images.length===1?'McRoomCardSingle':'McRoomCard'}>
-            {images?.length > 1 ? (
-              images.map((e, i) => (
-                i < 4 &&  (i===3||i===images.length?<div key={i} className='report-img-cards last-card'><p> View More </p></div>:(<div key={i} className='report-img-cards'>
+          {images &&
+            <div className="McRoomCard" >
+              <div className='single-card' onClick={handleReport}>
+                <div className="single-card-overlay">
+                  <div className="report-icon-container">   <img src={ReportImageIcon} alt='ieelifts report img icon' /></div>
+                </div>
+                <div className="report-img-count">
+                  <p>+{images.length}</p>
+                </div>
+                <>
                   <img src='https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg' />
-                </div>))
-              ))
-            ) : <div className='single-card'>
-                         <img src='https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg' />
-              </div>}
-
-          </div> : <p>Nothing Is Here</p>}
+                </>
+              </div>
+            </div>}
+     
         </>
       }
+
 
     </div>
 

@@ -19,6 +19,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegStar } from "react-icons/fa";
+import RepotImage from "./RepotImage";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
