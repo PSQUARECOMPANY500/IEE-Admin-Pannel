@@ -1830,7 +1830,136 @@ code {
 }
 
 
+/* ---------------------------------------------------------------client form css written by rahul kumar--------------------------------------- */
+.add-client-wrapper {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0px;
+  z-index: 5;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
 
+}
+
+.add-client-modal {
+  height: 80%;
+  width: 100%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 85%;
+  background: white;
+  z-index: 6;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+}
+
+.client-form-container {
+  height: 100%;
+  width: 100%;
+   display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+} 
+
+.client-form-details{
+ padding: 2rem;
+}
+
+.client-salesman-details{
+  background-color: blue;
+}
+.client-membership-document{
+  background-color: green;
+}
+.client-architect{
+  background-color: brown;
+}
+.client-form-details-heading{
+  color: #444444;
+  font-weight: 500;
+  font-size: 1rem;
+}
+.client-form-input-wrapper{
+  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: 20rem 20rem;
+  grid-gap: 1rem;
+}
+.client-form-hr{
+  color: #444444;
+}
+.client-form-input-wrapper-child
+
+/* --------------------------------Animated Input CSS---------------------------------- */
+input:-webkit-autofill {
+  -webkit-text-fill-color: #330152;
+  -webkit-box-shadow: 0 0 0px 1000px #ECE7E1 inset;
+}
+
+.input-container {
+  position: relative;
+
+  width: 20rem;
+}
+
+.select-container {
+  position: relative;
+  width: 25rem;
+}
+
+
+.input-field {
+  font-size: 20px;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  padding: 5px 0;
+  background-color: transparent;
+  outline: none;
+
+
+}
+
+
+.input-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  letter-spacing: 0.91px;
+  color: #3301526c;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #3301526c;
+  transition: all 0.3s ease;
+}
+
+
+.input-field:focus+.input-label {
+  top: -20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #330152;
+}
+
+.input-field:focus+.input-label+.input-highlight {
+  width: 100%;
+}
+
+
+/* ---------------------------------------------------------------------- */
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
 
   .client_table-container {
@@ -1892,7 +2021,7 @@ code {
     height: 18rem;
   }
 
-  .membership_card_expand{
+  .membership_card_expand {
     height: 42rem;
   }
 
