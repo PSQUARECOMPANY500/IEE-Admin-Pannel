@@ -5,6 +5,7 @@ import ClientFormDetails from "./ClientFormDetails";
 import ClientSalesManDetails from "./ClientSalesManDetails";
 import ClientMembershipDocument from "./ClientMembershipDocument";
 import ClientArchitect from "./ClientArchitect";
+import Clientbutton from "./ClientsReusableComponent/Clientbutton";
 
 const ClientForm = ({ }) => {
 
@@ -27,10 +28,15 @@ const ClientForm = ({ }) => {
 
                     <div className='client-form-container'>
                         < ClientFormDetails />
-                        <ClientSalesManDetails/>
-                        <ClientMembershipDocument/>
-                        <ClientArchitect/>  
+                        <ClientSalesManDetails />
+                        <ClientMembershipDocument />
+                        <ClientArchitect />
+                        <div className="button-container">
+                                <Clientbutton value={"Delete"} className={'client-form-button-red'}/>
+                                <Clientbutton value={"Next"} />
+                         </div>
                     </div>
+              
 
                 </div>
             </div>

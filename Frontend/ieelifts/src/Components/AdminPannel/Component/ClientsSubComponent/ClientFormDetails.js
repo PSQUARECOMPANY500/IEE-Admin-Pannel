@@ -49,14 +49,14 @@ const ClientFormDetails = ({ }) => {
                 </div>
                 <div>
                 <AnimatedInput
-                        label={""}
+                        label={"Reference"}
                         name={"courseName"}
                         disabled={true}
                     />
                 </div>
                 <div>
                 <AnimatedInput
-                        label={""}
+                        label={"Reference Name"}
                         name={"courseName"}
                         disabled={true}
                        

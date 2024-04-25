@@ -47,7 +47,7 @@ const Animated = ({
       >
         <sub>{label}</sub>
       </label>
-      <span className="input-highlight"></span>
+      <span className="input-highlight" ></span>
     </div>
   );
 };

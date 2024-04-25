@@ -1854,44 +1854,159 @@ code {
   z-index: 6;
   border-radius: 5px;
   transform: translate(-50%, -50%);
+  padding: 0 2rem;
 }
 
 .client-form-container {
   height: 100%;
   width: 100%;
-   display: grid;
+  display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-} 
+  grid-template-rows: 50% 15%;
+  grid-column-gap: 15rem;
+  margin-top: 1rem;
 
-.client-form-details{
- padding: 2rem;
 }
 
-.client-salesman-details{
-  background-color: blue;
+.client-form-details {
+  padding: 4rem 2rem;
 }
-.client-membership-document{
-  background-color: green;
+
+.client-salesman-details {
+  padding: 4rem 2rem;
 }
-.client-architect{
-  background-color: brown;
+
+.client-membership-document {
+  padding: 0 2rem;
+
 }
-.client-form-details-heading{
+
+.client-architect {
+  padding: 2rem;
+}
+
+.client-form-details-heading {
   color: #444444;
   font-weight: 500;
   font-size: 1rem;
 }
-.client-form-input-wrapper{
+
+.client-form-input-wrapper {
   padding-top: 1rem;
   display: grid;
-  grid-template-columns: 20rem 20rem;
-  grid-gap: 1rem;
+  grid-template-columns: 46.5% 46.5%;
+  grid-column-gap: 3.1rem;
+  grid-row-gap: 2rem;
+  margin-top: 1rem;
 }
-.client-form-hr{
+
+.client-form-hr {
+  color: #444444;
+  opacity: 0.54;
+
+}
+
+.client-warranty-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin-top: 1rem;
   color: #444444;
 }
-.client-form-input-wrapper-child
+
+.warranty-button {
+
+  width: 6rem;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.warranty-button.selected {
+  background-color: #F8AC1D;
+}
+
+.warranty-button-design {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 0.2rem;
+  width: 6rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.client-document {
+  margin-top: 2rem;
+}
+
+.client-document-child-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.client-salesman-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 0.3rem;
+  color: #444444;
+}
+
+.quotation-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.quotation {
+  color: #444444;
+  font-size: 1rem;
+  font-weight: 500;
+
+}
+
+.md-discount-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 2.5rem;
+}
+
+.client-architect-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2rem;
+}
+
+.client-form-button {
+  /* padding: 1rem 1.2rem; */
+  height: 2.6rem;
+  width: 7.7rem;
+  margin-left: 0.4rem;
+  background-color: #fff;
+
+  border-radius: 5px;
+  color: #444444;
+  cursor: pointer;
+}
+
+.client-form-button-red {
+  border: 1px solid #C10000;
+}
+
+.client-form-button-yellow {
+  border: 1px solid #F8AC1D;
+}
+
 
 /* --------------------------------Animated Input CSS---------------------------------- */
 input:-webkit-autofill {
@@ -1901,8 +2016,6 @@ input:-webkit-autofill {
 
 .input-container {
   position: relative;
-
-  width: 20rem;
 }
 
 .select-container {
@@ -1915,10 +2028,16 @@ input:-webkit-autofill {
   font-size: 20px;
   width: 100%;
   border: none;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 1px solid #44444462;
+  opacity: 1;
   padding: 5px 0;
   background-color: transparent;
   outline: none;
+  font-size: 1rem;
+  font-family: "Poppins";
+  color: #1d1d1d;
+  cursor: default;
+  font-weight: 400;
 
 
 }
@@ -1929,35 +2048,60 @@ input:-webkit-autofill {
   top: 0;
   left: 0;
   letter-spacing: 0.91px;
-  color: #3301526c;
+  color: #1d1d1d;
   transition: all 0.3s ease;
   pointer-events: none;
   font-size: 1rem;
+  opacity: 0.5;
+  font-weight: 400;
+
 }
+
 
 
 .input-highlight {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 2px;
+  height: 1px;
   width: 0;
-  background-color: #3301526c;
+  background-color: #444444;
   transition: all 0.3s ease;
+  opacity: 0.7;
+
+
 }
 
 
 .input-field:focus+.input-label {
   top: -20px;
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 500;
-  color: #330152;
+  color: #1d1d1d;
+  opacity: 1;
 }
 
 .input-field:focus+.input-label+.input-highlight {
+  opacity: 1;
   width: 100%;
 }
 
+.input-field:focus+.input-label {
+  opacity: 1;
+}
+
+.input-field:focus {
+  cursor: none;
+}
+
+.input-field:hover+.input-label+.input-highlight {
+  width: 100%;
+  opacity: 0.7;
+}
+
+.input-field:hover+.input-label {
+  opacity: 1;
+}
 
 /* ---------------------------------------------------------------------- */
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
