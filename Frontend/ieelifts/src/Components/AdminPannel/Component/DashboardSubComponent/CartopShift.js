@@ -23,14 +23,13 @@ const CartopShift = () => {
   }, [AdminReportData])
   const handleReport=()=>{
     dispatch(ReportCrouserHandler(1,true));
-  
   }
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 || adminReportData?.IssuesNotResolved?.length > 0 ||
         adminReportData?.SparePartsChanged?.length > 0 || adminReportData?.SparePartsRequested?.length > 0
         ?
-        <div className="CarTopShift">
+        <div className="CarTopShift Yello_Scrollbar">
           <div className="IssueResolved CardShiftCards">
             <div className="IssueResolvedL">
               <h5>Issues Resolved</h5>

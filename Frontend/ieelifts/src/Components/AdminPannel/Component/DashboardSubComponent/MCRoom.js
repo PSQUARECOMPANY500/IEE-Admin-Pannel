@@ -44,7 +44,7 @@ const MCRoom = ({ serviceId }) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
 
-  const R= useSelector((state) => {
+  const ReportUpdate= useSelector((state) => {
     return state?.AdminRootReducer?.ReportCrouserHandlerReducer
   });
 
@@ -57,6 +57,7 @@ const MCRoom = ({ serviceId }) => {
 
   
 const handleReport=()=>{
+  console.log(ReportUpdate)
   dispatch(ReportCrouserHandler(2,true));
 
 }
@@ -64,12 +65,12 @@ const handleReport=()=>{
   return (
 
     <>
-        <div className="McRoom">
+        <div className="McRoom ">
      
      {adminReportData?.IssuesResolved?.length > 0 || adminReportData?.IssuesNotResolved?.length > 0 ||
        adminReportData?.SparePartsChanged?.length > 0 || adminReportData?.SparePartsRequested?.length > 0
        ?
-       <div className="CarTopShift">
+       <div className="CarTopShift Yello_Scrollbar">
          <div className="IssueResolved CardShiftCards">
            <div className="IssueResolvedL">
              <h5>Issues Resolved</h5>

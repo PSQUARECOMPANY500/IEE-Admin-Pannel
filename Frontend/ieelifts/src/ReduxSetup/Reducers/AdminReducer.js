@@ -783,6 +783,7 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
 
 const adminReportData= {
 AdminReportData: null,
+
 };
 export const getAdminReportDataReducer = (
   state =adminReportData,

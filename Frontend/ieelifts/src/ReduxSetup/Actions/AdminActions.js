@@ -83,7 +83,7 @@ export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
 export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA"
-export const REPORT_CROUSER_HANDLER="REPORT_CROUSER_HANDLER"
+export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -1148,13 +1148,15 @@ export const getadminReportData = (callbackId) => {
 
 
   return async (dispatch) => {
+    if (!callbackId) {
+      return;
+    }
 
     try {
 
       const response = await axios.get(
-        `${config.apiUrl}/admin/getReportForAdmin/cdac44b3-1501-48f2-b3ad-fa9e87d0f657`
+        `${config.apiUrl}/admin/getReportForAdmin/${callbackId}`
       );
-      console.log(response)
       dispatch({
         type: GET_ADMIN_REPORT_DATA,
         payload: response.data,

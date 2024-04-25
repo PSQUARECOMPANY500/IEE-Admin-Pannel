@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react'
+import { ReportCrouserHandler } from '../../../../ReduxSetup/Actions/AdminActions';
+import { useDispatch, useSelector } from 'react-redux';
 
-const RepotImage = ({images}) => {
+const RepotImage = ({ images }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const dispatch = useDispatch();
 
-console.log(images.length)
-   
+
+
+    const ReportUpdate = useSelector((state) => {
+        return state?.AdminRootReducer?.ReportCrouserHandlerReducer
+    });
+
+
+    const handleClick = (e) => {
+    
+        if (e.target.className === 'images') {
+            dispatch(ReportCrouserHandler(ReportUpdate?.Index, false));
+        }
+    }
 
     const goToPrevious = () => {
         setCurrentIndex(prev => (prev === 0 ? 0 : prev - 1));
@@ -15,20 +29,22 @@ console.log(images.length)
     };
 
     useEffect(() => {
-        console.log("useEffect executed");
         document.body.style.overflow = "hidden";
         return () => {
             document.body.style.overflow = "scroll";
         };
     }, []);
-    
+
+
+
+
     return (
 
-      
-            <div className='images'>
+        <>
+     <div className='images' onClick={handleClick}>
                 <div className='report-image-container'>
                     <div className='report-image-prev'>
-                        <button className="learn-previous"  onClick={goToPrevious} style={{ opacity: currentIndex === 0 && '0' }}>
+                        <button className="learn-previous" onClick={goToPrevious} style={{ opacity: currentIndex === 0 && '0' }}>
                             <span className="circleprev" aria-hidden="true">
                                 <span className="iconprev arrowprev"></span>
                                 <span className="button-text-prev">PREV</span>
@@ -56,6 +72,11 @@ console.log(images.length)
                 </div>
 
             </div>
+
+
+
+        </>
+
 
 
 

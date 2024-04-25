@@ -242,7 +242,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
       setReportData(reportData);
     }
     //may be change logic in future make by aayush
-    dispatch(getadminReportData(reportData.callbackId));
+    dispatch(getadminReportData(reportData?.callbackId || reportData?.RequestId));
     
   }
 
@@ -398,8 +398,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               "service-card-selected"
                             }`}
                             onClick={() => handleReportSectionData(reportData)}
+                      
                           >
-                            <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row" >
                               <div className="ticket-sub-card-row-right">
                                 <h5>Name:</h5>
                               </div>
