@@ -1638,6 +1638,8 @@ code {
 .spare-part-table-container table {
   width: 100%;
   border-collapse: collapse;
+  text-align: start;
+
 }
 
 
@@ -1657,6 +1659,8 @@ code {
 .spare-part-table-container thead {
   height: 3.5rem;
 }
+
+
 
 /* set body scroll property starts */
 .client_table-container:hover::-webkit-scrollbar-thumb {
@@ -1749,9 +1753,17 @@ code {
   padding: 1rem 0.4rem;
   border-bottom: 1px solid #c1c1c12c;
   font-size: 0.8rem;
+  text-transform: capitalize;
+
   color: #1D1D1D;
   font-weight: 400;
   font-family: "Poppins";
+}
+
+.sos-description table td:nth-child(7){
+  text-align: start;
+  width: 22rem;
+  /* background-color: lightgrey; */
 }
 
 /* <-------------------------------Clients CSS Start Ends -------------------------------> */
@@ -1914,3 +1926,6 @@ code {
 /* sidebar SOS button css ends */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
+
+
+

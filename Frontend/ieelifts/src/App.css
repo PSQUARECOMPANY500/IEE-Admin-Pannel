@@ -2812,7 +2812,7 @@ footer a:hover {
 }
 
 .client-modal-container {
-  top: 15%;
+  top: 10%;
   border-radius: 15px;
   left: 15%;
   width: 80%;
@@ -2834,6 +2834,7 @@ footer a:hover {
 .client-child-modal-container {
   height: 45rem;
   width: 100%;
+
   position: relative;
   border-radius: 8px;
 
@@ -2844,6 +2845,7 @@ footer a:hover {
 .client-child-modal-container {
   text-transform: lowercase;
   padding: 1.5rem;
+
   height: 100%;
 
 }
@@ -6368,6 +6370,10 @@ element.style {
 .client-modal-card-container {
   height: 85%;
   width: 100%;
+  /* background-color: lightpink; */
+  border-radius: 0.8rem;
+  border: 1px solid #E5E5E5;
+
   position: relative;
   padding: 1rem;
 }
@@ -6402,26 +6408,47 @@ element.style {
 .client-modal-text-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
+  margin-left: 0.5rem;
   justify-content: start;
 }
 
+.client-modal-text-container h5{
+  text-transform: capitalize;
+
+
+}
+
 .client-modal-dropdown {
-  height: 2.5rem;
+  height: 2.8rem;
   width: 6rem;
-  border: 1px solid #000;
-  border-radius: 5px;
+  border: 1px solid #8E8E8E;
+border-radius: 10px;
+
   position: relative;
   cursor: pointer;
 }
+
+/*----------------------------- some changes by Raj  ----------*/
+/* date: 30/4/2024 */
 
 .dropdown-icon-container {
   height: 100%;
   width: 100%;
   display: flex;
+  /* gap: 5px; */
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   position: relative;
+  text-transform: capitalize;
+  padding: 0 5px;
+}
+
+.dropdown-icon-container h6 {
+  color:#DEDEDE;
+  text-transform:capitalize;
+  font-weight: 400;
+
 }
 
 
@@ -6430,11 +6457,13 @@ element.style {
   color: #000;
 }
 
+/* ------Add Some code by Raj data = 30/4/2024-------------- */
+
 .client-modal-drodown-options {
-  min-height: 100px;
+  min-height: 120px;
   width: 100%;
   background: #ffffff;
-  z-index: 9;
+  z-index: 9999999999;
   position: absolute;
   border: 1px solid #8E8E8E;
   border-radius: 10px;
@@ -6445,15 +6474,42 @@ element.style {
 
 }
 
+.client-modal-drodown-options p {
+font-size: 0.9rem;
+color: #BABABA;
+padding-top: 5px;
+text-align: center;
+transition: transform 0.1s;
+margin-top: .4rem;
+cursor: pointer;
+border-bottom: 1px solid lightgrey;
+text-transform: capitalize;
+
+}
+.client-modal-drodown-options p:hover {
+  transition: all 0.1s;
+  color: #F8AC1DAD;
+
+
+}
+
+.green-padding {
+  padding: 0.4375rem 1.3rem;
+border-radius: 3.125rem; 
+  background-color: #D6F8BF;
+  color: #0F351D;
+
+}
+
+
+
 .dropdown-icon-container p {
   font-size: 0.8rem;
   cursor: pointer;
+  margin-left: 5px;
 }
 
-.client-modal-dropdown-option p {
-  font-size: 0.8rem;
-  cursor: pointer;
-}
+
 
 /* ---------------------------------------------------------------make by aayush for report image preview----------------------------------------------------------------------------------- */
 .images {

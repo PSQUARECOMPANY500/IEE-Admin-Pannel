@@ -45,11 +45,13 @@ const Clients = () => {
     } else {
       dataToRender = clients;
     }
-
+    
     if (layout === "grid") {
+      console.log("Grid view");
       return <ClientCardView clientData={dataToRender} />;
     } else {
-      return <ClientCardView clientData={dataToRender} />;
+      
+      return <ClientTableView clientData={dataToRender} />;
     }
   };
 
