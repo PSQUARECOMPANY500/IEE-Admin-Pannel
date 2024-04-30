@@ -1,6 +1,7 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React, { useState } from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
+import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
 
 const ClientFormDetails = ({ }) => {
     const [userName,setUserName]=useState('');
@@ -43,10 +44,11 @@ const ClientFormDetails = ({ }) => {
                     />
                 </div>
                 <div>
-                <AnimatedInput
+                {/* <AnimatedInput
                         label={"Souce of Lead"}
                         name={"courseName"}
-                    />
+                    /> */}
+                    <ClientDropdown label={"Source of Lead"}/>
                 </div>
                 <div>
                 <AnimatedInput

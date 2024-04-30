@@ -1883,6 +1883,7 @@ code {
 
 .client-architect {
   padding: 2rem;
+  margin-top: 3rem;
 }
 
 .client-form-details-heading {
@@ -1898,6 +1899,7 @@ code {
   grid-column-gap: 3.1rem;
   grid-row-gap: 2rem;
   margin-top: 1rem;
+  
 }
 
 .client-form-hr {
@@ -1960,6 +1962,7 @@ code {
 .quotation-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+
 }
 
 .quotation {
@@ -2261,6 +2264,83 @@ font-size: 1rem;
   height: 15px;
 }
 
+/* client-dropdown */
+
+.client-dropdown{
+  position: relative;
+}
+
+.dropdown-input{
+  outline: none;
+  border :none;
+  border-bottom: 1px solid #1D1D1D;
+  opacity: 0.5;
+  padding-bottom: 0.4rem;
+  width: 100%;
+  font-family: Poppins;  
+  cursor: pointer;
+}
+.dropdown-input::placeholder{
+  margin-bottom: 1rem;
+  color: #1D1D1D;
+  font-family: Poppins;
+  font-size: 0.9;
+}
+.dropdown-icon-container{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+}
+
+.option-container{
+  position: absolute;
+  border: 1px solid #70707080;
+  border-radius: 10px;
+  color: #8E8E8E;
+  font-size: 1rem;
+  width: 100%;
+  height: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.6rem;
+  opacity: 1;
+  margin-top: 0.4rem;
+  font-family: Poppins;
+  background-color: #fff;
+  z-index: 10;
+}
+.option-container>ul{
+  list-style-type: none;
+  opacity: 0.54;
+  font-size: 1rem;
+}
+.option-container>ul>li{
+  cursor: pointer;
+}
+.option-li{
+  padding: 0.2rem;
+  transition: background-color 0.3s ease;
+
+}
+.option-li:hover{
+  background-color:#FEF3DE;
+  color:black;
+  border-radius: 7px;
+  padding: 0.2rem;
+  opacity: 1;
+  color: #F8AC1D;
+}
+.add-client-button{
+  font-size: 0.8rem;
+  border: 1px solid #f8ac1d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444444;
+  font-weight: 500;
+  padding: 0.72rem 1.25rem;
+  cursor: pointer;
+  border-radius: 7px;
+}
 
 /* --------------------------------Animated Input CSS---------------------------------- */
 input:-webkit-autofill {
@@ -2270,13 +2350,13 @@ input:-webkit-autofill {
 
 .input-container {
   position: relative;
+  z-index: 1;
 }
 
 .select-container {
   position: relative;
   width: 25rem;
 }
-
 
 .input-field {
   font-size: 20px;
@@ -2308,7 +2388,7 @@ input:-webkit-autofill {
   font-size: 1rem;
   opacity: 0.5;
   font-weight: 400;
-
+   z-index: 1;
 }
 
 

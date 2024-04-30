@@ -1,6 +1,7 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
 import React, { useState } from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
+import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
 const ClientFormElevatorDetails = ({ }) => {
     const [capacity,setCapacity] = useState('kg')
     const handleCapacityUnitChange = (unit) => {
@@ -24,22 +25,26 @@ const ClientFormElevatorDetails = ({ }) => {
             <hr className='client-form-hr' />
             <div className='client-elevator-input-wrapper'>
                 <div className='mmbtn-parent'>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Pit depth"}
                         name={"courseName"}
-                    /> <span className='mmBtn mm-btn-possition'>mm</span>
+                    /> */}
+                    <ClientDropdown label={"Pit depth"} />
+                     <span className='mmBtn mm-btn-possition'>mm</span>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Type"}
                         name={"courseName"}
-                    />
+                    /> */}
+                     <ClientDropdown label={"Type"}/>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Purpose"}
                         name={"courseName"}
-                    />
+                    /> */}
+                     <ClientDropdown label={"Purpose"}/>
                 </div>
                 <div className='capacity-container'>
                     <div>
@@ -86,22 +91,25 @@ const ClientFormElevatorDetails = ({ }) => {
                   </div>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Door Type"}
                         name={"courseName"}
-                    />
+                    /> */}
+                     <ClientDropdown label={"Door Type"}/>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Contstruction Material"}
                         name={"courseName"}
-                    />
+                    /> */}
+                     <ClientDropdown label={"Construction Material"}/>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Number of opening"}
                         name={"courseName"}
-                    />
+                    /> */}
+                     <ClientDropdown label={"Number of opening"}/>
                 </div>
                 <div>
                     <div className='degree-container'>

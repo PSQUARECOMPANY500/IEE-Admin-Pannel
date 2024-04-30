@@ -1,6 +1,7 @@
+// <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React from 'react';
 
-const Clientbutton = ({ value, className }) => {
+const Clientbutton = ({ value, className, handleNextPage }) => {
   let buttonClassName = 'client-form-button';
 
   if (value === "Delete") {
@@ -11,7 +12,7 @@ const Clientbutton = ({ value, className }) => {
 
   return (
     <>
-      <button className={buttonClassName}>{value}</button>
+      <button className={buttonClassName} onClick={handleNextPage}>{value}</button>
     </>
   );
 };

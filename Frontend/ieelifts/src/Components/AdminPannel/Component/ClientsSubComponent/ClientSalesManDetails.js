@@ -1,7 +1,9 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React from 'react';
+import { useState } from "react";
+import React  from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
 const ClientSalesManDetails = () => {
+ 
   return (
     <div className='client-salesman-details'>
       <h5 className='client-form-details-heading'>Sales Man Details</h5>
