@@ -425,6 +425,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
     const AttendanceCreatedDate = new Date()
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
+      console.log("AttendanceCreatedDate",AttendanceCreatedDate)
     const enggDetail = await EnggLocationModel.find({ AttendanceCreatedDate });
     if (!enggDetail) {
       return res.status(404).json({
@@ -439,8 +440,6 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    console.log(serviceEnggId);
-
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
       serviceEnggIdDetails: serviceEnggId[index],
@@ -450,7 +449,6 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       message: "Services Engg Location retrieved by his/her ID successfully",
       combinedData,
     });
-    //}
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });

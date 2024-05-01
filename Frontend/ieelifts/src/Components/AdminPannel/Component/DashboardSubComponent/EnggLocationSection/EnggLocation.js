@@ -125,60 +125,315 @@
 // }
 
 
-// to-do : Next Update in Future (2nd Update)
+/* 
+possible exports: Autocomplete, BicyclingLayer, 
+BicyclingLayerF, Circle, CircleF, Data, DataF, 
+DirectionsRenderer, DirectionsService, 
+DistanceMatrixService, DrawingManager, 
+DrawingManagerF, FLOAT_PANE, GoogleMap, 
+GoogleMapsMarkerClusterer, GoogleMarkerClusterer,
+GroundOverlay, GroundOverlayF, HeatmapLayer, 
+HeatmapLayerF, InfoBox, InfoBoxF, InfoWindow,
+InfoWindowF, KmlLayer, LoadScript, LoadScriptNext,
+MAP_PANE, MARKER_LAYER, MapContext, 
+Marker, MarkerClusterer, MarkerClustererF, 
+MarkerF, OVERLAY_LAYER, OVERLAY_MOUSE_TARGET, 
+OverlayView, OverlayViewF, Polygon, PolygonF,
+Polyline, PolylineF, Rectangle, RectangleF,
+StandaloneSearchBox, StreetViewPanorama, 
+StreetViewService, TrafficLayer, TrafficLayerF, 
+TransitLayer, TransitLayerF, useGoogleMap,
+useJsApiLoader, useLoadScript
+*/
 
-import React, {useEffect} from 'react'
-import { useState, useMemo, useCallback, useRef } from "react";
-import {
-  GoogleMap,
-  Marker,
-  DirectionsRenderer,
-  Circle,
-  MarkerClusterer,
-  useJsApiLoader
-} from "@react-google-maps/api";
+// to-do : Next Update in Future (2nd Update)
+/* 
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { EnggLocationDetailsFetch, onClickPinCart } from "../../../../../ReduxSetup/Actions/AdminActions";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 
 const EnggLocation = () => {
+  const dispatch = useDispatch();
+  const enggLocationDetails = useSelector(state => state.AdminRootReducer?.EnggLocationDetailsFetchReducer?.enggLocatioDetails);
+  const enggServiceID = useSelector(state => state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation);
+console.log("enggLocationDetails",enggLocationDetails)
+console.log("enggServiceID",enggServiceID)
+  const [center, setCenter] = useState({ lat: 30.715885973818526, lng: 76.6965589420526 });
+  const [mainopen, setMainOpen] = useState(false);
+  const [pinClick, setPinClick] = useState(false);
+  const [pinindex, setPinIndex] = useState(-1);
+  const [enggId, setEnggId] = useState("");
+  
+  const markerSymbol = {
+    path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    scale: 10,
+    fillColor: '#0F351D',
+    fillOpacity: 1,
+    strokeColor: 'white',
+    strokeWeight: 2,
+  };
+
+  const [enggmarkerSymbol, setenggMarkerSymbol] = useState({
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 10,
+    fillColor: '#0F351D',
+    fillOpacity: 1,
+    strokeColor: 'white',
+    strokeWeight: 2,
+  });
+  
+  useEffect(() => {
+    dispatch(EnggLocationDetailsFetch());
+  }, []);
+
+  useEffect(() => {
+    dispatch(onClickPinCart(enggId));
+  }, [enggId]);
+
+  useEffect(() => {
+    if (enggLocationDetails) {
+      enggLocationDetails.forEach((data, index) => {
+        if (data.ServiceEnggId === enggServiceID) {
+          const lat = parseFloat(data.currentLocation.coordinates[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[1]);
+          setCenter({ lat, lng });
+        }
+      });
+    }
+  }, [enggServiceID, enggLocationDetails]);
+
+  const handleDoubleClick = () => {
+    setenggMarkerSymbol(prevSymbol => ({
+      ...prevSymbol,
+      fillColor: '#F8AC1D',
+      scale: 12,
+    }));
+  };
 
 
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  return (
+    <>
+      <GoogleMap
+        zoom={14}
+        center={center}
+        mapContainerClassName="map-container"
+        options={{
+          mapTypeControl: true,
+          scaleControl: true,
+          streetViewControl: false,
+          rotateControl: true,
+          fullscreenControl: true,
+        }}
+      >
+        <Marker
+          position={{ lat: 30.715885973818526, lng: 76.6965589420526 }}
+          icon={markerSymbol}
+          onClick={() => setMainOpen(!mainopen)}
+        />
+         
+        {mainopen && (
+          <InfoWindow
+            position={{ lat: 30.715885973818526, lng: 76.6965589420526 }}
+            onCloseClick={() => setMainOpen(!mainopen)}
+          >
+            <p>IEE LIFTS</p>
+          </InfoWindow>
+        )}
+        {enggLocationDetails &&
+          enggLocationDetails.map((data, index) => {
+/*             const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
+            const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
+            const position = { lat: latitude, lng: longitude };
+            const engId = data.ServiceEnggId;
+            let num = data.ServiceEnggId === enggServiceID || pinindex === index ? 1.8 : 1;
+            let color = data.ServiceEnggId === enggServiceID || pinindex === index ? "#F8AC1D" : "#F8AC1D"; 
+            
+              const latitude = parseFloat(
+                data.currentLocation.coordinates?.[0]
+              );
+              const longitude = parseFloat(
+                data.currentLocation.coordinates?.[1]
+              );
+              const position = { lat: latitude, lng: longitude };
+              const engId = data.ServiceEnggId;
+              //const imgurl = data.serviceEnggIdDetails.EnggPhoto;
+              if (data.ServiceEnggId === enggServiceID   || pinindex === index) {
+                //console.log("data.ServiceEnggId",data.ServiceEnggId)
+                setenggMarkerSymbol(prevSymbol => ({
+                  ...prevSymbol,
+                  fillColor: '#F8AC1D',
+                  scale: 12,
+                }));
+              }
+              const enggId = data.ServiceEnggId;
+
+            return (
+              <Marker
+                key={index}
+                position={position}
+                icon={enggmarkerSymbol}
+                onClick={() => {
+                  setEnggId(engId);
+                  setPinClick(prev => !prev);
+                  setPinIndex(index);
+                }}
+              >
+              </Marker>
+            );
+          })}
+      </GoogleMap>
+    </>
+  );
+}
+
+export default EnggLocation;
+ */
 
 
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { EnggLocationDetailsFetch, onClickPinCart } from '../../../../../ReduxSetup/Actions/AdminActions';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+
+const EnggLocation = () => {
+  const dispatch = useDispatch();
+  const enggLocationDetails = useSelector((state) => {
+        return state.AdminRootReducer?.EnggLocationDetailsFetchReducer
+          ?.enggLocatioDetails;
+      });
+  const enggServiceID = useSelector(state => state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation);
+  const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 }
+  const [center, setCenter] = useState({ lat: 30.715885973818526, lng: 76.6965589420526 });
+  const [mainOpen, setMainOpen] = useState(false);
+  const [pinClick, setPinClick] = useState(false);
+  const [pinIndex, setPinIndex] = useState(-1);
+  const [enggId, setEnggId] = useState('');
+  const [enggMarkerSymbol, setEnggMarkerSymbol] = useState({
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 10,
+    fillColor: '#0F351D',
+    fillOpacity: 1,
+    strokeColor: 'white',
+    strokeWeight: 2,
+  });
+
+  const inactiveMarkerSymbol = {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 15,
+    fillColor: '#F8AC1D',
+    fillOpacity: 1,
+    strokeColor: 'white',
+    strokeWeight: 2,
+  };
+
+  const IEEmarkerSymbol = {
+    path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    scale: 10,
+    fillColor: '#0F351D',
+    fillOpacity: 1,
+    strokeColor: 'white',
+    strokeWeight: 2,
+  };
+
+  useEffect(() => {
+    const fetchData = () => {
+      dispatch(EnggLocationDetailsFetch())
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    };
+
+    fetchData();
+    const intervalId = setInterval(fetchData, 20000); // 20 seconds in milliseconds
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(onClickPinCart(enggId));
+  }, [dispatch, enggId]);
+
+  useEffect(() => {
+    if (enggLocationDetails) {
+      enggLocationDetails.forEach(data => {
+        if (data.ServiceEnggId === enggServiceID) {
+          const lat = parseFloat(data.currentLocation.coordinates[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[1]);
+          setCenter({ lat, lng });
+        }
+      });
+    }
+  }, [enggLocationDetails, enggServiceID]);
+
+  const handleDoubleClick = () => {
+    setEnggMarkerSymbol(prevSymbol => ({
+      ...prevSymbol,
+      fillColor: '#F8AC1D',
+      scale: 12,
+    }));
+  };
 
   const mapStyles = [
     {
-        "featureType": "water",
-        "elementType": "all",
+        "featureType": "landscape.man_made",
+        "elementType": "geometry",
         "stylers": [
             {
-                "hue": "#7fc8ed"
-            },
-            {
-                "saturation": 55
-            },
-            {
-                "lightness": -6
-            },
-            {
-                "visibility": "on"
+                "color": "#f7f1df"
             }
         ]
     },
     {
-        "featureType": "water",
+        "featureType": "landscape.natural",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#d0e3b4"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.natural.terrain",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
         "elementType": "labels",
         "stylers": [
             {
-                "hue": "#7fc8ed"
-            },
-            {
-                "saturation": 55
-            },
-            {
-                "lightness": -6
-            },
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.attraction",
+        "elementType": "labels",
+        "stylers": [
             {
                 "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.business",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.medical",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fbd3da"
             }
         ]
     },
@@ -187,50 +442,14 @@ const EnggLocation = () => {
         "elementType": "geometry",
         "stylers": [
             {
-                "hue": "#83cead"
-            },
-            {
-                "saturation": 1
-            },
-            {
-                "lightness": -15
-            },
-            {
-                "visibility": "on"
+                "color": "#bde6ab"
             }
         ]
     },
     {
-        "featureType": "landscape",
-        "elementType": "geometry",
+        "featureType": "road",
+        "elementType": "geometry.stroke",
         "stylers": [
-            {
-                "hue": "#f3f4f4"
-            },
-            {
-                "saturation": -84
-            },
-            {
-                "lightness": 59
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "hue": "#ffffff"
-            },
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 100
-            },
             {
                 "visibility": "off"
             }
@@ -238,70 +457,46 @@ const EnggLocation = () => {
     },
     {
         "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "hue": "#ffffff"
-            },
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 100
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
         "elementType": "labels",
         "stylers": [
             {
-                "hue": "#bbbbbb"
-            },
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 26
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "hue": "#ffcc00"
-            },
-            {
-                "saturation": 100
-            },
-            {
-                "lightness": -35
-            },
-            {
-                "visibility": "simplified"
+                "visibility": "off"
             }
         ]
     },
     {
         "featureType": "road.highway",
-        "elementType": "geometry",
+        "elementType": "geometry.fill",
         "stylers": [
             {
-                "hue": "#ffcc00"
-            },
+                "color": "#ffe15f"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
             {
-                "saturation": 100
-            },
+                "color": "#efd151"
+            }
+        ]
+    },
+    {
+        "featureType": "road.arterial",
+        "elementType": "geometry.fill",
+        "stylers": [
             {
-                "lightness": -22
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.local",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#ffffff"
             },
             {
                 "visibility": "on"
@@ -309,75 +504,85 @@ const EnggLocation = () => {
         ]
     },
     {
-        "featureType": "poi.school",
-        "elementType": "all",
+        "featureType": "road.local",
+        "elementType": "labels.text",
         "stylers": [
-            {
-                "hue": "#d7e4e4"
-            },
-            {
-                "saturation": -60
-            },
-            {
-                "lightness": 23
-            },
             {
                 "visibility": "on"
             }
         ]
+    },
+    {
+        "featureType": "transit.station.airport",
+        "elementType": "geometry.fill",
+        "stylers": [
+            {
+                "color": "#cfb2db"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#a2daf2"
+            }
+        ]
     }
 ]
-
-
-
-  const options = {
-    // zoomControl: true,
-    mapTypeControl: true,
-    scaleControl: true,
-    streetViewControl: true,
-    rotateControl: true,
-    fullscreenControl: true,
-    styles: mapStyles,
-  };
-
-
- 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyDqaTnQklfV5Ek9gmdbAuCk1qNIUyVyDC4',
-    libraries: ['places'],
-    language: 'en',
-    region: 'US',
-    mapIds: [],
-    nonce: '',
-    url: 'https://maps.googleapis.com/maps/api/js',
-    authReferrerPolicy: 'origin',
-  });
-
-  
-  
-  useEffect(() => {
-    // Load initial center coordinates or data from API
-    setCenter({ lat: 30.715885973818526, lng: 76.6965589420526  });
-  }, []);
-
-
-  if(!isLoaded) return <div>Loading map data.....</div>
-
   return (
-    <>
     <GoogleMap
-    zoom={12}
-    center={center}
-    mapContainerClassName="map-container"
-    options={options}
-  >
+      zoom={11}
+      center={center}
+      mapContainerClassName="map-container"
+      options={{
+        mapTypeControl: true,
+        scaleControl: true,
+        streetViewControl: false,
+        rotateControl: true,
+        fullscreenControl: true,
+        styles:mapStyles
+      }}
+    >
+      <Marker
+        position={IEELifts}
+        icon={IEEmarkerSymbol}
+        onClick={() => setMainOpen(!mainOpen)}
+      />
 
-</GoogleMap>
+      {mainOpen && (
+        <InfoWindow
+          position={IEELifts}
+          onCloseClick={() => setMainOpen(!mainOpen)}
+        >
+          <p>IEE LIFTS</p>
+        </InfoWindow>
+      )}
 
-
-    </>
-  )
+      {enggLocationDetails && enggLocationDetails.map((data, index) => {
+        const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
+        const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
+        const position = { lat: latitude, lng: longitude };
+        const engId = data.ServiceEnggId;
+        const isActive = data.ServiceEnggId === enggServiceID || pinIndex === index;
+        const markerSymbol = isActive ? inactiveMarkerSymbol :enggMarkerSymbol;
+        //console.log("id",enggServiceID ,isActive, markerSymbol)
+        return (
+          <Marker
+            key={index}
+            position={position}
+            icon={markerSymbol}
+            onClick={() => {
+              setEnggId(engId);
+              setPinClick(prev => !prev);
+              setPinIndex(index);
+            }}
+          />
+        );
+      })}
+    </GoogleMap>
+  );
 }
 
-export default EnggLocation
+export default EnggLocation;
