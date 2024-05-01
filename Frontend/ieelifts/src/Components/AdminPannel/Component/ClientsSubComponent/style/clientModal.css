@@ -32,4 +32,15 @@ object-fit: cover;
 
 
   
- 
+.client-modal-profile-pdficon{
+    cursor: pointer;
+}
+
+.client-modal-profile-excelicon{
+    cursor: pointer;
+
+}
+
+.cross-icon{
+    cursor: pointer;
+}

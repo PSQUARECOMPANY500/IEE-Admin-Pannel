@@ -1,4 +1,7 @@
 import React from 'react'
+import data from "./DatasClientServiceHis.json"
+
+// ---------------Raj ---------------------------
 
 const ClientSOSCall = () => {
     return (
@@ -21,73 +24,20 @@ const ClientSOSCall = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
 
-                                <td>Status</td>
-                            </tr>
-                            <tr >
-                                <td>2</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
+                            {data.map((row, index) => (
+                                <tr key={index}>
+                                    <td>{row.SrNo}</td>
+                                    <td>{row.Date}</td>
+                                    <td>{row.Time}</td>
+                                    <td>{row.EngAssigned}</td>
+                                    <td>{row.Location}</td>
+                                    <td>{row.Issue}</td>
+                                    <td>{row.Description}</td>
+                                    <td>{row.Status}</td>
 
-                                <td>Status</td>
-                            </tr>
-                            <tr >
-                                <td>3</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
-
-                                <td>Status</td>
-                            </tr>
-                            <tr >
-                                <td>4</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
-
-                                <td>Status</td>
-                            </tr>
-                            <tr >
-                                <td>5</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
-
-                                <td>Status</td>
-                            </tr>
-                            <tr >
-                                <td>6</td>
-                                <td>Date</td>
-                                <td>Time</td>
-                                <td>Anuj Rawat</td>
-                                <td>Mohali</td>
-                                <td>Door</td>
-                                <td>Stuck in elevator between floors.Light flickering <br /> and there strange noise coming <br /> from machinary.</td>
-
-                                <td>Status</td>
-                            </tr>
-
+                                </tr>
+                            ))}
 
                         </tbody>
                     </table>

@@ -1,4 +1,7 @@
 import React from 'react'
+import data from './DatasClientServiceHis.json'
+
+//---------------------------------Raj-------------------------------
 
 const ClientCallBackHis = () => {
   return (
@@ -15,227 +18,22 @@ const ClientCallBackHis = () => {
                 <th>Issue Reported</th>
                 <th>Eng Assigned</th>
                 <th>Status</th>
-                <th>Action</th>
 
               </tr>
             </thead>
             <tbody>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
+             {data.map((row, index) => (
+
+              <tr key={index}>
+                 <td>{row.SrNo}</td>
+                  <td>{row.Date}</td>
+                  <td>{row.Time}</td>
+                  <td>{row.IssueReported}</td>
+                  <td>{row.EngAssigned}</td>
+                  <td>{row.Status}</td>
+
               </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
-              <tr >
-                <td>Sr.no</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Issue Reported</td>
-                <td>Eng Assigned</td>
-                <td>Status</td>
-                <td>Action</td>
-              </tr>
+             ))}
             </tbody>
           </table>
         </div>

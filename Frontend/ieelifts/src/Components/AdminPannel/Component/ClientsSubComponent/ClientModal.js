@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RxCross2 } from "react-icons/rx";
 import ClientCallBackHis from './ClientCallBackHis';
 import { RiArrowDropDownLine } from "react-icons/ri";
@@ -12,8 +12,37 @@ import ClientServiceHistory from './ClientServiceHistory';
 import ClientDocuments from './ClientDocuments';
 import ClientSOSCall from './ClientSOSCall';
 
-const ClientModal = () => {
-  const [showClientModal, setShowClientModal] = useState(true);
+// --------------------Raj -------------------------------------------
+
+const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
+
+  const modalRef = useRef();
+
+  // Close modal when clicking outside of it
+  const handleClickOutside = (event) => {
+    if (modalRef.current && !modalRef.current.contains(event.target)) {
+      handleCloseModal();
+    }
+  };
+
+  //when we click outside modal then closing modal
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+
+    };
+  }, []);
+
+  useEffect(() => {
+    // update sccroll behavior when showclientmodal changes
+    document.body.style.overflow = showClientModal ? "hidden" : "scroll";
+  }, [showClientModal]);
+
+
+
+
   const [dropdowns, setDropdowns] = useState([
     { id: 0, options: ['App', 'Message', 'SMS'], pic: MailIcon, selectedOption: 'Mail1', showOptions: false },
     { id: 1, options: ['Warranty', 'Platinum', 'Gold', 'Silver'], defaultName: 'Membership :', pic: MailIcon, selectedOption: 'Warranty', showOptions: false },
@@ -37,24 +66,22 @@ const ClientModal = () => {
     );
   };
 
-  const handleCloseModal = () => {
-    setShowClientModal(false);
-  };
 
 
+  // -------------------Raj-----------------------------------------------------
 
   const renderComponent = () => {
 
     switch (dropdowns[2].selectedOption) {
 
       case "Service History":
-        return <ClientServiceHistory/>
+        return <ClientServiceHistory />
       case "Call Back History":
         return <ClientCallBackHis />
       case "Document":
-        return <ClientDocuments/>
+        return <ClientDocuments />
       case "SOS Calls":
-        return <ClientSOSCall/>
+        return <ClientSOSCall />
 
     }
   }
@@ -63,8 +90,8 @@ const ClientModal = () => {
   return (
     <>
       {showClientModal && <div className='client-modal-wrapper'>
-        <div className='client-modal-container'>
-          <div className="cross-icon" onClick={handleCloseModal}>
+        <div className='client-modal-container' ref={modalRef}>
+          <div className="cross-icon" onClick={handleCloseModal} >
             <RxCross2 />
           </div>
           <div className="client-child-modal-container">
@@ -79,12 +106,12 @@ const ClientModal = () => {
 
                 </div>
                 <div className='client-modal-text-container'>
-                  <h5>Anuj Rawat</h5>
-                  <p>2022100</p>
+                  <h5>{selectedClient && selectedClient.name}</h5>
+                  <p>{selectedClient && selectedClient.JobOrderNumber}</p>
                 </div>
               </div>
               <div className='client-modal-profile-container-right'>
-              
+
                 <ClientDropDown
 
                   key={dropdowns[0].id}
@@ -95,7 +122,7 @@ const ClientModal = () => {
                   toggleOptions={() => toggleOptions(dropdowns[0].id)}
                   handleOptionClick={(option) => handleOptionClick(dropdowns[0].id, option)}
                   id={dropdowns[0].id}
-                  w={'7rem'}
+                  w={'8rem'}
                 />
                 <ClientDropDown
                   key={dropdowns[1].id}
@@ -109,10 +136,10 @@ const ClientModal = () => {
                   w={'16rem'}
 
                 />
-                <div>
+                <div className='client-modal-profile-pdficon'>
                   <img src={PdfIcon} />
                 </div>
-                <div>
+                <div className='client-modal-profile-excelicon'>
 
 
                   <img src={ExcelIcon} />

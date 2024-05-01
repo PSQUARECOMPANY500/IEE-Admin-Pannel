@@ -373,7 +373,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-{!checkboxStates.includes(true)?(<span className="top-icon">
+            {!checkboxStates.includes(true) ? (<span className="top-icon">
               <div className="search-box">
                 <input
                   type="text"
@@ -395,13 +395,13 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <RiSearchLine className="iconColor" />
                 </i>
               </div>
-            </span>):(<img src={pdfIcon}/>)}
-            
+            </span>) : (<img src={pdfIcon} />)}
+
 
             {/* ............................................................ax13-search...................................................... */}
 
-            {!checkboxStates.includes(true)?(  <div className="sub-components-ticket-filter"  ref={dropdownClickRef}>
-              <p className="filter-icon" onClick={handleFilter} style={{cursor:'pointer'}}>
+            {!checkboxStates.includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+              <p className="filter-icon" onClick={handleFilter} style={{ cursor: 'pointer' }}>
                 <LuSettings2 className="iconColor" />
                 {""}
               </p>
@@ -414,11 +414,11 @@ const TicketSection = ({ setTicketUpdate }) => {
                   />
                 </div>
               )}
-            </div> ):(<img src={execelIcon} style={{boxShadow: '0px 3px 6px #00000029'}}/>)}
+            </div>) : (<img src={execelIcon} style={{ boxShadow: '0px 3px 6px #00000029' }} />)}
 
             {/* add  ticket +icon */}
 
-            {!checkboxStates.includes(true)?(  <div
+            {!checkboxStates.includes(true) ? (<div
               className="sub-components-ticket-filter"
               onClick={() => openModal(0)}
             >
@@ -426,7 +426,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 <GoPlus className="iconColor" />
                 {""}
               </p>
-            </div> ):('')}
+            </div>) : ('')}
             {showTicketModal && (
               <AddTicketOnCallRequests
                 closeModal={closeModal}
@@ -435,10 +435,10 @@ const TicketSection = ({ setTicketUpdate }) => {
                 setTicketUpdate={setTicketUpdate}
                 requestSection={false}
               />
-        
+
             )}
 
-      
+
           </div>
         </div>
 

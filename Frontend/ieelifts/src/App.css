@@ -2812,9 +2812,9 @@ footer a:hover {
 }
 
 .client-modal-container {
-  top: 10%;
+  top: 9%;
   border-radius: 15px;
-  left: 15%;
+  left: 10%;
   width: 80%;
 
 }
@@ -6436,9 +6436,9 @@ border-radius: 10px;
   height: 100%;
   width: 100%;
   display: flex;
-  /* gap: 5px; */
+  /* gap: 2px; */
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   position: relative;
   text-transform: capitalize;
   padding: 0 5px;
@@ -6463,6 +6463,7 @@ border-radius: 10px;
   min-height: 120px;
   width: 100%;
   background: #ffffff;
+  /* background-color: rgb(107, 65, 65); */
   z-index: 9999999999;
   position: absolute;
   border: 1px solid #8E8E8E;
@@ -6470,17 +6471,42 @@ border-radius: 10px;
   margin-top: 0.5rem;
   border-radius: 5px;
   padding: 1rem;
+  
 
 
 }
 
+.client-modal-dropdown-option{
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  margin-top: .4rem;
+  margin-left: -0.375rem;
+
+}
+
+.second-dropdown .client-modal-dropdown-option {
+/* background-color: lightcyan; */
+/* margin-left: 4vw; */
+width: 14rem;
+padding-left: 4vw;
+height: 2rem;
+border-bottom: 1px solid lightgrey;
+padding-top: 9px;
+/* margin-top:10px; */
+
+}
+
+.second-dropdown .client-modal-dropdown-option p{
+border-bottom: none;
+}
+
 .client-modal-drodown-options p {
 font-size: 0.9rem;
+margin-top: -0.375rem;
 color: #BABABA;
-padding-top: 5px;
 text-align: center;
 transition: transform 0.1s;
-margin-top: .4rem;
 cursor: pointer;
 border-bottom: 1px solid lightgrey;
 text-transform: capitalize;
@@ -6492,12 +6518,12 @@ text-transform: capitalize;
 
 
 }
-
+/* ---------Raj-------------------------- */
 .green-padding {
-  padding: 0.4375rem 1.3rem;
+  padding: 0.4375rem 1rem;
 border-radius: 3.125rem; 
-  background-color: #D6F8BF;
-  color: #0F351D;
+  /* background-color: #D6F8BF; */
+  color:white;
 
 }
 

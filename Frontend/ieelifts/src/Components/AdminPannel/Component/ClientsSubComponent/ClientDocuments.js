@@ -1,4 +1,7 @@
 import React from 'react'
+import data from './DatasClientServiceHis.json'
+
+// ------------------Raj-----------------------------------
 
 const ClientDocuments = () => {
   return (
@@ -19,69 +22,16 @@ const ClientDocuments = () => {
             </tr>
           </thead>
           <tbody>
-            <tr >
-              <td>1</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
+           {data.map((row, index) => (
+            <tr key={index}>
+              <td>{row.SrNo}</td>
+              <td>{row.EngAssigned}</td>
+              <td>{row.Location}</td>
+              <td>{row.PartReplaced}</td>
+              <td>{row.Status}</td>
 
-              <td>In progress</td>
             </tr>
-            <tr >
-              <td>2</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Window</td>
-
-              <td>Status</td>
-            </tr>
-            <tr >
-              <td>3</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
-
-              <td>Status</td>
-            </tr>
-            <tr >
-              <td>4</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
-
-              <td>Status</td>
-            </tr>
-            <tr >
-              <td>5</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
-
-              <td>Status</td>
-            </tr>
-            <tr >
-              <td>6</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
-
-              <td>Status</td>
-            </tr>
-            <tr >
-              <td>7</td>
-              
-              <td>Anuj Rawat</td>
-              <td>Mohali</td>
-              <td>Door</td>
-
-              <td>Status</td>
-            </tr>
+           ))}
           
             
           </tbody>
