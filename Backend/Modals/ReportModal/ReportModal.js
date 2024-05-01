@@ -151,8 +151,8 @@ const ReportInfo = new Schema({
   ],
   paymentMode: {
     type: String,
-    enum: ["online", "cash"],
-    default:"cash"
+    enum: ["Online", "Cash"],
+    default:"Cash"
   },
   // to do  ==>  entring payment Detail while razor pay is approving...
   paymentDetils: {

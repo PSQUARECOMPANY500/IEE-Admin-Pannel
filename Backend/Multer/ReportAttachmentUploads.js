@@ -12,4 +12,31 @@ const storage = multer.diskStorage({
 
 const uploadReportAttachment = multer({ storage: storage });
 
-module.exports = uploadReportAttachment;
+
+
+//=---------------------------------------------------------------- --------------------------------                            
+
+const PDFStore = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/ReportPdf');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
+  },
+});
+
+const reportPdf = multer({ storage: PDFStore });
+
+
+
+
+
+
+
+
+
+//=---------------------------------------------------------------- --------------------------------                            
+
+
+module.exports = {uploadReportAttachment, reportPdf} ;

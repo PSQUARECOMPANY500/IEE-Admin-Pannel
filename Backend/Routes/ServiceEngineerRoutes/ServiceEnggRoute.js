@@ -11,7 +11,8 @@ const adminContoller = require("../../Controllers/AdminController/AdminControlle
 
 const uploaded = require("../../Multer/EnggAttachmentUpload");
 
-const uploadReportAttachment = require("../../Multer/ReportAttachmentUploads");
+const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmentUploads");
+
 
 //-------------------------------------- All Post Requests -------------------------------
 router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
@@ -53,11 +54,11 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation", serviceEnggContoller.createEnggLocation);
+router.post("/createEnggLocation", serviceEnggContoller.createEnggLocation);     
 router.post(
   "/createEnggLocationOnAttendance",
-  serviceEnggContoller.CreateEnggLocationOnAttendance
-);
+  serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
+);  
 
 //------------------------------------- All Get Requests -----------------------------------------
 // router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
@@ -292,9 +293,21 @@ router.get(
 // --by Preet 31/03/2024 ------------
 //route to handle update paymanet details and update spare part request also.
 router.post(
-  "/upadatePaymentDetails",
+  "/upadatePaymentDetails", reportPdf.fields([
+    {
+      name: "report",
+      maxCount: 1,
+    },
+  ]),
   serviceEnggContoller.UpdatePaymentDetilsAndSparePartRequested
 );
+
+
+
+
+
+
+
 
 // --by Preet 05/04/2024 ------------
 router.get(

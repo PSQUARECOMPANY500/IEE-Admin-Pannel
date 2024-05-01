@@ -300,14 +300,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     ? currentDateCallback?.map((value, index) => {
                         const reportData = value;
 
-                        // console.log("ticket", value);
-
                         return (
                           <div
-                            className={`ticket-card ${
+                          style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
+                             className={`ticket-card ${
                               handleCallbackSelection[index] &&
                               "service-card-selected"
-                            }`}
+                            }` }
                             onClick={() => handleReportSectionData(reportData)}
                           >
                             <div className="ticket-sub-card-row">
@@ -414,8 +413,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     : currentDateServiceRequest?.map((serviceData, index) => {
                         const reportServiceData = serviceData;
 
+                        console.log("preet", reportServiceData?.ServiceProcess)
+
                         return (
                           <div
+                            style={{backgroundColor:`${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
                             className={`service-card ${
                               handleServiceSelection[index] &&
                               "service-card-selected"

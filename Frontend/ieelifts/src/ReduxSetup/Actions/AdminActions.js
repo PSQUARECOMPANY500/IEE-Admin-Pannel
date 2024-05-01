@@ -345,7 +345,6 @@ export const assignserviceRequestByAdmin = (
 ) => {
   return async (dispatch) => {
     try {
-      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {

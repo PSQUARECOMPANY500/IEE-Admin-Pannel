@@ -568,8 +568,9 @@ module.exports.fetchClientServiceHistory = async (req,res) => {
 
     const currentDate = new Date().toLocaleDateString("en-GB");
 
-    const callbackHistory = await assignCallback.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber callbackId Message Date")
-  const serviceRequestHistory = await assignService.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber RequestId Message Date")
+    const callbackHistory = await assignCallback.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber callbackId Message ServiceProcess Date")
+
+  const serviceRequestHistory = await assignService.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber RequestId Message ServiceProcess Date")
 
   const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
 
@@ -582,23 +583,20 @@ module.exports.fetchClientServiceHistory = async (req,res) => {
    }, {});
 
 
-     // Fetching payment details for callbackIds
-     const callbackIds = callbackHistory.map(entry => entry.callbackId);
-     const paymentDetails = await ReportTable.find({ serviceId: { $in: callbackIds } }).select("paymentDetils");
-     const paymentDetailsMap = paymentDetails.reduce((acc, curr) => {
-       acc[curr.serviceId] = curr.paymentDetils;
-       return acc;
-     }, {});
-
-
-       // Enriching history with engineer names and payment details
-       const enrichedHistory = combinedHistory.map(entry => ({
+       // Fetching report data for each entry in combinedHistory
+    const enrichedHistory = await Promise?.all(combinedHistory?.map(async entry => {
+      const id = entry.callbackId || entry.RequestId;
+      const paymentDetails = await ReportTable.find({ serviceId: id });
+      // console.log('-------------------------------->',paymentDetails[0].paymentDetils);
+      return {
         ...entry._doc,
         enggName: enggNameMap[entry.ServiceEnggId],
-        paymentDetails: paymentDetailsMap[entry.callbackId]
-      }));
+        paymentDetails: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].paymentDetils : null
+      };
+    }));
 
-
+    // console.log('-------------------------------->', enrichedHistory)
+        
   const latestDateEntry = enrichedHistory.filter(entry => entry.Date === currentDate);
   const previousHistory = enrichedHistory.filter(entry => entry.Date !== currentDate);
 

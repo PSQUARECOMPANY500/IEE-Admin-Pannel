@@ -298,8 +298,8 @@ module.exports.getEnggDetail = async (req, res) => {
 module.exports.createEnggLocation = async (req, res) => {
   // onswipe of the engg update allotdetails , jobordernumber(if joborder number is not present create a new array) starting and ending location
   try {
-    const { ServiceEnggId, JobOrderNumber, latitude, longitude } = req.body;
-    if (ServiceEnggId && JobOrderNumber && latitude && longitude) {
+    const { ServiceEnggId, JobOrderNumber } = req.body;
+    if (ServiceEnggId && JobOrderNumber) {
       const AttendanceCreatedDate = new Date()
         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
         .split(",")[0];
@@ -308,6 +308,23 @@ module.exports.createEnggLocation = async (req, res) => {
         ServiceEnggId,
         AttendanceCreatedDate,
       });
+
+      if (!enggLocation) {
+        return res.status(404).send({ mesasge: "No Engg location found" });
+      }
+
+      const latitude = enggLocation.currentLocation.coordinates[0];
+      const longitude = enggLocation.currentLocation.coordinates[1];
+
+      if (
+        enggLocation?.AllotDetails[0]?.startingLocation?.coordinates?.length >=
+        0
+      ) {
+        return res.status(404).json({
+          message: "Location already marked",
+        });
+      }
+
       if (enggLocation) {
         // EnggLocation found, iterate over AllotDetails array
         let jobOrderFound = false;
@@ -333,7 +350,7 @@ module.exports.createEnggLocation = async (req, res) => {
               type: "Point",
               coordinates: [latitude, longitude],
             },
-            endingLocation: { type: "Point", coordinates: [] },
+
             createdDate: AttendanceCreatedDate,
           });
         }
@@ -346,7 +363,7 @@ module.exports.createEnggLocation = async (req, res) => {
       }
     }
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     res
       .status(500)
       .json({ error: "Internal server error in Location creation" });
@@ -1242,7 +1259,7 @@ module.exports.GenerateReportByEngg = async (req, res) => {
         EnggId: reqs.EnggId,
         questionsDetails: QuestionResponse,
         subCategoriesphotos: uploaddata,
-        paymentMode: "cash",
+        paymentMode: "Cash",
         paymentDetils: "paymentDetils",
         // isActive: true,
       });
@@ -1449,11 +1466,42 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     });
 
+    // price caluclate login insiode the spare part
+    const FilterSparePartPrice = filteredData.map(
+      (item) => {
+        if (memeberShip = 'platinum'){
+          
+      }
+    
+    }
+      
+      
+      // !item.questionResponse.isSparePartRequest
+    );
+
+    console.log("----->", FilterSparePartPrice);
+
+    const PriceCaluclate = FilterSparePartPrice.map((item) => {
+      return item.questionResponse?.sparePartDetail?.partsprice;
+    }).filter((price) => typeof price === "string");
+
+    const TotalPrice = PriceCaluclate.reduce((accm, price) => {
+      return accm + parseFloat(price);
+    }, 0);
+
+    // console.log("----->", PriceCaluclate);
+    // console.log("----->", TotalPrice);
+
+    TotalAmount.push(TotalPrice)
+
+    // price caluclate login insiode the spare part
+
     res.status(200).json({
       IssuesResolved,
       IssuesNotResolved,
       SparePartsChanged,
       SparePartsRequested,
+      TotalAmount
     });
   } catch (error) {
     console.log(error);
@@ -1517,26 +1565,25 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
 module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
-    const { serviceId, paymentDetils } = req.body;
-
+    const { serviceId, paymentdata } = req.body;
     const ReportData = await ReportInfoModel.findOne({ serviceId });
 
     if (!ReportData) {
       return res.status(404).json({ message: "Report Not Found" });
     }
 
-    ReportData.paymentDetils = paymentDetils;
+    const paymentPDF = req.files.report[0].filename;
+
+    ReportData.paymentDetils = paymentPDF;
     ReportData.isVerify = true;
     ReportData.isActive = false;
+    ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
 
     await ReportData.save();
 
     const FilteredData = ReportData.questionsDetails.filter(
       (value) => value.questionResponse.isSparePartRequest === true
     );
-
-    // console.log("FilteredData == >",FilteredData);
-    // console.log("FilteredData ReportData",ReportData.questionsDetails[25].questionResponse.isSparePartRequest);
 
     const FinalFilteredData = await Promise.all(
       FilteredData.map(async (item) => {
@@ -1558,10 +1605,26 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
         return await newSparePartRequest.save();
       })
     );
-    // console.log("FinalFilteredData",FilteredData)
-    // console.log("FinalFilteredData2",FinalFilteredData)
 
-    return res.status(200).json({ FinalFilteredData });
+    const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
+      callbackId: serviceId,
+    });
+    const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
+      RequestId: serviceId,
+    });
+
+    if (updateTaskStatusCallback) {
+      updateTaskStatusCallback.ServiceProcess = "completed";
+      await updateTaskStatusCallback.save();
+      ``;
+    } else {
+      updateTaskStatusServiceRequest.ServiceProcess = "completed";
+      await updateTaskStatusServiceRequest.save();
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Report Submitted Successfully", status: "success" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

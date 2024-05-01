@@ -2467,6 +2467,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
     const { serviceId } = req.params;
 
     const ReportData = await ReportTable.findOne({ serviceId });
+    const Rating=await EnggRating.findOne({ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2561,7 +2562,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       PitArea,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages });
+    res.status(200).json({ finalReportedData, ReportImages,Rating});
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2575,3 +2576,4 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
