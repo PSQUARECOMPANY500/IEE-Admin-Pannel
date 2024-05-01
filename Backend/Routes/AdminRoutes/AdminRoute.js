@@ -150,6 +150,11 @@ router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
 router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
 router.post("/updatePassword",adminContoller.updatePassword);
 
+/**
+ * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
+ */
 
+router.post('/clientForm',adminContoller.postElevatorForm);
+router.put('/updateClientForm/:JON',adminContoller.putElevatorForm);
 
 module.exports = router;
