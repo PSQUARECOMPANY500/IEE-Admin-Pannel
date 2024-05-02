@@ -6363,6 +6363,7 @@ element.style {
   height: 15%;
   width: 100%;
   position: relative;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
 }
@@ -6370,7 +6371,6 @@ element.style {
 .client-modal-card-container {
   height: 85%;
   width: 100%;
-  /* background-color: lightpink; */
   border-radius: 0.8rem;
   border: 1px solid #E5E5E5;
 
@@ -6392,6 +6392,7 @@ element.style {
   width: 50%;
   height: 100%;
   display: flex;
+  margin-right: 1rem;
   align-items: center;
   justify-content: space-around;
 
@@ -6436,6 +6437,8 @@ border-radius: 10px;
   height: 100%;
   width: 100%;
   display: flex;
+  color: #8E8E8E;
+  gap: 3px;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -6482,7 +6485,10 @@ border-radius: 10px;
 
 .second-dropdown .client-modal-dropdown-option {
 width: 14rem;
-padding-left: 4vw;
+display: flex;
+flex-direction: column;
+text-align: center;
+margin-left:-2px;
 height: 2rem;
 border-bottom: 1px solid lightgrey;
 padding-top: 9px;
@@ -6514,13 +6520,14 @@ text-transform: capitalize;
 /* -------------------CSS for third-dropdown---------------- */
 
 .third-dropdown .client-modal-dropdown-option{
+  display: flex;
+  flex-direction: column;
   width: 9rem;
-  padding-left: 1.1vw;
   height: 2rem;
-  margin-left: 1px;
   border-bottom: 1px solid lightgrey;
   padding-top: 9px;
   text-align: center;
+  margin-left: -1px;
 
 
 }

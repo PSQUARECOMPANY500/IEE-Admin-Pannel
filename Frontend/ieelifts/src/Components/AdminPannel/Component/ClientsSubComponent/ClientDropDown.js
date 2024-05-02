@@ -25,7 +25,7 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                 </h6>
                 <p style={{ color: color }}>{hasSpecialOption ? <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>{selectedOption}</span> : selectedOption}</p>
 
-                <RiArrowDropDownLine style={{ color: color }} className='icon-size' />
+                <RiArrowDropDownLine style={{ color: "#8E8E8E" }} className='icon-size' />
             </div>
             {showOptions && (
                 <div className='client-modal-drodown-options'>
