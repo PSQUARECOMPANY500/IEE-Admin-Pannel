@@ -1,6 +1,13 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { IoLogoWhatsapp } from "react-icons/io";
+import { FaApple } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
+import { FaSms } from "react-icons/fa";
+
+
+
 
 const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaultName, pic, color, toggleOptions, handleOptionClick, w, id }) => {
     const hasSpecialOption = selectedOption.includes('Warranty') ||
@@ -8,8 +15,34 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
         selectedOption.includes('Platinum') ||
         selectedOption.includes('Silver');
 
-    const dropdownRef = useRef();
+    const [selectedIcon, setSelectedIcon] = useState(null);
 
+    // Function to set the selected icon based on the option
+    const setSelectedIconByOption = (option) => {
+        switch (option) {
+            case 'App':
+                setSelectedIcon(<FaApple />);
+                break;
+            case 'Message':
+                setSelectedIcon(<MdMessage />);
+                break;
+            case 'SMS':
+                setSelectedIcon(<FaSms />);
+                break;
+            case 'WhatsApp':
+                setSelectedIcon(<IoLogoWhatsapp />);
+                break;
+            default:
+                setSelectedIcon(null); 
+        }
+    };
+
+
+    // Handle option click in first dropdown
+    const handleOptionClickAndIcon = (option) => {
+        handleOptionClick(option);
+        setSelectedIconByOption(option);
+    };
 
 
     //condition for second dropdown and third dropdown for CSS
@@ -41,8 +74,8 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
             {/* -------------------------------------Raj----------------------------------------- */}
 
             <div className='dropdown-icon-container'>
-                <div>
-                    <img src={pic} />
+                <div className="dropdown-icon-container-img">
+                    {selectedIcon || <img src={pic} />}
                 </div>
                 <h6>
                     {defaultName}
@@ -59,10 +92,10 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                             onClick={() => {
                                 handleOptionClick(option);
                                 handleTextColor(option);
+                                handleOptionClickAndIcon(option);
                             }}
                             className='client-modal-dropdown-option'>
                             {id === 0 && <CheckBox />}
-                            {id === 0 && <img src={pic} />}
                             <p>{option}</p>
                         </div>
                     ))}

@@ -159,7 +159,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   toggleOptions={() => toggleOptions(dropdowns[2].id)}
                   handleOptionClick={(option) => handleOptionClick(dropdowns[2].id, option)}
                   id={dropdowns[2].id}
-                  w={'auto'}
+                  w={'24%'}
                   color={'#F8AC1DAD'}
 
                 />
