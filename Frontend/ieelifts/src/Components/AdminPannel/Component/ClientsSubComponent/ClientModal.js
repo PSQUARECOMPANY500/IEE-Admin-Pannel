@@ -11,6 +11,7 @@ import ExcelIcon from '../../../../Assets/Images/execel-icon.png'
 import ClientServiceHistory from './ClientServiceHistory';
 import ClientDocuments from './ClientDocuments';
 import ClientSOSCall from './ClientSOSCall';
+import ClientDetailMain from './ClientDetailMain';
 
 // --------------------Raj -------------------------------------------
 
@@ -44,9 +45,9 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
 
   const [dropdowns, setDropdowns] = useState([
-    { id: 0, options: ['App', 'Message', 'SMS'], pic: MailIcon, selectedOption: 'Mail1', showOptions: false },
+    { id: 0, options: ['App', 'Message', 'SMS', 'WhatsApp'], pic: MailIcon, selectedOption: 'Mail1', showOptions: false },
     { id: 1, options: ['Warranty', 'Platinum', 'Gold', 'Silver'], defaultName: 'Membership :', pic: MailIcon, selectedOption: 'Warranty', showOptions: false },
-    { id: 2, options: ['Service History', 'Call Back History', 'Document', 'SOS Calls'], pic: MailIcon, selectedOption: 'Call Back History', showOptions: false }
+    { id: 2, options: ['Service History', 'Call Back History', 'Document', 'SOS Calls'], pic: MailIcon, selectedOption: 'Select', showOptions: false }
   ]);
 
 
@@ -81,6 +82,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
         return <ClientDocuments />
       case "SOS Calls":
         return <ClientSOSCall />
+      default:
+        return <ClientDetailMain />
 
     }
   }
@@ -114,6 +117,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                 <ClientDropDown
 
                   key={dropdowns[0].id}
+
                   pic={dropdowns[0].pic}
                   options={dropdowns[0].options}
                   selectedOption={dropdowns[0].selectedOption}
@@ -155,7 +159,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   toggleOptions={() => toggleOptions(dropdowns[2].id)}
                   handleOptionClick={(option) => handleOptionClick(dropdowns[2].id, option)}
                   id={dropdowns[2].id}
-                  w={'11rem'}
+                  w={'auto'}
                   color={'#F8AC1DAD'}
 
                 />

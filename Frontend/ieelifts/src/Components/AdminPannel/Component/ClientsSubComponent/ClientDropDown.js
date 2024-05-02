@@ -1,5 +1,6 @@
 import { RiArrowDropDownLine } from "react-icons/ri";
 import CheckBox from "../DashboardSubComponent/CheckBox";
+import { useEffect, useRef, useState } from "react";
 
 const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaultName, pic, color, toggleOptions, handleOptionClick, w, id }) => {
     const hasSpecialOption = selectedOption.includes('Warranty') ||
@@ -7,10 +8,33 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
         selectedOption.includes('Platinum') ||
         selectedOption.includes('Silver');
 
-    //condition for second dropdown for CSS
-    // const dropdownClass = id === 1 ? 'second-dropdown' : '';
+    const dropdownRef = useRef();
+
+
+
+    //condition for second dropdown and third dropdown for CSS
     const dropdownClass = id === 1 ? 'second-dropdown' : (id === 2 ? 'third-dropdown' : '');
 
+    const [textColor, setTextColor] = useState("");
+
+    const handleTextColor = (option) => {
+        switch (option) {
+            case 'Warranty':
+                setTextColor('#0F351D');
+                break;
+            case 'Gold':
+                setTextColor('#F8AC1D');
+                break;
+            case 'Platinum':
+                setTextColor('#FF7F00');
+                break;
+            case 'Silver':
+                setTextColor('#8E8E8E');
+                break;
+            default:
+                setTextColor("#F8AC1D"); // Default color
+        }
+    };
 
     return (
         <div className={`client-modal-dropdown ${dropdownClass}`} onClick={toggleOptions} style={{ width: w }}>
@@ -23,7 +47,7 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                 <h6>
                     {defaultName}
                 </h6>
-                <p style={{ color: color }}>{hasSpecialOption ? <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>{selectedOption}</span> : selectedOption}</p>
+                <p style={{ color: textColor }}>{hasSpecialOption ? <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>{selectedOption}</span> : selectedOption}</p>
 
                 <RiArrowDropDownLine style={{ color: "#8E8E8E" }} className='icon-size' />
             </div>
@@ -31,8 +55,14 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                 <div className='client-modal-drodown-options'>
 
                     {options.map((option, index) => (
-                        <div key={index} onClick={() => handleOptionClick(option)} className='client-modal-dropdown-option'>
+                        <div key={index}
+                            onClick={() => {
+                                handleOptionClick(option);
+                                handleTextColor(option);
+                            }}
+                            className='client-modal-dropdown-option'>
                             {id === 0 && <CheckBox />}
+                            {id === 0 && <img src={pic} />}
                             <p>{option}</p>
                         </div>
                     ))}
@@ -45,13 +75,13 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
 const getBackgroundColor = (selectedOption) => {
     switch (selectedOption) {
         case 'Warranty':
-            return '#0F351D';
+            return '#D6F8BF';
         case 'Gold':
-            return '#F8AC1D';
+            return '#FEE2AE';
         case 'Platinum':
-            return '#FF7F00';
+            return '#F3DCC6';
         case 'Silver':
-            return '#B7B7B7';
+            return '#E5E5E5';
         default:
             return '';
     }
