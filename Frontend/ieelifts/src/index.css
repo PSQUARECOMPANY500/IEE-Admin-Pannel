@@ -1855,6 +1855,7 @@ code {
   border-radius: 5px;
   transform: translate(-50%, -50%);
   padding: 0 2rem;
+  overflow: hidden;
 }
 
 .client-form-container {
@@ -2162,7 +2163,8 @@ code {
 }
 .heading-badge{
   background-color: #F8AC1D;
-  width: 55%;
+  width: 7.6rem;
+  height: auto;
   text-align: center;
   border-radius: 5px;
   font-size: 0.81rem;
@@ -2191,7 +2193,6 @@ code {
 }
 .text-area-container textarea{
   width: 27rem;
-  height: 11rem;
   border: 1px solid #F8AC1D;
   border-radius: 10px;
   resize: none;
@@ -2208,6 +2209,9 @@ font-size: 1rem;
 
 .client-form-dimensions{
   padding: 4rem 2rem;
+ 
+  height: 80%;
+  margin-bottom: -13rem;
 }
 .basement-input-wrapper{
   display: grid;
@@ -2341,6 +2345,58 @@ font-size: 1rem;
   cursor: pointer;
   border-radius: 7px;
 }
+/*--------------------------Author: Rahul Kumar ------02/05/2024--------------*/
+.floor-section{
+  margin-top: 2.5rem;
+}
+.floor-input-wrapper{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 2rem;
+  grid-row-gap: 1.8rem;
+}
+.floor-margin{
+  margin-bottom: 1rem;
+}
+.floor-fl-fr-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1rem;
+}
+.overhead-input{
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 1.8rem;
+}
+
+
+.dimenstions-container {
+  overflow-y: auto;
+  max-height: 670px;
+  overflow-x: hidden;
+  display: grid;
+  padding-right: 2rem;
+   padding-bottom: 1rem;
+}
+
+/*Scrollbar*/
+.dimenstions-container::-webkit-scrollbar {
+  width: 3px;
+  height: 20px;
+}
+
+.dimenstions-container::-webkit-scrollbar-thumb {
+  /* background: rgba(255, 255, 255, 0); */
+  background: #F8AC1D;
+  border-radius: 4px;
+
+}
+
+
+
+
+
+
 
 /* --------------------------------Animated Input CSS---------------------------------- */
 input:-webkit-autofill {

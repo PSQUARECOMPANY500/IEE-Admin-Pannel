@@ -1,9 +1,17 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
 import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
+
 const ClientFormElevatorDetails = ({ }) => {
+    //States
     const [capacity,setCapacity] = useState('kg')
+    const [b1, setB1]= useState('');
+    const [b2,setB2]=useState('')
+    const [nintyDegreeLeft,SetNintyDegreeLeft] = useState('')
+    const [nintyDegreeRight,SetNintyDegreeRight] = useState('')
+    const [oneEightyDegree,SetOneEightyDegree] = useState('')
+    //handler
     const handleCapacityUnitChange = (unit) => {
         setCapacity(unit);
     };
@@ -11,10 +19,28 @@ const ClientFormElevatorDetails = ({ }) => {
     const handleChange =(value)=>{
         setData(value);
     }
-    const [value, setValue]= useState('B1');
-    const handleChangeInValue =(value)=>{
-        setValue(value);
+    const handleChangeInB1 =(b1)=>{
+        setB1(b1?"":"B1")
+        // if(b1==="B1"){
+        //     setB1('')
+        // }else{
+        //     setB1("B1")
+        // }
+
     }
+    const handleChangeInB2 =(b2)=>{
+        setB2(b2)
+        setB1("B1")
+        // if(b2==="B2"){
+        //     setB2('');
+        // }else{
+        //     setB2('B2')
+        //     setB1('B1')
+        // }
+    }
+    
+   
+
     const [degree, setDegree] = useState('90 degree left')
     const handleDegreeChange=(degree)=>{
         setDegree(degree);
@@ -25,25 +51,14 @@ const ClientFormElevatorDetails = ({ }) => {
             <hr className='client-form-hr' />
             <div className='client-elevator-input-wrapper'>
                 <div className='mmbtn-parent'>
-                    {/* <AnimatedInput
-                        label={"Pit depth"}
-                        name={"courseName"}
-                    /> */}
+                   
                     <ClientDropdown label={"Pit depth"} />
                      <span className='mmBtn mm-btn-possition'>mm</span>
                 </div>
                 <div>
-                    {/* <AnimatedInput
-                        label={"Type"}
-                        name={"courseName"}
-                    /> */}
                      <ClientDropdown label={"Type"}/>
                 </div>
                 <div>
-                    {/* <AnimatedInput
-                        label={"Purpose"}
-                        name={"courseName"}
-                    /> */}
                      <ClientDropdown label={"Purpose"}/>
                 </div>
                 <div className='capacity-container'>
@@ -72,10 +87,10 @@ const ClientFormElevatorDetails = ({ }) => {
                 <div className='b2b1-container'>
                     <div >
                         <div className='btn-container'>
-                        <span className={`b2-btn ${value==='B2'?'btn-active':''}`} onClick={()=> handleChangeInValue('B2')}>
+                        <span className={`b2-btn ${b2==='B2'?'btn-active':''}`} onClick={()=> handleChangeInB2('')}>
                             B2
                         </span>
-                        <span className={`b1-btn ${value==='B1'?'btn-active':''}`} onClick={()=> handleChangeInValue('B1')}>
+                        <span className={`b1-btn ${b1==='B1'?'btn-active':''}`} onClick={()=> handleChangeInB1('')}>
                             B1
                         </span>
                         </div>
@@ -91,24 +106,15 @@ const ClientFormElevatorDetails = ({ }) => {
                   </div>
                 </div>
                 <div>
-                    {/* <AnimatedInput
-                        label={"Door Type"}
-                        name={"courseName"}
-                    /> */}
+                   
                      <ClientDropdown label={"Door Type"}/>
                 </div>
                 <div>
-                    {/* <AnimatedInput
-                        label={"Contstruction Material"}
-                        name={"courseName"}
-                    /> */}
+                    
                      <ClientDropdown label={"Construction Material"}/>
                 </div>
                 <div>
-                    {/* <AnimatedInput
-                        label={"Number of opening"}
-                        name={"courseName"}
-                    /> */}
+                    
                      <ClientDropdown label={"Number of opening"}/>
                 </div>
                 <div>

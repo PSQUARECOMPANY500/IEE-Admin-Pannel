@@ -35,6 +35,7 @@ const ClientForm = () => {
 
     const closeModal = () => {
         dispatch(closeClientModalAction())
+        setToggle(true);
     };
     const handleOverlayClick = (event) => {
         if (event.target.classList.contains("add-client-wrapper")) {
@@ -80,14 +81,6 @@ const ClientForm = () => {
 
             </div>
             )
-
-
-
-
-
-
-
-
             }
         </>
     );
