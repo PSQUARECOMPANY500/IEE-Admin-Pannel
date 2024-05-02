@@ -7,8 +7,9 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
         selectedOption.includes('Platinum') ||
         selectedOption.includes('Silver');
 
-    //condition for second dropdown
-    const dropdownClass = id === 1 ? 'second-dropdown' : '';
+    //condition for second dropdown for CSS
+    // const dropdownClass = id === 1 ? 'second-dropdown' : '';
+    const dropdownClass = id === 1 ? 'second-dropdown' : (id === 2 ? 'third-dropdown' : '');
 
 
     return (

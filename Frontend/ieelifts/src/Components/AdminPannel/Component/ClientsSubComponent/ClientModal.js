@@ -35,8 +35,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     };
   }, []);
 
+  // update sccroll behavior when showclientmodal changes
   useEffect(() => {
-    // update sccroll behavior when showclientmodal changes
     document.body.style.overflow = showClientModal ? "hidden" : "scroll";
   }, [showClientModal]);
 
@@ -68,7 +68,6 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
 
 
-  // -------------------Raj-----------------------------------------------------
 
   const renderComponent = () => {
 
@@ -168,7 +167,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
             </div>
           </div>
         </div>
-      </div>}
+      </div>
+      }
 
     </>
   )

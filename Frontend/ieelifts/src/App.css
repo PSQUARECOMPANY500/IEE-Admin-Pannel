@@ -6436,7 +6436,6 @@ border-radius: 10px;
   height: 100%;
   width: 100%;
   display: flex;
-  /* gap: 2px; */
   align-items: center;
   justify-content: center;
   position: relative;
@@ -6451,7 +6450,6 @@ border-radius: 10px;
 
 }
 
-
 .icon-size {
   font-size: 2rem;
   color: #000;
@@ -6463,7 +6461,6 @@ border-radius: 10px;
   min-height: 120px;
   width: 100%;
   background: #ffffff;
-  /* background-color: rgb(107, 65, 65); */
   z-index: 9999999999;
   position: absolute;
   border: 1px solid #8E8E8E;
@@ -6472,8 +6469,6 @@ border-radius: 10px;
   border-radius: 5px;
   padding: 1rem;
   
-
-
 }
 
 .client-modal-dropdown-option{
@@ -6486,19 +6481,17 @@ border-radius: 10px;
 }
 
 .second-dropdown .client-modal-dropdown-option {
-/* background-color: lightcyan; */
-/* margin-left: 4vw; */
 width: 14rem;
 padding-left: 4vw;
 height: 2rem;
 border-bottom: 1px solid lightgrey;
 padding-top: 9px;
-/* margin-top:10px; */
 
 }
 
 .second-dropdown .client-modal-dropdown-option p{
 border-bottom: none;
+
 }
 
 .client-modal-drodown-options p {
@@ -6518,11 +6511,27 @@ text-transform: capitalize;
 
 
 }
-/* ---------Raj-------------------------- */
+/* -------------------CSS for third-dropdown---------------- */
+
+.third-dropdown .client-modal-dropdown-option{
+  width: 9rem;
+  padding-left: 1.1vw;
+  height: 2rem;
+  margin-left: 1px;
+  border-bottom: 1px solid lightgrey;
+  padding-top: 9px;
+  text-align: center;
+
+
+}
+
+.third-dropdown .client-modal-dropdown-option p{
+border-bottom: none;
+}
+
 .green-padding {
   padding: 0.4375rem 1rem;
 border-radius: 3.125rem; 
-  /* background-color: #D6F8BF; */
   color:white;
 
 }
