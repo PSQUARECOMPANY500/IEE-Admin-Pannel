@@ -1,7 +1,8 @@
 import React from "react";
 import { GrGallery } from "react-icons/gr";
 
-const MCRoom = () => {
+const MCRoom = ({serviceId}) => {
+  console.log('serviceId',serviceId)
   return (
     <div className="McRoom">
       <h5>All areas are working well</h5>

@@ -13,7 +13,6 @@ import { assignServiceRequestDetailByRequestIdAction } from "../Reducers/AdminRe
 import { getAllAssignServiceRequestReducer } from "../Reducers/AdminReducer";
 import { getAllAssignCallbackRequestReducer } from "../Reducers/AdminReducer";
 import { getCurrentDateAssignCalbackAction } from "../Reducers/AdminReducer";
-//import { ticketSectionRenderReducer } from '../Reducers/AdminReducer';
 import { getCurrentDateAssignServiceRequestReducer } from "../Reducers/AdminReducer";
 import { getBookedSlotsforEnggsReducer } from "../Reducers/AdminReducer";
 import { getEnggBasicDataForCrouserReducer } from "../Reducers/AdminReducer";
@@ -34,7 +33,6 @@ import { filteringLocationsReducer } from "../Reducers/AdminReducer";
 import { searchClientReducer } from "../Reducers/AdminReducer";
 import { membershipButtonLayoutReducer } from "../Reducers/AdminReducer";
 import { modalOpenerReducer } from "../Reducers/AdminReducer";
-// import { loginServiceAdminReducer } from "../Reducers/AdminReducer";
 import { loginAdminReducer } from "../Reducers/AdminReducer";
 import { VerifyOTPPasswordReducer } from "../Reducers/AdminReducer";
 import { engineersReducer } from "../Reducers/AdminReducer";
@@ -43,7 +41,7 @@ import { approveLeaveByAdminReducer } from "../Reducers/AdminReducer";
 import { engineerLeaveHistoryReducer } from "../Reducers/AdminReducer";
 import { engineerAttendanceReducer } from "../Reducers/AdminReducer";
 import { engineerRequestedLeaveReducer } from "../Reducers/AdminReducer";
-import {fetchassignedEnggDetailsReducer} from "../Reducers/AdminReducer"
+import { fetchassignedEnggDetailsReducer } from "../Reducers/AdminReducer";
 import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
 import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
 
@@ -90,9 +88,9 @@ const AdminRootReducer = combineReducers({
   approveLeaveByAdminReducer: approveLeaveByAdminReducer,
   engineerLeaveHistoryReducer: engineerLeaveHistoryReducer,
   engineerAttendanceReducer: engineerAttendanceReducer,
-  fetchassignedEnggDetailsReducer:fetchassignedEnggDetailsReducer,
-  onClickEnggCartEnggLocationReducer:onClickEnggCartEnggLocationReducer,
-  onClickEnggPinEnggLocationReducer:onClickEnggPinEnggLocationReducer
+  fetchassignedEnggDetailsReducer: fetchassignedEnggDetailsReducer,
+  onClickEnggCartEnggLocationReducer: onClickEnggCartEnggLocationReducer,
+  onClickEnggPinEnggLocationReducer: onClickEnggPinEnggLocationReducer,
 });
 
 export default AdminRootReducer;

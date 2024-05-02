@@ -13,13 +13,18 @@ function ReportTable({handleRedportData ,RedportData}) {
   const [showReport,setShowReport]=useState(true)
   
 
+  console.log("handleRedportData",handleRedportData)
+
+  const serviceId = RedportData
+  console.log("[[[[[[[[[[[[[[[[[[[[[[",serviceId);
+
   const routes = [
-    { name: "M/c Room", co: <MCRoom /> },
-    { name: "Cabin,Floors", co: <CabinFloors /> },
-    { name: "Cartop,Shaft", co: <CartopShift /> },
-    { name: "PIT Area", co: <PitArea /> },
-    { name: "Invoice", co: <Invoice /> },
-    { name: "Rating", co: <Rating /> },
+    { name: "M/c Room", co: <MCRoom serviceId={serviceId}/> },
+    { name: "Cabin,Floors", co: <CabinFloors serviceId={serviceId}/> },
+    { name: "Cartop,Shaft", co: <CartopShift serviceId={serviceId} /> },
+    { name: "PIT Area", co: <PitArea serviceId={serviceId} /> },
+    { name: "Invoice", co: <Invoice serviceId={serviceId}/> },
+    { name: "Rating", co: <Rating serviceId={serviceId}/> },
   ];
 
   const goToNext = () => {

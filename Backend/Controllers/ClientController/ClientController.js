@@ -10,6 +10,13 @@ const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSche
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
+const assignService = require("../../Modals/ServiceEngineerModals/AssignServiceRequest")
+const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks")
+
+const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
+
+const ReportTable = require("../../Modals/ReportModal/ReportModal");
+
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -548,3 +555,61 @@ module.exports.Rating = async (req, res) => {
     res.status(500).json({ error: "Error for creating service Request" });
   }
 }; */
+
+
+
+//==================================================================
+//==================================================================
+//function to handle fetch Client Service history past and previos history
+
+module.exports.fetchClientServiceHistory = async (req,res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const currentDate = new Date().toLocaleDateString("en-GB");
+
+    const callbackHistory = await assignCallback.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber callbackId Message ServiceProcess Date")
+
+  const serviceRequestHistory = await assignService.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber RequestId Message ServiceProcess Date")
+
+  const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
+
+   // Fetching engineer names for ServiceEnggId
+   const enggIds = combinedHistory.map(entry => entry.ServiceEnggId);
+   const enggNames = await ServiceEnggBasicSchema.find({ EnggId: { $in: enggIds } }).select("EnggId  EnggName");
+   const enggNameMap = enggNames.reduce((acc, curr) => {
+     acc[curr.EnggId] = curr.EnggName;
+     return acc;
+   }, {});
+
+
+       // Fetching report data for each entry in combinedHistory
+    const enrichedHistory = await Promise?.all(combinedHistory?.map(async entry => {
+      const id = entry.callbackId || entry.RequestId;
+      const paymentDetails = await ReportTable.find({ serviceId: id });
+      // console.log('-------------------------------->',paymentDetails[0].paymentDetils);
+      return {
+        ...entry._doc,
+        enggName: enggNameMap[entry.ServiceEnggId],
+        paymentDetails: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].paymentDetils : null
+      };
+    }));
+
+    // console.log('-------------------------------->', enrichedHistory)
+        
+  const latestDateEntry = enrichedHistory.filter(entry => entry.Date === currentDate);
+  const previousHistory = enrichedHistory.filter(entry => entry.Date !== currentDate);
+
+  const pastHistory = previousHistory.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+
+  res.status(200).json({ previousHistory: latestDateEntry, pastHistory});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error while fetching client service History" });
+  }
+}
+
+
+//==================================================================
+//==================================================================

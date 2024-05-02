@@ -37,18 +37,21 @@ const MessageBox = ({ onClose, EnggId }) => {
     setHeight(textareaRef.current);
   }, []);
   //socket implemantation starts ---------------------------------------------
-  // const socket = io('http://localhost:8000');
-  // const socket = io("https://iee-admin-pannel.onrender.com");
-  const socket = io('https://ieelifts.in/api');
+  // const socket = io('ws://localhost:4000');
+  const socket = io('https://ieelifts.in/');
   useEffect(() => {
-    socket.on("connect", () => [
-      console.log("socket is connected successfully"),
-    ]);
+    socket.on("connect", () => {
+      console.log("socket is connected successfully")
+    });
     return () => {
-      socket.off("connect");
-      socket.disconnect()
-    };
+      socket.disconnect();  
+      };
   }, []);
+
+  
+
+
+
   const chatCreated = useSelector((state) => {
     if (
       state.ChatRootReducer &&

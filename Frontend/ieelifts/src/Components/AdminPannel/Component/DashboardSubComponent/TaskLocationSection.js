@@ -35,6 +35,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
+  console.log("rteportdata", RedportData);
+
   useEffect(() => {
     const fetchData = () => {
       // dispatch(getFilterLocation());
@@ -119,8 +121,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
-  // const passData = () => {};
-
   useEffect(() => {
     if (filterConditions) {
       let data;
@@ -175,11 +175,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
       if (engineerFilter) {
         engineerFilter.forEach((engineer) => {
           const { condition } = engineer;
-          let eData = [];
-          if (data && data.length !== 0) {
-            eData = data.filter((d) => d.enggName === condition);
+          let eData = data.filter((d) => d.enggName === condition);
+          if (engineerData) {
+            engineerData = [...engineerData, ...eData];
+          } else {
+            engineerData = [...eData];
           }
-          engineerData = [...engineerData, ...eData];
         });
       }
       let filteredData = [];
@@ -242,7 +243,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
       setHandleReportData(false);
-      setReportData("no-data");
+      setReportData(reportData?.callbackId);
     } else {
       //console.log(reportData)
       setHandleReportData(true);
@@ -317,10 +318,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
                         return (
                           <div
-                            className={`ticket-card ${
+                          style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
+                             className={`ticket-card ${
                               handleCallbackSelection[index] &&
                               "service-card-selected"
-                            }`}
+                            }` }
                             onClick={() => handleReportSectionData(reportData)}
                           >
                             <div className="ticket-sub-card-row">
@@ -425,10 +427,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                         );
                       })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                        const reportServiceData = serviceData;
+                      const reportServiceData = serviceData
 
                         return (
                           <div
+                            style={{backgroundColor:`${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
                             className={`service-card ${
                               handleServiceSelection[index] &&
                               "service-card-selected"

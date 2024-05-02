@@ -116,7 +116,7 @@ const ReportInfo = new Schema({
           type: String,
           default:""
         },
-        Reason: {
+        reason: {
           type: String,
           default:""
         },
@@ -151,8 +151,8 @@ const ReportInfo = new Schema({
   ],
   paymentMode: {
     type: String,
-    enum: ["online", "cash"],
-    default:"cash"
+    enum: ["Online", "Cash"],
+    default:"Cash"
   },
   // to do  ==>  entring payment Detail while razor pay is approving...
   paymentDetils: {
@@ -163,9 +163,9 @@ const ReportInfo = new Schema({
     type: Boolean,
     default: false,
   },
-  isActive:{
-    type:Boolean,
-    default:true
+  isActive: {
+    type: Boolean,
+    default: true,
   }
 });
 

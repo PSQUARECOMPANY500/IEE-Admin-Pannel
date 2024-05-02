@@ -41,8 +41,8 @@ function App() {
           <Route path="/Dashboard" element={isLoggedIn ? <Sidebar><Dashboard /></Sidebar> : <Navigate to="/"  />} /> 
           <Route path="/Requests" element={isLoggedIn ? <Sidebar><Request /></Sidebar> : <Navigate to="/"  />} /> 
           <Route path="/Memberships" element={isLoggedIn ? <Sidebar><Membership /></Sidebar> : <Navigate to="/"  />} /> 
-          {/* <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} />  */}
-          <Route path="/Engeeniers" element={<Sidebar><Enggeniers/></Sidebar>} /> 
+          <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} /> 
+          {/* <Route path="/Engeeniers" element={<Sidebar><Enggeniers/></Sidebar>} />  */}
           <Route path="/Clients" element={isLoggedIn ? <Sidebar><Clients /></Sidebar> : <Navigate to="/"  />} /> 
 
 

@@ -34,6 +34,10 @@ const LocationSchema = require("../../Modals/LocationModel/MajorLocationForFilte
 
 const ForgetPassOTP = require("../../Modals/OTP/ForgetPasswordOtp");
 
+const SparePartTable = require("../../Modals/SpearParts/SparePartRequestModel");
+
+const ReportTable = require("../../Modals/ReportModal/ReportModal");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -291,7 +295,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-    console.log("currentDetailCallback", currentDetailCallback);
+    // console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const enggDetail = await ServiceEnggData.findOne({
@@ -1207,8 +1211,8 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-    const { ServiceEnggId, selectedDate } = req.body;
-    console.log("ServiceEnggId", ServiceEnggId);
+    const { ServiceEnggId, selectedDate } = req.params;
+    // console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
       const today = new Date(selectedDate);
@@ -2112,104 +2116,6 @@ module.exports.updatePassword = async (req, res) => {
       .json({ error: "Internal server error while updating the password" });
   }
 };
-module.exports.assignedEnggDetails = async (req, res) => {
-  try {
-    const { ServiceEnggId } = req.params;
-    if (ServiceEnggId) {
-      const assignCallbacks = await ServiceAssigntoEngg.find({
-        ServiceEnggId: ServiceEnggId,
-        ServiceProcess: "completed",
-      });
-
-      const assignServiceRequests = await AssignSecheduleRequest.find({
-        ServiceEnggId: ServiceEnggId,
-        ServiceProcess: "completed",
-      });
-
-      const assignCallbacksWithClientName = await Promise.all(
-        assignCallbacks.map(async (assignment) => {
-          const client = await clientDetailSchema.findOne({
-            JobOrderNumber: assignment.JobOrderNumber,
-          });
-          return {
-            ...assignment._doc,
-            ClientName: client?.name,
-            ClientAddress: client?.Address,
-          };
-        })
-      );
-      const assignServiceRequestsWithClientName = await Promise.all(
-        assignServiceRequests.map(async (assignment) => {
-          const client = await clientDetailSchema.findOne({
-            JobOrderNumber: assignment.JobOrderNumber,
-          });
-          return {
-            ...assignment._doc,
-            ClientName: client?.name,
-            ClientAddress: client?.Address,
-          };
-        })
-      );
-
-      const assignCallbacksDetails = assignCallbacksWithClientName.map(
-        (data) => ({
-          date: data.Date,
-          ServiceId: data.callbackId,
-          ServiceEnggId: data.ServiceEnggId,
-          JobOrderNumber: data.JobOrderNumber,
-          Slot: data.Slot,
-          name: data?.ClientName,
-          address: data?.ClientAddress,
-        })
-      );
-
-      const assignServiceRequestsDetails =
-        assignServiceRequestsWithClientName.map((data) => ({
-          date: data.Date,
-          ServiceId: data.RequestId,
-          ServiceEnggId: data.ServiceEnggId,
-          JobOrderNumber: data.JobOrderNumber,
-          Slot: data.Slot,
-          name: data?.ClientName,
-          address: data?.ClientAddress,
-        }));
-
-      const assignCallbacksWithRating = await Promise.all(
-        assignCallbacksDetails.map(async (assignment) => {
-          const Rating = await EnggRating.findOne({
-            ServiceId: assignment.ServiceId,
-          });
-          return {
-            ...assignment,
-            rating: Rating.Rating,
-          };
-        })
-      );
-
-      const assignServiceRequestsWithRating = await Promise.all(
-        assignServiceRequestsDetails.map(async (assignment) => {
-          const Rating = await EnggRating.findOne({
-            ServiceId: assignment.ServiceId,
-          });
-          return {
-            ...assignment,
-            rating: Rating.Rating,
-          };
-        })
-      );
-      return res.status(200).json({
-        assignServiceRequests: assignServiceRequestsWithRating,
-        assignCallbacks: assignCallbacksWithRating,
-      });
-    }
-    return res.status(400).json({ message: "ServiceEnggId not found" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ error: "Internal server error in assignedEnggDetails" });
-  }
-};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2319,7 +2225,7 @@ module.exports.takeActionOnLeave = async (req, res) => {
         last.UsedLeave = approvedLeaves[approvedLeaves.length - 1].UsedLeave;
       }
     }
-    console.log(last);
+    // console.log(last);
     await last.save();
     res.status(200).json({
       success: true,
@@ -2340,6 +2246,7 @@ module.exports.takeActionOnLeave = async (req, res) => {
 module.exports.assignedEnggDetails = async (req, res) => {
   try {
     const { ServiceEnggId } = req.params;
+    // console.log(ServiceEnggId)
     if (ServiceEnggId) {
       const assignCallbacks = await ServiceAssigntoEngg.find({
         ServiceEnggId: ServiceEnggId,
@@ -2396,9 +2303,10 @@ module.exports.assignedEnggDetails = async (req, res) => {
         }));
       const assignCallbacksWithRating = await Promise.all(
         assignCallbacksDetails.map(async (assignment) => {
-          const Rating = await EnggRating.findOne({
-            ServiceId: assignment.ServiceId,
+          const Rating = await EnggRating.find({
+            ServiceEnggId: assignment.ServiceId,
           });
+          console.log("rating", Rating);
           return {
             ...assignment,
             rating: Rating.Rating,
@@ -2407,8 +2315,8 @@ module.exports.assignedEnggDetails = async (req, res) => {
       );
       const assignServiceRequestsWithRating = await Promise.all(
         assignServiceRequestsDetails.map(async (assignment) => {
-          const Rating = await EnggRating.findOne({
-            ServiceId: assignment.ServiceId,
+          const Rating = await EnggRating.find({
+            ServiceEnggId: assignment.ServiceId,
           });
           return {
             ...assignment,
@@ -2429,5 +2337,243 @@ module.exports.assignedEnggDetails = async (req, res) => {
       .json({ error: "Internal server error in assignedEnggDetails" });
   }
 };
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//function to handle fetchSpare Part Request By the Engg
+//by preet 02/04/2024
+
+module.exports.getSparePartRequestByEngg = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+    const spareParts = await SparePartTable.find({ EnggId });
+
+    const filteredSpareParts = spareParts.filter(
+      (sparePart) =>
+        sparePart.isApproved === false && sparePart.isDenied === false
+    );
+
+    return res.status(200).json({ filteredSpareParts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while Fetching The Spare Part Details",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+
+//function to handle Deny, Approve spare part Request.
+
+module.exports.ApproveDenySparePartRequest = async (req, res) => {
+  try {
+    const { RequestId, isApproved, isDenied } = req.body;
+
+    const sparePartData = await SparePartTable.findOneAndUpdate(
+      { _id: RequestId },
+      { isApproved: isApproved, isDenied: isDenied },
+      { new: true }
+    );
+
+    if (!sparePartData) {
+      return res
+        .status(400)
+        .json({ message: "No SparePart Request fing this Id" });
+    }
+
+    res.status(200).json({
+      message: "SparePart Request Updated Successfully",
+      sparePartData,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while handling Approved and Deny Request",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+// function to handle fetch alloted spare part in Admin Pannel
+
+module.exports.fetchAllotedSparePart = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const allotedSparePart = await SparePartTable.find({ EnggId });
+
+    if (allotedSparePart.length < 0) {
+      return res
+        .status(400)
+        .json({ message: "No sparePart Data is found to this EggId" });
+    }
+
+    const FilterAllotedSparePart = allotedSparePart.filter(
+      (data) => data.isApproved === true && data.isDenied === false
+    );
+
+    res.status(200).json({ FilterAllotedSparePart });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Alloted Spare Part",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 03/04/2024 - preet
+// function to handle fetch denied sparePart
+
+module.exports.fetchDeniedSparePart = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const deniedSparePart = await SparePartTable.find({ EnggId });
+
+    if (deniedSparePart.length < 0) {
+      return res
+        .status(400)
+        .json({ message: "No Denied sparePart Data is found to this EggId" });
+    }
+
+    const FilterDeniedSparePartRequest = deniedSparePart.filter(
+      (data) => data.isApproved === false && data.isDenied === true
+    );
+
+    res.status(200).json({ FilterDeniedSparePartRequest });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Alloted Spare Part",
+    });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// 10/04/2024 - preet
+// function to fetch Report For Admin (Complex API I think)   ( toDo - Integration in admin pannel)
+
+module.exports.fetchReportForAdmin = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    const ReportData = await ReportTable.findOne({ serviceId });
+    const Rating=await EnggRating.findOne({ServiceId: serviceId });
+
+    const MCRoom = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+
+    const CabinFloors = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+    const CartopShaft = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+    const PitArea = {
+      IssuesResolved: [],
+      IssuesNotResolved: [],
+      SparePartsChanged: [],
+      SparePartsRequested: [],
+    };
+
+    const ReportImages = ReportData.subCategoriesphotos;
+
+    const sortedData = (keys, arr) => {
+      const arrData = arr.filter(
+        (question) =>
+          (question.questionResponse.isResolved &&
+            question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+            question.questionResponse.sparePartDetail.subsparePartspartid !==
+              "") ||
+          (question.questionResponse.isResolved &&
+            question.questionResponse.SparePartDescription !== "") ||
+          !question.questionResponse.isResolved
+      );
+
+      arrData.forEach((item) => {
+        if (item.questionResponse.isResolved) {
+          keys.IssuesResolved.push(item);
+        } else {
+          keys.IssuesNotResolved.push(item);
+        }
+        if (
+          !item.questionResponse.isSparePartRequest &&
+          item.questionResponse.sparePartDetail.sparePartsType !== "" &&
+          item.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+          item.questionResponse.isResolved
+        ) {
+          keys.SparePartsChanged.push(item);
+        }
+
+        if (
+          item.questionResponse.isSparePartRequest &&
+          item.questionResponse.sparePartDetail.sparePartsType !== "" &&
+          item.questionResponse.sparePartDetail.subsparePartspartid !== "" &&
+          !item.questionResponse.isResolved
+        ) {
+          keys.SparePartsRequested.push(item);
+        }
+      });
+    };
+    const transformedData = ReportData.questionsDetails.reduce((acc, item) => {
+      if (!acc[item.subcategoryname]) {
+        acc[item.subcategoryname] = [];
+      }
+      acc[item.subcategoryname].push(item);
+
+      return acc;
+    }, {});
+
+    Object.keys(transformedData).forEach((key) => {
+      if (key === "M/C Room") {
+        sortedData(MCRoom, transformedData[key]);
+      } else if (key === "Cabin, Floors") {
+        sortedData(CabinFloors, transformedData[key]);
+      } else if (key === "Cartop ,Shaft") {
+        sortedData(CartopShaft, transformedData[key]);
+      } else if (key === "Pit Area") {
+        sortedData(PitArea, transformedData[key]);
+      }
+    });
+
+    const finalReportedData = {
+      MCRoom,
+      CabinFloors,
+      CartopShaft,
+      PitArea,
+    };
+
+    res.status(200).json({ finalReportedData, ReportImages,Rating});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Report For Admin",
+    });
+  }
+};
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
