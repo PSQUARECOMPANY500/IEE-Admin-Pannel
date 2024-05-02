@@ -1,5 +1,5 @@
 import React from 'react'
-import ClientTableData from './ClientTableData';
+import InformationTable from '../../../CommonComponenets/InformationTable';
 
 
 //---------------------------------Raj-------------------------------
@@ -12,8 +12,7 @@ const ClientCallBackHis = () => {
   return (
 
     <div>
-      <ClientTableData fieldsToShow={fieldsToShow} />
-      
+      <InformationTable fieldsToShow={fieldsToShow} />
     </div>
 
 

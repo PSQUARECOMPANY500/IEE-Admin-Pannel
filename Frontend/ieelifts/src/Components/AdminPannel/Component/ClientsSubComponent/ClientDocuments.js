@@ -1,6 +1,7 @@
 import React from 'react'
 import data from './DatasClientServiceHis.json'
 import ClientTableData from './ClientTableData'
+import InformationTable from '../../../CommonComponenets/InformationTable'
 
 // ------------------Raj-----------------------------------
 
@@ -11,7 +12,7 @@ const ClientDocuments = () => {
   return (
     <div>
 
-      <ClientTableData fieldsToShow={fieldsToShow} />
+      <InformationTable fieldsToShow={fieldsToShow}/>
     </div>
   )
 }

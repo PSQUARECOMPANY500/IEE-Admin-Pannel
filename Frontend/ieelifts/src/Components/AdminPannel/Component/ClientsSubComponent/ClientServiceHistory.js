@@ -1,6 +1,6 @@
 import React from 'react'
 import data from './DatasClientServiceHis.json';
-import ClientTableData from './ClientTableData';
+import InformationTable from '../../../CommonComponenets/InformationTable';
 
 
 // ---------------Raj ---------------------------
@@ -13,7 +13,7 @@ const ClientServiceHistory = () => {
    
 //Pass the fieldtoshow as props
     <div>
-      <ClientTableData fieldsToShow={fieldsToShow}/>
+      <InformationTable fieldsToShow={fieldsToShow}/>
     </div>
 
   )
