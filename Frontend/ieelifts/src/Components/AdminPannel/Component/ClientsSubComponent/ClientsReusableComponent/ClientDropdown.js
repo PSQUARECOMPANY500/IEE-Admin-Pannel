@@ -1,16 +1,16 @@
 // <-----------------------------  Author:- Rahul Kumar --------------30/4/24--------------------->
 import React, { useState } from 'react';
 
-const ClientDropdown = ({options,name ,label}) => {
+const ClientDropdown = ({options,name ,label,onValueChange}) => {
     //useState hooks
-    const [data,setData] = useState('');
     const [isOpen,setIsOpen]=useState(false);
     const [selectedData, setSelectedData] = useState('');
 
-     options =['option1','option2']; //options for dropdown
+     const opt = options; //options for dropdown
 
     const handleDataClick = (data) => {
         setSelectedData(data);
+        onValueChange(data)
         setIsOpen(false);
       };
      
@@ -23,7 +23,7 @@ const ClientDropdown = ({options,name ,label}) => {
      { isOpen &&(
         <div className='option-container'>
         <ul>
-            {options.map((option, index) => (
+            {opt.map((option, index) => (
               <li className='option-li' key={index} onClick={() => handleDataClick(option)}>{option}</li>
             ))}
         </ul>

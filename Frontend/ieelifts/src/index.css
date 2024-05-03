@@ -2157,7 +2157,7 @@ code {
 }
 .level-heading{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -2183,6 +2183,9 @@ code {
    border-radius: 5px;
    margin-left: 1.5rem;
    cursor: pointer;
+}
+.level-selector-active{
+  background-color: #f8ac1d;
 }
 .level-title{
   color: #444444;
@@ -2369,15 +2372,24 @@ font-size: 1rem;
   margin-top: 1.8rem;
 }
 
-
 .dimenstions-container {
   overflow-y: auto;
   max-height: 670px;
   overflow-x: hidden;
   display: grid;
   padding-right: 2rem;
-   padding-bottom: 1rem;
+  padding-bottom: 1rem;
 }
+
+.elevator-container{
+  overflow-y: auto;
+  max-height: 670px;
+  overflow-x: hidden;
+  display: grid;
+  padding-bottom: 1rem;
+}
+
+
 
 /*Scrollbar*/
 .dimenstions-container::-webkit-scrollbar {
@@ -2386,12 +2398,17 @@ font-size: 1rem;
 }
 
 .dimenstions-container::-webkit-scrollbar-thumb {
-  /* background: rgba(255, 255, 255, 0); */
   background: #F8AC1D;
   border-radius: 4px;
-
 }
 
+
+
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 
 
 

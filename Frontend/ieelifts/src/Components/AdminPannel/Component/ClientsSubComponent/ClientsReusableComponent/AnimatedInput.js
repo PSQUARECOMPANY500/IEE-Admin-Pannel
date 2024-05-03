@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 const Animated = ({
   type = "text",
@@ -11,6 +11,7 @@ const Animated = ({
   handleCalendarOpen,
   email,
   disabled,
+  onValueChange,
   title,
   pattern,
 }) => {
@@ -19,6 +20,14 @@ const Animated = ({
     if (handleCalendarOpen) {
       handleCalendarOpen();
     }
+  };
+   
+  const [inputValue, setInputValue] = useState('');
+
+  const handleInputChange = (event) => {
+      const newValue = event.target.value;
+      setInputValue(newValue);
+      onValueChange(newValue);
   };
 
   return (
@@ -30,7 +39,7 @@ const Animated = ({
         id={name}
         disabled={disabled}
         value={value}
-        onChange={onChange}
+        onChange={handleInputChange}
         readOnly={read}
         onClick={handleCalendarToggle}
       />
