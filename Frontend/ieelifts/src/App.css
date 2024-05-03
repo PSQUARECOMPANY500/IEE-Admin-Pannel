@@ -6431,7 +6431,7 @@ border-radius: 10px;
 }
 
 /*----------------------------- some changes by Raj  ----------*/
-/* date: 30/4/2024 */
+
 
 .dropdown-icon-container {
   height: 100%;
@@ -6464,6 +6464,11 @@ border-radius: 10px;
 
 /* ------Add Some code by Raj data = 30/4/2024-------------- */
 
+.client-modal-drodown-options p.selected {
+  color: #F8AC1DAD;
+}
+
+
 .client-modal-drodown-options {
   min-height: 120px;
   width: 100%;
@@ -6480,7 +6485,6 @@ border-radius: 10px;
 
 .client-modal-dropdown-option{
   display: flex;
-  /* background-color: lightcyan; */
   gap: 13px;
   align-items: center;
   margin-top: .4rem;

@@ -19,5 +19,5 @@ const CheckBox = ({ id, checked, handleCheckboxChange }) => {
     </div>
   );
 };
+export default React.memo(CheckBox);
 
-export default CheckBox;

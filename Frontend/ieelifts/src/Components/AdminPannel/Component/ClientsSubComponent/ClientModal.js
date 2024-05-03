@@ -22,11 +22,26 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   // Close modal when clicking outside of it
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
+      handleCloseModalWithReset();
       handleCloseModal();
+
     }
   };
 
-  //when we click outside modal then closing modal
+  const handleCloseModalWithReset = () => {
+    handleResetDropdowns();
+    handleCloseModal();
+  };
+
+  const handleResetDropdowns = () => {
+    setDropdowns(prevDropdowns =>
+      prevDropdowns.map(dropdown =>
+        ({ ...dropdown, selectedOption: defaultOptions[dropdown.id], showOptions: false })
+      )
+    );
+  };
+
+  //When we click outside modal then closing modal
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
 
@@ -36,18 +51,23 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     };
   }, []);
 
-  // update sccroll behavior when showclientmodal changes
+  // Changes scroll behavior when showclientmodal changes
   useEffect(() => {
     document.body.style.overflow = showClientModal ? "hidden" : "scroll";
   }, [showClientModal]);
 
+  const defaultOptions = {
+    0: 'Message',
+    1: 'Warranty',
+    2: 'Select'
+  };
 
 
 
   const [dropdowns, setDropdowns] = useState([
-    { id: 0, options: ['App', 'Message', 'SMS', 'WhatsApp'], pic: MailIcon, selectedOption: 'Mail1', showOptions: false },
-    { id: 1, options: ['Warranty', 'Platinum', 'Gold', 'Silver'], defaultName: 'Membership :', pic: MailIcon, selectedOption: 'Warranty', showOptions: false },
-    { id: 2, options: ['Service History', 'Call Back History', 'Document', 'SOS Calls'], pic: MailIcon, selectedOption: 'Select', showOptions: false }
+    { id: 0, options: ['App', 'Message', 'SMS', 'WhatsApp'], pic: MailIcon, selectedOption: defaultOptions[0], showOptions: false },
+    { id: 1, options: ['Warranty', 'Platinum', 'Gold', 'Silver'], defaultName: 'Membership :', pic: MailIcon, selectedOption: defaultOptions[1], showOptions: false },
+    { id: 2, options: ['Service History', 'Call Back History', 'Document', 'SOS Calls'], pic: MailIcon, selectedOption: defaultOptions[2], showOptions: false }
   ]);
 
 
@@ -93,7 +113,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     <>
       {showClientModal && <div className='client-modal-wrapper'>
         <div className='client-modal-container' ref={modalRef}>
-          <div className="cross-icon" onClick={handleCloseModal} >
+          <div className="cross-icon" onClick={handleCloseModalWithReset} >
             <RxCross2 />
           </div>
           <div className="client-child-modal-container">
@@ -115,9 +135,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
               <div className='client-modal-profile-container-right'>
 
                 <ClientDropDown
-
                   key={dropdowns[0].id}
-
                   pic={dropdowns[0].pic}
                   options={dropdowns[0].options}
                   selectedOption={dropdowns[0].selectedOption}
@@ -125,7 +143,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   toggleOptions={() => toggleOptions(dropdowns[0].id)}
                   handleOptionClick={(option) => handleOptionClick(dropdowns[0].id, option)}
                   id={dropdowns[0].id}
-                  w={'8rem'}
+                  w={'9rem'}
                 />
                 <ClientDropDown
                   key={dropdowns[1].id}
@@ -139,17 +157,13 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   w={'16rem'}
 
                 />
+
                 <div className='client-modal-profile-pdficon'>
                   <img src={PdfIcon} />
                 </div>
                 <div className='client-modal-profile-excelicon'>
-
-
                   <img src={ExcelIcon} />
                 </div>
-
-
-
 
                 <ClientDropDown
                   key={dropdowns[2].id}

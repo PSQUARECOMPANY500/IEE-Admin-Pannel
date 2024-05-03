@@ -1,47 +1,60 @@
+
 import { RiArrowDropDownLine } from "react-icons/ri";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-import { useState } from "react";
+import React, { useState } from "react";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { FaApple } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { FaSms } from "react-icons/fa";
-
-
-
-
+{/* -------------------------------------Raj----------------------------------------- */ }
 const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaultName, pic, color, toggleOptions, handleOptionClick, w, id }) => {
     const hasSpecialOption = selectedOption.includes('Warranty') ||
         selectedOption.includes('Gold') ||
         selectedOption.includes('Platinum') ||
         selectedOption.includes('Silver');
 
-    const [selectedIcon, setSelectedIcon] = useState(null);
+    const [selectedIcon, setSelectedIcon] = useState([]);
 
-    // Function to set the selected icon based on the option
-    const setSelectedIconByOption = (option) => {
-        switch (option) {
-            case 'App':
-                setSelectedIcon(<FaApple />);
-                break;
-            case 'Message':
-                setSelectedIcon(<MdMessage />);
-                break;
-            case 'SMS':
-                setSelectedIcon(<FaSms />);
-                break;
-            case 'WhatsApp':
-                setSelectedIcon(<IoLogoWhatsapp />);
-                break;
-            default:
-                setSelectedIcon(null); 
-        }
-    };
-
+        const setSelectedIconByOption = (option) => {
+            let newIcon;
+            switch (option) {
+                case 'App':
+                    newIcon = <FaApple />;
+                    break;
+                case 'Message':
+                    newIcon = <MdMessage />;
+                    break;
+                case 'SMS':
+                    newIcon = <FaSms />;
+                    break;
+                case 'WhatsApp':
+                    newIcon = <IoLogoWhatsapp />;
+                    break;
+                default:
+                    newIcon = null;
+            }
+        
+            if (selectedIcon.some(icon => icon.type === newIcon.type)) {
+                setSelectedIcon(prevIcons => prevIcons.filter(icon => icon.type !== newIcon.type));
+            } else {
+                setSelectedIcon(prevIcons => [...prevIcons, newIcon]);
+            }
+        };
+        
 
     // Handle option click in first dropdown
     const handleOptionClickAndIcon = (option) => {
         handleOptionClick(option);
         setSelectedIconByOption(option);
+    };
+
+
+    const handleOptionClickWithStyle = (event, option) => {
+        handleOptionClick(option);
+        handleTextColor(option);
+        const options = document.querySelectorAll('.client-modal-drodown-options p');
+        options.forEach(option => option.classList.remove('selected'));
+        event.target.classList.add('selected');
     };
 
 
@@ -65,22 +78,29 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                 setTextColor('#8E8E8E');
                 break;
             default:
-                setTextColor("#F8AC1D"); // Default color
+                setTextColor("#F8AC1D");
         }
     };
 
     return (
         <div className={`client-modal-dropdown ${dropdownClass}`} onClick={toggleOptions} style={{ width: w }}>
-            {/* -------------------------------------Raj----------------------------------------- */}
 
             <div className='dropdown-icon-container'>
                 <div className="dropdown-icon-container-img">
-                    {selectedIcon || <img src={pic} />}
+                    {selectedIcon}
                 </div>
                 <h6>
                     {defaultName}
                 </h6>
-                <p style={{ color: textColor }}>{hasSpecialOption ? <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>{selectedOption}</span> : selectedOption}</p>
+                <p style={{ color: textColor }}>
+                    {hasSpecialOption ? (
+                        <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>
+                            {selectedOption}
+                        </span>
+                    ) : (
+                        selectedIcon.length >= 2 ? "" : selectedOption
+                    )}
+                </p>
 
                 <RiArrowDropDownLine style={{ color: "#8E8E8E" }} className='icon-size' />
             </div>
@@ -89,13 +109,14 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
 
                     {options.map((option, index) => (
                         <div key={index}
-                            onClick={() => {
+                            onClick={(event) => {
                                 handleOptionClick(option);
                                 handleTextColor(option);
-                                handleOptionClickAndIcon(option);
+                                handleOptionClickAndIcon(option)
+                                handleOptionClickWithStyle(event, option);
                             }}
-                            className='client-modal-dropdown-option'>
-                            {id === 0 && <CheckBox />}
+                            className={`client-modal-dropdown-option ${selectedOption === option ? 'selected' : ''}`}>
+                            {id === 0 && <></>}
                             <p>{option}</p>
                         </div>
                     ))}
@@ -105,6 +126,9 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
     );
 };
 
+
+
+// This is only for second dropdown background-color
 const getBackgroundColor = (selectedOption) => {
     switch (selectedOption) {
         case 'Warranty':
@@ -120,4 +144,4 @@ const getBackgroundColor = (selectedOption) => {
     }
 };
 
-export default ClientDropDown;
+export default React.memo(ClientDropDown);
