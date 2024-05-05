@@ -28,34 +28,34 @@ function App() {
     <>
       <Routes>
         {/* login routes */}
-          <Route path="/" element={!isLoggedIn ? <LoginPage><LoginPageInput/></LoginPage> :  <Navigate to="/Dashboard"  /> } />
-          <Route path="/forgetpassword" element={!isLoggedIn ? <LoginPage><SendPasswordVerificationCode/></LoginPage> :  <Navigate to="/Dashboard"  />}/>
-          <Route path="/enterOTP" element={!isLoggedIn ? <LoginPage><ForgetPasswordOTP/></LoginPage> :  <Navigate to="/Dashboard"  />}/>
-
-   
-          <Route path="/setnewpassword" element={!isLoggedIn ? <LoginPage><EnterNewPassword/></LoginPage> :  <Navigate to="/Dashboard"  />}/>
-          
+        <Route path="/" element={!isLoggedIn ? <LoginPage><LoginPageInput /></LoginPage> : <Navigate to="/Dashboard" />} />
+        <Route path="/forgetpassword" element={!isLoggedIn ? <LoginPage><SendPasswordVerificationCode /></LoginPage> : <Navigate to="/Dashboard" />} />
+        <Route path="/enterOTP" element={!isLoggedIn ? <LoginPage><ForgetPasswordOTP /></LoginPage> : <Navigate to="/Dashboard" />} />
 
 
-          {/* pages routes */}
-          <Route path="/Dashboard" element={isLoggedIn ? <Sidebar><Dashboard /></Sidebar> : <Navigate to="/"  />} /> 
-          <Route path="/Requests" element={isLoggedIn ? <Sidebar><Request /></Sidebar> : <Navigate to="/"  />} /> 
-          <Route path="/Memberships" element={isLoggedIn ? <Sidebar><Membership /></Sidebar> : <Navigate to="/"  />} /> 
-          {/* <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} />  */}
-          <Route path="/Engeeniers" element={<Sidebar><Enggeniers/></Sidebar>} /> 
-          <Route path="/Clients" element={isLoggedIn ? <Sidebar><Clients /></Sidebar> : <Navigate to="/"  />} /> 
+        <Route path="/setnewpassword" element={!isLoggedIn ? <LoginPage><EnterNewPassword /></LoginPage> : <Navigate to="/Dashboard" />} />
 
 
 
-
-          {/* not found Pages */}
-          <Route path="*" element={<NotFoundPage/>} /> 
+        {/* pages routes */}
+        <Route path="/Dashboard" element={isLoggedIn ? <Sidebar><Dashboard /></Sidebar> : <Navigate to="/" />} />
+        <Route path="/Requests" element={isLoggedIn ? <Sidebar><Request /></Sidebar> : <Navigate to="/" />} />
+        <Route path="/Memberships" element={isLoggedIn ? <Sidebar><Membership /></Sidebar> : <Navigate to="/" />} />
+        {/* <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} />  */}
+        <Route path="/Engeeniers" element={<Sidebar><Enggeniers /></Sidebar>} />
+        <Route path="/Clients" element={isLoggedIn ? <Sidebar><Clients /></Sidebar> : <Navigate to="/" />} />
 
 
 
 
+        {/* not found Pages */}
+        <Route path="*" element={<NotFoundPage />} />
 
-        </Routes>     
+
+
+
+
+      </Routes>
 
     </>
   );

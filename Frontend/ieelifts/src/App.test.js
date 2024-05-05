@@ -1,18 +1,17 @@
+import React from 'react'; // Import React
+
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../src/ReduxSetup/RootReducers/AdminRootReducer';
 
-import { LocalStorageMock } from 'jest-localstorage-mock';
-
-const localStorageMock = new LocalStorageMock();
+import 'jest-localstorage-mock';
 
 beforeEach(() => {
-  localStorageMock.clear(); // Clear mock storage before each test
-  localStorageMock.setItem('adminData', 'someData'); // Set mock data
+  localStorage.clear(); // Clear mock storage before each test
+  localStorage.setItem('adminData', 'someData'); // Set mock data
 });
-
 
 // Create Redux store inside a test case to ensure freshness
 test('renders learn react link', () => {
