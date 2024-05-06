@@ -155,6 +155,6 @@ router.post("/updatePassword",adminContoller.updatePassword);
  */
 
 router.post('/clientForm',adminContoller.postElevatorForm);
-router.put('/updateClientForm/:JON',adminContoller.putElevatorForm);
+router.put('/updateClientForm',adminContoller.putElevatorForm);
 
 module.exports = router;

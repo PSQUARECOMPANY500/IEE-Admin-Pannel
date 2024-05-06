@@ -186,7 +186,7 @@ const ClientFormDimentions = ({ }) => {
                         </div>
                         <div className='dimension-btn-wrapper'>
                             <div className='dimension-btn'>
-                            Floor Front
+                            <input type='file'/><span>Floor Front</span>
                             </div>
                             <div className='dimension-upload-btn'>
                                 <span>Top to Bottom <img src='./uploadIcon.png ' className='upload-icon' /></span>

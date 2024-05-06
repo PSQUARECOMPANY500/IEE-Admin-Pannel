@@ -66,6 +66,7 @@ const ClientForm = () => {
                                         value={"Next"}
                                         className={"client-form-button-yellow"}
                                         handleNextPage={handleNextPage} 
+                                        
                                     />
                                 </div>
                             </div>

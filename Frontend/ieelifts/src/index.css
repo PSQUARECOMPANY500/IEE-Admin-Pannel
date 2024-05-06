@@ -2250,10 +2250,24 @@ font-size: 1rem;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
 }
 .dimension-btn-wrapper{
   display: flex;
   justify-content: space-between;
+}
+.dimension-btn>input::file-selector-button{
+   background-color: white;
+   border: none;
+   outline: none;
+   background-color: #F8AC1D;
+   color: #f8ac1d;
+}
+.dimension-btn>input{
+  color: #f8ac1d;
+}
+.dimension-btn>span{
+  position:absolute;
 }
 .dimension-upload-btn{
   width: 10rem;

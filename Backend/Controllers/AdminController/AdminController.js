@@ -2613,12 +2613,12 @@ res.status(200).json({msg:"data submit successfully" });
 
 module.exports.putElevatorForm = async(req,res)=>{
   try{
-    const { JON } = req.params; 
+    const {JON} = req.body; 
     const newData = req.body;
     console.log(JON) 
     console.log(newData)
 
-    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData);
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData,{ new: true });
       console.log(updatedData)
             if (!updatedData) {
                 return res.status(404).json({ error: 'Data not found' });

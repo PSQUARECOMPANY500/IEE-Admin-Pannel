@@ -13,15 +13,22 @@ const ClientFormElevatorDetails = ({ }) => {
     const [nintyDegreeRight, SetNintyDegreeRight] = useState('');
     const [oneEightyDegree, SetOneEightyDegree] = useState('');
     const [noOfOpenings, setNoOfOpenings] = useState(0);
-    const [stops, setStops] = useState(2);
+    const [stops, setStops] = useState(0);
+    const [data, setData] = useState('G')
+    const [level,setLevel] = useState({
+        "b1":b1,
+        "b2":b2,
+        "G/S":data
+    })
+
     const elementsArray = Array.from({ length: stops }, (_, index) => index);//converting the stop value to array so that we can use map function
     const noOfOpeningsArray = Array.from({length:noOfOpenings-1},(_, index)=>index);
-
+   
     //handler
     const handleCapacityUnitChange = (unit) => {
         setCapacity(unit);
     };
-    const [data, setData] = useState('G')
+    
     const handleChange = (value) => {
         setData(value);
     }
@@ -43,21 +50,7 @@ const ClientFormElevatorDetails = ({ }) => {
             setIsActive(!isActive); 
         };
 
-    // const handleChangeIn90dL = () => {
-    //     SetNintyDegreeLeft(nintyDegreeLeft ? "" : "90dL");
-
-    // }
-
-    // const handleChangeIn90dR = () => {
-    //     SetNintyDegreeRight(nintyDegreeRight ? "" : "90dR");
-    // }
-
-    // const handleChangeIn180d = () => {
-
-
-    //     SetOneEightyDegree(oneEightyDegree ? "" : "180d");
-    // }
-
+    
     const handleNumberOfOpenings = (openings) => {
         setNoOfOpenings(openings);
     }
@@ -208,7 +201,7 @@ const ClientFormElevatorDetails = ({ }) => {
                 {
                     elementsArray.map((index) => (
                         <div className='level-heading' key={index}>
-                            <span className='level-title'>B/G:</span>
+                            <span className='level-title'>{b2?b2:b1}:</span>
                             <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={handleClick}></span>
                             {noOfOpeningsArray.map((index)=>(
                         <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={handleClick}></span>
