@@ -6438,7 +6438,7 @@ border-radius: 10px;
   width: 100%;
   display: flex;
   color: #8E8E8E;
-  gap: 1px;
+  /* gap: 1px; */
   align-items: center;
   justify-content: center;
   position: relative;
@@ -6446,7 +6446,10 @@ border-radius: 10px;
   padding: 0 5px;
 }
 .dropdown-icon-container-img{
-  margin-top: 0.3rem;
+  margin-top: 0rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
   
 }
 
@@ -6464,9 +6467,11 @@ border-radius: 10px;
 
 /* ------Add Some code by Raj data = 30/4/2024-------------- */
 
-.client-modal-drodown-options p.selected {
+/* .client-modal-drodown-options p.selected {
   color: #F8AC1DAD;
-}
+} */
+
+
 
 
 .client-modal-drodown-options {
@@ -6488,7 +6493,14 @@ border-radius: 10px;
   gap: 13px;
   align-items: center;
   margin-top: .4rem;
+  width: 7.6rem;
+  padding-top:0.4rem;
+  height: 1.6rem;
+  flex-direction: column;
+/* background-color: lightcyan; */
   margin-left:-8px;
+  border-bottom: 1px solid lightgrey;
+
 
 }
 
@@ -6516,7 +6528,7 @@ color: #BABABA;
 text-align: center;
 transition: transform 0.1s;
 cursor: pointer;
-border-bottom: 1px solid lightgrey;
+/* border-bottom: 1px solid lightgrey; */
 text-transform: capitalize;
 
 }

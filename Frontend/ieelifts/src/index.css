@@ -1728,10 +1728,17 @@ code {
   border-bottom: 1px solid #c1c1c180;
   font-size: 0.9rem;
   color: #444444;
+
   font-weight: 500;
   font-family: "Poppins";
 }
 
+.client_table-container table tr{
+  transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.2s;
+}
+.client_table-container table tr:hover{
+  background-color: rgb(241, 238, 238);
+}
 
 .spare-part-table-container table th {
   font-weight: 600;

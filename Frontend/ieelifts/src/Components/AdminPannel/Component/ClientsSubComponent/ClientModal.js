@@ -18,7 +18,9 @@ import ClientDetailMain from './ClientDetailMain';
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
   const modalRef = useRef();
+  const cardRef = useRef();
 
+ 
   // Close modal when clicking outside of it
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -27,6 +29,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
     }
   };
+
+
 
   const handleCloseModalWithReset = () => {
     handleResetDropdowns();
@@ -51,13 +55,15 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     };
   }, []);
 
+ 
+
   // Changes scroll behavior when showclientmodal changes
   useEffect(() => {
     document.body.style.overflow = showClientModal ? "hidden" : "scroll";
   }, [showClientModal]);
 
   const defaultOptions = {
-    0: 'Message',
+    0: 'Select',
     1: 'Warranty',
     2: 'Select'
   };
@@ -65,7 +71,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
 
   const [dropdowns, setDropdowns] = useState([
-    { id: 0, options: ['App', 'Message', 'SMS', 'WhatsApp'], pic: MailIcon, selectedOption: defaultOptions[0], showOptions: false },
+    { id: 0, options: ['Application', 'Message', 'SMS', 'WhatsApp'], pic: MailIcon, selectedOption: defaultOptions[0], showOptions: false },
     { id: 1, options: ['Warranty', 'Platinum', 'Gold', 'Silver'], defaultName: 'Membership :', pic: MailIcon, selectedOption: defaultOptions[1], showOptions: false },
     { id: 2, options: ['Service History', 'Call Back History', 'Document', 'SOS Calls'], pic: MailIcon, selectedOption: defaultOptions[2], showOptions: false }
   ]);
@@ -144,6 +150,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   handleOptionClick={(option) => handleOptionClick(dropdowns[0].id, option)}
                   id={dropdowns[0].id}
                   w={'9rem'}
+                  cardRef={cardRef}
                 />
                 <ClientDropDown
                   key={dropdowns[1].id}
@@ -155,6 +162,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   handleOptionClick={(option) => handleOptionClick(dropdowns[1].id, option)}
                   id={dropdowns[1].id}
                   w={'16rem'}
+                  cardRef={cardRef}
 
                 />
 
@@ -175,7 +183,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   id={dropdowns[2].id}
                   w={'24%'}
                   color={'#F8AC1DAD'}
-
+                  cardRef={cardRef}
                 />
               </div>
             </div>

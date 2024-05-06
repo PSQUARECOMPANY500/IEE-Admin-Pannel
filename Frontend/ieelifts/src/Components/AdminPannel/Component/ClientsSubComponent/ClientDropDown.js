@@ -1,7 +1,7 @@
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { FaApple } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
@@ -13,34 +13,52 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
         selectedOption.includes('Platinum') ||
         selectedOption.includes('Silver');
 
-    const [selectedIcon, setSelectedIcon] = useState([]);
 
-        const setSelectedIconByOption = (option) => {
-            let newIcon;
-            switch (option) {
-                case 'App':
-                    newIcon = <FaApple />;
-                    break;
-                case 'Message':
-                    newIcon = <MdMessage />;
-                    break;
-                case 'SMS':
-                    newIcon = <FaSms />;
-                    break;
-                case 'WhatsApp':
-                    newIcon = <IoLogoWhatsapp />;
-                    break;
-                default:
-                    newIcon = null;
-            }
-        
-            if (selectedIcon.some(icon => icon.type === newIcon.type)) {
-                setSelectedIcon(prevIcons => prevIcons.filter(icon => icon.type !== newIcon.type));
-            } else {
-                setSelectedIcon(prevIcons => [...prevIcons, newIcon]);
+
+    const [selectedIcon, setSelectedIcon] = useState([]);
+    const cardRef = useRef();
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (cardRef.current && !cardRef.current.contains(event.target)) {
+                toggleOptions();
             }
         };
-        
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [cardRef, toggleOptions]);
+
+
+    const setSelectedIconByOption = (option) => {
+        let newIcon;
+        switch (option) {
+            case 'Application':
+                newIcon = { type: 'Application', icon: <FaApple /> };
+                break;
+            case 'Message':
+                newIcon = { type: 'Message', icon: <MdMessage /> };
+                break;
+            case 'SMS':
+                newIcon = { type: 'SMS', icon: <FaSms /> };
+                break;
+            case 'WhatsApp':
+                newIcon = { type: 'WhatsApp', icon: <IoLogoWhatsapp /> };
+                break;
+            default:
+                newIcon = null;
+        }
+
+        if (newIcon && selectedIcon.some(icon => icon.type === newIcon.type)) {
+            setSelectedIcon(prevIcons => prevIcons.filter(icon => icon.type !== newIcon.type));
+        } else if (newIcon) {
+            setSelectedIcon(prevIcons => [...prevIcons, newIcon]);
+        }
+    };
+
+
 
     // Handle option click in first dropdown
     const handleOptionClickAndIcon = (option) => {
@@ -52,9 +70,7 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
     const handleOptionClickWithStyle = (event, option) => {
         handleOptionClick(option);
         handleTextColor(option);
-        const options = document.querySelectorAll('.client-modal-drodown-options p');
-        options.forEach(option => option.classList.remove('selected'));
-        event.target.classList.add('selected');
+
     };
 
 
@@ -66,69 +82,95 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
     const handleTextColor = (option) => {
         switch (option) {
             case 'Warranty':
-                setTextColor('#0F351D');
+                setTextColor('Warranty #0F351D');
                 break;
             case 'Gold':
-                setTextColor('#F8AC1D');
+                setTextColor('Gold #F8AC1D');
                 break;
             case 'Platinum':
-                setTextColor('#FF7F00');
+                setTextColor('Platinum #FF7F00');
                 break;
             case 'Silver':
-                setTextColor('#8E8E8E');
+                setTextColor('Silver #8E8E8E');
+                break;
+            case 'Service History':
+                setTextColor('Service History #F8AC1DAD');
+                break;
+            case 'Call Back History':
+                setTextColor('Call Back History #F8AC1DAD');
+                break;
+            case 'Document':
+                setTextColor('Document #F8AC1DAD');
+                break;
+            case 'SOS Calls':
+                setTextColor('SOS Calls #F8AC1DAD');
                 break;
             default:
-                setTextColor("#F8AC1D");
+                setTextColor("");
         }
     };
-
+    console.log("textColor", textColor.split(" ")[0])
     return (
+
         <div className={`client-modal-dropdown ${dropdownClass}`} onClick={toggleOptions} style={{ width: w }}>
 
-            <div className='dropdown-icon-container'>
-                <div className="dropdown-icon-container-img">
-                    {selectedIcon}
+            <div className='dropdown-icon-container' onClick={(e) => { if (showOptions) e.stopPropagation() }}>
+
+                <div className="dropdown-icon-container-img" onClick={(e) => { e.stopPropagation() }}>
+                    {selectedIcon.map((data) => {
+                        return data.icon
+                    })}
                 </div>
-                <h6>
+                <h6 onClick={(e) => { e.stopPropagation() }}>
                     {defaultName}
                 </h6>
-                <p style={{ color: textColor }}>
+                <p style={{
+                    color: textColor.split(" ").slice(-1)[0]
+                }}
+                    onClick={(e) => { e.stopPropagation() }}
+                >
                     {hasSpecialOption ? (
-                        <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }}>
-                            {selectedOption}
+                        <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }} >
+                            {id === 0 ? selectedIcon.forEach((data) => {
+                                return data.type
+                            }) : selectedOption}
                         </span>
                     ) : (
-                        selectedIcon.length >= 2 ? "" : selectedOption
+                        selectedIcon.length >= 2 ? "" :
+                            (id === 0 ?
+                                (selectedIcon.length > 0 ? selectedIcon.map((data) => data.type) : "Message")
+                                : selectedOption)
                     )}
                 </p>
 
                 <RiArrowDropDownLine style={{ color: "#8E8E8E" }} className='icon-size' />
             </div>
             {showOptions && (
-                <div className='client-modal-drodown-options'>
+                <div ref={cardRef} className='client-modal-drodown-options'>
 
-                    {options.map((option, index) => (
-                        <div key={index}
-                            onClick={(event) => {
-                                handleOptionClick(option);
-                                handleTextColor(option);
-                                handleOptionClickAndIcon(option)
-                                handleOptionClickWithStyle(event, option);
-                            }}
-                            className={`client-modal-dropdown-option ${selectedOption === option ? 'selected' : ''}`}>
-                            {id === 0 && <></>}
-                            <p>{option}</p>
-                        </div>
-                    ))}
+                    {options.map((option, index) => {
+
+                        return (
+                            <div key={index}
+                                onClick={(event) => {
+
+                                    handleOptionClick(option);
+                                    handleTextColor(option);
+                                    handleOptionClickAndIcon(option);
+                                }}
+                                className={`client-modal-dropdown-option `}>
+                                {id === 0 && <></>}
+                                <p style={{
+                                    color: (selectedIcon.some(icon => String(icon.type).toLowerCase().includes(option.toLowerCase())) || textColor.split(" ")[0] === option.split(" ")[0]) ? '#F8AC1DAD' : 'inherit'
+                                }}>{option}</p>
+                            </div>)
+                    })}
                 </div>
             )}
         </div>
     );
 };
 
-
-
-// This is only for second dropdown background-color
 const getBackgroundColor = (selectedOption) => {
     switch (selectedOption) {
         case 'Warranty':
