@@ -6425,7 +6425,6 @@ element.style {
   width: 6rem;
   border: 1px solid #8E8E8E;
 border-radius: 10px;
-
   position: relative;
   cursor: pointer;
 }
@@ -6442,12 +6441,14 @@ border-radius: 10px;
   align-items: center;
   justify-content: center;
   position: relative;
+  
   text-transform: capitalize;
   padding: 0 5px;
 }
 .dropdown-icon-container-img{
-  margin-top: 0rem;
+  margin-top: 0.1rem;
   display: flex;
+  margin-left: -0.5rem;
   align-items: center;
   gap: 0.3rem;
   
@@ -6460,18 +6461,17 @@ border-radius: 10px;
 
 }
 
+
+
+
 .icon-size {
   font-size: 2rem;
   color: #000;
+  position: absolute;
+  /* left: 80%; */
 }
 
 /* ------Add Some code by Raj data = 30/4/2024-------------- */
-
-/* .client-modal-drodown-options p.selected {
-  color: #F8AC1DAD;
-} */
-
-
 
 
 .client-modal-drodown-options {

@@ -1,5 +1,4 @@
 import React from 'react'
-import data from "./DatasClientServiceHis.json"
 import InformationTable from '../../../CommonComponenets/InformationTable'
 
 // ---------------Raj ---------------------------

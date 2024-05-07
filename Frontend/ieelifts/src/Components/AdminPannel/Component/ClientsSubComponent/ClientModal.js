@@ -162,7 +162,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   handleOptionClick={(option) => handleOptionClick(dropdowns[1].id, option)}
                   id={dropdowns[1].id}
                   w={'16rem'}
-                  cardRef={cardRef}
+                  
 
                 />
 
@@ -183,7 +183,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                   id={dropdowns[2].id}
                   w={'24%'}
                   color={'#F8AC1DAD'}
-                  cardRef={cardRef}
+                 
                 />
               </div>
             </div>

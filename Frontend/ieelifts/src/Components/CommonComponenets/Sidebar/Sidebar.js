@@ -105,7 +105,7 @@ const Sidebar = ({ children }) => {
       icon: <MdEngineering />,
     },
     {
-      Path: "/SOS",
+      Path: "/Sosrequest",
       name: "sos",
       icon: <MdEngineering />,
     },
@@ -129,6 +129,9 @@ const Sidebar = ({ children }) => {
         break;
       case "/Clients":
         setTopBarHeading("Clients");
+        break;
+      case "/Sosrequest":
+        setTopBarHeading("SOS");
         break;
       // Add more cases for other pages
       default:

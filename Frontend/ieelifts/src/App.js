@@ -18,6 +18,7 @@ import LoginPageInput from "./Components/AdminPannel/Pages/ForgetPasswordPagesCo
 import ForgetPasswordOTP from "./Components/AdminPannel/Pages/ForgetPasswordPagesComponents/ForgetPasswordOTP";
 import EnterNewPassword from "./Components/AdminPannel/Pages/ForgetPasswordPagesComponents/EnterNewPassword";
 import NotFoundPage from "./Components/CommonComponenets/NotFoundPage";
+import Sosrequest from "./Components/AdminPannel/Component/MainMenu/Sosrequest";
 
 function App() {
   const isLoggedIn = useSelector(
@@ -44,6 +45,7 @@ function App() {
           <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} /> 
           {/* <Route path="/Engeeniers" element={<Sidebar><Enggeniers/></Sidebar>} />  */}
           <Route path="/Clients" element={isLoggedIn ? <Sidebar><Clients /></Sidebar> : <Navigate to="/"  />} /> 
+          <Route path="/Sosrequest" element={isLoggedIn ? <Sidebar><Sosrequest /></Sidebar> : <Navigate to="/"  />} /> 
 
 
 

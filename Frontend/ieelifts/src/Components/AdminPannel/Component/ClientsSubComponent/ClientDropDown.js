@@ -32,6 +32,8 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
     }, [cardRef, toggleOptions]);
 
 
+
+
     const setSelectedIconByOption = (option) => {
         let newIcon;
         switch (option) {
@@ -112,22 +114,22 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
     console.log("textColor", textColor.split(" ")[0])
     return (
 
-        <div className={`client-modal-dropdown ${dropdownClass}`} onClick={toggleOptions} style={{ width: w }}>
+        <div className={`client-modal-dropdown ${dropdownClass}`}
+            onClick={toggleOptions} style={{ width: w }}>
+            <div className='dropdown-icon-container' >
 
-            <div className='dropdown-icon-container' onClick={(e) => { if (showOptions) e.stopPropagation() }}>
-
-                <div className="dropdown-icon-container-img" onClick={(e) => { e.stopPropagation() }}>
+                <div className="dropdown-icon-container-img">
                     {selectedIcon.map((data) => {
                         return data.icon
                     })}
                 </div>
-                <h6 onClick={(e) => { e.stopPropagation() }}>
+                <h6>
                     {defaultName}
                 </h6>
                 <p style={{
                     color: textColor.split(" ").slice(-1)[0]
                 }}
-                    onClick={(e) => { e.stopPropagation() }}
+
                 >
                     {hasSpecialOption ? (
                         <span className="green-padding" style={{ backgroundColor: getBackgroundColor(selectedOption) }} >
@@ -143,8 +145,11 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                     )}
                 </p>
 
-                <RiArrowDropDownLine style={{ color: "#8E8E8E" }} className='icon-size' />
-            </div>
+                {dropdownClass === 'second-dropdown' ? (
+                    <RiArrowDropDownLine style={{ color: "#8E8E8E", left: '87%' }} className='icon-size' />
+                ) : (
+                    <RiArrowDropDownLine style={{ color: "#8E8E8E", left: '78%' }} className='icon-size' />
+                )}            </div>
             {showOptions && (
                 <div ref={cardRef} className='client-modal-drodown-options'>
 
