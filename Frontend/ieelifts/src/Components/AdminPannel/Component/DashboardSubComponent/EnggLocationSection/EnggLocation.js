@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { EnggLocationDetailsFetch, onClickPinCart } from '../../../../../ReduxSetup/Actions/AdminActions';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
-
-import image from '../../../../../../src/Assets/Images/location-pin1.png';
+import { onClickEnggCart } from "../../../../../ReduxSetup/Actions/AdminActions";
 
 const EnggLocation = () => {
   const dispatch = useDispatch();
@@ -26,8 +25,6 @@ const EnggLocation = () => {
     strokeWeight: 2,
   }
 
-  console.log("render")
-
   const inactiveMarkerSymbol = {
     path: window.google.maps.SymbolPath.CIRCLE,
     scale: 15,
@@ -38,7 +35,7 @@ const EnggLocation = () => {
   };
 
   const IEEmarkerSymbol = {
-    path: window.google.maps.SymbolPath.CIRCLE,
+    path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
     scale: 10,
     fillColor: '#0F351D',
     fillOpacity: 1,
@@ -61,22 +58,24 @@ const EnggLocation = () => {
 
   useEffect(() => {
     dispatch(onClickPinCart(enggId));
-
+    console.log("dispatch enggId")
   }, [dispatch, enggId]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach(data => {
         if (data.ServiceEnggId === enggServiceID) {
-          setPinIndex(-1);
-          setEnggId('');
           const lat = parseFloat(data.currentLocation.coordinates[0]);
           const lng = parseFloat(data.currentLocation.coordinates[1]);
           setCenter({ lat, lng });
         }
       });
+      setPinIndex(-1);
+      setEnggId("");
+      console.log("click corousal")
+      console.log(enggServiceID)
     }
-  }, [enggLocationDetails, enggServiceID]);
+  }, [enggServiceID]);
 
   const mapStyles = [
     {
@@ -280,14 +279,14 @@ const EnggLocation = () => {
             icon={markerSymbol}
             onClick={() => {
               if (isMarkerActive) {
+                console.log("if")
                 setPinIndex(-1);
                 setEnggId('');
-                /* setEnggId(engId); */
-                console.log("on if")
               } else {
+                console.log("else")
+                dispatch(onClickEnggCart(""))
                 setEnggId(engId);
                 setPinIndex(index);
-                console.log("on else")
               }
             }}
           />
