@@ -2156,10 +2156,29 @@ code {
   grid-row-gap: 1.2rem;
 }
 .level-heading{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
   font-size: 1rem;
   font-weight: 500;
+  justify-content: space-evenly;
+}
+.levelHeading{
+ 
+}
+
+.level-title-wrapper{
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: grid;
+}
+.level-selector-parent{
+  display: grid;
+  font-size: 1rem;
+  font-weight: 500;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
 }
 .heading-badge{
   background-color: #F8AC1D;
@@ -2181,7 +2200,7 @@ code {
   width: 4.3rem;
   border: 1px solid #B7B7B7;
    border-radius: 5px;
-   margin-left: 1.5rem;
+   margin-left: 6rem;
    cursor: pointer;
 }
 .level-selector-active{
@@ -2206,6 +2225,11 @@ code {
   color: #8E8E8E;
 opacity: 0.54;
 font-size: 1rem;
+}
+
+.level-box-container{
+  display: flex;
+  
 }
 
 /* client form dimenstions */

@@ -1,21 +1,22 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
 import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
 
 const ClientFormElevatorDetails = () => {
     const numberOfOpenings = [1, 2, 3];
     const pitDepth = [100, 200];
-    const purpose =["Hospital","Mall"];
+    const purpose = ["Hospital", "Mall"];
     const typeOptions = ["gearless", "geared"];
-    const doorType =["option1","option2"];
-    const constructionMaterial = ["option1","option2"];
+    const doorType = ["option1", "option2"];
+    const constructionMaterial = ["option1", "option2"];
 
-    const [dropdown, setDropdown]=useState({
-        purpose:'',
-        doorType:'',
-        constructionMaterial:""
+    const [dropdown, setDropdown] = useState({
+        purpose: '',
+        doorType: '',
+        constructionMaterial: ""
     })
+
 
     //States
     const [pit, setPit] = useState('');
@@ -63,30 +64,32 @@ const ClientFormElevatorDetails = () => {
     const elementsArray = Array.from({ length: stops }, (_, index) => index);//converting the stop value to array so that we can use map function
     const noOfOpeningsArray = Array.from({ length: noOfOpenings - 1 }, (_, index) => index);
 
+    const [array, setArray] = useState([])
+
     //handler
-    const handleContructionMaterial =(value)=>{
-        setDropdown(prevState=>(
+    const handleContructionMaterial = (value) => {
+        setDropdown(prevState => (
             {
-              ...prevState,
-              constructionMaterial:value
+                ...prevState,
+                constructionMaterial: value
             }
-          ))
-    }
-    const handlePurpose =(value)=>{
-        setDropdown(prevState=>(
-          {
-            ...prevState,
-            purpose:value
-          }
         ))
     }
-    const handleDoorType =(value)=>{
-        setDropdown(prevState=>(
+    const handlePurpose = (value) => {
+        setDropdown(prevState => (
             {
-              ...prevState,
-              doorType:value
+                ...prevState,
+                purpose: value
             }
-          ))
+        ))
+    }
+    const handleDoorType = (value) => {
+        setDropdown(prevState => (
+            {
+                ...prevState,
+                doorType: value
+            }
+        ))
     }
     const handleCapacityUnitChange = (unit) => {
         setCapacity(unit);
@@ -110,6 +113,8 @@ const ClientFormElevatorDetails = () => {
 
     const handleInputValueChange = (newValue) => {
         setStops(newValue);
+
+
     };
     const handlePitValueChange = (pit) => {
         setPit(pit);
@@ -117,14 +122,20 @@ const ClientFormElevatorDetails = () => {
     const handleType = (value) => {
         setType(value);
     }
-    
 
-    const [isActive, setIsActive] = useState(false);
+
+   const [isActive, setIsActive] = useState(false);
     const [selectedIndex, setselectedIndex] = useState("");
 
-    const handleClick = () => {
-        setIsActive(!isActive);
+    const handleClick = (row, colIndex) => {
+        setArray(prevArray => {
+            const newArray = [...prevArray]; 
+            newArray[row][colIndex] = !newArray[row][colIndex];
+            return newArray; 
+        });
     };
+    
+    
 
 
     const handleNumberOfOpenings = (openings) => {
@@ -134,6 +145,7 @@ const ClientFormElevatorDetails = () => {
             nintyDegreeLeft: "",
             oneEightyDegree: ""
         })
+        setLevelAndOpeningsView(openings)
     }
     const isDivDisabled = () => {
         if (noOfOpenings === 0 || noOfOpenings === 1) {
@@ -210,6 +222,19 @@ const ClientFormElevatorDetails = () => {
         }
     };
 
+
+    const setLevelAndOpeningsView = (openings) => {
+        const arrayTobe = Array.from({ length: stops }, () => Array(openings).fill(false));
+        setArray(arrayTobe);
+        console.log("this is arrayto", arrayTobe);
+    }
+
+    const array2D = Array.from({ length: stops }, () =>
+        new Array(noOfOpenings).fill(0)
+    );
+
+console.log("=>>",array)
+
     return (
         <div className='client-form-elevator-details'>
             <h5 className='client-form-details-heading'>Elevator Details</h5>
@@ -233,8 +258,8 @@ const ClientFormElevatorDetails = () => {
                     </div>
                     <div>
                         <ClientDropdown label={"Purpose"}
-                        options={purpose}
-                        onValueChange={handlePurpose}
+                            options={purpose}
+                            onValueChange={handlePurpose}
                         />
                     </div>
                     <div className='capacity-container'>
@@ -284,16 +309,16 @@ const ClientFormElevatorDetails = () => {
                     </div>
                     <div>
 
-                        <ClientDropdown label={"Door Type"} 
-                        options={doorType}
-                        onValueChange={handleDoorType}
+                        <ClientDropdown label={"Door Type"}
+                            options={doorType}
+                            onValueChange={handleDoorType}
                         />
                     </div>
                     <div>
 
                         <ClientDropdown label={"Construction Material"}
-                        options={constructionMaterial}
-                        onValueChange={handleContructionMaterial}
+                            options={constructionMaterial}
+                            onValueChange={handleContructionMaterial}
                         />
                     </div>
                     <div>
@@ -330,60 +355,45 @@ const ClientFormElevatorDetails = () => {
                 </div>
                 <div className='level-main-container'>
                     <div className='level-heading'>
-                        <span>Level</span>
+                        <span className='levelHeading'>Level</span>
                         <span className='heading-badge'>Original opening</span>
-                        {/* {noOfOpeningsArray.map((index) => (
-                            <span className='heading-badge' key={index}>180°</span>
-                        ))} */}
+
                         {Object.entries(degree).map(([key, value], index, array) => (
                             value !== '' &&
                             <span className='heading-badge' key={index}>{value === "90dL" ? "90° Left" : value === "90dR" ? "90° Right" : "180°"}</span>
                         ))}
                     </div>
+                    <div className='level-box-container'>
+                        <div>
+                            {
+                                Object.entries(level).map(([key, value], index) => {
 
-                    {
-                        Object.entries(level).map(([key, value], index) => {
-                            console.log("e",index)
-                            return(
-                            <div className='level-heading' key={index}>
-                                <span className='level-title'>{key}:</span>
-                                <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={()=>{setselectedIndex(index);handleClick()}}></span>
-                                {noOfOpeningsArray.map((index) => (
-                                    <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={handleClick}></span>
-                                ))}
-                            </div>
-                            )})
+                                    return (
+                                        <div className='level-title-wrapper' key={index}>
+                                            <span className='level-title'>{key}:</span>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
 
-
-
-                        // elementsArray.map((index) => (
-                        //    <div className='level-heading' key={index}>
-                        //         <s pan className='level-title'>:</s>
-                        //         <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={handleClick}></span>
-                        //         {noOfOpeningsArray.map((index) => (
-                        //             <span className={`level-selector ${isActive ? 'level-selector-active' : ''}`} onClick={handleClick}></span>
-                        //         ))}
-                        //     </div>
-                        // ))
-                    }
-
-                    {/* <div className='level-heading'>
-                    <span className='level-title'>Level 1:</span>
-
-                    <span className='level-selector'></span>
-
-                    <span className='level-selector'></span>
-
-                </div>
-                <div className='level-heading'>
-                    <span className='level-title'>Level 2:</span>
-
-                    <span className='level-selector'></span>
-
-                    <span className='level-selector'></span>
-
-                </div> */}
-
+                        <div>
+                            {
+                                array.map((row, rowIndex) => {
+                                    const rI = rowIndex;
+                                    return (
+                                        <div className='level-selector-parent' key={rowIndex}>
+                                            {row.map((col, colIndex) => {
+                                                const cI = colIndex;
+                                                return(
+                                                <span className={`level-selector ${array[rI][cI] ? 'level-selector-active' : ''}`} onClick={()=>handleClick(rI, cI)} key={colIndex}></span>
+                                            )})}
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
                 </div>
                 <div className='text-area-container'>
                     <textarea placeholder='Add Remarks'>
