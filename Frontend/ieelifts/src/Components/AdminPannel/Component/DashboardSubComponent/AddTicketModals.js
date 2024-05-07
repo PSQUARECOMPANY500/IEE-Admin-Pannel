@@ -702,14 +702,14 @@ console.log("userCallBackDetail",userCallBackDetail)
                   </div>
                 </div>
                 <div className="grid-form-container2">
-
+                    {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input placeholder={`${rn}`} />
+                    <input placeholder={`${rn}`} onChange={(e)=> setrn(e.target.value)} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder={`${rnum}`} />
+                    <input placeholder={`${rnum}`} onChange={(e)=> setrum(e.target.value)}/>
                   </div>
 
                   <div className="col75">
@@ -728,6 +728,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                       onChange={(e) => {
                         setMessage(e.target.value);
                       }}
+
                     ></textarea>
 
                   </div>

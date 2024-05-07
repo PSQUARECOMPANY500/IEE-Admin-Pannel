@@ -37,6 +37,8 @@ const ReportInfoModel = require("../../Modals/ReportModal/ReportModal");
 
 const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
+const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const axios = require("axios");
 require("dotenv").config();
 
@@ -425,7 +427,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
     const AttendanceCreatedDate = new Date()
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
-      console.log("AttendanceCreatedDate",AttendanceCreatedDate)
+    //console.log("AttendanceCreatedDate",AttendanceCreatedDate)
     const enggDetail = await EnggLocationModel.find({ AttendanceCreatedDate });
     if (!enggDetail) {
       return res.status(404).json({
@@ -1417,6 +1419,8 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     const reportData = await ReportInfoModel.findOne({ serviceId });
 
+    const getMemberShipDetails = await memberShipTable.findOne({ JobOrderNumber: "2024021" }); //to do joborder number is dunamic by pankaj sir
+
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
     }
@@ -1426,7 +1430,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+          "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -1464,33 +1468,28 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     });
 
-    // price caluclate login insiode the spare part
-    const FilterSparePartPrice = filteredData.map(
-      (item) => {
-        if (memeberShip = 'platinum'){
-          
+    const caluclatePriceAsPerMemeberShip = (memeberShip, partprice) => {
+      if (memeberShip === "platinum" && partprice < 20000) {
+        return 0;
+      } else if (memeberShip === "gold" && partprice < 8000) {
+        return 0;
+      } else if (memeberShip === "silver" && partprice < 1000) {
+        return 0;
+      } else {
+        return partprice;
       }
-    
-    }
-      
-      
-      // !item.questionResponse.isSparePartRequest
-    );
+    };
 
-    console.log("----->", FilterSparePartPrice);
+    const membership = getMemberShipDetails.MembershipType;
+    // price caluclate login insiode the spare part
+    const caluclatePrice = SparePartsChanged.map((item) => {
+      const sparePartPrice = item.questionResponse.sparePartDetail.partsprice
+      return caluclatePriceAsPerMemeberShip(membership, sparePartPrice);
 
-    const PriceCaluclate = FilterSparePartPrice.map((item) => {
-      return item.questionResponse?.sparePartDetail?.partsprice;
-    }).filter((price) => typeof price === "string");
+    });
+    const totalPrice = caluclatePrice.reduce((acc, curr) => acc + parseInt(curr), 0);
+    TotalAmount.push(totalPrice);
 
-    const TotalPrice = PriceCaluclate.reduce((accm, price) => {
-      return accm + parseFloat(price);
-    }, 0);
-
-    // console.log("----->", PriceCaluclate);
-    // console.log("----->", TotalPrice);
-
-    TotalAmount.push(TotalPrice)
 
     // price caluclate login insiode the spare part
 
@@ -1831,3 +1830,66 @@ module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
 
 //==================================================================
 //==================================================================
+
+//emit on 2/05/2024
+//function for the paymentLink
+/* module.exports.paymentlinkRajorpay = async (req, res) => {
+  const keyId = "rzp_test_mODM3FD8ib4dUP";
+  const keySecret = "G56DvsZokv8476jzHbt5m9y0";
+
+  const instance = new Razorpay({
+    key_id: keyId,
+    key_secret: keySecret,
+  });
+
+  try {
+    const response = await instance.paymentLink.fetch("plink_O5W5SRYmDwzy9K");
+    // const response = await instance.paymentLink.create({
+    //   amount: 500,
+    //   currency: "INR",
+    //   description: "For XYZ purpose",
+    //   customer: {
+    //     name: "Gaurav Kumar",
+    //     email: "gaurav.kumar@example.com",
+    //     contact: "+919465932244",
+    //   },
+    //   notify: {
+    //     sms: true,
+    //     email: false,
+    //   },
+    //   reminder_enable: true,
+    //   notes: {
+    //     policy_name: "Jeevan Bima",
+    //   },
+    //   callback_url: "https://ieelifts.in/",
+    //   callback_method: "get",
+    // });
+    return res.status(200).json({ response });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: "Internal server error in paymentlinkRajorpay" });
+  }
+}; */
+
+module.exports.paymentLink = async (req, res) => {
+  try {
+
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal server error in paymentLink ! Contact Developer." });
+  }
+};
+
+
+module.exports.verifyPaymentLink = async (req, res) => {
+  try {
+
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal server error in verifyPaymentLink! Contact Developer." });
+  }
+};

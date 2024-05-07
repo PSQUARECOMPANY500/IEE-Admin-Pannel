@@ -341,7 +341,9 @@ export const assignserviceRequestByAdmin = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  RepresentativeName,
+  RepresentativeNumber
 ) => {
   return async (dispatch) => {
     try {
@@ -355,6 +357,8 @@ export const assignserviceRequestByAdmin = (
           Slot,
           Date,
           Message,
+          RepresentativeName,
+          RepresentativeNumber
         }
       );
 

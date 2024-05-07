@@ -197,16 +197,16 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
         >
           {assignedArray?.map((item, index) => {
             if(item.ServiceEnggId === dataOnPin){
-              return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  /> //preet sir please add border 
+              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={true} /> //preet sir please add border 
             }else{
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={false} />
             }
           })}
           {notAssignedArray?.map((item, index) => {
            if(item.ServiceEnggId === dataOnPin){
-            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />//preet sir please add border 
+            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={true}/>//preet sir please add border 
           }else{
-            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={false}/>
           }
         })}
         </Slider>

@@ -21,7 +21,7 @@ router.post(
   adminContoller.createLocationForFilter
 ); // crete service admin
 
-//------------------------------ All get requests -------------------------------------------------
+//------------------------------ All get requests ---------------------------------------------------
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);

@@ -357,7 +357,16 @@ router.put(
   checkInorOutAttendance,
   serviceEnggContoller.EnggOnLunchBreak
 );
+/* 
+router.post(
+  "/paymentLink",
+  serviceEnggContoller.paymentLink
+);
 
+router.post(
+  "/verifypaymentLink",
+  serviceEnggContoller.verifyPaymentLink
+); */
 //=================================================================================//=================================================================================
 
 module.exports = router;

@@ -46,9 +46,11 @@ const Services = new Schema(
     },
     RepresentativeName:{
       type:String,
+      default: ""
     },
     RepresentativeNumber:{
       type:String,
+      default: ""
     }
   },
   {
