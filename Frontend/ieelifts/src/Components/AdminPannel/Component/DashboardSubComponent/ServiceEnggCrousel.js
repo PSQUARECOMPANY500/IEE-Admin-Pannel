@@ -147,7 +147,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const dataOnPin = useSelector((state) => {
     return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer?.enggLocationOnPin
   })
-//console.log("data",dataOnPin)
+
   useEffect(() => {
     if (getBasicData) {
       getBasicData.forEach((data) => {
