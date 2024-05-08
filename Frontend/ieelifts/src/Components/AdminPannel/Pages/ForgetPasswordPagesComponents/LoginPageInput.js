@@ -29,6 +29,7 @@ const LoginPageInput = () => {
 
   const handleLogin = () => {
     dispatch(loginServiceAdminAction(adminId,password));
+    console.log("called login")
   }
 
   // const EnggDetail = useSelector((state)=> state.AdminRootReducer.loginAdminReducer.data);
@@ -36,7 +37,7 @@ const LoginPageInput = () => {
   
 
   const EnggDetail = useSelector((state)=> state.AdminRootReducer.loginAdminReducer);
-  console.log("this is ==>>>",EnggDetail.isLoggedIn);
+  //console.log("this is ==>>>",EnggDetail.isLoggedIn);
 
 
   

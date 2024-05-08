@@ -1171,9 +1171,11 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password } = req.body;
-
-    const Admin = await serviceAdmin.findOne({ AdminId });
+    const { AdminId, Password /* , Role */ } = req.body;
+    const Admin = await serviceAdmin.findOne({ AdminId });  
+    /* if(Admin.Role !== Role){
+      return res.status(401).json({status:"error", message: "permission denied" });
+    }   */
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -1183,14 +1185,14 @@ module.exports.loginServiceAdmin = async (req, res) => {
       _id: Admin._id,
       AdminName: Admin.AdminName,
       Phone: Admin.Phone,
-      Role: Admin.ServiceAdmin,
+      Role: Admin.Role,
       AdminId: Admin.AdminId,
     });
 
     res.status(200).json({
       message: "You are logged in Successfully",
       Admin,
-      token,
+      token
     });
   } catch (error) {
     console.log(error);

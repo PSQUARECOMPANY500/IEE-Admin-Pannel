@@ -70,9 +70,11 @@ const initialStates = {
   isLoggedIn: !!localStorage.getItem("adminData"),
 };
 export const loginAdminReducer = (state = initialStates, action) => {
+
+
   switch (action.type) {
-    case LOGIN_SERVICE_ADMIN:
-      return { ...state, data: action.payload, isLoggedIn: true };
+     case LOGIN_SERVICE_ADMIN:
+     return { ...state, data: action.payload, isLoggedIn: true };
     default:
       return state;
   }

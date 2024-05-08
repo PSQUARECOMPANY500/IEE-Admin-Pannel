@@ -169,18 +169,16 @@ export const loginServiceAdminAction = (AdminId, Password) => {
         AdminId,
         Password,
       });
+     
       localStorage.setItem("adminData", JSON.stringify(response.data.token));
-
+      localStorage.setItem("Role",response.data.Admin.Role);
       dispatch({
         type: LOGIN_SERVICE_ADMIN,
-        payload: response.data,
+        payload: response,
       });
 
       toast.success("login successfully");
 
-      setTimeout(() => {
-        window.location.href = "/Dashboard";
-      }, 1000); // Delay in milliseconds
     } catch (error) {
       toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
