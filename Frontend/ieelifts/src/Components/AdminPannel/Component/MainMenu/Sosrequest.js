@@ -57,7 +57,7 @@ const Sosrequest = () => {
           <div className='sosrequest_table_view_inside'>
 
 
-            <InformationTable fieldsToShow={fieldsToShow} />
+            <InformationTable fieldsToShow={fieldsToShow}  />
           </div>
         </div>
       </div>

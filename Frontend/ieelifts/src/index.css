@@ -1606,6 +1606,29 @@ code {
 
 }
 
+.dell-table-spare{
+  display: flex;
+  align-items: center;
+  width:1rem;
+  /* background-color: lightpink; */
+
+}
+
+
+.dell-icon-table{
+  display:flex;
+  gap:2px;
+  color: #8E8A8A;
+  font-weight: 700;
+  margin-left:0.5rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dell-icon-table img{
+  height:0.36rem;
+}
+
 /*-------------- This is css for SOSRequest -------------- */
 
 .main-container_sos{
@@ -1630,7 +1653,7 @@ code {
 
 .sosrequest_table_view {
   margin-top: 7vw;
-  height: 70vh;
+  height: 68vh;
 }
 
 .sub_table_view,
@@ -1656,6 +1679,7 @@ code {
 .spare-part-table-container {
   max-height: 77vh;
   overflow-y: auto;
+  /* background-color: lightgreen; */
   width: 100%;
 
 }
@@ -1664,6 +1688,7 @@ code {
   max-height: 60vh;
   overflow-y: auto;
   width: 100%;
+
 
 
 }
@@ -1689,24 +1714,21 @@ code {
 }
 
 
-
-
 .spare-part-table-container thead {
   height: 3.5rem;
 }
 
 
-.spare-part-table-container table td {
-  /* background-color: lightpink; */
-  /* width: 2rem; */
-}
 
 .spare-part-table-container table td:nth-child(7) {
   /* background-color: lightcyan; */
   width: 14rem;
 }
 
-
+.spare-part-table-container table td:nth-child(2) {
+  /* background-color: lightcyan; */
+  width:9rem;
+}
 
 
 
@@ -1738,6 +1760,7 @@ code {
 
 .spare-part-table-container:hover::-webkit-scrollbar-thumb {
   border: 1px solid #f8ac1d;
+  
 
 }
 
@@ -1749,6 +1772,7 @@ code {
 
 .spare-part-table-container::-webkit-scrollbar-track {
   background: 0;
+  margin-top: 4rem;
   /* margin-top: 4rem;
   margin-bottom: 10px; */
 }

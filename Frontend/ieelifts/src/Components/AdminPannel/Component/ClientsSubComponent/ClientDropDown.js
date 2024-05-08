@@ -111,7 +111,6 @@ const ClientDropDown = ({ options, selectedOption, checkbox, showOptions, defaul
                 setTextColor("");
         }
     };
-    console.log("textColor", textColor.split(" ")[0])
     return (
 
         <div className={`client-modal-dropdown ${dropdownClass}`}
