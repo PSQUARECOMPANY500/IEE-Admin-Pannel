@@ -4,8 +4,9 @@ import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
 import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
 import TextInputs from './ClientsReusableComponent/TextInput';
 
-const ClientFormDetails = ({ }) => {
-    const [clientFormData, setClientFormData] = useState({userName:'',
+const ClientFormDetails = () => {
+    const [clientFormData, setClientFormData] = useState({jon:'',
+    userName:'',phoneNumber:'',alternativeNumber:'',email:'',reference:'',referenceName:''
 // use other fileds 
 });
 
@@ -32,7 +33,6 @@ const ClientFormDetails = ({ }) => {
 
 
     useEffect(() => {
-        console.log(clientFormData)
     }, [clientFormData])
 
     return (
@@ -42,7 +42,22 @@ const ClientFormDetails = ({ }) => {
             <div className='client-form-input-wrapper' >
                 <div className='client-form-input-wrapper-child'>
                     <TextInputs
-                        label={'User Name'}
+                        label={'JON'}
+                        name={'jon'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.jon}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.jon}
+                        onBlur={handleClickFalse}
+                    />
+                </div>
+                <div>
+                <TextInputs
+                        label={'Name'}
                         name={'userName'}
                         // name paste here from useState
                     
@@ -56,27 +71,48 @@ const ClientFormDetails = ({ }) => {
                     />
                 </div>
                 <div>
-                    <AnimatedInput
-                        label={"Name"}
-                        name={"courseName"}
+                <TextInputs
+                        label={'Phone number'}
+                        name={'phoneNumber'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.phoneNumber}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.phoneNumber}
+                        onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                    <AnimatedInput
-                        label={"Phone Number"}
-                        name={"courseName"}
+                <TextInputs
+                        label={'Alternative number'}
+                        name={'alternativeNumber'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.alternativeNumber}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.alternativeNumber}
+                        onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                    <AnimatedInput
-                        label={"Alternative Number"}
-                        name={"courseName"}
-                    />
-                </div>
-                <div>
-                    <AnimatedInput
-                        label={"Email"}
-                        name={"courseName"}
+                <TextInputs
+                        label={'Email'}
+                        name={'email'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.email}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.email}
+                        onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
@@ -86,18 +122,33 @@ const ClientFormDetails = ({ }) => {
                     />
                 </div>
                 <div>
-                    <AnimatedInput
-                        label={"Reference"}
-                        name={"courseName"}
-                        disabled={true}
+                <TextInputs
+                        label={'Reference'}
+                        name={'reference'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.reference}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.reference}
+                        onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                    <AnimatedInput
-                        label={"Reference Name"}
-                        name={"courseName"}
-                        disabled={true}
-
+                <TextInputs
+                        label={'Refernce Name'}
+                        name={'referenceName'}
+                        // name paste here from useState
+                    
+                        onFocus={handleClick}
+                        // same name paste here from useState
+                        value={clientFormData.referenceName}
+                        onChange={hadleInputChnage}
+                        // name paste here from useState
+                        click={click.referenceName}
+                        onBlur={handleClickFalse}
                     />
                 </div>
             </div>

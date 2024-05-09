@@ -4,7 +4,7 @@ const TextInput = ({
   type = 'text',
   name,
   label,
-  w = '20rem',
+  w = 'auto',
   value,
   onChange,
   read = false,
@@ -25,7 +25,7 @@ const TextInput = ({
 
 
   return (
-    <div className="input-container" style={{ width: `${w}`,marginTop:'20px'}} >
+    <div className="input-container" style={{ width: `${w}`,}} >
       <input
         className="input-field"
         type={type}

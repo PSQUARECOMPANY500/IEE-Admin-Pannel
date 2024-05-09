@@ -1956,13 +1956,14 @@ code {
 .client-salesman-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: 0.3rem;
+  margin-top: 0.6rem;
   color: #444444;
 }
 
 .quotation-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  
 
 }
 
@@ -1970,6 +1971,7 @@ code {
   color: #444444;
   font-size: 1rem;
   font-weight: 500;
+  margin-bottom: 1.5rem;
 
 }
 
@@ -2159,11 +2161,9 @@ code {
   display: flex;
   font-size: 1rem;
   font-weight: 500;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
-.levelHeading{
- 
-}
+
 
 .level-title-wrapper{
   font-size: 1rem;
@@ -2178,7 +2178,7 @@ code {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 1rem;
   margin-bottom: 0.5rem;
-  align-items: center;
+  /* align-items: center; */
 }
 .heading-badge{
   background-color: #F8AC1D;
@@ -2270,11 +2270,11 @@ font-size: 1rem;
   color: #444444;
   font-size: 1rem;
   padding: 0.1rem;
+
   display: flex;  
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  position: relative;
 }
 .dimension-btn-wrapper{
   display: flex;
@@ -2290,9 +2290,11 @@ font-size: 1rem;
 .dimension-btn>input{
   color: #f8ac1d;
 }
-.dimension-btn>span{
-  position:absolute;
+
+.hidden-input{
+  display: none;
 }
+
 .dimension-upload-btn{
   width: 10rem;
   height: 2.6rem;
@@ -2386,6 +2388,11 @@ font-size: 1rem;
   cursor: pointer;
   border-radius: 7px;
 }
+
+/*--------------------------Author: Rahul Kumar ------09/05/2024--------------*/
+
+/*-----------------File Uploader Component CSS------------------------*/
+
 /*--------------------------Author: Rahul Kumar ------02/05/2024--------------*/
 .floor-section{
   margin-top: 2.5rem;
@@ -2446,6 +2453,81 @@ font-size: 1rem;
 .disabled {
   pointer-events: none;
   opacity: 0.5;
+}
+
+/*--------------------------Animated text Input css---------------*/
+
+
+
+
+
+.input-field {
+  font-size: 18px;
+  width: 100%;
+  border: none;
+  /* border-bottom: 2px solid #ccc; */
+  padding: 5px 0;
+  background-color: transparent;
+  outline: none;
+}
+
+
+.input-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  letter-spacing: 0.91px;
+  color: #3301526c;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 0.8rem;
+}
+
+
+
+.input-exist {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  transition: all 0.3s ease;
+}
+
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #3301526c;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+
+/* .input-field:focus+.input-label {
+  top: -20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #330152;
+}
+
+.input-field:focus+.input-label+.input-highlight {
+  width: 100%;
+}  */
+
+
+.input-field:focus~.input-label {
+  top: -20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #330152;
+}
+
+.input-field:focus~.input-label~.input-highlight {
+  width: 100%;
 }
 
 

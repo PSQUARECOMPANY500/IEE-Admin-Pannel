@@ -1,6 +1,7 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React ,{useState}from 'react';
 import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
+import FileUploader from './ClientsReusableComponent/FileUploader';
 const ClientMembershipDocument = () => {
 
     const [selectedMembership, setSelectedMembership] = useState("Warranty");
@@ -28,10 +29,7 @@ const ClientMembershipDocument = () => {
       <div className='client-document-child-wrapper client-form-input-wrapper'>
         <div>
          
-          <AnimatedInput
-            label={"Signed Quotation"}
-            name={"courseName"}
-          />
+       <FileUploader  label={"Signed Quotation"}/>
         </div>
         <div>
           <AnimatedInput
