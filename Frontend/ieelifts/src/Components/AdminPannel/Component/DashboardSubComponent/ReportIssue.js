@@ -1,7 +1,7 @@
 import React from "react";
 
 const ReportIssue = ({ RedportData }) => {
- // console.log(RedportData);
+ console.log("report data 31",RedportData);
   const src = RedportData?.ClientPhoto;
 
   return RedportData ? (
@@ -38,11 +38,11 @@ const ReportIssue = ({ RedportData }) => {
       <div className="IssueDoors IssuesDoor3" style={{ paddingLeft: "1rem" }}>
         <div className="IssueDoor3L">
           <h5>Representative Name</h5>
-          <h5>JOHN</h5>
+          <h5>{RedportData?.RepresentativeName}</h5>
         </div>
         <div className="IssueDoor3R">
           <h5>Representative Number</h5>
-          <h5 >+61-7-1234 5678</h5>
+          <h5 >{RedportData?.RepresentativeNumber}</h5>
         </div>
       </div>
 

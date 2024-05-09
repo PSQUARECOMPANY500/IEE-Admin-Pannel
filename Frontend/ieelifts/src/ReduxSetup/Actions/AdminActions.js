@@ -179,6 +179,7 @@ export const loginServiceAdminAction = (AdminId, Password) => {
       toast.success("login successfully");
 
       setTimeout(() => {
+        
         window.location.href = "/Dashboard";
       }, 1000); // Delay in milliseconds
     } catch (error) {
@@ -341,10 +342,16 @@ export const assignserviceRequestByAdmin = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  RepresentativeName,
+  RepresentativeNumber
 ) => {
   return async (dispatch) => {
     try {
+      
+      console.log("RepresentativeName",RepresentativeName)
+      console.log("RepresentativeNumber",RepresentativeNumber)
+      
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -355,6 +362,8 @@ export const assignserviceRequestByAdmin = (
           Slot,
           Date,
           Message,
+          RepresentativeName,
+          RepresentativeNumber
         }
       );
 

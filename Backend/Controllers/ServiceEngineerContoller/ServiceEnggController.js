@@ -37,6 +37,8 @@ const ReportInfoModel = require("../../Modals/ReportModal/ReportModal");
 
 const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
+const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const Razorpay = require("razorpay");
 
 const axios = require("axios");
@@ -125,8 +127,8 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
     const formData = req.files;
     const bodyData = req.body;
 
-    console.log(formData);
-    console.log(req.files);
+    // console.log(formData);
+    // console.log(req.files);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
       PhoneNumber: bodyData.mobileNumber,
@@ -191,7 +193,7 @@ module.exports.loginEngg = async (req, res) => {
 
     const rating = await engineerRating.find({ ServiceEnggId: EnggId });
 
-    console.log("enggId", rating);
+    // console.log("enggId", rating);
     let count = 0;
 
     rating.map((item) => (count += item.Rating));
@@ -379,6 +381,9 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
   try {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
+
+    console.log("enngglocation serviceid ", ServiceEnggId , " latitude " , latitude, " longitute ", longitude)
+    
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -906,7 +911,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       Leave_Reason,
       Document: document,
     });
-    console.log("document", document);
+    // console.log("document", document);
     res
       .status(200)
       .json({ success: true, message: "Leave Created successfully", response });
@@ -1239,6 +1244,9 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
+    // console.log("20",req.body)
+    // console.log("21",req.files)
+
     const serviceExist = await ReportInfoModel.findOne({
       serviceId: reqs.serviceId,
     });
@@ -1259,6 +1267,7 @@ module.exports.GenerateReportByEngg = async (req, res) => {
       ReportData = await ReportInfoModel.create({
         serviceId: reqs.serviceId,
         EnggId: reqs.EnggId,
+        JobOrderNumber:reqs.JobOrderNumber,
         questionsDetails: QuestionResponse,
         subCategoriesphotos: uploaddata,
         paymentMode: "Cash",
@@ -1295,14 +1304,15 @@ module.exports.getEngineerLeveCount = async (req, res) => {
   try {
     const { ServiceEnggId } = req.query;
     // console.log("working inside this");
-    console.log(ServiceEnggId);
+    // console.log(ServiceEnggId);
     const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
-    console.log("leaves", leaves);
+    // console.log("leaves", leaves);
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ message: "No leaves found" });
     }
     const approved = leaves.filter((leave) => leave.IsApproved === "Approved");
     const count = approved[approved.length - 1].UsedLeave;
+    // console.log(count);
     res.status(200).json({
       success: true,
       leavesUsed: count,
@@ -1421,6 +1431,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     const reportData = await ReportInfoModel.findOne({ serviceId });
 
+    const getMemberShipDetails = await memberShipTable.findOne({ JobOrderNumber: reportData.JobOrderNumber });
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
     }
@@ -1430,7 +1441,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+          "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -1480,12 +1491,16 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     };
 
-    const membership = "platinum";
+    const membership = getMemberShipDetails.MembershipType;
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
-      return caluclatePriceAsPerMemeberShip(membership, "399");
+      const sparePartPrice = item.questionResponse.sparePartDetail.partsprice
+      return caluclatePriceAsPerMemeberShip(membership, sparePartPrice);
+
     });
-    console.log("preet send the price", caluclatePrice);
+    const totalPrice = caluclatePrice.reduce((acc, curr) => acc + parseInt(curr), 0);
+    TotalAmount.push(totalPrice);
+
 
     // price caluclate login insiode the spare part
 
@@ -1494,6 +1509,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
       IssuesNotResolved,
       SparePartsChanged,
       SparePartsRequested,
+      TotalAmount
     });
   } catch (error) {
     console.log(error);
@@ -1528,7 +1544,7 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const FianlData = getData?.filter((data) => data.isActive === true);
 
-    console.log("==>", FianlData);
+    // console.log("==>", FianlData);
 
     if (FianlData.length === 0) {
       return res
@@ -1689,7 +1705,7 @@ module.exports.EnggSecondhalfinfo = async (req, res) => {
 
     if (ServiceEnggId) {
       const date = new Date().toLocaleDateString("en-GB");
-      console.log("date = ", date);
+      // console.log("date = ", date);
       const result = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId,
         Date: date,
@@ -1737,7 +1753,7 @@ module.exports.EnggLunchBreakinfo = async (req, res) => {
     const { ServiceEnggId } = req.params;
     if (ServiceEnggId) {
       const date = new Date().toLocaleDateString("en-GB");
-      console.log("date = ", date);
+      // console.log("date = ", date);
       const result = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId,
         Date: date,
@@ -2221,6 +2237,7 @@ module.exports.updatePaymentStatus = async (req, res) => {
           .json({ status: "success", message: "Payment already done" });
       }
     }
+    return res.status(200).json({ status: "success", message: "Pass"})
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error in updatePaymentStatus! Contact Developer.",

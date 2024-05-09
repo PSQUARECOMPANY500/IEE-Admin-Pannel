@@ -19,6 +19,9 @@ import ForgetPasswordOTP from "./Components/AdminPannel/Pages/ForgetPasswordPage
 import EnterNewPassword from "./Components/AdminPannel/Pages/ForgetPasswordPagesComponents/EnterNewPassword";
 import NotFoundPage from "./Components/CommonComponenets/NotFoundPage";
 
+
+import SelectDepartment from "./Components/AdminPannel/Pages/SelectDepartment";
+
 function App() {
   const isLoggedIn = useSelector(
     (state) => state?.AdminRootReducer?.loginAdminReducer.isLoggedIn
@@ -28,7 +31,8 @@ function App() {
     <>
       <Routes>
         {/* login routes */}
-          <Route path="/" element={!isLoggedIn ? <LoginPage><LoginPageInput/></LoginPage> :  <Navigate to="/Dashboard"  /> } />
+          <Route path="/" element={!isLoggedIn ? <LoginPage name='select departments'><SelectDepartment /></LoginPage> :  <Navigate to="/Dashboard"  /> } />
+          <Route path="/login" element={!isLoggedIn ? <LoginPage><LoginPageInput/></LoginPage> :  <Navigate to="/Dashboard"  /> } />
           <Route path="/forgetpassword" element={!isLoggedIn ? <LoginPage><SendPasswordVerificationCode/></LoginPage> :  <Navigate to="/Dashboard"  />}/>
           <Route path="/enterOTP" element={!isLoggedIn ? <LoginPage><ForgetPasswordOTP/></LoginPage> :  <Navigate to="/Dashboard"  />}/>
 
@@ -42,7 +46,6 @@ function App() {
           <Route path="/Requests" element={isLoggedIn ? <Sidebar><Request /></Sidebar> : <Navigate to="/"  />} /> 
           <Route path="/Memberships" element={isLoggedIn ? <Sidebar><Membership /></Sidebar> : <Navigate to="/"  />} /> 
           <Route path="/Engeeniers" element={isLoggedIn ? <Sidebar><Enggeniers/></Sidebar> : <Navigate to="/"  />} /> 
-          {/* <Route path="/Engeeniers" element={<Sidebar><Enggeniers/></Sidebar>} />  */}
           <Route path="/Clients" element={isLoggedIn ? <Sidebar><Clients /></Sidebar> : <Navigate to="/"  />} /> 
 
 

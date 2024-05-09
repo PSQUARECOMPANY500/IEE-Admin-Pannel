@@ -85,6 +85,10 @@ const ReportInfo = new Schema({
     type: String,
     required: true,
   },
+  JobOrderNumber: {
+    type: String,
+    // required: true,
+  },
 
   questionsDetails: [
     {

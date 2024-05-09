@@ -37,6 +37,12 @@ const AssignRequest = new Schema(
       type: String,
       enum: ["onGoing", "completed", "InCompleted"],
       default: "InCompleted",
+    },
+    RepresentativeName:{
+      type: String,
+    },
+    RepresentativeNumber:{
+      type: String,
     }
   },
   {
