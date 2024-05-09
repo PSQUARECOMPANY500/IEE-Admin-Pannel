@@ -16,9 +16,7 @@ function ReportTable({handleRedportData ,RedportData}) {
   console.log("handleRedportData",handleRedportData)
 
   const serviceId = RedportData
-  // console.log("[[[[[[[[[[[[[[[[[[[[[[",serviceId); 
-
-  console.log("teport data",RedportData);  
+  // console.log("[[[[[[[[[[[[[[[[[[[[[[",serviceId);
 
   const routes = [
     { name: "M/c Room", co: <MCRoom serviceId={serviceId}/> },

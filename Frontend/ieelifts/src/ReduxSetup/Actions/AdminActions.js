@@ -162,14 +162,17 @@ export const getSparePartRequestedByEnggIdAction = async (EnggId) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
-export const loginServiceAdminAction = (AdminId, Password) => {
+export const loginServiceAdminAction = (AdminId, Password ,Role) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`${config.apiUrl}/admin/loginAdmin`, {
         AdminId,
         Password,
+        Role
       });
-     
+     if(response.data.Admin.Role != Role){
+      toast.error(`Permission denied for ${Role}`);
+     }else{
       localStorage.setItem("adminData", JSON.stringify(response.data.token));
       localStorage.setItem("Role",response.data.Admin.Role);
       dispatch({
@@ -179,6 +182,7 @@ export const loginServiceAdminAction = (AdminId, Password) => {
 
       toast.success("login successfully");
 
+     }
     } catch (error) {
       toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
@@ -345,6 +349,10 @@ export const assignserviceRequestByAdmin = (
 ) => {
   return async (dispatch) => {
     try {
+      
+      console.log("RepresentativeName",RepresentativeName)
+      console.log("RepresentativeNumber",RepresentativeNumber)
+      
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {

@@ -3,6 +3,8 @@ import { FiEyeOff } from "react-icons/fi";
 import { FiEye } from "react-icons/fi";
 import { Link } from "react-router-dom";
 // import { jwtDecode } from "jwt-decode";
+import { useLocation } from "react-router-dom";
+
 
 import {useSelector, useDispatch} from "react-redux"
 import { loginServiceAdminAction } from "../../../../ReduxSetup/Actions/AdminActions"
@@ -10,6 +12,10 @@ import { loginServiceAdminAction } from "../../../../ReduxSetup/Actions/AdminAct
 
 const LoginPageInput = () => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  console.log("this is the hell",location?.state?.value);
 
   const [adminId, setAdminId] = useState();
   const [password, setPassword] = useState();
@@ -28,8 +34,7 @@ const LoginPageInput = () => {
 
 
   const handleLogin = () => {
-    dispatch(loginServiceAdminAction(adminId,password));
-    console.log("called login")
+    dispatch(loginServiceAdminAction(adminId,password , location?.state?.value));  //todo by emit singhniya
   }
 
   // const EnggDetail = useSelector((state)=> state.AdminRootReducer.loginAdminReducer.data);

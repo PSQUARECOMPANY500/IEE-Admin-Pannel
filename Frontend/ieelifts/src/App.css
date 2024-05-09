@@ -6558,3 +6558,93 @@ a[href^="http://maps.google.com/maps"]{display:none !important}
 }
 
   /*  map container css ends in task location section inside the dashboard */
+
+  /* select department css starts */
+  .department-main-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5rem;
+    row-gap: 2em;
+    margin-top: 2rem;
+    padding: 10px
+  }
+
+
+  
+ .selected-border{
+
+   border: 2px solid #F8AC1DAD;
+ }
+
+
+ .department-main-div .department-name-div {
+  padding: 12px;
+  border-radius: 10px;
+  background: radial-gradient(rgb(244, 242, 242) 30%, rgba(216, 210, 210, 0.587));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  filter: opacity(1);
+  cursor: pointer;
+  width: 100%;
+  justify-content: start;
+}
+
+  .department-name-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+.department-icon{
+  display: flex;
+ justify-content: center;
+ align-items: center; 
+ background:#FFFFFFC1 ;
+}
+
+.department-tag{
+  font-size: 14px;
+  color: #1D1D1D;
+
+}
+
+.department-name-div .department-icon {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+  padding: 8px 8px;
+  border-radius: 50%;
+}
+
+.check-tick {
+  width: 20px;
+  height: 20px;
+  color: rgb(248, 172, 29);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+}
+
+.Proceed-button{
+  margin-top: 1rem;
+  padding: 1.2rem 6rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #F8AC1D 0% 0% no-repeat padding-box;
+  color: #1D1D1D;
+  font-size: 16px;
+
+}
+
+
+@media only screen and (max-width: 1500px) {
+  .department-main-div{
+    column-gap: 2rem;
+    row-gap: 1.5em;
+    padding: 0px 20px;
+  
+
+  }
+}
+  /* select department css ends */

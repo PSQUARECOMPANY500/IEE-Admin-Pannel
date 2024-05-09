@@ -79,8 +79,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
   });
 
-console.log("currentDateServiceRequest",currentDateServiceRequest)
-
   useEffect(() => {
     if (currentDateServiceRequest) {
       setHandleServiceSelection(

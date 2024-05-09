@@ -612,7 +612,8 @@ module.exports.AssignServiceRequests = async (req, res) => {
     } = req.body;
 
     let callback;
-
+    // console.log("RepresentativeName--",RepresentativeName)
+    // console.log("RepresentativeNumber--",RepresentativeNumber)
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
@@ -1171,9 +1172,9 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password /* , Role */ } = req.body;
+    const { AdminId, Password , Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });  
-    /* if(Admin.Role !== Role){
+   /*  if(Admin.Role !== Role){
       return res.status(401).json({status:"error", message: "permission denied" });
     }   */
 
