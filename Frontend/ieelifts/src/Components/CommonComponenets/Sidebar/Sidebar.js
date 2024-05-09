@@ -78,38 +78,51 @@ const Sidebar = ({ children }) => {
   };
 
   // menu dropdown Items
-  const menueItems = [
-    {
-      Path: "/Dashboard",
-      name: "Dashboard",
-      icon: <MdDashboard />,
-    },
-    {
-      Path: "/Requests",
-      name: "Requests",
-      icon: <RiGitPullRequestFill />,
-    },
-    {
-      Path: "/Clients",
-      name: "Clients",
-      icon: <MdOutlineAirlineSeatReclineNormal />,
-    },
-    {
-      Path: "/Memberships",
-      name: "Memberships",
-      icon: <MdOutlineCardMembership />,
-    },
-    {
-      Path: "/Engeeniers",
-      name: "Engineers",
-      icon: <MdEngineering />,
-    },
-    {
-      Path: "/SOS",
-      name: "sos",
-      icon: <MdEngineering />,
-    },
-  ];
+  let menueItems;
+  const role = localStorage.getItem("Role");
+  if(role ==="CRM"){
+    menueItems = [
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+      
+    ];
+  }else if(role ==="ServiceAdmin"){
+    menueItems = [
+      {
+        Path: "/Dashboard",
+        name: "Dashboard",
+        icon: <MdDashboard />,
+      },
+      {
+        Path: "/Requests",
+        name: "Requests",
+        icon: <RiGitPullRequestFill />,
+      },
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+      {
+        Path: "/Memberships",
+        name: "Memberships",
+        icon: <MdOutlineCardMembership />,
+      },
+      {
+        Path: "/Engeeniers",
+        name: "Engineers",
+        icon: <MdEngineering />,
+      },
+      {
+        Path: "/SOS",
+        name: "sos",
+        icon: <MdEngineering />,
+      },
+    ];
+  }
 
   useEffect(() => {
     // Update top bar heading when location changes
