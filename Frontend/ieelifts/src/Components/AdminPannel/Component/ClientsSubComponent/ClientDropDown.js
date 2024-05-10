@@ -24,6 +24,7 @@ const ClientDropDown = ({
     selectedOption.includes("Silver");
 
   const [selectedIcon, setSelectedIcon] = useState([]);
+
 //   const cardRef = useRef();
 
 //   useEffect(() => {
@@ -42,8 +43,8 @@ const ClientDropDown = ({
   const setSelectedIconByOption = (option) => {
     let newIcon;
     switch (option) {
-      case "Application":
-        newIcon = { type: "Application", icon: <FaApple /> };
+      case "App":
+        newIcon = { type: "App", icon: <FaApple /> };
         break;
       case "Message":
         newIcon = { type: "Message", icon: <MdMessage /> };
@@ -162,7 +163,7 @@ const ClientDropDown = ({
           />
         ) : (
           <RiArrowDropDownLine
-            style={{ color: "#8E8E8E", left: "78%" }}
+            style={{ color: "#8E8E8E", left: "74%" }}
             className="icon-size"
           />
         )}{" "}

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import data from '../../Components/AdminPannel/Component/ClientsSubComponent/DatasClientServiceHis.json';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import UpArrow from "../../../../../Frontend/ieelifts/src/Assets/Images/94.png"
 import DownArrow from "../../../../../Frontend/ieelifts/src/Assets/Images/95.png"
+import Loader from "../CommonComponenets/Loader";
+
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -52,7 +53,7 @@ const InformationTable = ({ fieldsToShow }) => {
         if (observer.current) observer.current.observe(document.querySelector(".end-of-table"));
     }, [loading]);
 
-
+//IntersectionObserver == it allows us to detect when certain elements are visible in our viewport,
 
 
     return (
@@ -107,7 +108,8 @@ const InformationTable = ({ fieldsToShow }) => {
                                     ))}
                                 </tr>
                             ))}
-                            {loading && <tr><td colSpan={fieldsToShow.length} style={{ textAlign: 'center' }}>Loading...</td></tr>}
+                            {loading && <tr><td colSpan={fieldsToShow.length} style={{ textAlign: 'center' }}>
+                              <Loader/>  </td></tr>}
                             {!loading && records.length === 0 && <tr><td colSpan={fieldsToShow.length} style={{ textAlign: 'center' }}>No data available</td></tr>}
 
                         </tbody>

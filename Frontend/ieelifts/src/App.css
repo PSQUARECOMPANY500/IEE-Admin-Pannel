@@ -6461,7 +6461,11 @@ border-radius: 10px;
   font-weight: 400;
 
 }
-
+.dropdown-icon-container p {
+  font-size: 0.8rem;
+  cursor: pointer;
+  /* margin-left: -5px; */
+}
 
 
 
@@ -6562,22 +6566,22 @@ width: auto;
 border-bottom: none;
 }
 
+.client-modal-dropdown.third-dropdown .dropdown-icon-container p {
+  margin-left: -1.1rem;
+}
+
+
+/*---------------  This is for p tag of first dropdown only------------------------- */
+.client-modal-dropdown:not(.second-dropdown):not(.third-dropdown) .dropdown-icon-container p {
+  margin-left: -0.7rem;
+
+}
+
 .green-padding {
   padding: 0.4375rem 1rem;
 border-radius: 3.125rem; 
 
 }
-
-
-
-.dropdown-icon-container p {
-  font-size: 0.8rem;
-  cursor: pointer;
-  /* margin-left: 1px; */
-}
-
-
-
 
 
 /* ---------------------------------------------------------------make by aayush for report image preview----------------------------------------------------------------------------------- */

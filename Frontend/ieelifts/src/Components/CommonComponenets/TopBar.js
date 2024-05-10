@@ -54,12 +54,26 @@ const TopBar = (props) => {
   const dropdownRef = useRef(null);
   const [openEnggModal, setOpenEnggModal] = useState(false);
 
+  // -------------Debounced search function -----------------------------------------------
 
-  useLayoutEffect(() => {
-    if (searchValue !== "") {
-      dispatch(searchClients(searchValue));
-    }
-  }, [searchValue, dispatch]);
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+
+  const debouncedSearchClients = useCallback(
+    debounce((value) => {
+      dispatch(searchClients(value));
+    }, 1000),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    debouncedSearchClients(searchValue || null);
+  }, [searchValue, debouncedSearchClients]);
 
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
@@ -116,7 +130,6 @@ const TopBar = (props) => {
     dispatch(openAddEngggModalAction());
   };
 
-
   // -------notification popup box code--------------------------------------------------------------------
   const useClickOutsidenotification = (ref, handler) => {
     useEffect(() => {
@@ -126,21 +139,26 @@ const TopBar = (props) => {
         }
       };
 
-      document.addEventListener("mousedown",handleClickOutsidenotification );
+      document.addEventListener("mousedown", handleClickOutsidenotification);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutsidenotification);
+        document.removeEventListener(
+          "mousedown",
+          handleClickOutsidenotification
+        );
       };
     }, [ref, handler]);
   };
-  const handleNotfication= () => {
-    setShowNotification(prevState => !prevState);
+  const handleNotfication = () => {
+    setShowNotification((prevState) => !prevState);
   };
   const handleOutsideClicknotification = useCallback(() => {
     setShowNotification(false);
   }, []);
 
-  useClickOutsidenotification(notificationClickRef, handleOutsideClicknotification);
-
+  useClickOutsidenotification(
+    notificationClickRef,
+    handleOutsideClicknotification
+  );
 
   return (
     <div className="top-bar">
@@ -210,24 +228,23 @@ const TopBar = (props) => {
 
         {location.pathname === "/Memberships" && (
           <div className="top-icon" onClick={toggleGrid}>
-            {isGrid ? <CiGrid41  /> : <TbListTree />}
+            {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
         )}
 
         {location.pathname === "/Clients" && (
-          <> 
-
-            <div className="sub-components-ticket-filter" style={{ boxShadow: "none" }} ref={dropdownClickRef}>
+          <>
+            <div
+              className="sub-components-ticket-filter"
+              style={{ boxShadow: "none" }}
+              ref={dropdownClickRef}
+            >
               {" "}
-                <p className="filter-icon" onClick={handleTicketFilter}>
-                  <LuSettings2 />
-                  {""}
-                </p>
-                {showTicketFilter && (
-                    <ClientFilterDropdown />
-            
-                )}
-          
+              <p className="filter-icon" onClick={handleTicketFilter}>
+                <LuSettings2 />
+                {""}
+              </p>
+              {showTicketFilter && <ClientFilterDropdown />}
             </div>
 
             <div className="top-icon" onClick={clienttoggleGrid}>
@@ -237,8 +254,12 @@ const TopBar = (props) => {
         )}
 
         <div style={{ display: "flex" }} ref={notificationClickRef}>
-          <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
-            <HiOutlineBell className="iconColor"/>{" "}
+          <span
+            className="top-icon-bell"
+            onClick={handleNotfication}
+            ref={notificationRef}
+          >
+            <HiOutlineBell className="iconColor" />{" "}
           </span>
 
           <div className="dot"></div>
