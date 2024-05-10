@@ -4,7 +4,7 @@ import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import MembershipLoader from "./MembershipLoader";
+import Loader from "../../../CommonComponenets/Loader";
 import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
@@ -69,7 +69,7 @@ const MembershipExpired = ({ DemoData, count }) => {
           setPage((prevPage) => prevPage + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
     return;
   };
 
@@ -113,7 +113,7 @@ const MembershipExpired = ({ DemoData, count }) => {
 
           {loader ? (
             <div className="loder_Container">
-              <MembershipLoader />
+              <Loader />
             </div>
           ) : (
             <div
