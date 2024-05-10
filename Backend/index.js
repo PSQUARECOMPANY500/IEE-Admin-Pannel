@@ -9,11 +9,10 @@ const router = require("./Routes/ServiceEngineerRoutes/ServiceEnggRoute");
 const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
+// const callback = require('./Modals/ServicesModal/ClinetCallback')
 
-require("dotenv").config();
-
+const watchForLoginChanges = require("./Notifications/AllNotifications")
 const app = express();
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -32,12 +31,17 @@ app.use("/api/admin", AdminRoutes);
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
 
-main().catch((err) => console.log(err));
-
-async function main() {
+async function connectToDatabase() {
   await mongoose.connect(process.env.MONGO_DB_URL);
   console.log("Database connected successfully");
 }
+async function main() {
+  await connectToDatabase();
+  await watchForLoginChanges(io);
+}
+main().catch((err) => console.log(err));
+
+
 
 // Create HTTP server for Express app
 const httpServer = createHttpServer(app);
@@ -56,6 +60,8 @@ const io = new SocketServer(httpServer, {
   },
   allowEIO3: true,
 });
+
+
 
 
 // Listen for new connections
@@ -82,3 +88,5 @@ httpServer.listen(socketPort, () => {
 app.listen(httpPort, () => {
   console.log(`HTTP server listening on port ${httpPort}`);
 });
+
+

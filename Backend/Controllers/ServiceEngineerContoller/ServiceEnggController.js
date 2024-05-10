@@ -446,7 +446,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    console.log(serviceEnggId);
+    // console.log(serviceEnggId);
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
