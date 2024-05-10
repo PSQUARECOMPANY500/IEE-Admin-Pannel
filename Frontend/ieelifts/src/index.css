@@ -2170,14 +2170,15 @@ code {
   font-weight: 500;
   margin-bottom: 0.5rem;
   display: grid;
+  width: 5rem;
 }
 .level-selector-parent{
   display: grid;
   font-size: 1rem;
   font-weight: 500;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 1rem;
-  margin-bottom: 0.5rem;
+  /* grid-gap: 1rem; */
+  margin-bottom: 0.55rem;
   /* align-items: center; */
 }
 .heading-badge{
@@ -2209,6 +2210,7 @@ code {
 .level-title{
   color: #444444;
   opacity: 0.7;
+  width: 100%;
 }
 .text-area-container{
   margin-top: 2rem;
@@ -2311,6 +2313,19 @@ font-size: 1rem;
   height: 15px;
 }
 
+/*dimentions button*/
+.dimention-btn{
+ border: 1px solid #F8AC1D;
+border-radius: 5px;
+width: 14rem;
+height: 2.6rem;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1rem;
+margin-top: 1rem;
+color: #444444;
+}
 /* client-dropdown */
 
 .client-dropdown{

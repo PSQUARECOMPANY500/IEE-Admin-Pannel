@@ -12,84 +12,83 @@ import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-import { closeClientModalAction } from "../../../../ReduxSetup/Actions/AdminActions"
+import { closeClientModalAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+
 
 const ClientForm = () => {
-    const dispatch = useDispatch();
-    const [toggle, setToggle]= useState(true)
-    const handleNextPage=()=>{
-      setToggle(false)
-    }
+  const dispatch = useDispatch();
+  const [valforDimention, setValForDimention] = useState();
+  const [Flevel,setFLevel]=useState([])
+  const [toggle, setToggle] = useState(true);
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "scroll";
-        };
-    }, []);
+  const clientModalOperation = useSelector(
+    (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
+  );
 
-    const clientModalOperation = useSelector((state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen);
-    
-
-    // const [modalclose, setModalClose] = useState(false);
-
-    const closeModal = () => {
-        dispatch(closeClientModalAction())
-        setToggle(true);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "scroll";
     };
-    const handleOverlayClick = (event) => {
-        if (event.target.classList.contains("add-client-wrapper")) {
-          closeModal();
-        }
-      };
-    return (
-        <>
-            {clientModalOperation && (<div className="add-client-wrapper" onClick={handleOverlayClick}>
+  }, []);
 
-                <div className="add-client-modal">
-                    <div className="cross-icon" style={{ cursor: "pointer" }}>
-                        <RxCross2 onClick={closeModal} />
-                    </div>
-                    <div>
-                        {toggle ? (
-                            <div className="client-form-container">
-                                <ClientFormDetails />
-                                <ClientSalesManDetails />
-                                <ClientMembershipDocument />
-                                <ClientArchitect />
-                                <div className="button-container">
-                                    <Clientbutton
-                                        value={"Delete"}
-                                        className={"client-form-button-red"}
-                                    />
-                                    <Clientbutton
-                                        value={"Next"}
-                                        className={"client-form-button-yellow"}
-                                        handleNextPage={handleNextPage} 
-                                        
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="client-form-next-container">
-                                <ClientFormElevatorDetails />
-                                <ClientFormDimentions />
-                            </div>
-                        )}
-                    </div>
+  const handleNextPage = () => {
+    setToggle(false);
+  };
 
-                </div>
+  const closeModal = () => {
+    dispatch(closeClientModalAction());
+    setToggle(true);
+  };
 
+  const handleOverlayClick = (event) => {
+    if (event.target.classList.contains("add-client-wrapper")) {
+      closeModal();
+    }
+  };
+
+  return (
+    <>
+      {clientModalOperation && (
+        <div className="add-client-wrapper" onClick={handleOverlayClick}>
+          <div className="add-client-modal">
+            <div className="cross-icon" style={{ cursor: "pointer" }}>
+              <RxCross2 onClick={closeModal} />
             </div>
-            )
-            }
-        </>
-    );
+            <div>
+              {toggle ? (
+                <div className="client-form-container">
+                  <ClientFormDetails />
+                  <ClientSalesManDetails />
+                  <ClientMembershipDocument />
+                  <ClientArchitect />
+                  <div className="button-container">
+                    <Clientbutton
+                      value={"Delete"}
+                      className={"client-form-button-red"}
+                    />
+                    <Clientbutton
+                      value={"Next"}
+                      className={"client-form-button-yellow"}
+                      handleNextPage={handleNextPage}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="client-form-next-container">
+                  <ClientFormElevatorDetails setValForDimention={setValForDimention} setFLevel={setFLevel} Flevel={Flevel}/>
+                  <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel}/>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default ClientForm;
 
-
-
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-

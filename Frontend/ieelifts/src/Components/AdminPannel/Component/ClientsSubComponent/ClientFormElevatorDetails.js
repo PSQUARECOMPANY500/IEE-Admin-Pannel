@@ -1,9 +1,13 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 
-const ClientFormElevatorDetails = () => {
+const ClientFormElevatorDetails = ({
+  setValForDimention,
+  setFLevel,
+  Flevel,
+}) => {
   const numberOfOpenings = [1, 2, 3];
   const pitDepth = [100, 200];
   const purpose = ["Hospital", "Mall"];
@@ -21,10 +25,7 @@ const ClientFormElevatorDetails = () => {
   const [pit, setPit] = useState("");
   const [type, setType] = useState("");
   const [capacity, setCapacity] = useState("kg");
-  const [basementSelection, isBasementSelection] = useState({
-    B1: "",
-    B2: "",
-  });
+  const [basementSelection, isBasementSelection] = useState({ b1: "", b2: "" });
   const [degree, setDegdree] = useState({
     nintyDegreeLeft: "",
     nintyDegreeRight: "",
@@ -34,31 +35,36 @@ const ClientFormElevatorDetails = () => {
   const [noOfOpenings, setNoOfOpenings] = useState(0);
   const [stops, setStops] = useState(0);
   const [data, setData] = useState("G");
-  let level = [];
+
   // let elevatorOpenings = []
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
-  // const [level,setLevel]=useState({})
-  function addvalue() {
-    let GlobalStop = stops;
+
+  useEffect(() => {
+    let level = [];
+    let count = stops;
     if (basementSelection.b2 === "B2") {
       level.push("B1", "B2");
-      GlobalStop -= 2;
-    } else if (basementSelection.b1 === "B1") {
+      count -=2;
+    } else if (basementSelection.b1 === "B1" && basementSelection.b2 === "") {
       level.push("B1");
-      GlobalStop -= 1;
+      count -=1;
+    } else if (basementSelection.b1 === "B1" && basementSelection.b2 === "B2") {
+      level.push("B1", "B2");
+      count -=2;
     }
     if (data === "S") {
-      level.push("Stilt", "Ground");
-      GlobalStop -= 2;
+      level.push("Stilt");
     } else {
       level.push("Ground");
-      GlobalStop -= 1;
     }
-    for (let i = GlobalStop; i >= 1; i--) {
-      level.push(`level ${GlobalStop - i + 1}`);
+    for(let i = 1 ; i < count  ; i++){
+      level.push(`Level ${i}`);
     }
-  }
-  addvalue();
+    setFLevel(level);
+
+  }, [stops, data, basementSelection]);
+
+console.log("hihihihi",Flevel)
 
   const [array, setArray] = useState([]);
 
@@ -89,19 +95,21 @@ const ClientFormElevatorDetails = () => {
     setData(value);
   };
   const handleChangeInB1 = () => {
-    isBasementSelection((prevState) => ({
-      b1: prevState.b1 ? "" : "B1",
-      b2: prevState.b2 === "" ? "" : "",
+    isBasementSelection((prev) => ({
+      b1: prev.b1 === "B1" ? "" : "B1",
+      b2: prev.b2 === "B2" ? "" : "",
     }));
   };
+
   const handleChangeInB2 = () => {
-    isBasementSelection((prevState) => ({
-      b1: prevState.b2 === "" ? "B1" : "",
-      b2: prevState.b2 ? "" : "B2",
+    isBasementSelection((prev) => ({
+      b1: (prev.b1 = "B1"),
+      b2: prev.b2 === "B2" ? "" : "B2",
     }));
   };
 
   const handleInputValueChange = (newValue) => {
+    setValForDimention(newValue);
     setStops(newValue);
   };
   const handlePitValueChange = (pit) => {
@@ -117,12 +125,12 @@ const ClientFormElevatorDetails = () => {
       newArray[row][colIndex] = !newArray[row][colIndex];
       return newArray;
     });
-    const checkValue = array[row][colIndex];
+    // const checkValue = array[row][colIndex];
     let values = Object.values(degree).filter((value) => value !== "");
 
     values = ["original", ...values];
 
-    const levelValue = level[row];
+    const levelValue = Flevel[row];
 
     const updatedElevatorOpenings = elevatorOpenings.map((item) => {
       if (item.level === levelValue) {
@@ -140,10 +148,8 @@ const ClientFormElevatorDetails = () => {
       return item;
     });
 
-    console.log("updatedElevatorOpenings ", updatedElevatorOpenings);
     setElevatorOpenings(updatedElevatorOpenings);
   };
-  console.log("elevatorOpenings ", elevatorOpenings);
 
   const handleNumberOfOpenings = (openings) => {
     setNoOfOpenings(openings);
@@ -154,8 +160,8 @@ const ClientFormElevatorDetails = () => {
     });
 
     const ele = [];
-    for (let i = 0; i < level.length; i++) {
-      ele.push({ level: level[i], openings: [] });
+    for (let i = 0; i < Flevel.length; i++) {
+      ele.push({ level: Flevel[i], openings: [] });
     }
     setElevatorOpenings(ele);
     setLevelAndOpeningsView(openings);
@@ -169,14 +175,15 @@ const ClientFormElevatorDetails = () => {
     }
   };
 
-   function setDefaultData(openings) {
+  function setDefaultData(openings) {
     const ele = [];
-    for (let i = 0; i < level.length; i++) {
-      ele.push({ level: level[i], openings: [] });
+    for (let i = 0; i < Flevel.length; i++) {
+      ele.push({ level: Flevel[i], openings: [] });
     }
     setElevatorOpenings(ele);
     setLevelAndOpeningsView(openings);
   }
+
   const handleDegreeSelection = (value) => {
     setLevelAndOpeningsView(noOfOpenings);
     setDefaultData(noOfOpenings);
@@ -241,6 +248,10 @@ const ClientFormElevatorDetails = () => {
     );
     setArray(arrayTobe);
   };
+  const count = Object.values(degree).reduce(
+    (acc, val) => acc + (val ? 1 : 0),
+    0
+  );
 
   return (
     <div className="client-form-elevator-details">
@@ -402,58 +413,64 @@ const ClientFormElevatorDetails = () => {
             </div>
           </div>
         </div>
-        <div className="level-main-container">
-          <div className="level-heading">
-            <span className="levelHeading">Level</span>
-            <span className="heading-badge">Original opening</span>
 
-            {Object.entries(degree).map(
-              ([key, value], index, array) =>
-                value !== "" && (
-                  <span className="heading-badge" key={index}>
-                    {value === "90dL"
-                      ? "90° Left"
-                      : value === "90dR"
-                      ? "90° Right"
-                      : "180°"}
-                  </span>
-                )
-            )}
-          </div>
-          <div className="level-box-container">
-            <div>
-              {level.map((key, index) => {
-                return (
-                  <div className="level-title-wrapper" key={index}>
-                    <span className="level-title">{key}:</span>
-                  </div>
-                );
-              })}
-            </div>
+        {noOfOpenings != 0 && stops != 0 && count === noOfOpenings - 1 ? (
+          <div className="level-main-container">
+            <div className="level-heading">
+              <span className="levelHeading">Level</span>
+              <span className="heading-badge">Original opening</span>
 
-            <div>
-              {array.map((row, rowIndex) => {
-                const rI = rowIndex;
-                return (
-                  <div className="level-selector-parent" key={rowIndex}>
-                    {row.map((col, colIndex) => {
-                      const cI = colIndex;
-                      return (
-                        <span
-                          className={`level-selector ${
-                            array[rI][cI] ? "level-selector-active" : ""
-                          }`}
-                          onClick={() => handleClick(rI, cI)}
-                          key={colIndex}
-                        ></span>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+              {Object.entries(degree).map(
+                ([key, value], index, array) =>
+                  value !== "" && (
+                    <span className="heading-badge" key={index}>
+                      {value === "90dL"
+                        ? "90° Left"
+                        : value === "90dR"
+                        ? "90° Right"
+                        : "180°"}
+                    </span>
+                  )
+              )}
+            </div>
+            <div className="level-box-container">
+              <div>
+                {Flevel &&
+                  Flevel.map((key, index) => {
+                    return (
+                      <div className="level-title-wrapper" key={index}>
+                        <div className="level-title">{key}:</div>
+                      </div>
+                    );
+                  })}
+              </div>
+
+              <div>
+                {array.map((row, rowIndex) => {
+                  const rI = rowIndex;
+                  return (
+                    <div className="level-selector-parent" key={rowIndex}>
+                      {row.map((col, colIndex) => {
+                        const cI = colIndex;
+                        return (
+                          <span
+                            className={`level-selector ${
+                              array[rI][cI] ? "level-selector-active" : ""
+                            }`}
+                            onClick={() => handleClick(rI, cI)}
+                            key={colIndex}
+                          ></span>
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
         <div className="text-area-container">
           <textarea placeholder="Add Remarks"></textarea>
         </div>
