@@ -6382,6 +6382,7 @@ element.style {
   width: 20%;
   height: 100%;
   display: flex;
+  cursor: pointer;
   gap: 0.5rem;
   align-items: center;
   justify-content: flex-start;
@@ -6572,8 +6573,10 @@ border-radius: 3.125rem;
 .dropdown-icon-container p {
   font-size: 0.8rem;
   cursor: pointer;
-  margin-left: 5px;
+  /* margin-left: 1px; */
 }
+
+
 
 
 
