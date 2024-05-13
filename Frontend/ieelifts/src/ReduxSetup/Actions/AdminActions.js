@@ -83,6 +83,10 @@ export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
 
+
+export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
+export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -892,6 +896,14 @@ export const openAddEngggModalAction = () => ({
 });
 export const closeAddEngggModalAction = () => ({
   type: "CLOSE_MODAL",
+});
+
+//-------------------------x
+export const openAddClientModalAction = () => ({
+  type: "OPEN_CLIENT_MODAL",
+});
+export const closeClientModalAction = () => ({
+  type: "CLOSE_CLIENT_MODAL",
 });
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -21,6 +21,7 @@ import {
   changeLayout,
   getfilteredData,
   searchClients,
+  openAddClientModalAction
 } from "../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -112,8 +113,15 @@ const TopBar = (props) => {
 
   const dropdownClickRef = useRef();
   useClickOutside(dropdownClickRef, handleOutsideClick);
+
+
   const openModalHandle = () => {
     dispatch(openAddEngggModalAction());
+  };
+
+
+  const openClientModalHandle = () => {
+    dispatch(openAddClientModalAction());
   };
 
 
@@ -126,13 +134,13 @@ const TopBar = (props) => {
         }
       };
 
-      document.addEventListener("mousedown",handleClickOutsidenotification );
+      document.addEventListener("mousedown", handleClickOutsidenotification);
       return () => {
         document.removeEventListener("mousedown", handleClickOutsidenotification);
       };
     }, [ref, handler]);
   };
-  const handleNotfication= () => {
+  const handleNotfication = () => {
     setShowNotification(prevState => !prevState);
   };
   const handleOutsideClicknotification = useCallback(() => {
@@ -180,9 +188,8 @@ const TopBar = (props) => {
               <input
                 type="text"
                 placeholder="Search clients"
-                className={`search-input ${
-                  searchValue.length > 0 && "inputSearchWritten"
-                }`}
+                className={`search-input ${searchValue.length > 0 && "inputSearchWritten"
+                  }`}
                 value={searchValue || ""}
                 onChange={handleSearchChange}
               />
@@ -193,41 +200,44 @@ const TopBar = (props) => {
             </div>
           </span>
         ) : (
-          <span className="top-icon">
-            <div className="search-box">
-              <input
-                type="text"
-                placeholder="Search anything"
-                className="search-input"
-              />
+          <>
+            <span className="top-icon">
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder="Search anything"
+                  className="search-input"
+                />
 
-              <i className="search-btn ">
-                <RiSearchLine className="iconColor" />
-              </i>
-            </div>
-          </span>
+                <i className="search-btn ">
+                  <RiSearchLine className="iconColor"/>
+                </i>
+              </div>
+
+            </span>
+          </>
         )}
 
         {location.pathname === "/Memberships" && (
           <div className="top-icon" onClick={toggleGrid}>
-            {isGrid ? <CiGrid41  /> : <TbListTree />}
+            {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
         )}
 
         {location.pathname === "/Clients" && (
-          <> 
+          <>
 
             <div className="sub-components-ticket-filter" style={{ boxShadow: "none" }} ref={dropdownClickRef}>
               {" "}
-                <p className="filter-icon" onClick={handleTicketFilter}>
-                  <LuSettings2 />
-                  {""}
-                </p>
-                {showTicketFilter && (
-                    <ClientFilterDropdown />
-            
-                )}
-          
+              <p className="filter-icon" onClick={handleTicketFilter}>
+                <LuSettings2 />
+                {""}
+              </p>
+              {showTicketFilter && (
+                <ClientFilterDropdown />
+
+              )}
+
             </div>
 
             <div className="top-icon" onClick={clienttoggleGrid}>
@@ -238,7 +248,7 @@ const TopBar = (props) => {
 
         <div style={{ display: "flex" }} ref={notificationClickRef}>
           <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
-            <HiOutlineBell className="iconColor"/>{" "}
+            <HiOutlineBell className="iconColor" />{" "}
           </span>
 
           <div className="dot"></div>
@@ -251,6 +261,13 @@ const TopBar = (props) => {
 
           {showNotification && <NotificationSection />}
         </div>
+        
+        {location.pathname === "/Clients" && ( 
+            <div className="add-client-button" onClick={openClientModalHandle}>
+              Add Client
+            </div>       
+        )}
+
       </div>
     </div>
   );
