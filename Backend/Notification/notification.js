@@ -7,24 +7,26 @@ const AssignSecheduleRequest = require("../Modals/ServiceEngineerModals/AssignSe
 const EnggAttendanceServiceRecord = require("../Modals/ServiceEngineerModals/Attendance");
 const EnggLeaveServiceRecord = require("../Modals/ServiceEngineerModals/EnggLeaveSchema");
 const serviceRequest = require("../Modals/ServicesModal/ClientServicesRequest");
-const clientRequestImidiateVisit = require("../Modals/ServicesModal/ClinetCallback.js");
 const CallbackRequests = require("../Modals/ServicesModal/ClinetCallback.js");
 const SpearPartsRequested = require("../Modals/SpearParts/SparePartRequestModel");
 
-module.exports.watchNotifications = async () => {
-    {/* Engg Notification */}
-    EnggLeaveServiceRecord.watch().on('change', data => console.log(data.fullDocument));
-    CallbackRequests.watch().on('change', data => console.log(data.fullDocument));
-    EnggAttendanceServiceRecord.watch().on('change', data => console.log(data.fullDocument));
-    Report.watch().on('change', data => console.log(data.fullDocument));
-    AssignEnggService.watch().on('change', data => console.log(data.fullDocument));
-    AssignSecheduleRequest.watch().on('change', data => console.log(data.fullDocument));
-    SpearPartsRequested.watch().on('change', data => console.log(data.fullDocument));
-    serviceRequest.watch().on('change', data => console.log(data.fullDocument));
-    clientRequestImidiateVisit.watch().on('change', data => console.log(data.fullDocument));
-    message.watch().on('change', data => console.log(data.fullDocument));
+module.exports.watchNotifications = async (io) => {
+  {
+    /* Engg Notification */
+  }
+  EnggLeaveServiceRecord.watch().on("change", (data) => console.log(data));
+  CallbackRequests.watch().on("change", (data) => console.log(JSON.stringify({time:data.wallTime,data:data.fullDocument})));
+  EnggAttendanceServiceRecord.watch().on("change", (data) => console.log(data));
+  Report.watch().on("change", (data) => console.log(data));
+  AssignEnggService.watch().on("change", (data) => console.log(data));
+  AssignSecheduleRequest.watch().on("change", (data) => console.log(data));
+  SpearPartsRequested.watch().on("change", (data) => console.log(data));
+  serviceRequest.watch().on("change", (data) => console.log(data));
+  message.watch().on("change", (data) => console.log(data));
 
-    {/* client Notification */}
-    Referal.watch().on('change', data => console.log(data));
-    engineerRating.watch().on('change', data => console.log(data));
+  {
+    /* client Notification */
+  }
+  Referal.watch().on("change", (data) => console.log(data));
+  engineerRating.watch().on("change", (data) => console.log(data));
 };

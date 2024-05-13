@@ -619,7 +619,6 @@ module.exports.EnggCheckIn = async (req, res) => {
   //console.log("req of checkin",req.params.ServiceEnggId)
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
-    console.log("ServiceEnggId", ServiceEnggId);
     const images = req.files;
     const frontimagename = images?.frontimage[0].filename;
     const backimagename = images?.backimage[0].filename;
@@ -644,10 +643,10 @@ module.exports.EnggCheckIn = async (req, res) => {
       return res.status(201).json(time);
     }
     return res
-      .status(500)
+      .status(400)
       .json({ error: "ServiceEnggId or IsAttendance not find" });
   } catch (error) {
-    //console.error(error);
+    console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in EnggCheckIn" });
@@ -1576,6 +1575,8 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
     const { serviceId, paymentdata } = req.body;
+
+    console.log(serviceId, paymentdata)
     const ReportData = await ReportInfoModel.findOne({ serviceId });
 
     if (!ReportData) {
@@ -1601,7 +1602,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
           .split(",")[0];
         const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
-        const newSparePartRequest = new sparePartRequestTable({
+        const newSparePartRequest = await sparePartRequestTable.create({
           EnggId: ReportData.EnggId,
           sparePartId: questionResponse.sparePartDetail.subsparePartspartid,
           quantity: "default",
@@ -1612,7 +1613,8 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           SubSparePartName: questionResponse.sparePartDetail.sparePartsname,
           Date: sparePartRequestDate,
         });
-        return await newSparePartRequest.save();
+        // return await newSparePartRequest.save();
+        console.log("newSparePartRequest",newSparePartRequest);
       })
     );
 

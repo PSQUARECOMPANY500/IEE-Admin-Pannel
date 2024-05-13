@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import NotificationSlides from "./NotificationSlides";
+import { getNotificationDataAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
 const NotificationSection = () => {
   const notifications = [
@@ -46,6 +47,19 @@ const NotificationSection = () => {
       imageUrl: "https://example.com/image3.png",
     },
   ];
+
+  const [ notificationdata, setNotificationData ] = useState();
+  console.log("90909",notificationdata);
+
+  const getNotificationData = async () => {
+    const data = await getNotificationDataAction();
+    setNotificationData(data);
+  };
+
+  useEffect(() => {
+    getNotificationData();
+  },[]);
+
 
   const [filteredNotifications, setFilteredNotifications] = useState([
     ...notifications,

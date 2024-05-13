@@ -1147,3 +1147,20 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 };
 
 // {/armaan-dev}
+
+
+//-------------------------------------------------------------------------------------------------------
+//amit and preet get notification data from backend
+
+export const getNotificationDataAction = async() => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getNotification`
+      );
+      return response.data
+    } catch (error) {
+      console.log("error while fetching Notification data", error);
+    }
+  };
+
+//-------------------------------------------------------------------------------------------------------

@@ -12,7 +12,6 @@ const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
 const { watchNotifications } = require("./Notification/notification");
 
-const watchForLoginChanges = require("./Notifications/AllNotifications")
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -41,7 +40,7 @@ async function connectDB() {
 
 async function main() {
   await connectDB();
-  await watchNotifications();
+  await watchNotifications(io);
 }
 
 // Create HTTP server for Express app
