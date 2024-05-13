@@ -43,6 +43,9 @@ const clientRegister = new Schema(
     CallbackCount: {
       type: String,
     },
+    Razorpay_customer_ID:{
+      type: String,
+    }
   },
   {
     timestamp: true,

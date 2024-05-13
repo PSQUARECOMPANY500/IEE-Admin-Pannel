@@ -607,6 +607,8 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
+      RepresentativeName,
+      RepresentativeNumber
     } = req.body;
 
     let callback;
@@ -628,6 +630,8 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Date,
           Message,
           ServiceProcess,
+          RepresentativeName,
+          RepresentativeNumber
         },
         {
           new: true,
@@ -643,8 +647,24 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Date,
         Message,
         ServiceProcess,
+        RepresentativeName,
+        RepresentativeNumber
       });
     }
+
+
+      await getAllServiceRequest.findOneAndUpdate(
+      {
+        RequestId,
+      },{
+        RepresentativeName,
+        RepresentativeNumber
+      },
+      {
+        new: true,
+      }
+    );
+    
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")

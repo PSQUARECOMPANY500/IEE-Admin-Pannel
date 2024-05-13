@@ -71,8 +71,6 @@
 
 // module.exports = ReportInfoModel;
 
-
-
 //--------------------------- new Schema Generated (Alter) --------------------------
 
 const mongoose = require("mongoose");
@@ -93,13 +91,13 @@ const ReportInfo = new Schema({
       subCategoriesId: {
         type: String,
       },
-    subcategoryname:{
-    type:String
+      subcategoryname: {
+        type: String,
       },
       questionId: {
         type: String,
       },
-     
+
       questionResponse: {
         isResolved: {
           type: Boolean,
@@ -110,34 +108,34 @@ const ReportInfo = new Schema({
         },
         isSparePartRequest: {
           type: Boolean,
-          default:false
+          default: false,
         },
         SparePartDescription: {
           type: String,
-          default:""
+          default: "",
         },
         reason: {
           type: String,
-          default:""
+          default: "",
         },
         sparePartDetail: {
           sparePartsType: {
             type: String,
-            default:""
+            default: "",
           },
           sparePartsname: {
             type: String,
-            default:""
+            default: "",
           },
           subsparePartspartid: {
             type: String,
-            default:""
+            default: "",
           },
           subsparePartspartname: {
-            type: String,    
+            type: String,
           },
           partsprice: {
-            type: String,    
+            type: String,
           },
         },
       },
@@ -152,12 +150,12 @@ const ReportInfo = new Schema({
   paymentMode: {
     type: String,
     enum: ["Online", "Cash"],
-    default:"Cash"
+    default: "Cash",
   },
   // to do  ==>  entring payment Detail while razor pay is approving...
   paymentDetils: {
     type: String,
-    default:""
+    default: "",
   },
   isVerify: {
     type: Boolean,
@@ -166,6 +164,16 @@ const ReportInfo = new Schema({
   isActive: {
     type: Boolean,
     default: true,
+  },
+  paymentTime: {
+    type: String,
+  },
+  paymentType: {
+    type: String,
+    enum: ["Qr", "Link"],
+  },
+  payment_id:{
+    type: String,
   }
 });
 

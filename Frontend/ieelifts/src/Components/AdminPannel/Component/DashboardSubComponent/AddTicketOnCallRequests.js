@@ -57,15 +57,20 @@ const AddTicketOnCallRequests = ({
     enggAddress: "",
     enggLocation: "",
     enggRating: "",
-    enggPhoto: ""
+    enggPhoto: "",
+    repersentativeName:"",
+    repersentativeNumber:"" 
   });
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
 
-  const [reName , setreName] = useState("Enter Representative Name (Optional)")
-  const [reNumber , setreNumber] = useState("Enter Representative Number (Optional)")
+  const [reName , setreName] = useState("")
+  const [reNumber , setreNumber] = useState("")
+
+
+
   const timeSlots = [
     {
       slot: "9:00-11:00",
@@ -217,7 +222,9 @@ const AddTicketOnCallRequests = ({
         enggName: getEnggState.EnggName,
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
-        enggPhoto: getEnggState.EnggPhoto
+        enggPhoto: getEnggState.EnggPhoto,
+        repersentativeName:getEnggState.RepresentativeName,
+        repersentativeNumber:getEnggState.RepresentativeNumber       
       });
     }
   }, [getEnggState]);
@@ -271,7 +278,9 @@ const AddTicketOnCallRequests = ({
             engDate,
             message,
             engDetails?.enggName,
-            engDetails.enggJon
+            engDetails.enggJon,
+            reName,
+            reNumber
           ))
         }
       })
@@ -723,12 +732,12 @@ const AddTicketOnCallRequests = ({
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input  placeholder={reName} onChange={(e)=>{setreName(e.target.value)}} />
+                    <input  placeholder={reName ||"Enter Representative Name (Optional)"} onChange={(e)=> setreName(e.target.value)} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder={reNumber} onChange={(e)=>{setreNumber(e.target.value)}}/>
+                    <input placeholder={reNumber||"Enter Representative Number (Optional)"} onChange={(e)=> setreNumber(e.target.value)}/>
                   </div>
 
                   <div className="col75">

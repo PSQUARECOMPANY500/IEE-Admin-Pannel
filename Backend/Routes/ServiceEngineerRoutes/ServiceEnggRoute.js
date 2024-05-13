@@ -358,6 +358,42 @@ router.put(
   serviceEnggContoller.EnggOnLunchBreak
 );
 
+//emit on 01/05/2024 ---
+
+router.post(
+  "/clientPayment",
+  serviceEnggContoller.clientPayment
+);
+
+router.post(
+  "/paymentLink",
+  serviceEnggContoller.paymentLink
+);
+
+router.post(
+  "/verifyPaymentLink",
+  serviceEnggContoller.verifyPaymentLink
+);
+
+router.post(
+  "/generatePaymentQr",
+  serviceEnggContoller.generatePaymentQr
+);
+
+router.post(
+  "/getPaymentStatus",
+  serviceEnggContoller.getPaymentStatus
+);
+
+router.post(
+  "/resendPaymentLink",
+  serviceEnggContoller.resendPaymentLink
+);
+
+router.post(
+  "/updatePaymentStatus",
+  serviceEnggContoller.updatePaymentStatus
+);
 //=================================================================================//=================================================================================
 
 module.exports = router;
