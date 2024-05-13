@@ -47,8 +47,8 @@ const SparePartsRequestSchema = new Schema({
 });
 
 const SpearPartsRequested = mongoose.model(
-  "RequestSpareRequest",
+  "PartsRequest",
   SparePartsRequestSchema
-);
+);``
 
 module.exports = SpearPartsRequested;

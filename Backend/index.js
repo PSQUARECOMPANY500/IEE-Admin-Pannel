@@ -43,7 +43,7 @@ async function connectDB() {
 
 async function main() {
   await connectDB();
-  await watchNotifications();
+  await watchNotifications(io);
 }
 
 // Create HTTP server for Express app
