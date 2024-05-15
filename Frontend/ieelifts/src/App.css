@@ -6449,9 +6449,10 @@ border-radius: 10px;
 .dropdown-icon-container-img{
   margin-top: 0.1rem;
   display: flex;
-  margin-left: -0.5rem;
+  margin-left: -1rem;
   align-items: center;
   gap: 0.3rem;
+  /* background-color: lightgreen; */
   
 }
 
@@ -6566,16 +6567,16 @@ width: auto;
 border-bottom: none;
 }
 
-.client-modal-dropdown.third-dropdown .dropdown-icon-container p {
+/* .client-modal-dropdown.third-dropdown .dropdown-icon-container p {
   margin-left: -1.1rem;
-}
+} */
 
 
 /*---------------  This is for p tag of first dropdown only------------------------- */
-.client-modal-dropdown:not(.second-dropdown):not(.third-dropdown) .dropdown-icon-container p {
+/* .client-modal-dropdown:not(.second-dropdown):not(.third-dropdown) .dropdown-icon-container p {
   margin-left: -0.7rem;
 
-}
+} */
 
 .green-padding {
   padding: 0.4375rem 1rem;
