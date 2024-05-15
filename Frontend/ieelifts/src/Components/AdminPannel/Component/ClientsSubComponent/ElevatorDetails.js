@@ -1,8 +1,11 @@
+
+
 import React from 'react'
 import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 
-const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleType, purpose, handlePurpose, capacity, handleCapacityUnitChange, handleInputValueChange, basementSelection, handleChangeInB2, handleChangeInB1, data, handleChange, doorType, handleDoorType, constructionMaterial, handleContructionMaterial, numberOfOpenings, handleNumberOfOpenings, isDivDisabled, degree, handleDegreeSelection }) => {
+const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUnit, handleInputValueChange, basementSelection, doorType, constructionMaterial, numberOfOpenings, degree, openings, handleElevatorDetailsChange, groundOrStilt, handleDegreeSelection }) => {
+
     return (
         <>
             <div className="client-elevator-input-wrapper">
@@ -10,7 +13,7 @@ const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleTy
                     <ClientDropdown
                         label={"Pit depth"}
                         options={pitDepth}
-                        onValueChange={handlePitValueChange}
+                        onValueChange={() => handleElevatorDetailsChange("pit")}
                     />
                     <span className="mmBtn mm-btn-possition">mm</span>
                 </div>
@@ -18,33 +21,33 @@ const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleTy
                     <ClientDropdown
                         label={"Type"}
                         options={typeOptions}
-                        onValueChange={handleType}
+                        onValueChange={() => handleElevatorDetailsChange("type")}
                     />
                 </div>
                 <div>
                     <ClientDropdown
                         label={"Purpose"}
                         options={purpose}
-                        onValueChange={handlePurpose}
+                        onValueChange={() => handleElevatorDetailsChange("purpose")}
                     />
                 </div>
                 <div className="capacity-container">
                     <div>
-                        <AnimatedInput label={"Capacity"} name={"courseName"} />
+                        <AnimatedInput label={"Capacity"} name={"courseName"} onValueChange={() => handleInputValueChange("capacity")} />
                     </div>
                     <div>
                         <div className="selector-container">
                             <span
-                                className={`selector-child ${capacity === "kg" ? "selector-child-active" : ""
+                                className={`selector-child ${capacityUnit === "kg" ? "selector-child-active" : ""
                                     }`}
-                                onClick={() => handleCapacityUnitChange("kg")}
+                                onClick={() => handleElevatorDetailsChange("capacityUnit", "kg")}
                             >
                                 Kg
                             </span>
                             <span
-                                className={`selector-child ${capacity === "Pr" ? "selector-child-active" : ""
+                                className={`selector-child ${capacityUnit === "Pr" ? "selector-child-active" : ""
                                     }`}
-                                onClick={() => handleCapacityUnitChange("Pr")}
+                                onClick={() => handleElevatorDetailsChange("capacityUnit", "Pr")}
                             >
                                 Pr
                             </span>
@@ -62,16 +65,16 @@ const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleTy
                     <div>
                         <div className="btn-container">
                             <span
-                                className={`b2-btn ${basementSelection.b2 === "B2" ? "btn-active" : ""
+                                className={`b2-btn ${basementSelection.b2 ? "btn-active" : ""
                                     }`}
-                                onClick={() => handleChangeInB2("")}
+                                onClick={() => handleElevatorDetailsChange("basementSelection", { b1: !basementSelection.b2, b2: !basementSelection.b2 })}
                             >
                                 B2
                             </span>
                             <span
-                                className={`b1-btn ${basementSelection.b1 === "B1" ? "btn-active" : ""
+                                className={`b1-btn ${basementSelection.b1 ? "btn-active" : ""
                                     }`}
-                                onClick={() => handleChangeInB1("")}
+                                onClick={() => handleElevatorDetailsChange("basementSelection", { b1: !basementSelection.b1, b2: false })}
                             >
                                 B1
                             </span>
@@ -79,16 +82,16 @@ const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleTy
                     </div>
                     <div className="selector-container">
                         <span
-                            className={`selector-child ${data === "G" ? "selector-child-active" : ""
+                            className={`selector-child ${groundOrStilt === "G" ? "selector-child-active" : ""
                                 }`}
-                            onClick={() => handleChange("G")}
+                            onClick={() => handleElevatorDetailsChange("groundOrStilt", "G")}
                         >
                             G
                         </span>
                         <span
-                            className={`selector-child ${data === "S" ? "selector-child-active" : ""
+                            className={`selector-child ${groundOrStilt === "S" ? "selector-child-active" : ""
                                 }`}
-                            onClick={() => handleChange("S")}
+                            onClick={() => handleElevatorDetailsChange("groundOrStilt", "S")}
                         >
                             S
                         </span>
@@ -99,48 +102,48 @@ const ElevatorDetails = ({ pitDepth, handlePitValueChange, typeOptions, handleTy
                     <ClientDropdown
                         label={"Door Type"}
                         options={doorType}
-                        onValueChange={handleDoorType}
+                        onValueChange={handleInputValueChange}
                     />
                 </div>
                 <div>
                     <ClientDropdown
                         label={"Construction Material"}
                         options={constructionMaterial}
-                        onValueChange={handleContructionMaterial}
+                        onValueChange={handleInputValueChange}
                     />
                 </div>
                 <div>
                     <ClientDropdown
                         label={"Number of opening"}
                         options={numberOfOpenings}
-                        onValueChange={handleNumberOfOpenings}
+                        onValueChange={handleInputValueChange}
                     />
                 </div>
                 <div>
                     <div
                         className={
-                            isDivDisabled()
+                            openings === 0 || openings === 1
                                 ? "degree-container disabled"
                                 : "degree-container"
                         }
                     >
                         <>
                             <span
-                                className={`degree-container-children ${degree.nintyDegreeLeft === "90dL" ? "degree-selector" : ""
+                                className={`degree-container-children ${degree.nintyDegreeLeft ? "degree-selector" : ""
                                     }`}
                                 onClick={() => handleDegreeSelection("90dL")}
                             >
                                 90°left
                             </span>
                             <span
-                                className={`degree-container-children ${degree.nintyDegreeRight === "90dR" ? "degree-selector" : ""
+                                className={`degree-container-children ${degree.nintyDegreeRight ? "degree-selector" : ""
                                     }`}
                                 onClick={() => handleDegreeSelection("90dR")}
                             >
                                 90°right
                             </span>
                             <span
-                                className={`degree-container-children ${degree.oneEightyDegree === "180d" ? "degree-selector" : ""
+                                className={`degree-container-children ${degree.oneEightyDegree ? "degree-selector" : ""
                                     }`}
                                 onClick={() => handleDegreeSelection("180d")}
                             >

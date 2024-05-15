@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 
 const Animated = ({
   type = "text",
@@ -21,13 +21,13 @@ const Animated = ({
       handleCalendarOpen();
     }
   };
-   
+
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (event) => {
-      const newValue = event.target.value;
-      setInputValue(newValue);
-      onValueChange(newValue);
+    const newValue = event.target.value;
+    setInputValue(newValue);
+    onValueChange(label.toLowerCase(), newValue);
   };
 
   return (
@@ -51,7 +51,7 @@ const Animated = ({
           color: email && "#330152",
           fontWeigh: email && "500",
           fontSize: email && "1rem",
-          zIndex:'99999'
+          zIndex: '99999'
         }}
       >
         <sub>{label}</sub>
