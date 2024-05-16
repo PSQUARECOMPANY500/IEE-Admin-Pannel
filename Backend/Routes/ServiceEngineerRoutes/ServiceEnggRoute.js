@@ -396,4 +396,14 @@ router.post(
 );
 //=================================================================================//=================================================================================
 
+
+
+router.post("/updateTrackerInformations", serviceEnggContoller.handleTrackerPostionClientApp);
+
+
+
+
+
+
+
 module.exports = router;

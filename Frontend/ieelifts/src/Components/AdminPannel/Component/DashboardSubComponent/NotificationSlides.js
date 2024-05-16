@@ -8,6 +8,9 @@ import attendance from "../../../../../src/Assets/Images/NotificationIcons/atten
 import messageIcon from "../../../../../src/Assets/Images/NotificationIcons/messageIcon.png";
 
 import referalIcon from "../../../../../src/Assets/Images/NotificationIcons/refer.png";
+import leaveIcon from "../../../../../src/Assets/Images/NotificationIcons/leaveIcon.png";
+
+
 
 const NotificationSlides = ({ notifications, notificationcount }) => {
 
@@ -33,6 +36,9 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
       return null;
     }
     if (notification?.data?.RequestId && notification?.data?.Slot) {
+      return null;
+    }
+    if(notification?.data?.isVerify === false){
       return null;
     }
 
@@ -90,7 +96,14 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
       };
     }
 
-
+    if(notification?.data?.IsApproved === "false" && notification?.data?.Leave_Reason){
+      return {
+        title: "Leave Request",
+        message: `This ${notification?.data?.ServiceEnggId} has requested a leave for ${notification?.data?.Leave_Reason} from ${notification?.data?.Duration?.From} to ${notification?.data?.Duration?.To}.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: leaveIcon,
+      };
+    }
 
 
   };

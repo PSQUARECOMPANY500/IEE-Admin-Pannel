@@ -37,7 +37,7 @@ const ReportInfoModel = require("../../Modals/ReportModal/ReportModal");
 
 const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
-const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema")
+const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const Razorpay = require("razorpay");
 
@@ -382,8 +382,14 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    console.log("enngglocation serviceid ", ServiceEnggId , " latitude " , latitude, " longitute ", longitude)
-    
+    console.log(
+      "enngglocation serviceid ",
+      ServiceEnggId,
+      " latitude ",
+      latitude,
+      " longitute ",
+      longitude
+    );
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -967,19 +973,11 @@ module.exports.validateOtpForClient = async (req, res) => {
       });
       const time1 = new Date(response.time).getTime();
       const date = new Date().getTime();
-
-      console.log("5",time1);
-      console.log("6",date);
-
-
-      console.log('dsds',date-time1);
-
-
-
-      if (response) {
-        return res.status(200).json({ success: true });
+      const expireTime = date - time1;
+      if (expireTime > 300000) {
+        return res.status(200).json({ success: false, message: "OTP expired" });
       } else {
-        return res.status(404).json({ success: false });
+        return res.status(404).json({ success: true });
       }
     }
     return res.status(500).json({ error: "Enter valid data" });
@@ -1007,7 +1005,7 @@ module.exports.generateOtpForClient = async (req, res) => {
         otp: otp,
         ServiceEnggId: ServiceEnggId,
         JobOrderNumber: JobOrderNumber,
-        time: date
+        time: date,
       });
       // Prepare data and config for the API request
 
@@ -1273,7 +1271,7 @@ module.exports.GenerateReportByEngg = async (req, res) => {
       ReportData = await ReportInfoModel.create({
         serviceId: reqs.serviceId,
         EnggId: reqs.EnggId,
-        JobOrderNumber:reqs.JobOrderNumber,
+        JobOrderNumber: reqs.JobOrderNumber,
         questionsDetails: QuestionResponse,
         subCategoriesphotos: uploaddata,
         paymentMode: "Cash",
@@ -1290,6 +1288,45 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     });
   }
 };
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//api to handle the functionlity of tracker in the client app
+module.exports.handleTrackerPostionClientApp = async (req, res) => {
+  try {
+    const { serviceId, EnggId, JobOrderNumber, Steps } = req.body;
+
+    console.log(serviceId);
+    console.log(Steps);
+
+    const havea = await ReportInfoModel.findOne({
+      serviceId: serviceId,
+    });
+
+    if (havea) {
+      await ReportInfoModel.findOneAndUpdate(
+        { serviceId: serviceId },
+        { EnggId: EnggId, Steps: Steps, JobOrderNumber: JobOrderNumber }
+      );
+    } else {
+      await ReportInfoModel.create({
+        serviceId: serviceId,
+        EnggId: EnggId,
+        JobOrderNumber: JobOrderNumber,
+        Steps: Steps,
+      });
+    }
+
+    res.status(200).json({ message: "info update succesfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error Genrating Report by Engg",
+    });
+  }
+};
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getEngineerLeaves = async (req, res) => {
@@ -1437,7 +1474,9 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     const reportData = await ReportInfoModel.findOne({ serviceId });
 
-    const getMemberShipDetails = await memberShipTable.findOne({ JobOrderNumber: reportData.JobOrderNumber });
+    const getMemberShipDetails = await memberShipTable.findOne({
+      JobOrderNumber: reportData.JobOrderNumber,
+    });
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
     }
@@ -1447,7 +1486,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-          "") ||
+            "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -1500,13 +1539,14 @@ module.exports.getFinalReportDetails = async (req, res) => {
     const membership = getMemberShipDetails.MembershipType;
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
-      const sparePartPrice = item.questionResponse.sparePartDetail.partsprice
+      const sparePartPrice = item.questionResponse.sparePartDetail.partsprice;
       return caluclatePriceAsPerMemeberShip(membership, sparePartPrice);
-
     });
-    const totalPrice = caluclatePrice.reduce((acc, curr) => acc + parseInt(curr), 0);
+    const totalPrice = caluclatePrice.reduce(
+      (acc, curr) => acc + parseInt(curr),
+      0
+    );
     TotalAmount.push(totalPrice);
-
 
     // price caluclate login insiode the spare part
 
@@ -1515,7 +1555,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
       IssuesNotResolved,
       SparePartsChanged,
       SparePartsRequested,
-      TotalAmount
+      TotalAmount,
     });
   } catch (error) {
     console.log(error);
@@ -1583,7 +1623,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
     const { serviceId, paymentdata } = req.body;
 
-    console.log(serviceId, paymentdata)
+    console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
 
     if (!ReportData) {
@@ -1621,7 +1661,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           Date: sparePartRequestDate,
         });
         // return await newSparePartRequest.save();
-        console.log("newSparePartRequest",newSparePartRequest);
+        console.log("newSparePartRequest", newSparePartRequest);
       })
     );
 
@@ -2119,7 +2159,9 @@ module.exports.getPaymentStatus = async (req, res) => {
         return res.status(400).json({ status: "error", message: "expired" });
       }
     }
-    return res.status(400).json({status:"error" ,message: "payment not initiated" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "payment not initiated" });
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error in verifyPaymentLink! Contact Developer.",
@@ -2128,14 +2170,15 @@ module.exports.getPaymentStatus = async (req, res) => {
   }
 };
 
-//Done, touch this api at your own risk 
+//Done, touch this api at your own risk
 module.exports.resendPaymentLink = async (req, res) => {
   try {
     const { serviceId } = req.body;
 
     if (!serviceId) {
       return res.status(400).json({
-        status:"error",message: "serviceId is required.",
+        status: "error",
+        message: "serviceId is required.",
       });
     }
     const instance = new Razorpay({
@@ -2161,7 +2204,6 @@ module.exports.resendPaymentLink = async (req, res) => {
               .status(400)
               .json({ status: "error", time_left: timeDifference });
           } else {
-            
             if (data.payment_id) {
               const response = await instance.paymentLink.notifyBy(
                 data.payment_id,
@@ -2171,7 +2213,9 @@ module.exports.resendPaymentLink = async (req, res) => {
               fTimestamp.setMinutes(fTimestamp.getMinutes() + 2);
               data.paymentTime = fTimestamp.toISOString();
               await data.save();
-              return res.status(200).json({status:"success" ,data: response });
+              return res
+                .status(200)
+                .json({ status: "success", data: response });
             }
           }
         } else if (response.status === "paid") {
@@ -2218,7 +2262,7 @@ module.exports.updatePaymentStatus = async (req, res) => {
       const response = await instance.qrCode.fetch(id);
 
       if (response.status === "active") {
-        await instance.qrCode.close(id)
+        await instance.qrCode.close(id);
         data.payment_id = " ";
         data.paymentType = " ";
         await data.save();
@@ -2236,7 +2280,7 @@ module.exports.updatePaymentStatus = async (req, res) => {
       const response = await instance.paymentLink.fetch(id);
 
       if (response.status === "created") {
-        await instance.paymentLink.cancel(id)
+        await instance.paymentLink.cancel(id);
         data.payment_id = " ";
         data.paymentType = " ";
         await data.save();
@@ -2246,12 +2290,13 @@ module.exports.updatePaymentStatus = async (req, res) => {
           .json({ status: "success", message: "Payment already done" });
       }
     }
-    return res.status(200).json({ status: "success", message: "Pass"})
+    return res.status(200).json({ status: "success", message: "Pass" });
   } catch (error) {
     return res.status(500).json({
-      message: "Internal server error in updatePaymentStatus! Contact Developer.",
+      message:
+        "Internal server error in updatePaymentStatus! Contact Developer.",
       error: error,
     });
   }
-}
+};
 //=======================================================Razorpay-api-ends====================================================================
