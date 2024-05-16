@@ -21,7 +21,7 @@ router.post(
   adminContoller.createLocationForFilter
 ); // crete service admin
 
-//------------------------------ All get requests -------------------------------------------------
+//------------------------------ All get requests ---------------------------------------------------
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
@@ -153,6 +153,11 @@ router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
 router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
 router.post("/updatePassword",adminContoller.updatePassword);
 
+/**
+ * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
+ */
 
+router.post('/clientForm',adminContoller.postElevatorForm);
+router.put('/updateClientForm',adminContoller.putElevatorForm);
 
 module.exports = router;

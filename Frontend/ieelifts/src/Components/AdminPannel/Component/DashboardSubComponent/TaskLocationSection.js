@@ -81,6 +81,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
   });
 
+console.log("currentDateServiceRequest",currentDateServiceRequest)
+
   useEffect(() => {
 
     if (currentDateServiceRequest) {
@@ -130,11 +132,27 @@ const TaskLocationSection = forwardRef((props, ref) => {
     if (filterConditions) {
       let data;
       if (services) {
+        if (
+          currentDateServiceRequest &&
+          currentDateServiceRequest.length === 0
+        ) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateServiceRequest;
       }
       if (ticket) {
+        if (currentDateCallback && currentDateCallback.length === 0) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateCallback;
       }
+      if (data && data.length === 0) {
+        console.log("In data.length");
+        return setFilterData(null);
+      }
+
       const statusFilter = filterConditions.filter(
         (type) => type.type === "status"
       );
@@ -144,20 +162,20 @@ const TaskLocationSection = forwardRef((props, ref) => {
       const locationFilter = filterConditions.filter(
         (type) => type.type === "location"
       );
-      let statusData,
-        engineerData,
-        locationData = [];
+
+      // Add guards before accessing filterConditions
+      let statusData = [],
+        engineerData = [];
       if (statusFilter) {
         statusFilter.forEach(async (status) => {
           const { condition } = status;
-          let sData = data.filter(
-            (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
-          );
-          if (statusData) {
-            statusData = [...statusData, ...sData];
-          } else {
-            statusData = [...sData];
+          let sData = [];
+          if (data && data.length !== 0) {
+            sData = data.filter(
+              (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
+            );
           }
+          statusData = [...statusData, ...sData];
         });
       }
 
@@ -174,11 +192,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
       }
       let filteredData = [];
 
-      if (statusData && engineerData) {
+      if (statusData.length && engineerData.length) {
         filteredData = statusData.filter((status) => {
           return engineerData.some((engineer) => status._id === engineer._id);
         });
-      } else if (statusData) {
+      } else if (statusData.length) {
         filteredData = statusData;
       } else {
         filteredData = engineerData;
@@ -313,14 +331,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     ? currentDateCallback?.map((value, index) => {
                         const reportData = value;
 
-                        // console.log("ticket", value);
-
                         return (
                           <div
-                            className={`ticket-card ${
+                          style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
+                             className={`ticket-card ${
                               handleCallbackSelection[index] &&
                               "service-card-selected"
-                            }`}
+                            }` }
                             onClick={() => handleReportSectionData(reportData)}
                           >
                             <div className="ticket-sub-card-row">
@@ -426,10 +443,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                         );
                       })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                        const reportServiceData = serviceData;
+                      const reportServiceData = serviceData
 
                         return (
                           <div
+                            style={{backgroundColor:`${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
                             className={`service-card ${
                               handleServiceSelection[index] &&
                               "service-card-selected"

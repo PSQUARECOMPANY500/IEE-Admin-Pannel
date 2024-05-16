@@ -25,10 +25,10 @@ const EnggLocationSchema = new Schema(
                 type: { type: String },
                 coordinates: []
             },
-            endingLocation: { //client lift location 
-                type: { type: String },
-                coordinates: []
-            },
+            // endingLocation: { //client lift location 
+            //     type: { type: String },
+            //     coordinates: []
+            // },
             createdDate: {
                 type: String,
                 default: () => {

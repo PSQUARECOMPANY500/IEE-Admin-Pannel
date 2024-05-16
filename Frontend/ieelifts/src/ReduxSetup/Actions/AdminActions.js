@@ -85,6 +85,10 @@ export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
 export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA"
 export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER"
 
+
+export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
+export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -343,11 +347,12 @@ export const assignserviceRequestByAdmin = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  RepresentativeName,
+  RepresentativeNumber
 ) => {
   return async (dispatch) => {
     try {
-      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -358,6 +363,8 @@ export const assignserviceRequestByAdmin = (
           Slot,
           Date,
           Message,
+          RepresentativeName,
+          RepresentativeNumber
         }
       );
 
@@ -891,6 +898,14 @@ export const openAddEngggModalAction = () => ({
 });
 export const closeAddEngggModalAction = () => ({
   type: "CLOSE_MODAL",
+});
+
+//-------------------------x
+export const openAddClientModalAction = () => ({
+  type: "OPEN_CLIENT_MODAL",
+});
+export const closeClientModalAction = () => ({
+  type: "CLOSE_CLIENT_MODAL",
 });
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

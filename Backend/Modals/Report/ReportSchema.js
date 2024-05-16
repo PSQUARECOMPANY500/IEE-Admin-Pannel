@@ -53,6 +53,13 @@ const ReportChecklist = new Schema({
       return now;
     }
   },
+  paymentType:{
+    payment:{
+      type: String,
+      enum: ["Qr", "Link"],
+    },
+    id: String,
+  }
 });
 
 const Report = mongoose.model("ReportChecklist", ReportChecklist);

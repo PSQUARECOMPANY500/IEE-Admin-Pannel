@@ -59,11 +59,19 @@ const ServiceRequestModals = ({
     enggPhoto: ""
   });
 
-
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
   const [fetchedDate, setfetchedDate] = useState("")
+
+
+  // repersentative name and number logic
+  const [reName , setreName] = useState("")
+  const [reNumber , setreNumber] = useState("")
+
+  console.log("reName  --> ", reName)
+  console.log("reNumber ---> ", reNumber)
+
 
 
   //slots logic here ends-------------------------------------------------
@@ -103,7 +111,7 @@ const ServiceRequestModals = ({
     }
   });
 
-  //console.log("getUserRequestDetail =>",getUserRequestDetail)
+  // console.log("getUserRequestDetail =>",getUserRequestDetail)
 
 
 
@@ -128,7 +136,7 @@ const ServiceRequestModals = ({
     console.log('testing', getAssignedCallbackDetails) */
 
   const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
-
+console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
 
   useEffect(() => {
     if (isAssigned) {
@@ -188,11 +196,19 @@ const ServiceRequestModals = ({
       setClickListOnSelect(getAssignRequestdetail?.checkList?.checklistName);
       setSelectedSlot(getAssignRequestdetail?.Slot);
       setMessage(getAssignRequestdetail?.Message);
+      setreName(getAssignRequestdetail?.RepresentativeName)
+      setreNumber(getAssignRequestdetail?.RepresentativeNumber)
       const dateAsString = getAssignRequestdetail?.Date.toString();
       setfetchedDate(dateAsString)
     }
 
   }, [getAssignRequestdetail])
+
+  useEffect(()=>{
+    setreName()
+    setreNumber()
+  },[])
+
 
   const handleAssignDateChange = (selectedOption) => {
     const formattedDate = selectedOption.toLocaleDateString('en-GB');
@@ -229,7 +245,7 @@ const ServiceRequestModals = ({
       }
       else {
         dateOnAssign = engDate;
-      }
+      }    
       dispatch(
         assignserviceRequestByAdmin(
           engDetails?.enggJon,
@@ -240,7 +256,9 @@ const ServiceRequestModals = ({
           dateOnAssign,
           message,
           engDetails?.enggName,
-          engDetails.enggJon
+          engDetails.enggJon,
+          reName,
+          reNumber
         )
       );
       setRenderTicket((prev) => !prev);
@@ -700,12 +718,12 @@ const ServiceRequestModals = ({
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Name (Optional)" />
+                    <input placeholder={reName||"Enter Representative Name (Optional)"}  onChange={(e)=> setreName(e.target.value)} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Number (Optional)" />
+                    <input placeholder={reNumber||"Enter Representative Number (Optional)"}  onChange={(e)=> setreNumber(e.target.value)} />
                   </div>
 
                   <div className="col75">
@@ -735,7 +753,7 @@ const ServiceRequestModals = ({
                         className="assign-button"
                         onClick={handleAssignRequest}
                       >
-                        Assign
+                        Assign testing
                       </button>
                     </div>
                   </div>

@@ -10,8 +10,12 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import ServiceRequestModals from "./ServiceRequestModals";
 
-
-const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, setReqCheckboxStates, reqCheckboxStates }) => {
+const ServiceRequestTable = ({
+  setRenderTicket2,
+  searchText,
+  filterConditions,
+}) => {
+  const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
   const [enggId, setEnggId] = useState();
@@ -25,7 +29,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
-  const dropdownRef = useRef(null);
+  const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
 
   useEffect(() => {
     if (filterConditions && filterConditions.length === 0) {
@@ -33,6 +37,11 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
       setFilterData([]);
     }
     if (filterConditions && filterConditions.length > 0) {
+      if (filteredCD.length === 0) {
+        setGetFilterConditions(false);
+        setFilterData([]);
+        return;
+      }
       let data = filteredCD;
       const membershipFilter = filterConditions.filter(
         (filter) => filter.type === "membership"
@@ -47,9 +56,14 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
         let mData = [];
         membershipFilter.forEach((membership) => {
           const { condition } = membership;
-          mData = data.filter(
-            (d) => d.clientDetail.Membership.toLowerCase() === condition.toLowerCase()
-          );
+
+          if (data && data.length !== 0) {
+            mData = data.filter(
+              (d) =>
+                d.clientDetail.Membership.toLowerCase() ===
+                condition.toLowerCase()
+            );
+          }
           if (membershipData) {
             membershipData = [...membershipData, ...mData];
           } else {
@@ -62,9 +76,13 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
         let lData = [];
         locationFilter.forEach((location) => {
           const { condition } = location;
-          lData = data.filter(
-            (d) => d.clientDetail.Address.toLowerCase().includes(condition.toLowerCase())
-          );
+          if (data && data.length !== 0) {
+            lData = data.filter((d) =>
+              d.clientDetail.Address.toLowerCase().includes(
+                condition.toLowerCase()
+              )
+            );
+          }
           if (locationData) {
             locationData = [...locationData, ...lData];
           } else {
@@ -74,11 +92,16 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
       }
 
       let responseData = [];
-      if (membershipData.length > 0 && locationData.length > 0) {
+      if (
+        membershipData &&
+        membershipData.length > 0 &&
+        locationData &&
+        locationData.length > 0
+      ) {
         responseData = membershipData.filter((d) => locationData.includes(d));
-      } else if (membershipData.length > 0) {
+      } else if (membershipData && membershipData.length > 0) {
         responseData = membershipData;
-      } else if (locationData.length > 0) {
+      } else if (locationData && locationData.length > 0) {
         responseData = locationData;
       }
 
@@ -87,7 +110,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
     }
     console.log("filterData", filterData);
   }, [filterConditions]);
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -206,7 +228,9 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
 
   const handleCheckBoxAll = () => {
     if (filteredCD) {
-      const allChecked = reqCheckboxStates.every((isChecked) => isChecked);
+      const allChecked =
+        filteredCD && reqCheckboxStates?.every((isChecked) => isChecked);
+
       setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
     }
   };
@@ -219,7 +243,6 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
     });
   };
 
-
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -229,7 +252,10 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={filteredCD && reqCheckboxStates.every((isChecked) => isChecked)}
+                checked={
+                  filteredCD &&
+                  reqCheckboxStates.every((isChecked) => isChecked)
+                }
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>
@@ -300,8 +326,8 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
                 </td>
               </tr>
             </>
-          ) : (
-            getFilterConditions ? filterData?.map((value, index) => {
+          ) : getFilterConditions ? (
+            filterData?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
@@ -369,7 +395,9 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText, filterConditions, s
                   </tr>
                 </tbody>
               );
-            }) : filteredCD?.map((value, index) => {
+            })
+          ) : (
+            filteredCD?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;

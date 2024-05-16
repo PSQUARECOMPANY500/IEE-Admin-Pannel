@@ -46,17 +46,22 @@ const httpServer = createHttpServer(app);
 const httpPort = process.env.PORT || 3000;
 const socketPort = process.env.SOCKET_PORT || 4000;
 
-httpServer.listen(httpPort, () => {
-  console.log(`HTTP server listening on port ${httpPort}`);
+
+
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: ["*"],
+    // origin: ["https://ieelifts.in","http://ieelifts.in","https//www.ieelifts.in","http://www.ieelifts.in", "http://localhost:3000" ],
+    credentials: true,
+  },
+  allowEIO3: true,
 });
 
-const io = new SocketServer();
-io.listen(socketPort);
-console.log(`Socket.IO server listening on port ${socketPort}`);
 
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
+
   socket.on("aloo",(recivedMessaege) => { 
     console.log("message si recives",recivedMessaege)
     io.emit('messagerecieved',recivedMessaege)
@@ -68,7 +73,12 @@ io.on("connection", (socket) => {
   })
 });
 
-// Listen for disconnections
-io.on("disconnect", () => {
-  console.log(`A user disconnected:`);
+httpServer.listen(socketPort, () => {
+  console.log(`Socket.IO server listening on port ${socketPort}`);
+});
+
+
+
+app.listen(httpPort, () => {
+  console.log(`HTTP server listening on port ${httpPort}`);
 });

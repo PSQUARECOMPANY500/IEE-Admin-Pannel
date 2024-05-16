@@ -102,6 +102,9 @@ const ClientDropDown = ({
       case "Service History":
         setTextColor("Service History #F8AC1DAD");
         break;
+      case "Elevator details":
+        setTextColor("Elevator details #F8AC1DAD");
+        break;
       case "Call Back History":
         setTextColor("Call Back History #F8AC1DAD");
         break;

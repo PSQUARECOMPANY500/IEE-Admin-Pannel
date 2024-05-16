@@ -4,6 +4,7 @@ import { getClients } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector, useDispatch } from "react-redux";
 import ClientCardView from "../ClientsSubComponent/ClientCardView";
 import ClientTableView from "../ClientsSubComponent/ClientTableView";
+import ClientForm from "../ClientsSubComponent/ClientForm";
 
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
@@ -55,7 +56,11 @@ const Clients = () => {
     }
   };
 
-  return <div className="main-container">{renderClientView()}</div>;
+  return <div className="main-container">
+      <ClientForm/>
+    {renderClientView()}
+
+  </div>;
 };
 
 export default Clients;

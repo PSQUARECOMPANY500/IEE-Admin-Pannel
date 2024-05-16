@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import ClientCallBackHis from "./ClientCallBackHis";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import ClientDropDown from "./ClientDropDown";
 import ClientTableView from "./ClientTableView";
 import "../../Component/ClientsSubComponent/style/clientModal.css";
@@ -12,13 +11,14 @@ import ClientServiceHistory from "./ClientServiceHistory";
 import ClientDocuments from "./ClientDocuments";
 import ClientSOSCall from "./ClientSOSCall";
 import ClientDetailMain from "./ClientDetailMain";
+import ClientElevatorDetails from "./ClientElevatorDetails";
 
 // --------------------Raj -------------------------------------------
 
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const modalRef = useRef();
   // const cardRef = useRef();
-
+  
   // Close modal when clicking outside of it
   const handleClickOutsideModal = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -41,6 +41,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       }))
     );
   };
+
+ 
 
   //When we click outside modal then closing modal
   useEffect(() => {
@@ -82,6 +84,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       id: 2,
       options: [
         "Service History",
+        "Elevator details",
         "Call Back History",
         "Document",
         "SOS Calls",
@@ -116,6 +119,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     switch (dropdowns[2].selectedOption) {
       case "Service History":
         return <ClientServiceHistory />;
+      case "Elevator details":
+        return <ClientElevatorDetails />;
       case "Call Back History":
         return <ClientCallBackHis />;
       case "Document":
