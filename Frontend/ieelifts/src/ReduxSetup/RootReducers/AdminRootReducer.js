@@ -44,6 +44,8 @@ import { engineerRequestedLeaveReducer } from "../Reducers/AdminReducer";
 import { fetchassignedEnggDetailsReducer } from "../Reducers/AdminReducer";
 import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
 import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
+import {getAdminReportDataReducer} from "../Reducers/AdminReducer";
+import { ReportCrouserHandlerReducer} from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -91,6 +93,8 @@ const AdminRootReducer = combineReducers({
   fetchassignedEnggDetailsReducer: fetchassignedEnggDetailsReducer,
   onClickEnggCartEnggLocationReducer: onClickEnggCartEnggLocationReducer,
   onClickEnggPinEnggLocationReducer: onClickEnggPinEnggLocationReducer,
+  getAdminReportDataReducer:getAdminReportDataReducer,
+  ReportCrouserHandlerReducer:ReportCrouserHandlerReducer
 });
 
 export default AdminRootReducer;

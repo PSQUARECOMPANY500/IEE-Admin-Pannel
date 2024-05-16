@@ -82,6 +82,8 @@ export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY";
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
+export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA"
+export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -774,7 +776,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -796,7 +798,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -819,7 +821,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -833,7 +835,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -847,7 +849,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -873,7 +875,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -884,7 +886,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -1000,9 +1002,10 @@ export const updatePassswordAction = async (email, newPassword) => {
   }
 };
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-export const fetchEngDetails = (email, otp) => {
+//---------------------------------------------------------------------------------fetchEngDetailsf-----------------------------------------------------------------------------
+export const fetchEngDetails = () => {
   return async (dispatch) => {
+    console.log(dispatch);
     try {
       const response = await axios.get(
         `${config.apiUrl}/serviceEngg/getAllEngDetails`
@@ -1164,3 +1167,47 @@ export const getNotificationDataAction = async() => {
   };
 
 //-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+//===============================create by aayush for admin report data change end point and pass callback id=============================================================================
+
+export const getadminReportData = (callbackId) => {
+
+  //if any problem occur then call from useEffect and some change are lefts also update end point and check for callback id
+
+
+  return async (dispatch) => {
+    if (!callbackId) {
+      return;
+    }
+
+    try {
+
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getReportForAdmin/${callbackId}`
+      );
+      dispatch({
+        type: GET_ADMIN_REPORT_DATA,
+        payload: response.data,
+      });
+
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+
+
+
+export const ReportCrouserHandler = (Index, IsOpen) => {
+  return async (dispatch) => {
+    dispatch({
+      type: REPORT_CROUSER_HANDLER,
+      payload: { Index, IsOpen }
+    })
+  }
+}

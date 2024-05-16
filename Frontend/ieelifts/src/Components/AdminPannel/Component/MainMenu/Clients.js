@@ -49,7 +49,7 @@ const Clients = () => {
     if (layout === "grid") {
       return <ClientCardView clientData={dataToRender} />;
     } else {
-      return <ClientTableView clientData={dataToRender} />;
+      return <ClientCardView clientData={dataToRender} />;
     }
   };
 

@@ -45,6 +45,8 @@ import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
 import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
 import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
+import {GET_ADMIN_REPORT_DATA  } from "../Actions/AdminActions";
+import {REPORT_CROUSER_HANDLER} from "../Actions/AdminActions";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -774,6 +776,42 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
         engdetails: action.payload,
       };
 
+    default:
+      return state;
+  }
+};
+
+//============================================================================= create by aayush for adminReport data api================================================
+
+const adminReportData= {
+AdminReportData: null,
+
+};
+export const getAdminReportDataReducer = (
+  state =adminReportData,
+  action
+) => {
+  switch (action.type) {
+    case GET_ADMIN_REPORT_DATA:
+      return { ...state, AdminReportData: action.payload }
+    default:
+      return state;
+  }
+};
+
+const ReportCrouserData = {
+  Index: 0,
+  IsOpen: false
+};
+
+export const ReportCrouserHandlerReducer = (state = ReportCrouserData, action) => {
+  switch (action.type) {
+    case REPORT_CROUSER_HANDLER:
+      return {
+        ...state,
+        Index: action.payload.Index,
+        IsOpen: action.payload.IsOpen
+      };
     default:
       return state;
   }

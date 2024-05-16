@@ -3,13 +3,26 @@ import React, { useEffect, useRef, useState } from "react";
 import ServiceEnggCrousel from "../DashboardSubComponent/ServiceEnggCrousel";
 import TaskLocationSection from "../DashboardSubComponent/TaskLocationSection";
 import TicketSection from "../DashboardSubComponent/TicketSection";
+import RepotImage from "../DashboardSubComponent/RepotImage";
+import { useSelector } from "react-redux";
+
 
 const Dashboard = () => {
   const [kanban, setKanban] = useState(true);
   const [ticketUpdate, setTicketUpdate] = useState(true);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(true);
+  const [reportOpen,setReportOpen] = useState(false);
+  const [images, setImages] = useState();
   const ref = useRef(null);
   const ref2 = useRef(null);
+
+  const R= useSelector((state) => {
+    return state?.AdminRootReducer?.ReportCrouserHandlerReducer
+  });
+
+  const AdminReportData = useSelector((state) => {
+    return state?.AdminRootReducer?.getAdminReportDataReducer
+  });
 
   useEffect(() => {
     if (ref.current && shouldScrollToTop) {
@@ -23,11 +36,20 @@ const Dashboard = () => {
     setShouldScrollToTop((prev) => !prev);
     setKanban((prevKanban) => !prevKanban);
   };
+ 
+  useEffect(() => {
+    setImages(AdminReportData?.AdminReportData?.ReportImages[R.Index]?.photo);
+    setReportOpen(R.IsOpen);
+  },[R])
 
+
+ 
   return (
     <>
       <div ref={ref2}  className={`main-container`}>
+
         {/* <div className={`container`}></div> */}
+        {reportOpen&&<RepotImage images={images}/>}
         <div style={{ width: "100%", marginTop: "6%" }}>
           <ServiceEnggCrousel ticketUpdate={ticketUpdate} />
           <TaskLocationSection

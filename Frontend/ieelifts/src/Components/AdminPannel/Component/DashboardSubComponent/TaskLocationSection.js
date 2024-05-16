@@ -10,7 +10,7 @@ import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 import EnggLocation from "./EnggLocationSection/EnggLocation";
-import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
+import { getCurrentDateAssignServiceRequestAction, getadminReportData } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import {
   getFilterLocation,
@@ -19,6 +19,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegStar } from "react-icons/fa";
+import RepotImage from "./RepotImage";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
@@ -35,11 +36,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
-  console.log("rteportdata", RedportData);
 
+
+  
   useEffect(() => {
     const fetchData = () => {
-      // dispatch(getFilterLocation());
+
       dispatch(getEngineerNames());
     };
     fetchData();
@@ -80,6 +82,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+
     if (currentDateServiceRequest) {
       setHandleServiceSelection(
         Array(currentDateServiceRequest.length).fill(false)
@@ -89,6 +92,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   //get current date callback
   const currentDateCallback = useSelector((state) => {
+
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getCurrentDateAssignCalbackAction &&
@@ -103,6 +107,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+
     if (currentDateCallback) {
       setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     }
@@ -224,16 +229,24 @@ const TaskLocationSection = forwardRef((props, ref) => {
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
+
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
+
       setHandleReportData(false);
       setReportData(reportData?.callbackId);
+  
     } else {
       //console.log(reportData)
       setHandleReportData(true);
       setReportData(reportData);
     }
+    //may be change logic in future make by aayush
+    dispatch(getadminReportData(reportData?.callbackId || reportData?.RequestId));
+    
   }
+
+
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
@@ -384,8 +397,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               "service-card-selected"
                             }`}
                             onClick={() => handleReportSectionData(reportData)}
+                      
                           >
-                            <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row" >
                               <div className="ticket-sub-card-row-right">
                                 <h5>Name:</h5>
                               </div>
@@ -468,6 +482,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
+              
                   />
                 </div>
               </div>

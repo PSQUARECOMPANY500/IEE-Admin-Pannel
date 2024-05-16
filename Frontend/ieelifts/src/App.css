@@ -2783,7 +2783,8 @@ footer a:hover {
 
 /* assign ticket modal css starts */
 /*----------------------------------------------------------------------------changes by aayush malviya start from here---------------------------------------------------------------------- */
-.modal-wrapper {
+.modal-wrapper,
+.client-modal-wrapper {
   position: fixed;
   left: 0;
   right: 0;
@@ -2792,6 +2793,30 @@ footer a:hover {
   background: rgba(0, 0, 0, 0.1);
   z-index: 9999;
   width: 100%;
+}
+
+.client-modal-wrapper {
+  text-transform: lowercase;
+}
+
+.modal-container,
+.client-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  z-index: 9999;
+
+}
+
+.client-modal-container {
+  top: 15%;
+  border-radius: 15px;
+  left: 15%;
+  width: 80%;
+
 }
 
 .modal-wrapper1 {
@@ -2805,12 +2830,24 @@ footer a:hover {
   width: 100%;
 }
 
-.child-modal-container {
+.child-modal-container,
+.client-child-modal-container {
   height: 45rem;
   width: 100%;
   position: relative;
   border-radius: 8px;
+
 }
+
+
+
+.client-child-modal-container {
+  text-transform: lowercase;
+  padding: 1.5rem;
+  height: 100%;
+
+}
+
 
 .sub-child-modal-container {
   height: 100%;
@@ -2973,15 +3010,9 @@ footer a:hover {
   justify-content: center;
 }
 
-.modal-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 80%;
-  height: 80%;
-  background: white;
-  z-index: 9999;
-}
+
+
+
 
 .cross-icon {
   right: 17px;
@@ -3828,7 +3859,8 @@ element.style {
 }
 
 .parent-div {
-  z-index: 2;
+  /* zindex 2 to 0 by aayush creating problem in report image crouser */
+  /* z-index: 2; */
   position: relative;
 }
 
@@ -5075,12 +5107,105 @@ element.style {
 .McRoomCard {
   height: 90%;
   width: 40%;
-  border: 1px solid #707070;
   border-radius: 4px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+
+}
+
+
+.single-card {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+
+
+
+}
+
+.single-card img {
+  height: 100%;
+  width: 100%;
+  border-radius: 13px;
+}
+
+.report-img-count {
+  height: 28px;
+  width: 50px;
+  background: #F8AC1D;
+  position: absolute;
+  left: 76%;
+  z-index: 99;
   display: flex;
   align-items: center;
   justify-content: center;
+
+
+
 }
+
+.single-card-overlay {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background: #0000006b;
+  border-radius: 13px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.single-card:hover .single-card-overlay {
+  display: flex;
+  transition: 0.45s ease;
+}
+
+.single-card-overlay img {
+  width: 60%;
+  height: 60%;
+
+}
+
+.report-icon-container {
+  height: 50px;
+  width: 50px;
+  position: relative;
+  background-color: #F8AC1D;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 2px 5px #00000029;
+  justify-content: center;
+  object-fit: cover;
+  object-position: center;
+}
+
+.McRoomCard p {
+  font-size: 0.8rem;
+  white-space: nowrap;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #444444;
+  text-align: center;
+
+}
+
+.last-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
 
 .McRoom h5 {
   font-size: 0.9rem;
@@ -5105,10 +5230,11 @@ element.style {
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
+  overflow-y: auto;
+
 }
 
 .CardShiftCards {
-  height: 15%;
   width: 100%;
   position: relative;
 }
@@ -5174,6 +5300,7 @@ element.style {
   /* justify-content: space-between; */
   flex-direction: column;
   align-items: center;
+
 }
 
 .SparePartChange h5,
@@ -5192,6 +5319,7 @@ element.style {
 .SparepartReqB {
   display: flex;
   width: 100%;
+
 }
 
 .SparePartChangeB h5,
@@ -5220,7 +5348,7 @@ element.style {
   display: flex;
   justify-content: space-between;
   padding: 1rem 8rem 1rem 3rem;
-  height: 17%;
+
 }
 
 .Amount h5 {
@@ -5357,27 +5485,25 @@ element.style {
 }
 
 .RatingButton button {
-  padding: 0rem 0.6rem;
+  width: 3rem;
   text-transform: capitalize;
-  background-color: #f8ac1ddb;
+  background-color: transparent;
   border: 1px solid #f8ac1d;
   opacity: 1;
   border-radius: 3px;
-  text-align: left;
+  text-align: center;
   font-family: "Poppins";
-  /* font: normal normal normal 10px/16px Poppins; */
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
   font-size: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.RatingButton>button:nth-child(2) {
-  padding: 0rem 0.8rem;
-  border: 1px solid #f8ac1d;
-  opacity: 1;
-  background-color: transparent;
-  text-transform: capitalize;
+.RatingButton .active-button {
+  background-color: #f8ac1ddb;
 }
 
 .RatingContainerRow h5 {
@@ -5555,6 +5681,7 @@ element.style {
   padding-left: 24px;
   position: relative;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .service-card-selected {
@@ -6235,20 +6362,401 @@ border: 1px solid #CF352E!important;
 
 }
 
-.addFileName{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+.addFileName {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-.addFileName p {  
+.addFileName p {
   color: #f8ac1d;
   font-size: 0.7rem;
 }
 
 /*-----------------------------------------add engg button and add Engg Modal css in the top bar starts --------------------------------------------- */
+
+
+/* -------------------------------------------------------css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+/* -------------------------------------------------------end of css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
+.client-modal-profile-container {
+  height: 15%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.client-modal-card-container {
+  height: 85%;
+  width: 100%;
+  position: relative;
+  padding: 1rem;
+}
+
+.client-modal-profile-container-left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+.client-modal-profile-container-right {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+
+}
+
+.client-modal-img-container {
+  height: 4.5rem;
+  width: 4.5rem;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.client-modal-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
+
+.client-modal-dropdown {
+  height: 2.5rem;
+  width: 6rem;
+  border: 1px solid #000;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-icon-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+
+.icon-size {
+  font-size: 2rem;
+  color: #000;
+}
+
+.client-modal-drodown-options {
+  min-height: 100px;
+  width: 100%;
+  background: #ffffff;
+  z-index: 9;
+  position: absolute;
+  border: 1px solid #8E8E8E;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+  border-radius: 5px;
+  padding: 1rem;
+
+
+}
+
+.dropdown-icon-container p {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.client-modal-dropdown-option p {
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------make by aayush for report image preview----------------------------------------------------------------------------------- */
+.images {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background-color: #00000029;
+
+
+}
+
+
+
+.image-container {
+  height: 500px;
+  width: 500px;
+  position: relative;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+
+}
+
+.image-container img {
+  height: 100%;
+  width: 100%;
+}
+
+
+.report-image-prev,
+.report-image-next {
+  height: 40px;
+  width: 40px;
+  background: transparent;
+  cursor: pointer;
+  cursor: pointer;
+
+
+}
+
+.report-image-next {
+  margin-left: 1rem;
+}
+
+.report-image-prev {
+  margin-right: 5.6rem;
+}
+
+.report-image-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+}
+
+.image-container-bottom {
+  height: 50px;
+  width: 100%;
+  background-color: #1D1D1D80;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.image-container p {
+  color: #F5F5F5;
+  font-family: 'Poppins';
+  text-align: right;
+  width: 430px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+.learn-next {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+
+}
+
+.learn-next {
+  width: 12rem;
+  height: auto;
+  cursor: pointer;
+}
+
+.learn-next .circlenext {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  background: #F8AC1D;
+  border-radius: 1.625rem;
+  cursor: pointer;
+}
+
+.learn-next .circlenext .icon {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #444444;
+}
+
+.learn-next .circlenext .icon.arrow {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  left: 0.625rem;
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+  tranform: rotate(-90deg);
+}
+
+.learn-next .circlenext .icon.arrow::before {
+  position: absolute;
+  content: "";
+  top: -0.29rem;
+  right: 0.0625rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #444444;
+  border-right: 0.125rem solid #444444;
+  transform: rotate(45deg);
+}
+
+.learn-next .button-text-next {
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  white-space: nowrap;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+
+}
+
+.learn-next:hover .circlenext {
+  width: 60%;
+}
+
+.learn-next:hover .circlenext .icon.arrow {
+  background-color: #444444;
+  transform: translate(1rem, 0);
+}
+
+.learn-next:hover .button-text-next {
+  color: #444444;
+  opacity: 1;
+}
+
+.learn-previous {
+  width: 7.2rem;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  left: -25px;
+}
+
+.learn-previous .circleprev {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  background: #F8AC1D;
+  right: -67px;
+  border-radius: 1.625rem;
+}
+
+.learn-previous .circleprev .iconprev {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: #fff;
+}
+
+.learn-previous .circleprev .iconprev.arrowprev {
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  left: calc(100% - 1.625rem - 0.125rem);
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+}
+
+.learn-previous .circleprev .iconprev.arrowprev::before {
+  position: absolute;
+  content: "";
+  top: -0.29rem;
+  left: -0.009rem;
+  right: 0.1rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #444444;
+  border-right: 0.125rem solid #444444;
+  transform: rotate(-135deg);
+}
+
+.learn-previous .button-text-prev {
+  position: absolute;
+  left: 18px;
+  top: 25%;
+  white-space: nowrap;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 600;
+  transition: all 0.45s cubic-bezier(0.75, 0, 0.076, 1);
+}
+
+.learn-previous:hover .circleprev {
+  width: 100%;
+  right: 0;
+}
+
+.learn-previous:hover .circleprev .iconprev.arrowprev {
+  background: #444444;
+  transform: translate(-1rem, 0);
+}
+
+.learn-previous:hover .button-text-prev {
+  color: #444444;
+  opacity: 1;
+
+}
+
 
 /* -------------------------------------------------------------------------all media query here bro ----------------------------------------------------------------------------------- */
 
@@ -6258,9 +6766,6 @@ border: 1px solid #CF352E!important;
   }
 
 } */
-
-
-
 
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
@@ -6438,6 +6943,7 @@ border: 1px solid #CF352E!important;
 
   .service-card {
     height: 5.5rem;
+    cursor: pointer;
   }
 
   .CarouselButtons {
@@ -6516,7 +7022,7 @@ border: 1px solid #CF352E!important;
   .dropdown-content {
     top: 10%;
   }
-  /* media query for eng page eng css */
+
 
 
 

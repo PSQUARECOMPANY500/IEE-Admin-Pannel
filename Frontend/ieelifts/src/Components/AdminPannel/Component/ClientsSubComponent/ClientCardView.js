@@ -1,28 +1,34 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React from "react";
+import React, { useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
+import ClientModal from "./ClientModal";
 
-const clientCardView = ({ clientData }) => {
+const ClientCardView = ({clientData}) => {
+
+
   function setBoxShadow(type) {
     return type === "warrenty"
       ? "clientCardShadowWarrenty"
       : type === "platinum"
-      ? "clientCardShadowPlatinum"
-      : type === "gold"
-      ? "clientCardShadowGold"
-      : type === "silver"
-      ? "clientCardShadowSilver"
-      : "noMembershipP";
+        ? "clientCardShadowPlatinum"
+        : type === "gold"
+          ? "clientCardShadowGold"
+          : type === "silver"
+            ? "clientCardShadowSilver"
+            : "noMembershipP";
   }
+
+
   return (
     <div className="ClientCatainer">
-      {clientData &&
+  {clientData &&
         clientData.map((client, index) => (
           <div
             key={index}
             className={`clientCard ${setBoxShadow(client.MembershipType)}`}
+
           >
             <div className="clientInfo">
               <div className="clientCards">
@@ -92,8 +98,10 @@ const clientCardView = ({ clientData }) => {
             </div>
           </div>
         ))}
+
+        <ClientModal/>
     </div>
   );
-};
+}
 
-export default clientCardView;
+export default ClientCardView

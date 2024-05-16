@@ -1566,10 +1566,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2489,7 +2489,6 @@ module.exports.fetchDeniedSparePart = async (req, res) => {
 module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
-
     const ReportData = await ReportTable.findOne({ serviceId });
     const Rating=await EnggRating.findOne({ServiceId: serviceId });
 
@@ -2499,7 +2498,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const CabinFloors = {
       IssuesResolved: [],
       IssuesNotResolved: [],
@@ -2518,9 +2516,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const ReportImages = ReportData.subCategoriesphotos;
-
     const sortedData = (keys, arr) => {
       const arrData = arr.filter(
         (question) =>
@@ -2532,7 +2528,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
       );
-
       arrData.forEach((item) => {
         if (item.questionResponse.isResolved) {
           keys.IssuesResolved.push(item);
@@ -2547,7 +2542,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         ) {
           keys.SparePartsChanged.push(item);
         }
-
         if (
           item.questionResponse.isSparePartRequest &&
           item.questionResponse.sparePartDetail.sparePartsType !== "" &&
@@ -2563,10 +2557,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         acc[item.subcategoryname] = [];
       }
       acc[item.subcategoryname].push(item);
-
       return acc;
     }, {});
-
     Object.keys(transformedData).forEach((key) => {
       if (key === "M/C Room") {
         sortedData(MCRoom, transformedData[key]);
@@ -2578,7 +2570,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         sortedData(PitArea, transformedData[key]);
       }
     });
-
     const finalReportedData = {
       MCRoom,
       CabinFloors,
@@ -2594,7 +2585,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
     });
   }
 };
-
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2615,3 +2605,9 @@ module.exports.getNotification = async (req, res) => {
     });
   }
 };
+
+
+// by aayush for rating admin=================================
+
+
+ 
