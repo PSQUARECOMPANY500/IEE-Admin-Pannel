@@ -5,10 +5,10 @@ import ClientDropdown from './ClientsReusableComponent/ClientDropdown';
 import TextInputs from './ClientsReusableComponent/TextInput';
 
 const ClientFormDetails = () => {
-    const [clientFormData, setClientFormData] = useState({jon:'',
-    userName:'',phoneNumber:'',alternativeNumber:'',email:'',reference:'',referenceName:''
-// use other fileds 
-});
+    const [clientFormData, setClientFormData] = useState({
+        jon: '',
+        userName: '', phoneNumber: '', alternativeNumber: '', email: '', reference: '', referenceName: ''
+    });
 
     const [click, setClick] = useState({});
     const sourceOfLead = ["Website", "Reference"];
@@ -44,73 +44,53 @@ const ClientFormDetails = () => {
                     <TextInputs
                         label={'JON'}
                         name={'jon'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.jon}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.jon}
                         onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Name'}
                         name={'userName'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.userName}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.userName}
                         onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Phone number'}
                         name={'phoneNumber'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.phoneNumber}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.phoneNumber}
                         onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Alternative number'}
                         name={'alternativeNumber'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.alternativeNumber}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.alternativeNumber}
                         onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Email'}
                         name={'email'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.email}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.email}
                         onBlur={handleClickFalse}
                     />
@@ -122,31 +102,23 @@ const ClientFormDetails = () => {
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Reference'}
                         name={'reference'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.reference}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.reference}
                         onBlur={handleClickFalse}
                     />
                 </div>
                 <div>
-                <TextInputs
+                    <TextInputs
                         label={'Refernce Name'}
                         name={'referenceName'}
-                        // name paste here from useState
-                    
                         onFocus={handleClick}
-                        // same name paste here from useState
                         value={clientFormData.referenceName}
                         onChange={hadleInputChnage}
-                        // name paste here from useState
                         click={click.referenceName}
                         onBlur={handleClickFalse}
                     />

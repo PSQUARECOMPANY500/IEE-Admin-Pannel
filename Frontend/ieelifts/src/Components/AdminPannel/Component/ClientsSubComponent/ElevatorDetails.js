@@ -13,7 +13,7 @@ const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUni
                     <ClientDropdown
                         label={"Pit depth"}
                         options={pitDepth}
-                        onValueChange={() => handleElevatorDetailsChange("pit")}
+                        onValueChange={handleInputValueChange}
                     />
                     <span className="mmBtn mm-btn-possition">mm</span>
                 </div>
@@ -21,19 +21,19 @@ const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUni
                     <ClientDropdown
                         label={"Type"}
                         options={typeOptions}
-                        onValueChange={() => handleElevatorDetailsChange("type")}
+                        onValueChange={handleInputValueChange}
                     />
                 </div>
                 <div>
                     <ClientDropdown
                         label={"Purpose"}
                         options={purpose}
-                        onValueChange={() => handleElevatorDetailsChange("purpose")}
+                        onValueChange={handleInputValueChange}
                     />
                 </div>
                 <div className="capacity-container">
                     <div>
-                        <AnimatedInput label={"Capacity"} name={"courseName"} onValueChange={() => handleInputValueChange("capacity")} />
+                        <AnimatedInput label={"Capacity"} name={"courseName"} onValueChange={handleInputValueChange} />
                     </div>
                     <div>
                         <div className="selector-container">
