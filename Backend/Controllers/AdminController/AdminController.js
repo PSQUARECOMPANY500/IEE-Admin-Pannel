@@ -43,6 +43,7 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
+const Notification = require("../../Modals/NotificationModal/notificationModal");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2600,3 +2601,17 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+module.exports.getNotification = async (req, res) => {
+  try {
+    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+    const response = await Notification.find({Date:now});
+    console.log("response",response)
+    if(response){
+      return res.status(200).json({ status:"sucess", response:response});
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+};

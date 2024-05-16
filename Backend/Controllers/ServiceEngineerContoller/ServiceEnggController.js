@@ -965,6 +965,17 @@ module.exports.validateOtpForClient = async (req, res) => {
         ServiceEnggId,
         JobOrderNumber,
       });
+      const time1 = new Date(response.time).getTime();
+      const date = new Date().getTime();
+
+      console.log("5",time1);
+      console.log("6",date);
+
+
+      console.log('dsds',date-time1);
+
+
+
       if (response) {
         return res.status(200).json({ success: true });
       } else {
@@ -986,6 +997,8 @@ module.exports.generateOtpForClient = async (req, res) => {
   try {
     const { ServiceEnggId, JobOrderNumber, PhoneNumber } = req.body;
 
+    const date = new Date().toISOString();
+
     if (ServiceEnggId && JobOrderNumber && PhoneNumber) {
       const otp = Math.floor(1000 + Math.random() * 9000);
 
@@ -994,14 +1007,8 @@ module.exports.generateOtpForClient = async (req, res) => {
         otp: otp,
         ServiceEnggId: ServiceEnggId,
         JobOrderNumber: JobOrderNumber,
+        time: date
       });
-      if (response) {
-        const timer = 5 * 60000;
-
-        setTimeout(async () => {
-          await OtpDetails.findByIdAndDelete({ _id: response._id });
-        }, timer);
-      }
       // Prepare data and config for the API request
 
       const apiKey = process.env.MESSAGE_API_KEY;
@@ -1033,7 +1040,7 @@ module.exports.generateOtpForClient = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in generateOtpForClient" });

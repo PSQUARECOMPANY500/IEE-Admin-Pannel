@@ -13,12 +13,10 @@ const OtpSchema = new Schema({
     JobOrderNumber: {
         type: String,
         required: true,
+    },
+    time:{
+        type: String,
     }
-    // createdAt: {
-        // type: Date,
-        // default: Date.now,
-        // expires: 300, // OTP expires in 5 minutes (300 seconds)
-    //   },
 });
 
 OtpSchema.index({ email: 1, createdAt: 1 });

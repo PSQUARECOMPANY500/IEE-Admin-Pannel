@@ -4224,7 +4224,7 @@ element.style {
 
 .notification-data {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 8px;
   padding: 10px 0px;
@@ -4249,9 +4249,11 @@ element.style {
 
 .notification-buttons-operations {
   display: flex;
+  justify-content: space-between;
   font-size: 0.8rem;
   font-weight: 500;
   gap: 8px;
+  width: 100%;
 }
 
 .noti-dec-time p:first-child {
@@ -4263,19 +4265,26 @@ element.style {
   font-size: 0.7rem;
   font-weight: 500;
 }
+.noti-dec-time p:nth-child(3) {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
 
-.notification-buttons-operations p {
+.notification-buttons-operations p:first-child {
   background: #ffff;
   color: #343434;
-  padding: 2px 6px;
+  padding: 3px 15px;
   border-radius: 5px;
   font-size: 0.7rem;
   cursor: pointer;
   border: 1px solid #f8ac1d;
   font-weight: 500;
 }
+.notification-buttons-operations p:nth-child(2){
+  font-size: 10px;
+}
 
-.notification-buttons-operations p:hover {
+.notification-buttons-operations p:first-child:hover {
   background: #f8ac1d;
 }
 
@@ -6648,3 +6657,10 @@ a[href^="http://maps.google.com/maps"]{display:none !important}
   }
 }
   /* select department css ends */
+
+
+  .user-notification-image .icon-styling {
+    border: 1px solid #444444;
+    border-radius: 50%;
+    padding: 0px 9px;
+}

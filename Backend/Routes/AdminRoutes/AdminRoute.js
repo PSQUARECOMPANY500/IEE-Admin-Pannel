@@ -150,6 +150,6 @@ router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
 router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
 router.post("/updatePassword",adminContoller.updatePassword);
 
-
+router.get("/getNotification",adminContoller.getNotification)
 
 module.exports = router;

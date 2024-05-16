@@ -17,6 +17,7 @@
     "express": "^4.18.2",
     "fast-two-sms": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
     "mongoose-autopopulate": "^1.1.0",
