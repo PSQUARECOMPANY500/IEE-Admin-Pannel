@@ -24,26 +24,16 @@ const ClientMembershipDocument = () => {
       <hr className='client-form-hr' />
       <div className='client-document-child-wrapper client-form-input-wrapper'>
         <div>
-
           <FileUploader label={"Signed Quotation"} />
         </div>
         <div>
-          <AnimatedInput
-            label={"Payment Form"}
-            name={"courseName"}
-          />
+        <FileUploader label={"Payment Form"}  />
         </div>
         <div>
-          <AnimatedInput
-            label={"Check form"}
-            name={"courseName"}
-          />
+        <FileUploader label={"Cheque form"} />
         </div>
         <div>
-          <AnimatedInput
-            label={"Sales Order"}
-            name={"courseName"}
-          />
+        <FileUploader label={"Sales Order"}  />
         </div>
       </div>
     </div>

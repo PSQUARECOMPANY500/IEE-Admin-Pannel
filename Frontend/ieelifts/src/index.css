@@ -1971,7 +1971,7 @@ code {
   color: #444444;
   font-size: 1rem;
   font-weight: 500;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 
 }
 
@@ -2011,6 +2011,10 @@ code {
 
 .client-form-button-yellow {
   border: 1px solid #F8AC1D;
+}
+.client-form-button-submit{
+ background-color: #f8ac1d;
+ border: none;
 }
 
 /* next form elevator css */
@@ -2158,10 +2162,12 @@ code {
   grid-row-gap: 1.2rem;
 }
 .level-heading{
-  display: flex;
+  /* display: flex; */
   font-size: 1rem;
   font-weight: 500;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  /* justify-content: space-between; */
 }
 
 
@@ -2189,6 +2195,17 @@ code {
   border-radius: 5px;
   font-size: 0.81rem;
   padding: 0.3rem;
+  margin-left: 7rem;
+}
+.heading-badge-dynamic{
+  background-color: #F8AC1D;
+  width: 7.6rem;
+  height: auto;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 0.81rem;
+  padding: 0.3rem;
+  margin-left: 2.5rem;
 }
 .bg-container{
   display: grid;
@@ -2231,7 +2248,10 @@ font-size: 1rem;
 
 .level-box-container{
   display: flex;
-  
+}
+.level-opening{
+  display: flex;
+  justify-content: space-between;
 }
 
 /* client form dimenstions */
@@ -2296,7 +2316,6 @@ font-size: 1rem;
 .hidden-input{
   display: none;
 }
-
 .dimension-upload-btn{
   width: 10rem;
   height: 2.6rem;
@@ -2312,19 +2331,45 @@ font-size: 1rem;
 .upload-icon{
   height: 15px;
 }
+.file-upload{
+  border-bottom: 1px solid #444444;
+  opacity: 0.4;
+  position: relative;
+  font-size: 0.9rem;
+}
+.file-upload>input{
+  border: none;
+}
+.file-upload-icon{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+.fileInput{
+  display: none;
+}
 
 /*dimentions button*/
 .dimention-btn{
  border: 1px solid #F8AC1D;
 border-radius: 5px;
-width: 14rem;
+width: 13rem;
 height: 2.6rem;
 display: flex;
-justify-content: center;
+justify-content: space-evenly;
 align-items: center;
-font-size: 1rem;
+font-size: 0.9rem;
 margin-top: 1rem;
 color: #444444;
+}
+.generateIcon{
+  height: 16px;
+  width: 16px;
+}
+
+.hide{
+  display: none;
 }
 /* client-dropdown */
 

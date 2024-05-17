@@ -23,12 +23,13 @@ const ClientFormElevatorDetails = ({
     capacity: "",
     capacityUnit: "",
     stops: 0,
-    groundOrStilt: "",
+    groundOrStilt: "G",
     basementSelection: { b1: false, b2: false },
     doorType: "",
     constructionMaterial: "",
     numberOfOpening: "",
-    remarks: ""
+    remarks: "",
+    degree:""
   })
 
   const [degree, setDegree] = useState({
@@ -80,17 +81,16 @@ const ClientFormElevatorDetails = ({
   };
 
   const handleClick = (row, colIndex) => {
-
     setArray((prevArray) => {
       const newArray = [...prevArray];
       newArray[row][colIndex] = !newArray[row][colIndex];
       return newArray;
     });
     let values = Object.values(elevatorDetails.degree).filter((value) => value !== "");
-
     values = ["original", ...values];
 
     const levelValue = Flevel[row];
+    
 
     const updatedElevatorOpenings = elevatorOpenings.map((item) => {
       if (item.level === levelValue) {

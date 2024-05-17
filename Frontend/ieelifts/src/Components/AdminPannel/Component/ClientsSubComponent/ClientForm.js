@@ -36,6 +36,9 @@ const ClientForm = () => {
   const handleNextPage = () => {
     setToggle(false);
   };
+  const handlePreviousPage=()=>{
+    setToggle(true)
+  }
 
   const closeModal = () => {
     dispatch(closeClientModalAction());
@@ -71,7 +74,7 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}
-                      handleNextPage={handleNextPage}
+                      handleAction={handleNextPage}
                     />
                   </div>
                 </div>
@@ -79,6 +82,17 @@ const ClientForm = () => {
                 <div className="client-form-next-container">
                   <ClientFormElevatorDetails setValForDimention={setValForDimention} setFLevel={setFLevel} Flevel={Flevel}/>
                   <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel}/>
+                  <div className="button-container">
+                    <Clientbutton
+                      value={"Back"}
+                      className={"client-form-button-yellow"}
+                      handleAction={handlePreviousPage}
+                    />
+                    <Clientbutton
+                      value={"Submit"}
+                      className={"client-form-button-submit"}
+                    />
+                  </div>
                 </div>
               )}
             </div>
