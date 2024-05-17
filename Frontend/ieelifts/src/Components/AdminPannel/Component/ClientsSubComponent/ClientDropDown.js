@@ -43,8 +43,8 @@ const ClientDropDown = ({
   const setSelectedIconByOption = (option) => {
     let newIcon;
     switch (option) {
-      case "App":
-        newIcon = { type: "App", icon: <FaApple /> };
+      case "Application":
+        newIcon = { type: "Application", icon: <FaApple /> };
         break;
       case "Message":
         newIcon = { type: "Message", icon: <MdMessage /> };

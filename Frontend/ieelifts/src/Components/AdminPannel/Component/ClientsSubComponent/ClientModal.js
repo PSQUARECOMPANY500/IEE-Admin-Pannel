@@ -67,7 +67,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const [dropdowns, setDropdowns] = useState([
     {
       id: 0,
-      options: ["App", "Message", "SMS", "WhatsApp"],
+      options: ["Application", "Message", "SMS", "WhatsApp"],
       pic: MailIcon,
       selectedOption: defaultOptions[0],
       showOptions: false,
