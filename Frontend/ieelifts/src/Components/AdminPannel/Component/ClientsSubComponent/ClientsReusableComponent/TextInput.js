@@ -47,9 +47,10 @@ const TextInput = ({
         style={{
           top:  click ? "-20px":'0px',
           color:  click ? "#1D1D1D":'#1D1D1D',
-          fontWeigh:  click?"500":'300',
+          fontWeight:  click?"500":'300',
           fontSize:click ?"1rem":'1rem',
-          zIndex: '99999'
+          zIndex: '99999',
+          
         }}
 
       >
@@ -57,7 +58,8 @@ const TextInput = ({
       </label>
       <span className="input-highlight" style={{width:click?'100%':'0%'}}></span>
       <span className='input-exist'></span>
-      <p style={{ fontSize:'1rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem'}}>{value}</p>
+      <p style={{ fontSize:'1rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem', }}>{value}</p>
+      
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import TextInputs from "./ClientsReusableComponent/TextInput";
+import ElevatorInput from "./ClientsReusableComponent/ElevatorInput";
 
 const LeftElevatorDetails = ({
   pitDepth,
@@ -52,15 +53,12 @@ const LeftElevatorDetails = ({
     <>
       <div className="client-elevator-input-wrapper-left">
         <div>
-          <TextInputs
+          <ElevatorInput
             label={"Types"}
             name={"types"}
-            onFocus={handleClick}
             value={clientFormData.pitdepth}
             onChange={hadleInputChnage}
-            click={click.pitdepth}
             w="25vw"
-            onBlur={handleClickFalse}
           />
         </div>
 
@@ -70,6 +68,8 @@ const LeftElevatorDetails = ({
               label={"10"}
               w="15vw"
               name={"courseName"}
+              readOnly={true}
+              disabled={true}
               onValueChange={() => handleInputValueChange("capacity")}
             />
           </div>
@@ -152,7 +152,9 @@ const LeftElevatorDetails = ({
         </div>
 
         <div>
-          <TextInputs
+         
+
+          <ElevatorInput
             label={"Contruction Material"}
             name={"contructionmaterial"}
             onFocus={handleClick}

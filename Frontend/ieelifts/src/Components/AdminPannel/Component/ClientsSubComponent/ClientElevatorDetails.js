@@ -8,11 +8,9 @@ import FloorFormElevator from "./FloorFormElevator";
 import { HiArrowLeft } from "react-icons/hi";
 
 const ClientElevatorDetails = () => {
-
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
   const [selectedDegree, setSelectedDegree] = useState("90dL");
-
 
   const array = [
     [true, false],
@@ -20,7 +18,6 @@ const ClientElevatorDetails = () => {
     [true, false],
     [true, false],
   ];
-
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -40,9 +37,6 @@ const ClientElevatorDetails = () => {
     setSelectedDegree(degree);
   };
 
- 
-
-
   return (
     <>
       <div className="client-elevator-main">
@@ -51,22 +45,15 @@ const ClientElevatorDetails = () => {
             {toggle ? (
               <div className="client-form-elevator">
                 <ElevatorFormDetails
-                 handleDegreeSelection={handleDegreeSelection}
-                 degree={selectedDegree}
-                 />
+                  handleDegreeSelection={handleDegreeSelection}
+                  degree={selectedDegree}
+                />
 
                 <div className="client-form-elevator-details">
                   <LeftElevatorDetails
-                    pitDepth={["1000mm", "1500mm", "2000mm"]}
-                    typeOptions={["Type A", "Type B", "Type C"]}
-                    purpose={["Residential", "Commercial", "Industrial"]}
-                    capacity={"1000"}
                     degree={{}}
                     capacityUnit={"Pr"}
                     basementSelection={{ b1: true, b2: false }}
-                    doorType={["Manual", "Automatic"]}
-                    constructionMaterial={["Steel", "Aluminum"]}
-                    numberOfOpenings={["1", "2", "3"]}
                     groundOrStilt={"G"}
                     handleInputValueChange={() => {}}
                     handleElevatorDetailsChange={() => {}}
@@ -93,11 +80,15 @@ const ClientElevatorDetails = () => {
               </div>
             ) : (
               <div>
-                <div className="client-form-heading-arrow" onClick={handleBackPage}>
-                  <HiArrowLeft
-                   className="client-form-left-arrow" />
+                <div className="client-form-heading-arrow">
+                  <div
+                    onClick={handleBackPage}
+                    className="client-form-heading-arrowInner"
+                  >
+                    <HiArrowLeft className="client-form-left-arrow" />
 
-                  <h5>Dimensions</h5>
+                    <h5>Dimensions</h5>
+                  </div>
                   <span className="client-form-heading-line"></span>
                 </div>
                 <div className="client-form-next-floor">

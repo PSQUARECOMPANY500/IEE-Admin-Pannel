@@ -31,6 +31,7 @@ body::-webkit-scrollbar-thumb {
 
 .main-container {
   width: 100%;
+  /* height: 100vh; */
   background: #fff9ef;
   position: relative;
 }
@@ -43,6 +44,7 @@ body::-webkit-scrollbar-thumb {
 main {
   display: flex;
   width: 100%;
+  
   padding: 10px 20px;
   overflow: hidden;
 }
@@ -227,6 +229,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+
 
 }
 
@@ -2805,8 +2808,9 @@ footer a:hover {
   top: 50%;
   left: 50%;
   width: 80%;
-  height: 80%;
+  height: 80vh;
   background: white;
+ 
   z-index: 9999;
 
 }
@@ -6396,6 +6400,7 @@ border: 1px solid #CF352E!important;
 
 .client-modal-card-container {
   height: 85%;
+  /* background-color: slategray; */
   width: 100%;
   border-radius: 0.8rem;
   border: 1px solid #E5E5E5;
@@ -6454,6 +6459,7 @@ border: 1px solid #CF352E!important;
 border-radius: 10px;
   position: relative;
   cursor: pointer;
+  
 }
 
 /*----------------------------- some changes by Raj  ----------*/
@@ -6516,28 +6522,29 @@ border-radius: 10px;
   border-radius: 10px;
   margin-top: 0.5rem;
   border-radius: 5px;
-  padding: 1rem;
+  /* padding: 1rem; */
+  padding:13px 0px;
   
 }
 
 .client-modal-dropdown-option{
   display: flex;
+  /* background-color: lightcyan; */
   gap: 13px;
   align-items: center;
   margin-top: .4rem;
-  width: 7.6rem;
+  width:100%;
   padding-top:0.4rem;
   height: 1.6rem;
   flex-direction: column;
-/* background-color: lightcyan; */
-  margin-left:-8px;
+  /* margin-left:-8px; */
   border-bottom: 1px solid lightgrey;
 
 
 }
 
 .second-dropdown .client-modal-dropdown-option {
-width: 14rem;
+width:100%;
 display: flex;
 flex-direction: column;
 text-align: center;
@@ -6551,6 +6558,19 @@ padding-top: 9px;
 .second-dropdown .client-modal-dropdown-option p{
 border-bottom: none;
 
+}
+
+.second-dropdown .client-modal-dropdown-option:nth-child(1):hover{
+  color:#0F351D;
+}
+.second-dropdown .client-modal-dropdown-option:nth-child(2):hover{
+  color:#FF7F00;
+}
+.second-dropdown .client-modal-dropdown-option:nth-child(3):hover{
+  color:#F8AC1D;
+}
+.second-dropdown .client-modal-dropdown-option:nth-child(4):hover{
+  color:#8E8E8E;
 }
 
 .client-modal-drodown-options p {
@@ -6574,17 +6594,19 @@ text-transform: capitalize;
 
 .third-dropdown .client-modal-drodown-options{
 width: auto;
+padding: 10px 0px;
+width: 11rem;
 }
 
 .third-dropdown .client-modal-dropdown-option{
   display: flex;
   flex-direction: column;
-  width: 9rem;
+  width:100%;
   height: 2rem;
   border-bottom: 1px solid lightgrey;
   padding-top: 9px;
   text-align: center;
-  margin-left: -1px;
+  margin-left:0px;
 
 
 }

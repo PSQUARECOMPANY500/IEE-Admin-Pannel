@@ -1,13 +1,8 @@
 import React from 'react'
 
-const ViewDimensionBtn = ({value, className, handleNextPage}) => {
+const ViewDimensionBtn = ({value, handleNextPage}) => {
     let buttonClassName = 'view-form-button';
 
-     if (value === "Delete") {
-    buttonClassName += ' ' + className; 
-  }else if(value==='Next'){
-    buttonClassName+= ' '+ className;
-  }
 
   return (
     <div>

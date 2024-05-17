@@ -1673,7 +1673,6 @@ code {
 .spare-part-table-container {
   max-height: 77vh;
   overflow-y: auto;
-  /* background-color: lightgreen; */
   width: 100%;
 }
 
@@ -1681,6 +1680,7 @@ code {
   max-height: 60vh;
   overflow-y: auto;
   width: 100%;
+
 }
 
 .client_table-container table,
@@ -1930,14 +1930,13 @@ code {
 
 /*------------ css for elevator page---------------- */
 .add-client-elevator {
-  height: 62%;
+  height: 61%;
   /* width: 100%; */
   position: fixed;
   top: 54%;
   left: 50%;
   width: 75%;
   background: white;
-  /* background-color: lightgray; */
   z-index: 6;
   border-radius: 5px;
   transform: translate(-50%, -50%);
@@ -1948,14 +1947,18 @@ code {
 .client-form-elevator {
   height: 100%;
   width: 100%;
+  /* background-color: lightyellow; */
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50% 15%;
   grid-column-gap: 15rem;
   margin-top: -1rem;
+  /* padding: 0rem 2rem; */
+
 }
 .elevator-form-details {
   padding: 0.5rem 2rem;
+  
 }
 .elevator-form-input-wrapper {
   padding-top: 1rem;
@@ -2037,16 +2040,7 @@ code {
   width:88%;
   margin-left: 2rem;
 }
-.heading-badge180{
-  background-color: #f8ac1d;
-  width: 7.6rem;
-  height: auto;
-  margin-right:3rem;
-  text-align: center;
-  border-radius: 5px;
-  font-size: 0.81rem;
-  padding: 0.3rem;
-}
+
 .basement-form-dimensions {
   padding: 0rem 2rem;
   height: 80%;
@@ -2080,9 +2074,34 @@ code {
   font-weight: 500;
 }
 
+.client-form-heading-arrowInner{
+  display: flex;
+  gap: 0.7rem;
+}
 
+.heading-badge-original{
+ 
+    background-color: #f8ac1d;
+    width: 7.6rem;
+    height: auto;
+    margin-left: 2.7rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.81rem;
+    padding: 0.3rem;
+  
+}
 
-
+.heading-badge180{
+  background-color: #f8ac1d;
+  width: 7.6rem;
+  height: auto;
+  margin-right:3rem;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 0.81rem;
+  padding: 0.3rem;
+}
 
 
 
@@ -2141,6 +2160,7 @@ code {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin-top: 1rem;
   color: #444444;
+  background-color: lightcyan;
 }
 
 .warranty-button {
@@ -2683,6 +2703,81 @@ code {
   opacity: 0.5;
 }
 
+/* --------------ElevatorInput css By Raj--------------------- */
+
+
+.input-elevator{
+  position: relative;
+  z-index: 1;
+  text-transform: capitalize;
+}
+.input-field-elevator {
+  font-size: 18px;
+  width: 100%;
+  border: none;
+  color: #8E8E8E;
+  padding: 5px 0;
+  background-color: transparent;
+  outline: none;
+}
+
+.input-label-elevator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  letter-spacing: 0.91px;
+  color:#A7A7A7;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-size: 0.8rem;
+}
+
+.input-exist-elevator {
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #ccc;
+  transition: all 0.3s ease;
+}
+
+.input-highlight-elevator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #3301526c;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+
+.input-field-elevator:focus ~ .input-label-elevator {
+  top: -20px;
+  font-size: 1rem;
+  font-weight: 500;
+  /* color: #330152; */
+}
+
+.input-field-elevator:focus ~ .input-label-elevator ~ .input-highlight-elevator {
+  width: 100%;
+}
+
+
+
+.input-field:focus {
+  cursor: default;
+}
+
+.input-field-elevator:hover + .input-label-elevator + .input-highlight-elevator {
+  width: 100%;
+  /* opacity: 0.7; */
+}
+
+
+
 /*--------------------------Animated text Input css---------------*/
 
 .input-field {
@@ -2694,6 +2789,8 @@ code {
   background-color: transparent;
   outline: none;
 }
+
+
 
 .input-label {
   position: absolute;
@@ -2727,23 +2824,24 @@ code {
   z-index: 1;
 }
 
-/* .input-field:focus+.input-label {
+/* 
+.input-field:focus+.input-label {
   top: -20px;
   font-size: 1rem;
   font-weight: 500;
   color: #330152;
-}
+} */
 
 .input-field:focus+.input-label+.input-highlight {
   width: 100%;
-}  */
+} 
 
-.input-field:focus ~ .input-label {
+/* .input-field:focus ~ .input-label {
   top: -20px;
   font-size: 1rem;
   font-weight: 500;
   color: #330152;
-}
+} */
 
 .input-field:focus ~ .input-label ~ .input-highlight {
   width: 100%;
@@ -2778,7 +2876,7 @@ input:-webkit-autofill {
   font-size: 1rem;
   font-family: "Poppins";
   color: #1d1d1d;
-  cursor: default;
+  /* cursor: default; */
   font-weight: 400;
 }
 
@@ -2803,6 +2901,7 @@ input:-webkit-autofill {
   height: 1px;
   width: 0;
   background-color: #444444;
+  /* background-color: green; */
   transition: all 0.3s ease;
   opacity: 0.7;
 }
@@ -2815,27 +2914,27 @@ input:-webkit-autofill {
   opacity: 1;
 }
 
-.input-field:focus + .input-label + .input-highlight {
+/* .input-field:focus + .input-label + .input-highlight {
   opacity: 1;
   width: 100%;
-}
+} */
 
 .input-field:focus + .input-label {
   opacity: 1;
 }
 
 .input-field:focus {
-  cursor: none;
+  cursor: default;
 }
 
-.input-field:hover + .input-label + .input-highlight {
+/* .input-field:hover + .input-label + .input-highlight {
   width: 100%;
   opacity: 0.7;
-}
+} */
 
-.input-field:hover + .input-label {
+/* .input-field:hover + .input-label {
   opacity: 1;
-}
+} */
 
 /* ---------------------------------------------------------------------- */
 @media only screen and (min-width: 769px) and (max-width: 1550px) {

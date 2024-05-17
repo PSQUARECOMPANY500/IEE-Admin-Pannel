@@ -53,7 +53,8 @@ const Animated = ({
           color: email && "#330152",
           fontWeigh: email && "500",
           fontSize: email && "1rem",
-          zIndex: '99999'
+          zIndex: '99999',
+         
         }}
       >
         <sub>{label}</sub>
