@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import data from '../../Components/AdminPannel/Component/ClientsSubComponent/DatasClientServiceHis.json';
-import UpArrow from "../../../../../Frontend/ieelifts/src/Assets/Images/94.png"
-import DownArrow from "../../../../../Frontend/ieelifts/src/Assets/Images/95.png"
 import Loader from "../CommonComponenets/Loader";
-
+import CheckBox from "../../Components/AdminPannel/Component/DashboardSubComponent/CheckBox";
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -22,10 +20,11 @@ const getStatusColor = (status) => {
     }
 };
 
-const InformationTable = ({ fieldsToShow }) => {
+const InformationTable = ({ fieldsToShow, maxHeight, selectedRecords, onCheckboxChange, showCheckboxes, selectAll,setSelectAll , handleSelectAllChange }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [records, setRecords] = useState([]);
     const [loading, setLoading] = useState(false);
+
     const recordsPerPage = 10;
     const observer = useRef();
 
@@ -53,13 +52,22 @@ const InformationTable = ({ fieldsToShow }) => {
         if (observer.current) observer.current.observe(document.querySelector(".end-of-table"));
     }, [loading]);
 
-//IntersectionObserver == it allows us to detect when certain elements are visible in our viewport,
+    const handleCheckboxChange = (index) => {
+        const newSelectedRecords = { ...selectedRecords };
+        newSelectedRecords[index] = !selectedRecords[index];
+        onCheckboxChange(index, newSelectedRecords[index]);
 
+        if (!newSelectedRecords[index]) {
+            setSelectAll(false);
+        } else if (Object.values(newSelectedRecords).every(isChecked => isChecked)) {
+            setSelectAll(true);
+        }
+    };
 
     return (
         <div className="spare-part-table_view">
             <div className="spare-part-sub-table-view">
-                <div className="spare-part-table-container" style={{ maxHeight: '60vh', overflowY: 'auto' }} onScroll={(e) => {
+                <div className="spare-part-table-container" style={{ maxHeight: maxHeight, overflowY: 'auto' }} onScroll={(e) => {
                     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) {
                         setCurrentPage(prevPage => prevPage + 1);
                     }
@@ -70,33 +78,29 @@ const InformationTable = ({ fieldsToShow }) => {
                             <tr>
                                 {fieldsToShow.map((field, index) => (
                                     <th key={index}>
-                                        {field === 'Address' ? (
-                                            <div className='dell-table-spare'>
-                                                {field} <div className='dell-icon-table'>
-                                                    <img src={UpArrow} />
-                                                    <img src={DownArrow} />
-                                                </div>
-                                            </div>
-                                        ) : field === 'MEMBERSHIP' ? (
-                                            <div className='dell-table-spare'>
-                                                {field} <div className='dell-icon-table'>
-                                                    <img src={UpArrow} />
-                                                    <img src={DownArrow} />
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            field
-                                        )}
+                                        {field === "Checkbox" ? (
+                                            <CheckBox
+                                                id="select-all-checkbox"
+                                                checked={selectAll}
+                                                handleCheckboxChange={handleSelectAllChange}
+                                            />
+                                        ) : field}
                                     </th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
-                            {records.map((row, index) => (
-                                <tr key={index}>
+                            {records.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
                                     {fieldsToShow.map((field, index) => (
-                                        <td key={index} style={{ textAlign: 'center' }}>
-                                            {field === 'Status' ? (
+                                        <td key={index} style={{ textAlign: field === "Description" ? "start" : "center" }}>
+                                            {field === 'Checkbox' ? (
+                                                <CheckBox
+                                                    id={rowIndex}
+                                                    checked={!!selectedRecords[rowIndex]}
+                                                    handleCheckboxChange={() => handleCheckboxChange(rowIndex)}
+                                                />
+                                            ) : field === 'Status' ? (
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                     <div style={{ width: '9px', height: '9px', borderRadius: '50%', backgroundColor: getStatusColor(row[field]), marginRight: '5px' }}></div>
                                                     <div style={{ lineHeight: '1', whiteSpace: 'nowrap' }}>{row[field]}</div>
@@ -109,7 +113,7 @@ const InformationTable = ({ fieldsToShow }) => {
                                 </tr>
                             ))}
                             {loading && <tr><td colSpan={fieldsToShow.length} style={{ textAlign: 'center' }}>
-                              <Loader/>  </td></tr>}
+                                <Loader /> </td></tr>}
                             {!loading && records.length === 0 && <tr><td colSpan={fieldsToShow.length} style={{ textAlign: 'center' }}>No data available</td></tr>}
 
                         </tbody>

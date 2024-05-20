@@ -8,7 +8,7 @@ const ClientSOSCall = () => {
 
     return (
        <div>
-        <InformationTable fieldsToShow={fieldsToShow}/>
+        <InformationTable fieldsToShow={fieldsToShow} maxHeight="60vh"/>
        </div>
     )
 }

@@ -1647,8 +1647,8 @@ code {
 }
 
 .sosrequest_table_view {
-  margin-top: 7vw;
-  height: 68vh;
+  margin-top: 6vw;
+  height: 78vh;
 }
 
 .sub_table_view,
@@ -1696,7 +1696,7 @@ code {
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 9;
+  z-index: 999;
   height: 4rem;
 }
 
@@ -1705,6 +1705,10 @@ code {
 }
 
 .spare-part-table-container table td:nth-child(7) {
+  /* background-color: lightcyan; */
+  width: 14rem;
+}
+.spare-part-table-container table td:nth-child(8) {
   /* background-color: lightcyan; */
   width: 14rem;
 }
@@ -2160,7 +2164,6 @@ code {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin-top: 1rem;
   color: #444444;
-  background-color: lightcyan;
 }
 
 .warranty-button {
@@ -2260,7 +2263,6 @@ code {
 
 .client-form-next-container {
   display: grid;
-  background-color: lightcyan;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 13rem;
   margin-top: 1rem;

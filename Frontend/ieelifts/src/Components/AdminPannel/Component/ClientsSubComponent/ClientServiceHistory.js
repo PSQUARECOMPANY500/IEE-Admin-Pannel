@@ -13,7 +13,7 @@ const ClientServiceHistory = () => {
    
 //Pass the fieldtoshow as props
     <div>
-      <InformationTable fieldsToShow={fieldsToShow}/>
+      <InformationTable fieldsToShow={fieldsToShow} maxHeight="60vh"/>
     </div>
 
   )
