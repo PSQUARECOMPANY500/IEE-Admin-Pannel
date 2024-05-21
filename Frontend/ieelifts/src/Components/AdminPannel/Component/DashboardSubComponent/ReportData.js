@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+
 import ReportIssue from "./ReportIssue";
 import ReportCrouserData from "./ReportCrouserData";
-import RepotImage from "./RepotImage";
 
 function ReportTable({ handleRedportData, RedportData }) {
   // console.log("preet", RedportData);
@@ -24,3 +24,4 @@ function ReportTable({ handleRedportData, RedportData }) {
 }
 
 export default ReportTable;
+

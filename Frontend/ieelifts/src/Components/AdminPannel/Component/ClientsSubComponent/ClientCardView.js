@@ -5,8 +5,10 @@ import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
 import ClientModal from "./ClientModal";
 
-const ClientCardView = ({clientData}) => {
+const ClientCardView = ({ clientData }) => {
+  const [showClientModal, setShowClientModal] = useState(false);
 
+  const [selectedClient, setSelectedClient] = useState(null)
 
   function setBoxShadow(type) {
     return type === "warrenty"
@@ -20,15 +22,30 @@ const ClientCardView = ({clientData}) => {
             : "noMembershipP";
   }
 
+  // ------------------Raj------------------------------------------------
+
+  //Function to handle open modal
+  const HandleCardClick = (client) => {
+    setSelectedClient(client)
+    setShowClientModal(true)
+
+
+  }
+
+  //Function to handle closing modal
+  const handleCloseModal = () => {
+    setShowClientModal(false)
+  }
+
 
   return (
     <div className="ClientCatainer">
-  {clientData &&
+      {clientData &&
         clientData.map((client, index) => (
           <div
             key={index}
             className={`clientCard ${setBoxShadow(client.MembershipType)}`}
-
+            onClick={() => HandleCardClick(client)}
           >
             <div className="clientInfo">
               <div className="clientCards">
@@ -99,7 +116,13 @@ const ClientCardView = ({clientData}) => {
           </div>
         ))}
 
-        <ClientModal/>
+      {/* --------------------------------Raj--------------------- */}
+
+      <ClientModal
+        showClientModal={showClientModal}
+        handleCloseModal={handleCloseModal}
+        selectedClient={selectedClient} />
+
     </div>
   );
 }

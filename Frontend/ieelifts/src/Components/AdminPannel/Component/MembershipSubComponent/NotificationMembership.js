@@ -65,7 +65,7 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
       >
         <BiSolidSend />
       </div>
-      {/* <div className="notificationOptions">
+      <div className="notificationOptions">
         {showOptions && (
           <div className="options">
             {options.map((option, index) => (
@@ -81,7 +81,7 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
             ))}
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

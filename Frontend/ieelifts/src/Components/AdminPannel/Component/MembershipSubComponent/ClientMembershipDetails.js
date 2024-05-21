@@ -1,5 +1,5 @@
 // // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ClientDetails from "./ClientDetails";
 import ClientMembershipHistory from "./ClientMembershipHistory";
 import ClientCallDetails from "./ClientCallDetails";
@@ -7,7 +7,7 @@ import OfferButton from "./OfferButton";
 import NotificationMembership from "./NotificationMembership";
 import CallButtons from "./CallButtons";
 import { useSelector } from "react-redux";
-import MembershipLoader from "./MembershipLoader"
+import Loader from "../../../CommonComponenets/Loader"
 
 const ClientMembershipDetails = ({ isExpired, dataType }) => {
   const [buttonSelect, setButtonSelect] = useState(false);
@@ -85,7 +85,7 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
         </>
       ) : (
         <>
-        <MembershipLoader/>
+          <Loader />
         </>
       )}
     </div>

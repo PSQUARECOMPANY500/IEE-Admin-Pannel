@@ -19,6 +19,7 @@ import ForgetPasswordOTP from "./Components/AdminPannel/Pages/ForgetPasswordPage
 import EnterNewPassword from "./Components/AdminPannel/Pages/ForgetPasswordPagesComponents/EnterNewPassword";
 import NotFoundPage from "./Components/CommonComponenets/NotFoundPage";
 import SelectDepartment from "./Components/AdminPannel/Pages/SelectDepartment";
+import Sosrequest from "./Components/AdminPannel/Component/MainMenu/Sosrequest";
 
 /* const ServiceAdminRoute = ["Dashboard", "forgetpassword", "enterOTP", "setnewpassword", "Requests", "Memberships", "Engeeniers", "Clients"]
 const CRMRoutes = ["forgetpassword", "enterOTP", "setnewpassword", "Clients"]
@@ -37,14 +38,29 @@ function App() {
       <Routes>
         {/* login routes */}
         <Route
-          path="/" element={
-            !isLoggedIn ? <LoginPage name='select departments'><SelectDepartment /></LoginPage> :
-              (
-                <Navigate to={role === "CRM" ? "/Clients" : "/Dashboard"} />
-              )
+          path="/"
+          element={
+            !isLoggedIn ? (
+              <LoginPage name="select departments">
+                <SelectDepartment />
+              </LoginPage>
+            ) : (
+              <Navigate to={role === "CRM" ? "/Clients" : "/Dashboard"} />
+            )
           }
         />
-        <Route path="/login" element={!isLoggedIn ? <LoginPage><LoginPageInput/></LoginPage> :   <Navigate to={role === "CRM" ? "/Clients" : "/Dashboard"} /> } />
+        <Route
+          path="/login"
+          element={
+            !isLoggedIn ? (
+              <LoginPage>
+                <LoginPageInput />
+              </LoginPage>
+            ) : (
+              <Navigate to={role === "CRM" ? "/Clients" : "/Dashboard"} />
+            )
+          }
+        />
         <Route
           path="/forgetpassword"
           element={
@@ -82,13 +98,11 @@ function App() {
           }
         />
 
-
-
         {/* pages routes */}
         <Route
           path="/Dashboard"
           element={
-            (isLoggedIn && role === "ServiceAdmin") ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Dashboard />
               </Sidebar>
@@ -100,7 +114,7 @@ function App() {
         <Route
           path="/Requests"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Request />
               </Sidebar>
@@ -112,7 +126,7 @@ function App() {
         <Route
           path="/Memberships"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Membership />
               </Sidebar>
@@ -124,7 +138,7 @@ function App() {
         <Route
           path="/Engeeniers"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Enggeniers />
               </Sidebar>
@@ -136,7 +150,7 @@ function App() {
         <Route
           path="/Clients"
           element={
-            (isLoggedIn && (role === "ServiceAdmin" || "CRM")) ? (
+            isLoggedIn && (role === "ServiceAdmin" || "CRM") ? (
               <Sidebar>
                 <Clients />
               </Sidebar>
@@ -145,25 +159,26 @@ function App() {
             )
           }
         />
-
-
-
-
+        <Route
+          path="/Sosrequest"
+          element={
+            isLoggedIn ? (
+              <Sidebar>
+                <Sosrequest />
+              </Sidebar>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
-
-
-
-
-
       </Routes>
-
     </>
   );
 }
 
 export default App;
-
 
 /* import "./App.css";
 import "../src/Assets/LoginPage.css";

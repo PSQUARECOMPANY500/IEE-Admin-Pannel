@@ -104,21 +104,17 @@ const ClientFilterDropdown = () => {
   ];
 
   return (
-
- 
-      <div className="filter-dropdown"  style={{zIndex:'9999999'}}>
+    <div className="filter-dropdown" style={{ zIndex: "9999999" }}>
       <div
         className="child-filter-dropdown"
         style={{
           maxHeight: "1000px",
           width: "200px",
           boxShadow: "rgba(0, 0, 0, 0.05) 0px 6px 24px 0px",
-          position: 'absolute',
-          background:'#fff',
-          marginLeft:'-5rem',
-          marginTop:'0.5rem'
-
-
+          position: "absolute",
+          background: "#fff",
+          marginLeft: "-5rem",
+          marginTop: "0.5rem",
         }}
       >
         {filters.map((filter, index) => (
@@ -163,17 +159,18 @@ const ClientFilterDropdown = () => {
                               : option
                           )
                         }
-                        className={`${filterSelections.some(
-                          (selection) =>
-                            selection.type === filter.type &&
-                            selection.condition ===
-                            (filter.type === "location"
-                              ? option.location
-                              : option)
-                        )
-                          ? "selected-filter"
-                          : ""
-                          }`}
+                        className={`${
+                          filterSelections.some(
+                            (selection) =>
+                              selection.type === filter.type &&
+                              selection.condition ===
+                                (filter.type === "location"
+                                  ? option.location
+                                  : option)
+                          )
+                            ? "selected-filter"
+                            : ""
+                        }`}
                       >
                         {filter.type === "location" ? option.location : option}
                       </li>
@@ -199,10 +196,6 @@ const ClientFilterDropdown = () => {
         ))}
       </div>
     </div>
-
-
-
-
   );
 };
 

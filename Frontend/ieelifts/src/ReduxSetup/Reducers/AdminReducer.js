@@ -715,6 +715,22 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
       return state;
   }
 };
+
+//----------------------------------------------------------------------
+const intialStateClientOpenModal = {
+  isModalOpen: false,
+};
+export const openAddClientModalReducer = (state = intialStateClientOpenModal, action) => {
+  switch (action.type) {
+    case "OPEN_CLIENT_MODAL":
+      return { ...state, isModalOpen: true };
+    case "CLOSE_CLIENT_MODAL":
+      return { ...state, isModalOpen: false };
+    default:
+      return state;
+  }
+};
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //emit reducer for  enggpage task-section
 
