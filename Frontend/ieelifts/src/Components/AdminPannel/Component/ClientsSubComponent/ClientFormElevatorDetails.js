@@ -22,7 +22,7 @@ const ClientFormElevatorDetails = ({
     purpose: "",
     capacity: "",
     capacityUnit: "",
-    stops: 0,
+    stops: "",
     groundOrStilt: "G",
     basementSelection: { b1: false, b2: false },
     doorType: "",
@@ -32,13 +32,16 @@ const ClientFormElevatorDetails = ({
     degree:""
   })
 
+
   const [degree, setDegree] = useState({
     nintyDegreeLeft: "",
     nintyDegreeRight: "",
     oneEightyDegree: "",
   })
+ //handler
 
   const handleElevatorDetailsChange = (fieldName, value) => {
+    console.log(fieldName, value, "in handleElevatorDetailsChange");
     setElevatorDetails(prevDetails => ({
       ...prevDetails,
       [fieldName]: value
@@ -76,6 +79,7 @@ const ClientFormElevatorDetails = ({
 
 
   const handleInputValueChange = (field, newValue) => {
+    console.log(field,newValue);
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue)
   };
@@ -210,7 +214,8 @@ const ClientFormElevatorDetails = ({
           capacity={elevatorDetails.capacity} capacityUnit={elevatorDetails.capacityUnit} handleInputValueChange={handleInputValueChange} basementSelection={elevatorDetails.basementSelection}
           doorType={doorType} constructionMaterial={constructionMaterial} numberOfOpenings={numberOfOpenings}
           handleNumberOfOpenings={handleNumberOfOpenings} degree={degree} handleDegreeSelection={handleDegreeSelection} openings={elevatorDetails.numberOfOpening}
-          handleElevatorDetailsChange={handleElevatorDetailsChange}
+          stops={elevatorDetails.stops}
+          handleElevatorDetailsChange={handleElevatorDetailsChange} 
           groundOrStilt={elevatorDetails.groundOrStilt}
         />
 

@@ -2336,6 +2336,7 @@ font-size: 1rem;
   opacity: 0.4;
   position: relative;
   font-size: 0.9rem;
+  font-family: poppins;
 }
 .file-upload>input{
   border: none;
@@ -2448,6 +2449,7 @@ color: #444444;
   cursor: pointer;
   border-radius: 7px;
 }
+
 
 /*--------------------------Author: Rahul Kumar ------09/05/2024--------------*/
 

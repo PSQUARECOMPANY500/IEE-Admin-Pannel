@@ -7,6 +7,7 @@ const ClientFormDimentions = ({ valforDimention, Flevel }) => {
   const [Basementlen, setBasementLen] = useState();
   const [visible, setVisible] = useState(false);
   const [basementLevel,setBasemnetLevel]=useState([]);
+  console.log(Flevel)
   useMemo(() => {
     let count = 0;
     let bLevels =[];

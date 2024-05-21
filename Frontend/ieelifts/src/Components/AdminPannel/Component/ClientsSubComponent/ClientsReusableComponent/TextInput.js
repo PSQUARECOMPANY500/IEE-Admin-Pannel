@@ -21,9 +21,6 @@ const TextInput = ({
   };
 
   
-
-
-
   return (
     <div className="input-container" style={{ width: `${w}`,}} >
       <input

@@ -3,18 +3,18 @@ import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInput from './ClientsReusableComponent/TextInput';
 
-const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUnit, handleInputValueChange, basementSelection, doorType, constructionMaterial, numberOfOpenings, degree, openings, handleElevatorDetailsChange, groundOrStilt, handleDegreeSelection }) => {
+const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUnit, stops,handleInputValueChange, basementSelection, doorType, constructionMaterial, numberOfOpenings, degree, openings, handleElevatorDetailsChange, groundOrStilt, handleDegreeSelection }) => {
  //state
     const [clientFormData, setClientFormData] = useState({
-       Capacity:'',stops:''
+       Capacity:''
     });
-
     const [click, setClick] = useState({});
 
 //handler
     const hadleInputChnage = (e) => {
         const { name, value } = e.target;
-        setClientFormData({ ...clientFormData, [name]: value })
+        console.log(name,value,"in eele");
+        handleInputValueChange(name, value)
     }
 
     const handleClick = (e) => {
@@ -26,6 +26,7 @@ const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUni
         const { name } = e.target;
         setClick({ ...click, [name]: false });
     }
+   
 
 
     return (
@@ -43,7 +44,7 @@ const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUni
                     <ClientDropdown
                         label={"Type"}
                         options={typeOptions}
-                        onValueChange={handleInputValueChange}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                        onValueChange={handleInputValueChange}                                                                                                                                                                                                                                              
                     />
                 </div>
                 <div>
@@ -85,21 +86,21 @@ const ElevatorDetails = ({ pitDepth, typeOptions, purpose, capacity, capacityUni
                     </div>
                 </div>
                 <div>
-                    <AnimatedInput
+                    {/* <AnimatedInput
                         label={"Stops"}
                         name={"courseName"}
                         onValueChange={handleInputValueChange}
-                    />
-                     {/* <TextInput
+                    /> */}
+                     <TextInput
                         label={'Stops'}
                         name={'stops'}
                         onFocus={handleClick}
-                        value={clientFormData.stops}
+                        value={stops}
                         onChange={hadleInputChnage}
                         click={click.stops}
                         onBlur={handleClickFalse}
                         onValueChange={handleInputValueChange}
-                    /> */}
+                    />
                 </div>
                 <div className="b2b1-container">
                     <div>
