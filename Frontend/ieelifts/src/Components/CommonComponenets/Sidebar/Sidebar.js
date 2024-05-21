@@ -15,6 +15,8 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
 import { useMediaQuery } from "@react-hook/media-query";
+import { MdOutlineEmergency } from "react-icons/md";
+
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
@@ -118,7 +120,8 @@ const Sidebar = ({ children }) => {
       {
         Path: "/Sosrequest",
         name: "sos",
-        icon: <MdEngineering />,
+        icon: <MdOutlineEmergency />
+        ,
       },
     ];
   }
