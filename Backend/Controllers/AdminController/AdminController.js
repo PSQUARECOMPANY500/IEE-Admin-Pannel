@@ -2330,7 +2330,7 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceEnggId: assignment.ServiceId,
           });
-          console.log("rating", Rating);
+          // console.log("rating", Rating);
           return {
             ...assignment,
             rating: Rating.Rating,

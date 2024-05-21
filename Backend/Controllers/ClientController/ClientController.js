@@ -10,36 +10,34 @@ const ReferalSchema = require("../../Modals/ClientDetailModals/ClientReferalSche
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
-const assignService = require("../../Modals/ServiceEngineerModals/AssignServiceRequest")
-const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks")
+const assignService = require("../../Modals/ServiceEngineerModals/AssignServiceRequest");
+const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
-
-
-
+const moment = require("moment");
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
 
-module.exports.getAllReferalByJobOrderNumber = async (req,res) => {
+module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
   try {
     const { jobOrderNumber } = req.params;
 
-    const clientReferal = await ReferalSchema.find({jobOrderNumber});
+    const clientReferal = await ReferalSchema.find({ jobOrderNumber });
 
-    if(!clientReferal || clientReferal.length === 0){
-      return res.status(400).json({message:"No referal found on this JobOrderNumber"})
+    if (!clientReferal || clientReferal.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "No referal found on this JobOrderNumber" });
     }
 
-    return res.status(200).json({message:"Referal Found", clientReferal})
-
-
+    return res.status(200).json({ message: "Referal Found", clientReferal });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle create the Client Referal API
@@ -48,9 +46,13 @@ module.exports.referalUser = async (req, res) => {
   try {
     const { jobOrderNumber, Name, Number, City, Hot } = req.body;
 
-    const checkReferal = await RegisterClientDetails.findOne({PhoneNumber:Number});
-     if (checkReferal) {
-      return res.status(400).json({ message: "Lift is already installed on this number" });
+    const checkReferal = await RegisterClientDetails.findOne({
+      PhoneNumber: Number,
+    });
+    if (checkReferal) {
+      return res
+        .status(400)
+        .json({ message: "Lift is already installed on this number" });
     }
 
     const Referal = await ReferalSchema.create({
@@ -60,12 +62,10 @@ module.exports.referalUser = async (req, res) => {
       City,
       Hot,
     });
-    res
-      .status(201)
-      .json({
-        message: "Referal Created successfully",
-        Referal,
-      });
+    res.status(201).json({
+      message: "Referal Created successfully",
+      Referal,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -128,13 +128,11 @@ module.exports.loginClientwithPhoneNumber = async (req, res) => {
     };
 
     const token = generateToken({ Number });
-      res
-        .status(200)
-        .json({
-          message: "You are logged in Successfully",
-          CLientDetailWithPhoneNumber,
-          token,
-        });
+    res.status(200).json({
+      message: "You are logged in Successfully",
+      CLientDetailWithPhoneNumber,
+      token,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -256,7 +254,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       Description,
       AssignedEng,
       RepresentativeName,
-      RepresentativeNumber
+      RepresentativeNumber,
     } = req.body;
 
     const newCallback = await clientRequestCallback.create({
@@ -268,7 +266,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       Description,
       AssignedEng,
       RepresentativeName,
-      RepresentativeNumber
+      RepresentativeNumber,
     });
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -346,7 +344,7 @@ module.exports.imediateServiceRequest = async (req, res) => {
     } = req.body;
 
     const newRequest = await serviceRequest.create({
-      JobOrderNumber, 
+      JobOrderNumber,
       RequestId,
       RequestDate,
       RequestTime,
@@ -459,22 +457,18 @@ module.exports.verifyClient = (req, res) => {
     const secretKey = "client-secret-key";
     const decoded = jwt.verify(token, secretKey);
     req.user = decoded.user;
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Token verified successfully",
-        user: decoded.user,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Token verified successfully",
+      user: decoded.user,
+    });
   } catch (error) {
     console.error("Error verifying token:", error);
-    res
-      .status(401)
-      .json({
-        success: false,
-        message: "Unauthorized - Invalid token",
-        error: error.message,
-      });
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized - Invalid token",
+      error: error.message,
+    });
   }
 };
 
@@ -491,9 +485,11 @@ module.exports.Rating = async (req, res) => {
       Questions: { Question1, Question2, Question3, Question4, Question5 },
     } = req.body;
 
-    const serviceIdForRating = await engineerRating.findOne({ServiceId});
-    if(serviceIdForRating){
-      return  res.status(400).json({ message: "Rating is Already Done on This Id" });
+    const serviceIdForRating = await engineerRating.findOne({ ServiceId });
+    if (serviceIdForRating) {
+      return res
+        .status(400)
+        .json({ message: "Rating is Already Done on This Id" });
     }
 
     const newRequest = await engineerRating.create({
@@ -510,13 +506,11 @@ module.exports.Rating = async (req, res) => {
         Question5,
       },
     });
-    res
-      .status(201)
-      .json({
-        message: "Engineer rated successfully",
-        success: true,
-        newRequest,
-      });
+    res.status(201).json({
+      message: "Engineer rated successfully",
+      success: true,
+      newRequest,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal server error" });
@@ -556,60 +550,226 @@ module.exports.Rating = async (req, res) => {
   }
 }; */
 
-
-
 //==================================================================
 //==================================================================
 //function to handle fetch Client Service history past and previos history
 
-module.exports.fetchClientServiceHistory = async (req,res) => {
+module.exports.fetchClientServiceHistory = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
     const currentDate = new Date().toLocaleDateString("en-GB");
 
-    const callbackHistory = await assignCallback.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber callbackId Message ServiceProcess Date")
+    const callbackHistory = await assignCallback
+      .find({ JobOrderNumber, ServiceProcess: "completed" })
+      .select(
+        "ServiceEnggId JobOrderNumber callbackId Message ServiceProcess Date"
+      );
 
-  const serviceRequestHistory = await assignService.find({JobOrderNumber , ServiceProcess:'completed'}).select("ServiceEnggId JobOrderNumber RequestId Message ServiceProcess Date")
+    const serviceRequestHistory = await assignService
+      .find({ JobOrderNumber, ServiceProcess: "completed" })
+      .select(
+        "ServiceEnggId JobOrderNumber RequestId Message ServiceProcess Date"
+      );
 
-  const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
+    const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
 
-   // Fetching engineer names for ServiceEnggId
-   const enggIds = combinedHistory.map(entry => entry.ServiceEnggId);
-   const enggNames = await ServiceEnggBasicSchema.find({ EnggId: { $in: enggIds } }).select("EnggId  EnggName");
-   const enggNameMap = enggNames.reduce((acc, curr) => {
-     acc[curr.EnggId] = curr.EnggName;
-     return acc;
-   }, {});
+    // Fetching engineer names for ServiceEnggId
+    const enggIds = combinedHistory.map((entry) => entry.ServiceEnggId);
+    const enggNames = await ServiceEnggBasicSchema.find({
+      EnggId: { $in: enggIds },
+    }).select("EnggId  EnggName");
+    const enggNameMap = enggNames.reduce((acc, curr) => {
+      acc[curr.EnggId] = curr.EnggName;
+      return acc;
+    }, {});
 
-
-       // Fetching report data for each entry in combinedHistory
-    const enrichedHistory = await Promise?.all(combinedHistory?.map(async entry => {
-      const id = entry.callbackId || entry.RequestId;
-      const paymentDetails = await ReportTable.find({ serviceId: id });
-      // console.log('-------------------------------->',paymentDetails[0].paymentDetils);
-      return {
-        ...entry._doc,
-        enggName: enggNameMap[entry.ServiceEnggId],
-        paymentDetails: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].paymentDetils : null
-      };
-    }));
+    // Fetching report data for each entry in combinedHistory
+    const enrichedHistory = await Promise?.all(
+      combinedHistory?.map(async (entry) => {
+        const id = entry.callbackId || entry.RequestId;
+        const paymentDetails = await ReportTable.find({ serviceId: id });
+        // console.log('-------------------------------->',paymentDetails[0].paymentDetils);
+        return {
+          ...entry._doc,
+          enggName: enggNameMap[entry.ServiceEnggId],
+          paymentDetails:
+            paymentDetails && paymentDetails.length > 0
+              ? paymentDetails[0].paymentDetils
+              : null,
+        };
+      })
+    );
 
     // console.log('-------------------------------->', enrichedHistory)
-        
-  const latestDateEntry = enrichedHistory.filter(entry => entry.Date === currentDate);
-  const previousHistory = enrichedHistory.filter(entry => entry.Date !== currentDate);
 
-  const pastHistory = previousHistory.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    const latestDateEntry = enrichedHistory.filter(
+      (entry) => entry.Date === currentDate
+    );
+    const previousHistory = enrichedHistory.filter(
+      (entry) => entry.Date !== currentDate
+    );
 
-  res.status(200).json({ previousHistory: latestDateEntry, pastHistory});
+    const pastHistory = previousHistory.sort(
+      (a, b) => new Date(b.Date) - new Date(a.Date)
+    );
 
+    res.status(200).json({ previousHistory: latestDateEntry, pastHistory });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Error while fetching client service History" });
+    res
+      .status(500)
+      .json({ error: "Error while fetching client service History" });
   }
+};
+
+//==================================================================
+//==================================================================
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//api to get current schedule service for Client
+
+// convert the format for Am/Pm
+
+const convertTo12HourFormat = (time24) => {
+  let [hours, minutes] = time24.split(':');
+
+  hours = parseInt(hours, 10);
+
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+
+  hours = hours % 12 || 12;
+
+  return `${hours}:${minutes} ${ampm}`;
 }
 
 
-//==================================================================
-//==================================================================
+module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> middlaware implemented 
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const currentDate = new Date().toLocaleDateString("en-GB");
+
+    const service = await serviceRequest.find({
+      JobOrderNumber,
+      isDead:false,
+    });
+    const callback = await clientRequestCallback.find({
+      JobOrderNumber,
+      isDead: false,
+    });
+
+    let data = [];
+
+    if (service.length > 0) {
+      data = await Promise.all(
+        service.map(async (item) => {
+          const resp = await assignService.find({
+            RequestId: item.RequestId,
+          });
+          return resp;
+        })
+      );
+    } else if (callback.length > 0) {
+      data = await Promise.all(
+        callback.map(async (item) => {
+          const resp = await assignCallback.find({
+            callbackId: item.callbackId,
+          });
+          return resp;
+        })
+      );
+    } else {
+      return res.status(200).json({
+        status: "complete",
+        message: "Schedule your service",
+        time: null,
+        date: null,
+        liveTracking: false,
+        rating: false,
+      });
+    }
+
+    if (
+      data[0].length === 0 &&
+      (service[0]?.isAssigned === false || callback[0]?.isAssigned === false)
+    ) {
+      return res.status(200).json({
+        status: "success",
+        message: "service Booked",
+        time: null,
+        date: null,
+        liveTracking: false,
+        rating: false,
+      });
+    }
+
+    const rating = await engineerRating.findOne({
+      ServiceId: data[0][0].ServiceId || data[0][0].callbackId,
+    });
+
+    // console.log("preet saii", currentDate , data[0][0].Date, rating);
+    // first case 1:
+    if (
+      (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
+      !rating &&
+      data[0][0].ServiceProcess === "InCompleted"
+    ) {
+      res.status(200).json({
+        status: "success",
+        message: "service Booked",
+        time: null,
+        date: null,
+        liveTracking: false,
+        rating: false,
+      });
+    } else if (
+      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+      !rating &&
+      data[0][0].ServiceProcess === "InCompleted"
+    ) {
+      //case 2:
+      res.status(200).json({
+        status: "success",
+        message:
+          currentDate === data[0][0].Date
+            ? `Service Today at ${convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0])}`
+            : "service Booked",
+        time: data[0][0].Slot,
+        date: data[0][0].Date,
+        liveTracking: currentDate === data[0][0].Date ? true : false,
+        rating: false,
+      });
+    } else if (
+      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+      !rating &&
+      data[0][0].ServiceProcess === "completed"
+    ) {
+      //case 3
+      res.status(200).json({
+        status: "success",
+        message: "Service Completed",
+        time: data[0][0].Slot,
+        date: data[0][0].Date,
+        liveTracking: false,
+        rating: true,
+      });
+    } else {
+      res.status(200).json({
+        status: "complete",
+        message: "Schedule your service",
+        time: null,
+        date: null,
+        liveTracking: false,
+        rating: false,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Error while fetching current active client service" });
+  }
+};
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------

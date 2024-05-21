@@ -382,14 +382,14 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    console.log(
-      "enngglocation serviceid ",
-      ServiceEnggId,
-      " latitude ",
-      latitude,
-      " longitute ",
-      longitude
-    );
+    // console.log(
+    //   "enngglocation serviceid ",
+    //   ServiceEnggId,
+    //   " latitude ",
+    //   latitude,
+    //   " longitute ",
+    //   longitude
+    // );
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -771,7 +771,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
 module.exports.EnggOnSecondHalfBreak = async (req, res) => {
   try {
     const { ServiceEnggId } = req.body;
-    console.log("ServiceEnggId get in backend = ", ServiceEnggId);
+    // console.log("ServiceEnggId get in backend = ", ServiceEnggId);
     if (ServiceEnggId) {
       const time = new Date().toLocaleTimeString("en-IN", {
         timeZone: "Asia/Kolkata",
@@ -1128,7 +1128,7 @@ module.exports.AssignCallbackDataForEnggAppByCallbackId = async (req, res) => {
     const CallbackDetail = await clientRequestImidiateVisit.findOne({
       callbackId: callbackData.callbackId,
     });
-    console.log(callbackData.callbackId);
+    // console.log(callbackData.callbackId);
     if (!CallbackDetail) {
       return res.status(404).json({ message: "no CallbackDetail data found" });
     }
@@ -1196,7 +1196,7 @@ module.exports.getChecklistByIdAndServiceType = async (req, res) => {
   try {
     const { checklistId } = req.params;
 
-    console.log(checklistId);
+    // console.log(checklistId);
 
     const checkList = await CheckList.findById({ _id: checklistId });
 
@@ -1225,7 +1225,7 @@ module.exports.getAllSparePartdetails = async (req, res) => {
       return res.status(401).json({ message: "Spare Part is not Present" });
     }
 
-    console.log(spareParts);
+    // console.log(spareParts);
 
     return res.status(200).json({ spareParts });
   } catch (error) {
@@ -1296,8 +1296,8 @@ module.exports.handleTrackerPostionClientApp = async (req, res) => {
   try {
     const { serviceId, EnggId, JobOrderNumber, Steps } = req.body;
 
-    console.log(serviceId);
-    console.log(Steps);
+    // console.log(serviceId);
+    // console.log(Steps);
 
     const havea = await ReportInfoModel.findOne({
       serviceId: serviceId,
@@ -1576,6 +1576,8 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const getData = await ReportInfoModel.find({ EnggId });
 
+    // console.log("preet",getData[0].Steps);
+
     if (!getData) {
       return res
         .status(404)
@@ -1601,10 +1603,13 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
     const ServiceId = FianlData[0].serviceId;
     const ReEvaluateData =
       FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
+
+      // console.log(ReEvaluateData);
     res.status(200).json({
       ServiceId: ServiceId,
       subCategoriesId: ReEvaluateData.subCategoriesId,
       subcategoryname: ReEvaluateData.subcategoryname,
+      Steps:getData[0].Steps
     });
   } catch (error) {
     console.log(error);
@@ -1623,7 +1628,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
     const { serviceId, paymentdata } = req.body;
 
-    console.log(serviceId, paymentdata);
+    // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
 
     if (!ReportData) {
@@ -1661,7 +1666,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           Date: sparePartRequestDate,
         });
         // return await newSparePartRequest.save();
-        console.log("newSparePartRequest", newSparePartRequest);
+        // console.log("newSparePartRequest", newSparePartRequest);
       })
     );
 
@@ -1681,6 +1686,27 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       await updateTaskStatusServiceRequest.save();
     }
 
+
+    //-------------------------------------------------------------------------------
+    const updateInCallbackTable = await clientRequestImidiateVisit.findOne({
+      callbackId: serviceId,
+    });
+    const updateInServiceTable = await serviceRequest({
+      RequestId: serviceId,
+    })
+
+    if(updateInCallbackTable){
+      updateInCallbackTable.isDead = true;
+      await updateInCallbackTable.save();
+    }
+    if(updateInServiceTable){
+      updateInServiceTable.isDead = true;
+      await updateInServiceTable.save();
+    }
+
+
+
+   
     return res
       .status(200)
       .json({ message: "Report Submitted Successfully", status: "success" });
@@ -2247,7 +2273,7 @@ module.exports.resendPaymentLink = async (req, res) => {
 module.exports.updatePaymentStatus = async (req, res) => {
   try {
     const { serviceId } = req.body;
-    console.log(serviceId);
+    // console.log(serviceId);
     if (!serviceId) {
       return res.status(400).json({ message: "serviceId is required." });
     }

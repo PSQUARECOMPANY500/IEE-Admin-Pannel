@@ -312,7 +312,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
                         const reportData = value;
-
                         return (
                           <div
                           style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}

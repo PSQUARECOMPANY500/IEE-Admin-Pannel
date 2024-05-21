@@ -12,6 +12,8 @@ const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
 const { watchNotifications } = require("./Notification/notification");
 
+const path = require("path");
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +32,13 @@ app.use("/api/admin", AdminRoutes);
 
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
+
+app.use("/api/document/:foldername/:filename",(req,res)=>{
+  const filename = req.params.filename
+  const foldername = req.params.foldername
+  const filepath = path.join(__dirname,`public/${foldername}`,filename)
+  res.sendFile(filepath)
+});
 
 main().catch((err) => console.log(err));
 
