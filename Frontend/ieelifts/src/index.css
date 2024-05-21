@@ -1680,7 +1680,6 @@ code {
   max-height: 60vh;
   overflow-y: auto;
   width: 100%;
-
 }
 
 .client_table-container table,
@@ -1753,8 +1752,6 @@ code {
 .spare-part-table-container::-webkit-scrollbar-track {
   background: 0;
   margin-top: 4rem;
-  /* margin-top: 4rem;
-  margin-bottom: 10px; */
 }
 
 .spare-part-table-container table td {
@@ -1932,10 +1929,9 @@ code {
   overflow: hidden;
 }
 
-/*------------ css for elevator page---------------- */
+/*------------ css for ClientElevatorDetails.js  page by Raj---------------- */
 .add-client-elevator {
   height: 61%;
-  /* width: 100%; */
   position: fixed;
   top: 54%;
   left: 50%;
@@ -1951,18 +1947,14 @@ code {
 .client-form-elevator {
   height: 100%;
   width: 100%;
-  /* background-color: lightyellow; */
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 50% 15%;
   grid-column-gap: 15rem;
   margin-top: -1rem;
-  /* padding: 0rem 2rem; */
-
 }
 .elevator-form-details {
   padding: 0.5rem 2rem;
-  
 }
 .elevator-form-input-wrapper {
   padding-top: 1rem;
@@ -1993,10 +1985,8 @@ code {
   cursor: pointer;
   transition: all ease-in-out 0.3s;
 }
-.view-form-button:hover{
-  background-color:#f8ac1d;
- 
-
+.view-form-button:hover {
+  background-color: #f8ac1d;
 }
 .client-elevator-input-wrapper-left {
   display: grid;
@@ -2040,77 +2030,98 @@ code {
   height: 2rem;
 }
 
-.Elevator-Opening-Selection{
-  width:88%;
+.Elevator-Opening-Selection {
+  width: 88%;
   margin-left: 2rem;
 }
 
+
+
+/*------- ClientElevatorForm CSS by Raj --------- */
+
+.client-elevatorform-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 10rem;
+  margin-top: 1rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.client-elevatorform-main::-webkit-scrollbar {
+  width: 3px;
+  height: 20px;
+}
+
+.client-elevatorform-main::-webkit-scrollbar-thumb {
+  background: #f8ac1d;
+  border-radius: 4px;
+
+}
+.delhi {
+  margin-top: 4vw;
+}
+.patna{
+  height: 80vh;
+  margin-bottom: -22rem;
+
+}
 .basement-form-dimensions {
   padding: 0rem 2rem;
   height: 80%;
   margin-bottom: -13rem;
-}
-.client-form-next-floor {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-column-gap: 13rem;
-  margin-top: 2rem;
-}
-.client-form-heading-arrow{
+
+} 
+
+.client-form-heading-arrow {
   display: flex;
   margin-top: 2rem;
-  gap:0.7rem;
+  gap: 0.7rem;
   text-transform: capitalize;
   align-items: center;
 }
-.client-form-heading-arrow h5{
+.client-form-heading-arrow h5 {
   font-size: 1.2rem;
-  color:#1D1D1D;
+  color: #1d1d1d;
 }
-.client-form-heading-line{
-  width:90%;
-  height:0.5px;
-  background-color:#8E8E8E;
+.client-form-heading-line {
+  width: 90%;
+  height: 0.5px;
+  background-color: #8e8e8e;
 }
-.client-form-left-arrow{
-  font-size:1.7rem;
+.client-form-left-arrow {
+  font-size: 1.7rem;
   cursor: pointer;
   font-weight: 500;
 }
 
-.client-form-heading-arrowInner{
+.client-form-heading-arrowInner {
   display: flex;
   gap: 0.7rem;
 }
 
-.heading-badge-original{
- 
-    background-color: #f8ac1d;
-    width: 7.6rem;
-    height: auto;
-    margin-left: 2.7rem;
-    text-align: center;
-    border-radius: 5px;
-    font-size: 0.81rem;
-    padding: 0.3rem;
-  
-}
-
-.heading-badge180{
+.heading-badge-original {
   background-color: #f8ac1d;
   width: 7.6rem;
   height: auto;
-  margin-right:3rem;
+  margin-left: 2.7rem;
   text-align: center;
   border-radius: 5px;
   font-size: 0.81rem;
   padding: 0.3rem;
 }
 
+.heading-badge180 {
+  background-color: #f8ac1d;
+  width: 7.6rem;
+  height: auto;
+  margin-right: 3rem;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 0.81rem;
+  padding: 0.3rem;
+}
 
-
-
-/* ---------This Above css for Elevator -------------------------------------- */
+/* --------⇧⇧⇧⇧⇧ This Above css for Elevator -------------------------------------- */
 
 .client-form-container {
   height: 100%;
@@ -2399,7 +2410,6 @@ code {
   margin-top: 2rem;
   color: #444444;
   grid-row-gap: 1.2rem;
-  
 }
 .level-heading {
   display: flex;
@@ -2447,7 +2457,11 @@ code {
   cursor: pointer;
 }
 .level-selector-active {
-  background-color: #F8AC1DAD;
+  background-color: #f8ac1d;
+}
+.client-elevator-main .level-selector-active {
+  background-color: #f8ac1dad;
+  border: none;
 }
 .level-title {
   color: #444444;
@@ -2474,6 +2488,7 @@ code {
 .level-box-container {
   display: flex;
 }
+
 
 /* client form dimenstions */
 
@@ -2520,7 +2535,7 @@ code {
 }
 .dimension-btn-wrapper {
   display: flex;
-  gap:1rem;
+  gap: 1rem;
   justify-content: space-between;
 }
 .dimension-btn > input::file-selector-button {
@@ -2707,8 +2722,7 @@ code {
 
 /* --------------ElevatorInput css By Raj--------------------- */
 
-
-.input-elevator{
+.input-elevator {
   position: relative;
   z-index: 1;
   text-transform: capitalize;
@@ -2717,7 +2731,7 @@ code {
   font-size: 18px;
   width: 100%;
   border: none;
-  color: #8E8E8E;
+  color: #8e8e8e;
   padding: 5px 0;
   background-color: transparent;
   outline: none;
@@ -2728,7 +2742,7 @@ code {
   top: 0;
   left: 0;
   letter-spacing: 0.91px;
-  color:#A7A7A7;
+  color: #a7a7a7;
   transition: all 0.3s ease;
   pointer-events: none;
   font-size: 0.8rem;
@@ -2755,7 +2769,6 @@ code {
   z-index: 1;
 }
 
-
 .input-field-elevator:focus ~ .input-label-elevator {
   top: -20px;
   font-size: 1rem;
@@ -2763,22 +2776,22 @@ code {
   /* color: #330152; */
 }
 
-.input-field-elevator:focus ~ .input-label-elevator ~ .input-highlight-elevator {
+.input-field-elevator:focus
+  ~ .input-label-elevator
+  ~ .input-highlight-elevator {
   width: 100%;
 }
-
-
 
 .input-field:focus {
   cursor: default;
 }
 
-.input-field-elevator:hover + .input-label-elevator + .input-highlight-elevator {
+.input-field-elevator:hover
+  + .input-label-elevator
+  + .input-highlight-elevator {
   width: 100%;
   /* opacity: 0.7; */
 }
-
-
 
 /*--------------------------Animated text Input css---------------*/
 
@@ -2791,8 +2804,6 @@ code {
   background-color: transparent;
   outline: none;
 }
-
-
 
 .input-label {
   position: absolute;
@@ -2834,9 +2845,9 @@ code {
   color: #330152;
 } */
 
-.input-field:focus+.input-label+.input-highlight {
+.input-field:focus + .input-label + .input-highlight {
   width: 100%;
-} 
+}
 
 /* .input-field:focus ~ .input-label {
   top: -20px;

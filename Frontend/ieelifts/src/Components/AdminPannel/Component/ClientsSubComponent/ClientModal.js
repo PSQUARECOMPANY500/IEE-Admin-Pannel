@@ -61,7 +61,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const defaultOptions = {
     0: "Select",
     1: "Warranty",
-    2: "Select",
+    2: "Elevator details",
   };
 
   const [dropdowns, setDropdowns] = useState([
@@ -83,8 +83,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     {
       id: 2,
       options: [
-        "Service History",
         "Elevator details",
+        "Service History",
         "Call Back History",
         "Document",
         "SOS Calls",
@@ -117,10 +117,11 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
   const renderComponent = () => {
     switch (dropdowns[2].selectedOption) {
-      case "Service History":
-        return <ClientServiceHistory />;
       case "Elevator details":
         return <ClientElevatorDetails />;
+      case "Service History":
+        return <ClientServiceHistory />;
+     
       case "Call Back History":
         return <ClientCallBackHis />;
       case "Document":
@@ -128,7 +129,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       case "SOS Calls":
         return <ClientSOSCall />;
       default:
-        return <ClientDetailMain />;
+        return <ClientElevatorDetails />;
     }
   };
 

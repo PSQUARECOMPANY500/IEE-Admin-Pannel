@@ -6394,11 +6394,6 @@ border: 1px solid #CF352E!important;
 
 
 
-
-
-
-
-
 /* -------------------------------------------------------end of css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
 .client-modal-profile-container {
   height: 15%;
@@ -6481,11 +6476,9 @@ border-radius: 10px;
   width: 100%;
   display: flex;
   color: #8E8E8E;
-  /* gap: 1px; */
   align-items: center;
   justify-content: center;
   position: relative;
-  
   text-transform: capitalize;
   padding: 0 5px;
 }
@@ -6495,7 +6488,6 @@ border-radius: 10px;
   margin-left: -1rem;
   align-items: center;
   gap: 0.3rem;
-  /* background-color: lightgreen; */
   
 }
 
@@ -6508,16 +6500,12 @@ border-radius: 10px;
 .dropdown-icon-container p {
   font-size: 0.8rem;
   cursor: pointer;
-  /* margin-left: -5px; */
 }
-
-
 
 .icon-size {
   font-size: 2rem;
   color: #000;
   position: absolute;
-  /* left: 80%; */
 }
 
 /* ------Add Some code by Raj data = 30/4/2024-------------- */
@@ -6533,14 +6521,12 @@ border-radius: 10px;
   border-radius: 10px;
   margin-top: 0.5rem;
   border-radius: 5px;
-  /* padding: 1rem; */
-  padding:13px 0px;
+ 
   
 }
 
 .client-modal-dropdown-option{
   display: flex;
-  /* background-color: lightcyan; */
   gap: 13px;
   align-items: center;
   margin-top: .4rem;
@@ -6548,7 +6534,6 @@ border-radius: 10px;
   padding-top:0.4rem;
   height: 1.6rem;
   flex-direction: column;
-  /* margin-left:-8px; */
   border-bottom: 1px solid lightgrey;
 
 
@@ -6560,11 +6545,9 @@ display: flex;
 flex-direction: column;
 text-align: center;
 margin-top: 0;
-/* margin-left:-2px; */
 height: 2.6rem;
 border-bottom: 1px solid lightgrey;
 padding-top: 9px;
-/* background-color: lightblue; */
 
 }
 
@@ -6616,7 +6599,6 @@ color: #BABABA;
 text-align: center;
 transition: transform 0.1s;
 cursor: pointer;
-/* border-bottom: 1px solid lightgrey; */
 text-transform: capitalize;
 
 }
@@ -6630,7 +6612,7 @@ text-transform: capitalize;
 
 .third-dropdown .client-modal-drodown-options{
 width: auto;
-padding: 10px 0px;
+padding:5px 0px;
 width: 11rem;
 }
 
@@ -6651,16 +6633,6 @@ width: 11rem;
 border-bottom: none;
 }
 
-/* .client-modal-dropdown.third-dropdown .dropdown-icon-container p {
-  margin-left: -1.1rem;
-} */
-
-
-/*---------------  This is for p tag of first dropdown only------------------------- */
-/* .client-modal-dropdown:not(.second-dropdown):not(.third-dropdown) .dropdown-icon-container p {
-  margin-left: -0.7rem;
-
-} */
 
 .green-padding {
   padding: 0.4375rem 1rem;

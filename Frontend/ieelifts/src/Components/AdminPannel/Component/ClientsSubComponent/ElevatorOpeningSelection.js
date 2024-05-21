@@ -1,6 +1,6 @@
 import React from "react";
 
-const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick }) => {
+const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient }) => {
   return (
     <>
       <div className="level-main-container">
@@ -36,6 +36,7 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick }) => {
 
           <div>
             {array.map((row, rowIndex) => {
+              const rI = rowIndex;
               return (
                 <div className="level-selector-parent" key={rowIndex}>
                   {/* Render the heading for each row */}
@@ -43,11 +44,14 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick }) => {
                     {rowIndex === 0 ? "B/W" : `Level${rowIndex}`}
                   </span>
                   {row.map((col, colIndex) => {
+                    const cI = colIndex;
                     return (
                       <span
                         className={`level-selector ${
-                          array[rowIndex][colIndex]
-                            ? "level-selector-active"
+                          array[rI][cI]
+                          ? isClient 
+                            ? "level-selector-active client-active"
+                            : "level-selector-active"
                             : ""
                         }`}
                         onClick={() => handleClick(rowIndex, colIndex)}
@@ -56,6 +60,7 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick }) => {
                     );
                   })}
                 </div>
+        
               );
             })}
           </div>
