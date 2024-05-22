@@ -5,7 +5,7 @@ import { FaApple } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { FaSms } from "react-icons/fa";
 {
-  /* -------------------------------------Raj----------------------------------------- */
+  /* -------------------------------------code by Raj----------------------------------------- */
 }
 const ClientDropDown = ({
   options,
@@ -25,20 +25,20 @@ const ClientDropDown = ({
 
   const [selectedIcon, setSelectedIcon] = useState([]);
 
-//   const cardRef = useRef();
+  //   const cardRef = useRef();
 
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (cardRef.current && !cardRef.current.contains(event.target)) {
-//         toggleOptions();
-//       }
-//     };
+  //   useEffect(() => {
+  //     const handleClickOutside = (event) => {
+  //       if (cardRef.current && !cardRef.current.contains(event.target)) {
+  //         toggleOptions();
+  //       }
+  //     };
 
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [cardRef, toggleOptions]);
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => {
+  //       document.removeEventListener("mousedown", handleClickOutside);
+  //     };
+  //   }, [cardRef, toggleOptions]);
 
   const setSelectedIconByOption = (option) => {
     let newIcon;
@@ -84,20 +84,25 @@ const ClientDropDown = ({
     id === 1 ? "second-dropdown" : id === 2 ? "third-dropdown" : "";
 
   const [textColor, setTextColor] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("");
 
   const handleTextColor = (option) => {
     switch (option) {
       case "Warranty":
         setTextColor("Warranty #0F351D");
+        setBackgroundColor("#D6F8BF");
         break;
       case "Gold":
         setTextColor("Gold #F8AC1D");
+        setBackgroundColor("#FEE2AE");
         break;
       case "Platinum":
         setTextColor("Platinum #FF7F00");
+        setBackgroundColor("#F3DCC6");
         break;
       case "Silver":
         setTextColor("Silver #8E8E8E");
+        setBackgroundColor("#E5E5E5");
         break;
       case "Service History":
         setTextColor("Service History #F8AC1DAD");
@@ -114,10 +119,26 @@ const ClientDropDown = ({
       case "SOS Calls":
         setTextColor("SOS Calls #F8AC1DAD");
         break;
+
       default:
         setTextColor("");
+        setBackgroundColor("");
     }
   };
+
+  // ------ for third dropdown for default selction
+  useEffect(() => {
+    if (id === 2 && selectedOption === "Elevator details") {
+      handleTextColor("Elevator details");
+    }
+    if (id === 1 && selectedOption === "Warranty") {
+      handleTextColor("Warranty");
+      getBackgroundColor("Warranty");
+    }
+
+    handleTextColor(selectedOption);
+  }, [id, selectedOption]);
+
   return (
     <div
       className={`client-modal-dropdown ${dropdownClass}`}
@@ -139,7 +160,10 @@ const ClientDropDown = ({
           {hasSpecialOption ? (
             <span
               className="green-padding"
-              style={{ backgroundColor: getBackgroundColor(selectedOption), marginLeft:"5px" }}
+              style={{
+                backgroundColor: getBackgroundColor(selectedOption),
+                marginLeft: "5px",
+              }}
             >
               {id === 0
                 ? selectedIcon.forEach((data) => {
@@ -177,12 +201,16 @@ const ClientDropDown = ({
             return (
               <div
                 key={index}
-                onClick={(event) => {
+                onClick={() => {
                   handleOptionClick(option);
                   handleTextColor(option);
                   handleOptionClickAndIcon(option);
                 }}
                 className={`client-modal-dropdown-option `}
+                style={{
+                  backgroundColor:
+                    selectedOption === option ? getBackgroundColor(option) : "",
+                }}
               >
                 {id === 0 && <></>}
                 <p

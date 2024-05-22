@@ -3000,6 +3000,8 @@ footer a:hover {
   text-align: start;
 }
 
+
+
 .req-photo-upload-section {
   width: 25%;
   height: 100%;
@@ -6532,7 +6534,6 @@ border-radius: 10px;
   margin-top: 0.5rem;
   border-radius: 5px;
  
-  
 }
 
 .client-modal-dropdown-option{
@@ -6545,7 +6546,6 @@ border-radius: 10px;
   height: 1.6rem;
   flex-direction: column;
   border-bottom: 1px solid lightgrey;
-
 
 }
 
@@ -6618,6 +6618,7 @@ text-transform: capitalize;
 
 
 }
+
 /* -------------------CSS for third-dropdown---------------- */
 
 .third-dropdown .client-modal-drodown-options{

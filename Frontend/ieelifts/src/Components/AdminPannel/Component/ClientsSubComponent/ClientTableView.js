@@ -109,7 +109,7 @@ const ClientTableView = ({ clientData }) => {
                     <td className="JON">{data.JobOrderNumber}</td>
                     <td className="name">{data?.name}</td>
                     <td className="checkbox">{data?.PhoneNumber}</td>
-                    <td className="address">S{data?.Address}</td>
+                    <td className="address">{data?.Address}</td>
                     <td className="callback">
                       {data?.callback ? data?.callback : 0}
                     </td>
