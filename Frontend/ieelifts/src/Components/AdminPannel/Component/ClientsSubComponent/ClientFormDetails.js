@@ -11,10 +11,7 @@ const ClientFormDetails = () => {
     });
 
     const [click, setClick] = useState({});
-    const sourceOfLead = ["Website", "Reference"];
-
-
-
+    const sourceOfLead = ["Website", "Reference","Builder","client","Architect"];
 
     const hadleInputChnage = (e) => {
         const { name, value } = e.target;
@@ -99,6 +96,7 @@ const ClientFormDetails = () => {
 
                     <ClientDropdown label={"Source of Lead"}
                         options={sourceOfLead}
+                        onValueChange={hadleInputChnage}
                     />
                 </div>
                 <div>

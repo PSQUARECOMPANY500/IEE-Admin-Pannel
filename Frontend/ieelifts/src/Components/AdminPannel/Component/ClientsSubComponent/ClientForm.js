@@ -14,8 +14,6 @@ import { useDispatch } from "react-redux";
 
 import { closeClientModalAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-
-
 const ClientForm = () => {
   const dispatch = useDispatch();
   const [valforDimention, setValForDimention] = useState();
@@ -81,7 +79,7 @@ const ClientForm = () => {
               ) : (
                 <div className="client-form-next-container">
                   <ClientFormElevatorDetails setValForDimention={setValForDimention} setFLevel={setFLevel} Flevel={Flevel}/>
-                  <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel}/>
+                  <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel} validate={false}/>
                   <div className="button-container">
                     <Clientbutton
                       value={"Back"}

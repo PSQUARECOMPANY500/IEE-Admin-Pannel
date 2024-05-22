@@ -9,15 +9,15 @@ const ClientFormElevatorDetails = ({
   Flevel,
 }) => {
   const numberOfOpenings = [1, 2, 3];
-  const pitDepth = [100, 200];
-  const purpose = ["Hospital", "Mall"];
+  // const pitDepth = [100, 200];
+  const purpose = ["Hospital", "Automobil","Passenger"];
   const typeOptions = ["gearless", "geared"];
   const doorType = ["option1", "option2"];
   const constructionMaterial = ["option1", "option2"];
 
   const [array, setArray] = useState([]);
   const [elevatorDetails, setElevatorDetails] = useState({
-    pit: "",
+    pitDepth: "",
     type: "",
     purpose: "",
     capacity: "",
@@ -58,7 +58,7 @@ const ClientFormElevatorDetails = ({
     let count = elevatorDetails.stops;
 
     if (elevatorDetails.basementSelection.b2) {
-      level.push("B1", "B2");
+      level.push("Basement 2", "Basement 1");
       count -= 2;
     } else if (elevatorDetails.basementSelection.b1) {
       level.push("B1");
@@ -79,7 +79,7 @@ const ClientFormElevatorDetails = ({
 
 
   const handleInputValueChange = (field, newValue) => {
-    console.log(field,newValue);
+    // console.log(field,newValue);
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue)
   };
@@ -210,7 +210,7 @@ const ClientFormElevatorDetails = ({
       <hr className="client-form-hr" />
 
       <div className="dimenstions-container">
-        <ElevatorDetails pitDepth={pitDepth} typeOptions={typeOptions} purpose={purpose}
+        <ElevatorDetails pitDepth={elevatorDetails.pitDepth} typeOptions={typeOptions} purpose={purpose}
           capacity={elevatorDetails.capacity} capacityUnit={elevatorDetails.capacityUnit} handleInputValueChange={handleInputValueChange} basementSelection={elevatorDetails.basementSelection}
           doorType={doorType} constructionMaterial={constructionMaterial} numberOfOpenings={numberOfOpenings}
           handleNumberOfOpenings={handleNumberOfOpenings} degree={degree} handleDegreeSelection={handleDegreeSelection} openings={elevatorDetails.numberOfOpening}
