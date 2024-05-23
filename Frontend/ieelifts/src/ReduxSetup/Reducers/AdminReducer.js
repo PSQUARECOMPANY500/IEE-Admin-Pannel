@@ -46,6 +46,9 @@ import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
 import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
 import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
 
+
+import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
+
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -792,3 +795,22 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
       return state;
   }
 };
+
+
+//-----------------------------------------------------------------------------------------------------------------
+//Reducer to handle registerclient data form
+const registerClientFormData = {
+  registerClientData: null
+}
+
+export const RegisterClientDataReducer = (state=registerClientFormData, action) => {
+  switch (action.type) {
+    case REGISTER_CLIENT_DATA:
+      return {
+        ...state,registerClientData:action.payload,
+      };
+      default:
+        return state;
+  }
+}
+

@@ -11,10 +11,21 @@ import ClientFormElevatorDetails from "./ClientFormElevatorDetails";
 import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-
 import { closeClientModalAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
+
+import { RegisterClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+
+
 const ClientForm = () => {
+   //state
+  const [allFormData,setAllFormData]=useState({
+    clientFormDetails:{},
+    clientSalesManDetails:{},
+    clientMembershipDocument:{},
+    clientArchitect:{}
+  }); 
   const dispatch = useDispatch();
   const [valforDimention, setValForDimention] = useState();
   const [Flevel,setFLevel]=useState([])
@@ -23,7 +34,7 @@ const ClientForm = () => {
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
-
+ 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -31,9 +42,65 @@ const ClientForm = () => {
     };
   }, []);
 
+  //handler
+  const handleClientFormDetails =(data)=>{
+      setAllFormData((prev)=>({
+        ...prev,
+        clientFormDetails:data
+      }))
+  }
+  const handleClientSalesManDetails=(data)=>{
+    setAllFormData((prev)=>({
+      ...prev,
+      clientSalesManDetails:data
+    }))
+  }
+  const handleClientMembershipDocument=(data)=>{
+    setAllFormData((prev)=>(
+      {
+        ...prev,
+        clientMembershipDocument:data
+      }
+    ))
+  }
+
+  const handleClientArchitect =(data)=>{
+    setAllFormData((prev)=>(
+      {
+        ...prev,
+        clientArchitect:data
+      }
+    ))
+  }
+
+  
+
   const handleNextPage = () => {
     setToggle(false);
+    //-----------------------------
+    console.log("All Form Data---------------:", allFormData.clientMembershipDocument);
+    console.log("All Form Data:", allFormData);
+
+    const formData = new FormData();
+    formData.append("signedQuotation", allFormData.clientMembershipDocument.signedQuotation || '');
+    formData.append("paymentForm", allFormData.clientMembershipDocument.paymentForm || '');
+    formData.append("salesOrder", allFormData.clientMembershipDocument.salesOrder || '');
+    formData.append("chequeForm", allFormData.clientMembershipDocument.chequeForm || '');
+
+
+    const {clientFormDetails,clientArchitect,clientMembershipDocument,clientSalesManDetails} = allFormData
+
+    dispatch(RegisterClientDataAction(clientFormDetails,clientSalesManDetails,clientMembershipDocument,clientArchitect))
+
   };
+
+
+
+
+
+
+
+
   const handlePreviousPage=()=>{
     setToggle(true)
   }
@@ -48,7 +115,7 @@ const ClientForm = () => {
       closeModal();
     }
   };
-
+  // console.log(allFormData)
   return (
     <>
       {clientModalOperation && (
@@ -60,10 +127,10 @@ const ClientForm = () => {
             <div>
               {toggle ? (
                 <div className="client-form-container">
-                  <ClientFormDetails />
-                  <ClientSalesManDetails />
-                  <ClientMembershipDocument />
-                  <ClientArchitect />
+                  <ClientFormDetails onDataChange={handleClientFormDetails} />
+                  <ClientSalesManDetails onDataChange={handleClientSalesManDetails} />
+                  <ClientMembershipDocument onDataChange={handleClientMembershipDocument} />
+                  <ClientArchitect onDataChange={handleClientArchitect} />
                   <div className="button-container">
                     <Clientbutton
                       value={"Delete"}
@@ -72,7 +139,8 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}
-                      handleAction={handleNextPage}
+                      handleAction={handleNextPage}    
+                      // onClick={handleSubmmitEnggData}    
                     />
                   </div>
                 </div>

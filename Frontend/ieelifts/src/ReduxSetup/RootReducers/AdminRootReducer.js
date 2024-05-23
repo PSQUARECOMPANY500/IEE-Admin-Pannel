@@ -45,6 +45,7 @@ import { fetchassignedEnggDetailsReducer } from "../Reducers/AdminReducer";
 import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
 import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
 import { openAddClientModalReducer } from "../Reducers/AdminReducer";
+import { RegisterClientDataReducer } from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -92,7 +93,8 @@ const AdminRootReducer = combineReducers({
   fetchassignedEnggDetailsReducer: fetchassignedEnggDetailsReducer,
   onClickEnggCartEnggLocationReducer: onClickEnggCartEnggLocationReducer,
   onClickEnggPinEnggLocationReducer: onClickEnggPinEnggLocationReducer,
-  openAddClientModalReducer:openAddClientModalReducer
+  openAddClientModalReducer:openAddClientModalReducer,
+  RegisterClientDataReducer:RegisterClientDataReducer
 });
 
 export default AdminRootReducer;

@@ -2606,16 +2606,32 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 
 //post client form controller
 module.exports.postElevatorForm = async(req,res)=>{
+
+  console.log(req.body)
+  console.log(req.files)
+
   try{
       const {
-      clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-      elevatorDetails,dimensions
+        clientFormDetails,clientSalesManDetails,clientMembershipDocument,architectDetails
       } = req.body;
 
+      const membershipDocument = {
+        signedQuotation: req.files.signedQuotation ? req.files.signedQuotation[0].filename: '',
+        paymentForm: req.files.paymentForm ? req.files.paymentForm[0].filename : '',
+        chequeForm: req.files.chequeForm ? req.files.chequeForm[0].filename : '',
+        salesOrder: req.files.salesOrder ? req.files.salesOrder[0].filename : ''
+      };
+      console.log(membershipDocument)
+
       const elevatorFormSchema = new ElevatorFormSchema({
-        clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-        elevatorDetails,dimensions
+        clientFormDetails,clientSalesManDetails,architectDetails,clientMembershipDocument:{
+          signedQuotation: membershipDocument.signedQuotation,
+          paymentForm: membershipDocument.paymentForm,
+          chequeForm: membershipDocument.chequeForm,
+          salesOrder: membershipDocument.salesOrder
+        }
       })
+      
 
      await elevatorFormSchema.save();
 

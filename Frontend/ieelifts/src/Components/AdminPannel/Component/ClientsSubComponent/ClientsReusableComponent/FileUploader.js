@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 
-const FileUploader = ({ label }) => {
+const FileUploader = ({ label,onFileSelect }) => {
   const [fileName, setFileName] = useState(label);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    console.log(file)
+
     if (file) {
-      setFileName(file.name);
+      setFileName(file.name)
+      onFileSelect(file,label);
     } else {
       setFileName(label);
     }

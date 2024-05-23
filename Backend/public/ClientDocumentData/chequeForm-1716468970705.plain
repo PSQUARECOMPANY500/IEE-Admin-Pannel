@@ -1,0 +1,241 @@
+{
+    "checklistName":"Service E1",
+    "subcategories":[
+        {
+            "subcategoryName":"M/C Room",
+            "questions":[
+                {
+                    "questionId":"65e6f701458a4ce49e974ef4",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974ef5",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974ef6",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974ef7",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974ef8",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974ef9",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974efa",
+                    "Response":true
+                }
+            ]
+        },
+         {
+            "subcategoryName":"Cabin, Floors",
+            "questions":[
+                {
+                    "questionId":"65e6f701458a4ce49e974efd",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974efe",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f00",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f01",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f02",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f03",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f04",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f05",
+                    "Response":false
+                }
+            ]
+        },
+         {
+            "subcategoryName":"Cartop ,Shaft",
+            "questions":[
+                {
+                    "questionId":"65e6f701458a4ce49e974f07",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f08",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f09",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0a",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0b",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0c",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0d",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0e",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f0f",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f11",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f12",
+                    "Response":true
+                }
+            ]
+        },
+         {
+            "subcategoryName":"Pit Area",
+            "questions":[
+                {
+                    "questionId":"65e6f701458a4ce49e974f14",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f15",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f16",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f17",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f18",
+                    "Response":true
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f19",
+                    "Response":false
+                },
+                {
+                    "questionId":"65e6f701458a4ce49e974f1a",
+                    "Response":true
+                }
+            ]
+        }
+    ]
+}
+
+
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, './public/uplodes');
+  },
+  filename(req, file, cb) {
+    cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+  },
+});
+
+const uploadImg = multer({ storage:storage}).array("photos",2);
+
+
+
+{
+    "SpearPart":"Landing Door",
+    "subcategoryName":[
+        {
+           "Spearpartname":"Landing header Base plate",
+           "Price":"9500"
+        },
+        {
+           "Spearpartname":"Landing header carriage  plate",
+           "Price":"7200"
+        },
+        {
+           "Spearpartname":"Track roller   big",
+           "Price":"760"
+        },
+        {
+           "Spearpartname":"Track roller   small",
+           "Price":"640"
+        },
+        {
+           "Spearpartname":"Aluminium track",
+           "Price":"7500"
+        },
+        {
+           "Spearpartname":"M/s sill with assembly",
+           "Price":"8200"
+        },
+        {
+           "Spearpartname":"Rope drive pulley",
+           "Price":"420"
+        },
+        {
+           "Spearpartname":"Wire rope to door coupling",
+           "Price":"1280"
+        },
+        {
+           "Spearpartname":"Door shoe",
+           "Price":"680"
+        },
+        {
+           "Spearpartname":"Rcc fastener",
+           "Price":"52"
+        },
+        {
+           "Spearpartname":"Landing door lock assembly",
+           "Price":"3500"
+        },
+        {
+           "Spearpartname":"Landing door panel set",
+           "Price":"17500"
+        },
+        {
+           "Spearpartname":"Lop complete (landing operating panel)",
+           "Price":"1800"
+        },
+        {
+           "Spearpartname":"Lop display",
+           "Price":"440"
+        },
+        {
+           "Spearpartname":"Lop button",
+           "Price":"420"
+        },{
+           "Spearpartname":"Lop wiring",
+           "Price":"820"
+        }
+    ]
+}

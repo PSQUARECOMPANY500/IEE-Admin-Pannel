@@ -87,6 +87,12 @@ export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
 export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
 export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
 
+
+export const REGISTER_CLIENT_DATA = "REGISTER_CLIENT_DATA";
+
+
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1153,3 +1159,32 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 };
 
 // {/armaan-dev}
+
+
+
+//----------------------------------------------------------------------------------------------------
+
+//action to handle registerclient data form
+
+export const RegisterClientDataAction = (clientFormDetails,clientSalesManDetails,clientMembershipDocument,architectDetails) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/registerClientData`,{
+        clientFormDetails,
+        clientSalesManDetails,
+        clientMembershipDocument,
+        architectDetails
+      }
+    );
+
+      dispatch({
+        type: REGISTER_CLIENT_DATA,
+        payload: response.data
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+}

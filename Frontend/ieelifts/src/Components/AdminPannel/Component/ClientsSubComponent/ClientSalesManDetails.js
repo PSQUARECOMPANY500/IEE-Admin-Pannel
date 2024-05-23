@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import TextInput from "./ClientsReusableComponent/TextInput";
 
-const ClientSalesManDetails = () => {
+const ClientSalesManDetails = ({ onDataChange }) => {
   const [clientFormData, setClientFormData] = useState({
     salesmanId: "",
     salesmanName: "",
@@ -15,7 +15,6 @@ const ClientSalesManDetails = () => {
   });
 
   const [click, setClick] = useState({});
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,57 +35,65 @@ const ClientSalesManDetails = () => {
     setClick({ ...click, [name]: false });
   };
 
-const calculateValues = (e) => {
-  const { quotatedPrice , finalPrice , discountInRupees, discountInPercentage,discountAmount } = clientFormData;
-  const contentname = e.target.name;
-  const pricevalue =  Number(e.target.value);
+  const calculateValues = (e) => {
+    const {
+      quotatedPrice,
+      finalPrice,
+      discountInRupees,
+      discountInPercentage,
+      discountAmount,
+    } = clientFormData;
+    const contentname = e.target.name;
+    const pricevalue = Number(e.target.value);
 
-  // console.log(">>>>>>>>>>",contentname, pricevalue)
+    // console.log(">>>>>>>>>>",contentname, pricevalue)
 
-  if(contentname === 'quotatedPrice' && finalPrice > 0){
-    const result = pricevalue - finalPrice;
-    const percentage = (result/pricevalue)*100; 
-    setClientFormData((prev) => ({
-      ...prev,
-      discountInRupees: result,
-      discountInPercentage:percentage
-    }));
-  }else if(contentname === 'finalPrice'){
-    const result = quotatedPrice - pricevalue;
-    const percentage = (result / quotatedPrice)*100;
-    setClientFormData((prev)=>({
-      ...prev,
-      discountInRupees:result,
-      discountInPercentage:percentage
-    }))    
-  }else if(contentname === 'discountInRupees'){
-    const result = quotatedPrice - discountInRupees;
-    const percentage = (discountInRupees/quotatedPrice)*100;
-    console.log("reached inside: ",result,percentage);
-    setClientFormData((prev)=>({
-      ...prev,
-      finalPrice : result,
-      discountInPercentage:percentage
-    }))
-  }else if(contentname === "discountInPercentage" && pricevalue <= 100) {
-    const result = quotatedPrice * (pricevalue/100) 
-    const price = quotatedPrice - result;
-    setClientFormData((prev)=>({  
-      ...prev,
-      discountInRupees:result,
-      finalPrice:price
-    }))
-  }
-  
-  if(contentname==="discountAmount"){
-    const fAmount = finalPrice-discountAmount;
-    setClientFormData((prev)=>({
-      ...prev,
-      finalAmount:fAmount
-    }))
-  }
+    if (contentname === "quotatedPrice" && finalPrice > 0) {
+      const result = pricevalue - finalPrice;
+      const percentage = (result / pricevalue) * 100;
+      setClientFormData((prev) => ({
+        ...prev,
+        discountInRupees: result,
+        discountInPercentage: percentage,
+      }));
+    } else if (contentname === "finalPrice") {
+      const result = quotatedPrice - pricevalue;
+      const percentage = (result / quotatedPrice) * 100;
+      setClientFormData((prev) => ({
+        ...prev,
+        discountInRupees: result,
+        discountInPercentage: percentage,
+      }));
+    } else if (contentname === "discountInRupees") {
+      const result = quotatedPrice - discountInRupees;
+      const percentage = (discountInRupees / quotatedPrice) * 100;
+      console.log("reached inside: ", result, percentage);
+      setClientFormData((prev) => ({
+        ...prev,
+        finalPrice: result,
+        discountInPercentage: percentage,
+      }));
+    } else if (contentname === "discountInPercentage" && pricevalue <= 100) {
+      const result = quotatedPrice * (pricevalue / 100);
+      const price = quotatedPrice - result;
+      setClientFormData((prev) => ({
+        ...prev,
+        discountInRupees: result,
+        finalPrice: price,
+      }));
+    }
 
-}
+    if (contentname === "discountAmount") {
+      const fAmount = finalPrice - discountAmount;
+      setClientFormData((prev) => ({
+        ...prev,
+        finalAmount: fAmount,
+      }));
+    }
+  };
+  useEffect(() => {
+    onDataChange(clientFormData);
+  }, [clientFormData]);
 
   return (
     <div className="client-salesman-details">
@@ -126,7 +133,8 @@ const calculateValues = (e) => {
             value={clientFormData.quotatedPrice}
             onChange={handleInputChange}
             click={click.quotatedPrice}
-            onBlur={(e)=>{handleClickFalse(e);
+            onBlur={(e) => {
+              handleClickFalse(e);
               calculateValues(e);
             }}
           />
@@ -139,7 +147,8 @@ const calculateValues = (e) => {
             value={clientFormData.finalPrice}
             onChange={handleInputChange}
             click={click.finalPrice}
-            onBlur={(e)=>{handleClickFalse(e);
+            onBlur={(e) => {
+              handleClickFalse(e);
               calculateValues(e);
             }}
           />
@@ -152,7 +161,7 @@ const calculateValues = (e) => {
             value={clientFormData.discountInRupees}
             onChange={handleInputChange}
             click={click.discountInRupees}
-            onBlur={(e)=>{
+            onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
@@ -163,10 +172,15 @@ const calculateValues = (e) => {
             label={"Discount(%)"}
             name={"discountInPercentage"}
             onFocus={handleClick}
-            value={clientFormData.discountInPercentage<0?0:clientFormData.discountInPercentage}
+            value={
+              clientFormData.discountInPercentage < 0
+                ? 0
+                : clientFormData.discountInPercentage
+            }
             onChange={handleInputChange}
             click={click.discountInPercentage}
-            onBlur={(e)=>{handleClickFalse(e);
+            onBlur={(e) => {
+              handleClickFalse(e);
               calculateValues(e);
             }}
           />
@@ -182,7 +196,8 @@ const calculateValues = (e) => {
             value={clientFormData.discountAmount}
             onChange={handleInputChange}
             click={click.discountAmount}
-            onBlur={(e)=>{handleClickFalse(e);
+            onBlur={(e) => {
+              handleClickFalse(e);
               calculateValues(e);
             }}
           />
@@ -195,7 +210,8 @@ const calculateValues = (e) => {
             value={clientFormData.finalAmount}
             onChange={handleInputChange}
             click={click.finalAmount}
-            onBlur={(e)=>{handleClickFalse(e);
+            onBlur={(e) => {
+              handleClickFalse(e);
               calculateValues(e);
             }}
           />

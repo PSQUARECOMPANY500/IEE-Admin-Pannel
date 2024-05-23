@@ -5,6 +5,8 @@ const router = express.Router();
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
+
+const uploadClientData = require("../../Multer/ClientDocumentUpload")
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -154,7 +156,28 @@ router.post("/updatePassword",adminContoller.updatePassword);
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
 
-router.post('/clientForm',adminContoller.postElevatorForm);
+router.post('/registerClientData',uploadClientData.fields([
+  {
+    name: "signedQuotation",
+    maxCount: 1,
+  },
+  {
+    name: "paymentForm",
+    maxCount: 1,
+  },
+  {
+    name: "salesOrder",
+    maxCount: 1,
+  },
+  {
+    name: "chequeForm",
+    maxCount: 1,
+  },
+]),adminContoller.postElevatorForm);  //to do apply multer
+
+
+
+
 router.put('/updateClientForm',adminContoller.putElevatorForm);
 
 module.exports = router;
