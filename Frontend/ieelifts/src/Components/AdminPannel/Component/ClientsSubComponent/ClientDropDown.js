@@ -23,7 +23,11 @@ const ClientDropDown = ({
     selectedOption.includes("Platinum") ||
     selectedOption.includes("Silver");
 
+  console.log("selectedOption", selectedOption);
+
   const [selectedIcon, setSelectedIcon] = useState([]);
+
+  const [warrentyColor, setWarrentyColor] = useState();
 
   //   const cardRef = useRef();
 
@@ -91,6 +95,8 @@ const ClientDropDown = ({
       case "Warranty":
         setTextColor("Warranty #0F351D");
         setBackgroundColor("#D6F8BF");
+        setWarrentyColor("#FF0000");
+
         break;
       case "Gold":
         setTextColor("Gold #F8AC1D");
@@ -101,7 +107,7 @@ const ClientDropDown = ({
         setBackgroundColor("#F3DCC6");
         break;
       case "Silver":
-        setTextColor("Silver #8E8E8E");
+        setTextColor("Silver ");
         setBackgroundColor("#E5E5E5");
         break;
       case "Service History":
@@ -137,6 +143,16 @@ const ClientDropDown = ({
     }
 
     handleTextColor(selectedOption);
+
+    if (selectedOption === "Warranty") {
+      setWarrentyColor("#0F351D");
+    } else if (selectedOption === "Platinum") {
+      setWarrentyColor("#FF7F00");
+    } else if (selectedOption === "Gold") {
+      setWarrentyColor("#F8AC1D");
+    } else if (selectedOption === "Silver") {
+      setWarrentyColor("#8E8E8E");
+    }
   }, [id, selectedOption]);
 
   return (
@@ -221,7 +237,9 @@ const ClientDropDown = ({
                           .toLowerCase()
                           .includes(option.toLowerCase())
                       ) || textColor.split(" ")[0] === option.split(" ")[0]
-                        ? "#F8AC1DAD"
+                        ? id === 1
+                          ? warrentyColor
+                          : "#F8AC1DAD" //change color inside thsi
                         : "inherit",
                   }}
                 >
@@ -246,6 +264,7 @@ const getBackgroundColor = (selectedOption) => {
       return "#F3DCC6";
     case "Silver":
       return "#E5E5E5";
+
     default:
       return "";
   }

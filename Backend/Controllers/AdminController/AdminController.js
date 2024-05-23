@@ -40,6 +40,8 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const ElevatorFormSchema = require("../../Modals/ClientDetailModals/ClientFormSchema");
 
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -2613,7 +2615,7 @@ module.exports.postElevatorForm = async(req,res)=>{
 
      await elevatorFormSchema.save();
 
-res.status(200).json({msg:"data submit successfully" });      
+res.status(200).json({msg:"data submit successfully"});      
 
   }catch(err){
     console.log(err);
@@ -2655,7 +2657,7 @@ module.exports.getNotification = async (req, res) => {
     const response = await Notification.find({Date:now});
     console.log("response",response)
     if(response){
-      return res.status(200).json({ status:"sucess", response:response});
+      return res.status(200).json({ status:"success", response:response});
     }
   } catch (error) {
     return res.status(500).json({
@@ -2668,4 +2670,21 @@ module.exports.getNotification = async (req, res) => {
 // by aayush for rating admin=================================
 
 
- 
+// By Raj for get client modal information -------------↓↓
+
+module.exports.getClientModalInformation = async (req, res) => {
+  try {
+    const {jon} = req.params;
+    const response = await RegisteredElevatorForm.findOne({jon})
+    if(!response){
+      return res.status(404).json({message:"This JON is not found"})
+    }
+
+    res.status(200).json({response})
+
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+}

@@ -160,4 +160,8 @@ router.get("/getNotification",adminContoller.getNotification)/**
 router.post('/clientForm',adminContoller.postElevatorForm);
 router.put('/updateClientForm',adminContoller.putElevatorForm);
 
+// --------------------------Create by Raj-----------------23/05/2024
+
+router.get('/getClientModalInformation/:jon', adminContoller.getClientModalInformation);
+
 module.exports = router;
