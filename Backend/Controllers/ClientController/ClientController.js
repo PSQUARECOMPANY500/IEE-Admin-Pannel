@@ -651,12 +651,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     const currentDate = new Date().toLocaleDateString("en-GB");
 
     const service = await serviceRequest.find({
-      JobOrderNumber,
-      isDead:false,
+      JobOrderNumber
     });
     const callback = await clientRequestCallback.find({
-      JobOrderNumber,
-      isDead: false,
+      JobOrderNumber
     });
 
     let data = [];
@@ -707,6 +705,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     const rating = await engineerRating.findOne({
       ServiceId: data[0][0].ServiceId || data[0][0].callbackId,
     });
+    console.log("rating for testing",rating);
+
 
     // console.log("preet saii", currentDate , data[0][0].Date, rating);
     // first case 1:
@@ -734,14 +734,15 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         message:
           currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0])}`
-            : "service Booked",
-        time: data[0][0].Slot,
+            : currentDate > data[0][0].Date ? "Service Expired" : "Service Booked",
+        time: currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0]) +"-"+ convertTo12HourFormat((data[0][0].Slot[0]).split('-')[1]),
         date: data[0][0].Date,
+        trackingId: data[0][0]?.callbackId || data[0][0]?.ServiceId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
         rating: false,
       });
     } else if (
-      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) && service[0]?.isDead === false,
       !rating &&
       data[0][0].ServiceProcess === "completed"
     ) {
@@ -754,7 +755,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         liveTracking: false,
         rating: true,
       });
-    } else {
+    }  
+    else {
       res.status(200).json({
         status: "complete",
         message: "Schedule your service",
@@ -773,3 +775,67 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+//api to get steps and engg deatil for tracker in client application...
+
+module.exports.getStepsAndEnggDetail = async (req,res) => {
+  try {
+    const {trackerId}  = req.params;
+
+    const getData = await ReportTable.findOne({ serviceId: trackerId });
+
+    const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId: getData.EnggId});
+
+    let data = [];
+
+    const resp = await assignService.findOne({
+      RequestId: trackerId,
+    });
+    const resp1 = await assignCallback.findOne({
+      callbackId: trackerId,
+
+    });
+
+    if(resp && resp != null && resp != undefined) {
+      data = resp;
+    }else if(resp1 && resp1 != null && resp1 != undefined){
+      data = resp1;
+    }
+
+
+console.log(data);
+
+function processSlots(slots) {
+  if (slots.length === 1) {
+      return [slots[0]];
+  } else if (slots.length > 1) {
+      const startTime = slots[0].split('-')[0];
+      const endTime = slots[slots.length - 1].split('-')[1];
+      return [`${startTime}-${endTime}`];
+  }
+  return '';
+}
+
+const calucalteTime = processSlots(data.Slot)
+console.log("Calculating", calucalteTime);
+
+    const responsedata = {
+      enggname: enggDetails.EnggName,
+      enggId: getData.EnggId,
+      enggImage: enggDetails.EnggPhoto,
+      enggPhone: enggDetails.PhoneNumber,
+      slot: convertTo12HourFormat((calucalteTime[0]).split('-')[0]) +"-"+ convertTo12HourFormat((calucalteTime[0]).split('-')[1]),
+    }
+
+    res.status(200).json({status:"success", steps: getData.Steps, EnggDetails: responsedata});
+
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Error while fetching current active client service" })
+  }
+};

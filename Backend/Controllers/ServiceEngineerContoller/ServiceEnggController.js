@@ -1604,12 +1604,12 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
     const ReEvaluateData =
       FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
 
-      // console.log(ReEvaluateData);
+    // console.log(ReEvaluateData);
     res.status(200).json({
       ServiceId: ServiceId,
       subCategoriesId: ReEvaluateData.subCategoriesId,
       subcategoryname: ReEvaluateData.subcategoryname,
-      Steps:getData[0].Steps
+      Steps: getData[0].Steps,
     });
   } catch (error) {
     console.log(error);
@@ -1680,33 +1680,28 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
       await updateTaskStatusCallback.save();
-      ``;
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
       await updateTaskStatusServiceRequest.save();
     }
 
-
     //-------------------------------------------------------------------------------
     const updateInCallbackTable = await clientRequestImidiateVisit.findOne({
       callbackId: serviceId,
     });
-    const updateInServiceTable = await serviceRequest({
+    const updateInServiceTable = await serviceRequest.findOne({
       RequestId: serviceId,
-    })
+    });
 
-    if(updateInCallbackTable){
+    if (updateInCallbackTable) {
       updateInCallbackTable.isDead = true;
       await updateInCallbackTable.save();
     }
-    if(updateInServiceTable){
+    if (updateInServiceTable) {
       updateInServiceTable.isDead = true;
       await updateInServiceTable.save();
     }
 
-
-
-   
     return res
       .status(200)
       .json({ message: "Report Submitted Successfully", status: "success" });
