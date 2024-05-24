@@ -1,17 +1,18 @@
 /**
  * <-----------------------------Author:Rahul Kumar---------------1/05/2024------------------------->
  */
+const { Timestamp } = require('mongodb');
 const mongoose = require('mongoose');
 
 
 const clientForm = new mongoose.Schema({
-    clientDetails: {
+    clientFormDetails: {
         //First part of the form
-        JON: {
+        jon: {
             type: String,
             // unique: true
         },
-        name: {
+        userName: {
             type: String,
             // required: true
         },
@@ -37,58 +38,63 @@ const clientForm = new mongoose.Schema({
             type: String
         }
     },
-    salesManDetails: {
+    clientSalesManDetails: {
         salesmanId: {
-            type: Number,
+            type:String
             // required: true
         },
         salesmanName: {
-            type: String,
+            type:String
             // required: true
-        }
-    },
-    quotation: {
-        quotatedPrice: {
-            type: String,
         },
-        finalPrice: {
-            type: String
-        },
-        discountInRupees: {
-            type: String
+
+        discountAmount: {
+            type:String,
+            // required: true
         },
         discountInPercentage: {
-            type: String
+            type:String,
+            // required: true
         },
-        mdDiscount: {
-            discountAmount: {
-                type: String
-            },
-            finalAmount: {
-                type: String
-            }
-        }
+        discountInRupees: {
+            type:String,
+            // required: true
+        },
+        finalAmount: {
+            type:String,
+            // required: true
+        },
+        finalPrice: {
+            type:String,
+            // required: true
+        },
+        quotatedPrice: {
+            type:String,
+            // required: true
+        },
+    
+
     },
-    clientMembership: {
+    clientMembershipDocument: {
+        selectedMembership:{
         type: String,
         enum: ["Warranty", "Silver", "Gold", "Platnium"],
-        // required: true
+        // required: true}
+    },paymentForm:{
+        type:String,
     },
-    documents: {
-        signedQuotation: {
-            type: String
-        },
-        paymentForm: {
-            type: String
-        },
-        chequeForm: {
-            type: String
-        },
-        salesOrder: {
-            type: String
-        },
+    chequeForm:{
+        type:String
     },
-    architectDetails: {
+    salesOrder:{
+        type:String
+    },
+    signedQuotation:{
+        type:String
+    },
+    },
+    
+    clientArchitect: {
         architectName: {
             type: String,
             // required: true
@@ -101,7 +107,7 @@ const clientForm = new mongoose.Schema({
             type: String,
             // required: true
         },
-        contractorNumber: {
+        name: {
             type: String,
             // required: true
         },
@@ -287,6 +293,8 @@ const clientForm = new mongoose.Schema({
         },
 
     }
+}, {
+    timestamps:true
 })
 
 module.exports = mongoose.model("RegisteredElevatorForm", clientForm);

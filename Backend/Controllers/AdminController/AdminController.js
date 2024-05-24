@@ -2675,7 +2675,7 @@ module.exports.getNotification = async (req, res) => {
 module.exports.getClientModalInformation = async (req, res) => {
   try {
     const {jon} = req.params;
-    const response = await RegisteredElevatorForm.findOne({jon})
+    const response = await RegisteredElevatorForm.findOne({ "clientFormDetails.jon": jon})
     if(!response){
       return res.status(404).json({message:"This JON is not found"})
     }

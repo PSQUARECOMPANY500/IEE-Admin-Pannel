@@ -2857,6 +2857,89 @@ footer a:hover {
 }
 
 
+/* EditEngineerDeatils page css */
+
+.engineer-modal-wrapper {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.381);
+  /* background-color: lightgray; */
+  z-index: 9999;
+  width: 100%;
+}
+
+.engineer-modal-wrapper {
+  text-transform: capitalize;
+}
+
+.engineer-modal-container {
+  /* top: 9%; */
+  border-radius: 15px;
+  left: 10%;
+  width: 80%;
+
+}
+
+.engineer-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25%;
+  height: 46vh;
+  background: white;
+ 
+  z-index: 9999;
+
+}
+
+.engineer-modal-container {
+  /* top: 9%; */
+  border-radius: 15px;
+  /* left: 10%; */
+  /* width: 40%; */
+
+}
+.bigg{
+  width: 100%;
+  position: relative;
+  height: 46vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: lightpink; */
+}
+
+.ttt{
+  display: flex;
+  align-items: center;
+  width: 18vw;
+ /* background-color: lightgray; */
+  justify-content: center;
+ 
+}
+
+.uuu{
+  display: flex;
+  align-items: center;
+  margin-top:1.5rem;
+  gap:10px;
+}
+.edit-engineer-modal{
+  position: absolute;
+  top: 5%;
+  cursor: pointer;
+  left: 88%;
+  font-size: 1.6vw;
+
+}
+
+
+/* --------------------------------------------- */
+
 
 .client-child-modal-container {
   text-transform: lowercase;
@@ -6567,6 +6650,8 @@ margin-top:0;
 
 
 }
+
+
 
 .second-dropdown .client-modal-dropdown-option:nth-child(4){
   border-bottom: none;

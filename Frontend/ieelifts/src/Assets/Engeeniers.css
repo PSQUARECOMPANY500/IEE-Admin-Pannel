@@ -540,6 +540,7 @@ body {
 
 .Icon_Color {
   color: #F8AC1D;
+  cursor: pointer;
 }
 
 .ODetailsColumn h5 {
