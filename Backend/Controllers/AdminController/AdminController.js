@@ -38,6 +38,8 @@ const SparePartTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
+const ElevatorFormSchema = require("../../Modals/ClientDetailModals/ClientFormSchema");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -2590,6 +2592,62 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+/**
+ * <-----------------------------Author: Rahul Kumar---------------------01/05/2024---------->
+ */
+
+//post client form controller
+module.exports.postElevatorForm = async(req,res)=>{
+  try{
+      const {
+      clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
+      elevatorDetails,dimensions
+      } = req.body;
+
+      const elevatorFormSchema = new ElevatorFormSchema({
+        clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
+        elevatorDetails,dimensions
+      })
+
+     await elevatorFormSchema.save();
+
+res.status(200).json({msg:"data submit successfully" });      
+
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error",
+      message:err.message
+    })
+  }
+}
+
+//put request
+
+module.exports.putElevatorForm = async(req,res)=>{
+  try{
+    const {JON} = req.body; 
+    const newData = req.body;
+    console.log(JON) 
+    console.log(newData)
+
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData,{ new: true });
+      console.log(updatedData)
+            if (!updatedData) {
+                return res.status(404).json({ error: 'Data not found' });
+            }
+            res.status(200).json(updatedData);
+           
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error",
+      message:err.message
+    })
+  }
+}
 
 module.exports.getNotification = async (req, res) => {
   try {
