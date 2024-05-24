@@ -1,21 +1,28 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
 import React, { useState, useEffect } from "react";
-import ElevatorOpeningSelection from "./ElevatorOpeningSelection"
+import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
 import ElevatorDetails from "./ElevatorDetails";
 
 const ClientFormElevatorDetails = ({
   setValForDimention,
   setFLevel,
   Flevel,
+  onDataChange,
 }) => {
+  const [elevatorOpenings, setElevatorOpenings] = useState([]);
   const numberOfOpenings = [1, 2, 3];
   // const pitDepth = [100, 200];
-  const purpose = ["Hospital", "Automobil","Passenger"];
+  const purpose = ["Hospital", "Automobil", "Passenger"];
   const typeOptions = ["gearless", "geared"];
   const doorType = ["option1", "option2"];
   const constructionMaterial = ["option1", "option2"];
-
+  const [elevatorData, setElevatorData] = useState({});
   const [array, setArray] = useState([]);
+  const [degree, setDegree] = useState({
+    nintyDegreeLeft: "",
+    nintyDegreeRight: "",
+    oneEightyDegree: "",
+  });
   const [elevatorDetails, setElevatorDetails] = useState({
     pitDepth: "",
     type: "",
@@ -27,31 +34,21 @@ const ClientFormElevatorDetails = ({
     basementSelection: { b1: false, b2: false },
     doorType: "",
     constructionMaterial: "",
-    numberOfOpening: "",
+    numberOfOpenings: "",
     remarks: "",
-    degree:""
-  })
+  });
+  
 
-
-  const [degree, setDegree] = useState({
-    nintyDegreeLeft: "",
-    nintyDegreeRight: "",
-    oneEightyDegree: "",
-  })
- //handler
-
+  //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
-    console.log(fieldName, value, "in handleElevatorDetailsChange");
-    setElevatorDetails(prevDetails => ({
+    setElevatorDetails((prevDetails) => ({
       ...prevDetails,
-      [fieldName]: value
+      [fieldName]: value,
     }));
     if (fieldName === "stops") {
       setDefaultData(value);
     }
   };
-
-  const [elevatorOpenings, setElevatorOpenings] = useState([]);
 
   useEffect(() => {
     let level = [];
@@ -74,14 +71,15 @@ const ClientFormElevatorDetails = ({
       level.push(`Level ${i}`);
     }
     setFLevel(level);
-  }, [elevatorDetails.stops, elevatorDetails.groundOrStilt, elevatorDetails.basementSelection]);
-
-
+  }, [
+    elevatorDetails.stops,
+    elevatorDetails.groundOrStilt,
+    elevatorDetails.basementSelection,
+  ]);
 
   const handleInputValueChange = (field, newValue) => {
-    // console.log(field,newValue);
     setValForDimention(newValue);
-    handleElevatorDetailsChange(field, newValue)
+    handleElevatorDetailsChange(field, newValue);
   };
 
   const handleClick = (row, colIndex) => {
@@ -90,11 +88,10 @@ const ClientFormElevatorDetails = ({
       newArray[row][colIndex] = !newArray[row][colIndex];
       return newArray;
     });
-    let values = Object.values(elevatorDetails.degree).filter((value) => value !== "");
+    let values = Object.values(degree).filter((value) => value !== "");
     values = ["original", ...values];
 
     const levelValue = Flevel[row];
-    
 
     const updatedElevatorOpenings = elevatorOpenings.map((item) => {
       if (item.level === levelValue) {
@@ -113,9 +110,8 @@ const ClientFormElevatorDetails = ({
 
     setElevatorOpenings(updatedElevatorOpenings);
   };
-
   const handleNumberOfOpenings = (openings) => {
-    handleElevatorDetailsChange("numberOfOpening ", openings);
+    handleElevatorDetailsChange("numberOfOpenings ", openings);
     setDegree({
       nintyDegreeLeft: "",
       nintyDegreeRight: "",
@@ -129,7 +125,6 @@ const ClientFormElevatorDetails = ({
     setLevelAndOpeningsView(openings);
   };
 
-
   function setDefaultData(openings) {
     const ele = [];
     for (let i = 0; i < Flevel.length; i++) {
@@ -140,15 +135,18 @@ const ClientFormElevatorDetails = ({
   }
 
   const handleDegreeSelection = (value) => {
-    setLevelAndOpeningsView(elevatorDetails.numberOfOpening);
-    setDefaultData(elevatorDetails.numberOfOpening);
-    if (elevatorDetails.numberOfOpening === 2 || elevatorDetails.numberOfOpening === 1) {
+    setLevelAndOpeningsView(elevatorDetails.numberOfOpenings);
+    setDefaultData(elevatorDetails.numberOfOpenings);
+    if (
+      elevatorDetails.numberOfOpenings === 2 ||
+      elevatorDetails.numberOfOpenings === 1
+    ) {
       setDegree({
         nintyDegreeLeft: "",
         nintyDegreeRight: "",
         oneEightyDegree: "",
       });
-    } else if (elevatorDetails.numberOfOpening === 3) {
+    } else if (elevatorDetails.numberOfOpenings === 3) {
       const R90 = degree.nintyDegreeRight;
       const L90 = degree.nintyDegreeLeft;
       const back = degree.oneEightyDegree;
@@ -204,27 +202,80 @@ const ClientFormElevatorDetails = ({
     setArray(arrayTobe);
   };
 
+  //remarks handler
+  const handleRemarksChange = (event) => {
+    setElevatorDetails({
+      ...elevatorDetails,
+      remarks: event.target.value,
+    });
+  };
+  useEffect(() => {
+    onDataChange();
+  }, []);
+
+  // console.log("elevatorDetails", elevatorDetails);
+  // console.log("degree", degree);
+  // console.log("elevatorOpenings", elevatorOpenings);
+  useEffect(() => {
+    setElevatorData((prevData) => ({
+      ...prevData,
+      ...elevatorDetails,
+      degree,
+      elevatorOpenings,
+    }));
+  }, [elevatorDetails, degree, elevatorOpenings]);
+  useEffect(() => {
+    onDataChange(elevatorData);
+  }, [elevatorData]);
+  console.log("elevatorData", elevatorData);
   return (
     <div className="client-form-elevator-details">
       <h5 className="client-form-details-heading">Elevator Details</h5>
       <hr className="client-form-hr" />
 
       <div className="dimenstions-container">
-        <ElevatorDetails pitDepth={elevatorDetails.pitDepth} typeOptions={typeOptions} purpose={purpose}
-          capacity={elevatorDetails.capacity} capacityUnit={elevatorDetails.capacityUnit} handleInputValueChange={handleInputValueChange} basementSelection={elevatorDetails.basementSelection}
-          doorType={doorType} constructionMaterial={constructionMaterial} numberOfOpenings={numberOfOpenings}
-          handleNumberOfOpenings={handleNumberOfOpenings} degree={degree} handleDegreeSelection={handleDegreeSelection} openings={elevatorDetails.numberOfOpening}
+        <ElevatorDetails
+          pitDepth={elevatorDetails.pitDepth}
+          typeOptions={typeOptions}
+          purpose={purpose}
+          capacity={elevatorDetails.capacity}
+          capacityUnit={elevatorDetails.capacityUnit}
+          handleInputValueChange={handleInputValueChange}
+          basementSelection={elevatorDetails.basementSelection}
+          doorType={doorType}
+          constructionMaterial={constructionMaterial}
+          numberOfOpenings={numberOfOpenings}
+          handleNumberOfOpenings={handleNumberOfOpenings}
+          degree={degree}
+          handleDegreeSelection={handleDegreeSelection}
+          openings={elevatorDetails.numberOfOpenings}
           stops={elevatorDetails.stops}
-          handleElevatorDetailsChange={handleElevatorDetailsChange} 
+          handleElevatorDetailsChange={handleElevatorDetailsChange}
           groundOrStilt={elevatorDetails.groundOrStilt}
         />
 
-        {elevatorDetails.numberOfOpening !== 0 && elevatorDetails.stops !== 0 && Object.values(degree).filter(val => val !== "").length === elevatorDetails.numberOfOpening - 1 && (
-          <> <ElevatorOpeningSelection Flevel={Flevel} numberOfOpening={elevatorDetails.numberOfOpening} degree={degree} array={array} handleClick={handleClick} /></>
-        )}
+        {elevatorDetails.numberOfOpenings !== 0 &&
+          elevatorDetails.stops !== 0 &&
+          Object.values(degree).filter((val) => val !== "").length ===
+            elevatorDetails.numberOfOpenings - 1 && (
+            <>
+              {" "}
+              <ElevatorOpeningSelection
+                Flevel={Flevel}
+                numberOfOpenings={elevatorDetails.numberOfOpenings}
+                degree={degree}
+                array={array}
+                handleClick={handleClick}
+              />
+            </>
+          )}
 
         <div className="text-area-container">
-          <textarea placeholder="Add Remarks"></textarea>
+          <textarea
+            placeholder="Add Remarks"
+            value={elevatorDetails.remarks}
+            onChange={handleRemarksChange}
+          ></textarea>
         </div>
       </div>
     </div>

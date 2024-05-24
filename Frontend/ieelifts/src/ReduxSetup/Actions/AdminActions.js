@@ -83,15 +83,11 @@ export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
 
-
 export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
 export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
 
-
 export const REGISTER_CLIENT_DATA = "REGISTER_CLIENT_DATA";
-
-
-
+export const UPDATE_CLIENT_DATA = "UPDATE_CLIENT_DATA";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -368,7 +364,7 @@ export const assignserviceRequestByAdmin = (
           Date,
           Message,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         }
       );
 
@@ -1160,31 +1156,48 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 
 // {/armaan-dev}
 
-
-
 //----------------------------------------------------------------------------------------------------
 
 //action to handle registerclient data form
 
-export const RegisterClientDataAction = (clientFormDetails,clientSalesManDetails,clientMembershipDocument,architectDetails) => {
+export const RegisterClientDataAction = (formData) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${config.apiUrl}/admin/registerClientData`,{
-        clientFormDetails,
-        clientSalesManDetails,
-        clientMembershipDocument,
-        architectDetails
-      }
-    );
+      const response = await axios.post(
+        `${config.apiUrl}/admin/registerClientData`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       dispatch({
         type: REGISTER_CLIENT_DATA,
-        payload: response.data
-      })
-
+        payload: response.data,
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
+};
 
-  }
-}
+export const updateClientData = (formData) => {
+  console.log("rahul ...........", formData);
+
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(
+        `${config.apiUrl}/admin/updateClientForm`,
+        formData
+      );
+      dispatch({
+        type: UPDATE_CLIENT_DATA,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

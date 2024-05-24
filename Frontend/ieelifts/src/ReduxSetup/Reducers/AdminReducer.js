@@ -46,8 +46,8 @@ import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
 import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
 import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
 
-
 import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
+import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -719,7 +719,10 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
 const intialStateClientOpenModal = {
   isModalOpen: false,
 };
-export const openAddClientModalReducer = (state = intialStateClientOpenModal, action) => {
+export const openAddClientModalReducer = (
+  state = intialStateClientOpenModal,
+  action
+) => {
   switch (action.type) {
     case "OPEN_CLIENT_MODAL":
       return { ...state, isModalOpen: true };
@@ -796,21 +799,39 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
   }
 };
 
-
 //-----------------------------------------------------------------------------------------------------------------
 //Reducer to handle registerclient data form
 const registerClientFormData = {
-  registerClientData: null
-}
+  registerClientData: null,
+};
 
-export const RegisterClientDataReducer = (state=registerClientFormData, action) => {
+export const RegisterClientDataReducer = (
+  state = registerClientFormData,
+  action
+) => {
   switch (action.type) {
     case REGISTER_CLIENT_DATA:
       return {
-        ...state,registerClientData:action.payload,
+        ...state,
+        registerClientData: action.payload,
       };
-      default:
-        return state;
+    default:
+      return state;
   }
-}
+};
 
+const updateClientData = {
+  updateClientData: null,
+};
+
+export const UpdateClientDataReducer = (state = updateClientData, action) => {
+  switch (action.type) {
+    case UPDATE_CLIENT_DATA:
+      return {
+        ...state,
+        updateClientData: action.payload,
+      };
+    default:
+      return state;
+  }
+};

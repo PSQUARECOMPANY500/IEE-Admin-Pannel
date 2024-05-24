@@ -135,6 +135,7 @@ module.exports.getEnggCrouserData = async (req, res) => {
     });
   }
 };
+
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
     slot
@@ -610,7 +611,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Message,
       ServiceProcess,
       RepresentativeName,
-      RepresentativeNumber
+      RepresentativeNumber,
     } = req.body;
 
     let callback;
@@ -633,7 +634,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Message,
           ServiceProcess,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         },
         {
           new: true,
@@ -650,23 +651,22 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Message,
         ServiceProcess,
         RepresentativeName,
-        RepresentativeNumber
+        RepresentativeNumber,
       });
     }
 
-
-      await getAllServiceRequest.findOneAndUpdate(
+    await getAllServiceRequest.findOneAndUpdate(
       {
         RequestId,
-      },{
+      },
+      {
         RepresentativeName,
-        RepresentativeNumber
+        RepresentativeNumber,
       },
       {
         new: true,
       }
     );
-    
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")
@@ -2489,7 +2489,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
     const { serviceId } = req.params;
 
     const ReportData = await ReportTable.findOne({ serviceId });
-    const Rating=await EnggRating.findOne({ServiceId: serviceId });
+    const Rating = await EnggRating.findOne({ ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2584,7 +2584,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       PitArea,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages,Rating});
+    res.status(200).json({ finalReportedData, ReportImages, Rating });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2593,81 +2593,82 @@ module.exports.fetchReportForAdmin = async (req, res) => {
   }
 };
 
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 /**
  * <-----------------------------Author: Rahul Kumar---------------------01/05/2024---------->
  */
 
 //post client form controller
-module.exports.postElevatorForm = async(req,res)=>{
+module.exports.postElevatorForm = async (req, res) => {
+  // console.log("rajjjjjjjjjjjjjjjjj",req.body)
+  // console.log("preeeeeee",req.files)
 
-  console.log(req.body)
-  console.log(req.files)
+  const membershipDocument = {
+    signedQuotation: req?.files?.signedQuotation[0]?.filename || "",
+    paymentForm: req?.files?.paymentForm[0]?.filename || "",
+    chequeForm: req?.files?.chequeForm[0]?.filename || "",
+    salesOrder: req?.files?.salesOrder[0]?.filename || "",
+  };
 
-  try{
-      const {
-        clientFormDetails,clientSalesManDetails,clientMembershipDocument,architectDetails
-      } = req.body;
+  const { clientFormDetails, clientSalesManDetails, clientArchitect } =
+    req.body;
 
-      const membershipDocument = {
-        signedQuotation: req.files.signedQuotation ? req.files.signedQuotation[0].filename: '',
-        paymentForm: req.files.paymentForm ? req.files.paymentForm[0].filename : '',
-        chequeForm: req.files.chequeForm ? req.files.chequeForm[0].filename : '',
-        salesOrder: req.files.salesOrder ? req.files.salesOrder[0].filename : ''
-      };
-      console.log(membershipDocument)
+  console.log("Client Form Details:", req.body.clientFormDetails[0].jon);
+  console.log(
+    "Client Form Details 0200000000000000000:",
+    JSON.parse(req.body.clientFormDetails)
+  );
 
-      const elevatorFormSchema = new ElevatorFormSchema({
-        clientFormDetails,clientSalesManDetails,architectDetails,clientMembershipDocument:{
-          signedQuotation: membershipDocument.signedQuotation,
-          paymentForm: membershipDocument.paymentForm,
-          chequeForm: membershipDocument.chequeForm,
-          salesOrder: membershipDocument.salesOrder
-        }
-      })
-      
+  try {
+    const elevatorFormSchema = new ElevatorFormSchema({
+      clientFormDetails: JSON.parse(req.body.clientFormDetails),
+      clientSalesManDetails: JSON.parse(req.body.clientSalesManDetails),
+      clientArchitect: JSON.parse(req.body.clientArchitect),
+      clientMembershipDocument: membershipDocument,
+    });
 
-     await elevatorFormSchema.save();
+    await elevatorFormSchema.save();
 
-res.status(200).json({msg:"data submit successfully" });      
-
-  }catch(err){
+    res.status(200).json({ msg: "data submit successfully" });
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
-    })
+      message: err.message,
+    });
   }
-}
+};
 
 //put request
 
-module.exports.putElevatorForm = async(req,res)=>{
-  try{
-    const {JON} = req.body; 
+module.exports.putElevatorForm = async (req, res) => {
+  try {
     const newData = req.body;
-    console.log(JON) 
-    console.log(newData)
+    const  JON  = req.body.JON;
+    delete newData.JON;
+    // console.log(typeof(JON));
+    console.log(newData.stops);
 
-    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData,{ new: true });
-      console.log(updatedData)
-            if (!updatedData) {
-                return res.status(404).json({ error: 'Data not found' });
-            }
-            res.status(200).json(updatedData);
-           
-  }catch(err){
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate(
+      { 'clientFormDetails.jon': JON },
+      {elevatorDetails:newData},
+      { new: true }
+    );
+    // const data = await ElevatorFormSchema.findOne({ });
+    // console.log(data);
+    // console.log(updatedData);
+    if (!updatedData) {
+      return res.status(404).json({ error: "Data not found" });
+    }
+    res.status(200).json({ success: true });
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
-    })
+      message: err.message,
+    });
   }
-}
-
+};

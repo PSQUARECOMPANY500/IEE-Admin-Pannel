@@ -44,7 +44,7 @@ const ElevatorDetails = ({
       <div className="client-elevator-input-wrapper">
         <div className="mmbtn-parent">
           <TextInput
-            label={"Pit depth"}
+            label={"Pit depth[mm]"}
             name={"pitDepth"}
             onFocus={handleClick}
             value={pitDepth}
@@ -52,11 +52,12 @@ const ElevatorDetails = ({
             click={click.pitDepth}
             onBlur={handleClickFalse}
           />
-          <span className="mmBtn mm-btn-possition">mm</span>
+          {/* <span className="mmBtn mm-btn-possition">mm</span> */}
         </div>
         <div>
           <ClientDropdown
             label={"Type"}
+            name={"type"}
             options={typeOptions}
             onValueChange={handleInputValueChange}
           />
@@ -64,6 +65,7 @@ const ElevatorDetails = ({
         <div>
           <ClientDropdown
             label={"Purpose"}
+            name={"purpose"}
             options={purpose}
             onValueChange={handleInputValueChange}
           />
@@ -167,6 +169,7 @@ const ElevatorDetails = ({
         <div>
           <ClientDropdown
             label={"Door Type"}
+            name={"doorType"}
             options={doorType}
             onValueChange={handleInputValueChange}
           />
@@ -174,6 +177,7 @@ const ElevatorDetails = ({
         <div>
           <ClientDropdown
             label={"Construction Material"}
+            name={"constructionMaterial"}
             options={constructionMaterial}
             onValueChange={handleInputValueChange}
           />
@@ -181,6 +185,7 @@ const ElevatorDetails = ({
         <div>
           <ClientDropdown
             label={"Number of opening"}
+            name={"numberOfOpenings"}
             options={numberOfOpenings}
             onValueChange={handleInputValueChange}
           />
@@ -189,7 +194,7 @@ const ElevatorDetails = ({
           <div
             className={
               openings === 0 || openings === 1
-                ? "degree-container disabled"
+                ? "degree-container "
                 : "degree-container"
             }
           >

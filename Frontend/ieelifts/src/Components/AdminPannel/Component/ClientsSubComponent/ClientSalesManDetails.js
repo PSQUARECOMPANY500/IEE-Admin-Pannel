@@ -58,7 +58,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
       }));
     } else if (contentname === "finalPrice") {
       const result = quotatedPrice - pricevalue;
-      const percentage = (result / quotatedPrice) * 100;
+      const percentage = ((result / quotatedPrice) * 100).toFixed(2);
       setClientFormData((prev) => ({
         ...prev,
         discountInRupees: result,
@@ -66,8 +66,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
       }));
     } else if (contentname === "discountInRupees") {
       const result = quotatedPrice - discountInRupees;
-      const percentage = (discountInRupees / quotatedPrice) * 100;
-      console.log("reached inside: ", result, percentage);
+      const percentage = ((discountInRupees / quotatedPrice) * 100).toFixed(2);
       setClientFormData((prev) => ({
         ...prev,
         finalPrice: result,

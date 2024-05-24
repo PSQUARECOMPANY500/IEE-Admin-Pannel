@@ -2,7 +2,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import TextInput from "./ClientsReusableComponent/TextInput";
-const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
+const ClientFormDimentions = ({
+  valforDimention,
+  Flevel,
+  validate,
+  forSecondClick,
+}) => {
   //states
   const [len, setLen] = useState();
   const [Basementlen, setBasementLen] = useState();
@@ -10,7 +15,7 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
   const [basementLevel, setBasemnetLevel] = useState([]);
   const [levelData, setLevelData] = useState([]);
   const [click, setClick] = useState({});
-  const [check,setCheck]=useState(validate)
+  const [check, setCheck] = useState(validate);
   const [basementWithPit, setBasementWithPit] = useState({
     shaftWidth: "",
     shaftDepth: "",
@@ -21,12 +26,13 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
     fl: "",
     fr: "",
   });
+  console.log("basementWithPit",basementWithPit)
   const [floorFrontData, setFloorFrontData] = useState({
     shaftWidth: "",
     shaftDepth: "",
     doorWidth: "",
     doorHeight: "",
-    overhead: ""
+    overhead: "",
   });
   useEffect(() => {
     const initialFormData = Flevel.slice(1, -1).map(() => ({
@@ -75,14 +81,20 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
     setVisible((prev) => !prev);
   };
 
+  const handleOnClick = () => {
+    toggleVisibility();
+    forSecondClick();
+  };
+
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
       <div
-       className={`dimention-btn ${visible ? "hide" : ""} ${!check ? "disabled" : ""}`}
-
-        onClick={toggleVisibility}
+        className={`dimention-btn ${visible ? "hide" : ""} ${
+          !check ? "disabled" : ""
+        }`}
+        onClick={handleOnClick}
       >
         Generate dimensions{" "}
         <img src="generateicon.png" alt="icon" className="generateIcon" />
@@ -283,8 +295,9 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
                           />
                         </div>
                         <div className="floor-fl-fr-container">
-                        <TextInput
-                           label={"FL"} name={"fl"}
+                          <TextInput
+                            label={"FL"}
+                            name={"fl"}
                             onFocus={handleClick}
                             value={levelData[index]?.fl || ""}
                             onChange={(event) =>
@@ -294,7 +307,8 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
                             onBlur={handleClickFalse}
                           />
                           <TextInput
-                           label={"FR"} name={"fr"}
+                            label={"FR"}
+                            name={"fr"}
                             onFocus={handleClick}
                             value={levelData[index]?.fr || ""}
                             onChange={(event) =>
@@ -330,62 +344,60 @@ const ClientFormDimentions = ({ valforDimention, Flevel,validate }) => {
                 <div className="floor-input-wrapper">
                   <div>
                     <TextInput
-                  label={"Shaft Width"}
-                  name={"shaftWidth"}
-                  onFocus={handleClick}
-                  value={floorFrontData.shaftWidth}
-                  onChange={handleInputChangeInPFloorFront}
-                  click={click.shaftWidth}
-                  onBlur={handleClickFalse}
-                />
-                  </div>
-                  <div>
-            
-                    <TextInput
-                  label={"Shaft Depth"}
-                  name={"shaftDepth"}
-                  onFocus={handleClick}
-                  value={floorFrontData.shaftDepth}
-                  onChange={handleInputChangeInPFloorFront}
-                  click={click.shaftDepth}
-                  onBlur={handleClickFalse}
-                />
-                  </div>
-                  <div>
-                  
-                    <TextInput
-                  label={"Door Width"}
-                  name={"doorWidth"}
-                  onFocus={handleClick}
-                  value={floorFrontData.doorWidth}
-                  onChange={handleInputChangeInPFloorFront}
-                  click={click.doorWidth}
-                  onBlur={handleClickFalse}
-                />
+                      label={"Shaft Width"}
+                      name={"shaftWidth"}
+                      onFocus={handleClick}
+                      value={floorFrontData.shaftWidth}
+                      onChange={handleInputChangeInPFloorFront}
+                      click={click.shaftWidth}
+                      onBlur={handleClickFalse}
+                    />
                   </div>
                   <div>
                     <TextInput
-                  label={"Door Height"}
-                  name={"doorHeight"}
-                  onFocus={handleClick}
-                  value={floorFrontData.doorHeight}
-                  onChange={handleInputChangeInPFloorFront}
-                  click={click.doorHeight}
-                  onBlur={handleClickFalse}
-                />
+                      label={"Shaft Depth"}
+                      name={"shaftDepth"}
+                      onFocus={handleClick}
+                      value={floorFrontData.shaftDepth}
+                      onChange={handleInputChangeInPFloorFront}
+                      click={click.shaftDepth}
+                      onBlur={handleClickFalse}
+                    />
+                  </div>
+                  <div>
+                    <TextInput
+                      label={"Door Width"}
+                      name={"doorWidth"}
+                      onFocus={handleClick}
+                      value={floorFrontData.doorWidth}
+                      onChange={handleInputChangeInPFloorFront}
+                      click={click.doorWidth}
+                      onBlur={handleClickFalse}
+                    />
+                  </div>
+                  <div>
+                    <TextInput
+                      label={"Door Height"}
+                      name={"doorHeight"}
+                      onFocus={handleClick}
+                      value={floorFrontData.doorHeight}
+                      onChange={handleInputChangeInPFloorFront}
+                      click={click.doorHeight}
+                      onBlur={handleClickFalse}
+                    />
                   </div>
                 </div>
                 <div className="overhead-input">
                   {/* <AnimatedInput label={"Overhead (opt)"} name={"Overhead"} /> */}
                   <TextInput
-                  label={"Overhead (opt)"}
-                  name={"overhead"}
-                  onFocus={handleClick}
-                  value={floorFrontData.overhead}
-                  onChange={handleInputChangeInPFloorFront}
-                  click={click.overhead}
-                  onBlur={handleClickFalse}
-                />
+                    label={"Overhead (opt)"}
+                    name={"overhead"}
+                    onFocus={handleClick}
+                    value={floorFrontData.overhead}
+                    onChange={handleInputChangeInPFloorFront}
+                    click={click.overhead}
+                    onBlur={handleClickFalse}
+                  />
                 </div>
                 <div className="site-photos">Site Photos</div>
                 <div className="dimension-btn-wrapper">

@@ -127,6 +127,9 @@ const clientForm = new mongoose.Schema({
         capacity: {
             type: String
         },
+        capacityUnit: {
+            type: String
+        },
         stops: {
             numberOfStops: {
                 type: Number
