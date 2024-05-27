@@ -2857,7 +2857,7 @@ footer a:hover {
 }
 
 
-/* EditEngineerDeatils page css */
+/*------------------- EditEngineerDeatils page css--------------------- */
 
 .engineer-modal-wrapper {
   position: fixed;
@@ -2888,13 +2888,11 @@ footer a:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 25%;
-  height: 46vh;
+  width: 23%;
+  height: 45vh;
   background: white;
- 
   z-index: 9999;
-
-}
+ }
 
 .engineer-modal-container {
   /* top: 9%; */
@@ -2910,13 +2908,13 @@ footer a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background-color: lightpink; */
 }
 
 .ttt{
   display: flex;
   align-items: center;
   width: 18vw;
+  margin-top: -1rem;
  /* background-color: lightgray; */
   justify-content: center;
  
@@ -2925,20 +2923,57 @@ footer a:hover {
 .uuu{
   display: flex;
   align-items: center;
+  cursor: pointer;
   margin-top:1.5rem;
   gap:10px;
 }
 .edit-engineer-modal{
   position: absolute;
   top: 5%;
-  cursor: pointer;
+  cursor:pointer;
   left: 88%;
   font-size: 1.6vw;
 
 }
+.addform-modal-wrapper {
+  position: fixed;
+  z-index: 99999999;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.381);
+  /* background-color:lightpink; */
+  width: 100%;
+}
+
+.addform-modal-wrapper {
+  text-transform: capitalize;
+}
+
+.addform-modal-container {
+  /* top: 9%; */
+  border-radius: 7px;
+  /* left: 10%; */
+  /* width: 95%; */
+
+}
+
+.addform-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* wid width: 85%;th: 25%; */
+  /* height: 46vh; */
+  width: 85vw;
+  height: 80vh;
+  background: white;
+  z-index: 99999999;
+ }
 
 
-/* --------------------------------------------- */
+/* --------------------------------------------- -----------------------------*/
 
 
 .client-child-modal-container {

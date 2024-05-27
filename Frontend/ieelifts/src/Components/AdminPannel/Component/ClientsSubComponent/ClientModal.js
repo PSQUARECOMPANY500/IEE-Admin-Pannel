@@ -104,7 +104,6 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
   const handleOptionClick = (id, option) => {
 
-    console.log("selected optionsssssssss",option , id)
 
     setDropdowns((prevDropdowns) =>
       prevDropdowns.map((dropdown) =>
