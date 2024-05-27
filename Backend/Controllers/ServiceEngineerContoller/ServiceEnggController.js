@@ -126,9 +126,11 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
     const bodyData = req.body;
-
-    // console.log(formData);
-    // console.log(req.files);
+    console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
+// 
+    // console.log("preet", req.body);
+    console.log("pankaj",req.files);
+    // console.log(bodyData);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
       PhoneNumber: bodyData.mobileNumber,
@@ -140,12 +142,15 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
         .json({ message: "Engg is Already Exist with thius Mobile Number" });
     }
 
+
     const enggData = await ServiceEnggBasicSchema.create({
       EnggName: bodyData.firstName,
+      EnggId: bodyData.EngggId,
+      AlternativeNumber: bodyData.alternativeNumber,
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
-      EnggPhoto: formData.profilePhoto[0].filename,
+      EnggPhoto: formData?.profilePhoto ? formData?.profilePhoto[0]?.filename : "",
       DateOfBirth: bodyData.dateOfBirth,
       Email: bodyData.email,
       PinCode: bodyData.pinCode,
@@ -161,17 +166,19 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       BranchName: bodyData.branchName,
       AccountNumber: bodyData.accountNumber,
       IFSCcode: bodyData.IFSCcode,
-      AddharPhoto: formData.addharPhoto[0].filename,
-      DrivingLicensePhoto: formData.drivingLicensePhoto[0].filename,
-      PancardPhoto: formData.pancardPhoto[0].filename,
-      QualificationPhoto: formData.qualificationPhoto[0].filename,
-      AdditionalCoursePhoto: formData.additionalCoursePhoto[0].filename,
+      AddharPhoto:  formData?.addharPhoto ? formData?.addharPhoto[0]?.filename : "",
+      DrivingLicensePhoto: formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "",
+      PancardPhoto: formData?.pancardPhoto ? formData?.pancardPhoto[0]?.filename : "",
+      QualificationPhoto: formData?.qualificationPhoto ? formData?.qualificationPhoto[0]?.filename : "",
+      AdditionalCoursePhoto: formData?.additionalCoursePhoto ? formData?.additionalCoursePhoto[0]?.filename : "",
       DurationOfJob: bodyData.jobDuration,
       CompanyName: bodyData.companyName,
       JobTitle: bodyData.jobTitle,
       ManagerName: bodyData.managerName,
       ManagerNo: bodyData.managerNumber,
     });
+
+
 
     res
       .status(201)
@@ -1604,12 +1611,12 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
     const ReEvaluateData =
       FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
 
-      // console.log(ReEvaluateData);
+    // console.log(ReEvaluateData);
     res.status(200).json({
       ServiceId: ServiceId,
       subCategoriesId: ReEvaluateData.subCategoriesId,
       subcategoryname: ReEvaluateData.subcategoryname,
-      Steps:getData[0].Steps
+      Steps: getData[0].Steps,
     });
   } catch (error) {
     console.log(error);
@@ -1680,33 +1687,28 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
       await updateTaskStatusCallback.save();
-      ``;
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
       await updateTaskStatusServiceRequest.save();
     }
 
-
     //-------------------------------------------------------------------------------
     const updateInCallbackTable = await clientRequestImidiateVisit.findOne({
       callbackId: serviceId,
     });
-    const updateInServiceTable = await serviceRequest({
+    const updateInServiceTable = await serviceRequest.findOne({
       RequestId: serviceId,
-    })
+    });
 
-    if(updateInCallbackTable){
+    if (updateInCallbackTable) {
       updateInCallbackTable.isDead = true;
       await updateInCallbackTable.save();
     }
-    if(updateInServiceTable){
+    if (updateInServiceTable) {
       updateInServiceTable.isDead = true;
       await updateInServiceTable.save();
     }
 
-
-
-   
     return res
       .status(200)
       .json({ message: "Report Submitted Successfully", status: "success" });
@@ -1920,42 +1922,51 @@ module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
 //amit on 01/05/2024 ---
 
 //function to create razor-Pay instance
-//Done, Touch this api at your own risk.
-module.exports.clientPayment = async (req, res) => {
-  try {
-    const { amount, currency, serviceId } = req.body;
+// //Done, Touch this api at your own risk.
 
-    if (!amount || !currency) {
-      return res
-        .status(400)
-        .json({ message: "Amount and currency are required." });
-    }
-    const receipt = serviceId || "receipt#1";
+// module.exports.clientPayment = async (req, res) => {
+//   try {
+//     const { amount, currency, JON } = req.body;
 
-    const instance = new Razorpay({
-      key_id: process.env.key_id,
-      key_secret: process.env.key_secret,
-    });
+//     if (!amount || !currency) {
+//       return res
+//         .status(400)
+//         .json({ message: "Amount and currency are required." });
+//     }
+//     const receipt = JON || "receipt#1";
 
-    const order = await instance.orders.create({
-      amount: amount,
-      currency: currency,
-      receipt: receipt,
-      partial_payment: false,
-    });
-    if (order.statusCode === 400) {
-      return res
-        .status(400)
-        .json({ message: "Something Went Wrong", data: order });
-    }
-    return res
-      .status(200)
-      .json({ message: "Order created successfully", data: order });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: "Internal Server Error enggPayment" });
-  }
-};
+//     const instance = new Razorpay({
+//       key_id: process.env.key_id,
+//       key_secret: process.env.key_secret,
+//     });
+
+//     const order = await instance.orders.create({
+//       amount: amount,
+//       currency: currency,
+//       receipt: receipt,
+//       partial_payment: false,
+//     });
+
+
+
+//     if (order.statusCode === 400) {
+//       return res
+//         .status(400)
+//         .json({ message: "Something Went Wrong", data: order });
+//     }
+//     return res
+//       .status(200)
+//       .json({ message: "Order created successfully", data: order });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ error: "Internal Server Error enggPayment" });
+//   }
+// };
+
+
+
+
+
 //amit on 2/05/2024 and 3/05/2024
 //function for the paymentLink generation and verification
 

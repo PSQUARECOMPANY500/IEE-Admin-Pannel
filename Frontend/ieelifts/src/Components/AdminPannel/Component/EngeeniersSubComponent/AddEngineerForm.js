@@ -23,8 +23,13 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const fileInputRef4 = useRef(null);
   const fileInputRef5 = useRef(null);
 
-
   const [showWorkExperience, setShowWorkExperience] = useState(false);
+  const [EngggId, setEnggId] = useState("");
+  const [alternativeNumber, setAlternativeNumber] = useState("");
+
+  const [engAllData, setEngAllData] = useState("");
+  // console.log("4rrrrr4", engAllData);
+  // console.log("555555555555", engAllData?.EnggName);
 
   const [profilePhoto, setProfilePhoto] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -84,16 +89,52 @@ const AddEngineerForm = ({ engID, onClose }) => {
     };
   }, []);
 
-  console.log("raj", engID);
+  // console.log("raj", engID);
 
   useEffect(() => {
     const getData = async () => {
       const getEnggBasicData = await fetchEnggPersonalData(engID);
-console.log("getenggBasicData", getEnggBasicData)
+      console.log("getenggBasicData", getEnggBasicData);
+
+      if (getEnggBasicData && getEnggBasicData.enggDetails !== undefined) {
+        setFirstName(getEnggBasicData.enggDetails.EnggName);
+        // setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto)
+        setLastName(getEnggBasicData.enggDetails.EnggLastName);
+        setAdditionalCourse(getEnggBasicData.enggDetails.AdditionalCourse);
+        setMobileNumber(getEnggBasicData.enggDetails.PhoneNumber);
+        setDateOfBirth(getEnggBasicData.enggDetails.DateOfBirth);
+        setEmail(getEnggBasicData.enggDetails.Email);
+        setAddress(getEnggBasicData.enggDetails.EnggAddress);
+        setPinCode(getEnggBasicData.enggDetails.PinCode);
+        setCity(getEnggBasicData.enggDetails.City);
+        setQualification(getEnggBasicData.enggDetails.Qualification);
+        setPancard(getEnggBasicData.enggDetails.PanCardNo);
+        setDrivingLisience(getEnggBasicData.enggDetails.DrivingLicenseNo);
+        setAddharCardNumber(getEnggBasicData.enggDetails.AddharCardNo);
+        setAccountNumber(getEnggBasicData.enggDetails.AccountNumber);
+        setBranchName(getEnggBasicData.enggDetails.BranchName);
+        setManagerName(getEnggBasicData.enggDetails.ManagerName);
+        setJobTitle(getEnggBasicData.enggDetails.JobTitle);
+        setCompanyName(getEnggBasicData.enggDetails.CompanyName);
+        setManagerNumber(getEnggBasicData.enggDetails.ManagerNo);
+        setState(getEnggBasicData.enggDetails.State);
+        setIFSCcode(getEnggBasicData.enggDetails.IFSCcode);
+        SetPancardPhoto(getEnggBasicData.enggDetails.PancardPhoto);
+        SetDrivingLicensePhoto(
+          getEnggBasicData.enggDetails.DrivingLicensePhoto
+        );
+        SetAddharPhoto(getEnggBasicData.enggDetails.AddharPhoto);
+        setDistrict(getEnggBasicData.enggDetails.District);
+        setQualification(getEnggBasicData.enggDetails.Qualification);
+        setIsAdditionalCourseEmpty(
+          getEnggBasicData.enggDetails.AdditionalCourse
+        );
+        setEnggId(getEnggBasicData.enggDetails.EnggId);
+        setAccountHolderName(getEnggBasicData.enggDetails.AccountHolderName);
+      }
     };
     getData();
-  }, []);
-
+  }, [EngggId]);
 
   const closeModal = (e) => {
     e.stopPropagation();
@@ -190,33 +231,35 @@ console.log("getenggBasicData", getEnggBasicData)
     if (
       !profilePhoto ||
       !firstName ||
-      !lastName ||
+      // !lastName ||
       !mobileNumber ||
-      !dateOfBirth ||
-      !email ||
+      // !dateOfBirth ||
+      // !email ||
       !address ||
       !pinCode ||
-      !city ||
+      // !city ||
       !district ||
       !state ||
       !addharCardNumber ||
-      !drivingLisience ||
-      !pancards ||
+      // !drivingLisience ||
+      // !pancards ||
       !addharPhoto ||
-      !pancardPhoto ||
-      !drivingLicensePhoto ||
-      !additionalCourse ||
-      !qualificationPhoto ||
-      !additionalCoursePhoto ||
-      !qualification ||
-      !accountHolderName ||
-      !branchName ||
-      !accountNumber ||
-      !IFSCcode ||
-      !jobDuration ||
-      !companyName ||
-      !jobTitle ||
-      !managerName
+      // !pancardPhoto ||
+      // !drivingLicensePhoto ||
+      // !additionalCourse ||
+      // !qualificationPhoto ||
+      // !additionalCoursePhoto ||
+      // !qualification ||
+      // !accountHolderName ||
+      // !branchName ||
+      // !accountNumber ||
+      // !IFSCcode ||
+      // !jobDuration ||
+      // !companyName ||
+      // !jobTitle ||
+      // !managerName
+      !EngggId ||
+      !alternativeNumber
     ) {
       toast.error("Plese fill all the fields");
     }
@@ -293,6 +336,8 @@ console.log("getenggBasicData", getEnggBasicData)
       { value: branchName, id: "branchNameInput" },
       { value: accountNumber, id: "accountNumberInput" },
       { value: IFSCcode, id: "IFSCcodeInput" },
+      { value: EngggId, id: "EnggIdInput" },
+      { value: alternativeNumber, id: "AlternativeMobileNumber" },
       // { value: jobDuration, id: "jobDurationInput" },
       // { value: companyName, id: "companyNameInput" },
       // { value: jobTitle, id: "jobTitleInput" },
@@ -351,6 +396,9 @@ console.log("getenggBasicData", getEnggBasicData)
     formData.append("jobTitle", jobTitle);
     formData.append("managerName", managerName);
     formData.append("managerNumber", managerNumber);
+    formData.append("EnggId", EngggId);
+    formData.append("AlternativeNumber", alternativeNumber);
+
     const response = await RegistrationEnggDetails(formData);
     console.log("response", response);
 
@@ -390,8 +438,8 @@ console.log("getenggBasicData", getEnggBasicData)
     }
   };
   return (
-    <div>
-      <div>
+    <div className="" onClick={closeModal}>
+      <div className="" ref={mainDivRef} onClick={(e) => e.stopPropagation()}>
         <div
           className="cross-icon"
           onClick={onClose}
@@ -400,6 +448,7 @@ console.log("getenggBasicData", getEnggBasicData)
           <RxCross2 />
         </div>
 
+        {/* --------------------------------------------------------------------------- Engineer Personal details section starts--------------------------------------------------------------------------- */}
         <div className="outerMainMoodule">
           <div className="EnggAddressSection">
             <div className="EnggDetailSection">
@@ -426,6 +475,12 @@ console.log("getenggBasicData", getEnggBasicData)
                         ? URL.createObjectURL(profilePhoto)
                         : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                     }
+
+                    // src={
+                    //   profilePhoto
+                    //     ? profilePhoto // Use profilePhoto directly if it's set
+                    //     : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                    // }
                   ></img>
                   <input
                     id="profilePhoto"
@@ -443,21 +498,20 @@ console.log("getenggBasicData", getEnggBasicData)
                     ref={fileInputRef5} // Attach fileInputRef to the input element
                   />
                 </div>
-                <div className="personalDetailSec">
+                <div
+                  className="personalDetailSec"
+                  style={{ marginTop: "2.7rem" }}
+                >
                   <div className="PersonalDetailInput">
                     <input
                       id="firstNameInput"
                       type="text"
                       placeholder="First Name"
+                      defaultValue={
+                        engAllData?.EnggName && engAllData?.EnggName
+                      }
                       value={firstName}
-                      onChange={(e) => {
-                        setFirstName(e.target.value);
-                        if (e.target.value.trim() !== "") {
-                          document
-                            .getElementById("firstNameInput")
-                            .classList.remove("errorBorder");
-                        }
-                      }}
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                     <input
                       id="lastNameInput"
@@ -490,6 +544,7 @@ console.log("getenggBasicData", getEnggBasicData)
                         }
                       }}
                     />
+
                     <input
                       id="dateOfBirthInput"
                       type="text"
@@ -506,6 +561,43 @@ console.log("getenggBasicData", getEnggBasicData)
                       }}
                     />
                   </div>
+
+                  {/*------------------------ engg id and alternative number section starts  -------------------------*/}
+                  <div className="PersonalDetailInput">
+                    <input
+                      id="EnggIdInput"
+                      type="text"
+                      placeholder="Engg Id"
+                      required
+                      value={EngggId}
+                      onChange={(e) => {
+                        setEnggId(e.target.value);
+                        if (e.target.value.trim() !== "") {
+                          document
+                            .getElementById("EnggIdInput")
+                            .classList.remove("errorBorder");
+                        }
+                      }}
+                    />
+
+                    <input
+                      id="AlternativeMobileNumber"
+                      type="text"
+                      placeholder="Alternative Number"
+                      required
+                      value={alternativeNumber}
+                      onChange={(e) => {
+                        setAlternativeNumber(e.target.value);
+                        if (e.target.value.trim() !== "") {
+                          document
+                            .getElementById("AlternativeMobileNumber")
+                            .classList.remove("errorBorder");
+                        }
+                      }}
+                    />
+                  </div>
+                  {/*----------------------- engg id and alternative number section End -------------------------------- */}
+
                   <div className="PersonalDetailInputEmail">
                     <input
                       id="emailInput"
@@ -528,7 +620,10 @@ console.log("getenggBasicData", getEnggBasicData)
             </div>
             {/* --------------------------------------------------------------------------- Address details section starts--------------------------------------------------------------------------- */}
 
-            <div className="ExtraCiricularSection">
+            <div
+              className="ExtraCiricularSection"
+              style={{ marginTop: "2.6rem" }}
+            >
               <div className="EnggDetailHeading">Address details</div>
               <div className="ExtraCiricularSectionInputFields">
                 <div className="EnggAddressInput">
@@ -754,6 +849,100 @@ console.log("getenggBasicData", getEnggBasicData)
 
             {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
 
+            {/* <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Educational details</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <AddEnggAttachment
+                            width="100%"
+                            placeholder="Select Qualification"
+                            Details={QualificationData}
+                            padding="4px"
+                            onStateChange={onStateChange}
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetQualificationPhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef3} // Attach fileInputRef to the input element
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("QualificationPhoto")
+                            }
+                          />
+                        </div>
+                        <p>{qualificationPhoto.name}</p>
+                      </div>
+
+                      <div className="addFileName">
+                        <div
+                          className={
+                            isAdditionalCourseEmpty
+                              ? "inputWithAttachment2"
+                              : "inputWithAttachment"
+                          }
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <input
+                            id="additionalCourseData"
+                            type="text"
+                            placeholder="Additional Course"
+                            required
+                            style={{ outline: "none" }}
+                            value={additionalCourse}
+                            onChange={(e) => {
+                              setAdditionalCourse(e.target.value);
+                              if (e.target.value.trim() !== "") {
+                                setIsAdditionalCourseEmpty(false);
+                                document
+                                  .getElementById("additionalCourseData")
+                                  .classList.remove("errorBorder");
+                              } else {
+                                setIsAdditionalCourseEmpty(true);
+                              }
+                            }}
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetAdditionalCoursePhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef4} // Attach fileInputRef to the input element\
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("AdditionalCoursePhoto")
+                            }
+                          />
+                        </div>
+                        <p>{additionalCoursePhoto.name}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+          </div>
+          {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
+
+          <div className="BankWorkSection">
             <div className="ExtraCiricularSection">
               <div className="EnggDetailHeading">Educational details</div>
               <div className="ExtraCiricularSectionInputFields">
@@ -772,6 +961,7 @@ console.log("getenggBasicData", getEnggBasicData)
                           Details={QualificationData}
                           padding="4px"
                           onStateChange={onStateChange}
+                          value={qualification}
                         />
                         <input
                           type="file"
@@ -789,6 +979,9 @@ console.log("getenggBasicData", getEnggBasicData)
                           }
                         />
                       </div>
+
+                   
+
                       <p>{qualificationPhoto.name}</p>
                     </div>
 
@@ -844,10 +1037,7 @@ console.log("getenggBasicData", getEnggBasicData)
                 </div>
               </div>
             </div>
-          </div>
-          {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 
-          <div className="BankWorkSection">
             <div className="ExtraCiricularSection">
               <div className="EnggDetailHeading">Banking Details</div>
               <div className="ExtraCiricularSectionInputFields">
@@ -1058,6 +1248,7 @@ console.log("getenggBasicData", getEnggBasicData)
             </div>
           </div>
         </div>
+        {/* -------------------------------------------------------------------------------------------------------------------------------- */}
       </div>
     </div>
   );

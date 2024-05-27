@@ -3,8 +3,10 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
+const checkClientServiceExist = require("../../Middleware/CheckClientPreviousService")
 
 const clientController = require("../../Controllers/ClientController/ClientController");
+
 
 //-------------------------------- all post requests ------------------------------------
 router.post("/RegisterClientsAsJON", clientController.RegisterClientsAsJobOrderNumber);
@@ -14,12 +16,12 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
-router.post("/requestCallbacks", clientController.RequestCallbacks);
+router.post("/requestCallbacks",checkClientServiceExist, clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
-router.post("/imediateServiceRequest",clientController.imediateServiceRequest);
+router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
 
 router.post("/createReferal", clientController.referalUser);
 // router.post("/createReferal", verifyToken('client'), clientController.referalUser);
@@ -54,5 +56,13 @@ router.put("/updateServiceRequest", clientController.updateServiceRequest);
 // ------------------------20/05/2024 by preet --------------------------------
 router.get("/getClientCurentActiveService/:JobOrderNumber", clientController.getCurrentScheduleService);
 
+router.get("/gettrackerdetails/:trackerId", clientController.getStepsAndEnggDetail);
+
+//---------------------------- embeded by preet 24/05/2024---------------------------------------------------------------
+router.post(
+      "/clientPayment",
+      clientController.clientPayment
+    );
+    
 
 module.exports = router;

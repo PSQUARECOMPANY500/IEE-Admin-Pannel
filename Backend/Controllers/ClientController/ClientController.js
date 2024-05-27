@@ -15,7 +15,11 @@ const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbac
 
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
+const memberShipDetails = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
+const Razorpay = require("razorpay");
+
 const moment = require("moment");
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
@@ -485,6 +489,8 @@ module.exports.Rating = async (req, res) => {
       Questions: { Question1, Question2, Question3, Question4, Question5 },
     } = req.body;
 
+    // console.log(`Rating`, req.body);
+
     const serviceIdForRating = await engineerRating.findOne({ ServiceId });
     if (serviceIdForRating) {
       return res
@@ -651,12 +657,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     const currentDate = new Date().toLocaleDateString("en-GB");
 
     const service = await serviceRequest.find({
-      JobOrderNumber,
-      isDead:false,
+      JobOrderNumber
     });
     const callback = await clientRequestCallback.find({
-      JobOrderNumber,
-      isDead: false,
+      JobOrderNumber
     });
 
     let data = [];
@@ -707,8 +711,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     const rating = await engineerRating.findOne({
       ServiceId: data[0][0].ServiceId || data[0][0].callbackId,
     });
+    console.log("rating for testing",rating);
 
-    // console.log("preet saii", currentDate , data[0][0].Date, rating);
+
+    console.log("preet saii ---> ", data);
     // first case 1:
     if (
       (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
@@ -734,14 +740,15 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         message:
           currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0])}`
-            : "service Booked",
-        time: data[0][0].Slot,
+            : currentDate > data[0][0].Date ? "Service Expired" : "Service Booked",
+        time: currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0]) +"-"+ convertTo12HourFormat((data[0][0].Slot[0]).split('-')[1]),
         date: data[0][0].Date,
+        trackingId: data[0][0]?.callbackId || data[0][0]?.ServiceId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
         rating: false,
       });
     } else if (
-      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) && service[0]?.isDead === false,
       !rating &&
       data[0][0].ServiceProcess === "completed"
     ) {
@@ -752,9 +759,12 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         time: data[0][0].Slot,
         date: data[0][0].Date,
         liveTracking: false,
-        rating: true,
+        rating: true,   // add Enggid and ServiceId  ----------------------------------------------------------
+        enggId: data[0][0]?.ServiceEnggId,
+        trackingId: data[0][0]?.ServiceId || data[0][0]?.callbackId,
       });
-    } else {
+    }  
+    else {
       res.status(200).json({
         status: "complete",
         message: "Schedule your service",
@@ -773,3 +783,114 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+//api to get steps and engg deatil for tracker in client application...
+
+module.exports.getStepsAndEnggDetail = async (req,res) => {
+  try {
+    const {trackerId}  = req.params;
+
+    const getData = await ReportTable.findOne({ serviceId: trackerId });
+
+    const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId: getData.EnggId});
+
+    let data = [];
+
+    const resp = await assignService.findOne({
+      RequestId: trackerId,
+    });
+    const resp1 = await assignCallback.findOne({
+      callbackId: trackerId,
+
+    });
+
+    if(resp && resp != null && resp != undefined) {
+      data = resp;
+    }else if(resp1 && resp1 != null && resp1 != undefined){
+      data = resp1;
+    }
+
+
+console.log(data);
+
+function processSlots(slots) {
+  if (slots.length === 1) {
+      return [slots[0]];
+  } else if (slots.length > 1) {
+      const startTime = slots[0].split('-')[0];
+      const endTime = slots[slots.length - 1].split('-')[1];
+      return [`${startTime}-${endTime}`];
+  }
+  return '';
+}
+
+const calucalteTime = processSlots(data.Slot)
+console.log("Calculating", calucalteTime);
+
+    const responsedata = {
+      enggname: enggDetails.EnggName,
+      enggId: getData.EnggId,
+      enggImage: enggDetails.EnggPhoto,
+      enggPhone: enggDetails.PhoneNumber,
+      slot: convertTo12HourFormat((calucalteTime[0]).split('-')[0]) +"-"+ convertTo12HourFormat((calucalteTime[0]).split('-')[1]),
+    }
+
+    res.status(200).json({status:"success", steps: getData.Steps, EnggDetails: responsedata});
+
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Error while fetching current active client service" })
+  }
+};
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+//razor pay API  client can purchase memebership...
+
+module.exports.clientPayment = async (req, res) => {
+  try {
+    const { amount, currency, JON, MembershipType} = req.body;
+
+    console.log("MembershipType",MembershipType)
+
+    if (!amount || !currency) {
+      return res
+        .status(400)
+        .json({ message: "Amount and currency are required." });
+    }
+    const receipt = JON || "receipt#1";
+
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const order = await instance.orders.create({
+      amount: amount,
+      currency: currency,
+      receipt: receipt,
+      partial_payment: false,
+    });
+    if (order.statusCode === 400) {
+      return res
+        .status(400)
+        .json({ message: "Something Went Wrong", data: order });
+    }
+
+    const orderDetail = await memberShipDetails.find({})
+
+    return res
+      .status(200)
+      .json({ message: "Order created successfully", data: order });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal Server Error enggPayment" });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------------------------------

@@ -50,7 +50,10 @@ const Schema = mongoose.Schema;
 
 const EnggBasicDetail = new Schema(
   {
-    EnggId: {
+    EnggId: {             // TODO: just pass
+      type: String,
+    },
+    AlternativeNumber: {  //just to do -->
       type: String,
     },
     EnggPassword: {
@@ -58,19 +61,19 @@ const EnggBasicDetail = new Schema(
     },
     EnggName: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggLastName: {
       type: String,
-      required: true,
+      // required: true,
     },
     PhoneNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggAddress: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggPhoto: {
       type: String,
@@ -78,83 +81,83 @@ const EnggBasicDetail = new Schema(
     },
     DateOfBirth: {
       type: String,
-      required: true,
+      // required: true,
     },
     Email: {
       type: String,
-      unique: true,
+      // unique: true,
     },
     PinCode: {
       type: String,
-      required: true,
+      // required: true,
     },
     City: {
       type: String,
-      required: true,
+      // required: true,
     },
     District: {
       type: String,
-      required: true,
+      // required: true,
     },
     State: {
       type: String,
-      required: true,
+      // required: true,
     },
     AddharCardNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     DrivingLicenseNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     PanCardNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     Qualification: {
       type: String,
-      required: true,
+      // required: true,
     },
     AdditionalCourse: {
       type: String,
-      required: true,
+      // required: true,
     },
     AccountHolderName: {
       type: String,
-      required: true,
+      // required: true,
     },
     BranchName: {
       type: String,
-      required: true,
+      // required: true,
     },
     AccountNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     IFSCcode: {
       type: String,
-      required: true,
+      // required: true,
     },
     AddharPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     DrivingLicensePhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     PancardPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     QualificationPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     AdditionalCoursePhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     DurationOfJob: {
       type: String,
