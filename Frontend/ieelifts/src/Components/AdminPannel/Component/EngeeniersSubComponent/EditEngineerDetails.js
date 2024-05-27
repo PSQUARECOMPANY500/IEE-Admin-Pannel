@@ -6,7 +6,7 @@ import drivers from "../../../../Assets/Images/drivers.svg";
 import { IoCloseOutline } from "react-icons/io5";
 import AddEngineerForm from "./AddEngineerForm";
 
-const EditEngineerDetails = ({ onClose }) => {
+const EditEngineerDetails = ({ engID, onClose }) => {
   const [openForm, setOpenForm] = useState(false);
 
   const formRef = useRef();
@@ -28,6 +28,7 @@ const EditEngineerDetails = ({ onClose }) => {
       document.removeEventListener("mousedown", handleClickOutsideModal);
     };
   }, []);
+
 
   return (
     <>
@@ -67,7 +68,7 @@ const EditEngineerDetails = ({ onClose }) => {
       {openForm && (
         <div className="addform-modal-wrapper">
           <div className="addform-modal-container" ref={formRef}>
-            <AddEngineerForm onClose={handleCloseForm} />
+            <AddEngineerForm engID={engID} onClose={handleCloseForm} />
           </div>
         </div>
       )}

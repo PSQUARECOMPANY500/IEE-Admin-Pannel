@@ -2688,3 +2688,35 @@ module.exports.getClientModalInformation = async (req, res) => {
     });
   }
 }
+
+
+
+// function handle get all engg personal details by Id -----------------------
+// by Raj---------------
+
+module.exports.getEnggPersonalData = async (req,  res) => {
+  try {
+    const {EnggId} = req.params;
+
+    const enggDetails = await ServiceEnggBasicSchema.findOne({
+      EnggId,
+    });
+
+    if(!enggDetails){
+      return res.status(404).json({
+        message:"No services Engg found for the specified Service Engineer ID"
+      });
+    }
+
+    res.status(200).json({
+      message:"servicesc Engg retrieved by ID successfully",
+      enggDetails,
+    })
+
+  } catch (error) {
+    console.error("Error getting enng detail", error);
+    res.status(500).json({
+      error:"Internal server Error",
+    });
+  }
+};

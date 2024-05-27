@@ -82,9 +82,8 @@ export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY";
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
-export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA"
-export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER"
-
+export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA";
+export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER";
 
 export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
 export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
@@ -168,27 +167,26 @@ export const getSparePartRequestedByEnggIdAction = async (EnggId) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
-export const loginServiceAdminAction = (AdminId, Password ,Role) => {
+export const loginServiceAdminAction = (AdminId, Password, Role) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`${config.apiUrl}/admin/loginAdmin`, {
         AdminId,
         Password,
-        Role
+        Role,
       });
-     if(response.data.Admin.Role != Role){
-      toast.error(`Permission denied for ${Role}`);
-     }else{
-      localStorage.setItem("adminData", JSON.stringify(response.data.token));
-      localStorage.setItem("Role",response.data.Admin.Role);
-      dispatch({
-        type: LOGIN_SERVICE_ADMIN,
-        payload: response,
-      });
+      if (response.data.Admin.Role != Role) {
+        toast.error(`Permission denied for ${Role}`);
+      } else {
+        localStorage.setItem("adminData", JSON.stringify(response.data.token));
+        localStorage.setItem("Role", response.data.Admin.Role);
+        dispatch({
+          type: LOGIN_SERVICE_ADMIN,
+          payload: response,
+        });
 
-      toast.success("login successfully");
-
-     }
+        toast.success("login successfully");
+      }
     } catch (error) {
       toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
@@ -355,10 +353,9 @@ export const assignserviceRequestByAdmin = (
 ) => {
   return async (dispatch) => {
     try {
-      
-      console.log("RepresentativeName",RepresentativeName)
-      console.log("RepresentativeNumber",RepresentativeNumber)
-      
+      console.log("RepresentativeName", RepresentativeName);
+      console.log("RepresentativeNumber", RepresentativeNumber);
+
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -370,7 +367,7 @@ export const assignserviceRequestByAdmin = (
           Date,
           Message,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         }
       );
 
@@ -780,7 +777,7 @@ export const getClients = () => {
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -802,7 +799,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -825,7 +822,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -839,7 +836,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -853,7 +850,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -879,7 +876,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -890,7 +887,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -1163,33 +1160,24 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 
 // {/armaan-dev}
 
-
 //-------------------------------------------------------------------------------------------------------
 //amit and preet get notification data from backend
 
-export const getNotificationDataAction = async() => {
-    try {
-      const response = await axios.get(
-        `${config.apiUrl}/admin/getNotification`
-      );
-      return response.data
-    } catch (error) {
-      console.log("error while fetching Notification data", error);
-    }
-  };
+export const getNotificationDataAction = async () => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching Notification data", error);
+  }
+};
 
 //-------------------------------------------------------------------------------------------------------
-
-
-
-
 
 //===============================create by aayush for admin report data change end point and pass callback id=============================================================================
 
 export const getadminReportData = (callbackId) => {
-
   //if any problem occur then call from useEffect and some change are lefts also update end point and check for callback id
-
 
   return async (dispatch) => {
     if (!callbackId) {
@@ -1197,7 +1185,6 @@ export const getadminReportData = (callbackId) => {
     }
 
     try {
-
       const response = await axios.get(
         `${config.apiUrl}/admin/getReportForAdmin/${callbackId}`
       );
@@ -1205,21 +1192,32 @@ export const getadminReportData = (callbackId) => {
         type: GET_ADMIN_REPORT_DATA,
         payload: response.data,
       });
-
     } catch (error) {
       console.log("error while fetching data", error);
     }
   };
 };
 
-
-
-
 export const ReportCrouserHandler = (Index, IsOpen) => {
   return async (dispatch) => {
     dispatch({
       type: REPORT_CROUSER_HANDLER,
-      payload: { Index, IsOpen }
-    })
+      payload: { Index, IsOpen },
+    });
+  };
+};
+
+// -------------Created by Raj-----------------
+// Action to handle fetch Engg personal dets by Id
+
+export const fetchEnggPersonalData = async (EnggId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getEnggPersonalData/${EnggId}`
+    );
+    return response.data
+    
+  } catch (error) {
+    console.log("Error while fetching Eng_Personal_details", error);
   }
-}
+};

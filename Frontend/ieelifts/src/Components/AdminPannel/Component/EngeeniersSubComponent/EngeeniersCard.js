@@ -333,7 +333,7 @@ const EngeeniersCard = () => {
       {openModal && (
         <div className="engineer-modal-wrapper">
           <div className="engineer-modal-container">
-            <EditEngineerDetails  onClose={handleCloseModal} />
+            <EditEngineerDetails engID={engID}  onClose={handleCloseModal} />
           </div>
         </div>
       )}

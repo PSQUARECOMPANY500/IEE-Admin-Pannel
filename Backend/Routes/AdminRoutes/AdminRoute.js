@@ -164,4 +164,12 @@ router.put('/updateClientForm',adminContoller.putElevatorForm);
 
 router.get('/getClientModalInformation/:jon', adminContoller.getClientModalInformation);
 
+
+// ---------------API of Engineer Personal Data -----------------------27/05/2024
+
+router.get("/getEnggDetailById/:EnggId", adminContoller.getEnggDetail);
+
+
+router.get("/getEnggPersonalData/:EnggId", adminContoller.getEnggPersonalData)
+
 module.exports = router;
