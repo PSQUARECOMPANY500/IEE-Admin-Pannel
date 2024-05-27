@@ -360,10 +360,10 @@ router.put(
 
 //emit on 01/05/2024 ---
 
-router.post(
-  "/clientPayment",
-  serviceEnggContoller.clientPayment
-);
+// router.post(
+//   "/clientPayment",
+//   serviceEnggContoller.clientPayment
+// );
 
 router.post(
   "/paymentLink",

@@ -58,5 +58,11 @@ router.get("/getClientCurentActiveService/:JobOrderNumber", clientController.get
 
 router.get("/gettrackerdetails/:trackerId", clientController.getStepsAndEnggDetail);
 
+//---------------------------- embeded by preet 24/05/2024---------------------------------------------------------------
+router.post(
+      "/clientPayment",
+      clientController.clientPayment
+    );
+    
 
 module.exports = router;

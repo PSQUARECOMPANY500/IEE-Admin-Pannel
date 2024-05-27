@@ -27,7 +27,8 @@ const checkClientServiceExist = async (req, res, next) => {
   const AssignedTrue = data.filter((item) => item.isAssigned);
 
   if(AssignedFalse.length > 0){
-      return res.status(400).json({
+      return res.status(200).json({
+        status:'error',
           message: "Wait until previous Service is Assigned and Completed"
       })
   }
@@ -58,8 +59,9 @@ const checkClientServiceExist = async (req, res, next) => {
     );
     const filteredResults = checkComplete.filter((result) => result !== null);
     if (filteredResults.length > 0) {
-      return res.status(400).json({
-        message: "Wait until previous Service is Completed",
+      return res.status(200).json({
+        status:'error',
+        message: "Wait until previous Service is Completed"
       });
     }
   }

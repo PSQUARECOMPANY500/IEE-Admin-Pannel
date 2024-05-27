@@ -2668,4 +2668,21 @@ module.exports.getNotification = async (req, res) => {
 // by aayush for rating admin=================================
 
 
+ //-------------------------------------------------------------------------------------------------------------
+ // edit engg details form API
+
+ module.exports.editEnggDetailsForm = async (req, res) => {
+  try {
+      const { EnggId } = req.params;
+
+      // const  
+
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+ }
+ //-------------------------------------------------------------------------------------------------------------
  
+

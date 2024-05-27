@@ -15,7 +15,11 @@ const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbac
 
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
+const memberShipDetails = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
+const Razorpay = require("razorpay");
+
 const moment = require("moment");
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
@@ -485,6 +489,8 @@ module.exports.Rating = async (req, res) => {
       Questions: { Question1, Question2, Question3, Question4, Question5 },
     } = req.body;
 
+    // console.log(`Rating`, req.body);
+
     const serviceIdForRating = await engineerRating.findOne({ ServiceId });
     if (serviceIdForRating) {
       return res
@@ -708,7 +714,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     console.log("rating for testing",rating);
 
 
-    // console.log("preet saii", currentDate , data[0][0].Date, rating);
+    console.log("preet saii ---> ", data);
     // first case 1:
     if (
       (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
@@ -753,7 +759,9 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         time: data[0][0].Slot,
         date: data[0][0].Date,
         liveTracking: false,
-        rating: true,
+        rating: true,   // add Enggid and ServiceId  ----------------------------------------------------------
+        enggId: data[0][0]?.ServiceEnggId,
+        trackingId: data[0][0]?.ServiceId || data[0][0]?.callbackId,
       });
     }  
     else {
@@ -839,3 +847,50 @@ console.log("Calculating", calucalteTime);
       .json({ error: "Error while fetching current active client service" })
   }
 };
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+//razor pay API  client can purchase memebership...
+
+module.exports.clientPayment = async (req, res) => {
+  try {
+    const { amount, currency, JON, MembershipType} = req.body;
+
+    console.log("MembershipType",MembershipType)
+
+    if (!amount || !currency) {
+      return res
+        .status(400)
+        .json({ message: "Amount and currency are required." });
+    }
+    const receipt = JON || "receipt#1";
+
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const order = await instance.orders.create({
+      amount: amount,
+      currency: currency,
+      receipt: receipt,
+      partial_payment: false,
+    });
+    if (order.statusCode === 400) {
+      return res
+        .status(400)
+        .json({ message: "Something Went Wrong", data: order });
+    }
+
+    const orderDetail = await memberShipDetails.find({})
+
+    return res
+      .status(200)
+      .json({ message: "Order created successfully", data: order });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal Server Error enggPayment" });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------------------------------

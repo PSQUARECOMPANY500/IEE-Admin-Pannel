@@ -6090,13 +6090,10 @@ element.style {
   justify-content: center;
   align-items: flex-startF;
   gap: 2rem;
-  padding: 1rem 0.7rem;
+  padding: 2rem 0.7rem;
   position: relative;
   height: 100%;
   width: 100%;
-
-
-
 }
 
 .EnggDetailInputField {
@@ -6202,6 +6199,8 @@ border: 1px solid #CF352E!important;
   font-size: 1rem;
   font-weight: 500;
 }
+
+
 
 .ExtraCiricularSectionInputFields {
   display: flex;

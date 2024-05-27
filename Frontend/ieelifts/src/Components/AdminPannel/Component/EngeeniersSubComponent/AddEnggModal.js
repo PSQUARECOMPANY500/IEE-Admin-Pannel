@@ -55,6 +55,9 @@ const AddEnggModal = () => {
   const [IFSCcode, setIFSCcode] = useState("");
   const [fetchIFSCCode, setfetchIFSCCode] = useState("");
 
+  const [EngggId, setEnggId] = useState("");
+  const [alternativeNumber, setAlternativeNumber] = useState("");
+
   //attachmnents
   const [additionalCoursePhoto, SetAdditionalCoursePhoto] = useState("");
   const [qualificationPhoto, SetQualificationPhoto] = useState("");
@@ -179,33 +182,34 @@ const AddEnggModal = () => {
     if (
       !profilePhoto ||
       !firstName ||
-      !lastName ||
+      // !lastName ||
       !mobileNumber ||
-      !dateOfBirth ||
-      !email ||
+      // !dateOfBirth ||
+      // !email ||
       !address ||
       !pinCode ||
-      !city ||
+      // !city ||
       !district ||
       !state ||
       !addharCardNumber ||
-      !drivingLisience ||
-      !pancards ||
+      // !drivingLisience ||
+      // !pancards ||
       !addharPhoto ||
-      !pancardPhoto ||
-      !drivingLicensePhoto ||
-      !additionalCourse ||
-      !qualificationPhoto ||
-      !additionalCoursePhoto ||
-      !qualification ||
-      !accountHolderName ||
-      !branchName ||
-      !accountNumber ||
-      !IFSCcode ||
-      !jobDuration ||
-      !companyName ||
-      !jobTitle ||
-      !managerName
+      // !pancardPhoto ||
+      // !drivingLicensePhoto ||
+      // !additionalCourse ||
+      // !qualificationPhoto ||
+      // !additionalCoursePhoto ||
+      // !qualification ||
+      // !accountHolderName ||
+      // !branchName ||
+      // !accountNumber ||
+      // !IFSCcode ||
+      // !jobDuration ||
+      // !companyName ||
+      // !jobTitle ||
+      // !managerName 
+     !EngggId || !alternativeNumber
     ) {
       toast.error("Plese fill all the fields");
     }
@@ -217,26 +221,26 @@ const AddEnggModal = () => {
         .classList.add("inputWithAttachment2");
     }
 
-    if (!isPancardsEmpty && pancards.length <= 0) {
-      setIsPancardsEmpty(true);
-      document
-        .getElementById("pancardsInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isPancardsEmpty && pancards.length <= 0) {
+    //   setIsPancardsEmpty(true);
+    //   document
+    //     .getElementById("pancardsInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
-      setIsDrivingLisienceEmpty(true);
-      document
-        .getElementById("drivingLisienceInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
+    //   setIsDrivingLisienceEmpty(true);
+    //   document
+    //     .getElementById("drivingLisienceInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
-      setIsAdditionalCourseEmpty(true);
-      document
-        .getElementById("additionalCourseData")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
+    //   setIsAdditionalCourseEmpty(true);
+    //   document
+    //     .getElementById("additionalCourseData")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
     // conditioning for work experience border set up starts
     if (showWorkExperience && jobDuration.length <= 0) {
@@ -270,13 +274,13 @@ const AddEnggModal = () => {
     const requiredFields = [
       { value: profilePhoto, id: "profilePhoto" },
       { value: firstName, id: "firstNameInput" },
-      { value: lastName, id: "lastNameInput" },
+      // { value: lastName, id: "lastNameInput" },
       { value: mobileNumber, id: "mobileNumberInput" },
-      { value: dateOfBirth, id: "dateOfBirthInput" },
-      { value: email, id: "emailInput" },
+      // { value: dateOfBirth, id: "dateOfBirthInput" },
+      // { value: email, id: "emailInput" },
       { value: address, id: "addressInput" },
       { value: pinCode, id: "pinCodeInput" },
-      { value: city, id: "cityInput" },
+      // { value: city, id: "cityInput" },
       // { value: district, id: "districtInput" },
       // { value: state, id: "stateInput" },
       // { value: addharCardNumber, id: "addharCardNumberInput" },
@@ -289,15 +293,17 @@ const AddEnggModal = () => {
       // { value: qualificationPhoto, id: "qualificationPhotoInput" },
       // { value: additionalCoursePhoto, id: "additionalCoursePhotoInput" },
       // { value: qualification, id: "qualificationInput" },
-      { value: accountHolderName, id: "accountHolderNameInput" },
-      { value: branchName, id: "branchNameInput" },
-      { value: accountNumber, id: "accountNumberInput" },
-      { value: IFSCcode, id: "IFSCcodeInput" },
+      // { value: accountHolderName, id: "accountHolderNameInput" },
+      // { value: branchName, id: "branchNameInput" },
+      // { value: accountNumber, id: "accountNumberInput" },
+      // { value: IFSCcode, id: "IFSCcodeInput" },
       // { value: jobDuration, id: "jobDurationInput" },
       // { value: companyName, id: "companyNameInput" },
       // { value: jobTitle, id: "jobTitleInput" },
       // { value: managerName, id: "managerNameInput" },
       // { value: managerNumber, id: "managerNumberInput" },
+      { value: EngggId, id: "EnggIdInput" },
+      { value: alternativeNumber, id: "AlternativeMobileNumber" },
     ];
 
     const checkRequiredFields = () => {
@@ -351,6 +357,10 @@ const AddEnggModal = () => {
     formData.append("jobTitle", jobTitle);
     formData.append("managerName", managerName);
     formData.append("managerNumber", managerNumber);
+
+    formData.append("EnggId", EngggId);
+    formData.append("AlternativeNumber", alternativeNumber);
+
     const response = await RegistrationEnggDetails(formData);
     console.log("response", response);
 
@@ -386,6 +396,8 @@ const AddEnggModal = () => {
       SetPancardPhoto("");
       SetDrivingLicensePhoto("");
       SetAddharPhoto("");
+      setAlternativeNumber("");
+      setEnggId("");
       toast.success("engineer register successfully");
     }
   };
@@ -450,7 +462,7 @@ const AddEnggModal = () => {
                       ref={fileInputRef5} // Attach fileInputRef to the input element
                     />
                   </div>
-                  <div className="personalDetailSec">
+                  <div className="personalDetailSec" style={{marginTop:"2.7rem"}}>
                     <div className="PersonalDetailInput">
                       <input
                         id="firstNameInput"
@@ -497,6 +509,7 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
+                      
                       <input
                         id="dateOfBirthInput"
                         type="text"
@@ -513,6 +526,50 @@ const AddEnggModal = () => {
                         }}
                       />
                     </div>
+
+                    {/*------------------------ engg id and alternative number section starts  -------------------------*/}
+                    <div className="PersonalDetailInput">
+                      <input
+                        id="EnggIdInput"
+                        type="text"
+                        placeholder="Engg Id"
+                        required
+                        value={EngggId}
+                        onChange={(e) => {
+                          setEnggId(e.target.value);
+                          if (e.target.value.trim() !== "") {
+                            document
+                              .getElementById("EnggIdInput")
+                              .classList.remove("errorBorder");
+                          }
+                        }}
+                      />
+                      
+                      <input
+                        id="AlternativeMobileNumber"
+                        type="text"
+                        placeholder="Alternative Number"
+                        required
+                        value={alternativeNumber}
+                        onChange={(e) => {
+                          setAlternativeNumber(e.target.value);
+                          if (e.target.value.trim() !== "") {
+                            document
+                              .getElementById("AlternativeMobileNumber")
+                              .classList.remove("errorBorder");
+                          }
+                        }}
+                      />
+                    </div> 
+                    {/*----------------------- engg id and alternative number section End -------------------------------- */}
+
+
+
+
+
+
+
+
                     <div className="PersonalDetailInputEmail">
                       <input
                         id="emailInput"
@@ -535,7 +592,7 @@ const AddEnggModal = () => {
               </div>
               {/* --------------------------------------------------------------------------- Address details section starts--------------------------------------------------------------------------- */}
 
-              <div className="ExtraCiricularSection">
+              <div className="ExtraCiricularSection" style={{marginTop:"2.6rem"}}>
                 <div className="EnggDetailHeading">Address details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="EnggAddressInput">
@@ -761,7 +818,102 @@ const AddEnggModal = () => {
 
               {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
 
-              <div className="ExtraCiricularSection">
+              {/* <div className="ExtraCiricularSection">
+                <div className="EnggDetailHeading">Educational details</div>
+                <div className="ExtraCiricularSectionInputFields">
+                  <div className="mainPersonalDetialSection">
+                    <div className="PersonalDetailInput">
+                      <div className="addFileName">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <AddEnggAttachment
+                            width="100%"
+                            placeholder="Select Qualification"
+                            Details={QualificationData}
+                            padding="4px"
+                            onStateChange={onStateChange}
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetQualificationPhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef3} // Attach fileInputRef to the input element
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("QualificationPhoto")
+                            }
+                          />
+                        </div>
+                        <p>{qualificationPhoto.name}</p>
+                      </div>
+
+                      <div className="addFileName">
+                        <div
+                          className={
+                            isAdditionalCourseEmpty
+                              ? "inputWithAttachment2"
+                              : "inputWithAttachment"
+                          }
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <input
+                            id="additionalCourseData"
+                            type="text"
+                            placeholder="Additional Course"
+                            required
+                            style={{ outline: "none" }}
+                            value={additionalCourse}
+                            onChange={(e) => {
+                              setAdditionalCourse(e.target.value);
+                              if (e.target.value.trim() !== "") {
+                                setIsAdditionalCourseEmpty(false);
+                                document
+                                  .getElementById("additionalCourseData")
+                                  .classList.remove("errorBorder");
+                              } else {
+                                setIsAdditionalCourseEmpty(true);
+                              }
+                            }}
+                          />
+                          <input
+                            type="file"
+                            name="fields[]"
+                            onChange={(e) =>
+                              SetAdditionalCoursePhoto(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef4} // Attach fileInputRef to the input element\
+                          />
+                          <SlLink
+                            style={{ marginRight: "22px", cursor: "pointer" }}
+                            onClick={() =>
+                              handleUploadClick("AdditionalCoursePhoto")
+                            }
+                          />
+                        </div>
+                        <p>{additionalCoursePhoto.name}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+            </div>
+            {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
+
+            <div className="BankWorkSection">
+
+            <div className="ExtraCiricularSection">
                 <div className="EnggDetailHeading">Educational details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="mainPersonalDetialSection">
@@ -851,10 +1003,7 @@ const AddEnggModal = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 
-            <div className="BankWorkSection">
               <div className="ExtraCiricularSection">
                 <div className="EnggDetailHeading">Banking Details</div>
                 <div className="ExtraCiricularSectionInputFields">
