@@ -182,7 +182,7 @@ const ElevatorDetails = ({
             onValueChange={handleInputValueChange}
           />
         </div>
-        <div>
+        <div className={`${stops===""?"disabled":""}`}>
           <ClientDropdown
             label={"Number of opening"}
             name={"numberOfOpenings"}
@@ -194,7 +194,7 @@ const ElevatorDetails = ({
           <div
             className={
               openings === 0 || openings === 1
-                ? "degree-container "
+                ? "degree-container disabled"
                 : "degree-container"
             }
           >

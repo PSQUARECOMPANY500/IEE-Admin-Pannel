@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick }) => {
+const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick,numberOfOpenings,stops }) => {
+   
   return (
     <>  
-      <div className="level-main-container">
+      <div className={`level-main-container ${(numberOfOpenings===0 || numberOfOpenings===1 || stops==="" )?"display-block":""}`}>
         <div className="level-heading">
           <div className="level-opening">
             <span className="levelHeading">Level</span>

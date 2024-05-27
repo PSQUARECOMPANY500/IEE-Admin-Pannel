@@ -27,6 +27,7 @@ const ClientForm = () => {
     clientArchitect: {},
   });
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
+  const [dimentionsData, setDimentionsData] = useState({})
   const dispatch = useDispatch();
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
@@ -42,9 +43,15 @@ const ClientForm = () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
+  useEffect(()=>{
+    console.log("dimentionsData--->",dimentionsData);
+  },[dimentionsData])
 
   //handler
-  const handleClientFormDetails = (data) => {
+  const handleDimenstionsData =(data)=>{  //handle Dimenstions data from dimenstion component
+    setDimentionsData(data)
+  }
+  const handleClientFormDetails = (data) => { 
     setAllFormData((prev) => ({
       ...prev,
       clientFormDetails: data,
@@ -210,7 +217,7 @@ const ClientForm = () => {
     console.log(elevatorDetails);
   };
 
-  console.log("Heelo dear", clientElevatorDetails);
+  
 
   return (
     <>
@@ -259,6 +266,7 @@ const ClientForm = () => {
                     forSecondClick={() => {
                       handleSecndStep();
                     }}
+                    onDataChange={handleDimenstionsData}
                   />
                   <div className="button-container">
                     <Clientbutton
@@ -269,6 +277,7 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Submit"}
                       className={"client-form-button-submit"}
+                      onClick={()=>{console.log("Hello")}}
                     />
                   </div>
                 </div>

@@ -7,6 +7,7 @@ const ClientFormDimentions = ({
   Flevel,
   validate,
   forSecondClick,
+  onDataChange
 }) => {
   //states
   const [len, setLen] = useState();
@@ -24,9 +25,9 @@ const ClientFormDimentions = ({
     floorToFloorHeight: "",
     pitDepth: "",
     fl: "",
-    fr: "",
+    fr: ""
   });
-  console.log("basementWithPit",basementWithPit)
+  // console.log("basementWithPit", basementWithPit);
   const [floorFrontData, setFloorFrontData] = useState({
     shaftWidth: "",
     shaftDepth: "",
@@ -34,6 +35,20 @@ const ClientFormDimentions = ({
     doorHeight: "",
     overhead: "",
   });
+
+
+  const [fileNames, setFileNames] = useState({});
+  // console.log("filenames",fileNames)
+
+  // const handleFileChange = (event, label) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     setFileNames({
+  //       ...fileNames,
+  //       [label]: file.name,
+  //     });
+  //   }
+  // };
   useEffect(() => {
     const initialFormData = Flevel.slice(1, -1).map(() => ({
       shaftWidth: "",
@@ -46,8 +61,70 @@ const ClientFormDimentions = ({
     }));
     setLevelData(initialFormData);
   }, [Flevel]);
+   const [dimentionsData,setDimentionsData] =useState({
+    basementWithPit:basementWithPit,
+    floorFrontData:floorFrontData,
+    levelData:levelData
+   })
 
+   useEffect(() => {
+    setDimentionsData({
+      basementWithPit: basementWithPit,
+      floorFrontData: floorFrontData,
+      levelData: levelData
+    });
+  }, [basementWithPit, floorFrontData, levelData]);
+   console.log("dimentionsData",dimentionsData);
   //handler
+
+  const handleFileChangeInPit = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setBasementWithPit(prevState => ({
+        ...prevState,
+        sitePhotos: {
+          ...prevState.sitePhotos,
+          [fieldName]: file
+        }
+      }));
+      setFileNames(prevState => ({
+        ...prevState,
+        [fieldName]: file.name
+      }));
+    }
+  };
+  const handleFileChangeInLevel = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setLevelData(prevState => ({
+        ...prevState,
+        sitePhotos: {
+          ...prevState.sitePhotos,
+          [fieldName]: file
+        }
+      }));
+      setFileNames(prevState => ({
+        ...prevState,
+        [fieldName]: file.name
+      }));
+    }
+  };
+  const handleFileChangeInFloorFront = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFloorFrontData(prevState => ({
+        ...prevState,
+        sitePhotos: {
+          ...prevState.sitePhotos,
+          [fieldName]: file
+        }
+      }));
+      setFileNames(prevState => ({
+        ...prevState,
+        [fieldName]: file.name
+      }));
+    }
+  };
 
   const handleInputChangeInPit = (e) => {
     const { name, value } = e.target;
@@ -85,7 +162,9 @@ const ClientFormDimentions = ({
     toggleVisibility();
     forSecondClick();
   };
-
+  useEffect(() => {
+    onDataChange(dimentionsData);
+  }, [dimentionsData]);
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
@@ -200,29 +279,76 @@ const ClientFormDimentions = ({
             </div>
             <div className="site-photos">Site Photos</div>
             <div className="dimension-btn-wrapper">
-              <label className="dimension-btn">
-                Pit
-                <input className="hidden-input" type="file" />
-              </label>
-              <div className="dimension-upload-btn">
-                <label className="dimension-upload-btn">
-                  Bottom to Top{" "}
+              <div>
+                <label
+                  className={`dimension-btn ${
+                    fileNames["pit"] ? "dimension-btn-background" : ""
+                  }`}
+                >
+                  <span>Pit</span>
                   <img src="./uploadIcon.png " className="upload-icon" />
-                  <input className="hidden-input" type="file" />
+                  <input
+                    className="hidden-input"
+                    type="file"
+                    onChange={(e) => handleFileChangeInPit(e, "pit")}
+                  
+                  />
                 </label>
+                {fileNames["pit"] && (
+                  <div className="file-name">{fileNames["pit"]}</div>
+                )}
               </div>
-              <div className="dimension-upload-btn">
-                <label className="dimension-upload-btn">
-                  Basement Front{" "}
-                  <img src="./uploadIcon.png " className="upload-icon" />
-                  <input className="hidden-input" type="file" />
-                </label>
+              <div className="dimension-btn-wrapper">
+                <div>
+                  <label
+                    className={`dimension-btn ${
+                      fileNames["bottomToTop"] ? "dimension-btn-background" : ""
+                    }`}
+                  >
+                    <span>Bottom to top</span>
+                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <input
+                      className="hidden-input"
+                      type="file"
+                      onChange={(e) => handleFileChangeInPit(e, "bottomToTop")}
+                    />
+                  </label>
+
+                  {fileNames["bottomToTop"] && (
+                    <div className="file-name">{fileNames["bottomToTop"]}</div>
+                  )}
+                </div>
+              </div>
+              <div className="dimension-btn-wrapper">
+                <div>
+                  <label
+                    className={`dimension-btn ${
+                      fileNames["basementFront"]
+                        ? "dimension-btn-background"
+                        : ""
+                    }`}
+                  >
+                    <span>Basement Front</span>
+                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <input
+                      className="hidden-input"
+                      type="file"
+                      onChange={(e) => handleFileChangeInPit(e, "basementFront")}
+                    />
+                  </label>
+                  {fileNames["basementFront"] && (
+                    <div className="file-name">
+                      {fileNames["basementFront"]}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {Flevel &&
             Flevel.slice(1, -1).map((val, index) => {
+              const uniqueKey = `floor-${index}`;
               return (
                 <div className="floor-section" key={index}>
                   <div className="floor">
@@ -321,10 +447,34 @@ const ClientFormDimentions = ({
                       </div>
                       <div className="site-photos">Site Photos</div>
                       <div className="dimension-btn-wrapper">
-                        <label className="dimension-btn">
-                          Floor Front
-                          <input className="hidden-input" type="file" />
-                        </label>
+                        <div>
+                          <label
+                            className={`dimension-btn ${
+                              fileNames[uniqueKey]
+                                ? "dimension-btn-background"
+                                : ""
+                            }`}
+                          >
+                            <span>Floor Front</span>
+                            <img
+                              src="./uploadIcon.png "
+                              className="upload-icon"
+                            />
+                            <input
+                              className="hidden-input"
+                              type="file"
+                              onChange={(e) =>
+                                handleFileChangeInLevel(e, uniqueKey)
+                              }
+                            />
+                          </label>
+
+                          {fileNames[uniqueKey] && (
+                            <div className="file-name">
+                              {fileNames[uniqueKey]}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -401,24 +551,70 @@ const ClientFormDimentions = ({
                 </div>
                 <div className="site-photos">Site Photos</div>
                 <div className="dimension-btn-wrapper">
-                  <label className="dimension-btn">
-                    Floor Front
-                    <input className="hidden-input" type="file" />
+              <div>
+                <label
+                  className={`dimension-btn ${
+                    fileNames["topFloorFront"] ? "dimension-btn-background" : ""
+                  }`}
+                >
+                  <span>Floor Front</span>
+                  <img src="./uploadIcon.png " className="upload-icon" />
+                  <input
+                    className="hidden-input"
+                    type="file"
+                    onChange={(e) => handleFileChangeInFloorFront(e, "topFloorFront")}
+                  />
+                </label>
+                {fileNames["topFloorFront"] && (
+                  <div className="file-name">{fileNames["topFloorFront"]}</div>
+                )}
+              </div>
+              <div className="dimension-btn-wrapper">
+                <div>
+                  <label
+                    className={`dimension-btn ${
+                      fileNames["topToBottom"] ? "dimension-btn-background" : ""
+                    }`}
+                  >
+                    <span>Top to Bottom</span>
+                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <input
+                      className="hidden-input"
+                      type="file"
+                      onChange={(e) => handleFileChangeInFloorFront(e, "topToBottom")}
+                    />
                   </label>
-                  <div className="dimension-upload-btn">
-                    <span>
-                      Top to Bottom{" "}
-                      <img src="./uploadIcon.png " className="upload-icon" />
-                    </span>
-                  </div>
-                  <div className="dimension-upload-btn">
-                    <span>
-                      {" "}
-                      Overhead{" "}
-                      <img src="./uploadIcon.png" className="upload-icon" />
-                    </span>
-                  </div>
+
+                  {fileNames["topToBottom"] && (
+                    <div className="file-name">{fileNames["topToBottom"]}</div>
+                  )}
                 </div>
+              </div>
+              <div className="dimension-btn-wrapper">
+                <div>
+                  <label
+                    className={`dimension-btn ${
+                      fileNames["Overhead"]
+                        ? "dimension-btn-background"
+                        : ""
+                    }`}
+                  >
+                    <span>Overhead</span>
+                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <input
+                      className="hidden-input"
+                      type="file"
+                      onChange={(e) => handleFileChangeInFloorFront(e, "Overhead")}
+                    />
+                  </label>
+                  {fileNames["Overhead"] && (
+                    <div className="file-name">
+                      {fileNames["Overhead"]}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
               </div>
             </div>
           </div>

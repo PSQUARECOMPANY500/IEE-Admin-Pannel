@@ -124,7 +124,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
       </div>
       <div className="client-form-input-wrapper quotation">Quotation</div>
       <div className="quotation-container client-form-input-wrapper">
-        <div>
+        <div >
           <TextInput
             label={"Quotated Price"}
             name={"quotatedPrice"}
@@ -138,7 +138,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
             }}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
           <TextInput
             label={"Final Price"}
             name={"finalPrice"}
@@ -152,7 +152,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
             }}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`} >
           <TextInput
             label={"Discount(Rupees)"}
             name={"discountInRupees"}
@@ -166,7 +166,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
             }}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
           <TextInput
             label={"Discount(%)"}
             name={"discountInPercentage"}
@@ -201,7 +201,7 @@ const ClientSalesManDetails = ({ onDataChange }) => {
             }}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.finalAmount===""?"disabled":""}`}>
           <TextInput
             label={"Final Amount"}
             name={"finalAmount"}

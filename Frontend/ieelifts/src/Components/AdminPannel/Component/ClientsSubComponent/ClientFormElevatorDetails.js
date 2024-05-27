@@ -34,7 +34,7 @@ const ClientFormElevatorDetails = ({
     basementSelection: { b1: false, b2: false },
     doorType: "",
     constructionMaterial: "",
-    numberOfOpenings: "",
+    numberOfOpenings: 0,
     remarks: "",
   });
   
@@ -228,6 +228,7 @@ const ClientFormElevatorDetails = ({
     onDataChange(elevatorData);
   }, [elevatorData]);
   console.log("elevatorData", elevatorData);
+  console.log("elevatorData======>",elevatorData)
   return (
     <div className="client-form-elevator-details">
       <h5 className="client-form-details-heading">Elevator Details</h5>
@@ -266,6 +267,7 @@ const ClientFormElevatorDetails = ({
                 degree={degree}
                 array={array}
                 handleClick={handleClick}
+                stops={elevatorDetails.stops}
               />
             </>
           )}
