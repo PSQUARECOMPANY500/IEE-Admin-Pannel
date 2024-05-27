@@ -44,11 +44,11 @@ const MessageBox = ({ onClose, EnggId }) => {
       console.log("socket is connected successfully")
     });
     return () => {
-      socket.disconnect();
-    };
+      socket.disconnect();  
+      };
   }, []);
 
-
+  
 
 
 
@@ -168,19 +168,19 @@ const MessageBox = ({ onClose, EnggId }) => {
     scroll();
   }, [getMessages]);
 
-  useEffect(() => {
-    socket.on("EnggNewMessage", (message) => {
-      setAllMessages((prevMessages) => [...prevMessages, message]);
-    });
-  }, []);
+useEffect(() => {
+  socket.on("EnggNewMessage", (message) => {
+    setAllMessages((prevMessages) => [...prevMessages, message]);
+  });
+}, []);
 
 
 
   useEffect(() => {
-
+  
     scroll();
   }, [allMessages]);
-
+  
   return (
     <>
       <EngChatNav />
@@ -188,9 +188,9 @@ const MessageBox = ({ onClose, EnggId }) => {
         <div className="EngChatBoxHead-Dash">
           <h6>online</h6>
           <div className="EngChatBoxIcons-Dash">
-            <IoCallOutline className="cursor" />
-            <CiVideoOn className="cursor" />
-            <RxCross2 onClick={onClose} className="cursor" />
+            <IoCallOutline className="cursor"/>
+            <CiVideoOn  className="cursor"/>
+            <RxCross2 onClick={onClose}  className="cursor"/>
           </div>
         </div>
         <div className="EngChatMsg-Dash"  >

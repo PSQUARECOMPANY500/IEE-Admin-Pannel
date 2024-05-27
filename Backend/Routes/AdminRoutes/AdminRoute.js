@@ -14,6 +14,8 @@ router.post("/assignRequest", adminContoller.AssignServiceRequests);
 router.post("/createMembership", adminContoller.createClientMemebership);
 
 router.post("/createServiceAdmin", adminContoller.createServiceAdmin); // crete service admin
+
+router.post("/createServiceAdmin", adminContoller.createServiceAdmin); // crete service admin
 router.post(
   "/createFilteringLocations",
   adminContoller.createLocationForFilter
@@ -98,6 +100,7 @@ router.get("/getMembershipHistory", adminContoller.getMembershipHistory);
 router.get("/getMembershipDetails", adminContoller.getMembershipDetails);
 router.get("/getClientId/:JON", adminContoller.getClientDetail);
 router.get("/getMembership", adminContoller.getClientMembership);
+router.post("/createMembership", adminContoller.createClientMemebership);
 router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
@@ -150,10 +153,10 @@ router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
 router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
 router.post("/updatePassword",adminContoller.updatePassword);
 
-/**
+router.get("/getNotification",adminContoller.getNotification)/**
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
-router.get("/getNotification",adminContoller.getNotification)
+
 router.post('/clientForm',adminContoller.postElevatorForm);
 router.put('/updateClientForm',adminContoller.putElevatorForm);
 

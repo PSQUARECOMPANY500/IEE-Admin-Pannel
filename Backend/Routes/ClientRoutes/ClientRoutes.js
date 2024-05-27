@@ -51,4 +51,8 @@ router.put("/updateServiceRequest", clientController.updateServiceRequest);
 // router.post("/engineerRating",verifyToken('client'),clientController.Rating)
 
 
+// ------------------------20/05/2024 by preet --------------------------------
+router.get("/getClientCurentActiveService/:JobOrderNumber", clientController.getCurrentScheduleService);
+
+
 module.exports = router;

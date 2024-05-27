@@ -14,13 +14,10 @@ const ElevatorFormDetails = ({
     numberofopenings: "04",
   });
 
-
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
     setClientFormData({ ...clientFormData, [name]: value });
   };
-
- 
 
   useEffect(() => {}, [clientFormData]);
   return (
@@ -32,7 +29,6 @@ const ElevatorFormDetails = ({
               label={"Pit depth"}
               name={"pitdepth"}
               value={clientFormData.pitdepth}
-              onChange={hadleInputChnage}
               w="25vw"
             />
             {/* <span className="mmBtn mm-btn-possition">mm</span> */}
@@ -44,7 +40,6 @@ const ElevatorFormDetails = ({
             label={"Purpose"}
             name={"purpose"}
             value={clientFormData.purpose}
-            onChange={hadleInputChnage}
             w="25vw"
           />
         </div>
@@ -53,7 +48,6 @@ const ElevatorFormDetails = ({
             label={"Stops"}
             name={"stops"}
             value={clientFormData.stops}
-            onChange={hadleInputChnage}
             w="25vw"
           />
         </div>
@@ -63,7 +57,6 @@ const ElevatorFormDetails = ({
             label={"Door Type"}
             name={"doortype"}
             value={clientFormData.doortype}
-            onChange={hadleInputChnage}
             w="25vw"
           />
         </div>
@@ -72,7 +65,6 @@ const ElevatorFormDetails = ({
             label={"Number of Openings"}
             name={"numberofopenings"}
             value={clientFormData.numberofopenings}
-            onChange={hadleInputChnage}
             w="25vw"
           />
         </div>

@@ -3,9 +3,8 @@ import ElevatorFormDetails from "./ElevatorFormDetails";
 import ViewDimensionBtn from "./ClientsReusableComponent/ViewDimensionBtn";
 import LeftElevatorDetails from "./LeftElevatorDetails";
 import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
-import BasementFormElevatorDetails from "./BasementFormElevatorDetails";
-import FloorFormElevator from "./FloorFormElevator";
 import { HiArrowLeft } from "react-icons/hi";
+import ClientElevatorForm from "./ClientElevatorForm";
 
 const ClientElevatorDetails = () => {
   const [Flevel, setFLevel] = useState([]);
@@ -75,6 +74,7 @@ const ClientElevatorDetails = () => {
                     degree={{}}
                     array={array}
                     handleClick={() => {}}
+                    isClient={true}
                   />
                 </div>
               </div>
@@ -92,9 +92,14 @@ const ClientElevatorDetails = () => {
                   <span className="client-form-heading-line"></span>
                 </div>
                 <div className="client-form-next-floor">
-                  <BasementFormElevatorDetails />
+                 
 
-                  <FloorFormElevator />
+                  <ClientElevatorForm/>
+
+
+
+
+
                 </div>
               </div>
             )}

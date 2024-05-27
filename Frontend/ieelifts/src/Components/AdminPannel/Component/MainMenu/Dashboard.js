@@ -20,9 +20,13 @@ const Dashboard = () => {
     return state?.AdminRootReducer?.ReportCrouserHandlerReducer
   });
 
+  console.log('R',R);
+
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
+
+  console.log('dashboard pit area',AdminReportData?.AdminReportData?.ReportImages[3]?.photo);
 
   useEffect(() => {
     if (ref.current && shouldScrollToTop) {
@@ -41,7 +45,6 @@ const Dashboard = () => {
     setImages(AdminReportData?.AdminReportData?.ReportImages[R.Index]?.photo);
     setReportOpen(R.IsOpen);
   },[R])
-
 
  
   return (

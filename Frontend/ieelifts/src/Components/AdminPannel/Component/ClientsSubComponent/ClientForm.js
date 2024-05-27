@@ -19,7 +19,7 @@ import { closeClientModalAction } from "../../../../ReduxSetup/Actions/AdminActi
 const ClientForm = () => {
   const dispatch = useDispatch();
   const [valforDimention, setValForDimention] = useState();
-  const [Flevel, setFLevel] = useState([])
+  const [Flevel,setFLevel]=useState([])
   const [toggle, setToggle] = useState(true);
 
   const clientModalOperation = useSelector(
@@ -36,9 +36,6 @@ const ClientForm = () => {
   const handleNextPage = () => {
     setToggle(false);
   };
-  const handlePreviousPage = () => {
-    setToggle(true)
-  }
 
   const closeModal = () => {
     dispatch(closeClientModalAction());
@@ -74,25 +71,14 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}
-                      handleAction={handleNextPage}
+                      handleNextPage={handleNextPage}
                     />
                   </div>
                 </div>
               ) : (
                 <div className="client-form-next-container">
-                  <ClientFormElevatorDetails setValForDimention={setValForDimention} setFLevel={setFLevel} Flevel={Flevel} />
-                  <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel} />
-                  <div className="button-container">
-                    <Clientbutton
-                      value={"Back"}
-                      className={"client-form-button-yellow"}
-                      handleAction={handlePreviousPage}
-                    />
-                    <Clientbutton
-                      value={"Submit"}
-                      className={"client-form-button-submit"}
-                    />
-                  </div>
+                  <ClientFormElevatorDetails setValForDimention={setValForDimention} setFLevel={setFLevel} Flevel={Flevel}/>
+                  <ClientFormDimentions valforDimention={valforDimention} Flevel={Flevel}/>
                 </div>
               )}
             </div>

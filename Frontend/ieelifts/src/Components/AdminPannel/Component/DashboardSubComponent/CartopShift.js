@@ -15,14 +15,14 @@ const CartopShift = () => {
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
-
+console.log("pwwww",images);
   useEffect(() => {
-    setImages(AdminReportData?.AdminReportData?.ReportImages[1]?.photo);
+    setImages(AdminReportData?.AdminReportData?.ReportImages[2]?.photo);
     setAdminReportData(AdminReportData?.AdminReportData?.finalReportedData?.CartopShaft
     )
   }, [AdminReportData])
   const handleReport=()=>{
-    dispatch(ReportCrouserHandler(1,true));
+    dispatch(ReportCrouserHandler(2,true));
   }
   return (
     <div className="McRoom">
@@ -101,7 +101,7 @@ const CartopShift = () => {
                   <p>+{images.length}</p>
                 </div>
                 <>
-                  <img src='https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg' />
+                  <img src={`http://localhost:8000/api/document/ReportAttachments/${images[0]}`} />
                 </>
               </div>
             </div>}

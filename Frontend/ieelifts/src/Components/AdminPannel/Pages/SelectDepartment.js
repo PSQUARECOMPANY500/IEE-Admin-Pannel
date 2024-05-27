@@ -25,12 +25,6 @@ const SelectDepartment = () => {
     },
     {
       id: 3,
-      name: "Sales Admin",
-      value: "SalesAdmin",
-      image: crm,
-    },
-    {
-      id: 4,
       name: "Erection Admin",
       value: "ErectionAdmin",
       image: crm,

@@ -44,7 +44,7 @@ body::-webkit-scrollbar-thumb {
 main {
   display: flex;
   width: 100%;
-
+  
   padding: 10px 20px;
   overflow: hidden;
 }
@@ -60,7 +60,7 @@ main {
   top: 0;
   box-shadow: 2px 4px 10px #99886b66;
   display: flex;
-  z-index: 4;
+  z-index: 999;
   justify-content: center;
   align-items: baseline;
   height: 100vh;
@@ -626,7 +626,7 @@ span::after {
   margin-top: 0px;
   position: fixed;
   top: 0;
-  z-index: 3;
+  z-index: 999;
   padding-left: 18rem;
   box-shadow: 2px 4px 10px #99886b66;
   /* gap: 65%; */
@@ -1091,6 +1091,7 @@ footer a:hover {
 
 .slick-list {
   overflow: visible;
+  z-index: 99;
 }
 
 .basic-info {
@@ -1663,7 +1664,7 @@ footer a:hover {
   border-radius: 10px;
   margin-top: 25px;
   /* padding-top: 5px; */
-
+  background-color: red;
   background: #ffffff;
   z-index: -1;
 }
@@ -1806,11 +1807,9 @@ footer a:hover {
 .report-description-section {
   margin-top: 1rem;
   display: grid;
-
   grid-template-columns: repeat(1, calc(100% - 1rem));
   justify-content: center;
   gap: 1rem;
-  /* background-color: limegreen; */
   position: relative;
 }
 
@@ -2491,13 +2490,12 @@ footer a:hover {
   transition: background-color 0.25s ease;
   border-radius: 4px;
   border: 1px solid #c1c1c1;
-
+  
 }
-
-.sosCheckbox {
+.sosCheckbox{
   height: 18px;
   width: 18px;
-  margin-left: 5px;
+  margin-left:5px;
   border-radius: 4px;
   border: 1px solid #c1c1c1;
   transition: background-color 0.25s ease;
@@ -2824,7 +2822,7 @@ footer a:hover {
   width: 80%;
   height: 80vh;
   background: white;
-
+ 
   z-index: 9999;
 
 }
@@ -4019,7 +4017,6 @@ element.style {
 /* --------------------------------------------------message box css starts--------------------------------------------------------------------------------------- */
 .engg-message {
   transition: all 0.5s, background 2s 0.5s linear;
-
 }
 
 .message-parent-div {
@@ -4318,7 +4315,6 @@ element.style {
   font-size: 0.7rem;
   font-weight: 500;
 }
-
 .noti-dec-time p:nth-child(3) {
   font-size: 0.7rem;
   font-weight: 500;
@@ -4334,8 +4330,7 @@ element.style {
   border: 1px solid #f8ac1d;
   font-weight: 500;
 }
-
-.notification-buttons-operations p:nth-child(2) {
+.notification-buttons-operations p:nth-child(2){
   font-size: 10px;
 }
 
@@ -4899,7 +4894,6 @@ element.style {
 }
 
 .IssuesDoor1 h5 {
-
   margin-bottom: 0.2rem;
   margin-left: 1rem;
   text-align: left;
@@ -5737,7 +5731,6 @@ element.style {
   font-weight: 500;
 }
 
-
 .service-card-bottom {
   height: 40%;
   width: 100%;
@@ -5782,8 +5775,8 @@ element.style {
   border-radius: 5px;
   margin-top: 2px;
   margin-left: -260px;
-  position: relative;
- z-index: 9999999999;
+  position: absolute;
+  z-index: 99999;
 
   box-shadow: 10px 10px 25px #00000029;
 }
@@ -5818,7 +5811,6 @@ element.style {
   height: 85%;
   width: 100%;
   position: relative;
-  z-index: 9999999999999;
   padding: 0.5rem;
 }
 
@@ -5829,7 +5821,6 @@ element.style {
   padding-bottom: 2rem;
   overflow-y: auto;
   overflow-x: hidden;
-
 }
 
 .engchatmsg-sender-side-dash {
@@ -6042,7 +6033,7 @@ element.style {
   left: 0%;
   height: 100%;
   width: 100%;
-
+  z-index: 999;
 }
 
 .add-engg-modal {
@@ -6158,8 +6149,8 @@ element.style {
 
 
 /* for erorr border */
-.errorBorder {
-  border: 1px solid #CF352E !important;
+.errorBorder{
+border: 1px solid #CF352E!important;
 }
 
 
@@ -6278,7 +6269,6 @@ element.style {
 .PersonalDetailInput .inputWithAttachment input {
   border: none;
 }
-
 .PersonalDetailInput .inputWithAttachment2 input {
   border: none;
 }
@@ -6286,7 +6276,6 @@ element.style {
 .inputWithAttachment .css-b62m3t-container {
   width: 100%;
 }
-
 .inputWithAttachment2 .css-b62m3t-container {
   width: 100%;
 }
@@ -6415,11 +6404,6 @@ element.style {
 
 
 
-
-
-
-
-
 /* -------------------------------------------------------end of css for client modal data and wrraper and container css write on top with other cards---------------------------------------------------------------------------------------------- */
 .client-modal-profile-container {
   height: 15%;
@@ -6478,7 +6462,7 @@ element.style {
   justify-content: start;
 }
 
-.client-modal-text-container h5 {
+.client-modal-text-container h5{
   text-transform: capitalize;
 
 
@@ -6488,10 +6472,10 @@ element.style {
   height: 2.8rem;
   width: 6rem;
   border: 1px solid #8E8E8E;
-  border-radius: 10px;
+border-radius: 10px;
   position: relative;
   cursor: pointer;
-
+  
 }
 
 /*----------------------------- some changes by Raj  ----------*/
@@ -6502,45 +6486,36 @@ element.style {
   width: 100%;
   display: flex;
   color: #8E8E8E;
-  /* gap: 1px; */
   align-items: center;
   justify-content: center;
   position: relative;
-
   text-transform: capitalize;
   padding: 0 5px;
 }
-
-.dropdown-icon-container-img {
+.dropdown-icon-container-img{
   margin-top: 0.1rem;
   display: flex;
   margin-left: -1rem;
   align-items: center;
   gap: 0.3rem;
-  /* background-color: lightgreen; */
-
+  
 }
 
 .dropdown-icon-container h6 {
-  color: #DEDEDE;
-  text-transform: capitalize;
+  color:#DEDEDE;
+  text-transform:capitalize;
   font-weight: 400;
 
 }
-
 .dropdown-icon-container p {
   font-size: 0.8rem;
   cursor: pointer;
-  /* margin-left: -5px; */
 }
-
-
 
 .icon-size {
   font-size: 2rem;
   color: #000;
   position: absolute;
-  /* left: 80%; */
 }
 
 /* ------Add Some code by Raj data = 30/4/2024-------------- */
@@ -6556,145 +6531,122 @@ element.style {
   border-radius: 10px;
   margin-top: 0.5rem;
   border-radius: 5px;
-  /* padding: 1rem; */
-  padding: 13px 0px;
-
+ 
+  
 }
 
-.client-modal-dropdown-option {
+.client-modal-dropdown-option{
   display: flex;
-  /* background-color: lightcyan; */
   gap: 13px;
   align-items: center;
   margin-top: .4rem;
-  width: 100%;
-  padding-top: 0.4rem;
+  width:100%;
+  padding-top:0.4rem;
   height: 1.6rem;
   flex-direction: column;
-  /* margin-left:-8px; */
   border-bottom: 1px solid lightgrey;
 
 
 }
 
 .second-dropdown .client-modal-dropdown-option {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  margin-top: 0;
-  /* margin-left:-2px; */
-  height: 2.6rem;
-  border-bottom: 1px solid lightgrey;
-  padding-top: 9px;
-  /* background-color: lightblue; */
+width:100%;
+display: flex;
+flex-direction: column;
+text-align: center;
+margin-top: 0;
+height: 2.6rem;
+border-bottom: 1px solid lightgrey;
+padding-top: 9px;
 
 }
 
-.second-dropdown .client-modal-dropdown-option p {
-  border-bottom: none;
-  margin-top: 0;
+.second-dropdown .client-modal-dropdown-option p{
+border-bottom: none;
+margin-top:0;
 
 
 }
 
-.second-dropdown .client-modal-dropdown-option:nth-child(4) {
+.second-dropdown .client-modal-dropdown-option:nth-child(4){
   border-bottom: none;
   padding-top: 12px;
-  height: 2.8rem;
+  height:2.8rem;
 
+  
+}
+.third-dropdown .client-modal-dropdown-option:nth-child(5){
+  border-bottom: none;
 
 }
-
-.third-dropdown .client-modal-dropdown-option:nth-child(5) {
+.client-modal-dropdown-option:nth-child(4){
   border-bottom: none;
 
 }
 
-.client-modal-dropdown-option:nth-child(4) {
-  border-bottom: none;
-
-}
-
-.second-dropdown .client-modal-dropdown-option:nth-child(1):hover {
-  color: #0F351D;
+.second-dropdown .client-modal-dropdown-option:nth-child(1):hover{
+  color:#0F351D;
   background-color: #D6F8BF;
 }
-
-.second-dropdown .client-modal-dropdown-option:nth-child(2):hover {
-  color: #FF7F00;
+.second-dropdown .client-modal-dropdown-option:nth-child(2):hover{
+  color:#FF7F00;
   background-color: #F3DCC6;
 }
-
-.second-dropdown .client-modal-dropdown-option:nth-child(3):hover {
-  color: #F8AC1D;
+.second-dropdown .client-modal-dropdown-option:nth-child(3):hover{
+  color:#F8AC1D;
   background-color: #FEE2AE;
 }
-
-.second-dropdown .client-modal-dropdown-option:nth-child(4):hover {
-  color: #8E8E8E;
+.second-dropdown .client-modal-dropdown-option:nth-child(4):hover{
+  color:#8E8E8E;
   background-color: #E5E5E5;
-
+  
 }
 
 .client-modal-drodown-options p {
-  font-size: 0.9rem;
-  margin-top: -0.375rem;
-  color: #BABABA;
-  text-align: center;
-  transition: transform 0.1s;
-  cursor: pointer;
-  /* border-bottom: 1px solid lightgrey; */
-  text-transform: capitalize;
+font-size: 0.9rem;
+margin-top: -0.375rem;
+color: #BABABA;
+text-align: center;
+transition: transform 0.1s;
+cursor: pointer;
+text-transform: capitalize;
 
 }
-
 .client-modal-drodown-options p:hover {
   transition: all 0.1s;
   color: #F8AC1DAD;
 
 
 }
-
 /* -------------------CSS for third-dropdown---------------- */
 
-.third-dropdown .client-modal-drodown-options {
-  width: auto;
-  padding: 10px 0px;
-  width: 11rem;
+.third-dropdown .client-modal-drodown-options{
+width: auto;
+padding:5px 0px;
+width: 11rem;
 }
 
-.third-dropdown .client-modal-dropdown-option {
+.third-dropdown .client-modal-dropdown-option{
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width:100%;
   height: 2rem;
   border-bottom: 1px solid lightgrey;
   padding-top: 9px;
   text-align: center;
-  margin-left: 0px;
+  margin-left:0px;
 
 
 }
 
-.third-dropdown .client-modal-dropdown-option p {
-  border-bottom: none;
+.third-dropdown .client-modal-dropdown-option p{
+border-bottom: none;
 }
 
-/* .client-modal-dropdown.third-dropdown .dropdown-icon-container p {
-  margin-left: -1.1rem;
-} */
-
-
-/*---------------  This is for p tag of first dropdown only------------------------- */
-/* .client-modal-dropdown:not(.second-dropdown):not(.third-dropdown) .dropdown-icon-container p {
-  margin-left: -0.7rem;
-
-} */
 
 .green-padding {
   padding: 0.4375rem 1rem;
-  border-radius: 3.125rem;
+border-radius: 3.125rem; 
 
 }
 
@@ -7250,66 +7202,58 @@ element.style {
 /* ----------------------------------------------------------- css will Resum on 2nd Updates --------------------------------------------- */
 
 /*  map container css starts in task location section inside the dashboard */
-.map-container {
-  width: 100%;
-  height: 100%;
-}
+  .map-container{
+    width: 100%;
+    height: 100%;
+  }
 
-.gmnoprint a,
-.gmnoprint span {
-  display: none;
+  .gmnoprint a, .gmnoprint span {
+    display:none;
 }
-
 .gmnoprint div {
-  background: none !important;
+    background:none !important;
+}
+#GMapsID div div a div img{
+    display:none;
 }
 
-#GMapsID div div a div img {
-  display: none;
-}
+a[href^="http://maps.google.com/maps"]{display:none !important}
 
-a[href^="http://maps.google.com/maps"] {
-  display: none !important
+.gmnoprint a, .gmnoprint span {
+    display:none;
 }
-
-.gmnoprint a,
-.gmnoprint span {
-  display: none;
-}
-
 .gmnoprint div {
-  background: none !important;
+    background:none !important;
 }
 
 .gmnoprint {
   display: none;
 }
-
-.gm-style>div>div>a>div>img {
+.gm-style > div > div > a > div > img {
   display: none;
 }
 
-/*  map container css ends in task location section inside the dashboard */
+  /*  map container css ends in task location section inside the dashboard */
 
-/* select department css starts */
-.department-main-div {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 5rem;
-  row-gap: 2em;
-  margin-top: 2rem;
-  padding: 10px
-}
-
-
-
-.selected-border {
-
-  border: 2px solid #F8AC1DAD;
-}
+  /* select department css starts */
+  .department-main-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 5rem;
+    row-gap: 2em;
+    margin-top: 2rem;
+    padding: 10px
+  }
 
 
-.department-main-div .department-name-div {
+  
+ .selected-border{
+
+   border: 2px solid #F8AC1DAD;
+ }
+
+
+ .department-main-div .department-name-div {
   padding: 12px;
   border-radius: 10px;
   background: radial-gradient(rgb(244, 242, 242) 30%, rgba(216, 210, 210, 0.587));
@@ -7321,22 +7265,22 @@ a[href^="http://maps.google.com/maps"] {
   justify-content: start;
 }
 
-.department-name-div {
+  .department-name-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+.department-icon{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
+ justify-content: center;
+ align-items: center; 
+ background:#FFFFFFC1 ;
 }
 
-.department-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #FFFFFFC1;
-}
-
-.department-tag {
+.department-tag{
   font-size: 14px;
   color: #1D1D1D;
 
@@ -7357,7 +7301,7 @@ a[href^="http://maps.google.com/maps"] {
   right: -8px;
 }
 
-.Proceed-button {
+.Proceed-button{
   margin-top: 1rem;
   padding: 1.2rem 6rem;
   border-radius: 10px;
@@ -7371,20 +7315,19 @@ a[href^="http://maps.google.com/maps"] {
 
 
 @media only screen and (max-width: 1500px) {
-  .department-main-div {
+  .department-main-div{
     column-gap: 2rem;
     row-gap: 1.5em;
     padding: 0px 20px;
-
+  
 
   }
 }
+  /* select department css ends */
 
-/* select department css ends */
 
-
-.user-notification-image .icon-styling {
-  border: 1px solid #444444;
-  border-radius: 50%;
-  padding: 0px 9px;
+  .user-notification-image .icon-styling {
+    border: 1px solid #444444;
+    border-radius: 50%;
+    padding: 0px 9px;
 }

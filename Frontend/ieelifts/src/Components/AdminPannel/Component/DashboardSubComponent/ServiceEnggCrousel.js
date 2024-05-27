@@ -129,9 +129,9 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const [click, setClick] = useState("")
   const [hitclick, setHitClick] = useState(null)
   const [onclick, setOnClick] = useState(false)
-
+ 
   useEffect(() => {
-
+ 
     if (hitclick === click) {
       dispatch(onClickEnggCart(""))
       setHitClick(null)
@@ -196,19 +196,19 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           beforeChange={handleBeforeChange}
         >
           {assignedArray?.map((item, index) => {
-            if (item.ServiceEnggId === dataOnPin) {
+            if(item.ServiceEnggId === dataOnPin){
               return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={true} /> //preet sir please add border 
-            } else {
+            }else{
               return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={false} />
             }
           })}
           {notAssignedArray?.map((item, index) => {
-            if (item.ServiceEnggId === dataOnPin) {
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={true} />//preet sir please add border 
-            } else {
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={false} />
-            }
-          })}
+           if(item.ServiceEnggId === dataOnPin){
+            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={true}/>//preet sir please add border 
+          }else{
+            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={false}/>
+          }
+        })}
         </Slider>
       )}
     </div>

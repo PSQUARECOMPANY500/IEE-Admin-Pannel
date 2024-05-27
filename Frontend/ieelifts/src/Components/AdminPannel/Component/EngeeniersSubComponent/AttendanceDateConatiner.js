@@ -25,6 +25,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       setDates(dates);
     };
 
+    console.log("i am here", engID);
     if (date && engID) {
       dispatch(getEngineerAttendance(engID, date));
       selectedDate = date;
@@ -39,20 +40,10 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   const attendance = useSelector((state) => state?.AdminRootReducer?.engineerAttendanceReducer?.attendance?.attendanceData);
 
   const getDayOfWeek = (dateStr) => {
-    try {
-      const [day, month, year] = dateStr.split("/").map(Number);
-      if (isNaN(day) || isNaN(month) || isNaN(year)) {
-        throw new Error("Invalid date components");
-      }
-      const dateObj = new Date(year, month - 1, day);
-      if (isNaN(dateObj.getTime())) {
-        throw new Error("Invalid date object");
-      }
-      const options = { weekday: 'short' };
-      return new Intl.DateTimeFormat('en-US', options).format(dateObj);
-    } catch (error) {
-      return "Invalid date";
-    }
+    const [day, month, year] = dateStr.split("/");
+    const dateObj = new Date(year, month - 1, day);
+    const options = { weekday: 'short' };
+    return new Intl.DateTimeFormat('en-US', options).format(dateObj);
   };
 
   const calculateTotalHours = (checkIn, checkOut) => {
@@ -64,7 +55,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
   };
-  
+  console.log(dates, attendance);
   const renderDates = () => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {

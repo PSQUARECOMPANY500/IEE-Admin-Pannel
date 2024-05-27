@@ -16,53 +16,54 @@ const ClientFormElevatorDetails = ({
   const doorType = ["option1", "option2"];
   const constructionMaterial = ["option1", "option2"];
 
-  const [array, setArray] = useState([]);
+  
   const [elevatorDetails, setElevatorDetails] = useState({
     pit: "",
     type: "",
     purpose: "",
     capacity: "",
-    capacityUnit: "",
+    capacityUnit: "kg",
     stops: 0,
     groundOrStilt: "G",
     basementSelection: { b1: false, b2: false },
     doorType: "",
     constructionMaterial: "",
     numberOfOpening: "",
+    degree: {
+      nintyDegreeLeft: false,
+      nintyDegreeRight: false,
+      oneEightyDegree: false,
+    },
     remarks: "",
-    degree:""
-  })
-
-  const [degree, setDegree] = useState({
-    nintyDegreeLeft: "",
-    nintyDegreeRight: "",
-    oneEightyDegree: "",
-  })
-
+  });
   const handleElevatorDetailsChange = (fieldName, value) => {
     setElevatorDetails((prevDetails) => ({
       ...prevDetails,
       [fieldName]: value,
     }));
-    if (fieldName === "stops") {
-      setDefaultData(value);
-    }
   };
-
+  // let elevatorOpenings = []
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
 
   useEffect(() => {
     let level = [];
     let count = elevatorDetails.stops;
-
     if (elevatorDetails.basementSelection.b2) {
       level.push("B1", "B2");
       count -= 2;
-    } else if (elevatorDetails.basementSelection.b1) {
+    } else if (
+      elevatorDetails.basementSelection.b1 &&
+      elevatorDetails.basementSelection.b2
+    ) {
       level.push("B1");
       count -= 1;
+    } else if (
+      elevatorDetails.basementSelection.b1 &&
+      elevatorDetails.basementSelection.b2
+    ) {
+      level.push("B1", "B2");
+      count -= 2;
     }
-
     if (elevatorDetails.groundOrStilt === "S") {
       level.push("Stilt");
     } else {
@@ -72,14 +73,22 @@ const ClientFormElevatorDetails = ({
       level.push(`Level ${i}`);
     }
     setFLevel(level);
-  }, [elevatorDetails.stops, elevatorDetails.groundOrStilt, elevatorDetails.basementSelection]);
+  }, [
+    elevatorDetails.stops,
+    elevatorDetails.groundOrStilt,
+    elevatorDetails.basementSelection,
+  ]);
 
+  const [array, setArray] = useState([]);
 
+ 
 
   const handleInputValueChange = (field, newValue) => {
     setValForDimention(newValue);
-    handleElevatorDetailsChange(field, newValue)
+   
+    handleElevatorDetailsChange(field, newValue);
   };
+ 
 
   const handleClick = (row, colIndex) => {
     setArray((prevArray) => {
@@ -87,11 +96,13 @@ const ClientFormElevatorDetails = ({
       newArray[row][colIndex] = !newArray[row][colIndex];
       return newArray;
     });
-    let values = Object.values(elevatorDetails.degree).filter((value) => value !== "");
+    let values = Object.values(elevatorDetails.degree).filter(
+      (value) => value !== ""
+    );
+
     values = ["original", ...values];
 
     const levelValue = Flevel[row];
-    
 
     const updatedElevatorOpenings = elevatorOpenings.map((item) => {
       if (item.level === levelValue) {
@@ -110,13 +121,14 @@ const ClientFormElevatorDetails = ({
 
     setElevatorOpenings(updatedElevatorOpenings);
   };
-
+  // console.log("numberOfOpening ", elevatorDetails);
   const handleNumberOfOpenings = (openings) => {
+
     handleElevatorDetailsChange("numberOfOpening ", openings);
-    setDegree({
-      nintyDegreeLeft: "",
-      nintyDegreeRight: "",
-      oneEightyDegree: "",
+    handleElevatorDetailsChange("degree", {
+      nintyDegreeRight: false,
+      nintyDegreeLeft: false,
+      oneEightyDegree: false,
     });
     const ele = [];
     for (let i = 0; i < Flevel.length; i++) {
@@ -138,55 +150,86 @@ const ClientFormElevatorDetails = ({
   const handleDegreeSelection = (value) => {
     setLevelAndOpeningsView(elevatorDetails.numberOfOpening);
     setDefaultData(elevatorDetails.numberOfOpening);
-    if (elevatorDetails.numberOfOpening === 2 || elevatorDetails.numberOfOpening === 1) {
-      setDegree({
-        nintyDegreeLeft: "",
-        nintyDegreeRight: "",
-        oneEightyDegree: "",
+    if (elevatorDetails.numberOfOpening === 2) {
+      handleElevatorDetailsChange("degree", {
+        nintyDegreeRight: false,
+        nintyDegreeLeft: false,
+        oneEightyDegree: false,
       });
     } else if (elevatorDetails.numberOfOpening === 3) {
-      const R90 = degree.nintyDegreeRight;
-      const L90 = degree.nintyDegreeLeft;
-      const back = degree.oneEightyDegree;
+      const R90 = elevatorDetails.degree.nintyDegreeRight;
+      const L90 = elevatorDetails.degree.nintyDegreeLeft;
+      const back = elevatorDetails.degree.oneEightyDegree;
 
-      if (R90 === "90dR" && L90 === "90dL") {
-        setDegree((prevState) => ({
-          ...prevState,
-          nintyDegreeLeft: "",
-        }));
-      } else if (L90 === "90dL" && back === "180d") {
-        setDegree((prevState) => ({
-          ...prevState,
-          oneEightyDegree: "",
-        }));
-      } else if (R90 === "90dR" && back === "180d") {
-        setDegree((prevState) => ({
-          ...prevState,
-          nintyDegreeRight: "",
-        }));
+      if (R90 && L90) {
+        // console.log("thisnis", R90, L90, back);
+        handleElevatorDetailsChange("degree", {
+          nintyDegreeRight: true,
+          nintyDegreeLeft: false,
+          oneEightyDegree: false,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   nintyDegreeLeft: "",
+        // }));
+      } else if (L90 && back) {
+        handleElevatorDetailsChange("degree", {
+          nintyDegreeRight: false,
+          nintyDegreeLeft: true,
+          oneEightyDegree: false,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   oneEightyDegree: "",
+        // }));
+      } else if (R90 && back) {
+        handleElevatorDetailsChange("degree", {
+          nintyDegreeRight: true,
+          nintyDegreeLeft: false,
+          oneEightyDegree: false,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   nintyDegreeRight: "",
+        // }));
       }
     }
+    // console.log("this is handleElevatorDetailsChange: ",elevatorDetails.degree);
+    const degreeDetail = elevatorDetails.degree;
+    // console.log("This is degreeDetail ", degreeDetail);
 
     switch (value) {
       case "90dL":
-        setDegree((prevState) => ({
-          ...prevState,
-          nintyDegreeLeft: prevState.nintyDegreeLeft ? "" : "90dL",
-        }));
+        handleElevatorDetailsChange("degree", {
+          ...degreeDetail,
+          nintyDegreeLeft: !degreeDetail.nintyDegreeLeft,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   nintyDegreeLeft: prevState.nintyDegreeLeft ? "" : "90dL",
+        // }));
 
         break;
       case "90dR":
-        setDegree((prevState) => ({
-          ...prevState,
-          nintyDegreeRight: prevState.nintyDegreeRight ? "" : "90dR",
-        }));
+        handleElevatorDetailsChange("degree", {
+          ...degreeDetail,
+          nintyDegreeRight: !degreeDetail.nintyDegreeRight,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   nintyDegreeRight: prevState.nintyDegreeRight ? "" : "90dR",
+        // }));
 
         break;
       case "180d":
-        setDegree((prevState) => ({
-          ...prevState,
-          oneEightyDegree: prevState.oneEightyDegree ? "" : "180d",
-        }));
+        handleElevatorDetailsChange("degree", {
+          ...degreeDetail,
+          oneEightyDegree: !degreeDetail.oneEightyDegree,
+        });
+        // setDegdree((prevState) => ({
+        //   ...prevState,
+        //   oneEightyDegree: prevState.oneEightyDegree ? "" : "180d",
+        // }));
         break;
       default:
         break;
@@ -206,17 +249,46 @@ const ClientFormElevatorDetails = ({
       <hr className="client-form-hr" />
 
       <div className="dimenstions-container">
-        <ElevatorDetails pitDepth={pitDepth} typeOptions={typeOptions} purpose={purpose}
-          capacity={elevatorDetails.capacity} capacityUnit={elevatorDetails.capacityUnit} handleInputValueChange={handleInputValueChange} basementSelection={elevatorDetails.basementSelection}
-          doorType={doorType} constructionMaterial={constructionMaterial} numberOfOpenings={numberOfOpenings}
-          handleNumberOfOpenings={handleNumberOfOpenings} degree={degree} handleDegreeSelection={handleDegreeSelection} openings={elevatorDetails.numberOfOpening}
+        <ElevatorDetails
+          pitDepth={pitDepth}
+          typeOptions={typeOptions}
+          purpose={purpose}
+          capacity={elevatorDetails.capacity}
+          capacityUnit={elevatorDetails.capacityUnit}
+          handleInputValueChange={handleInputValueChange}
+          basementSelection={elevatorDetails.basementSelection}
+          doorType={doorType}
+          constructionMaterial={constructionMaterial}
+          numberOfOpenings={numberOfOpenings}
+          handleNumberOfOpenings={handleNumberOfOpenings}
+          degree={elevatorDetails.degree}
+          handleDegreeSelection={handleDegreeSelection}
+          openings={elevatorDetails.numberOfOpening}
           handleElevatorDetailsChange={handleElevatorDetailsChange}
           groundOrStilt={elevatorDetails.groundOrStilt}
         />
 
-        {elevatorDetails.numberOfOpening !== 0 && elevatorDetails.stops !== 0 && Object.values(degree).filter(val => val !== "").length === elevatorDetails.numberOfOpening - 1 && (
-          <> <ElevatorOpeningSelection Flevel={Flevel} numberOfOpening={elevatorDetails.numberOfOpening} degree={degree} array={array} handleClick={handleClick} /></>
-        )}
+        <ElevatorFormDetails
+        degree={elevatorDetails.degree}
+        handleDegreeSelection={handleDegreeSelection}
+        openings={elevatorDetails.numberOfOpening}
+        />
+
+        {elevatorDetails.numberOfOpening !== 0 &&
+          elevatorDetails.stops !== 0 &&
+          Object.values(elevatorDetails.degree).filter((val) => val !== false)
+            .length === elevatorDetails.numberOfOpening && (
+            <>
+              {" "}
+              <ElevatorOpeningSelection
+                Flevel={Flevel}
+                numberOfOpening={elevatorDetails.numberOfOpening}
+                degree={elevatorDetails.degree}
+                array={array}
+                handleClick={handleClick}
+              />
+            </>
+          )}
 
         <div className="text-area-container">
           <textarea placeholder="Add Remarks"></textarea>

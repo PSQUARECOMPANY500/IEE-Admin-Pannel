@@ -1,42 +1,16 @@
-// <-----------------------------  Author:- Rahul kumar ----------------------------------->clientFormData
-import { useState, useEffect } from "react";
+// <-----------------------------  Author:- Rahul kumar ----------------------------------->
+import { useState,useEffect } from "react";
 import React from "react";
 import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import TextInput from "./ClientsReusableComponent/TextInput";
 const ClientSalesManDetails = () => {
-  const [clientFormData, setClientFormData] = useState({
-    salesmanId: "",
-    salesmanName: "",
-    finalPrice: "",
-    quotatedPrice: "",
-    finalPrice: "",
-    discountInRupees: "",
-    discountInPercentage: "",
-    discountAmount: "",
-    finalAmount: "",
+  const [clientFormData, setClientFormData] = useState({salesmanId:'',salesmanName:''
+    ,finalPrice:'',quotatedPrice:'',finalPrice:'',discountInRupees:'',discountInPercentage:'',discountAmount:'',finalAmount:''
   });
- 
   const [click, setClick] = useState({});
-
-  console.log("popopo",click.finalPrice)
-  
   const hadleInputChnage = (e) => {
-    console.log(e.target.value)
     const { name, value } = e.target;
     setClientFormData({ ...clientFormData, [name]: value });
-
-  
-    // if(clientFormData.quotatedPrice && clientFormData.finalPrice){
-    //   const newDiscountInRupees = clientFormData.quotatedPrice-clientFormData.finalPrice;
-    //   const newDiscountInPercentage = (newDiscountInRupees/clientFormData.quotatedPrice)*100+"%";
-    //   {click.finalPrice === 'false' && setClientFormData( prevState=> ({
-    //     ...prevState,
-    //     discountInRupees:newDiscountInRupees,
-    //     discountInPercentage:newDiscountInPercentage
-    //   }))}
-
-    // }
-
   };
 
   const handleClick = (e) => {
@@ -49,50 +23,8 @@ const ClientSalesManDetails = () => {
     setClick({ ...click, [name]: false });
   };
 
-
-
-
   useEffect(() => {
-    if(clientFormData.quotatedPrice && clientFormData.finalPrice){
-      const newDiscountInRupees = clientFormData.quotatedPrice-clientFormData.finalPrice;
-      const newDiscountInPercentage = (newDiscountInRupees/clientFormData.quotatedPrice)*100+"%";
-
-      setClientFormData({
-        discountInRupees: newDiscountInRupees,
-        discountInPercentage: newDiscountInPercentage,
-      });
-
-    }
-    // else if(clientFormData.quotatedPrice && clientFormData.discountInRupees){
-    //   const newFinalPrice = clientFormData.quotatedPrice-clientFormData.discountInRupees;
-    //   const newDiscountInPercentage = (clientFormData.discountInRupees/clientFormData.quotatedPrice)*100+"%";
-    //   setClientFormData(prevState => ({
-      //     ...prevState,
-      //     finalPrice: newFinalPrice,
-      
-      //     discountInPercentage: newDiscountInPercentage
-      //   }));
-    
-  },[clientFormData.quotatedPrice, clientFormData.finalPrice]);
-
-  // useEffect(() => {
-  //   const quotatedPrice = parseFloat(clientFormData.quotatedPrice) || 0;
-  //   const finalPrice = parseFloat(clientFormData.finalPrice) || 0;
-  //   const discountInRupees = parseFloat(clientFormData.discountInRupees) || 0;
-
-  //   if (quotatedPrice && finalPrice) {
-  //     const newDiscountInRupees = quotatedPrice - finalPrice;
-  //     const newDiscountInPercentage = (newDiscountInRupees / quotatedPrice) * 100;
-
-  //     setClientFormData(prevState => ({
-  //       ...prevState,
-  //       discountInRupees: newDiscountInRupees.toFixed(2),
-  //       discountInPercentage: newDiscountInPercentage.toFixed(2)
-  //     }));
-  //   } 
-  // }, [clientFormData.quotatedPrice, clientFormData.finalPrice, clientFormData.discountInRupees]);
-
-  // console.log("heello",clientFormData);
+  }, [clientFormData]);
 
   return (
     <div className="client-salesman-details">
@@ -103,20 +35,28 @@ const ClientSalesManDetails = () => {
           <TextInput
             label={"Salesman ID"}
             name={"salesmanId"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.salesmanId}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.salesmanId}
             onBlur={handleClickFalse}
           />
         </div>
         <div>
-          <TextInput
+        <TextInput
             label={"Name"}
             name={"salesmanName"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.salesmanName}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.salesmanName}
             onBlur={handleClickFalse}
           />
@@ -128,42 +68,58 @@ const ClientSalesManDetails = () => {
           <TextInput
             label={"Quotated Price"}
             name={"quotatedPrice"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.quotatedPrice}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.quotatedPrice}
             onBlur={handleClickFalse}
           />
         </div>
         <div>
-          <TextInput
+        <TextInput
             label={"Final Price"}
             name={"finalPrice"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.finalPrice}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.finalPrice}
             onBlur={handleClickFalse}
           />
         </div>
         <div>
-          <TextInput
+        <TextInput
             label={"Discount(Rupees)"}
             name={"discountInRupees"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.discountInRupees}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.discountInRupees}
             onBlur={handleClickFalse}
           />
         </div>
         <div>
-          <TextInput
+        <TextInput
             label={"Discount(%)"}
             name={"discountInPercentage"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.discountInPercentage}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.discountInPercentage}
             onBlur={handleClickFalse}
           />
@@ -172,23 +128,31 @@ const ClientSalesManDetails = () => {
       <div className="client-form-input-wrapper quotation">MD-Discount</div>
       <div className="md-discount-container">
         <div>
-          <TextInput
+        <TextInput
             label={"Discount Amount"}
             name={"discountAmount"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.discountAmount}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.discountAmount}
             onBlur={handleClickFalse}
           />
         </div>
         <div>
-          <TextInput
+        <TextInput
             label={"Final Amount"}
             name={"finalAmount"}
+            // name paste here from useState
+
             onFocus={handleClick}
+            // same name paste here from useState
             value={clientFormData.finalAmount}
             onChange={hadleInputChnage}
+            // name paste here from useState
             click={click.finalAmount}
             onBlur={handleClickFalse}
           />
