@@ -1221,3 +1221,24 @@ export const fetchEnggPersonalData = async (EnggId) => {
     console.log("Error while fetching Eng_Personal_details", error);
   }
 };
+
+
+
+export const editEnggPersonalData = async (EnggId, formData) => {
+  try {
+    const response = await axios.put(
+      `${config.apiUrl}/admin/editEnggDetails/${EnggId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("sunday", response.data)
+    return response.data
+  } catch (error) {
+    console.log("Error while fetching Edit_Eng_Personal_details", error);
+
+  }
+}

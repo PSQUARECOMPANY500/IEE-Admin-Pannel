@@ -9,10 +9,13 @@ import AddEnggAttachment from "../DashboardSubComponent/DropdownCollection/AddEn
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
+import { editEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
 import toast, { Toaster } from "react-hot-toast";
 import config from "../../../../config";
 
-const AddEngineerForm = ({ engID, onClose }) => {
+const AddEngineerForm = ({ engID,  onClose }) => {
+
+ 
   const dispatch = useDispatch();
   const divRef = useRef([]);
   const mainDivRef = useRef(null);
@@ -33,8 +36,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [engDrivingData, setEngDrivingData] = useState("");
   const [engQualificationPhoto, setQualificationPhoto] = useState("");
   const [engAdditionalPhoto, setEngAdditionalPhoto] = useState("");
-  // console.log("4rrrrr4", engAllData);
-  // console.log("555555555555", engAllData?.EnggName);
+
 
   const [profilePhoto, setProfilePhoto] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -71,6 +73,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
   const [addharPhoto, SetAddharPhoto] = useState("");
+  console.log("dsdsd",addharPhoto)
+
   const [isAddharCardNumberEmpty, setIsAddharCardNumberEmpty] = useState(false);
   const [isPancardsEmpty, setIsPancardsEmpty] = useState(false);
   const [isDrivingLisienceEmpty, setIsDrivingLisienceEmpty] = useState(false);
@@ -146,12 +150,16 @@ const AddEngineerForm = ({ engID, onClose }) => {
         setEngAdditionalPhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto);
 
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
+        setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber)
 
       }
     };
 
     getData();
   }, [EngggId]);
+
+
+ 
 
   const openIt = () => {
     const url = `${config.documentUrl}/EnggAttachments/${engAllData}`;
@@ -407,7 +415,6 @@ const AddEngineerForm = ({ engID, onClose }) => {
     };
 
     checkRequiredFields();
-
     const formData = new FormData();
     formData.append("profilePhoto", profilePhoto);
     formData.append("firstName", firstName);
@@ -423,8 +430,19 @@ const AddEngineerForm = ({ engID, onClose }) => {
     formData.append("addharCardNumber", addharCardNumber);
     formData.append("drivingLisience", drivingLisience);
     formData.append("pancards", pancards);
-    formData.append("addharPhoto", addharPhoto);
-    formData.append("pancardPhoto", pancardPhoto);
+
+    
+      formData.append("addharPhoto", addharPhoto);
+    
+    
+    formData.append("pancardPhoto", pancardPhoto);   
+
+
+
+   
+
+
+
     formData.append("drivingLicensePhoto", drivingLicensePhoto);
     formData.append("additionalCourse", additionalCourse);
     formData.append("additionalCoursePhoto", additionalCoursePhoto);
@@ -442,43 +460,51 @@ const AddEngineerForm = ({ engID, onClose }) => {
     formData.append("EnggId", EngggId);
     formData.append("AlternativeNumber", alternativeNumber);
 
-    const response = await RegistrationEnggDetails(formData);
-    console.log("response", response);
+    // const response = await RegistrationEnggDetails(formData);
+   
+     
+        const editEnggPersonal = await editEnggPersonalData(engID, formData);
+        
+     
+  
+   
+  
+    // console.log("response", response);
 
-    if (response?.status === 201) {
-      setProfilePhoto("");
-      setFirstName("");
-      setLastName("");
-      setMobileNumber("");
-      setDateOfBirth("");
-      setEmail("");
-      setAddress("");
-      setCity("");
-      setAddharCardNumber("");
-      setDrivingLisience("");
-      setPancard("");
-      setQualification("");
-      setAdditionalCourse("");
-      setAccountHolderName("");
-      setBranchName("");
-      setAccountNumber("");
-      setJobDuration("");
-      setCompanyName("");
-      setJobTitle("");
-      setManagerName("");
-      setManagerNumber("");
-      setPinCode("");
-      setDistrict("");
-      setState("");
-      setIFSCcode("");
-      setfetchIFSCCode("");
-      SetAdditionalCoursePhoto("");
-      SetQualificationPhoto("");
-      SetPancardPhoto("");
-      SetDrivingLicensePhoto("");
-      SetAddharPhoto("");
-      toast.success("engineer register successfully");
-    }
+    // if (response?.status === 201) {
+    //   setProfilePhoto("");
+    //   setFirstName("");
+    //   setLastName("");
+    //   setMobileNumber("");
+    //   setDateOfBirth("");
+    //   setEmail("");
+    //   setAddress("");
+    //   setCity("");
+    //   setAddharCardNumber("");
+    //   setDrivingLisience("");
+    //   setPancard("");
+    //   setQualification("");
+    //   setAdditionalCourse("");
+    //   setAccountHolderName("");
+    //   setBranchName("");
+    //   setAccountNumber("");
+    //   setJobDuration("");
+    //   setCompanyName("");
+    //   setJobTitle("");
+    //   setManagerName("");
+    //   setManagerNumber("");
+    //   setPinCode("");
+    //   setDistrict("");
+    //   setState("");
+    //   setIFSCcode("");
+    //   setfetchIFSCCode("");
+    //   SetAdditionalCoursePhoto("");
+    //   SetQualificationPhoto("");
+    //   SetPancardPhoto("");
+    //   SetDrivingLicensePhoto("");
+    //   SetAddharPhoto("");
+    //   toast.success("engineer register successfully");
+    // }
   };
   return (
     <div className="" onClick={closeModal}>
@@ -795,7 +821,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }
                         />
                       </div>
-                      <p>{addharPhoto.name}</p>
+                      <p>{addharPhoto?.name}</p>
                     </div>
 
                     <div className="addFileName">
@@ -844,7 +870,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           onClick={pancardPhoto ? openItPanCard : () => handleUploadClick("panCard")}
                         />
                       </div>
-                      <p>{pancardPhoto.name}</p>
+                      <p>{pancardPhoto?.name}</p>
                     </div>
                   </div>
 
@@ -898,7 +924,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         />
                       </div>
                     </div>
-                    <p>{drivingLicensePhoto.name}</p>
+                    <p>{drivingLicensePhoto?.name}</p>
                   </div>
                 </div>
               </div>
@@ -1044,8 +1070,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       <div
                         className={
                           isAdditionalCourseEmpty
-                            ? "inputWithAttachment2"
-                            : "inputWithAttachment"
+                            ? "inputWithAttachment"
+                            : "inputWithAttachment2"
                         }
                         ref={(el) => (divRef.current[4] = el)}
                         onClick={() => handleClick(4)}

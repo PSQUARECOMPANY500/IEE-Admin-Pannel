@@ -2747,6 +2747,9 @@ module.exports.editEnggDetailsForm = async (req, res) => {
     const formData = req.files;
     const bodyData = req.body;
 
+    const EnggDataChecker = await ServiceEnggBasicSchema.findOne({EnggId})
+      
+
     const EnggData = await ServiceEnggBasicSchema.findOneAndUpdate(
       {
         EnggId,
@@ -2760,7 +2763,7 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggAddress: bodyData.address,
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
-          : "",
+          : EnggDataChecker.EnggPhoto ? EnggDataChecker.EnggPhoto : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -2778,19 +2781,19 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         IFSCcode: bodyData.IFSCcode,
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
-          : "",
+          : EnggDataChecker.AddharPhoto ? EnggDataChecker.AddharPhoto : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
-          : "",
+          : EnggDataChecker.DrivingLicensePhoto ? EnggDataChecker.DrivingLicensePhoto : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
-          : "",
+          : EnggDataChecker.PancardPhoto ? EnggDataChecker.PancardPhoto : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
-          : "",
+          : EnggDataChecker.QualificationPhoto ? EnggDataChecker.QualificationPhoto : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
-          : "",
+          : EnggDataChecker.AdditionalCoursePhoto ? EnggDataChecker.AdditionalCoursePhoto : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -2801,11 +2804,13 @@ module.exports.editEnggDetailsForm = async (req, res) => {
       }
     );
 
+    console.log("abiiiiiii",EnggData)
+
     if(!EnggData){
       return res.status(404).json({ message: "This JON is not found" });
     }
 
-    res.status(200).json({ message: "Engg Profile updated Succesfully" });
+    res.status(200).json({ message: "Engg Profile updated Succesfully"});
 
     // console.log("dooooooooooo", EnggData);
   } catch (error) {
