@@ -40,6 +40,8 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const ElevatorFormSchema = require("../../Modals/ClientDetailModals/ClientFormSchema");
 
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -611,7 +613,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Message,
       ServiceProcess,
       RepresentativeName,
-      RepresentativeNumber
+      RepresentativeNumber,
     } = req.body;
 
     let callback;
@@ -635,7 +637,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Message,
           ServiceProcess,
           RepresentativeName,
-          RepresentativeNumber
+          RepresentativeNumber,
         },
         {
           new: true,
@@ -652,23 +654,22 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Message,
         ServiceProcess,
         RepresentativeName,
-        RepresentativeNumber
+        RepresentativeNumber,
       });
     }
 
-
-      await getAllServiceRequest.findOneAndUpdate(
+    await getAllServiceRequest.findOneAndUpdate(
       {
         RequestId,
-      },{
+      },
+      {
         RepresentativeName,
-        RepresentativeNumber
+        RepresentativeNumber,
       },
       {
         new: true,
       }
     );
-    
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")
@@ -1175,9 +1176,9 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password , Role } = req.body;
-    const Admin = await serviceAdmin.findOne({ AdminId });  
-   /*  if(Admin.Role !== Role){
+    const { AdminId, Password, Role } = req.body;
+    const Admin = await serviceAdmin.findOne({ AdminId });
+    /*  if(Admin.Role !== Role){
       return res.status(401).json({status:"error", message: "permission denied" });
     }   */
 
@@ -1196,7 +1197,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
     res.status(200).json({
       message: "You are logged in Successfully",
       Admin,
-      token
+      token,
     });
   } catch (error) {
     console.log(error);
@@ -1568,10 +1569,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2492,7 +2493,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
     const ReportData = await ReportTable.findOne({ serviceId });
-    const Rating=await EnggRating.findOne({ServiceId: serviceId });
+    const Rating = await EnggRating.findOne({ ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2579,7 +2580,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       PitArea,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages,Rating});
+    res.status(200).json({ finalReportedData, ReportImages, Rating });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2588,74 +2589,88 @@ module.exports.fetchReportForAdmin = async (req, res) => {
   }
 };
 
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 /**
  * <-----------------------------Author: Rahul Kumar---------------------01/05/2024---------->
  */
 
 //post client form controller
-module.exports.postElevatorForm = async(req,res)=>{
-  try{
-      const {
-      clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-      elevatorDetails,dimensions
-      } = req.body;
+module.exports.postElevatorForm = async (req, res) => {
+  try {
+    const {
+      clientDetails,
+      salesManDetails,
+      quotation,
+      clientMembership,
+      documents,
+      architectDetails,
+      elevatorDetails,
+      dimensions,
+    } = req.body;
 
-      const elevatorFormSchema = new ElevatorFormSchema({
-        clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-        elevatorDetails,dimensions
-      })
+    const elevatorFormSchema = new ElevatorFormSchema({
+      clientDetails,
+      salesManDetails,
+      quotation,
+      clientMembership,
+      documents,
+      architectDetails,
+      elevatorDetails,
+      dimensions,
+    });
 
-     await elevatorFormSchema.save();
+    await elevatorFormSchema.save();
 
-res.status(200).json({msg:"data submit successfully" });      
-
-  }catch(err){
+    res.status(200).json({ msg: "data submit successfully" });
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
-    })
+      message: err.message,
+    });
   }
-}
+};
 
 //put request
 
-module.exports.putElevatorForm = async(req,res)=>{
-  try{
-    const {JON} = req.body; 
+module.exports.putElevatorForm = async (req, res) => {
+  try {
+    const { JON } = req.body;
     const newData = req.body;
-    console.log(JON) 
-    console.log(newData)
+    console.log(JON);
+    console.log(newData);
 
-    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData,{ new: true });
-      console.log(updatedData)
-            if (!updatedData) {
-                return res.status(404).json({ error: 'Data not found' });
-            }
-            res.status(200).json(updatedData);
-           
-  }catch(err){
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate(
+      { JON: JON },
+      newData,
+      { new: true }
+    );
+    console.log(updatedData);
+    if (!updatedData) {
+      return res.status(404).json({ error: "Data not found" });
+    }
+    res.status(200).json(updatedData);
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
-    })
+      message: err.message,
+    });
   }
-}
+};
 
 module.exports.getNotification = async (req, res) => {
   try {
-    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-    const response = await Notification.find({Date:now});
-    console.log("response",response)
-    if(response){
-      return res.status(200).json({ status:"sucess", response:response});
+    const now = new Date()
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
+    const response = await Notification.find({ Date: now });
+    console.log("response", response);
+    if (response) {
+      return res.status(200).json({ status: "success", response: response });
     }
   } catch (error) {
     return res.status(500).json({
@@ -2664,25 +2679,103 @@ module.exports.getNotification = async (req, res) => {
   }
 };
 
-
 // by aayush for rating admin=================================
 
+// By Raj for get client modal information -------------↓↓
 
- //-------------------------------------------------------------------------------------------------------------
- // edit engg details form API
-
- module.exports.editEnggDetailsForm = async (req, res) => {
+module.exports.getClientModalInformation = async (req, res) => {
   try {
-      const { EnggId } = req.params;
+    const { jon } = req.params;
+    const response = await RegisteredElevatorForm.findOne({
+      "clientFormDetails.jon": jon,
+    });
+    if (!response) {
+      return res.status(404).json({ message: "This JON is not found" });
+    }
 
-      // const  
-
+    res.status(200).json({ response });
   } catch (error) {
     return res.status(500).json({
       error: "Internal server error while fetching Notification",
     });
   }
- }
- //-------------------------------------------------------------------------------------------------------------
- 
+};
+//-------------------------------------------------------------------------------------------------------------
+// edit engg details form API preet
 
+module.exports.editEnggDetailsForm = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const formData = req.files;
+    const bodyData = req.body;
+
+    const EnggData = await ServiceEnggBasicSchema.findOneAndUpdate(
+      {
+        EnggId,
+      },
+      {
+        EnggName: bodyData.firstName,
+        EnggId: bodyData.EngggId,
+        AlternativeNumber: bodyData.AlternativeNumber,
+        EnggLastName: bodyData.lastName,
+        PhoneNumber: bodyData.mobileNumber,
+        EnggAddress: bodyData.address,
+        EnggPhoto: formData?.profilePhoto
+          ? formData?.profilePhoto[0]?.filename
+          : "",
+        DateOfBirth: bodyData.dateOfBirth,
+        Email: bodyData.email,
+        PinCode: bodyData.pinCode,
+        City: bodyData.city,
+        District: bodyData.district,
+        State: bodyData.state,
+        AddharCardNo: bodyData.addharCardNumber,
+        DrivingLicenseNo: bodyData.drivingLisience,
+        PanCardNo: bodyData.pancards,
+        Qualification: bodyData.qualification,
+        AdditionalCourse: bodyData.additionalCourse,
+        AccountHolderName: bodyData.accountHolderName,
+        BranchName: bodyData.branchName,
+        AccountNumber: bodyData.accountNumber,
+        IFSCcode: bodyData.IFSCcode,
+        AddharPhoto: formData?.addharPhoto
+          ? formData?.addharPhoto[0]?.filename
+          : "",
+        DrivingLicensePhoto: formData?.drivingLicensePhoto
+          ? formData?.drivingLicensePhoto[0]?.filename
+          : "",
+        PancardPhoto: formData?.pancardPhoto
+          ? formData?.pancardPhoto[0]?.filename
+          : "",
+        QualificationPhoto: formData?.qualificationPhoto
+          ? formData?.qualificationPhoto[0]?.filename
+          : "",
+        AdditionalCoursePhoto: formData?.additionalCoursePhoto
+          ? formData?.additionalCoursePhoto[0]?.filename
+          : "",
+        DurationOfJob: bodyData.jobDuration,
+        CompanyName: bodyData.companyName,
+        JobTitle: bodyData.jobTitle,
+        ManagerName: bodyData.managerName,
+        ManagerNo: bodyData.managerNumber,
+      },{
+        new: true,
+      }
+    );
+
+    if(!EnggData){
+      return res.status(404).json({ message: "This JON is not found" });
+    }
+
+    res.status(200).json({ message: "Engg Profile updated Succesfully" });
+
+    // console.log("dooooooooooo", EnggData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+};
+//-------------------------------------------------------------------------------------------------------------

@@ -129,7 +129,7 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
     console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
 // 
     // console.log("preet", req.body);
-    console.log("pankaj",req.files);
+    console.log("pankaj",bodyData.AlternativeNumber);
     // console.log(bodyData);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
@@ -146,7 +146,7 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
     const enggData = await ServiceEnggBasicSchema.create({
       EnggName: bodyData.firstName,
       EnggId: bodyData.EngggId,
-      AlternativeNumber: bodyData.alternativeNumber,
+      AlternativeNumber: bodyData.AlternativeNumber,
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,

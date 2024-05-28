@@ -5,6 +5,8 @@ const router = express.Router();
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
+
+const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -159,5 +161,39 @@ router.get("/getNotification",adminContoller.getNotification)/**
 
 router.post('/clientForm',adminContoller.postElevatorForm);
 router.put('/updateClientForm',adminContoller.putElevatorForm);
+
+// --------------------------Create by Raj-----------------23/05/2024
+
+router.get('/getClientModalInformation/:jon', adminContoller.getClientModalInformation);
+
+
+//by preet ------------------ 27/05/2024  ------------------------------------  edit Engg formData --------------------------------
+
+router.put('/editEnggDetails/:EnggId',uploadEdit.fields([
+  {
+    name: "profilePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "addharPhoto",
+    maxCount: 1,
+  },
+  {
+    name: "pancardPhoto",
+    maxCount: 1,
+  },
+  {
+    name: "drivingLicensePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "additionalCoursePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "qualificationPhoto",
+    maxCount: 1,
+  },
+]),adminContoller.editEnggDetailsForm);      
 
 module.exports = router;

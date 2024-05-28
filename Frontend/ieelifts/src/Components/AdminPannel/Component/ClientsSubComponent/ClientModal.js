@@ -10,7 +10,6 @@ import ExcelIcon from "../../../../Assets/Images/execel-icon.png";
 import ClientServiceHistory from "./ClientServiceHistory";
 import ClientDocuments from "./ClientDocuments";
 import ClientSOSCall from "./ClientSOSCall";
-import ClientDetailMain from "./ClientDetailMain";
 import ClientElevatorDetails from "./ClientElevatorDetails";
 
 // --------------------Raj -------------------------------------------
@@ -18,7 +17,7 @@ import ClientElevatorDetails from "./ClientElevatorDetails";
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const modalRef = useRef();
   // const cardRef = useRef();
-  
+
   // Close modal when clicking outside of it
   const handleClickOutsideModal = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -41,8 +40,6 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       }))
     );
   };
-
- 
 
   //When we click outside modal then closing modal
   useEffect(() => {
@@ -106,6 +103,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   };
 
   const handleOptionClick = (id, option) => {
+
+
     setDropdowns((prevDropdowns) =>
       prevDropdowns.map((dropdown) =>
         dropdown.id === id
@@ -121,7 +120,6 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
         return <ClientElevatorDetails />;
       case "Service History":
         return <ClientServiceHistory />;
-     
       case "Call Back History":
         return <ClientCallBackHis />;
       case "Document":
@@ -168,7 +166,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                     }
                     id={dropdowns[0].id}
                     w={"9rem"}
-                    />
+                  />
                   <ClientDropDown
                     key={dropdowns[1].id}
                     defaultName={dropdowns[1].defaultName}
@@ -202,7 +200,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                     id={dropdowns[2].id}
                     w={"24%"}
                     color={"#F8AC1DAD"}
-                    />
+                  />
                 </div>
               </div>
               <div className="client-modal-card-container">

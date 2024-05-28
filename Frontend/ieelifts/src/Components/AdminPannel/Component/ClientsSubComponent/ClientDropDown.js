@@ -5,7 +5,7 @@ import { FaApple } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { FaSms } from "react-icons/fa";
 {
-  /* -------------------------------------Raj----------------------------------------- */
+  /* -------------------------------------code by Raj----------------------------------------- */
 }
 const ClientDropDown = ({
   options,
@@ -23,22 +23,26 @@ const ClientDropDown = ({
     selectedOption.includes("Platinum") ||
     selectedOption.includes("Silver");
 
+  console.log("selectedOption", selectedOption);
+
   const [selectedIcon, setSelectedIcon] = useState([]);
 
-//   const cardRef = useRef();
+  const [warrentyColor, setWarrentyColor] = useState();
 
-//   useEffect(() => {
-//     const handleClickOutside = (event) => {
-//       if (cardRef.current && !cardRef.current.contains(event.target)) {
-//         toggleOptions();
-//       }
-//     };
+  //   const cardRef = useRef();
 
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => {
-//       document.removeEventListener("mousedown", handleClickOutside);
-//     };
-//   }, [cardRef, toggleOptions]);
+  //   useEffect(() => {
+  //     const handleClickOutside = (event) => {
+  //       if (cardRef.current && !cardRef.current.contains(event.target)) {
+  //         toggleOptions();
+  //       }
+  //     };
+
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //     return () => {
+  //       document.removeEventListener("mousedown", handleClickOutside);
+  //     };
+  //   }, [cardRef, toggleOptions]);
 
   const setSelectedIconByOption = (option) => {
     let newIcon;
@@ -84,20 +88,27 @@ const ClientDropDown = ({
     id === 1 ? "second-dropdown" : id === 2 ? "third-dropdown" : "";
 
   const [textColor, setTextColor] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("");
 
   const handleTextColor = (option) => {
     switch (option) {
       case "Warranty":
         setTextColor("Warranty #0F351D");
+        setBackgroundColor("#D6F8BF");
+        setWarrentyColor("#FF0000");
+
         break;
       case "Gold":
         setTextColor("Gold #F8AC1D");
+        setBackgroundColor("#FEE2AE");
         break;
       case "Platinum":
         setTextColor("Platinum #FF7F00");
+        setBackgroundColor("#F3DCC6");
         break;
       case "Silver":
-        setTextColor("Silver #8E8E8E");
+        setTextColor("Silver ");
+        setBackgroundColor("#E5E5E5");
         break;
       case "Service History":
         setTextColor("Service History #F8AC1DAD");
@@ -114,10 +125,36 @@ const ClientDropDown = ({
       case "SOS Calls":
         setTextColor("SOS Calls #F8AC1DAD");
         break;
+
       default:
         setTextColor("");
+        setBackgroundColor("");
     }
   };
+
+  // ------ for third dropdown for default selction
+  useEffect(() => {
+    if (id === 2 && selectedOption === "Elevator details") {
+      handleTextColor("Elevator details");
+    }
+    if (id === 1 && selectedOption === "Warranty") {
+      handleTextColor("Warranty");
+      getBackgroundColor("Warranty");
+    }
+
+    handleTextColor(selectedOption);
+
+    if (selectedOption === "Warranty") {
+      setWarrentyColor("#0F351D");
+    } else if (selectedOption === "Platinum") {
+      setWarrentyColor("#FF7F00");
+    } else if (selectedOption === "Gold") {
+      setWarrentyColor("#F8AC1D");
+    } else if (selectedOption === "Silver") {
+      setWarrentyColor("#8E8E8E");
+    }
+  }, [id, selectedOption]);
+
   return (
     <div
       className={`client-modal-dropdown ${dropdownClass}`}
@@ -139,7 +176,10 @@ const ClientDropDown = ({
           {hasSpecialOption ? (
             <span
               className="green-padding"
-              style={{ backgroundColor: getBackgroundColor(selectedOption), marginLeft:"5px" }}
+              style={{
+                backgroundColor: getBackgroundColor(selectedOption),
+                marginLeft: "5px",
+              }}
             >
               {id === 0
                 ? selectedIcon.forEach((data) => {
@@ -177,12 +217,16 @@ const ClientDropDown = ({
             return (
               <div
                 key={index}
-                onClick={(event) => {
+                onClick={() => {
                   handleOptionClick(option);
                   handleTextColor(option);
                   handleOptionClickAndIcon(option);
                 }}
                 className={`client-modal-dropdown-option `}
+                style={{
+                  backgroundColor:
+                    selectedOption === option ? getBackgroundColor(option) : "",
+                }}
               >
                 {id === 0 && <></>}
                 <p
@@ -193,7 +237,9 @@ const ClientDropDown = ({
                           .toLowerCase()
                           .includes(option.toLowerCase())
                       ) || textColor.split(" ")[0] === option.split(" ")[0]
-                        ? "#F8AC1DAD"
+                        ? id === 1
+                          ? warrentyColor
+                          : "#F8AC1DAD" //change color inside thsi
                         : "inherit",
                   }}
                 >
@@ -218,6 +264,7 @@ const getBackgroundColor = (selectedOption) => {
       return "#F3DCC6";
     case "Silver":
       return "#E5E5E5";
+
     default:
       return "";
   }

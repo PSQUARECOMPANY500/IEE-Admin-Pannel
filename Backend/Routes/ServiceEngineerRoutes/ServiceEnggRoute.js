@@ -9,7 +9,9 @@ const {
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 
-const uploaded = require("../../Multer/EnggAttachmentUpload");
+const {uploaded} = require("../../Multer/EnggAttachmentUpload");
+
+
 
 const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmentUploads");
 
