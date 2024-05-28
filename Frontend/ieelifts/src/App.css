@@ -117,6 +117,11 @@ main {
   margin-left: 80px;
 }
 
+/* .Pimg img{
+object-fit:cover;
+object-position: top;
+} */
+
 
 /* hamburger css starts */
 /* .toggle-button {
@@ -2979,8 +2984,8 @@ footer a:hover {
 .client-child-modal-container {
   text-transform: lowercase;
   padding: 1.5rem;
-
   height: 100%;
+
 
 }
 

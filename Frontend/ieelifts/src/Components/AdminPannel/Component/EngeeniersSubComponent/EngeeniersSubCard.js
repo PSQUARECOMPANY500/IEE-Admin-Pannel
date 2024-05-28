@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+import config from "../../../../config";
 
 const EngeeniersSubCard = (props) => {
 
@@ -20,6 +21,7 @@ const EngeeniersSubCard = (props) => {
   }, [])
 
 
+  
 
 
 
@@ -52,15 +54,16 @@ const EngeeniersSubCard = (props) => {
     handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
   };
 
-
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {engData.engdetails && engData.engdetails.combinedData.map((e, index) => (
+         
           <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-              <img src={e.EnggPhoto} alt={`Image for ID`} />
+              <img src={`${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`} />
+              
               </div>
               <div className="EngCardDetailsR">
                 <div class="table-container">

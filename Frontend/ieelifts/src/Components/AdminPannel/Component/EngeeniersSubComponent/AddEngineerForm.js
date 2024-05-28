@@ -10,6 +10,7 @@ import CheckBox from "../DashboardSubComponent/CheckBox";
 import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
 import toast, { Toaster } from "react-hot-toast";
+import config from "../../../../config";
 
 const AddEngineerForm = ({ engID, onClose }) => {
   const dispatch = useDispatch();
@@ -28,6 +29,10 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [alternativeNumber, setAlternativeNumber] = useState("");
 
   const [engAllData, setEngAllData] = useState("");
+  const [engPancardData, setEngPancardData] = useState("");
+  const [engDrivingData, setEngDrivingData] = useState("");
+  const [engQualificationPhoto, setQualificationPhoto] = useState("");
+  const [engAdditionalPhoto, setEngAdditionalPhoto] = useState("");
   // console.log("4rrrrr4", engAllData);
   // console.log("555555555555", engAllData?.EnggName);
 
@@ -66,7 +71,6 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
   const [addharPhoto, SetAddharPhoto] = useState("");
-
   const [isAddharCardNumberEmpty, setIsAddharCardNumberEmpty] = useState(false);
   const [isPancardsEmpty, setIsPancardsEmpty] = useState(false);
   const [isDrivingLisienceEmpty, setIsDrivingLisienceEmpty] = useState(false);
@@ -126,15 +130,54 @@ const AddEngineerForm = ({ engID, onClose }) => {
         SetAddharPhoto(getEnggBasicData.enggDetails.AddharPhoto);
         setDistrict(getEnggBasicData.enggDetails.District);
         setQualification(getEnggBasicData.enggDetails.Qualification);
+        SetQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto)
+        SetAdditionalCoursePhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto)
         setIsAdditionalCourseEmpty(
           getEnggBasicData.enggDetails.AdditionalCourse
         );
         setEnggId(getEnggBasicData.enggDetails.EnggId);
         setAccountHolderName(getEnggBasicData.enggDetails.AccountHolderName);
+        setJobDuration(getEnggBasicData.enggDetails.DurationOfJob);
+
+        setEngAllData(getEnggBasicData.enggDetails.AddharPhoto);
+        setEngPancardData(getEnggBasicData.enggDetails.PancardPhoto);
+        setEngDrivingData(getEnggBasicData.enggDetails.DrivingLicensePhoto);
+        setQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto);
+        setEngAdditionalPhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto);
+
+        setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
+
       }
     };
+
     getData();
   }, [EngggId]);
+
+  const openIt = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engAllData}`;
+
+    window.open(url);
+  };
+  const openItPanCard = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engPancardData}`;
+
+    window.open(url);
+  };
+  const openDriving = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engDrivingData}`;
+
+    window.open(url);
+  };
+  const openQualification = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engQualificationPhoto}`;
+
+    window.open(url);
+  };
+  const openAdditionalPhoto = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engAdditionalPhoto}`;
+
+    window.open(url);
+  };
 
   const closeModal = (e) => {
     e.stopPropagation();
@@ -472,7 +515,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     }}
                     src={
                       profilePhoto
-                        ? URL.createObjectURL(profilePhoto)
+                        ? `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                         : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                     }
 
@@ -741,8 +784,15 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "18px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("aadhar")}
+                          style={{ marginRight: "18px", cursor: "pointer",
+                            color:addharPhoto ? "#F8AC1D" : "inherit"
+                           }}
+                         
+                          onClick={
+                            addharPhoto
+                              ? openIt
+                              : () => handleUploadClick("aadhar")
+                          }
                         />
                       </div>
                       <p>{addharPhoto.name}</p>
@@ -786,8 +836,12 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }}
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("panCard")}
+                          style={{ marginRight: "22px", cursor: "pointer",
+                            color: pancardPhoto ? "#F8AC1D" : "inherit"
+                           }}
+                          // onClick={() => handleUploadClick("panCard")}
+
+                          onClick={pancardPhoto ? openItPanCard : () => handleUploadClick("panCard")}
                         />
                       </div>
                       <p>{pancardPhoto.name}</p>
@@ -836,8 +890,11 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef2} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() => handleUploadClick("drivingLicense")}
+                          style={{ marginRight: "22px", cursor: "pointer",
+                            color: drivingLicensePhoto ? "#F8AC1D" : "inherit"
+                           }}
+                         
+                          onClick={drivingLicensePhoto ? openDriving : () => handleUploadClick("drivingLicense")}
                         />
                       </div>
                     </div>
@@ -973,14 +1030,12 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef3} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() =>
-                            handleUploadClick("QualificationPhoto")
-                          }
+                          style={{ marginRight: "22px", cursor: "pointer",
+                            color:qualificationPhoto ? "#F8AC1D" : "inherit"
+                           }}
+                          onClick={qualificationPhoto ? openQualification : () => handleUploadClick("QualificationPhoto") }
                         />
                       </div>
-
-                   
 
                       <p>{qualificationPhoto.name}</p>
                     </div>
@@ -1025,10 +1080,10 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef4} // Attach fileInputRef to the input element\
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" }}
-                          onClick={() =>
-                            handleUploadClick("AdditionalCoursePhoto")
-                          }
+                          style={{ marginRight: "22px", cursor: "pointer" ,
+                          color:additionalCoursePhoto ? "#F8AC1D" : "inherit"}}
+                         
+                          onClick={additionalCoursePhoto ? openAdditionalPhoto : () =>  handleUploadClick("AdditionalCoursePhoto")}
                         />
                       </div>
                       <p>{additionalCoursePhoto.name}</p>
@@ -1236,7 +1291,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
             <div className="addEnggButtons">
               <button class="button-69-cancel" role="button">
-                Cancel
+                Edit
               </button>
               <button
                 class="button-69"

@@ -7,9 +7,12 @@ import { useMediaQuery } from "@react-hook/media-query";
 
 import { useSelector } from "react-redux";
 import RepotImage from "./RepotImage";
+import config from "../../../../config";
 
 const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHover }) => {
   const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+
+  console.log("traj", item)
 
 
   const dropdownClickRef = useRef();
@@ -75,7 +78,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
       <div className="second-carusel">
         <div className="basic-info">
           <img
-            src={item.ServiceEnggPic}
+            src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
             alt="img"
             style={{
               height: "50px",

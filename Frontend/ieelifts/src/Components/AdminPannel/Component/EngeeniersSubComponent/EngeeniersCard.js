@@ -177,7 +177,8 @@ const EngeeniersCard = () => {
             <div className="PDetails">
               <div className="SubPDetails">
                 <div className="Pimg">
-                  <img src={currentengImg} alt="eng persnol image" />
+                  {/* <img src={currentengImg} alt="eng persnol image" /> */}
+                  <img src={`http://localhost:8000/api/document/EnggAttachments/${currentengImg}`} alt="eng persnol image" />
                 </div>
                 <h1>
                   Name:<span>{currentEngName}</span>
