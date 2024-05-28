@@ -11,7 +11,7 @@ const EnggAttendanceServiceRecord = require("../Modals/ServiceEngineerModals/Att
 
 // Function to generate a JWT token
 const generateEnggToken = (user) => {
-  return jwt.sign({ user }, "engg-secret-key", { expiresIn: "1h" });
+  return jwt.sign({ user }, "engg-secret-key", { expiresIn: "30s" });
 };
 
 // Middleware to verify the user's JWT token

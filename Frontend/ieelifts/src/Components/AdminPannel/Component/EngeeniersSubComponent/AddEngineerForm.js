@@ -1289,21 +1289,20 @@ const AddEngineerForm = ({ engID, onClose }) => {
             </div>
             {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
-            <div className="addEnggButtons">
-              <button class="button-69-cancel" role="button">
-                Edit
-              </button>
-              <button
-                class="button-69"
-                role="button"
-                onClick={(e) => handleSaveEnggProfileData(e)}
-              >
-                Save
-              </button>
+              <div className="addEnggButtons">
+                <button class="button-69-cancel" role="button">
+                  Edit
+                </button>
+                <button
+                  class="button-69"
+                  role="button"
+                  onClick={(e) => handleSaveEnggProfileData(e)}
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        {/* -------------------------------------------------------------------------------------------------------------------------------- */}
       </div>
     </div>
   );

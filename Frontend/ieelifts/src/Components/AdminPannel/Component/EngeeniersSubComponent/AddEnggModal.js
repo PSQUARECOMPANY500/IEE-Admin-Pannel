@@ -57,6 +57,7 @@ const AddEnggModal = () => {
 
   const [EngggId, setEnggId] = useState("");
   const [alternativeNumber, setAlternativeNumber] = useState("");
+  console.log(alternativeNumber);
 
   //attachmnents
   const [additionalCoursePhoto, SetAdditionalCoursePhoto] = useState("");

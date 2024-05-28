@@ -10,11 +10,26 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const uploaded = multer({ storage: storage });
+
+
+const storageEdit = multer.diskStorage({
+  destination:(req,res,cb) => {
+    cb(null, './public/EnggAttachments');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
+  },
+})
+
+const uploadEdit = multer({ storage: storageEdit });
 
 
 
-module.exports = upload;
+
+
+module.exports = {uploaded, uploadEdit};
 
 
 

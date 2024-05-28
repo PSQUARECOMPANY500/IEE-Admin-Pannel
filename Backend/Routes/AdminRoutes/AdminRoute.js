@@ -5,6 +5,8 @@ const router = express.Router();
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
+
+const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -164,11 +166,35 @@ router.put('/updateClientForm',adminContoller.putElevatorForm);
 
 router.get('/getClientModalInformation/:jon', adminContoller.getClientModalInformation);
 
+router.get('/getEnggPersonalData/:EnggId', adminContoller.getEnggPersonalData)
 
-// ---------------API of Engineer Personal Data by Raj -----------------------27/05/2024
+//by preet ------------------ 27/05/2024  ------------------------------------  edit Engg formData --------------------------------
 
-
-
-router.get("/getEnggPersonalData/:EnggId", adminContoller.getEnggPersonalData)
+router.put('/editEnggDetails/:EnggId',uploadEdit.fields([
+  {
+    name: "profilePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "addharPhoto",
+    maxCount: 1,
+  },
+  {
+    name: "pancardPhoto",
+    maxCount: 1,
+  },
+  {
+    name: "drivingLicensePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "additionalCoursePhoto",
+    maxCount: 1,
+  },
+  {
+    name: "qualificationPhoto",
+    maxCount: 1,
+  },
+]),adminContoller.editEnggDetailsForm);      
 
 module.exports = router;
