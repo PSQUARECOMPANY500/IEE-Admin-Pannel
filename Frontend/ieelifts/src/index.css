@@ -2189,7 +2189,7 @@ code {
   font-weight: 500;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   /* grid-gap: 1rem; */
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.56rem;
   /* align-items: center; */
 }
 .heading-badge{
@@ -2466,7 +2466,21 @@ color: #444444;
   cursor: pointer;
   border-radius: 7px;
 }
+/*--------------------------Author: Rahul Kumar ------28/05/2024--------------*/
+/*-----------------dimention pagination CSS------------------------*/
+.dimention-pagination-btn-wrapper{
+  margin-top: 2rem;
+  margin-left: auto;
+    margin-right: 0;
+    display: flex;
+}
+.dimention-pagination-btn-wrapper span {
+  margin-left: 10px; 
+}
 
+.dimention-pagination-btn-wrapper span:first-child {
+  margin-left: 0; 
+}
 
 /*--------------------------Author: Rahul Kumar ------09/05/2024--------------*/
 
@@ -2502,7 +2516,7 @@ color: #444444;
   overflow-x: hidden;
   display: grid;
   padding-right: 2rem;
-  padding-bottom: 5rem;
+  padding-bottom: 1rem;
 }
 
 .elevator-container{

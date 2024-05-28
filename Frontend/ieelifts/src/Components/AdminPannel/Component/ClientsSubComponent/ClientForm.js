@@ -32,7 +32,7 @@ const ClientForm = () => {
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
-
+  const [validate, setValidate]= useState(false)  //validation for dimensions
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
@@ -44,10 +44,14 @@ const ClientForm = () => {
     };
   }, []);
   useEffect(()=>{
-    console.log("dimentionsData--->",dimentionsData);
+    // console.log("dimentionsData--->",dimentionsData);
   },[dimentionsData])
 
   //handler
+  const validateData =(data)=>{  //handler for validation data
+    setValidate(data)
+    console.log("Parent--validate--->",data)
+  }
   const handleDimenstionsData =(data)=>{  //handle Dimenstions data from dimenstion component
     setDimentionsData(data)
   }
@@ -258,11 +262,13 @@ const ClientForm = () => {
                     setFLevel={setFLevel}
                     Flevel={Flevel}
                     onDataChange={handleElevatorDetails}
+                    validateData={validateData}
                   />
                   <ClientFormDimentions
                     valforDimention={valforDimention}
                     Flevel={Flevel}
-                    validate={true}
+                    // validateData={validate}
+                    validate={validate}
                     forSecondClick={() => {
                       handleSecndStep();
                     }}
@@ -277,7 +283,6 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Submit"}
                       className={"client-form-button-submit"}
-                      onClick={()=>{console.log("Hello")}}
                     />
                   </div>
                 </div>

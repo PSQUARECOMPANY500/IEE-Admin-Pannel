@@ -8,7 +8,9 @@ const ClientFormElevatorDetails = ({
   setFLevel,
   Flevel,
   onDataChange,
+  validateData
 }) => {
+  //dropdown options
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
   const numberOfOpenings = [1, 2, 3];
   // const pitDepth = [100, 200];
@@ -16,6 +18,7 @@ const ClientFormElevatorDetails = ({
   const typeOptions = ["gearless", "geared"];
   const doorType = ["option1", "option2"];
   const constructionMaterial = ["option1", "option2"];
+  //states
   const [elevatorData, setElevatorData] = useState({});
   const [array, setArray] = useState([]);
   const [degree, setDegree] = useState({
@@ -37,7 +40,7 @@ const ClientFormElevatorDetails = ({
     numberOfOpenings: 0,
     remarks: "",
   });
-  
+  const [validate, setValidate] = useState(false);
 
   //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
@@ -78,6 +81,13 @@ const ClientFormElevatorDetails = ({
   ]);
 
   const handleInputValueChange = (field, newValue) => {
+    if (field === "stops" || field === "numberOfOpenings") {
+      setDegree({
+        nintyDegreeLeft: "",
+        nintyDegreeRight: "",
+        oneEightyDegree: "",
+      });
+    }
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue);
   };
@@ -111,12 +121,12 @@ const ClientFormElevatorDetails = ({
     setElevatorOpenings(updatedElevatorOpenings);
   };
   const handleNumberOfOpenings = (openings) => {
-    handleElevatorDetailsChange("numberOfOpenings ", openings);
     setDegree({
       nintyDegreeLeft: "",
       nintyDegreeRight: "",
       oneEightyDegree: "",
     });
+    handleElevatorDetailsChange("numberOfOpenings ", openings);
     const ele = [];
     for (let i = 0; i < Flevel.length; i++) {
       ele.push({ level: Flevel[i], openings: [] });
@@ -124,7 +134,6 @@ const ClientFormElevatorDetails = ({
     setElevatorOpenings(ele);
     setLevelAndOpeningsView(openings);
   };
-
   function setDefaultData(openings) {
     const ele = [];
     for (let i = 0; i < Flevel.length; i++) {
@@ -209,13 +218,7 @@ const ClientFormElevatorDetails = ({
       remarks: event.target.value,
     });
   };
-  useEffect(() => {
-    onDataChange();
-  }, []);
 
-  // console.log("elevatorDetails", elevatorDetails);
-  // console.log("degree", degree);
-  // console.log("elevatorOpenings", elevatorOpenings);
   useEffect(() => {
     setElevatorData((prevData) => ({
       ...prevData,
@@ -224,11 +227,54 @@ const ClientFormElevatorDetails = ({
       elevatorOpenings,
     }));
   }, [elevatorDetails, degree, elevatorOpenings]);
+
+  function validateElevatorData(data) {
+   
+    if (!data.capacity || !data.capacityUnit || !data.constructionMaterial) {
+      return false;
+    }
+    if (data.elevatorOpenings.length > 1) {
+      if (!data.degree || (!data.degree.nintyDegreeLeft && !data.degree.nintyDegreeRight && !data.degree.oneEightyDegree)) {
+        return false;
+      }
+    }
+
+    if (!data.doorType) {
+      return false;
+    }
+
+    if (!data.elevatorOpenings || data.elevatorOpenings.length === 0) {
+      return false;
+    }
+    if (data.elevatorOpenings.length > 1) {
+      for (let i = 0; i < data.elevatorOpenings.length; i++) {
+        const opening = data.elevatorOpenings[i];
+        if (!opening.level || !opening.openings || opening.openings.length === 0) {
+          return false;
+        }
+      }
+    }
+   
+    if (
+      !data.groundOrStilt ||
+      !data.numberOfOpenings ||
+      !data.pitDepth ||
+      !data.purpose ||
+      !data.stops ||
+      !data.type
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   useEffect(() => {
     onDataChange(elevatorData);
-  }, [elevatorData]);
-  console.log("elevatorData", elevatorData);
-  console.log("elevatorData======>",elevatorData)
+    const isValid = validateElevatorData(elevatorData);
+    setValidate(isValid);
+    validateData(validate)
+  }, [elevatorData,onDataChange]);
+
   return (
     <div className="client-form-elevator-details">
       <h5 className="client-form-details-heading">Elevator Details</h5>
