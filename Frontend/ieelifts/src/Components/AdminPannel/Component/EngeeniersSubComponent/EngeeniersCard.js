@@ -27,6 +27,23 @@ const EngeeniersCard = () => {
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
 
+
+  
+  const formRef = useRef();
+  const handleClickOutsideModal = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      handleCloseModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
+
   const handleEnggNameDoubleClick = (engId, engName, engImg) => {
     setEngID(engId);
     setCurrentEngName(engName);
@@ -333,7 +350,7 @@ const EngeeniersCard = () => {
 
       {openModal && (
         <div className="engineer-modal-wrapper">
-          <div className="engineer-modal-container">
+          <div className="engineer-modal-container" ref={formRef}>
             <EditEngineerDetails engID={engID}  onClose={handleCloseModal} />
           </div>
         </div>

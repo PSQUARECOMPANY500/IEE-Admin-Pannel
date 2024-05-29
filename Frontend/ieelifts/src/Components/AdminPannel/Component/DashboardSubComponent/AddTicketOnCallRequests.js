@@ -20,6 +20,7 @@
  
  import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
  import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import config from "../../../../config";
  
  const AddTicketOnCallRequests = ({
    closeModal,
@@ -565,7 +566,7 @@
                            {getEnggState ? (
                              <img
                                style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                               src={engDetails.enggPhoto}
+                               src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                                alt="lift"
                              />
                            ) : (

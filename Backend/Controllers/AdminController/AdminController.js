@@ -2804,13 +2804,13 @@ module.exports.editEnggDetailsForm = async (req, res) => {
       }
     );
 
-    console.log("abiiiiiii",EnggData)
+    // console.log("abiiiiiii",EnggData)
 
     if(!EnggData){
       return res.status(404).json({ message: "This JON is not found" });
     }
 
-    res.status(200).json({ message: "Engg Profile updated Succesfully"});
+    res.status(200).json({status:true, message: "Engg Profile updated Succesfully"});
 
     // console.log("dooooooooooo", EnggData);
   } catch (error) {

@@ -17,6 +17,7 @@ import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/Adm
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import config from "../../../../config";
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -518,6 +519,7 @@ console.log("userCallBackDetail",userCallBackDetail)
 
 
                     {/*engg detail div start here------------------------------------------------------------------------------  */}
+                    
                     <div className="sub-engg-detail-section">
 
                       <h1>ENGINEER DETAILS</h1>
@@ -527,14 +529,15 @@ console.log("userCallBackDetail",userCallBackDetail)
                           {getEnggState ? (
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                              src={engDetails.enggPhoto}
+                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               alt="lift"
                             />
                           ) : (
                             <SkeltonLoader width="90px" height="90px" marginBottom='1.6rem' />
                           )}
                         </div>
-
+                       
+                        {/* engDetails.enggPhoto */}
                         <div style={{ width: "50%" }}>
                           {getEnggState ? (
                             <div className="elevator-detail-row">
