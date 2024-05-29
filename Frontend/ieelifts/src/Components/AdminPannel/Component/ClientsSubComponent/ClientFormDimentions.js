@@ -73,9 +73,9 @@ const ClientFormDimentions = ({
       levelData: levelData,
     });
   }, [basementWithPit, floorFrontData, levelData]);
-  console.log("dimentionsData", dimentionsData);
+  // console.log("dimentionsData", dimentionsData);
   //handler
-
+  // console.log("leveldata===>",levelData);
   const handleFileChangeInPit = (event, fieldName) => {
     const file = event.target.files[0];
     if (file) {
@@ -144,6 +144,7 @@ const ClientFormDimentions = ({
     setLevelData(newFormData);
   };
   const handleClick = (e) => {
+    console.log("event===>",e)
     const { name } = e.target;
     setClick({ ...click, [name]: true });
   };
@@ -190,60 +191,65 @@ const ClientFormDimentions = ({
       </div>
       {visible && (
         <div className="dimenstions-container">
-          {/* basement component */}
-          <DimentionPitFloor
-            basementWithPit={basementWithPit}
-            handleClick={handleClick}
-            handleInputChangeInPit={handleInputChangeInPit}
-            click={click}
-            handleFileChangeInPit={handleFileChangeInPit}
-            fileNames={fileNames}
-            handleClickFalse={handleClickFalse}
-            Flevel={Flevel}
-          />
-          {/* floor mid component*/}
-          <DimentionMidFloor
-            levelData={levelData}
-            handleClick={handleClick}
-            handleInputChange={handleInputChange}
-            click={click}
-            handleFileChangeInLevel={handleFileChangeInLevel}
-            fileNames={fileNames}
-            handleClickFalse={handleClickFalse}
-            Flevel={Flevel}
-          />
-
-          {/* floor top component*/}
-          <DimentionFloorTop
-            floorFrontData={floorFrontData}
-            handleClick={handleClick}
-            handleInputChangeInPFloorFront={handleInputChangeInPFloorFront}
-            click={click}
-            handleFileChangeInFloorFront={handleFileChangeInFloorFront}
-            fileNames={fileNames}
-            handleClickFalse={handleClickFalse}
-          />
-
-          {/* pagination */}
+          {Flevel.slice(startIndex, endIndex).map((level, index) => (
+            <React.Fragment key={startIndex + index}>
+              {startIndex + index === 0 && (
+                <DimentionPitFloor
+                  basementWithPit={basementWithPit}
+                  handleClick={handleClick}
+                  handleInputChangeInPit={handleInputChangeInPit}
+                  click={click}
+                  handleFileChangeInPit={handleFileChangeInPit}
+                  fileNames={fileNames}
+                  handleClickFalse={handleClickFalse}
+                  Flevel={Flevel}
+                />
+              )}
+              {startIndex + index > 0 && startIndex + index < Flevel.length - 1 && (
+                
+                <DimentionMidFloor
+                  levelData={levelData}
+                  handleClick={handleClick}
+                  handleInputChange={(e) => handleInputChange(startIndex + index, e)}
+                  click={click}
+                  handleFileChangeInLevel={(e) => handleFileChangeInLevel(e, startIndex + index)}
+                  fileNames={fileNames}
+                  handleClickFalse={handleClickFalse}
+                  Flevel={Flevel}
+                  LevelName={Flevel[startIndex + index]}
+                  index={startIndex + index}
+                />
+              )}
+              {startIndex + index === Flevel.length - 1 && (
+                <DimentionFloorTop
+                  floorFrontData={floorFrontData}
+                  handleClick={handleClick}
+                  handleInputChangeInPFloorFront={handleInputChangeInPFloorFront}
+                  click={click}
+                  handleFileChangeInFloorFront={handleFileChangeInFloorFront}
+                  fileNames={fileNames}
+                  handleClickFalse={handleClickFalse}
+                />
+              )}
+            </React.Fragment>
+          ))}
           <div className="dimention-pagination-btn-wrapper">
-            <span
-              onClick={() =>
-                handlePageChange(currentPage > 0 ? currentPage - 1 : 0)
-              }
-            >
-              <img src="leftBtn.png" alt="leftBtn" />
-            </span>
-            <span
-              onClick={() =>
-                handlePageChange(
-                  currentPage < Math.ceil(Flevel.length / itemsPerPage) - 1
-                    ? currentPage + 1
-                    : currentPage
-                )
-              }
-            >
-              <img src="rightBtn.png" alt="rightBtn" />
-            </span>
+            {currentPage > 0 && (
+              <span
+                className="pagination-btn left"
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                <img src="leftLightBtn.png" alt="leftBtn" />
+              </span>
+            )}
+            {currentPage < Math.ceil(Flevel.length / itemsPerPage) - 1 && (
+              <span
+                className="pagination-btn right"
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                <img src="rightLightBtn.png" alt="rightBtn" />
+              </span>
+            )}
           </div>
         </div>
       )}

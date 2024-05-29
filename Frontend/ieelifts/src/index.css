@@ -2482,6 +2482,36 @@ color: #444444;
   margin-left: 0; 
 }
 
+.pagination-btn {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+}
+
+.pagination-btn img {
+  width: 30px; 
+  height: 30px;
+}
+
+.pagination-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.pagination-btn.left:hover {
+  background-image: url('../public/leftBtnDark.png');
+}
+.pagination-btn.right:hover {
+  background-image: url('../public/rightBtn.png'); 
+}
+
+
 /*--------------------------Author: Rahul Kumar ------09/05/2024--------------*/
 
 /*-----------------File Uploader Component CSS------------------------*/
@@ -2648,7 +2678,7 @@ input:-webkit-autofill {
 }
 
 .input-field {
-  font-size: 20px;
+  font-size: 18px;
   width: 100%;
   border: none;
   border-bottom: 1px solid #44444462;
@@ -2661,8 +2691,6 @@ input:-webkit-autofill {
   color: #1d1d1d;
   cursor: default;
   font-weight: 400;
-
-
 }
 
 

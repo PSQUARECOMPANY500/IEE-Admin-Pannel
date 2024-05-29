@@ -14,6 +14,7 @@ const Animated = ({
   onValueChange,
   title,
   pattern,
+  
 }) => {
   const handleCalendarToggle = () => {
 
