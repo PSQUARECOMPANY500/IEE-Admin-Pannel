@@ -26,6 +26,7 @@ const ClientForm = () => {
     clientMembershipDocument: {},
     clientArchitect: {},
   });
+  console.log("allFormData====>", allFormData)
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
   const [dimentionsData, setDimentionsData] = useState({})
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const ClientForm = () => {
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
   const [validate, setValidate]= useState(false)  //validation for dimensions
+  const [validateNextBtn,setValidateNextBtn] = useState()
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
@@ -187,7 +189,11 @@ const ClientForm = () => {
       numberOfOpenings:numberOfOpenings
     };
     
+  // handle client form validation 
+  
+  
 
+ 
     // const elevatorDetails = {
     //   JON: 2024031,
     //   capacity: "222",
@@ -220,9 +226,37 @@ const ClientForm = () => {
     dispatch(updateClientData((elevatorDetails)));
     console.log(elevatorDetails);
   };
-
+  function validateClientForm(allFormData){
+    const { clientFormDetails, clientArchitect, clientSalesManDetails,clientMembershipDocument } =
+    allFormData;
+    const {selectedMembership,signedQuotation,paymentForm,salesOrder}=clientMembershipDocument;   
+    const {jon,userName,phoneNumber,alternativeNumber,email,reference,referenceName,sourceOfLead}= clientFormDetails;
+    const {finalPrice,quotatedPrice,discountInRupees,discountInPercentage,discountAmount,finalAmount}=clientSalesManDetails;
+    if(!jon ||!userName ||!phoneNumber ||!alternativeNumber ||!email){
+      return false;
+    }
+    if(sourceOfLead==="Reference"){
+      if(!reference ||!referenceName){
+        return false;
+      }else{
+        return true;
+      }
+    }
+    if(!selectedMembership||!signedQuotation ||!paymentForm ||!salesOrder){
+      return false;
+    }
+    if(!finalPrice||!quotatedPrice||!discountInRupees||!discountInPercentage||!discountAmount||!finalAmount){
+      return false;
+    }
+    return true;
+  }
   
-
+ //-------------------------------------------------------------------------
+ useEffect(()=>{
+  const val = validateClientForm(allFormData);
+  setValidateNextBtn(val)
+ },[allFormData])
+ //------------------------------------------------------------------------
   return (
     <>
       {clientModalOperation && (
@@ -247,12 +281,14 @@ const ClientForm = () => {
                       value={"Delete"}
                       className={"client-form-button-red"}
                     />
+                    <div className={`${validateNextBtn?"":"disabled"}`}>
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}
                       handleAction={handleNextPage}
                       // onClick={handleSubmmitEnggData}
                     />
+                    </div>
                   </div>
                 </div>
               ) : (

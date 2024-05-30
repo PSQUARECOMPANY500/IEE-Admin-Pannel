@@ -2618,7 +2618,6 @@ module.exports.postElevatorForm = async (req, res) => {
 
   console.log("Client Form Details:", req.body.clientFormDetails[0].jon);
   console.log(
-    "Client Form Details 0200000000000000000:",
     JSON.parse(req.body.clientFormDetails)
   );
 

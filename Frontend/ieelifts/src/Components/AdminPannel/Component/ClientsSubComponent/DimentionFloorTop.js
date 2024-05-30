@@ -16,6 +16,7 @@ const DimentionFloorTop = ({floorFrontData, handleClick, handleInputChangeInPFlo
               onChange={handleInputChangeInPFloorFront}
               click={click.shaftWidth}
               onBlur={handleClickFalse}
+              id={`shaftWidth`}
             />
           </div>
           <div>
@@ -27,6 +28,7 @@ const DimentionFloorTop = ({floorFrontData, handleClick, handleInputChangeInPFlo
               onChange={handleInputChangeInPFloorFront}
               click={click.shaftDepth}
               onBlur={handleClickFalse}
+              id={`shaftDepth`}
             />
           </div>
           <div>
@@ -38,6 +40,7 @@ const DimentionFloorTop = ({floorFrontData, handleClick, handleInputChangeInPFlo
               onChange={handleInputChangeInPFloorFront}
               click={click.doorWidth}
               onBlur={handleClickFalse}
+              id={`doorWidth`}
             />
           </div>
           <div>
@@ -49,6 +52,7 @@ const DimentionFloorTop = ({floorFrontData, handleClick, handleInputChangeInPFlo
               onChange={handleInputChangeInPFloorFront}
               click={click.doorHeight}
               onBlur={handleClickFalse}
+              id={`doorHeight`}
             />
           </div>
         </div>
@@ -62,6 +66,7 @@ const DimentionFloorTop = ({floorFrontData, handleClick, handleInputChangeInPFlo
             onChange={handleInputChangeInPFloorFront}
             click={click.overhead}
             onBlur={handleClickFalse}
+            id={`overhead`}
           />
         </div>
         <div className="site-photos">Site Photos</div>

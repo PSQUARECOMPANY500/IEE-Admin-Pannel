@@ -16,6 +16,7 @@ export const DimentionMidFloor = ({
 
 
   console.log("index====>",index)
+  // console.log("Level data====>",levelData)
   return (
     
     <div className="floor-section">
@@ -29,10 +30,11 @@ export const DimentionMidFloor = ({
                 name={"shaftWidth"}
                 onFocus={handleClick}
                 value={levelData[index]?.shaftWidth || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.shaftWidth}
+                onChange={(i,event) => handleInputChange(i,event)}
+                // onBlur={handleClickFalse}
+                id={`shaftWidth-${index}`}
+                click={click[`shaftWidth-${index}`] || false}
                 onBlur={handleClickFalse}
-                
               />
             </div>
             <div>
@@ -40,9 +42,10 @@ export const DimentionMidFloor = ({
                 label={"Shaft Depth"}
                 name={"shaftDepth"}
                 onFocus={handleClick}
+                id={`shaftDepth-${index}`}
                 value={levelData[index]?.shaftDepth || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.shaftDepth}
+                onChange={(i,event) => handleInputChange(i,event)}
+                click={click[`shaftDepth-${index}`] || false}
                 onBlur={handleClickFalse}
               />
             </div>
@@ -52,8 +55,9 @@ export const DimentionMidFloor = ({
                 name={"doorWidth"}
                 onFocus={handleClick}
                 value={levelData[index]?.doorWidth || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.doorWidth}
+                onChange={(i,event) => handleInputChange(i,event)}
+                id={`doorWidth-${index}`}
+                click={click[`doorWidth-${index}`] || false}
                 onBlur={handleClickFalse}
               />
             </div>
@@ -63,8 +67,9 @@ export const DimentionMidFloor = ({
                 name={"doorHeight"}
                 onFocus={handleClick}
                 value={levelData[index]?.doorHeight || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.doorHeight}
+                onChange={(i,event) => handleInputChange(i,event)}
+                id={`doorHeight-${index}`}
+                click={click[`doorHeight-${index}`] || false}
                 onBlur={handleClickFalse}
               />
             </div>
@@ -74,8 +79,9 @@ export const DimentionMidFloor = ({
                 name={"floorToFloorHeight"}
                 onFocus={handleClick}
                 value={levelData[index]?.floorToFloorHeight || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.floorToFloorHeight}
+                onChange={(i,event) => handleInputChange(i,event)}
+                id={`floorToFloorHeight-${index}`}
+                click={click[`floorToFloorHeight-${index}`] || false}
                 onBlur={handleClickFalse}
               />
             </div>
@@ -85,8 +91,9 @@ export const DimentionMidFloor = ({
                 name={"fl"}
                 onFocus={handleClick}
                 value={levelData[index]?.fl || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.fl}
+                onChange={(i,event) => handleInputChange(i,event)}
+                id={`fl-${index}`}
+                click={click[`fl-${index}`] || false}
                 onBlur={handleClickFalse}
               />
               <TextInput
@@ -94,8 +101,9 @@ export const DimentionMidFloor = ({
                 name={"fr"}
                 onFocus={handleClick}
                 value={levelData[index]?.fr || ""}
-                onChange={(event) => handleInputChange(event, index)}
-                click={click.fr}
+                onChange={(i,event) => handleInputChange(i,event)}
+                id={`fr-${index}`}
+                click={click[`fr-${index}`] || false}
                 onBlur={handleClickFalse}
               />
             </div>

@@ -106,6 +106,7 @@ const ClientFormDetails = ({ onDataChange }) => {
             onChange={hadleInputChnage}
             click={click.email}
             onBlur={handleClickFalse}
+            type={"email"}
           />
         </div>
         <div>
@@ -116,7 +117,7 @@ const ClientFormDetails = ({ onDataChange }) => {
             name={"sourceOfLead"}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
           <TextInputs
             label={"Reference"}
             name={"reference"}
@@ -127,7 +128,7 @@ const ClientFormDetails = ({ onDataChange }) => {
             onBlur={handleClickFalse}
           />
         </div>
-        <div>
+        <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
           <TextInputs
             label={"Refernce Name"}
             name={"referenceName"}

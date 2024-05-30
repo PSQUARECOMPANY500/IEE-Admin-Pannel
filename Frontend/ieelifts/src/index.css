@@ -1990,6 +1990,7 @@ code {
   bottom: 0;
   right: 0;
   padding: 2rem;
+  display: flex;
 }
 
 .client-form-button {

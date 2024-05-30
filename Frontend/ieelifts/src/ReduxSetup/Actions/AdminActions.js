@@ -1173,6 +1173,10 @@ export const RegisterClientDataAction = (formData) => {
         }
       );
 
+      console.log("====================================");
+      console.log(response);
+      console.log("====================================");
+
       dispatch({
         type: REGISTER_CLIENT_DATA,
         payload: response.data,
@@ -1184,7 +1188,7 @@ export const RegisterClientDataAction = (formData) => {
 };
 
 export const updateClientData = (formData) => {
-  console.log("rahul ...........", formData);
+  // console.log("rahul ...........", formData);
 
   return async (dispatch) => {
     try {

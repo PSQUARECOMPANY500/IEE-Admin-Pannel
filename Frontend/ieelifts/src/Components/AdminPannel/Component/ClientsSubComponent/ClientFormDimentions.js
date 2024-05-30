@@ -47,7 +47,7 @@ const ClientFormDimentions = ({
   const [fileNames, setFileNames] = useState({});
 
   useEffect(() => {
-    const initialFormData = Flevel.slice(1, -1).map(() => ({
+    const initialFormData = Flevel.map(() => ({
       shaftWidth: "",
       shaftDepth: "",
       doorWidth: "",
@@ -75,7 +75,7 @@ const ClientFormDimentions = ({
   }, [basementWithPit, floorFrontData, levelData]);
   // console.log("dimentionsData", dimentionsData);
   //handler
-  // console.log("leveldata===>",levelData);
+  console.log("leveldata===>", levelData);
   const handleFileChangeInPit = (event, fieldName) => {
     const file = event.target.files[0];
     if (file) {
@@ -135,23 +135,33 @@ const ClientFormDimentions = ({
   };
 
   const handleInputChange = (index, event) => {
+    // console.log("handleInputChange====", index);
     const { name, value } = event.target;
-    const newFormData = [...levelData];
-    newFormData[index] = {
-      ...newFormData[index],
-      [name]: value,
-    };
+    const toBeUpdate = levelData[index];
+    toBeUpdate[name] = value;
+
+    // Find the index of the item to be updated in newFormData
+
+    const newFormData = { ...levelData };
+    // If the item is found, update it in newFormData
+    newFormData[index] = toBeUpdate;
+
+    // console.log(newFormData[index], value, name);
+
+    // newFormData[index] = {
+    //   ...newFormData[index],
+    //   [name]: value,
+    // };
     setLevelData(newFormData);
   };
   const handleClick = (e) => {
-    console.log("event===>",e)
-    const { name } = e.target;
-    setClick({ ...click, [name]: true });
+    const { id } = e.target;
+    setClick((prevClick) => ({ ...prevClick, [id]: true }));
   };
 
   const handleClickFalse = (e) => {
-    const { name } = e.target;
-    setClick({ ...click, [name]: false });
+    const { id } = e.target;
+    setClick((prevClick) => ({ ...prevClick, [id]: false }));
   };
 
   const toggleVisibility = () => {
@@ -205,26 +215,32 @@ const ClientFormDimentions = ({
                   Flevel={Flevel}
                 />
               )}
-              {startIndex + index > 0 && startIndex + index < Flevel.length - 1 && (
-                
-                <DimentionMidFloor
-                  levelData={levelData}
-                  handleClick={handleClick}
-                  handleInputChange={(e) => handleInputChange(startIndex + index, e)}
-                  click={click}
-                  handleFileChangeInLevel={(e) => handleFileChangeInLevel(e, startIndex + index)}
-                  fileNames={fileNames}
-                  handleClickFalse={handleClickFalse}
-                  Flevel={Flevel}
-                  LevelName={Flevel[startIndex + index]}
-                  index={startIndex + index}
-                />
-              )}
+              {startIndex + index > 0 &&
+                startIndex + index < Flevel.length - 1 && (
+                  <DimentionMidFloor
+                    levelData={levelData}
+                    handleClick={handleClick}
+                    handleInputChange={(e) =>
+                      handleInputChange(startIndex + index, e)
+                    }
+                    click={click}
+                    handleFileChangeInLevel={(e) =>
+                      handleFileChangeInLevel(e, startIndex + index)
+                    }
+                    fileNames={fileNames}
+                    handleClickFalse={handleClickFalse}
+                    Flevel={Flevel}
+                    LevelName={Flevel[startIndex + index]}
+                    index={startIndex + index}
+                  />
+                )}
               {startIndex + index === Flevel.length - 1 && (
                 <DimentionFloorTop
                   floorFrontData={floorFrontData}
                   handleClick={handleClick}
-                  handleInputChangeInPFloorFront={handleInputChangeInPFloorFront}
+                  handleInputChangeInPFloorFront={
+                    handleInputChangeInPFloorFront
+                  }
                   click={click}
                   handleFileChangeInFloorFront={handleFileChangeInFloorFront}
                   fileNames={fileNames}

@@ -34,7 +34,7 @@ const ClientFormElevatorDetails = ({
     capacityUnit: "",
     stops: "",
     groundOrStilt: "G",
-    basementSelection: { b1: false, b2: false },
+    basementSelection: { B1: false, B2: false },
     doorType: "",
     constructionMaterial: "",
     numberOfOpenings: 0,
@@ -57,10 +57,10 @@ const ClientFormElevatorDetails = ({
     let level = [];
     let count = elevatorDetails.stops;
 
-    if (elevatorDetails.basementSelection.b2) {
+    if (elevatorDetails.basementSelection.B2) {
       level.push("Basement 2", "Basement 1");
       count -= 2;
-    } else if (elevatorDetails.basementSelection.b1) {
+    } else if (elevatorDetails.basementSelection.B1) {
       level.push("B1");
       count -= 1;
     }
