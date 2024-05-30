@@ -4,6 +4,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import { FaApple } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
 import { FaSms } from "react-icons/fa";
+import MembershipPopup from "./MembershipPopup";
 {
   /* -------------------------------------code by Raj----------------------------------------- */
 }
@@ -26,6 +27,7 @@ const ClientDropDown = ({
   console.log("selectedOption", selectedOption);
 
   const [selectedIcon, setSelectedIcon] = useState([]);
+  const [openPopUp, setOpenPopUp] = useState(false);
 
   const [warrentyColor, setWarrentyColor] = useState();
 
@@ -82,6 +84,10 @@ const ClientDropDown = ({
     handleOptionClick(option);
     handleTextColor(option);
   };
+
+  const handleCloseMember = () => {
+    setOpenPopUp(false)
+  }
 
   //condition for second dropdown and third dropdown for CSS
   const dropdownClass =
@@ -156,6 +162,8 @@ const ClientDropDown = ({
   }, [id, selectedOption]);
 
   return (
+
+    <>
     <div
       className={`client-modal-dropdown ${dropdownClass}`}
       onClick={toggleOptions}
@@ -221,6 +229,8 @@ const ClientDropDown = ({
                   handleOptionClick(option);
                   handleTextColor(option);
                   handleOptionClickAndIcon(option);
+
+                  if (id === 1) setOpenPopUp(true);
                 }}
                 className={`client-modal-dropdown-option `}
                 style={{
@@ -250,7 +260,18 @@ const ClientDropDown = ({
           })}
         </div>
       )}
-    </div>
+
+      
+      </div>
+
+      {openPopUp && id === 1 && (
+        <div className="membershippopup-modal-wrapper">
+          <div className="membershippopup-modal-container">
+            <MembershipPopup onClose={handleCloseMember} />
+          </div>
+        </div>
+      )}
+      </>
   );
 };
 

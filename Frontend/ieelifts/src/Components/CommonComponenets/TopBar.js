@@ -17,14 +17,16 @@ import { openAddEngggModalAction } from "../../ReduxSetup/Actions/AdminActions";
 import { LuSettings2 } from "react-icons/lu";
 import ClientFilterDropdown from "../AdminPannel/Component/ClientsSubComponent/ClientFilterDropdown";
 import { useDispatch, useSelector } from "react-redux";
+import moneyIcon from "../../../src/Assets/Images/money.png"
 import {
   changeLayout,
   getfilteredData,
   searchClients,
-  openAddClientModalAction
+  openAddClientModalAction,
 } from "../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -45,11 +47,15 @@ const TopBar = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const notificationRef = useRef(null);
+  const collectCashRef = useRef(null);
+  const collectCashClickRef = useRef();
   const notificationClickRef = useRef();
   const [showNotification, setShowNotification] = useState(false);
+  const [collectCash, setCollectCash] = useState(false)
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const [openForm, setOpenForm] = useState(false);
 
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
@@ -128,16 +134,34 @@ const TopBar = (props) => {
   const dropdownClickRef = useRef();
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
-
   const openModalHandle = () => {
     dispatch(openAddEngggModalAction());
   };
-
 
   const openClientModalHandle = () => {
     dispatch(openAddClientModalAction());
   };
 
+  
+
+  const handleClickOutsideCollectCashModal = (event) => {
+    if (collectCashRef.current && !collectCashRef.current.contains(event.target)) {
+      handleCollectCash();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideCollectCashModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCollectCashModal);
+    };
+  }, []);
+
+
+  // const handleCloseForm = () => {
+  //   setOpenForm(false);
+  // };
 
   // -------notification popup box code--------------------------------------------------------------------
   const useClickOutsidenotification = (ref, handler) => {
@@ -157,16 +181,64 @@ const TopBar = (props) => {
       };
     }, [ref, handler]);
   };
-  const handleNotfication = () => {
-    setShowNotification(prevState => !prevState);
+
+  // this for collect cash
+  const useClickOutsidecollectcash = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutsidecollectcash = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutsidecollectcash);
+      return () => {
+        document.removeEventListener(
+          "mousedown",
+          handleClickOutsidecollectcash
+        );
+      };
+    }, [ref, handler]);
   };
+
+
+
+
+
+
+
+
+
+  const handleNotfication = () => {
+    setShowNotification((prevState) => !prevState);
+  };
+  
+  
+  // collect cash
+  const handleCollectCash = () => {
+    setCollectCash((prevState) => !prevState)
+  }
   const handleOutsideClicknotification = useCallback(() => {
     setShowNotification(false);
   }, []);
 
+  
+  // collect cash
+  const handleClickOutsidecollectcash = useCallback(() => {
+    setCollectCash(false);
+  }, []);
+
   useClickOutsidenotification(
     notificationClickRef,
+   
     handleOutsideClicknotification
+  );
+
+  // collect cash
+  useClickOutsidecollectcash(
+    collectCashClickRef,
+   
+    handleClickOutsidecollectcash
   );
 
   return (
@@ -207,8 +279,9 @@ const TopBar = (props) => {
               <input
                 type="text"
                 placeholder="Search clients"
-                className={`search-input ${searchValue.length > 0 && "inputSearchWritten"
-                  }`}
+                className={`search-input ${
+                  searchValue.length > 0 && "inputSearchWritten"
+                }`}
                 value={searchValue || ""}
                 onChange={handleSearchChange}
               />
@@ -229,10 +302,9 @@ const TopBar = (props) => {
                 />
 
                 <i className="search-btn ">
-                  <RiSearchLine className="iconColor"/>
+                  <RiSearchLine className="iconColor" />
                 </i>
               </div>
-
             </span>
           </>
         )}
@@ -245,18 +317,17 @@ const TopBar = (props) => {
 
         {location.pathname === "/Clients" && (
           <>
-
-            <div className="sub-components-ticket-filter" style={{ boxShadow: "none" }} ref={dropdownClickRef}>
+            <div
+              className="sub-components-ticket-filter"
+              style={{ boxShadow: "none" }}
+              ref={dropdownClickRef}
+            >
               {" "}
               <p className="filter-icon" onClick={handleTicketFilter}>
                 <LuSettings2 />
                 {""}
               </p>
-              {showTicketFilter && (
-                <ClientFilterDropdown />
-
-              )}
-
+              {showTicketFilter && <ClientFilterDropdown />}
             </div>
 
             <div className="top-icon" onClick={clienttoggleGrid}>
@@ -265,8 +336,25 @@ const TopBar = (props) => {
           </>
         )}
 
+        <div style={{ display: "flex" }} ref={collectCashClickRef}>
+          <span
+            className="top-icon-bell"
+            onClick={handleCollectCash}
+            ref={collectCashRef}
+          >
+            <img src={moneyIcon} />
+          </span>
+
+
+          {collectCash && <CollectCashModal onClose={handleCollectCash} />}
+        </div>
+
         <div style={{ display: "flex" }} ref={notificationClickRef}>
-          <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+          <span
+            className="top-icon-bell"
+            onClick={handleNotfication}
+            ref={notificationRef}
+          >
             <HiOutlineBell className="iconColor" />{" "}
           </span>
 
@@ -280,13 +368,12 @@ const TopBar = (props) => {
 
           {showNotification && <NotificationSection />}
         </div>
-        
-        {location.pathname === "/Clients" && ( 
-            <div className="add-client-button" onClick={openClientModalHandle}>
-              Add Client
-            </div>       
-        )}
 
+        {location.pathname === "/Clients" && (
+          <div className="add-client-button" onClick={openClientModalHandle}>
+            Add Client
+          </div>
+        )}
       </div>
     </div>
   );
