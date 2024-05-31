@@ -63,4 +63,5 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick,numberOfO
   );
 };
 
+
 export default elevatorOpeningSelection;

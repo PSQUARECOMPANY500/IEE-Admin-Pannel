@@ -1,9 +1,7 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React, { useState, useEffect } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
-import Clientbutton from "./ClientsReusableComponent/Clientbutton";
 import TextInput from "./ClientsReusableComponent/TextInput";
-const ClientArchitect = ({onDataChange}) => {
+const ClientArchitect = ({ onDataChange }) => {
   const [clientFormData, setClientFormData] = useState({
     architectName: "",
     architectNumber: "",
@@ -27,7 +25,7 @@ const ClientArchitect = ({onDataChange}) => {
   };
 
   useEffect(() => {
-    onDataChange(clientFormData)
+    onDataChange(clientFormData);
   }, [clientFormData]);
 
   return (

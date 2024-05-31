@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
 const express = require("express");
 const router = express.Router();
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
@@ -6,7 +9,7 @@ const adminContoller = require("../../Controllers/AdminController/AdminControlle
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
 
-const uploadClientData = require("../../Multer/ClientDocumentUpload")
+const uploadClientData = require("../../Multer/ClientDocumentUpload");
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -23,7 +26,7 @@ router.post(
   adminContoller.createLocationForFilter
 ); // crete service admin
 
-//------------------------------ All get requests ---------------------------------------------------
+//------------------------------ All get requests -------------------------------------------------
 
 router.get("/Allcallbacks", adminContoller.getAllCallbacks);
 router.get("/Allservices", adminContoller.getAllRequests);
@@ -89,7 +92,10 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);  
+router.get(
+  "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
+  adminContoller.fetchEnggAttendance
+);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
@@ -107,77 +113,119 @@ router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
 router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
-router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get(
+  "/getEngineerRequestedLeave",
+  adminContoller.getEngineerRequestedLeave
+);
 router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
-
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
 
 //api for assignedEnggDetails
 // router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
-
-
 // --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
 router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
-router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get(
+  "/getEngineerRequestedLeave",
+  adminContoller.getEngineerRequestedLeave
+);
 router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 // --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
 
-
 // --by amit 29/03/2024 ------------
-router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
-
-
+router.get(
+  "/assignedEnggDetails/:ServiceEnggId",
+  adminContoller.assignedEnggDetails
+);
 
 // --by Preet 02/04/2024 ------------
-router.get("/getSparePartRequest/:EnggId",adminContoller.getSparePartRequestByEngg); 
+router.get(
+  "/getSparePartRequest/:EnggId",
+  adminContoller.getSparePartRequestByEngg
+);
 //--- by Preet 03/04/2024
-router.post("/ApproveDenySparepart", adminContoller.ApproveDenySparePartRequest);
-router.get("/fetchAllotedSparePart/:EnggId", adminContoller.fetchAllotedSparePart);
-router.get("/fetchDeniedSparePart/:EnggId", adminContoller.fetchDeniedSparePart);
-
+router.post(
+  "/ApproveDenySparepart",
+  adminContoller.ApproveDenySparePartRequest
+);
+router.get(
+  "/fetchAllotedSparePart/:EnggId",
+  adminContoller.fetchAllotedSparePart
+);
+router.get(
+  "/fetchDeniedSparePart/:EnggId",
+  adminContoller.fetchDeniedSparePart
+);
 
 //--- by Preet 10/04/2024
-router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
+router.get("/getReportForAdmin/:serviceId", adminContoller.fetchReportForAdmin);
 
-
-
-
-
-
+//---by aayush malviya 18/04/24
 
 // retain routes again 03/04/2024   ------------
-router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
-router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
-router.post("/updatePassword",adminContoller.updatePassword);
+router.post("/SendOtpEmail", adminContoller.sendPasswordResetOTPOnEmail);
+router.post("/veriyfyOTP", adminContoller.ValidateOTPForgetPassword);
+router.post("/updatePassword", adminContoller.updatePassword);
 
+router.get("/getNotification", adminContoller.getNotification);
 /**
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
 
-router.post('/registerClientData',uploadClientData.fields([
-  {
-    name: "signedQuotation",
-    maxCount: 1,
-  },
-  {
-    name: "paymentForm",
-    maxCount: 1,
-  },
-  {
-    name: "salesOrder",
-    maxCount: 1,
-  },
-  {
-    name: "chequeForm",
-    maxCount: 1,
-  },
-]),adminContoller.postElevatorForm);  //to do apply multer
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/uplodes/");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+//   },
+// });
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/ElevatorDimensions/");
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    const fileName = file.originalname.split(".")[0];
 
+    cb(null, `${fileName}.${parts}-${Date.now()}`);
+  },
+});
+const upload = multer({ storage: storage });
 
+router.put(
+  "/putElevatorDimensions",
+  upload.any(),
+  adminContoller.updatElevatorDimensions
+);
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
 
-router.put('/updateClientForm',adminContoller.putElevatorForm);
+router.post(
+  "/registerClientData",
+  uploadClientData.fields([
+    {
+      name: "signedQuotation",
+      maxCount: 1,
+    },
+    {
+      name: "paymentForm",
+      maxCount: 1,
+    },
+    {
+      name: "salesOrder",
+      maxCount: 1,
+    },
+    {
+      name: "chequeForm",
+      maxCount: 1,
+    },
+  ]),
+  adminContoller.postElevatorForm
+);
+
+router.put("/updateClientForm", adminContoller.putElevatorForm);
 
 module.exports = router;

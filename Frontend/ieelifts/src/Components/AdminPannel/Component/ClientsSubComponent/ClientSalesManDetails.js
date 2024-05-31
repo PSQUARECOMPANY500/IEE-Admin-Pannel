@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
-import TextInput from "./ClientsReusableComponent/TextInput";
+import TextInput from "../ClientsSubComponent/ClientsReusableComponent/TextInput";
 
 const ClientSalesManDetails = ({ onDataChange }) => {
   const [clientFormData, setClientFormData] = useState({

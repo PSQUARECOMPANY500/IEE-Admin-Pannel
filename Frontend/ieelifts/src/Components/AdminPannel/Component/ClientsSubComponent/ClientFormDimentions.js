@@ -73,8 +73,8 @@ const ClientFormDimentions = ({
   useEffect(() => {
     setDimentionsData({
       basementWithPit: basementWithPit,
-      floorFrontData: floorFrontData,
       levelData: levelData,
+      floorFrontData: floorFrontData,
     });
   }, [basementWithPit, floorFrontData, levelData]);
   console.log("dimentionsData", dimentionsData);
@@ -188,22 +188,16 @@ const ClientFormDimentions = ({
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    
   };
-  //---------------------------------------------------------------------------------
-  
-  //----------------------------handle third step ----------------------------------
-  
 
-  //--------------------------------------------------------------------------------
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
       <div
-        className={`dimention-btn ${visible ? "hide" : ""} ${
-          validate ? "disabled" : ""
-        }`}
+        className={`dimention-btn ${visible ? "hide" : ""}   ${
+          !validate ? "disabled" : ""
+        } `}
         onClick={handleOnClick}
       >
         Generate dimensions{" "}
@@ -264,7 +258,6 @@ const ClientFormDimentions = ({
               <span
                 className="pagination-btn left"
                 onClick={() => handlePageChange(currentPage - 1)}
-                
               >
                 <img src="leftLightBtn.png" alt="leftBtn" />
               </span>

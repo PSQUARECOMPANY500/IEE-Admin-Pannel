@@ -45,6 +45,7 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
+const Notification = require("../../Modals/NotificationModal/notificationModal");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -615,7 +616,8 @@ module.exports.AssignServiceRequests = async (req, res) => {
     } = req.body;
 
     let callback;
-
+    // console.log("RepresentativeName--",RepresentativeName)
+    // console.log("RepresentativeNumber--",RepresentativeNumber)
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
@@ -1173,9 +1175,11 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password } = req.body;
-
+    const { AdminId, Password, Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });
+    /*  if(Admin.Role !== Role){
+       return res.status(401).json({status:"error", message: "permission denied" });
+     }   */
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -1185,7 +1189,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
       _id: Admin._id,
       AdminName: Admin.AdminName,
       Phone: Admin.Phone,
-      Role: Admin.ServiceAdmin,
+      Role: Admin.Role,
       AdminId: Admin.AdminId,
     });
 
@@ -2328,7 +2332,7 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceEnggId: assignment.ServiceId,
           });
-          console.log("rating", Rating);
+          // console.log("rating", Rating);
           return {
             ...assignment,
             rating: Rating.Rating,
@@ -2487,7 +2491,6 @@ module.exports.fetchDeniedSparePart = async (req, res) => {
 module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
-
     const ReportData = await ReportTable.findOne({ serviceId });
     const Rating = await EnggRating.findOne({ ServiceId: serviceId });
 
@@ -2497,7 +2500,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const CabinFloors = {
       IssuesResolved: [],
       IssuesNotResolved: [],
@@ -2516,9 +2518,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const ReportImages = ReportData.subCategoriesphotos;
-
     const sortedData = (keys, arr) => {
       const arrData = arr.filter(
         (question) =>
@@ -2530,7 +2530,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
       );
-
       arrData.forEach((item) => {
         if (item.questionResponse.isResolved) {
           keys.IssuesResolved.push(item);
@@ -2545,7 +2544,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         ) {
           keys.SparePartsChanged.push(item);
         }
-
         if (
           item.questionResponse.isSparePartRequest &&
           item.questionResponse.sparePartDetail.sparePartsType !== "" &&
@@ -2561,10 +2559,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         acc[item.subcategoryname] = [];
       }
       acc[item.subcategoryname].push(item);
-
       return acc;
     }, {});
-
     Object.keys(transformedData).forEach((key) => {
       if (key === "M/C Room") {
         sortedData(MCRoom, transformedData[key]);
@@ -2576,7 +2572,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         sortedData(PitArea, transformedData[key]);
       }
     });
-
     const finalReportedData = {
       MCRoom,
       CabinFloors,
@@ -2603,8 +2598,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 
 //post client form controller
 module.exports.postElevatorForm = async (req, res) => {
-  // console.log("rajjjjjjjjjjjjjjjjj",req.body)
-  // console.log("preeeeeee",req.files)
 
   const membershipDocument = {
     signedQuotation: req?.files?.signedQuotation[0]?.filename || "",
@@ -2615,13 +2608,15 @@ module.exports.postElevatorForm = async (req, res) => {
 
   const { clientFormDetails, clientSalesManDetails, clientArchitect } =
     req.body;
-
-  console.log("Client Form Details:", req.body.clientFormDetails[0].jon);
-  console.log(
-    JSON.parse(req.body.clientFormDetails)
-  );
-
+    const { jon } = JSON.parse(clientFormDetails);
+  // console.log("Client Form Details:", req.body.clientFormDetails[0].jon);
+  // console.log(JSON.parse(req.body.clientFormDetails));
   try {
+    const existingForm = await ElevatorFormSchema.findOne({ "clientFormDetails.jon": jon });
+    
+    if (existingForm) {
+      return res.status(400).json({ error: "Jon already exists" });
+    }
     const elevatorFormSchema = new ElevatorFormSchema({
       clientFormDetails: JSON.parse(req.body.clientFormDetails),
       clientSalesManDetails: JSON.parse(req.body.clientSalesManDetails),
@@ -2646,14 +2641,14 @@ module.exports.postElevatorForm = async (req, res) => {
 module.exports.putElevatorForm = async (req, res) => {
   try {
     const newData = req.body;
-    const  JON  = req.body.JON;
+    const JON = req.body.JON;
     delete newData.JON;
     // console.log(typeof(JON));
     console.log(newData.stops);
 
     const updatedData = await ElevatorFormSchema.findOneAndUpdate(
-      { 'clientFormDetails.jon': JON },
-      {elevatorDetails:newData},
+      { "clientFormDetails.jon": JON },
+      { elevatorDetails: newData },
       { new: true }
     );
     // const data = await ElevatorFormSchema.findOne({ });
@@ -2668,6 +2663,167 @@ module.exports.putElevatorForm = async (req, res) => {
     return res.status(500).json({
       error: "Internal server error",
       message: err.message,
+    });
+  }
+};
+
+module.exports.getNotification = async (req, res) => {
+  try {
+    const now = new Date()
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
+    const response = await Notification.find({ Date: now });
+    console.log("response", response);
+    if (response) {
+      return res.status(200).json({ status: "sucess", response: response });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+};
+
+// by aayush for rating admin=================================
+
+//-----------------------------------------------------------------------
+// by armaan regarding 3rd step in client submision form
+
+// module.exports.updatElevatorDimensions = async (req, res) => {
+//   try {
+//     const files = req.files;
+//     const { JON } = req.body;
+//     const first = req.body.data[0];
+//     const second = req.body.data[1];
+
+//     const data = await ElevatorFormSchema.findOne({ 'clientFormDetails.jon': JON });
+//     if (!data) {
+//       return res.status(404).json({ error: 'Data not found' });
+//     }
+//     let Data = data;
+//     // Data.dimensions.pitPoint.levelName = first.pitPoint.levelName;
+//     // console.log((first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined);
+//     if (((Data.dimensions.pitPoint.levelName) === undefined) && first.pitPoint) {
+//       console.log(1);
+//       Data.dimensions.pitPoint = first.pitPoint;
+//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
+
+//       Data.dimensions.floors[0] = second.floors[0];
+//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
+//     }
+//     else if (first.pitPoint && (first.pitPoint.levelName === Data.dimensions.pitPoint.levelName)) {
+//       console.log(2);
+//       Data.dimensions.pitPoint = first.pitPoint;
+//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
+
+//       Data.dimensions.floors[0] = second.floors[0];
+//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
+//     }
+//     else if (first.topPoint && (first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined) {
+//       console.log(3);
+//       Data.dimensions.topPoint = first.topPoint;
+//       console.log(Data);
+//       Data.dimensions.topPoint.sitePhotos.floorFront = files[0].originalname;
+//       Data.dimensions.topPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.topPoint.sitePhotos.overheadImages = files[2].originalname;
+//     }
+//     else if (second.topPoint && (second.topPoint.levelName === Data.dimensions.topPoint.levelName)) {
+//       console.log(4);
+//       Data.topPoint = second.topPoint;
+//       Data.topPoint.sitePhotos.floorFront = files[1].originalname;
+//       Data.topPoint.sitePhotos.bottomToTopImages = files[2].originalname;
+//       Data.topPoint.sitePhotos.overheadImages = files[3].originalname;
+
+//       if (Data.floors.find(floor => floor.levelName === first.levelName)){
+
+//       }
+//       Data.floors[Data.floors.length() - 1] = second;
+//       Data.floors[Data.floors.length() - 1].sitePhotos = files[0].originalname;
+//     }
+//     // else {
+//     //   Data.floors.find(floor => floor.levelName === first.levelName) = first;
+//     //   Data.floors.find(floor => floor.levelName === first.levelName).sitePhotos = files[0].originalname;
+//     //   Data.floors.find(second => floor.levelName === second.levelName) = second;
+//     //   Data.floors.find(second => floor.levelName === second.levelName).sitePhotos = files[1].originalname;
+//     // }
+
+//     Data.save();
+
+//     res.status(200).json({ success: true, Data });
+
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       error: "Internal server error",
+//       message: err.message
+//     })
+//   }
+// }
+
+module.exports.updatElevatorDimensions = async (req, res) => {
+  try {
+    const files = req.files;
+    const { JON } = req.body;
+
+    const data = req.body.data;
+    const Data = await ElevatorFormSchema.findOne({
+      "clientFormDetails.jon": JON,
+    });
+
+    const topPoint = data.floorFrontData;
+    const pitPoint = data.basementWithPit;
+    const floors = data.levelData;
+
+    floors.shift();
+    floors.pop();
+
+    Data.dimensions.topPoint = topPoint;
+    Data.dimensions.pitPoint = pitPoint;
+    Data.dimensions.floors = floors;
+
+    Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
+    Data.dimensions.pitPoint.sitePhotos.bottomToTopImages =
+      files[1].originalname;
+    Data.dimensions.pitPoint.sitePhotos.basementFrontImages =
+      files[2].originalname;
+
+    Data.dimensions.topPoint.sitePhotos.floorFront =
+      files[files.length - 3].originalname;
+    Data.dimensions.topPoint.sitePhotos.bottomToTopImages =
+      files[files.length - 2].originalname;
+    Data.dimensions.topPoint.sitePhotos.overheadImages =
+      files[files.length - 1].originalname;
+
+    let i = 0;
+    console.log(files.length);
+    files.forEach((file, index) => {
+      if (
+        index !== 0 &&
+        index !== 1 &&
+        index !== 2 &&
+        index !== files.length - 1 &&
+        index !== files.length - 2 &&
+        index !== files.length - 3
+      ) {
+        console.log(Data.dimensions.floors[i], index, i);
+        // Update Data.dimensions.floors[i] instead of Data.dimensions.floors[index]
+        Data.dimensions.floors[i].sitePhotos = file.originalname;
+        i++;
+      }
+    });
+
+    Data.save();
+
+    res.status(200).json({ success: true, Data });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error",
+      message: error.message,
     });
   }
 };

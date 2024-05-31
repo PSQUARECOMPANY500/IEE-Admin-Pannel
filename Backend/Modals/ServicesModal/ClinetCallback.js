@@ -53,6 +53,10 @@ const Services = new Schema(
     },
     RepresentativeNumber:{
       type:String,
+    },
+    isDead:{
+      type:Boolean,
+      default:false
     }
   },
   {

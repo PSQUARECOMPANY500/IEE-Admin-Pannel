@@ -46,11 +46,13 @@ const Services = new Schema(
     },
     RepresentativeName:{
       type:String,
-      default: ""
     },
     RepresentativeNumber:{
       type:String,
-      default: ""
+    },
+    isDead:{
+      type:Boolean,
+      default:false
     }
   },
   {

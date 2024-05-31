@@ -20,14 +20,15 @@ import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
 const Sidebar = ({ children }) => {
-  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+  const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
-  const initialIsOpen=smallLaptopSizes?false:true
+  const pathname = location.pathname;
+  const initialIsOpen = smallLaptopSizes ? false : true
   const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [toogleOpen, settoogleClose] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
- 
+
 
 
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
@@ -41,18 +42,18 @@ const Sidebar = ({ children }) => {
 
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
-    !smallLaptopSizes&& setIsOpen(!isOpen);
+    !smallLaptopSizes && setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
     console.log("clicked");
     settoogleClose(!toogleOpen);
-    !smallLaptopSizes&& setIsOpen(isOpen);
+    !smallLaptopSizes && setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
     console.log("image clicked");
-    !smallLaptopSizes&& setIsOpen(!isOpen);
+    !smallLaptopSizes && setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
@@ -78,42 +79,67 @@ const Sidebar = ({ children }) => {
   };
 
   // menu dropdown Items
-  const menueItems = [
-    {
-      Path: "/Dashboard",
-      name: "Dashboard",
-      icon: <MdDashboard />,
-    },
-    {
-      Path: "/Requests",
-      name: "Requests",
-      icon: <RiGitPullRequestFill />,
-    },
-    {
-      Path: "/Clients",
-      name: "Clients",
-      icon: <MdOutlineAirlineSeatReclineNormal />,
-    },
-    {
-      Path: "/Memberships",
-      name: "Memberships",
-      icon: <MdOutlineCardMembership />,
-    },
-    {
-      Path: "/Engeeniers",
-      name: "Engineers",
-      icon: <MdEngineering />,
-    },
-    {
-      Path: "/SOS",
-      name: "sos",
-      icon: <MdEngineering />,
-    },
-  ];
+  let menueItems;
+  const role = localStorage.getItem("Role");
+  if (role === "CRM") {
+    menueItems = [
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+
+    ];
+  } else if (role === "ServiceAdmin") {
+    menueItems = [
+      {
+        Path: "/Dashboard",
+        name: "Dashboard",
+        icon: <MdDashboard />,
+      },
+      {
+        Path: "/Requests",
+        name: "Requests",
+        icon: <RiGitPullRequestFill />,
+      },
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+      {
+        Path: "/Memberships",
+        name: "Memberships",
+        icon: <MdOutlineCardMembership />,
+      },
+      {
+        Path: "/Engeeniers",
+        name: "Engineers",
+        icon: <MdEngineering />,
+      },
+      {
+        Path: "/SOS",
+        name: "sos",
+        icon: <MdEngineering />,
+      },
+    ];
+  } else if (role === "ErectionAdmin") {
+    menueItems = [
+      {
+        Path: "/ErectionDashboard",
+        name: "Dashboard",
+        icon: < MdDashboard />,
+      },
+      {
+        Path: "/ErectionEngeeniers",
+        name: "Engineers",
+        icon: <MdEngineering />,
+      },
+    ];
+  }
 
   useEffect(() => {
     // Update top bar heading when location changes
-    const pathname = location.pathname;
     switch (pathname) {
       case "/Dashboard":
         setTopBarHeading("Dashboard");
@@ -129,6 +155,15 @@ const Sidebar = ({ children }) => {
         break;
       case "/Clients":
         setTopBarHeading("Clients");
+        break;
+      case "/Sosrequest":
+        setTopBarHeading("SOS");
+        break;
+      case "/ErectionDashboard":
+        setTopBarHeading("Dashboard");
+        break;
+      case "/ErectionEngeeniers":
+        setTopBarHeading("Engineers");
         break;
       // Add more cases for other pages
       default:
@@ -171,7 +206,7 @@ const Sidebar = ({ children }) => {
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
-          {!toogleOpen&& !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
+          {!toogleOpen && !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
 
           <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
             <h1
@@ -180,7 +215,7 @@ const Sidebar = ({ children }) => {
             >
               <img
                 className="logo-image"
-                style={{ width:smallLaptopSizes?'80px':isOpen ? "100px" : "60px" }}
+                style={{ width: smallLaptopSizes ? '80px' : isOpen ? "100px" : "60px" }}
                 src={logo}
                 alt="logo"
               />
@@ -260,7 +295,7 @@ const Sidebar = ({ children }) => {
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu":"sub-menu-wrap"
+                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu" : "sub-menu-wrap"
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
@@ -302,7 +337,7 @@ const Sidebar = ({ children }) => {
                   style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                     <FiChevronUp style={{ fontSize: "20px" }} />
+                  <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -324,10 +359,10 @@ const Sidebar = ({ children }) => {
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}
-                    // ClassName={
-                    //   location.pathname === item.Path ? "active-link" : ""
-                    // }
-                    // not know the reason of commenting todo - uncomment if there is some problem exist
+                  // ClassName={
+                  //   location.pathname === item.Path ? "active-link" : ""
+                  // }
+                  // not know the reason of commenting todo - uncomment if there is some problem exist
                   >
                     <div className="icon">{item.icon}</div>
                     <div
@@ -344,16 +379,17 @@ const Sidebar = ({ children }) => {
             {/* MAIN MENUE items goes here ends */}
 
             {/* OFFICE MENUE items goes here start */}
-
-            <div className="main-menue" onClick={menuUpDown2}>
-              <div className="seprate-line"></div>
-              <label htmlFor="touch2" className="main-menu-style">
-                <span
-                  className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
-                >
-                  OFFICE
-                </span>
-                {/* <span
+            {
+              pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) :
+                (<> <div className="main-menue" onClick={menuUpDown2}>
+                  <div className="seprate-line"></div>
+                  <label htmlFor="touch2" className="main-menu-style">
+                    <span
+                      className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
+                    >
+                      OFFICE
+                    </span>
+                    {/* <span
                   style={{ fontSize: isOpen ? "16px" : "0px" }}
                   className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
                 >
@@ -364,49 +400,55 @@ const Sidebar = ({ children }) => {
                   )}
                 </span> */}
 
-<span
-                  style={{ fontSize: isOpen ? "16px" : "0px" }}
-                  className={`menu-icon ${officeMenuOpen  ? "rotate" : ""}` }   
-                >
-                     <FiChevronUp style={{ fontSize: "20px"}} />
-                </span>
-              </label>
-            </div>
-
-            <input type="checkbox" id="touch2" />
-            <ul
-              className="slide"
-              style={{ height: officeMenuOpen ? "190px" : "" }}
-            >
-              <li>
-                {officeItems.map((item, index) => (
-                  <NavLink
-                    to={item.Path}
-                    key={index}
-                    className="link"
-                    style={{ justifyContent: isOpen ? "" : "center" }}
-                    activeclassname="active"
-                  >
-                    <div className="icon">{item.icon}</div>
-                    <div
-                      style={{ display: isOpen ? "block" : "none" }}
-                      className="link_text"
+                    <span
+                      style={{ fontSize: isOpen ? "16px" : "0px" }}
+                      className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
                     >
-                      {item.name}
-                    </div>
-                  </NavLink>
-                ))}
-              </li>
-            </ul>
+                      <FiChevronUp style={{ fontSize: "20px" }} />
+                    </span>
+                  </label>
+                </div>
+
+                  {/* <input type="checkbox" id="touch2" /> */}
+
+                  <ul
+                    className="slide"
+                    style={{ height: officeMenuOpen ? "190px" : "" }}
+                  >
+                    <li>
+                      {officeItems.map((item, index) => (
+                        <NavLink
+                          to={item.Path}
+                          key={index}
+                          className="link"
+                          style={{ justifyContent: isOpen ? "" : "center" }}
+                          activeclassname="active"
+                        >
+                          <div className="icon">{item.icon}</div>
+                          <div
+                            style={{ display: isOpen ? "block" : "none" }}
+                            className="link_text"
+                          >
+                            {item.name}
+                          </div>
+                        </NavLink>
+                      ))}
+                    </li>
+                  </ul>
+                </>
+                )
+            }
 
             {/* OFFICE MENUE items goes here ends */}
           </nav>
         </div>
-          <div className="circle">SOS</div>
-      </div>
-  
+        {
+          pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) : (<> <div className="circle">SOS</div></>)}
+
+      </div >
+
       <main>{children}</main>
-    </div>
+    </div >
   );
 };
 

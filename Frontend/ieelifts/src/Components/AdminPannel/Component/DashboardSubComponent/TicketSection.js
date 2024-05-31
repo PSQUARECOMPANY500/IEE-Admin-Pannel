@@ -21,6 +21,7 @@ import {
   getFilterLocation,
   getEngineerNames,
 } from "../../../../ReduxSetup/Actions/AdminActions";
+import RepotImage from "./RepotImage";
 
 const TicketSection = ({ setTicketUpdate }) => {
   const dispatch = useDispatch();
@@ -542,7 +543,10 @@ const TicketSection = ({ setTicketUpdate }) => {
                 setTicketUpdate={setTicketUpdate}
                 requestSection={false}
               />
+
             )}
+
+
           </div>
         </div>
 

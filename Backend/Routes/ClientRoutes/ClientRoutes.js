@@ -21,12 +21,13 @@ router.put("/updateCallbacks", clientController.updateCallbacks);
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
 router.post("/imediateServiceRequest",clientController.imediateServiceRequest);
 
-router.post("/createReferal", verifyToken('client'), clientController.referalUser);
+router.post("/createReferal", clientController.referalUser);
+// router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 router.get("/getClientReferalByJobOrderNumber/:jobOrderNumber", verifyToken('client'), clientController.getAllReferalByJobOrderNumber);
 
-//router.post("/engineerRating",clientController.Rating)
+router.post("/engineerRating",clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------
 router.get("/clientDetail/:JobOrderNumber", verifyToken('client'), clientController.getClientDetail);
@@ -47,7 +48,11 @@ router.get("/fetchClientServiceHistory/:JobOrderNumber", clientController.fetchC
 // ------------------------all Put Requests ----------------------------------------------------
 router.put("/updateCallbacks", clientController.updateCallbacks);
 router.put("/updateServiceRequest", clientController.updateServiceRequest);
-router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+// router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
+
+// ------------------------20/05/2024 by preet --------------------------------
+router.get("/getClientCurentActiveService/:JobOrderNumber", clientController.getCurrentScheduleService);
 
 
 module.exports = router;

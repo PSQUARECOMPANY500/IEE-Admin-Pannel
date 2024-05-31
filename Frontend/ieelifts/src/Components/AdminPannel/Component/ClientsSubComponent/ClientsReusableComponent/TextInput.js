@@ -40,9 +40,10 @@ const TextInput = ({
         style={{
           top:  click ? "-20px":'0px',
           color:  click ? "#1D1D1D":'#1D1D1D',
-          fontWeigh:  click?"500":'300',
+          fontWeight:  click?"500":'300',
           fontSize:click ?"1rem":'1rem',
-          zIndex: '99999'
+          zIndex: '99999',
+          
         }}
 
       >

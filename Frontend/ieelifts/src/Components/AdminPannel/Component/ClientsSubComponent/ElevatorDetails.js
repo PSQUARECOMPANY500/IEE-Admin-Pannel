@@ -38,7 +38,7 @@ const ElevatorDetails = ({
     const { name } = e.target;
     setClick({ ...click, [name]: false });
   };
-
+  console.log("stops===>",stops)
   return (
     <>
       <div className="client-elevator-input-wrapper">
@@ -122,23 +122,23 @@ const ElevatorDetails = ({
         <div className="b2b1-container">
           <div>
             <div className="btn-container">
-              <span
-                className={`b2-btn ${basementSelection.b2 ? "btn-active" : ""}`}
+              <span 
+                className={`b2-btn ${basementSelection.B2 ? "btn-active" : ""} ${stops == "2" || stops=="1" ? "disabled" : ""}`}
                 onClick={() =>
                   handleElevatorDetailsChange("basementSelection", {
-                    b1: !basementSelection.b2,
-                    b2: !basementSelection.b2,
+                    B1: !basementSelection.B2,
+                    B2: !basementSelection.B2,
                   })
                 }
               >
                 B2
               </span>
               <span
-                className={`b1-btn ${basementSelection.b1 ? "btn-active" : ""}`}
+                className={`b1-btn ${basementSelection.B1 ? "btn-active" : ""} ${stops=="1"?"disabled":""}`}
                 onClick={() =>
                   handleElevatorDetailsChange("basementSelection", {
-                    b1: !basementSelection.b1,
-                    b2: false,
+                    B1: !basementSelection.B1,
+                    B2: false,
                   })
                 }
               >

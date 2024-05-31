@@ -57,7 +57,7 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
 
 //-----------------------------------------------------------------------------------------------------------
 //function to fetch all the RequestId by admin
-export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description ,RepresentativeName, RepresentativeNumber) => {
+export const requestServiceRequestByAdmin = (JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description ,RepresentativeName , RepresentativeNumber) => {
   return async()=>{
       try {
         //console.log(JobOrderNumber,RequestDate,RequestTime,TypeOfIssue,Description)

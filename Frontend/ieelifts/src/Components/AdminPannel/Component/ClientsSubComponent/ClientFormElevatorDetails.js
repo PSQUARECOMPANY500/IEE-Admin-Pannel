@@ -16,8 +16,8 @@ const ClientFormElevatorDetails = ({
   // const pitDepth = [100, 200];
   const purpose = ["Hospital", "Automobil", "Passenger"];
   const typeOptions = ["gearless", "geared"];
-  const doorType = ["option1", "option2"];
-  const constructionMaterial = ["option1", "option2"];
+  const doorType = ["center opening", "Swing","Manual","Telescopic(LHS)","Telescopic(RHS)"];
+  const constructionMaterial = ["Brick", "RCC","Steel"];
   //states
   const [elevatorData, setElevatorData] = useState({});
   const [array, setArray] = useState([]);
@@ -41,11 +41,12 @@ const ClientFormElevatorDetails = ({
     remarks: "",
   });
   const [validate, setValidate] = useState(false);
-
+  console.log("elevatorDetails===>",elevatorDetails)
   //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
     setElevatorDetails((prevDetails) => ({
       ...prevDetails,
+      [fieldName]: value,
       [fieldName]: value,
     }));
     if (fieldName === "stops") {

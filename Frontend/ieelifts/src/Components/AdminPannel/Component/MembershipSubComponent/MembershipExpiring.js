@@ -4,7 +4,7 @@ import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { createSelector } from "reselect";
-import MembershipLoader from "./MembershipLoader";
+import Loader from "../../../CommonComponenets/Loader";
 import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
@@ -12,6 +12,7 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const MembershipExpiring = ({ DemoData, count }) => {
+
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -36,7 +37,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
   useEffect(() => {
     setLoader(true);
     requestLimitedClientDataAction(dispatch, type, "expiring", page, 10)
-      .then(() =>  setLoader(false))
+      .then(() => setLoader(false))
       .catch((error) => {
         setLoader(false);
       });
@@ -65,7 +66,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
           setPage((prevPage) => prevPage + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     const currentRef = ref.current;
@@ -90,12 +91,13 @@ const MembershipExpiring = ({ DemoData, count }) => {
     DemoData.dataType === "Warrenty"
       ? "membership_card_scrollable_warrenty"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_scrollable_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_scrollable_gold"
-      : DemoData.dataType === "Silver"
-      ? "membership_card_scrollable_silver"
-      : "total_revenue_outer_border";
+        ? "membership_card_scrollable_platinum"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_scrollable_gold"
+          : DemoData.dataType === "Silver"
+            ? "membership_card_scrollable_silver"
+            : "total_revenue_outer_border";
+
   return (
     <>
       {ref && (
@@ -117,14 +119,13 @@ const MembershipExpiring = ({ DemoData, count }) => {
           {loader ? (
             <>
               <div className="loder_Container">
-                <MembershipLoader />
+                <Loader />z
               </div>
             </>
           ) : (
             <div
-              className={`membership_card_scrollable ${
-                !count && "membership_card_scrollable_expanded"
-              } ${scrollbar}`}
+              className={`${count !== undefined ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable "
+                } ${scrollbar}`}
               ref={ref}
             >
               {memberShipDetails &&

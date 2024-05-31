@@ -24,10 +24,18 @@ const ClientFormDetails = ({ onDataChange }) => {
     "client",
     "Architect",
   ];
-
+  const [emailError, setEmailError] = useState("");
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
     setClientFormData({ ...clientFormData, [name]: value });
+    if (name === 'email') {
+      if (!emailRegex.test(value)) {
+        setEmailError('Invalid email address');
+      } else {
+        setEmailError('valid email address');
+      }
+    }
   };
 
   const handleClick = (e) => {
@@ -47,7 +55,7 @@ const ClientFormDetails = ({ onDataChange }) => {
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
-
+console.log("emailError===>",emailError);
   return (
     <div className="client-form-details">
       <h5 className="client-form-details-heading">Client's Details</h5>

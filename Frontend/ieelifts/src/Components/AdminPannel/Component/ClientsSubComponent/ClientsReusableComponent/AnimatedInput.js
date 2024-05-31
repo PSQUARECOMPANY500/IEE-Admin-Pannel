@@ -5,6 +5,7 @@ const Animated = ({
   defaultValue = "",
   name,
   label,
+  w,
   value,
   onChange,
   read = false,
@@ -34,6 +35,7 @@ const Animated = ({
   return (
     <div className="input-container">
       <input
+      style={{ width: `${w}`,}}
         className="input-field"
         type={type}
         name={name}
@@ -52,7 +54,8 @@ const Animated = ({
           color: email && "#330152",
           fontWeigh: email && "500",
           fontSize: email && "1rem",
-          zIndex: '99999'
+          zIndex: '99999',
+         
         }}
       >
         <sub>{label}</sub>

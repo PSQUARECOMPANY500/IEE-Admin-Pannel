@@ -49,6 +49,8 @@ import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
 import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
 import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
 import {UPDATE_CLIENT_FORM_USING_PAGINATION} from "../Actions/AdminActions.js";
+import {GET_ADMIN_REPORT_DATA  } from "../Actions/AdminActions";
+import {REPORT_CROUSER_HANDLER} from "../Actions/AdminActions";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,9 +76,11 @@ const initialStates = {
   isLoggedIn: !!localStorage.getItem("adminData"),
 };
 export const loginAdminReducer = (state = initialStates, action) => {
+
+
   switch (action.type) {
-    case LOGIN_SERVICE_ADMIN:
-      return { ...state, data: action.payload, isLoggedIn: true };
+     case LOGIN_SERVICE_ADMIN:
+     return { ...state, data: action.payload, isLoggedIn: true };
     default:
       return state;
   }
@@ -799,6 +803,43 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
       return state;
   }
 };
+
+//============================================================================= create by aayush for adminReport data api================================================
+
+const adminReportData= {
+AdminReportData: null,
+
+};
+export const getAdminReportDataReducer = (
+  state =adminReportData,
+  action
+) => {
+  switch (action.type) {
+    case GET_ADMIN_REPORT_DATA:
+      return { ...state, AdminReportData: action.payload }
+    default:
+      return state;
+  }
+};
+
+const ReportCrouserData = {
+  Index: 0,
+  IsOpen: false
+};
+
+export const ReportCrouserHandlerReducer = (state = ReportCrouserData, action) => {
+  switch (action.type) {
+    case REPORT_CROUSER_HANDLER:
+      return {
+        ...state,
+        Index: action.payload.Index,
+        IsOpen: action.payload.IsOpen
+      };
+    default:
+      return state;
+  }
+};
+
 //-----------------------------------------------------------------------------------------------------------------
 //Reducer to handle registerclient data form
 const registerClientFormData = {
@@ -849,4 +890,3 @@ export const UpdateClientFormDataReducer= (state=updateClientFormData,action)=>{
         return state;   
   }
 }
-

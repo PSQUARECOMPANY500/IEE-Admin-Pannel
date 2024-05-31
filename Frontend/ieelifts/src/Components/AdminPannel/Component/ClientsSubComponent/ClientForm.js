@@ -6,7 +6,6 @@ import ClientSalesManDetails from "./ClientSalesManDetails";
 import ClientMembershipDocument from "./ClientMembershipDocument";
 import ClientArchitect from "./ClientArchitect";
 import Clientbutton from "./ClientsReusableComponent/Clientbutton";
-import ClientFormElevatorDetials from "./ClientFormElevatorDetails";
 import ClientFormElevatorDetails from "./ClientFormElevatorDetails";
 import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
@@ -26,7 +25,7 @@ const ClientForm = () => {
     clientMembershipDocument: {},
     clientArchitect: {},
   });
-  console.log("allFormData====>", allFormData)
+  // console.log("allFormData====>", allFormData)
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
   const [dimentionsData, setDimentionsData] = useState({})
   const dispatch = useDispatch();
@@ -277,7 +276,8 @@ const ClientForm = () => {
                       value={"Delete"}
                       className={"client-form-button-red"}
                     />
-                    <div className={`${!validateNextBtn?"":"disabled"}`}>
+                   
+                   <div className={`${validateNextBtn?"":"disabled"}`}>
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}

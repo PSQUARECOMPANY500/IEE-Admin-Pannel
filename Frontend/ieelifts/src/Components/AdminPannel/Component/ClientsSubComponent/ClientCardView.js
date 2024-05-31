@@ -1,21 +1,43 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React from "react";
+import React, { useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
+import ClientModal from "./ClientModal";
 
-const clientCardView = ({ clientData }) => {
+const ClientCardView = ({ clientData }) => {
+  const [showClientModal, setShowClientModal] = useState(false);
+
+  const [selectedClient, setSelectedClient] = useState(null)
+
   function setBoxShadow(type) {
     return type === "warrenty"
       ? "clientCardShadowWarrenty"
       : type === "platinum"
-      ? "clientCardShadowPlatinum"
-      : type === "gold"
-      ? "clientCardShadowGold"
-      : type === "silver"
-      ? "clientCardShadowSilver"
-      : "noMembershipP";
+        ? "clientCardShadowPlatinum"
+        : type === "gold"
+          ? "clientCardShadowGold"
+          : type === "silver"
+            ? "clientCardShadowSilver"
+            : "noMembershipP";
   }
+
+  // ------------------Raj------------------------------------------------
+
+  //Function to handle open modal
+  const HandleCardClick = (client) => {
+    setSelectedClient(client)
+    setShowClientModal(true)
+
+
+  }
+
+  //Function to handle closing modal
+  const handleCloseModal = () => {
+    setShowClientModal(false)
+  }
+
+
   return (
     <div className="ClientCatainer">
       {clientData &&
@@ -23,6 +45,7 @@ const clientCardView = ({ clientData }) => {
           <div
             key={index}
             className={`clientCard ${setBoxShadow(client.MembershipType)}`}
+            onClick={() => HandleCardClick(client)}
           >
             <div className="clientInfo">
               <div className="clientCards">
@@ -92,8 +115,16 @@ const clientCardView = ({ clientData }) => {
             </div>
           </div>
         ))}
+
+      {/* --------------------------------Raj--------------------- */}
+
+      <ClientModal
+        showClientModal={showClientModal}
+        handleCloseModal={handleCloseModal}
+        selectedClient={selectedClient} />
+
     </div>
   );
-};
+}
 
-export default clientCardView;
+export default ClientCardView

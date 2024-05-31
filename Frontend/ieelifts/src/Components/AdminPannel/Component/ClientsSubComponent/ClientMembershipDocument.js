@@ -1,7 +1,7 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React, { useState,useEffect } from 'react';
-import AnimatedInput from './ClientsReusableComponent/AnimatedInput';
-import FileUploader from './ClientsReusableComponent/FileUploader';
+import AnimatedInput from '../ClientsSubComponent/ClientsReusableComponent/AnimatedInput';
+import FileUploader from '../ClientsSubComponent/ClientsReusableComponent/FileUploader';
 const ClientMembershipDocument = ({onDataChange}) => {
 
   const [selectedMembership, setSelectedMembership] = useState("Warranty");
