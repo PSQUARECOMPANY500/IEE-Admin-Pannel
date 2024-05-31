@@ -1093,18 +1093,61 @@ module.exports.EnggReportQuestionFetch = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
+const calculateEarlyLate = (timetocalculate) =>{
+  const currentTime = new Date();
+  const [hours, minutes, seconds] = timetocalculate.split(':').map(Number);
+  const targetTime = new Date(currentTime);
+  targetTime.setHours(hours, minutes, seconds, 0);
+  return targetTime;
+}
+
+const caluclateCheckInCheckOutStatus = (attendanceTime,caltime) => {
+  if(calculateEarlyLate(attendanceTime) > calculateEarlyLate(caltime[1])){
+          return 'Late'
+  }else if(calculateEarlyLate(attendanceTime) <= calculateEarlyLate(caltime[1])  && calculateEarlyLate(attendanceTime) >= calculateEarlyLate(caltime[0]) ){
+    return 'On Time'   
+  }else if(calculateEarlyLate(attendanceTime) < calculateEarlyLate(caltime[0])){
+    return 'Early'
+  }
+}
+
+
+
 module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
   try {
     const Id = req.params.ServiceEnggId;
     if (Id) {
       const date = new Date().toLocaleDateString("en-GB");
+      const time = new Date().toLocaleTimeString("en-GB");
       const response = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId: Id,
         Date: date,
       });
+
+      let Check_In_status
+      let Check_Out_status
+      // const timeresdposne = calculateEarlyLate('9:00:00');
+      if(response.Check_In.time){
+        Check_In_status = caluclateCheckInCheckOutStatus(response.Check_In.time,['08:45:00','09:15:00'])
+      }
+      if(response.Check_Out.time){
+        Check_Out_status = caluclateCheckInCheckOutStatus(response.Check_Out.time,['17:15:00','17:45:00'])
+      }
+      
+
+
+   
+
+      // console.log("this is the time ",timeresdposne  );
+      
+      // console.log("Reponse for checkin", response.Check_In.time)
+      // console.log("Reponse for checkout", response.Check_Out.time)
+
       return res.status(200).json({
         Check_In: response.Check_In.time,
+        Check_In_status,
         Check_Out: response.Check_Out.time,
+        Check_Out_status
       });
     }
     return res.status(500).json({ error: "ServiceEnggId Not Found" });
@@ -1641,6 +1684,12 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     if (!ReportData) {
       return res.status(404).json({ message: "Report Not Found" });
     }
+
+
+    console.log("-------------------0000000000000",paymentdata)
+
+
+
 
     const paymentPDF = req.files.report[0].filename;
 
