@@ -2832,54 +2832,52 @@ footer a:hover {
 }
 
 .membershippopup-modal-container {
- 
   border-radius: 15px;
-  
 }
-.membershippopup-main{
+.membershippopup-main {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.membershippopup-inner h4{
+.membershippopup-inner h4 {
   margin-top: 2.6vw;
   text-align: center;
   color: #444444;
   font: normal normal 600 17px/26px Poppins;
 }
-.membershippopup-btn{
+.membershippopup-btn {
   margin-top: 2vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.membershippopup-btn button{
-width: 90px;
-height: 51px;
-background: transparent;
-border: 1px solid #F8AC1D;
-border-radius: 10px;
-opacity: 1;
-font-size: 14px;
-/* font-weight: 600; */
-font: normal normal medium 16px/25px Poppins;
-transition: all ease-in 0.2s;
+.membershippopup-btn button {
+  width: 90px;
+  height: 51px;
+  background: transparent;
+  border: 1px solid #f8ac1d;
+  border-radius: 10px;
+  opacity: 1;
+  font-size: 14px;
+  /* font-weight: 600; */
+  font: normal normal medium 16px/25px Poppins;
+  transition: all ease-in 0.2s;
 }
 
-.membershippopup-btn button:hover{
-  background-color:#F8AC1D;
+.membershippopup-btn button:hover {
+  background-color: #f8ac1d;
 }
 .closeIconmembershippopup {
   position: absolute;
   left: 89%;
   top: 4%;
-  font-size:2rem;
-  color:#A2A2A2;
+  font-size: 2rem;
+  color: #a2a2a2;
 }
 
 /* ----------Innermembership-modal-container ------------*/
-.innermembershippopup-modal-conntainer{
+.innermembershippopup-modal-conntainer {
   /* top: 9%; */
   border-radius: 15px;
   left: 10%;
@@ -2891,16 +2889,14 @@ transition: all ease-in 0.2s;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width:23vw;
-  height:35vh;
+  width: 23vw;
+  height: 35vh;
   background: white;
   z-index: 999999999999999;
 }
 
-.innermembershippopup-modal-conntainer{
- 
+.innermembershippopup-modal-conntainer {
   border-radius: 20px;
-  
 }
 
 .innermembershippopup-modal-wrapper {
@@ -2919,37 +2915,29 @@ transition: all ease-in 0.2s;
   text-transform: capitalize;
 }
 
-.innerMembershipPopup-main{
-
- /* background-color: lightgreen; */
-}
-
-.innerMembershipPopup-center{
+.innerMembershipPopup-center {
   margin-left: 2.4vw;
   margin-top: 0.3vw;
-
 }
 
-.innerMembershipPopup-inner input{
+.innerMembershipPopup-inner input {
   width: 21.5rem;
-  margin-top:1.3rem;
+  margin-top: 1.3rem;
   border: none;
   outline: none;
   border-bottom: 1px solid #707070;
   padding: 8px 0px;
-
 }
 .innerMembershipPopup-inner input::placeholder {
   font: 14px/23px Poppins;
-  color:#444444;
-
+  color: #444444;
 }
-.invoicemembership{
- /* opacity:0; */
- background-color: red;
+.invoicemembership {
+  /* opacity:0; */
+  /* background-color: red; */
 }
 
-.innerMembershipPopup-btn{
+.innerMembershipPopup-btn {
   display: flex;
   width: 18vw;
   margin-top: 2vw;
@@ -2959,51 +2947,216 @@ transition: all ease-in 0.2s;
   justify-content: space-between;
 }
 
-.innerMembershipPopup-btn button{
+.innerMembershipPopup-btn button {
   width: 128px;
-height: 49px;
-border: 1px solid #F8AC1D;
-border-radius: 5px;
-background: transparent;
-opacity: 1;
+  height: 49px;
+  border: 1px solid #f8ac1d;
+  border-radius: 5px;
+  background: transparent;
+  opacity: 1;
 }
-#submit-innermembership{
+#submit-innermembership {
   background-color: #f8ac1d;
 }
 
-.file-upload{
-  border-bottom:1px solid #707070;
+.file-upload {
+  border-bottom: 1px solid #707070;
   /* opacity:0.4; */
-  margin-top:1.6vw;
+  margin-top: 1.6vw;
   cursor: pointer;
   width: 18vw;
   position: relative;
   font-size: 0.9rem;
-  font-family:poppins;
+  font-family: poppins;
 }
-.invoise{
-  color:#444444;
+.invoise {
+  color: #444444;
 }
-.file-upload input{
+.file-upload input {
   border: none;
 }
 
-.file-upload-icon{
+.file-upload-icon {
   position: absolute;
   right: 0;
   bottom: 4px;
   cursor: pointer;
 }
-.fileInput{
+.fileInput {
   display: none;
 }
 
+/* ------------EngeeniersAttendanceCard page CSS by Raj-------------- */
+
+.engeenierattendance-modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1006px;
+  height: 683px;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  /* border: 1px solid #707070; */
+  border-radius: 20px;
+}
+
+.preet {
+ width: 1007px;
+ height: 686px;
+ top:-4.7%;
+ left: -3.8%;
+ position: absolute;
+ z-index: 999;
+ border-radius: 20px;
+
+ background-color: lightgreen;
+
+ overflow: hidden;
+}
+
+.preet img {
+  width:100%;
+  height:100%;
+object-fit: cover;
+ 
+ }
 
 
+.engeeniersattendancecard-main {
+  width: 93%;
+  height: 92%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.engeeniersattendancecard-left {
+  /* width: 15%; */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+.engeeniersattendancecard-right {
+  width: 83%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
+.closeIconengeeniersattendancecard {
+  position: absolute;
+  left: 97%;
+  top: 3%;
+  cursor: pointer;
+  font-size: 2rem;
+  color:#202020;
+  z-index: 999999999999999999;
+}
+.engeeniersattendancecard-right-inner {
+  /* background-color: lightgreen; */
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: space-between;
+}
 
+.engeeniersattendancecard-right-inner button {
+  width: 121px;
+  height: 42px;
+  background: #f8ac1dad 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  /* margin-top:16px; */
+}
+.engeeniersattendancecard-left button {
+  width: 121px;
+  height: 42px;
+  background: #f8ac1dad 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+}
 
+.engeeniersattendancecard-box2 {
+  width: 121px;
+  height: 118px;
+  /* background: transparent url('img/Rectangle 1268.png') 0% 0% no-repeat padding-box; */
+  border: 1px solid #c10000;
+  border-radius: 20px;
+  opacity: 1;
+  overflow: hidden;
+}
 
+.engeeniersattendancecard-box2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all ease-in 0.2s;
+}
+.engeeniersattendancecard-box2 img:hover {
+  scale: 1.2;
+}
+
+.engeeniersattendancecard-box {
+  width: 121px;
+  height: 118px;
+  /* background: transparent url('img/Rectangle 1268.png') 0% 0% no-repeat padding-box; */
+  border: 1px solid #389300;
+  border-radius: 20px;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.engeeniersattendancecard-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all ease-in 0.2s;
+}
+.engeeniersattendancecard-box img:hover {
+  scale: 1.2;
+}
+
+.engeeniersattendancecard-right-inner {
+  width: 100%;
+  height: 6.6%;
+}
+.engeeniersattendancecard-right-inner2 {
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  /* height: 91%; */
+  overflow: hidden;
+  /* width: 765px; */
+  height: 566px;
+  border-radius: 10px;
+}
+
+.engeeniersattendancecard-description-section {
+  /* margin-top: 1rem; */
+  display: grid;
+  grid-template-columns: repeat(1, calc(100%));
+  justify-content: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.engeeniersattendancecard-more-descriptive {
+  position: relative;
+  height: 568px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border: 1px solid #c1c1c180;
+  /* margin-top: -6px; */
+}
 
 /*------------------- EditEngineerDeatils page css--------------------- */
 
@@ -3042,9 +3195,7 @@ opacity: 1;
 }
 
 .engineer-modal-container {
- 
   border-radius: 15px;
-  
 }
 .bigg {
   width: 100%;
