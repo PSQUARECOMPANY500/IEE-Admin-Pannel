@@ -205,16 +205,16 @@ const clientForm = new mongoose.Schema({
                 pitImage: {
                     type: String
                 },
-                bottomToTopImages: [
-                    {
-                        type: String
-                    }
-                ],
-                basementFrontImages: [
-                    {
-                        type: String
-                    }
-                ],
+                bottomToTopImages:
+                {
+                    type: String
+                }
+                ,
+                basementFrontImages:
+                {
+                    type: String
+                }
+                ,
 
             }
         },
@@ -273,16 +273,16 @@ const clientForm = new mongoose.Schema({
                 floorFront: {
                     type: String
                 },
-                bottomToTopImages: [
-                    {
-                        type: String
-                    }
-                ],
-                overheadImages: [
-                    {
-                        type: String
-                    }
-                ],
+                bottomToTopImages:
+                {
+                    type: String
+                }
+                ,
+                overheadImages:
+                {
+                    type: String
+                }
+                ,
             }
         },
 

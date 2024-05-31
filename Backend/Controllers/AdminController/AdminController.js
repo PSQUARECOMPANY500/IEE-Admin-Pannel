@@ -657,18 +657,18 @@ module.exports.AssignServiceRequests = async (req, res) => {
     }
 
 
-      await getAllServiceRequest.findOneAndUpdate(
+    await getAllServiceRequest.findOneAndUpdate(
       {
         RequestId,
-      },{
-        RepresentativeName,
-        RepresentativeNumber
-      },
+      }, {
+      RepresentativeName,
+      RepresentativeNumber
+    },
       {
         new: true,
       }
     );
-    
+
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")
@@ -1175,11 +1175,11 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password , Role } = req.body;
-    const Admin = await serviceAdmin.findOne({ AdminId });  
-   /*  if(Admin.Role !== Role){
-      return res.status(401).json({status:"error", message: "permission denied" });
-    }   */
+    const { AdminId, Password, Role } = req.body;
+    const Admin = await serviceAdmin.findOne({ AdminId });
+    /*  if(Admin.Role !== Role){
+       return res.status(401).json({status:"error", message: "permission denied" });
+     }   */
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -2492,7 +2492,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
     const ReportData = await ReportTable.findOne({ serviceId });
-    const Rating=await EnggRating.findOne({ServiceId: serviceId });
+    const Rating = await EnggRating.findOne({ ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2525,7 +2525,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2579,7 +2579,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       PitArea,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages,Rating});
+    res.status(200).json({ finalReportedData, ReportImages, Rating });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2599,52 +2599,52 @@ module.exports.fetchReportForAdmin = async (req, res) => {
  */
 
 //post client form controller
-module.exports.postElevatorForm = async(req,res)=>{
-  try{
-      const {
-      clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-      elevatorDetails,dimensions
-      } = req.body;
+module.exports.postElevatorForm = async (req, res) => {
+  try {
+    const {
+      clientDetails, salesManDetails, quotation, clientMembership, documents, architectDetails,
+      elevatorDetails, dimensions
+    } = req.body;
 
-      const elevatorFormSchema = new ElevatorFormSchema({
-        clientDetails,salesManDetails,quotation,clientMembership,documents,architectDetails,
-        elevatorDetails,dimensions
-      })
+    const elevatorFormSchema = new ElevatorFormSchema({
+      clientDetails, salesManDetails, quotation, clientMembership, documents, architectDetails,
+      elevatorDetails, dimensions
+    })
 
-     await elevatorFormSchema.save();
+    await elevatorFormSchema.save();
 
-res.status(200).json({msg:"data submit successfully" });      
+    res.status(200).json({ msg: "data submit successfully" });
 
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
+      message: err.message
     })
   }
 }
 
 //put request
 
-module.exports.putElevatorForm = async(req,res)=>{
-  try{
-    const {JON} = req.body; 
+module.exports.putElevatorForm = async (req, res) => {
+  try {
+    const { JON } = req.body;
     const newData = req.body;
-    console.log(JON) 
+    console.log(JON)
     console.log(newData)
 
-    const updatedData = await ElevatorFormSchema.findOneAndUpdate({JON:JON}, newData,{ new: true });
-      console.log(updatedData)
-            if (!updatedData) {
-                return res.status(404).json({ error: 'Data not found' });
-            }
-            res.status(200).json(updatedData);
-           
-  }catch(err){
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate({ JON: JON }, newData, { new: true });
+    console.log(updatedData)
+    if (!updatedData) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+    res.status(200).json(updatedData);
+
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message:err.message
+      message: err.message
     })
   }
 }
@@ -2652,10 +2652,10 @@ module.exports.putElevatorForm = async(req,res)=>{
 module.exports.getNotification = async (req, res) => {
   try {
     const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-    const response = await Notification.find({Date:now});
-    console.log("response",response)
-    if(response){
-      return res.status(200).json({ status:"sucess", response:response});
+    const response = await Notification.find({ Date: now });
+    console.log("response", response)
+    if (response) {
+      return res.status(200).json({ status: "sucess", response: response });
     }
   } catch (error) {
     return res.status(500).json({
@@ -2668,4 +2668,91 @@ module.exports.getNotification = async (req, res) => {
 // by aayush for rating admin=================================
 
 
- 
+//-----------------------------------------------------------------------
+// by armaan regarding 3rd step in client submision form 
+
+
+// module.exports.updatElevatorDimensions = async (req, res) => {
+//   try {
+//     const files = req.files;
+//     const { JON } = req.body;
+//     const first = req.body.data[0];
+//     const second = req.body.data[1];
+
+//     const data = await ElevatorFormSchema.findOne({ 'clientFormDetails.jon': JON });
+//     if (!data) {
+//       return res.status(404).json({ error: 'Data not found' });
+//     }
+//     let Data = data;
+//     // Data.dimensions.pitPoint.levelName = first.pitPoint.levelName;
+//     // console.log((first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined);
+//     if (((Data.dimensions.pitPoint.levelName) === undefined) && first.pitPoint) {
+//       console.log(1);
+//       Data.dimensions.pitPoint = first.pitPoint;
+//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
+
+//       Data.dimensions.floors[0] = second.floors[0];
+//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
+//     }
+//     else if (first.pitPoint && (first.pitPoint.levelName === Data.dimensions.pitPoint.levelName)) {
+//       console.log(2);
+//       Data.dimensions.pitPoint = first.pitPoint;
+//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
+
+//       Data.dimensions.floors[0] = second.floors[0];
+//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
+//     }
+//     else if (first.topPoint && (first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined) {
+//       console.log(3);
+//       Data.dimensions.topPoint = first.topPoint;
+//       console.log(Data);
+//       Data.dimensions.topPoint.sitePhotos.floorFront = files[0].originalname;
+//       Data.dimensions.topPoint.sitePhotos.bottomToTopImages = files[1].originalname;
+//       Data.dimensions.topPoint.sitePhotos.overheadImages = files[2].originalname;
+//     }
+//     else if (second.topPoint && (second.topPoint.levelName === Data.dimensions.topPoint.levelName)) {
+//       console.log(4);
+//       Data.topPoint = second.topPoint;
+//       Data.topPoint.sitePhotos.floorFront = files[1].originalname;
+//       Data.topPoint.sitePhotos.bottomToTopImages = files[2].originalname;
+//       Data.topPoint.sitePhotos.overheadImages = files[3].originalname;
+      
+//       if (Data.floors.find(floor => floor.levelName === first.levelName)){
+
+//       }
+//       Data.floors[Data.floors.length() - 1] = second;
+//       Data.floors[Data.floors.length() - 1].sitePhotos = files[0].originalname;
+//     }
+//     // else {
+//     //   Data.floors.find(floor => floor.levelName === first.levelName) = first;
+//     //   Data.floors.find(floor => floor.levelName === first.levelName).sitePhotos = files[0].originalname;
+//     //   Data.floors.find(second => floor.levelName === second.levelName) = second;
+//     //   Data.floors.find(second => floor.levelName === second.levelName).sitePhotos = files[1].originalname;
+//     // }
+
+
+
+//     Data.save();
+
+//     res.status(200).json({ success: true, Data });
+
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).json({
+//       error: "Internal server error",
+//       message: err.message
+//     })
+//   }
+// }
+
+module.exports.updatElevatorDimensions = async (req, res) => {
+  
+}
+
+
+
+

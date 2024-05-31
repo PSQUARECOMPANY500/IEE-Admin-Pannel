@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+const multer = require("multer");
 const express = require("express");
 const router = express.Router();
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
@@ -87,7 +90,7 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);  
+router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
@@ -124,12 +127,12 @@ router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 
 
 // --by amit 29/03/2024 ------------
-router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
+router.get("/assignedEnggDetails/:ServiceEnggId", adminContoller.assignedEnggDetails)
 
 
 
 // --by Preet 02/04/2024 ------------
-router.get("/getSparePartRequest/:EnggId",adminContoller.getSparePartRequestByEngg); 
+router.get("/getSparePartRequest/:EnggId", adminContoller.getSparePartRequestByEngg);
 //--- by Preet 03/04/2024
 router.post("/ApproveDenySparepart", adminContoller.ApproveDenySparePartRequest);
 router.get("/fetchAllotedSparePart/:EnggId", adminContoller.fetchAllotedSparePart);
@@ -137,7 +140,7 @@ router.get("/fetchDeniedSparePart/:EnggId", adminContoller.fetchDeniedSparePart)
 
 
 //--- by Preet 10/04/2024
-router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
+router.get("/getReportForAdmin/:serviceId", adminContoller.fetchReportForAdmin);
 
 //---by aayush malviya 18/04/24
 
@@ -149,15 +152,50 @@ router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
 
 
 // retain routes again 03/04/2024   ------------
-router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
-router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
-router.post("/updatePassword",adminContoller.updatePassword);
+router.post("/SendOtpEmail", adminContoller.sendPasswordResetOTPOnEmail);
+router.post("/veriyfyOTP", adminContoller.ValidateOTPForgetPassword);
+router.post("/updatePassword", adminContoller.updatePassword);
 
-router.get("/getNotification",adminContoller.getNotification)/**
+router.get("/getNotification", adminContoller.getNotification)/**
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
 
-router.post('/clientForm',adminContoller.postElevatorForm);
-router.put('/updateClientForm',adminContoller.putElevatorForm);
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/uplodes/");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+//   },
+// });
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/ElevatorDimensions/');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    const fileName = file.originalname.split(".")[0];
+    // console.log(file);
+    const uploadPath = path.join('./public/ElevatorDimensions/', `${fileName}.${parts}`);
+
+    // Check if file exists and delete it if necessary
+    if (fs.existsSync(uploadPath)) {
+      fs.unlinkSync(uploadPath);
+    }
+
+    cb(null, `${fileName}.${parts}`);
+  }
+});
+const upload = multer({ storage: storage });
+
+router.put('/putElevatorDimensions', upload.any(), adminContoller.updatElevatorDimensions);
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
+
+
+router.post('/clientForm', adminContoller.postElevatorForm);
+router.put('/updateClientForm', adminContoller.putElevatorForm);
 
 module.exports = router;
