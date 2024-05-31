@@ -50,10 +50,10 @@ const Schema = mongoose.Schema;
 
 const EnggBasicDetail = new Schema(
   {
-    EnggId: {             // TODO: just pass
+    EnggId: {            
       type: String,
     },
-    AlternativeNumber: {  //just to do -->
+    AlternativeNumber: {  
       type: String,
     },
     EnggPassword: {
@@ -174,6 +174,10 @@ const EnggBasicDetail = new Schema(
     ManagerNo: {
       type: String,
     },
+    AvailableCash: {
+      type: Number,
+      default:0
+    }
   },
   {
     timestamps: true,

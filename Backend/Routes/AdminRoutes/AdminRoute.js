@@ -89,7 +89,10 @@ router.get(
   serviceEnggContoller.getEnggLocationDetail
 );
 
-router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate", adminContoller.fetchEnggAttendance);  
+router.get(
+  "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
+  adminContoller.fetchEnggAttendance
+);
 
 router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
@@ -107,94 +110,114 @@ router.post("/createCall", adminContoller.createClientCallDetails);
 router.post("/createSpearParts", adminContoller.createSpearParts);
 router.get("/getEngineerNames", adminContoller.getEngineerNames);
 router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
-router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get(
+  "/getEngineerRequestedLeave",
+  adminContoller.getEngineerRequestedLeave
+);
 router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
-
 
 router.post("/loginAdmin", adminContoller.loginServiceAdmin);
 
 //api for assignedEnggDetails
 // router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
 
-
-
 // --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
 router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
-router.get("/getEngineerRequestedLeave", adminContoller.getEngineerRequestedLeave);
+router.get(
+  "/getEngineerRequestedLeave",
+  adminContoller.getEngineerRequestedLeave
+);
 router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 // --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
 
-
 // --by amit 29/03/2024 ------------
-router.get("/assignedEnggDetails/:ServiceEnggId",adminContoller.assignedEnggDetails)
-
-
+router.get(
+  "/assignedEnggDetails/:ServiceEnggId",
+  adminContoller.assignedEnggDetails
+);
 
 // --by Preet 02/04/2024 ------------
-router.get("/getSparePartRequest/:EnggId",adminContoller.getSparePartRequestByEngg); 
+router.get(
+  "/getSparePartRequest/:EnggId",
+  adminContoller.getSparePartRequestByEngg
+);
 //--- by Preet 03/04/2024
-router.post("/ApproveDenySparepart", adminContoller.ApproveDenySparePartRequest);
-router.get("/fetchAllotedSparePart/:EnggId", adminContoller.fetchAllotedSparePart);
-router.get("/fetchDeniedSparePart/:EnggId", adminContoller.fetchDeniedSparePart);
-
+router.post(
+  "/ApproveDenySparepart",
+  adminContoller.ApproveDenySparePartRequest
+);
+router.get(
+  "/fetchAllotedSparePart/:EnggId",
+  adminContoller.fetchAllotedSparePart
+);
+router.get(
+  "/fetchDeniedSparePart/:EnggId",
+  adminContoller.fetchDeniedSparePart
+);
 
 //--- by Preet 10/04/2024
-router.get("/getReportForAdmin/:serviceId",adminContoller.fetchReportForAdmin);
+router.get("/getReportForAdmin/:serviceId", adminContoller.fetchReportForAdmin);
 
 //---by aayush malviya 18/04/24
 
-
-
-
-
-
-
-
 // retain routes again 03/04/2024   ------------
-router.post("/SendOtpEmail",adminContoller.sendPasswordResetOTPOnEmail);
-router.post("/veriyfyOTP",adminContoller.ValidateOTPForgetPassword);
-router.post("/updatePassword",adminContoller.updatePassword);
+router.post("/SendOtpEmail", adminContoller.sendPasswordResetOTPOnEmail);
+router.post("/veriyfyOTP", adminContoller.ValidateOTPForgetPassword);
+router.post("/updatePassword", adminContoller.updatePassword);
 
-router.get("/getNotification",adminContoller.getNotification)/**
+router.get("/getNotification", adminContoller.getNotification);
+/**
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
 
-router.post('/clientForm',adminContoller.postElevatorForm);
-router.put('/updateClientForm',adminContoller.putElevatorForm);
+router.post("/clientForm", adminContoller.postElevatorForm);
+router.put("/updateClientForm", adminContoller.putElevatorForm);
 
 // --------------------------Create by Raj-----------------23/05/2024 ----------> 
 
-router.get('/getClientModalInformation/:jon', adminContoller.getClientModalInformation);
+router.get(
+  "/getClientModalInformation/:jon",
+  adminContoller.getClientModalInformation
+);
 
-router.get('/getEnggPersonalData/:EnggId', adminContoller.getEnggPersonalData)
+router.get("/getEnggPersonalData/:EnggId", adminContoller.getEnggPersonalData);
 
 //by preet ------------------ 27/05/2024  ------------------------------------  edit Engg formData --------------------------------
 
-router.put('/editEnggDetails/:EnggId',uploadEdit.fields([
-  {
-    name: "profilePhoto",
-    maxCount: 1,
-  },
-  {
-    name: "addharPhoto",
-    maxCount: 1,
-  },
-  {
-    name: "pancardPhoto",
-    maxCount: 1,
-  },
-  {
-    name: "drivingLicensePhoto",
-    maxCount: 1,
-  },
-  {
-    name: "additionalCoursePhoto",
-    maxCount: 1,
-  },
-  {
-    name: "qualificationPhoto",
-    maxCount: 1,
-  },
-]),adminContoller.editEnggDetailsForm);      
+router.put(
+  "/editEnggDetails/:EnggId",
+  uploadEdit.fields([
+    {
+      name: "profilePhoto",
+      maxCount: 1,
+    },
+    {
+      name: "addharPhoto",
+      maxCount: 1,
+    },
+    {
+      name: "pancardPhoto",
+      maxCount: 1,
+    },
+    {
+      name: "drivingLicensePhoto",
+      maxCount: 1,
+    },
+    {
+      name: "additionalCoursePhoto",
+      maxCount: 1,
+    },
+    {
+      name: "qualificationPhoto",
+      maxCount: 1,
+    },
+  ]),
+  adminContoller.editEnggDetailsForm
+);
 
 module.exports = router;
+
+//by preet ------------------ 30/05/2024  ------------------------------------  Add Engg cash Data --------------------------------
+
+// router.put("/addEnggCash", adminContoller.addEnggCashByAdmin);
+router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);

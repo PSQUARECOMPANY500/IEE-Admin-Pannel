@@ -2668,7 +2668,7 @@ module.exports.getNotification = async (req, res) => {
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
     const response = await Notification.find({ Date: now });
-    console.log("response", response);
+    // console.log("response", response);
     if (response) {
       return res.status(200).json({ status: "success", response: response });
     }
@@ -2816,9 +2816,62 @@ module.exports.editEnggDetailsForm = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      error: "Internal server error while fetching Notification",
+      error: "Internal server error while fetching editEnggDetailsForm",
     });
   }
 };
 
 //-------------------------------------------------------------------------------------------------------------
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------
+//api to add Engg Cash in Engg Table By admin
+// module.exports.addEnggCashByAdmin = async (req,res) => {
+// try {
+//   const {EnggId, AvailableCash} = req.body;
+  
+//  await ServiceEnggBasicSchema.findOneAndUpdate(
+//     {
+//       EnggId
+//     },
+//     { $inc: {AvailableCash:AvailableCash} }
+//   );
+
+//   res.status(200).json({message: 'Add Cash Successfully'})
+// } catch (error) {
+//   console.log(error);
+//   return res.status(500).json({
+//     error: "Internal server error while add cash Details",
+//   });
+// }
+// }
+//-------------------------------------------------------------------------------------------------------------
+
+//api to DepositeEnggCash To admin  //todo
+
+module.exports.DepositeEnggCash = async (req,res) => {
+  try {
+    const {EnggId, AvailableCash} = req.body;
+
+    await ServiceEnggBasicSchema.findOneAndUpdate(
+          {
+            EnggId
+          },
+          { $inc: {AvailableCash:-AvailableCash} }
+        );
+      
+        res.status(200).json({message: 'Deposite Cash Successfully'})
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+    error: "Internal server error while add Deposite Details",
+  });
+  }
+}
+
+
+
+

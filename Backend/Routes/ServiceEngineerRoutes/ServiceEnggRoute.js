@@ -158,7 +158,16 @@ const checkOutAttendance = async (req, res, next) => {
 };
 
 const checkInorOutAttendance = async (req, res, next) => {
-  const { ServiceEnggId } = req.body;
+
+  let ServiceEnggId;
+
+  if (!req.body || Object.keys(req.body).length === 0) {
+      ({ServiceEnggId}  = req.query);
+  } else {
+    ({ServiceEnggId} = req.body);
+  }
+
+
   if (ServiceEnggId) {
     const date = new Date().toLocaleDateString("en-GB");
     const checkIn = await EnggAttendanceServiceRecord.findOne({
@@ -174,7 +183,7 @@ const checkInorOutAttendance = async (req, res, next) => {
     if (checkIn?.Check_In?.time && checkIn?.Check_Out?.time) {
       return res
         .status(403)
-        .json({ message: "Break is not applicable after CheckedOut" });
+        .json({ status:"checkedout",message: "Break is not applicable after CheckedOut" });
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
@@ -246,11 +255,11 @@ router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount);
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves);
 // --- by preet 15/03/2024 ---
 router.get(
-  "/getAssignCalbackDetailForEnggApp/:callbackId",
+  "/getAssignCalbackDetailForEnggApp/:callbackId",checkInorOutAttendance,
   serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId
 );
 router.get(
-  "/getAssignServiceRequestDetailForEnggApp/:RequestId",
+  "/getAssignServiceRequestDetailForEnggApp/:RequestId",checkInorOutAttendance,
   serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId
 );
 
