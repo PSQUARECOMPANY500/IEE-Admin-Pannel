@@ -46,12 +46,12 @@ const EngeeniersSubCard = (props) => {
 
   }
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto) => {
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
+    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto, AvailableCash);
   };
 
   return (
@@ -59,7 +59,7 @@ const EngeeniersSubCard = (props) => {
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {engData.engdetails && engData.engdetails.combinedData.map((e, index) => (
          
-          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto , e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
               <img src={`${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`} />
@@ -84,7 +84,7 @@ const EngeeniersSubCard = (props) => {
               </h5>
               <span className="HoriZontalLine"></span>
               <h5>
-                Cash:<span>{e.Cash}</span>
+                Cash:<span>{e.AvailableCash}</span>
               </h5>
             </div>
             <div className="EngCardMessage"></div>

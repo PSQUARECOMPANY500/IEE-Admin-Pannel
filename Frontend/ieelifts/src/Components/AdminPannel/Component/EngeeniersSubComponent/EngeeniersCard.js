@@ -26,6 +26,8 @@ const EngeeniersCard = () => {
   const [engID, setEngID] = useState(null);
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
+  const [currentengCash, setCurrentEngCash] = useState(null);
+  
 
 
   
@@ -44,10 +46,11 @@ const EngeeniersCard = () => {
     };
   }, []);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg) => {
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash) => {
     setEngID(engId);
     setCurrentEngName(engName);
     setCurrentEngImg(engImg);
+    setCurrentEngCash(engCash)
   };
   // Render the selected component
   const renderSelectedComponent = () => {
@@ -209,7 +212,7 @@ const EngeeniersCard = () => {
                 Spare Parts: <span>15</span>
               </h1>
               <h1 className="ooo">
-                Cash In Hand: <span>150,0000</span>
+                Cash In Hand: <span>{currentengCash}</span>
               </h1>
               <FaRegFileAlt
                 className="Icon_Color"

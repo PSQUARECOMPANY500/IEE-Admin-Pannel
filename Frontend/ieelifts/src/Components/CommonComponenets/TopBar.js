@@ -144,19 +144,19 @@ const TopBar = (props) => {
 
   
 
-  const handleClickOutsideCollectCashModal = (event) => {
-    if (collectCashRef.current && !collectCashRef.current.contains(event.target)) {
-      handleCollectCash();
-    }
-  };
+  // const handleClickOutsideCollectCashModal = (event) => {
+  //   if (collectCashRef.current && !collectCashRef.current.contains(event.target)) {
+  //     handleCollectCash();
+  //   }
+  // };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutsideCollectCashModal);
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutsideCollectCashModal);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideCollectCashModal);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutsideCollectCashModal);
+  //   };
+  // }, []);
 
 
   // const handleCloseForm = () => {
@@ -183,30 +183,23 @@ const TopBar = (props) => {
   };
 
   // this for collect cash
-  const useClickOutsidecollectcash = (ref, handler) => {
-    useEffect(() => {
-      const handleClickOutsidecollectcash = (event) => {
-        if (ref.current && !ref.current.contains(event.target)) {
-          handler();
-        }
-      };
+  // const useClickOutsidecollectcash = (ref, handler) => {
+  //   useEffect(() => {
+  //     const handleClickOutsidecollectcash = (event) => {
+  //       if (ref.current && !ref.current.contains(event.target)) {
+  //         handler();
+  //       }
+  //     };
 
-      document.addEventListener("mousedown", handleClickOutsidecollectcash);
-      return () => {
-        document.removeEventListener(
-          "mousedown",
-          handleClickOutsidecollectcash
-        );
-      };
-    }, [ref, handler]);
-  };
-
-
-
-
-
-
-
+  //     document.addEventListener("mousedown", handleClickOutsidecollectcash);
+  //     return () => {
+  //       document.removeEventListener(
+  //         "mousedown",
+  //         handleClickOutsidecollectcash
+  //       );
+  //     };
+  //   }, [ref, handler]);
+  // };
 
 
   const handleNotfication = () => {
@@ -224,9 +217,9 @@ const TopBar = (props) => {
 
   
   // collect cash
-  const handleClickOutsidecollectcash = useCallback(() => {
-    setCollectCash(false);
-  }, []);
+  // const handleClickOutsidecollectcash = useCallback(() => {
+  //   setCollectCash(false);
+  // }, []);
 
   useClickOutsidenotification(
     notificationClickRef,
@@ -235,11 +228,11 @@ const TopBar = (props) => {
   );
 
   // collect cash
-  useClickOutsidecollectcash(
-    collectCashClickRef,
+  // useClickOutsidecollectcash(
+  //   collectCashClickRef,
    
-    handleClickOutsidecollectcash
-  );
+  //   handleClickOutsidecollectcash
+  // );
 
   return (
     <div className="top-bar">
