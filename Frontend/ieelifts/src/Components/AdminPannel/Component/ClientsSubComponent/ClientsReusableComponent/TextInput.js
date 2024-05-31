@@ -20,7 +20,6 @@ const TextInput = ({
       handleCalendarOpen();
     }
   };
-
   return (
     <div className="input-container" style={{ width: `${w}`,}} >
       <input
@@ -37,7 +36,6 @@ const TextInput = ({
         onBlur={onBlur}
         onClick={handleCalendarOpen}
       />
-    
       <label htmlFor={id} className={'input-label'}
         style={{
           top:  click ? "-20px":'0px',

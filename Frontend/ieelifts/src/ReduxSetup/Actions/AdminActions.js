@@ -88,6 +88,7 @@ export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
 
 export const REGISTER_CLIENT_DATA = "REGISTER_CLIENT_DATA";
 export const UPDATE_CLIENT_DATA = "UPDATE_CLIENT_DATA";
+export const UPDATE_CLIENT_FORM_USING_PAGINATION ="UPDATE_CLIENT_FORM_USING_PAGINATION";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -1172,13 +1173,10 @@ export const RegisterClientDataAction = (formData) => {
           },
         }
       );
-
-      console.log("====================================");
       console.log(response);
-      console.log("====================================");
 
       dispatch({
-        type: REGISTER_CLIENT_DATA,
+type: REGISTER_CLIENT_DATA,
         payload: response.data,
       });
     } catch (error) {
@@ -1205,3 +1203,21 @@ export const updateClientData = (formData) => {
     }
   };
 };
+
+// third step
+export const updateClientFormUsingPagination = (formData,jon)=>{
+  console.log("formData===>",formData);
+  console.log("jon===>",jon);
+  return async (dispatch)=>{
+    try{                 
+      const response = await axios.put(`${config.apiUrl}/admin/putElevatorDimensions`,formData);
+      dispatch({
+      type:UPDATE_CLIENT_FORM_USING_PAGINATION,
+      payload:response.data,
+      })
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+}

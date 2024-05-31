@@ -16,7 +16,7 @@ import {
   updateClientData,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import { RegisterClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { RegisterClientDataAction ,updateClientFormUsingPagination} from "../../../../ReduxSetup/Actions/AdminActions";
 
 const ClientForm = () => {
   //state
@@ -38,7 +38,7 @@ const ClientForm = () => {
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
-
+  const {jon}= allFormData.clientFormDetails;
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -46,7 +46,7 @@ const ClientForm = () => {
     };
   }, []);
   useEffect(()=>{
-    // console.log("dimentionsData--->",dimentionsData);
+    console.log("dimentionsData--->",dimentionsData);
   },[dimentionsData])
 
   //handler
@@ -116,17 +116,6 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
-
-    // console.log("clientFormDetails-0-------: ", clientFormDetails);
-    // const clientMembershipDocument = {
-    //   signedQuotation: allFormData.clientMembershipDocument.signedQuotation,
-    //   paymentForm: allFormData.clientMembershipDocument.paymentForm,
-    //   salesOrder: allFormData.clientMembershipDocument.salesOrder,
-    //   chequeForm: allFormData.clientMembershipDocument.chequeForm
-    // };
-
-    // const {clientFormDetails,clientArchitect,clientSalesManDetails} = allFormData
-
     dispatch(RegisterClientDataAction(formData));
   };
 
@@ -163,7 +152,7 @@ const ClientForm = () => {
       type,
     } = clientElevatorDetails;
     const elevatorDetails = {
-      JON: 2024031,
+      JON: jon,
       capacity: capacity,
       capacityUnit:capacityUnit,
       constructionMaterial: constructionMaterial,
@@ -226,8 +215,15 @@ const ClientForm = () => {
     dispatch(updateClientData((elevatorDetails)));
     console.log(elevatorDetails);
   };
+
+ //handle data in third step using pagination
+//----------------------------------------------------------------
+   const handleThirdStep = ()=>{
+    dispatch(updateClientFormUsingPagination(dimentionsData,jon))
+   }
+//----------------------------------------------------------------
   function validateClientForm(allFormData){
-    const { clientFormDetails, clientArchitect, clientSalesManDetails,clientMembershipDocument } =
+    const { clientFormDetails,clientSalesManDetails,clientMembershipDocument } =
     allFormData;
     const {selectedMembership,signedQuotation,paymentForm,salesOrder}=clientMembershipDocument;   
     const {jon,userName,phoneNumber,alternativeNumber,email,reference,referenceName,sourceOfLead}= clientFormDetails;
@@ -281,7 +277,7 @@ const ClientForm = () => {
                       value={"Delete"}
                       className={"client-form-button-red"}
                     />
-                    <div className={`${validateNextBtn?"":"disabled"}`}>
+                    <div className={`${!validateNextBtn?"":"disabled"}`}>
                     <Clientbutton
                       value={"Next"}
                       className={"client-form-button-yellow"}
@@ -319,6 +315,7 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Submit"}
                       className={"client-form-button-submit"}
+                      handleAction ={handleThirdStep}
                     />
                   </div>
                 </div>

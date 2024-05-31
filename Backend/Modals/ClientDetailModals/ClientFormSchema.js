@@ -228,7 +228,6 @@ const clientForm = new mongoose.Schema({
         },
         floors: [
             {
-
                 levelName: {
                     type: String
                 },

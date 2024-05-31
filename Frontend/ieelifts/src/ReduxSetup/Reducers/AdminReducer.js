@@ -48,6 +48,7 @@ import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
 
 import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
 import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
+import {UPDATE_CLIENT_FORM_USING_PAGINATION} from "../Actions/AdminActions.js";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -798,7 +799,6 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
       return state;
   }
 };
-
 //-----------------------------------------------------------------------------------------------------------------
 //Reducer to handle registerclient data form
 const registerClientFormData = {
@@ -835,3 +835,18 @@ export const UpdateClientDataReducer = (state = updateClientData, action) => {
       return state;
   }
 };
+const updateClientFormData = {
+  updateClientFormData:null,
+}
+export const UpdateClientFormDataReducer= (state=updateClientFormData,action)=>{
+  switch(action.type){
+    case UPDATE_CLIENT_FORM_USING_PAGINATION:
+      return{
+        ...state,
+        updateClientFormData:action.payload
+      };
+      default:
+        return state;   
+  }
+}
+

@@ -5,6 +5,9 @@ import TextInput from "./ClientsReusableComponent/TextInput";
 import DimentionPitFloor from "./DimentionsPitFloor";
 import DimentionFloorTop from "./DimentionFloorTop";
 import { DimentionMidFloor } from "./DimentionMidFloor";
+
+// import { updateClientFormUsingPagination } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { useDispatch } from "react-redux";
 const ClientFormDimentions = ({
   valforDimention,
   Flevel,
@@ -21,6 +24,7 @@ const ClientFormDimentions = ({
   const [levelData, setLevelData] = useState([]);
   const [click, setClick] = useState({});
   const [check, setCheck] = useState(validate);
+  // const dispatch = useDispatch();
   const [basementWithPit, setBasementWithPit] = useState({
     shaftWidth: "",
     shaftDepth: "",
@@ -73,7 +77,7 @@ const ClientFormDimentions = ({
       levelData: levelData,
     });
   }, [basementWithPit, floorFrontData, levelData]);
-  // console.log("dimentionsData", dimentionsData);
+  console.log("dimentionsData", dimentionsData);
   //handler
   console.log("leveldata===>", levelData);
   const handleFileChangeInPit = (event, fieldName) => {
@@ -184,8 +188,14 @@ const ClientFormDimentions = ({
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    
   };
   //---------------------------------------------------------------------------------
+  
+  //----------------------------handle third step ----------------------------------
+  
+
+  //--------------------------------------------------------------------------------
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
@@ -254,6 +264,7 @@ const ClientFormDimentions = ({
               <span
                 className="pagination-btn left"
                 onClick={() => handlePageChange(currentPage - 1)}
+                
               >
                 <img src="leftLightBtn.png" alt="leftBtn" />
               </span>
