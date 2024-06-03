@@ -2691,7 +2691,7 @@ module.exports.getClientModalInformation = async (req, res) => {
       "clientFormDetails.jon": jon,
     });
     if (!response) {
-      return res.status(404).json({ message: "This JON is not found" });
+      return res.status(404).json({success:false, message: "This JON is not found" });
     }
 
     res.status(200).json({response})
