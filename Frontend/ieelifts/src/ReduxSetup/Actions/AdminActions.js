@@ -1207,17 +1207,50 @@ export const ReportCrouserHandler = (Index, IsOpen) => {
   };
 };
 
-// -------------Created by Raj-----------------
-// Action to handle fetch Engg personal dets by Id
+// -------------Created by Raj---------------------------------------------------------------
+//--------------- Action to handle fetch Engg personal dets by Id---------------------------------------------
 
 export const fetchEnggPersonalData = async (EnggId) => {
   try {
     const response = await axios.get(
       `${config.apiUrl}/admin/getEnggPersonalData/${EnggId}`
     );
-    return response.data
-    
+    return response.data;
   } catch (error) {
     console.log("Error while fetching Eng_Personal_details", error);
+  }
+};
+
+// ---------------Edit personal data --------------------------------------------------
+
+export const editEnggPersonalData = async (EnggId, formData) => {
+  try {
+    const response = await axios.put(
+      `${config.apiUrl}/admin/editEnggDetails/${EnggId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("sunday", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Edit_Eng_Personal_details", error);
+  }
+};
+
+// -----------Deposite Enginner cash to admin collect cash------------------------------------------------
+
+export const depositeEnggCash = async (EnggId, AvailableCash) => {
+  try {
+    const response = await axios.put(`${config.apiUrl}/admin/depositeEnggCash`, {
+      EnggId,
+      AvailableCash
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Deposit Engineer Cash", error);
   }
 };

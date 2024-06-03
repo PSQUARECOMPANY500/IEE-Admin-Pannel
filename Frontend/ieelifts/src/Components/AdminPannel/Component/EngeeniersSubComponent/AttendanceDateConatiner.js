@@ -1,10 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEngineerAttendance } from '../../../../ReduxSetup/Actions/AdminActions';
+import EngeeniersAttendanceCard from './EngeeniersAttendanceCard';
 
 const AttendanceDateConatiner = ({ date, engID }) => {
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
+  const [openCard, setOpenCard] = useState(false);
+
+
+  const handleCloseCard = () => {
+    setOpenCard(false)
+  };
+
+  const formRef = useRef();
+  const handleClickOutsideModal = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      handleCloseCard();
+    }
+  };
+
+
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
 
   useEffect(() => {
     let selectedDate;
@@ -60,7 +84,10 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {
       renderedDates.push(
-        <div className="DatesCard" style={{ cursor: "pointer" }} key={i}>
+
+        <>
+        <div className="DatesCard" style={{ cursor: "pointer" }}
+         onClick={() => setOpenCard(true)} key={i}>
           <div className="DateCardData">
             <h5>{dates && dates[i] ? dates[i].split("/")[0] : "--"}</h5>
             <h5>{dates && dates[i] ? getDayOfWeek(dates[i]) : "--"}</h5>
@@ -80,6 +107,16 @@ const AttendanceDateConatiner = ({ date, engID }) => {
             <h5>Total Hours</h5>
           </div>
         </div>
+
+        {openCard && (
+          <div className='client-modal-wrapper'>
+            <div ref={formRef} className='engeenierattendance-modal-container'>
+               <EngeeniersAttendanceCard onClose={handleCloseCard}/>
+            </div>
+          </div>
+        )}
+
+        </>
       );
     }
     return renderedDates;

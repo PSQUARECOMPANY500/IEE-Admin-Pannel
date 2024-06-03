@@ -7,9 +7,9 @@ import { getBankDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import { SlLink } from "react-icons/sl";
 import AddEnggAttachment from "../DashboardSubComponent/DropdownCollection/AddEnggAttachment";
 import CheckBox from "../DashboardSubComponent/CheckBox";
-import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
-import toast, { Toaster } from "react-hot-toast";
+import { editEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
+import toast from "react-hot-toast";
 import config from "../../../../config";
 
 const AddEngineerForm = ({ engID, onClose }) => {
@@ -33,8 +33,6 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [engDrivingData, setEngDrivingData] = useState("");
   const [engQualificationPhoto, setQualificationPhoto] = useState("");
   const [engAdditionalPhoto, setEngAdditionalPhoto] = useState("");
-  // console.log("4rrrrr4", engAllData);
-  // console.log("555555555555", engAllData?.EnggName);
 
   const [profilePhoto, setProfilePhoto] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -71,6 +69,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
   const [addharPhoto, SetAddharPhoto] = useState("");
+  console.log("dsdsd", addharPhoto);
+
   const [isAddharCardNumberEmpty, setIsAddharCardNumberEmpty] = useState(false);
   const [isPancardsEmpty, setIsPancardsEmpty] = useState(false);
   const [isDrivingLisienceEmpty, setIsDrivingLisienceEmpty] = useState(false);
@@ -84,6 +84,16 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [jobTitleShow, SetJobTitleShow] = useState(false);
   const [managerNameShow, SetManagerNameShow] = useState(false);
   const [managerNumberShow, SetManagerNumberShow] = useState(false);
+  const [editchange, setEditChange] = useState(false);
+
+  const handleEditSection = () => {
+    
+    setEditChange(!editchange)
+
+  }
+
+ 
+
   // work experience input border changes states ends
 
   useEffect(() => {
@@ -130,8 +140,10 @@ const AddEngineerForm = ({ engID, onClose }) => {
         SetAddharPhoto(getEnggBasicData.enggDetails.AddharPhoto);
         setDistrict(getEnggBasicData.enggDetails.District);
         setQualification(getEnggBasicData.enggDetails.Qualification);
-        SetQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto)
-        SetAdditionalCoursePhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto)
+        SetQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto);
+        SetAdditionalCoursePhoto(
+          getEnggBasicData.enggDetails.AdditionalCoursePhoto
+        );
         setIsAdditionalCourseEmpty(
           getEnggBasicData.enggDetails.AdditionalCourse
         );
@@ -143,10 +155,12 @@ const AddEngineerForm = ({ engID, onClose }) => {
         setEngPancardData(getEnggBasicData.enggDetails.PancardPhoto);
         setEngDrivingData(getEnggBasicData.enggDetails.DrivingLicensePhoto);
         setQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto);
-        setEngAdditionalPhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto);
+        setEngAdditionalPhoto(
+          getEnggBasicData.enggDetails.AdditionalCoursePhoto
+        );
 
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
-
+        setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
       }
     };
 
@@ -199,6 +213,16 @@ const AddEngineerForm = ({ engID, onClose }) => {
     },
   ];
 
+  const getSortedData = (qualification) => {
+    return QualificationData
+      .filter((item) => qualification === item.value)
+      .map((item) => item.label);
+  };
+  
+  const sortedData = getSortedData(qualification);
+  // console.log(sortedData[0]);
+
+
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
     setPinCode(newEvent);
@@ -232,13 +256,23 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
   const handleCheckboxChange = (e) => {
     setShowWorkExperience(e.target.checked);
+
   };
+
+  useEffect(() => {
+    if (jobDuration || companyName || jobTitle || managerName || managerNumber) {
+      setShowWorkExperience(true);
+    } else {
+      setShowWorkExperience(false);
+    }
+  }, [jobDuration, companyName, jobTitle, managerName, managerNumber]);
 
   const onStateChange = (value) => {
     setQualification(value.value);
   };
 
   const handleUploadClick = (documentType) => {
+    
     switch (documentType) {
       case "aadhar":
         fileInputRef.current.dataset.documentType = documentType;
@@ -268,6 +302,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
     }
   };
 
+
+
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
@@ -287,20 +323,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
       // !drivingLisience ||
       // !pancards ||
       !addharPhoto ||
-      // !pancardPhoto ||
-      // !drivingLicensePhoto ||
-      // !additionalCourse ||
-      // !qualificationPhoto ||
-      // !additionalCoursePhoto ||
-      // !qualification ||
-      // !accountHolderName ||
-      // !branchName ||
-      // !accountNumber ||
-      // !IFSCcode ||
-      // !jobDuration ||
-      // !companyName ||
-      // !jobTitle ||
-      // !managerName
+     
       !EngggId ||
       !alternativeNumber
     ) {
@@ -381,11 +404,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
       { value: IFSCcode, id: "IFSCcodeInput" },
       { value: EngggId, id: "EnggIdInput" },
       { value: alternativeNumber, id: "AlternativeMobileNumber" },
-      // { value: jobDuration, id: "jobDurationInput" },
-      // { value: companyName, id: "companyNameInput" },
-      // { value: jobTitle, id: "jobTitleInput" },
-      // { value: managerName, id: "managerNameInput" },
-      // { value: managerNumber, id: "managerNumberInput" },
+      
     ];
 
     const checkRequiredFields = () => {
@@ -407,7 +426,6 @@ const AddEngineerForm = ({ engID, onClose }) => {
     };
 
     checkRequiredFields();
-
     const formData = new FormData();
     formData.append("profilePhoto", profilePhoto);
     formData.append("firstName", firstName);
@@ -442,43 +460,14 @@ const AddEngineerForm = ({ engID, onClose }) => {
     formData.append("EnggId", EngggId);
     formData.append("AlternativeNumber", alternativeNumber);
 
-    const response = await RegistrationEnggDetails(formData);
-    console.log("response", response);
+    const editEnggPersonal = await editEnggPersonalData(engID, formData);
+    console.log("Raj", editEnggPersonal)
 
-    if (response?.status === 201) {
-      setProfilePhoto("");
-      setFirstName("");
-      setLastName("");
-      setMobileNumber("");
-      setDateOfBirth("");
-      setEmail("");
-      setAddress("");
-      setCity("");
-      setAddharCardNumber("");
-      setDrivingLisience("");
-      setPancard("");
-      setQualification("");
-      setAdditionalCourse("");
-      setAccountHolderName("");
-      setBranchName("");
-      setAccountNumber("");
-      setJobDuration("");
-      setCompanyName("");
-      setJobTitle("");
-      setManagerName("");
-      setManagerNumber("");
-      setPinCode("");
-      setDistrict("");
-      setState("");
-      setIFSCcode("");
-      setfetchIFSCCode("");
-      SetAdditionalCoursePhoto("");
-      SetQualificationPhoto("");
-      SetPancardPhoto("");
-      SetDrivingLicensePhoto("");
-      SetAddharPhoto("");
-      toast.success("engineer register successfully");
+    if(editEnggPersonal?.status === true) {
+      toast.success("engineer edited successfully");
+
     }
+
   };
   return (
     <div className="" onClick={closeModal}>
@@ -500,9 +489,10 @@ const AddEngineerForm = ({ engID, onClose }) => {
                 <div
                   className="imageUploadDiv"
                   onClick={() => handleUploadClick("profilePhoto")}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer",  pointerEvents: editchange ? "visible" : "none" }}
                 >
                   <img
+                
                     style={{
                       width: "100%",
                       height: "100%",
@@ -512,18 +502,14 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       alignItems: "center",
                       objectFit: "contain",
                       border: "none",
+                     
+                      
                     }}
                     src={
                       profilePhoto
                         ? `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                         : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                     }
-
-                    // src={
-                    //   profilePhoto
-                    //     ? profilePhoto // Use profilePhoto directly if it's set
-                    //     : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-                    // }
                   ></img>
                   <input
                     id="profilePhoto"
@@ -547,6 +533,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                 >
                   <div className="PersonalDetailInput">
                     <input
+                     disabled={!editchange}
                       id="firstNameInput"
                       type="text"
                       placeholder="First Name"
@@ -557,6 +544,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       onChange={(e) => setFirstName(e.target.value)}
                     />
                     <input
+                    disabled={!editchange}
                       id="lastNameInput"
                       type="text"
                       placeholder="Last Name"
@@ -573,6 +561,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   </div>
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="mobileNumberInput"
                       type="text"
                       placeholder="Mobile no"
@@ -589,6 +578,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     />
 
                     <input
+                    disabled={!editchange}
                       id="dateOfBirthInput"
                       type="text"
                       placeholder="Date of Birth"
@@ -608,6 +598,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   {/*------------------------ engg id and alternative number section starts  -------------------------*/}
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="EnggIdInput"
                       type="text"
                       placeholder="Engg Id"
@@ -624,6 +615,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     />
 
                     <input
+                    disabled={!editchange}
                       id="AlternativeMobileNumber"
                       type="text"
                       placeholder="Alternative Number"
@@ -643,6 +635,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
                   <div className="PersonalDetailInputEmail">
                     <input
+                    disabled={!editchange}
                       id="emailInput"
                       type="text"
                       placeholder="Email"
@@ -671,6 +664,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
               <div className="ExtraCiricularSectionInputFields">
                 <div className="EnggAddressInput">
                   <input
+                  disabled={!editchange}
                     id="addressInput"
                     type="text"
                     placeholder="Address"
@@ -689,6 +683,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="pinCodeInput"
                       type="number"
                       placeholder="Pincode"
@@ -705,6 +700,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       }}
                     />
                     <input
+                    disabled={!editchange}
                       id="cityInput"
                       type="text"
                       placeholder="City"
@@ -722,6 +718,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   </div>
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="districtInput"
                       type="text"
                       placeholder="District"
@@ -730,6 +727,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       value={district}
                     />
                     <input
+                    disabled={!editchange}
                       id="stateInput"
                       type="text"
                       placeholder="State"
@@ -749,6 +747,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   <div className="PersonalDetailInput">
                     <div className="addFileName">
                       <div
+                      
+
                         className={
                           isAddharCardNumberEmpty
                             ? "inputWithAttachment2"
@@ -759,6 +759,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         style={{ outline: "none" }}
                       >
                         <input
+                        disabled={!editchange}
                           id="addharCardNumberInput"
                           type="text"
                           placeholder="Aadhaar Card No"
@@ -778,16 +779,21 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }}
                         />
                         <input
+                        disabled={!editchange}
                           type="file"
                           onChange={(e) => SetAddharPhoto(e.target.files[0])}
                           style={{ display: "none" }}
                           ref={fileInputRef} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "18px", cursor: "pointer",
-                            color:addharPhoto ? "#F8AC1D" : "inherit"
-                           }}
-                         
+                         disabled={!editchange}
+                       
+                        style={{
+                            marginRight: "18px",
+                            cursor: "pointer",
+                            color: addharPhoto ? "#F8AC1D" : "inherit",
+                            pointerEvents: editchange ? "visible" : "none"
+                          }}
                           onClick={
                             addharPhoto
                               ? openIt
@@ -795,7 +801,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }
                         />
                       </div>
-                      <p>{addharPhoto.name}</p>
+                      <p>{addharPhoto?.name}</p>
                     </div>
 
                     <div className="addFileName">
@@ -810,6 +816,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         style={{ outline: "none" }}
                       >
                         <input
+                        disabled={!editchange}
                           type="file"
                           name="fields[]"
                           onChange={(e) => SetPancardPhoto(e.target.files[0])}
@@ -817,6 +824,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef1} // Attach fileInputRef to the input element
                         />
                         <input
+                        disabled={!editchange}
                           id="pancardsInput"
                           type="text"
                           placeholder="Pancard No"
@@ -836,15 +844,22 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }}
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer",
-                            color: pancardPhoto ? "#F8AC1D" : "inherit"
-                           }}
+                          style={{
+                            marginRight: "22px",
+                            cursor: "pointer",
+                            color: pancardPhoto ? "#F8AC1D" : "inherit",
+                            pointerEvents: editchange ? "visible" : "none"
+                          }}
                           // onClick={() => handleUploadClick("panCard")}
 
-                          onClick={pancardPhoto ? openItPanCard : () => handleUploadClick("panCard")}
+                          onClick={
+                            pancardPhoto
+                              ? openItPanCard
+                              : () => handleUploadClick("panCard")
+                          }
                         />
                       </div>
-                      <p>{pancardPhoto.name}</p>
+                      <p>{pancardPhoto?.name}</p>
                     </div>
                   </div>
 
@@ -861,6 +876,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         style={{ outline: "none", width: "49%" }}
                       >
                         <input
+                        disabled={!editchange}
                           id="drivingLisienceInput"
                           type="text"
                           placeholder="Driving License No"
@@ -881,6 +897,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         />
 
                         <input
+                        disabled={!editchange}
                           type="file"
                           name="fields[]"
                           onChange={(e) =>
@@ -890,112 +907,26 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef2} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer",
-                            color: drivingLicensePhoto ? "#F8AC1D" : "inherit"
-                           }}
-                         
-                          onClick={drivingLicensePhoto ? openDriving : () => handleUploadClick("drivingLicense")}
+                          style={{
+                            marginRight: "22px",
+                            cursor: "pointer",
+                            color: drivingLicensePhoto ? "#F8AC1D" : "inherit",
+                            pointerEvents: editchange ? "visible" : "none"
+                          }}
+                          onClick={
+                            drivingLicensePhoto
+                              ? openDriving
+                              : () => handleUploadClick("drivingLicense")
+                          }
                         />
                       </div>
                     </div>
-                    <p>{drivingLicensePhoto.name}</p>
+                    <p>{drivingLicensePhoto?.name}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
-
-            {/* <div className="ExtraCiricularSection">
-                <div className="EnggDetailHeading">Educational details</div>
-                <div className="ExtraCiricularSectionInputFields">
-                  <div className="mainPersonalDetialSection">
-                    <div className="PersonalDetailInput">
-                      <div className="addFileName">
-                        <div
-                          className="inputWithAttachment"
-                          ref={(el) => (divRef.current[4] = el)}
-                          onClick={() => handleClick(4)}
-                          style={{ outline: "none" }}
-                        >
-                          <AddEnggAttachment
-                            width="100%"
-                            placeholder="Select Qualification"
-                            Details={QualificationData}
-                            padding="4px"
-                            onStateChange={onStateChange}
-                          />
-                          <input
-                            type="file"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetQualificationPhoto(e.target.files[0])
-                            }
-                            style={{ display: "none" }}
-                            ref={fileInputRef3} // Attach fileInputRef to the input element
-                          />
-                          <SlLink
-                            style={{ marginRight: "22px", cursor: "pointer" }}
-                            onClick={() =>
-                              handleUploadClick("QualificationPhoto")
-                            }
-                          />
-                        </div>
-                        <p>{qualificationPhoto.name}</p>
-                      </div>
-
-                      <div className="addFileName">
-                        <div
-                          className={
-                            isAdditionalCourseEmpty
-                              ? "inputWithAttachment2"
-                              : "inputWithAttachment"
-                          }
-                          ref={(el) => (divRef.current[4] = el)}
-                          onClick={() => handleClick(4)}
-                          style={{ outline: "none" }}
-                        >
-                          <input
-                            id="additionalCourseData"
-                            type="text"
-                            placeholder="Additional Course"
-                            required
-                            style={{ outline: "none" }}
-                            value={additionalCourse}
-                            onChange={(e) => {
-                              setAdditionalCourse(e.target.value);
-                              if (e.target.value.trim() !== "") {
-                                setIsAdditionalCourseEmpty(false);
-                                document
-                                  .getElementById("additionalCourseData")
-                                  .classList.remove("errorBorder");
-                              } else {
-                                setIsAdditionalCourseEmpty(true);
-                              }
-                            }}
-                          />
-                          <input
-                            type="file"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetAdditionalCoursePhoto(e.target.files[0])
-                            }
-                            style={{ display: "none" }}
-                            ref={fileInputRef4} // Attach fileInputRef to the input element\
-                          />
-                          <SlLink
-                            style={{ marginRight: "22px", cursor: "pointer" }}
-                            onClick={() =>
-                              handleUploadClick("AdditionalCoursePhoto")
-                            }
-                          />
-                        </div>
-                        <p>{additionalCoursePhoto.name}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
           </div>
           {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 
@@ -1008,19 +939,29 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     <div className="addFileName">
                       <div
                         className="inputWithAttachment"
+                     
                         ref={(el) => (divRef.current[4] = el)}
                         onClick={() => handleClick(4)}
                         style={{ outline: "none" }}
                       >
-                        <AddEnggAttachment
+                        {editchange ? <AddEnggAttachment
                           width="100%"
-                          placeholder="Select Qualification"
+                          placeholder="Select "
                           Details={QualificationData}
                           padding="4px"
                           onStateChange={onStateChange}
                           value={qualification}
-                        />
+                         /> : 
+                        <AddEnggAttachment
+                          width="100%"
+                          placeholder={sortedData[0]}                      
+                          padding="4px"
+                         /> }
+
+
+
                         <input
+                        disabled={!editchange}
                           type="file"
                           name="fields[]"
                           onChange={(e) =>
@@ -1030,10 +971,17 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef3} // Attach fileInputRef to the input element
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer",
-                            color:qualificationPhoto ? "#F8AC1D" : "inherit"
-                           }}
-                          onClick={qualificationPhoto ? openQualification : () => handleUploadClick("QualificationPhoto") }
+                          style={{
+                            marginRight: "22px",
+                            cursor: "pointer",
+                            color: qualificationPhoto ? "#F8AC1D" : "inherit",
+                            pointerEvents: editchange ? "visible" : "none"
+                          }}
+                          onClick={
+                            qualificationPhoto
+                              ? openQualification
+                              : () => handleUploadClick("QualificationPhoto")
+                          }
                         />
                       </div>
 
@@ -1042,16 +990,13 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
                     <div className="addFileName">
                       <div
-                        className={
-                          isAdditionalCourseEmpty
-                            ? "inputWithAttachment2"
-                            : "inputWithAttachment"
-                        }
+                        className="inputWithAttachment6"
                         ref={(el) => (divRef.current[4] = el)}
                         onClick={() => handleClick(4)}
                         style={{ outline: "none" }}
                       >
                         <input
+                        disabled={!editchange}
                           id="additionalCourseData"
                           type="text"
                           placeholder="Additional Course"
@@ -1071,6 +1016,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }}
                         />
                         <input
+                        disabled={!editchange}
                           type="file"
                           name="fields[]"
                           onChange={(e) =>
@@ -1080,10 +1026,19 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           ref={fileInputRef4} // Attach fileInputRef to the input element\
                         />
                         <SlLink
-                          style={{ marginRight: "22px", cursor: "pointer" ,
-                          color:additionalCoursePhoto ? "#F8AC1D" : "inherit"}}
-                         
-                          onClick={additionalCoursePhoto ? openAdditionalPhoto : () =>  handleUploadClick("AdditionalCoursePhoto")}
+                          style={{
+                            marginRight: "22px",
+                            cursor: "pointer",
+                            color: additionalCoursePhoto
+                              ? "#F8AC1D"
+                              : "inherit",
+                              pointerEvents: editchange ? "visible" : "none"
+                          }}
+                          onClick={
+                            additionalCoursePhoto
+                              ? openAdditionalPhoto
+                              : () => handleUploadClick("AdditionalCoursePhoto")
+                          }
                         />
                       </div>
                       <p>{additionalCoursePhoto.name}</p>
@@ -1099,6 +1054,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="accountHolderNameInput"
                       type="text"
                       placeholder="Account Holder Name"
@@ -1114,6 +1070,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       }}
                     />
                     <input
+                    disabled={!editchange}
                       id="branchNameInput"
                       type="text"
                       placeholder="Branch Name"
@@ -1131,6 +1088,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   </div>
                   <div className="PersonalDetailInput">
                     <input
+                    disabled={!editchange}
                       id="accountNumberInput"
                       type="text"
                       placeholder="Account Number"
@@ -1147,6 +1105,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     />
                     <div className="smallifcCodeSuggestion">
                       <input
+                      disabled={!editchange}
                         id="IFSCcodeInput"
                         type="text"
                         placeholder="IFSC Code"
@@ -1181,6 +1140,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       style={{ width: showWorkExperience ? "100%" : "50%" }}
                     >
                       <input
+                      disabled={!editchange}
                         readOnly
                         type="text"
                         placeholder="Previos Work Experience"
@@ -1189,12 +1149,14 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       />
                       <CheckBox
                         style={{ marginTop: "4px" }}
+                        checked={showWorkExperience}
                         handleCheckboxChange={handleCheckboxChange}
                       />
                     </div>
 
                     {showWorkExperience ? (
                       <input
+                      disabled={!editchange}
                         id="jobDurationInput"
                         type="text"
                         placeholder="Duration of Job"
@@ -1215,6 +1177,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   <div className="PersonalDetailInput">
                     {showWorkExperience && (
                       <input
+                      disabled={!editchange}
                         id="companyNameInput"
                         type="text"
                         placeholder="Company Name"
@@ -1232,6 +1195,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     )}
                     {showWorkExperience && (
                       <input
+                      disabled={!editchange}
                         id="jobTitleInput"
                         type="text"
                         placeholder="Job title"
@@ -1251,6 +1215,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   <div className="PersonalDetailInput">
                     {showWorkExperience && (
                       <input
+                      disabled={!editchange}
                         id="managerInputNameInput"
                         type="text"
                         placeholder="Manager Name"
@@ -1268,6 +1233,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     )}
                     {showWorkExperience && (
                       <input
+                      disabled={!editchange}
                         id="managerNumberInput"
                         type="text"
                         placeholder="Manager No"
@@ -1289,23 +1255,27 @@ const AddEngineerForm = ({ engID, onClose }) => {
             </div>
             {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
-              <div className="addEnggButtons">
-                <button class="button-69-cancel" role="button">
-                  Edit
-                </button>
-                <button
-                  class="button-69"
-                  role="button"
-                  onClick={(e) => handleSaveEnggProfileData(e)}
-                >
-                  Save
-                </button>
-              </div>
+            <div className="addEnggButtons">
+              <button onClick={handleEditSection} style={{background:editchange ? "#F8AC1D" : "#fff"}} class="button-69-cancel" role="button">
+                Edit
+              </button>
+              <button
+                class="button-69"
+                role="button"
+                onClick={(e) => handleSaveEnggProfileData(e)}
+                disabled={!editchange}
+                style={{opacity : editchange ? "1" : "0.4"}}
+              >
+                Save
+              </button>
             </div>
           </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default AddEngineerForm;
+
+
