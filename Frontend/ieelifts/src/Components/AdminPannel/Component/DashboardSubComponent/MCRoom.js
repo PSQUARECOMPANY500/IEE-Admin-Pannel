@@ -10,7 +10,7 @@ import RepotImage from "./RepotImage";
 const MCRoom = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
-  console.log("images", images);
+  console.log("images preettttttt", images);
   const [showReportImage, setShowReportImage] = useState(false);
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -67,7 +67,7 @@ const MCRoom = ({ serviceId }) => {
   };
 
   // const firstImage = images?.map((images) => images?.photo[0]);
-
+  
 
   return (
     <>
