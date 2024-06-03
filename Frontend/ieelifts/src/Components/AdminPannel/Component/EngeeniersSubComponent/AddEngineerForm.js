@@ -307,30 +307,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
-    // if (
-    //   !profilePhoto ||
-    //   !firstName ||
-    //   // !lastName ||
-    //   !mobileNumber ||
-    //   // !dateOfBirth ||
-    //   // !email ||
-    //   !address ||
-    //   !pinCode ||
-    //   // !city ||
-    //   !district ||
-    //   !state ||
-    //   !addharCardNumber ||
-    //   // !drivingLisience ||
-    //   // !pancards ||
-    //   !addharPhoto ||
-     
-    //   !EngggId ||
-    //   !alternativeNumber
-    // ) {
-    //   toast.error("Plese fill all the fields");
-    // }
-
-    if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
+   if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
       setIsAddharCardNumberEmpty(true);
       document
         .getElementById("addharCardNumberInput")
