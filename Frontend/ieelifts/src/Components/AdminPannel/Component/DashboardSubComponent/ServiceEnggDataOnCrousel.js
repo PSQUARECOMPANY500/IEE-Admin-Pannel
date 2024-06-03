@@ -85,6 +85,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
               width: "50px",
               borderRadius: "100%",
               objectFit: "cover",
+              objectPosition:"top"
             }}
           />
           <div className="engg-profile">

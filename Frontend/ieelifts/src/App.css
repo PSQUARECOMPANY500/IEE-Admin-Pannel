@@ -110,10 +110,10 @@ main {
   margin-left: 80px;
 }
 
-/* .Pimg img{
+.Pimg img{
 object-fit:cover;
 object-position: top;
-} */
+}
 
 /* hamburger css starts */
 /* .toggle-button {
@@ -2860,7 +2860,6 @@ footer a:hover {
   border-radius: 10px;
   opacity: 1;
   font-size: 14px;
-  /* font-weight: 600; */
   font: normal normal medium 16px/25px Poppins;
   transition: all ease-in 0.2s;
 }
@@ -2872,6 +2871,7 @@ footer a:hover {
   position: absolute;
   left: 89%;
   top: 4%;
+  cursor: pointer;
   font-size: 2rem;
   color: #a2a2a2;
 }
@@ -4646,6 +4646,7 @@ element.style {
   background-color: transparent;
   border: 1px solid #f8ac1d;
   height: 2.4rem;
+  cursor: pointer;
 }
 .collect-body button:hover {
   background-color: #f8ac1d;
@@ -4654,6 +4655,7 @@ element.style {
   position: absolute;
   left: 87%;
   top: 4%;
+  cursor: pointer;
   color: #444444;
 }
 
@@ -6541,11 +6543,17 @@ element.style {
   gap: 1rem;
 }
 
+.EngCardDetailsL img{
+  object-fit: cover;
+  object-position: top;
+}
+
 .EnggDetailInputField .imageUploadDiv {
   border: 1px solid #8e8e8e;
   border-radius: 10px;
   height: 70%;
   width: 20%;
+  overflow: hidden;
   position: relative;
 }
 

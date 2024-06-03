@@ -69,7 +69,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
   const [addharPhoto, SetAddharPhoto] = useState("");
-  console.log("dsdsd", addharPhoto);
+  // console.log("dsdsd", addharPhoto);
 
   const [isAddharCardNumberEmpty, setIsAddharCardNumberEmpty] = useState(false);
   const [isPancardsEmpty, setIsPancardsEmpty] = useState(false);
@@ -103,7 +103,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
     };
   }, []);
 
-  // console.log("raj", engID);
+  // console.log("idddd =>", engID);
 
   useEffect(() => {
     const getData = async () => {
@@ -307,60 +307,62 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
-   if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
-      setIsAddharCardNumberEmpty(true);
-      document
-        .getElementById("addharCardNumberInput")
-        .classList.add("inputWithAttachment2");
-    }
+  
 
-    if (!isPancardsEmpty && pancards.length <= 0) {
-      setIsPancardsEmpty(true);
-      document
-        .getElementById("pancardsInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
+    //   setIsAddharCardNumberEmpty(true);
+    //   document
+    //     .getElementById("addharCardNumberInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
-      setIsDrivingLisienceEmpty(true);
-      document
-        .getElementById("drivingLisienceInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isPancardsEmpty && pancards.length <= 0) {
+    //   setIsPancardsEmpty(true);
+    //   document
+    //     .getElementById("pancardsInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
-      setIsAdditionalCourseEmpty(true);
-      document
-        .getElementById("additionalCourseData")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
+    //   setIsDrivingLisienceEmpty(true);
+    //   document
+    //     .getElementById("drivingLisienceInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
+
+    // if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
+    //   setIsAdditionalCourseEmpty(true);
+    //   document
+    //     .getElementById("additionalCourseData")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
     // conditioning for work experience border set up starts
-    if (showWorkExperience && jobDuration.length <= 0) {
-      SetJobDurationShow(true);
-      document.getElementById("jobDurationInput").classList.add("errorBorder");
-    }
-    if (showWorkExperience && companyName.length <= 0) {
-      SetCompanyNameShow(true);
-      document.getElementById("companyNameInput").classList.add("errorBorder");
-    }
+    // if (showWorkExperience && jobDuration.length <= 0) {
+    //   SetJobDurationShow(true);
+    //   document.getElementById("jobDurationInput").classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && companyName.length <= 0) {
+    //   SetCompanyNameShow(true);
+    //   document.getElementById("companyNameInput").classList.add("errorBorder");
+    // }
 
-    if (showWorkExperience && jobTitle.length <= 0) {
-      SetJobTitleShow(true);
-      document.getElementById("jobTitleInput").classList.add("errorBorder");
-    }
-    if (showWorkExperience && managerName.length <= 0) {
-      SetManagerNameShow(true);
-      document
-        .getElementById("managerInputNameInput")
-        .classList.add("errorBorder");
-    }
-    if (showWorkExperience && managerNumber.length <= 0) {
-      SetManagerNumberShow(true);
-      document
-        .getElementById("managerNumberInput")
-        .classList.add("errorBorder");
-    }
+    // if (showWorkExperience && jobTitle.length <= 0) {
+    //   SetJobTitleShow(true);
+    //   document.getElementById("jobTitleInput").classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && managerName.length <= 0) {
+    //   SetManagerNameShow(true);
+    //   document
+    //     .getElementById("managerInputNameInput")
+    //     .classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && managerNumber.length <= 0) {
+    //   SetManagerNumberShow(true);
+    //   document
+    //     .getElementById("managerNumberInput")
+    //     .classList.add("errorBorder");
+    // }
 
     // conditioning for work experience border set up ends
 
@@ -385,21 +387,21 @@ const AddEngineerForm = ({ engID, onClose }) => {
     ];
 
     const checkRequiredFields = () => {
-      let isEmptyField = false;
-      requiredFields.forEach((field) => {
-        if (
-          !field?.value ||
-          typeof field.value !== "string" ||
-          field?.value?.trim() === ""
-        ) {
-          document.getElementById(field.id).classList.add("errorBorder");
-          isEmptyField = true;
-        }
-      });
+      // let isEmptyField = false;
+      // requiredFields.forEach((field) => {
+      //   if (
+      //     !field?.value ||
+      //     typeof field.value !== "string" ||
+      //     field?.value?.trim() === ""
+      //   ) {
+      //     document.getElementById(field.id).classList.add("errorBorder");
+      //     isEmptyField = true;
+      //   }
+      // });
 
-      if (isEmptyField) {
-        return true; // Return true if there are empty fields
-      }
+      // if (isEmptyField) {
+      //   return true; // Return true if there are empty fields
+      // }
     };
 
     checkRequiredFields();
@@ -474,20 +476,19 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       width: "100%",
                       height: "100%",
                       borderRadius: "8px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      objectPosition:"top",
                       border: "none",
                      
                       
                     }}
                     src={
-                      profilePhoto
+                      profilePhoto 
                         ? `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                         : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                     }
                   ></img>
+
                   <input
                     id="profilePhoto"
                     type="file"

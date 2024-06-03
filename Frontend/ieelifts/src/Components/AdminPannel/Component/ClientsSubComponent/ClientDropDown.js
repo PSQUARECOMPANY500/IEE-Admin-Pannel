@@ -46,6 +46,26 @@ const ClientDropDown = ({
   //     };
   //   }, [cardRef, toggleOptions]);
 
+  // -------------------this ref for MembershipPopup components---------------------------------------
+const memberRef = useRef();
+
+  const handleClickOutsideModal = (event) => {
+    if (memberRef.current && !memberRef.current.contains(event.target)) {
+      handleCloseMember();
+    }
+  };
+
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
+
+
+
   const setSelectedIconByOption = (option) => {
     let newIcon;
     switch (option) {
@@ -266,7 +286,7 @@ const ClientDropDown = ({
 
       {openPopUp && id === 1 && (
         <div className="membershippopup-modal-wrapper">
-          <div className="membershippopup-modal-container">
+          <div className="membershippopup-modal-container" ref={memberRef}>
             <MembershipPopup onClose={handleCloseMember} />
           </div>
         </div>
