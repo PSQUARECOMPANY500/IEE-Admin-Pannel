@@ -307,28 +307,28 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
-    if (
-      !profilePhoto ||
-      !firstName ||
-      // !lastName ||
-      !mobileNumber ||
-      // !dateOfBirth ||
-      // !email ||
-      !address ||
-      !pinCode ||
-      // !city ||
-      !district ||
-      !state ||
-      !addharCardNumber ||
-      // !drivingLisience ||
-      // !pancards ||
-      !addharPhoto ||
+    // if (
+    //   !profilePhoto ||
+    //   !firstName ||
+    //   // !lastName ||
+    //   !mobileNumber ||
+    //   // !dateOfBirth ||
+    //   // !email ||
+    //   !address ||
+    //   !pinCode ||
+    //   // !city ||
+    //   !district ||
+    //   !state ||
+    //   !addharCardNumber ||
+    //   // !drivingLisience ||
+    //   // !pancards ||
+    //   !addharPhoto ||
      
-      !EngggId ||
-      !alternativeNumber
-    ) {
-      toast.error("Plese fill all the fields");
-    }
+    //   !EngggId ||
+    //   !alternativeNumber
+    // ) {
+    //   toast.error("Plese fill all the fields");
+    // }
 
     if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
       setIsAddharCardNumberEmpty(true);
@@ -464,7 +464,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
     console.log("Raj", editEnggPersonal)
 
     if(editEnggPersonal?.status === true) {
-      toast.success("engineer edited successfully");
+      toast.success("Engineer Edited successfully");
 
     }
 
@@ -565,7 +565,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="mobileNumberInput"
                       type="text"
                       placeholder="Mobile no"
-                      required
+                      
                       value={mobileNumber}
                       onChange={(e) => {
                         setMobileNumber(e.target.value);
@@ -582,7 +582,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="dateOfBirthInput"
                       type="text"
                       placeholder="Date of Birth"
-                      required
+                      
                       value={dateOfBirth}
                       onChange={(e) => {
                         setDateOfBirth(e.target.value);
@@ -602,7 +602,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="EnggIdInput"
                       type="text"
                       placeholder="Engg Id"
-                      required
+                      
                       value={EngggId}
                       onChange={(e) => {
                         setEnggId(e.target.value);
@@ -619,7 +619,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="AlternativeMobileNumber"
                       type="text"
                       placeholder="Alternative Number"
-                      required
+                      
                       value={alternativeNumber}
                       onChange={(e) => {
                         setAlternativeNumber(e.target.value);
@@ -639,7 +639,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="emailInput"
                       type="text"
                       placeholder="Email"
-                      required
+                      
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
@@ -668,7 +668,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     id="addressInput"
                     type="text"
                     placeholder="Address"
-                    required
+                    
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
@@ -687,7 +687,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="pinCodeInput"
                       type="number"
                       placeholder="Pincode"
-                      required
+                      
                       value={pinCode}
                       onChange={(e) => {
                         setPinCode(e.target.value);
@@ -704,7 +704,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="cityInput"
                       type="text"
                       placeholder="City"
-                      required
+                      
                       value={city}
                       onChange={(e) => {
                         setCity(e.target.value);
@@ -722,7 +722,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="districtInput"
                       type="text"
                       placeholder="District"
-                      required
+                      
                       readOnly
                       value={district}
                     />
@@ -732,7 +732,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       type="text"
                       placeholder="State"
                       readOnly
-                      required
+                      
                       value={state}
                     />
                   </div>
@@ -763,7 +763,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="addharCardNumberInput"
                           type="text"
                           placeholder="Aadhaar Card No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={addharCardNumber}
                           onChange={(e) => {
@@ -828,7 +828,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="pancardsInput"
                           type="text"
                           placeholder="Pancard No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={pancards}
                           onChange={(e) => {
@@ -880,7 +880,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="drivingLisienceInput"
                           type="text"
                           placeholder="Driving License No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={drivingLisience}
                           onChange={(e) => {
@@ -1000,7 +1000,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="additionalCourseData"
                           type="text"
                           placeholder="Additional Course"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={additionalCourse}
                           onChange={(e) => {
@@ -1058,7 +1058,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="accountHolderNameInput"
                       type="text"
                       placeholder="Account Holder Name"
-                      required
+                     
                       value={accountHolderName}
                       onChange={(e) => {
                         setAccountHolderName(e.target.value);
@@ -1074,7 +1074,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="branchNameInput"
                       type="text"
                       placeholder="Branch Name"
-                      required
+                      
                       value={branchName}
                       onChange={(e) => {
                         setBranchName(e.target.value);
@@ -1092,7 +1092,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="accountNumberInput"
                       type="text"
                       placeholder="Account Number"
-                      required
+                      
                       value={accountNumber}
                       onChange={(e) => {
                         setAccountNumber(e.target.value);
@@ -1109,7 +1109,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="IFSCcodeInput"
                         type="text"
                         placeholder="IFSC Code"
-                        required
+                       
                         value={IFSCcode}
                         onChange={(e) => {
                           setIFSCcode(e.target.value);
@@ -1144,7 +1144,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         readOnly
                         type="text"
                         placeholder="Previos Work Experience"
-                        required
+                        
                         style={{ border: "none", outline: "none" }}
                       />
                       <CheckBox
@@ -1160,7 +1160,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobDurationInput"
                         type="text"
                         placeholder="Duration of Job"
-                        required
+                        
                         value={jobDuration}
                         onChange={(e) => {
                           setJobDuration(e.target.value);
@@ -1181,7 +1181,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="companyNameInput"
                         type="text"
                         placeholder="Company Name"
-                        required
+                        
                         value={companyName}
                         onChange={(e) => {
                           setCompanyName(e.target.value);
@@ -1199,7 +1199,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobTitleInput"
                         type="text"
                         placeholder="Job title"
-                        required
+                        
                         value={jobTitle}
                         onChange={(e) => {
                           setJobTitle(e.target.value);
@@ -1219,7 +1219,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerInputNameInput"
                         type="text"
                         placeholder="Manager Name"
-                        required
+                        
                         value={managerName}
                         onChange={(e) => {
                           setManagerName(e.target.value);
@@ -1237,7 +1237,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerNumberInput"
                         type="text"
                         placeholder="Manager No"
-                        required
+                        
                         value={managerNumber}
                         onChange={(e) => {
                           setManagerNumber(e.target.value);
