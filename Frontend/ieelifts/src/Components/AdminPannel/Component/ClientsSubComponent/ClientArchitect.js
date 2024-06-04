@@ -1,7 +1,7 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import TextInput from "./ClientsReusableComponent/TextInput";
-const ClientArchitect = ({ onDataChange }) => {
+const ClientArchitect = ({ onDataChange,initialValues }) => {
   const [clientFormData, setClientFormData] = useState({
     architectName: "",
     architectNumber: "",
@@ -27,7 +27,9 @@ const ClientArchitect = ({ onDataChange }) => {
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
-
+useMemo(()=>{
+  setClientFormData(initialValues)
+},[initialValues])
   return (
     <div className="client-architect">
       <h5 className="client-form-details-heading">Architect Details</h5>

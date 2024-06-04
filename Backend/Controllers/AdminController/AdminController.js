@@ -2598,24 +2598,42 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 
 //post client form controller
 module.exports.postElevatorForm = async (req, res) => {
-
-  const membershipDocument = {
-    signedQuotation: req?.files?.signedQuotation[0]?.filename || "",
-    paymentForm: req?.files?.paymentForm[0]?.filename || "",
-    chequeForm: req?.files?.chequeForm[0]?.filename || "",
-    salesOrder: req?.files?.salesOrder[0]?.filename || "",
-  };
-
   const { clientFormDetails, clientSalesManDetails, clientArchitect } =
     req.body;
-    const { jon } = JSON.parse(clientFormDetails);
-  // console.log("Client Form Details:", req.body.clientFormDetails[0].jon);
-  // console.log(JSON.parse(req.body.clientFormDetails));
+
   try {
-    const existingForm = await ElevatorFormSchema.findOne({ "clientFormDetails.jon": jon });
-    
+    const { jon } = JSON.parse(clientFormDetails);
+    const existingForm = await ElevatorFormSchema.findOne({
+      "clientFormDetails.jon": jon,
+    });
+    const membershipDocument = {
+      signedQuotation:(req?.files?.signedQuotation && req.files.signedQuotation.length > 0)
+      ? req.files.signedQuotation[0].filename
+      : existingForm.signedQuotation,
+      paymentForm:
+      (req?.files?.paymentForm && req.files.paymentForm.length > 0)
+      ? req.files.paymentForm[0].filename
+      : existingForm.paymentForm,
+      chequeForm:
+      (req?.files?.chequeForm && req.files.chequeForm.length > 0)
+      ? req.files.chequeForm[0].filename
+      : existingForm.chequeForm,
+      salesOrder:
+      (req?.files?.salesOrder && req.files.salesOrder.length > 0)
+      ? req.files.salesOrder[0].filename
+      : existingForm.salesOrder
+    };
+
     if (existingForm) {
-      return res.status(400).json({ error: "Jon already exists" });
+      existingForm.clientFormDetails = JSON.parse(req.body.clientFormDetails);
+      existingForm.clientSalesManDetails = JSON.parse(
+        req.body.clientSalesManDetails
+      );
+      existingForm.clientArchitect = JSON.parse(req.body.clientArchitect);
+      existingForm.clientMembershipDocument = membershipDocument;
+      
+      return res.status(200).json({ error: "data updated successfully" });
+
     }
     const elevatorFormSchema = new ElevatorFormSchema({
       clientFormDetails: JSON.parse(req.body.clientFormDetails),
@@ -2824,6 +2842,27 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     return res.status(500).json({
       error: "Internal server error",
       message: error.message,
+    });
+  }
+};
+
+// By Raj for get client modal information -------------↓↓
+
+module.exports.getClientModalInformation = async (req, res) => {
+  try {
+    const { jon } = req.params;
+    const response = await ElevatorFormSchema.findOne({
+      "clientFormDetails.jon": jon,
+    });
+    if (!response) {
+      return res.json({ success: false, message: "This JON is not found" });
+    }
+
+    res.status(200).json({ response });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching data",
     });
   }
 };

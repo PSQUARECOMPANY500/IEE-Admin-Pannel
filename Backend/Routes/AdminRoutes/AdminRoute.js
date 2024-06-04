@@ -228,4 +228,14 @@ router.post(
 
 router.put("/updateClientForm", adminContoller.putElevatorForm);
 
+
+router.get(
+  "/getClientModalInformation/:jon",
+  adminContoller.getClientModalInformation
+);
+
+
+
+
+
 module.exports = router;

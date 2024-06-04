@@ -15,7 +15,7 @@ export const DimentionMidFloor = ({
 }) => {
 
 
-  console.log("index====>",index)
+  // console.log("index====>",index)
   // console.log("Level data====>",levelData)
   return (
     

@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { RxCross2 } from "react-icons/rx";
 import ClientFormDetails from "./ClientFormDetails";
 import ClientSalesManDetails from "./ClientSalesManDetails";
@@ -10,12 +10,18 @@ import ClientFormElevatorDetails from "./ClientFormElevatorDetails";
 import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import debounce from "../../../../utils/debounce";
 import {
   closeClientModalAction,
   updateClientData,
+  getDataBasedOnJon,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import { RegisterClientDataAction ,updateClientFormUsingPagination} from "../../../../ReduxSetup/Actions/AdminActions";
+import {
+  RegisterClientDataAction,
+  updateClientFormUsingPagination,
+} from "../../../../ReduxSetup/Actions/AdminActions";
+import axios from "axios";
 
 const ClientForm = () => {
   //state
@@ -25,38 +31,43 @@ const ClientForm = () => {
     clientMembershipDocument: {},
     clientArchitect: {},
   });
+
   // console.log("allFormData====>", allFormData)
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
-  const [dimentionsData, setDimentionsData] = useState({})
+  const [dimentionsData, setDimentionsData] = useState({});
   const dispatch = useDispatch();
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
-  const [validate, setValidate]= useState(false)  //validation for dimensions
-  const [validateNextBtn,setValidateNextBtn] = useState()
+  const [validate, setValidate] = useState(false); //validation for dimensions
+  const [validateNextBtn, setValidateNextBtn] = useState();
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
-  const {jon}= allFormData.clientFormDetails;
+  const [prevData, setPrevData] = useState(false);
+
+  const { jon } = allFormData.clientFormDetails;
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
-  useEffect(()=>{
-    console.log("dimentionsData--->",dimentionsData);
-  },[dimentionsData])
+  useEffect(() => {
+    // console.log("dimentionsData--->",dimentionsData);
+  }, [dimentionsData]);
 
   //handler
-  const validateData =(data)=>{  //handler for validation data
-    setValidate(data)
-    console.log("Parent--validate--->",data)
-  }
-  const handleDimenstionsData =(data)=>{  //handle Dimenstions data from dimenstion component
-    setDimentionsData(data)
-  }
-  const handleClientFormDetails = (data) => { 
+  const validateData = (data) => {
+    //handler for validation data
+    setValidate(data);
+    // console.log("Parent--validate--->",data)
+  };
+  const handleDimenstionsData = (data) => {
+    //handle Dimenstions data from dimenstion component
+    setDimentionsData(data);
+  };
+  const handleClientFormDetails = (data) => {
     setAllFormData((prev) => ({
       ...prev,
       clientFormDetails: data,
@@ -84,8 +95,8 @@ const ClientForm = () => {
   const handleElevatorDetails = (data) => {
     setClientElevatorDetails(data);
   };
-
-  const handleNextPage = () => {
+  //------------------handle next page-------------------
+  const handleNextPage = async () => {
     setToggle(false);
 
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
@@ -115,20 +126,40 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
-    dispatch(RegisterClientDataAction(formData));
+    if (prevData) {
+      await dispatch(RegisterClientDataAction(formData));
+    } else {
+      await dispatch(RegisterClientDataAction(formData));
+    }
+    // setAllFormData((prev) => ({
+    //   ...prev,
+    //   clientMembershipDocument: {},
+    // }));
   };
-
+  //-----------------------------------------------------
   const handlePreviousPage = () => {
     setToggle(true);
   };
 
   const closeModal = () => {
+    setAllFormData({
+      clientFormDetails: {},
+      clientSalesManDetails: {},
+      clientMembershipDocument: {},
+      clientArchitect: {},
+    });
     dispatch(closeClientModalAction());
     setToggle(true);
   };
 
   const handleOverlayClick = (event) => {
     if (event.target.classList.contains("add-client-wrapper")) {
+      setAllFormData({
+        clientFormDetails: {},
+        clientSalesManDetails: {},
+        clientMembershipDocument: {},
+        clientArchitect: {},
+      });
       closeModal();
     }
   };
@@ -153,7 +184,7 @@ const ClientForm = () => {
     const elevatorDetails = {
       JON: jon,
       capacity: capacity,
-      capacityUnit:capacityUnit,
+      capacityUnit: capacityUnit,
       constructionMaterial: constructionMaterial,
       doorType: doorType,
       levelOpening: elevatorOpenings.map(({ level, openings }) => ({
@@ -174,84 +205,138 @@ const ClientForm = () => {
         FloorType: groundOrStilt,
       },
       type: type,
-      numberOfOpenings:numberOfOpenings
+      numberOfOpenings: numberOfOpenings,
     };
-    
-  // handle client form validation 
-  
-  
 
- 
-    // const elevatorDetails = {
-    //   JON: 2024031,
-    //   capacity: "222",
-    //   constructionMaterial: "option1",
-    //   doorType: "option2",
-    //   levelOpening: [
-    //     { level: "Basement 2", opening: ["original"] },
-    //     { level: "Basement 1", opening: ["90dL"] },
-    //     { level: "Ground", opening: ["original", "90dL"] },
-
-    //     { level: "Level 1", opening: ["original", "90dL"] },
-
-    //     { level: "Level 2", opening: ["90dL"] },
-
-    //     { level: "Level 3", opening: ["90dL"] },
-    //     { level: "Level 4", opening: ["90dL", "original"] },
-    //   ],
-    //   pitDepth: "dfsdf",
-    //   purpose: "Hospital",
-    //   remarks: "dasda",
-    //   sideOpening: ["original","90dL"],
-    //   stops: {
-    //     numberOfOpenings: 2,
-    //     Basement: ["b1", "b2"],
-    //     FloorType: "G" ,
-    //   },
-    //   type: "gearless",
-    // };
-
-    dispatch(updateClientData((elevatorDetails)));
-    console.log(elevatorDetails);
+    dispatch(updateClientData(elevatorDetails));
+    // console.log(elevatorDetails);
   };
 
- //handle data in third step using pagination
-//----------------------------------------------------------------
-   const handleThirdStep = ()=>{
-    dispatch(updateClientFormUsingPagination(dimentionsData,jon))
-   }
-//----------------------------------------------------------------
-  function validateClientForm(allFormData){
-    const { clientFormDetails,clientSalesManDetails,clientMembershipDocument } =
-    allFormData;
-    const {selectedMembership,signedQuotation,paymentForm,salesOrder}=clientMembershipDocument;   
-    const {jon,userName,phoneNumber,alternativeNumber,email,reference,referenceName,sourceOfLead}= clientFormDetails;
-    const {finalPrice,quotatedPrice,discountInRupees,discountInPercentage,discountAmount,finalAmount}=clientSalesManDetails;
-    if(!jon ||!userName ||!phoneNumber ||!alternativeNumber ||!email){
+  //handle data in third step using pagination
+  //----------------------------------------------------------------
+  const handleThirdStep = () => {
+    dispatch(updateClientFormUsingPagination(dimentionsData, jon));
+  };
+  //----------------------------------------------------------------
+  function validateClientForm(allFormData) {
+    const {
+      clientFormDetails,
+      clientSalesManDetails,
+      clientMembershipDocument,
+    } = allFormData;
+    const { selectedMembership, signedQuotation, paymentForm, salesOrder } =
+      clientMembershipDocument;
+    const {
+      jon,
+      userName,
+      phoneNumber,
+      alternativeNumber,
+      email,
+      reference,
+      referenceName,
+      sourceOfLead,
+    } = clientFormDetails;
+    const {
+      finalPrice,
+      quotatedPrice,
+      discountInRupees,
+      discountInPercentage,
+      discountAmount,
+      finalAmount,
+    } = clientSalesManDetails;
+    if (!jon || !userName || !phoneNumber || !alternativeNumber || !email) {
       return false;
     }
-    if(sourceOfLead==="Reference"){
-      if(!reference ||!referenceName){
+    if (sourceOfLead === "Reference") {
+      if (!reference || !referenceName) {
         return false;
-      }else{
+      } else {
         return true;
       }
     }
-    if(!selectedMembership||!signedQuotation ||!paymentForm ||!salesOrder){
+    if (
+      !selectedMembership ||
+      !signedQuotation ||
+      !paymentForm ||
+      !salesOrder
+    ) {
       return false;
     }
-    if(!finalPrice||!quotatedPrice||!discountInRupees||!discountInPercentage||!discountAmount||!finalAmount){
+    if (
+      !finalPrice ||
+      !quotatedPrice ||
+      !discountInRupees ||
+      !discountInPercentage ||
+      !discountAmount ||
+      !finalAmount
+    ) {
       return false;
     }
     return true;
   }
-  
- //-------------------------------------------------------------------------
- useEffect(()=>{
-  const val = validateClientForm(allFormData);
-  setValidateNextBtn(val)
- },[allFormData])
- //------------------------------------------------------------------------
+
+  //-------------------------------------------------------------------------
+  useEffect(() => {
+    const val = validateClientForm(allFormData);
+    setValidateNextBtn(val);
+  }, [allFormData]);
+  //-------------------------------------------------------------------------
+  //fecthing data from the api
+
+  const fetchData = async (jon) => {
+    try {
+      const data = await getDataBasedOnJon(jon);
+      // console.log("data==>", data);
+      if (data.response) {
+        const clientFormDetails = data.response.clientFormDetails
+          ? data.response.clientFormDetails
+          : {};
+        const clientSalesManDetails = data.response.clientSalesManDetails
+          ? data.response.clientSalesManDetails
+          : {};
+        const clientMembershipDocument = data.response.clientMembershipDocument
+          ? data.response.clientMembershipDocument
+          : {};
+        const clientArchitect = data.response.clientArchitect
+          ? data.response.clientArchitect
+          : {};
+
+        // Update state with fetched data
+        setAllFormData({
+          clientFormDetails: clientFormDetails,
+          clientSalesManDetails: clientSalesManDetails,
+          clientMembershipDocument: clientMembershipDocument,
+          clientArchitect: clientArchitect,
+        });
+        setPrevData(true);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setAllFormData({
+        clientFormDetails: {},
+        clientSalesManDetails: {},
+        clientMembershipDocument: {},
+        clientArchitect: {},
+      });
+    }
+  };
+  const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
+  useEffect(() => {
+    if (jon) {
+      debouncedFetchData(jon);
+    }
+  }, [jon, debouncedFetchData]);
+  //------------------------------------------------------------------------
+  const handleReset = () => {
+    setAllFormData({
+      clientFormDetails: {},
+      clientSalesManDetails: {},
+      clientMembershipDocument: {},
+      clientArchitect: {},
+    });
+    // setToggle(true);
+    // setValidateNextBtn(false)
+  };
   return (
     <>
       {clientModalOperation && (
@@ -263,27 +348,36 @@ const ClientForm = () => {
             <div>
               {toggle ? (
                 <div className="client-form-container">
-                  <ClientFormDetails onDataChange={handleClientFormDetails} />
+                  <ClientFormDetails
+                    onDataChange={handleClientFormDetails}
+                    initialValues={allFormData.clientFormDetails}
+                  />
                   <ClientSalesManDetails
                     onDataChange={handleClientSalesManDetails}
+                    initialValues={allFormData.clientSalesManDetails}
                   />
                   <ClientMembershipDocument
                     onDataChange={handleClientMembershipDocument}
+                    initialValues={allFormData.clientMembershipDocument}
                   />
-                  <ClientArchitect onDataChange={handleClientArchitect} />
+                  <ClientArchitect
+                    onDataChange={handleClientArchitect}
+                    initialValues={allFormData.clientArchitect}
+                  />
                   <div className="button-container">
                     <Clientbutton
-                      value={"Delete"}
+                      value={"Reset"}
                       className={"client-form-button-red"}
+                      handleAction={handleReset}
                     />
-                   
-                   <div className={`${validateNextBtn?"":"disabled"}`}>
-                    <Clientbutton
-                      value={"Next"}
-                      className={"client-form-button-yellow"}
-                      handleAction={handleNextPage}
-                      // onClick={handleSubmmitEnggData}
-                    />
+
+                    <div className={`${validateNextBtn ? "" : "disabled"}`}>
+                      <Clientbutton
+                        value={"Next"}
+                        className={"client-form-button-yellow"}
+                        handleAction={handleNextPage}
+                        // onClick={handleSubmmitEnggData}
+                      />
                     </div>
                   </div>
                 </div>
@@ -315,7 +409,7 @@ const ClientForm = () => {
                     <Clientbutton
                       value={"Submit"}
                       className={"client-form-button-submit"}
-                      handleAction ={handleThirdStep}
+                      handleAction={handleThirdStep}
                     />
                   </div>
                 </div>

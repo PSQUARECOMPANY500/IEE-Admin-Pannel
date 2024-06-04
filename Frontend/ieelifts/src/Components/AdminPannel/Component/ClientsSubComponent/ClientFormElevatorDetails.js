@@ -41,7 +41,7 @@ const ClientFormElevatorDetails = ({
     remarks: "",
   });
   const [validate, setValidate] = useState(false);
-  console.log("elevatorDetails===>",elevatorDetails)
+  // console.log("elevatorDetails===>",elevatorDetails)
   //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
     setElevatorDetails((prevDetails) => ({

@@ -1,7 +1,7 @@
 // <-----------------------------  Author:- Rahul Kumar --------------30/4/24--------------------->
 import React, { useState } from "react";
 
-const ClientDropdown = ({ options, name, label, onValueChange,  w , }) => {
+const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
   //useState hooks
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState("");
@@ -23,7 +23,7 @@ const ClientDropdown = ({ options, name, label, onValueChange,  w , }) => {
         className="dropdown-input"
         placeholder={label}
         name={name}
-        value={selectedData}
+        value={value}
         readOnly
         onClick={handleIconClick}
       />{" "}

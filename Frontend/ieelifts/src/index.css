@@ -2559,8 +2559,6 @@ color: #444444;
   padding-bottom: 1rem;
 }
 
-
-
 /*Scrollbar*/
 .dimenstions-container::-webkit-scrollbar {
   width: 3px;
@@ -2571,9 +2569,6 @@ color: #444444;
   background: #F8AC1D;
   border-radius: 4px;
 }
-
-
-
 
 .disabled {
   pointer-events: none;

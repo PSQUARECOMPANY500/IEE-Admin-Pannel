@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import React from "react";
 import TextInput from "../ClientsSubComponent/ClientsReusableComponent/TextInput";
 
-const ClientSalesManDetails = ({ onDataChange }) => {
+const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
   const [clientFormData, setClientFormData] = useState({
     salesmanId: "",
     salesmanName: "",
@@ -93,7 +93,9 @@ const ClientSalesManDetails = ({ onDataChange }) => {
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
-
+  useMemo(()=>{
+    setClientFormData(initialValues)
+  },[initialValues])
   return (
     <div className="client-salesman-details">
       <h5 className="client-form-details-heading">Sales Man Details</h5>

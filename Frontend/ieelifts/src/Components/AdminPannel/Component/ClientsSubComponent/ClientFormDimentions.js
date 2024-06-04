@@ -77,9 +77,9 @@ const ClientFormDimentions = ({
       floorFrontData: floorFrontData,
     });
   }, [basementWithPit, floorFrontData, levelData]);
-  console.log("dimentionsData", dimentionsData);
+  // console.log("dimentionsData", dimentionsData);
   //handler
-  console.log("leveldata===>", levelData);
+  // console.log("leveldata===>", levelData);
   const handleFileChangeInPit = (event, fieldName) => {
     const file = event.target.files[0];
     if (file) {

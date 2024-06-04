@@ -4,7 +4,7 @@ import React from 'react';
 const Clientbutton = ({ value, className, handleAction }) => {
   let buttonClassName = 'client-form-button';
 
-  if (value === "Delete") {
+  if (value === "Reset") {
     buttonClassName += ' ' + className; 
   }else if(value==='Next'){
     buttonClassName+= ' '+ className;

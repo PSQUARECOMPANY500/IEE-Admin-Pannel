@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const FileUploader = ({ label,onFileSelect }) => {
-  const [fileName, setFileName] = useState(label);
+const FileUploader = ({ label,onFileSelect,apiDataName }) => {
+  const [fileName, setFileName] = useState(apiDataName || label);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log(file)
+    // console.log(file)
 
     if (file) {
       setFileName(file.name)
@@ -16,6 +16,11 @@ const FileUploader = ({ label,onFileSelect }) => {
   };
   // Generate a unique ID for each instance
   const inputId = `fileInput-${label.replace(/\s+/g, "-")}`;
+  useEffect(()=>{
+    if(apiDataName){
+      setFileName(apiDataName);
+    }
+  },[])
   return (
     <div className="file-upload">
       <input

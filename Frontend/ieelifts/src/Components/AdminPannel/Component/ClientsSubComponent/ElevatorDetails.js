@@ -38,7 +38,7 @@ const ElevatorDetails = ({
     const { name } = e.target;
     setClick({ ...click, [name]: false });
   };
-  console.log("stops===>",stops)
+  // console.log("stops===>",stops)
   return (
     <>
       <div className="client-elevator-input-wrapper">

@@ -1273,8 +1273,8 @@ export const updateClientData = (formData) => {
 
 // third step
 export const updateClientFormUsingPagination = (formData,jon)=>{
-  console.log("formData===>",formData);
-  console.log("jon===>",jon);
+  // console.log("formData===>",formData);
+  // console.log("jon===>",jon);
   return async (dispatch)=>{
     try{                 
 
@@ -1296,3 +1296,19 @@ export const updateClientFormUsingPagination = (formData,jon)=>{
     }
   }
 }
+
+export const getDataBasedOnJon = async(jon)=>{
+  if (!jon) {
+    return;
+  }
+
+  try {
+
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientModalInformation/${jon}`
+    );
+     return response.data
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
