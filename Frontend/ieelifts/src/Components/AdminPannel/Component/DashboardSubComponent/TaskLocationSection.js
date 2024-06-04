@@ -246,11 +246,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
 
+    // console.log("andi toofan.......................................................................", reportData)
+
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
 
       setHandleReportData(false);
-      setReportData(reportData?.callbackId);
+      setReportData(reportData?.callbackId || reportData?.RequestId);
   
     } else {
       //console.log(reportData)
@@ -327,7 +329,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                        const reportData = value;
+                        let reportData = value;
                         return (
                           <div
                           style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
@@ -363,7 +365,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                         );
                       })
                     : filterData?.map((value, index) => {
-                        const reportData = value;
+                        let reportData = value;
                         return (
                           <div
                             className={`ticket-card ${
@@ -404,7 +406,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                        const reportData = serviceData;
+                        let reportData = serviceData;
                         return (
                           <div
                             className={`service-card ${

@@ -1254,3 +1254,20 @@ export const depositeEnggCash = async (EnggId, AvailableCash) => {
     console.log("Error while fetching Deposit Engineer Cash", error);
   }
 };
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------------
+//   -------  fetch final report for admin -------
+
+export const fetchFinalReportData = async (serviceId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/serviceEngg/fetchFinalReport/${serviceId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};

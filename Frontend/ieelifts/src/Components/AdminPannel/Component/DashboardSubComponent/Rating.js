@@ -14,6 +14,8 @@ const Rating = () => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
 
+  console.log("AdminReportData0000000000000000", AdminReportData);
+
   const ratingValue = AdminReportData?.AdminReportData?.Rating?.Rating || 0
   useEffect(() => {
     console.log(AdminReportData?.AdminReportData?.Rating)

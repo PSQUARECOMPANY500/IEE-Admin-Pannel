@@ -2519,6 +2519,10 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
+
+    // console.log("22222222222222",ReportData.paymentMode);
+    // console.log("22222222222222",ReportData.paymentDetils);
+
     const ReportImages = ReportData.subCategoriesphotos;
     const sortedData = (keys, arr) => {
       const arrData = arr.filter(
@@ -2578,6 +2582,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       CabinFloors,
       CartopShaft,
       PitArea,
+      PaymentMode: ReportData?.paymentMode,
+      PaymentDetails: ReportData?.paymentDetils,
     };
 
     res.status(200).json({ finalReportedData, ReportImages, Rating });
@@ -2681,7 +2687,6 @@ module.exports.getNotification = async (req, res) => {
 
 // by aayush for rating admin=================================
 
-
 // By Raj for get client modal information -------------↓↓
 
 module.exports.getClientModalInformation = async (req, res) => {
@@ -2691,51 +2696,49 @@ module.exports.getClientModalInformation = async (req, res) => {
       "clientFormDetails.jon": jon,
     });
     if (!response) {
-      return res.status(404).json({success:false, message: "This JON is not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "This JON is not found" });
     }
 
-    res.status(200).json({response})
-
+    res.status(200).json({ response });
   } catch (error) {
     return res.status(500).json({
       error: "Internal server error while fetching Notification",
     });
   }
-}
-
-
+};
 
 // function handle get all engg personal details by Id -----------------------
 // by Raj---------------
 
-module.exports.getEnggPersonalData = async (req,  res) => {
+module.exports.getEnggPersonalData = async (req, res) => {
   try {
-    const {EnggId} = req.params;
+    const { EnggId } = req.params;
 
     const enggDetails = await ServiceEnggBasicSchema.findOne({
       EnggId,
     });
 
-    if(!enggDetails){
+    if (!enggDetails) {
       return res.status(404).json({
-        message:"No services Engg found for the specified Service Engineer ID"
+        message: "No services Engg found for the specified Service Engineer ID",
       });
     }
 
     res.status(200).json({
-      message:"servicesc Engg retrieved by ID successfully",
+      message: "servicesc Engg retrieved by ID successfully",
       enggDetails,
-    })
-
+    });
   } catch (error) {
     console.error("Error getting enng detail", error);
     res.status(500).json({
-      error:"Internal server Error",
+      error: "Internal server Error",
     });
   }
 };
- //-------------------------------------------------------------------------------------------------------------
- // edit engg details form API
+//-------------------------------------------------------------------------------------------------------------
+// edit engg details form API
 
 //-------------------------------------------------------------------------------------------------------------
 // edit engg details form API preet
@@ -2747,8 +2750,7 @@ module.exports.editEnggDetailsForm = async (req, res) => {
     const formData = req.files;
     const bodyData = req.body;
 
-    const EnggDataChecker = await ServiceEnggBasicSchema.findOne({EnggId})
-      
+    const EnggDataChecker = await ServiceEnggBasicSchema.findOne({ EnggId });
 
     const EnggData = await ServiceEnggBasicSchema.findOneAndUpdate(
       {
@@ -2763,7 +2765,9 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggAddress: bodyData.address,
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
-          : EnggDataChecker.EnggPhoto ? EnggDataChecker.EnggPhoto : "",
+          : EnggDataChecker.EnggPhoto
+          ? EnggDataChecker.EnggPhoto
+          : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -2781,36 +2785,49 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         IFSCcode: bodyData.IFSCcode,
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
-          : EnggDataChecker.AddharPhoto ? EnggDataChecker.AddharPhoto : "",
+          : EnggDataChecker.AddharPhoto
+          ? EnggDataChecker.AddharPhoto
+          : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
-          : EnggDataChecker.DrivingLicensePhoto ? EnggDataChecker.DrivingLicensePhoto : "",
+          : EnggDataChecker.DrivingLicensePhoto
+          ? EnggDataChecker.DrivingLicensePhoto
+          : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
-          : EnggDataChecker.PancardPhoto ? EnggDataChecker.PancardPhoto : "",
+          : EnggDataChecker.PancardPhoto
+          ? EnggDataChecker.PancardPhoto
+          : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
-          : EnggDataChecker.QualificationPhoto ? EnggDataChecker.QualificationPhoto : "",
+          : EnggDataChecker.QualificationPhoto
+          ? EnggDataChecker.QualificationPhoto
+          : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
-          : EnggDataChecker.AdditionalCoursePhoto ? EnggDataChecker.AdditionalCoursePhoto : "",
+          : EnggDataChecker.AdditionalCoursePhoto
+          ? EnggDataChecker.AdditionalCoursePhoto
+          : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
         ManagerName: bodyData.managerName,
         ManagerNo: bodyData.managerNumber,
-      },{
+      },
+      {
         new: true,
       }
     );
 
     // console.log("abiiiiiii",EnggData)
 
-    if(!EnggData){
+    if (!EnggData) {
       return res.status(404).json({ message: "This JON is not found" });
     }
 
-    res.status(200).json({status:true, message: "Engg Profile updated Succesfully"});
+    res
+      .status(200)
+      .json({ status: true, message: "Engg Profile updated Succesfully" });
 
     // console.log("dooooooooooo", EnggData);
   } catch (error) {
@@ -2823,15 +2840,12 @@ module.exports.editEnggDetailsForm = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------
 
-
-
-
 //-------------------------------------------------------------------------------------------------------------
 //api to add Engg Cash in Engg Table By admin
 // module.exports.addEnggCashByAdmin = async (req,res) => {
 // try {
 //   const {EnggId, AvailableCash} = req.body;
-  
+
 //  await ServiceEnggBasicSchema.findOneAndUpdate(
 //     {
 //       EnggId
@@ -2851,27 +2865,77 @@ module.exports.editEnggDetailsForm = async (req, res) => {
 
 //api to DepositeEnggCash To admin  //todo
 
-module.exports.DepositeEnggCash = async (req,res) => {
+module.exports.DepositeEnggCash = async (req, res) => {
   try {
-    const {EnggId, AvailableCash} = req.body;
+    const { EnggId, AvailableCash } = req.body;
 
     await ServiceEnggBasicSchema.findOneAndUpdate(
-          {
-            EnggId
-          },
-          { $inc: {AvailableCash:-AvailableCash} }
-        );
-      
-        res.status(200).json({message: 'Deposite Cash Successfully'})
+      {
+        EnggId,
+      },
+      { $inc: { AvailableCash: -AvailableCash } }
+    );
 
+    res.status(200).json({ message: "Deposite Cash Successfully" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-    error: "Internal server error while add Deposite Details",
-  });
+      error: "Internal server error while add Deposite Details",
+    });
   }
-}
+};
 
+//-------------------------------------------------------------------------------------------------------
 
+//get Engg Rating By Engg ID
 
+module.exports.getEnggRatingById = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
 
+    const ratingData = await EnggRating.find({ ServiceEnggId });
+
+    // console.log("jjjjjjj", ratingData);
+
+    const rating = await Promise.all(
+      ratingData.map(async (item) => {
+        const assignCallback = await ServiceAssigntoEngg.findOne({
+          callbackId: item.ServiceId,
+        });
+        const assignService = await AssignSecheduleRequest.findOne({
+          RequestId: item.ServiceId,
+        });
+        const clientDetails = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
+
+        const slots = assignCallback?.Slot || assignService?.Slot;
+        const clientName = clientDetails?.name;
+        const clientAddress = clientDetails?.Address;
+        const ClientRating = item.Rating;
+
+        return {
+          clientName,
+          clientAddress,
+          slots,
+          ClientRating,
+        };
+      })
+    );
+
+    // Calculate the average rating
+    const totalRatings = ratingData.reduce((sum, item) => sum + item.Rating, 0);
+    const averageRating = ratingData.length
+      ? totalRatings / ratingData.length
+      : 0;
+
+    // console.log("rating",rating)
+
+    res.status(200).json({ rating, averageRating });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching rating",
+    });
+  }
+};
