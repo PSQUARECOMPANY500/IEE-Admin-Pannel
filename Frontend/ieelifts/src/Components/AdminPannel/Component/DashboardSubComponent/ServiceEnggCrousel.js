@@ -28,7 +28,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   }, [ticketUpdate]);
 
   //-------------------------------------------------------------------------------------------------------------------------------
-  const getBasicData = useSelector((state) => {
+  const getBasicData = useSelector((state) => {       
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getEnggBasicDataForCrouserReducer &&

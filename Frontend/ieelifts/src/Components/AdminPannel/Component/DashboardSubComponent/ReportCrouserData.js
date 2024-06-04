@@ -10,14 +10,14 @@ import Rating from "./Rating";
 
 
 
-const ReportCrouserData = () => {
+const ReportCrouserData = ({serviceId}) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const routes = [
         { name: "M/c Room", co: <MCRoom /> },
         { name: "Cabin,Floors", co: <CabinFloors /> },
         { name: "Cartop,Shaft", co: <CartopShift /> },
         { name: "PIT Area", co: <PitArea /> },
-        { name: "Invoice", co: <Invoice /> },
+        { name: "Invoice", co: <Invoice serviceId={serviceId} /> },
         { name: "Rating", co: <Rating /> },
       ];
     

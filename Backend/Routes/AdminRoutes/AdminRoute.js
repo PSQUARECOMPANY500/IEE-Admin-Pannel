@@ -221,3 +221,9 @@ module.exports = router;
 
 // router.put("/addEnggCash", adminContoller.addEnggCashByAdmin);
 router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);
+
+
+
+//by preet ------------------ 03/06/2024  ------------------------------------  Add Engg Rating Data --------------------------------
+
+router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById)

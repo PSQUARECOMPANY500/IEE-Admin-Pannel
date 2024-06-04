@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
+import config from "../../../../config";
 
 const RepotImage = ({ images }) => {
 
@@ -59,7 +60,7 @@ console.log("images carsouls",images);
 
         <div className="image-container">
           {images?.map((items)=>{
-           return <img src={`http://localhost:8000/api/document/ReportAttachments/${items}`} />
+           return <img src={`${config.documentUrl}/ReportAttachments/${items}`} />
           })}
 
           {/* <div className="image-container-bottom">

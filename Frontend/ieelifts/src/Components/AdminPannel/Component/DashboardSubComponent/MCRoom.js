@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import ReportImageIcon from "../../../../Assets/Images/repotimage.png";
 import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
 import RepotImage from "./RepotImage";
+import config from "../../../../config";
 
 
 
 const MCRoom = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
-  console.log("images", images);
+  console.log("images preettttttt", images);
   const [showReportImage, setShowReportImage] = useState(false);
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -193,7 +194,7 @@ const MCRoom = ({ serviceId }) => {
                   </div>
                   <>
                     {/* <img src="https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg" /> */}
-                    <img src={`http://localhost:8000/api/document/ReportAttachments/${images[0]}`}/>
+                    <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`}/>
                   </>
                 </div>
               </div>

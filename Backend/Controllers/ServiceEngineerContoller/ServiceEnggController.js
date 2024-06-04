@@ -1680,15 +1680,22 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
     // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
+    console.log("ReportData", ReportData.EnggId);
 
     if (!ReportData) {
       return res.status(404).json({ message: "Report Not Found" });
     }
 
 
-    console.log("-------------------0000000000000",paymentdata)
-
-
+    //update cash in Engg table------------
+if(JSON.parse(paymentdata).Payment_Method === 'Cash' ){
+   await ServiceEnggBasicSchema.findOneAndUpdate(
+      {
+        EnggId:ReportData.EnggId
+      },
+      { $inc: {AvailableCash:JSON.parse(paymentdata).Total_Amount} }
+    );
+}
 
 
     const paymentPDF = req.files.report[0].filename;

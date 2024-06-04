@@ -14,7 +14,7 @@ const TaskHistory = (props) => {
 
   useEffect(() => {
     dispatch(assignedEnggDetails(engID));
-  }, []);
+  }, [engID]);
 
   useEffect(() => {
     if (Data) {

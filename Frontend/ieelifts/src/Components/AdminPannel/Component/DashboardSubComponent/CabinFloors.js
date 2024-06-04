@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReportImageIcon from "../../../../Assets/Images/repotimage.png";
 import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
 import RepotImage from "./RepotImage";
+import config from "../../../../config";
 
 const CabinFloors = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
@@ -147,7 +148,7 @@ const CabinFloors = ({ serviceId }) => {
                 </div>
                 <>
                   <img
-                    src={`http://localhost:8000/api/document/ReportAttachments/${images[0]}`}
+                    src={`${config.documentUrl}/ReportAttachments/${images[0]}`}
                   />
                 </>
               </div>

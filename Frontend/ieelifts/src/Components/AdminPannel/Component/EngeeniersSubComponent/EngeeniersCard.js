@@ -60,7 +60,7 @@ const EngeeniersCard = () => {
       case "c2":
         return <Attendance engID={engID} />;
       case "c3":
-        return <Rating />;
+        return <Rating engID={engID} />;
       case "c4":
         return <SpareParts engID={engID} />;
       default:
