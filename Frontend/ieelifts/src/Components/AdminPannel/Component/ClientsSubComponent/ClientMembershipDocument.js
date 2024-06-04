@@ -51,9 +51,10 @@ const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
         break;
     }
   };
+  // console.log("membershipData==>",membershipData);
   useEffect(() => {
     onDataChange(membershipData);
-    console.log("I am running", membershipData);
+   
   }, [membershipData]);
   useMemo(() => {
     // console.log(initialValues);
@@ -104,28 +105,28 @@ const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
           <FileUploader
             label={"Signed Quotation"}
             onFileSelect={handleFileSelect}
-            // apiDataName={initialValues.signedQuotation}
+            apiDataName={initialValues.signedQuotation}
           />
         </div>
         <div>
           <FileUploader
             label={"Payment Form"}
             onFileSelect={handleFileSelect}
-            // apiDataName={initialValues.paymentForm}
+            apiDataName={initialValues.paymentForm}
           />
         </div>
         <div>
           <FileUploader
             label={"Cheque form"}
             onFileSelect={handleFileSelect}
-            // apiDataName={initialValues.chequeForm}
+            apiDataName={initialValues.chequeForm}
           />
         </div>
         <div>
           <FileUploader
             label={"Sales Order"}
             onFileSelect={handleFileSelect}
-            // apiDataName={initialValues.salesOrder}
+            apiDataName={initialValues.salesOrder}
           />
         </div>
       </div>

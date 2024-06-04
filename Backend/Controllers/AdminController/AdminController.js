@@ -2606,22 +2606,23 @@ module.exports.postElevatorForm = async (req, res) => {
     const existingForm = await ElevatorFormSchema.findOne({
       "clientFormDetails.jon": jon,
     });
+  
     const membershipDocument = {
       signedQuotation:(req?.files?.signedQuotation && req.files.signedQuotation.length > 0)
       ? req.files.signedQuotation[0].filename
-      : existingForm.signedQuotation,
+      : existingForm.clientMembershipDocument.signedQuotation,
       paymentForm:
       (req?.files?.paymentForm && req.files.paymentForm.length > 0)
       ? req.files.paymentForm[0].filename
-      : existingForm.paymentForm,
+      : existingForm.clientMembershipDocument.paymentForm,
       chequeForm:
       (req?.files?.chequeForm && req.files.chequeForm.length > 0)
       ? req.files.chequeForm[0].filename
-      : existingForm.chequeForm,
+      : existingForm.clientMembershipDocument.chequeForm,
       salesOrder:
       (req?.files?.salesOrder && req.files.salesOrder.length > 0)
       ? req.files.salesOrder[0].filename
-      : existingForm.salesOrder
+      : existingForm.clientMembershipDocument.salesOrder
     };
 
     if (existingForm) {
@@ -2631,7 +2632,7 @@ module.exports.postElevatorForm = async (req, res) => {
       );
       existingForm.clientArchitect = JSON.parse(req.body.clientArchitect);
       existingForm.clientMembershipDocument = membershipDocument;
-      
+      await existingForm.save();
       return res.status(200).json({ error: "data updated successfully" });
 
     }

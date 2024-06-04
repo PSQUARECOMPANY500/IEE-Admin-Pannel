@@ -32,7 +32,9 @@ const ClientForm = () => {
     clientArchitect: {},
   });
 
+  
   // console.log("allFormData====>", allFormData)
+
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
   const [dimentionsData, setDimentionsData] = useState({});
   const dispatch = useDispatch();
@@ -96,7 +98,7 @@ const ClientForm = () => {
     setClientElevatorDetails(data);
   };
   //------------------handle next page-------------------
-  const handleNextPage = async () => {
+  const handleNextPage = () => {
     setToggle(false);
 
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
@@ -126,15 +128,23 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
+   
+    
+    
+    
+
     if (prevData) {
-      await dispatch(RegisterClientDataAction(formData));
+      dispatch(RegisterClientDataAction(formData));
     } else {
-      await dispatch(RegisterClientDataAction(formData));
+      dispatch(RegisterClientDataAction(formData));
     }
     // setAllFormData((prev) => ({
     //   ...prev,
     //   clientMembershipDocument: {},
     // }));
+
+ 
+
   };
   //-----------------------------------------------------
   const handlePreviousPage = () => {

@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from "react";
 
-const FileUploader = ({ label,onFileSelect,apiDataName }) => {
-  const [fileName, setFileName] = useState(apiDataName || label);
+const FileUploader = ({ label, onFileSelect, apiDataName }) => {
+  const [fileName, setFileName] = useState(label);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    // console.log(file)
+    console.log("files==>", file);
 
     if (file) {
-      setFileName(file.name)
-      onFileSelect(file,label);
+      setFileName(file.name);
+      onFileSelect(file, label);
     } else {
       setFileName(label);
     }
   };
   // Generate a unique ID for each instance
   const inputId = `fileInput-${label.replace(/\s+/g, "-")}`;
-  useEffect(()=>{
-    if(apiDataName){
-      setFileName(apiDataName);
+  useEffect(() => {
+    if (apiDataName) {
+      if (apiDataName instanceof File) {
+        setFileName(apiDataName.name);
+        onFileSelect(apiDataName, label);
+      } else {
+        setFileName(apiDataName.split("."[0] + apiDataName.split(".")[1]));
+      }
+    } else {
+      setFileName(label);
     }
-  },[])
+  }, [apiDataName, label]);
+
   return (
     <div className="file-upload">
       <input
