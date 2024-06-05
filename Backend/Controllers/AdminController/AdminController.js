@@ -2939,3 +2939,30 @@ module.exports.getEnggRatingById = async (req, res) => {
     });
   }
 };
+
+
+
+//-------------------------------------------------------------------------------------------------------
+
+
+//fetch client Service History ------------------------------------------------------------------------------------
+
+module.exports.getClientServiceHistoryByJON = async (req,res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const clientServiceHistory = await AssignSecheduleRequest.find({
+      JobOrderNumber,
+    });
+
+    
+
+    res.status(200).json({clientServiceHistory})
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching getClientServiceHistoryByJON"
+    });
+  }
+};

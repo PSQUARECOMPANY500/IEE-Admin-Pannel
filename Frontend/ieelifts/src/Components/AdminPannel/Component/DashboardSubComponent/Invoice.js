@@ -30,7 +30,7 @@ const Invoice = ({ serviceId }) => {
   // console.log("gggggggggggggggggggggggggggggggggggggggg",AdminReportData.AdminReportData.finalReportedData.PaymentMode);
 
   const openIt = () => {
-    const url = `${config.documentUrl}/ReportAttachments/${AdminReportData.PaymentDetails}`;
+    const url = `${config.documentUrl}/ReportPdf/${AdminReportData.PaymentDetails}`;
 
     window.open(url);
   };

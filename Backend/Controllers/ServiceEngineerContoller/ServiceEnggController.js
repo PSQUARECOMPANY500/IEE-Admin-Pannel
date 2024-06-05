@@ -1688,7 +1688,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
 
     //update cash in Engg table------------
-if(JSON.parse(paymentdata).Payment_Method === 'Cash' ){
+if(JSON.parse(paymentdata).Payment_Method === 'Cash'){
    await ServiceEnggBasicSchema.findOneAndUpdate(
       {
         EnggId:ReportData.EnggId
@@ -1707,6 +1707,7 @@ console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
     ReportData.isVerify = true;
     ReportData.isActive = false;
     ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
+    ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
 
     await ReportData.save();
 

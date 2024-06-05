@@ -109,6 +109,10 @@ const ReportInfo = new Schema({
   Steps:{
     type:Number,
     default:1,
+  },
+  TotalAmount:{
+    type:Number,
+    default:0,
   }
 });
 
