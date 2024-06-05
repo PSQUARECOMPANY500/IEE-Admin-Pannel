@@ -226,4 +226,4 @@ router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);
 
 //by preet ------------------ 03/06/2024  ------------------------------------  Add Engg Rating Data --------------------------------
 
-router.get("/getEnggRatibngById/:ServiceEnggId", adminContoller.getEnggRatingById)
+router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById)

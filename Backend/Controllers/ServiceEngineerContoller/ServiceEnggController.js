@@ -1695,7 +1695,10 @@ if(JSON.parse(paymentdata).Payment_Method === 'Cash' ){
       },
       { $inc: {AvailableCash:JSON.parse(paymentdata).Total_Amount} }
     );
-}
+}   // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
 
 
     const paymentPDF = req.files.report[0].filename;

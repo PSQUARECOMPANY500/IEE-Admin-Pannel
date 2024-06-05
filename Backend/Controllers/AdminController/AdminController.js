@@ -2912,7 +2912,7 @@ module.exports.getEnggRatingById = async (req, res) => {
         const slots = assignCallback?.Slot || assignService?.Slot;
         const clientName = clientDetails?.name;
         const clientAddress = clientDetails?.Address;
-        const ClientRating = item.Rating;
+        const ClientRating = item;
 
         return {
           clientName,
@@ -2926,7 +2926,7 @@ module.exports.getEnggRatingById = async (req, res) => {
     // Calculate the average rating
     const totalRatings = ratingData.reduce((sum, item) => sum + item.Rating, 0);
     const averageRating = ratingData.length
-      ? totalRatings / ratingData.length
+      ? (totalRatings / ratingData.length).toFixed(1)
       : 0;
 
     // console.log("rating",rating)
