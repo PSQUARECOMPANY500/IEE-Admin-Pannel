@@ -88,6 +88,8 @@ export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER";
 export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
 export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
 
+export const GET_CLIENT_MODAL_INFORMATION = "GET_CLIENT_MODAL_INFORMATION";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1245,20 +1247,20 @@ export const editEnggPersonalData = async (EnggId, formData) => {
 
 export const depositeEnggCash = async (EnggId, AvailableCash) => {
   try {
-    const response = await axios.put(`${config.apiUrl}/admin/depositeEnggCash`, {
-      EnggId,
-      AvailableCash
-    });
+    const response = await axios.put(
+      `${config.apiUrl}/admin/depositeEnggCash`,
+      {
+        EnggId,
+        AvailableCash,
+      }
+    );
     return response.data;
   } catch (error) {
     console.log("Error while fetching Deposit Engineer Cash", error);
   }
 };
 
-
-
-
-//------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
 //   -------  fetch final report for admin -------
 
 export const fetchFinalReportData = async (serviceId) => {
@@ -1272,15 +1274,53 @@ export const fetchFinalReportData = async (serviceId) => {
   }
 };
 
+// ---------------------------Get Rating data in rating.js page --------------------------------------------------------------------------------------------------------------
 
 export const fetchEnggRatingData = async (serviceId) => {
   try {
-    const response = await  axios.get(
+    const response = await axios.get(
       `${config.apiUrl}/admin/getEnggRatingById/${serviceId}`
     );
     return response.data;
   } catch (error) {
     console.log("error while fetching data", error);
-
   }
-}
+};
+
+// ------------------------------------------Get Client Modal information page ------------------------------------------------------------------------------------------
+
+export const getClientModalData = (jonId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getClientModalInformation/${jonId}`
+      );
+      dispatch({
+        type: GET_CLIENT_MODAL_INFORMATION,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+
+
+
+
+// export const getClientModalData = (jonId) => {
+//   return async (dispatch) => {
+//     try {
+//       const response = await axios.get(
+//         `${config.apiUrl}/admin/getClientModalInformation/${jonId}`
+//       );
+//       dispatch({
+//         type: GET_CLIENT_MODAL_INFORMATION,
+//         payload: response.data,
+//       });
+//     } catch (error) {
+//       console.log("error while fetching data", error);
+//     }
+//   };
+// };

@@ -2,17 +2,22 @@ import React, { useEffect, useState } from "react";
 import ElevatorInput from "./ClientsReusableComponent/ElevatorInput";
 
 const ElevatorFormDetails = ({
-  degree = {},
+  degree,
   openings,
   handleDegreeSelection,
+  clientModalInformation
 }) => {
   const [clientFormData, setClientFormData] = useState({
-    pitdepth: "300",
-    purpose: "Hospital",
-    stops: "02",
-    doortype: "type",
-    numberofopenings: "04",
+    pitdepth: clientModalInformation?.dimensions?.pitPoint?.pitDepth,
+    purpose: clientModalInformation?.elevatorDetails?.purpose,
+    stops: clientModalInformation?.dimensions?.pitPoint?.pitDepth,
+    doortype: clientModalInformation?.elevatorDetails?.doorType,
+    numberofopenings: clientModalInformation?.elevatorDetails?.numberOfOpenings,
   });
+
+  console.log("dell" ,clientModalInformation?.elevatorDetails?.type)
+  // console.log("preetiiii",clientModalInformation.elevatorDetails.sideOpening)
+
 
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
@@ -90,14 +95,14 @@ const ElevatorFormDetails = ({
               </span>
               <span
                 className={`degree-container-children ${
-                  degree.nintyDegreeRight ? "degree-selector" : ""
+                  degree?.nintyDegreeRight ? "degree-selector" : ""
                 }`}
               >
                 90°right
               </span>
               <span
                 className={`degree-container-children ${
-                  degree.oneEightyDegree ? "degree-selector" : ""
+                  degree?.oneEightyDegree ? "degree-selector" : ""
                 }`}
               >
                 180°degree

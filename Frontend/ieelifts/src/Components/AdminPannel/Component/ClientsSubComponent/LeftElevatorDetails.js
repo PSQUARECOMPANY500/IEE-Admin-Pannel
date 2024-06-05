@@ -6,16 +6,23 @@ const LeftElevatorDetails = ({
   capacityUnit,
   basementSelection,
   groundOrStilt,
+  clientModalInformation
+
 }) => {
   const [clientFormData, setClientFormData] = useState({
-    pitdepth: "Gearless",
-    purpose: "Hospital",
+    pitdepth: clientModalInformation?.elevatorDetails?.type,
+    purpose: clientModalInformation?.elevatorDetails?.capacity,
     stops: "02",
     doortype: "type",
     numberofopenings: "04",
-    contructionmaterial: "Type",
+    contructionmaterial: clientModalInformation?.elevatorDetails?.constructionMaterial,
+    
   });
 
+  console.log( "groundOrStilt",groundOrStilt)
+
+
+  // console.log("preetttttttttt",clientModalInformation.elevatorDetails.stops.Basement)
 
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
@@ -74,14 +81,14 @@ const LeftElevatorDetails = ({
             <div className="btn-container">
               <span
                 className={`b2-btnleft ${
-                  basementSelection.b2 ? "btn-active" : ""
+                  basementSelection?.includes("B2") ? "btn-active" : ""
                 }`}
               >
                 B2
               </span>
               <span
                 className={`b1-btnleft ${
-                  basementSelection.b1 ? "btn-active" : ""
+                  basementSelection?.includes("B1") ? "btn-active" : ""
                 }`}
               >
                 B1

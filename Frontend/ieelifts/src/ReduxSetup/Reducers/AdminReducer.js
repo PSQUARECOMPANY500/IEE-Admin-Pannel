@@ -45,8 +45,9 @@ import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
 import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
 import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
-import {GET_ADMIN_REPORT_DATA  } from "../Actions/AdminActions";
-import {REPORT_CROUSER_HANDLER} from "../Actions/AdminActions";
+import { GET_ADMIN_REPORT_DATA } from "../Actions/AdminActions";
+import { REPORT_CROUSER_HANDLER } from "../Actions/AdminActions";
+import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,11 +73,9 @@ const initialStates = {
   isLoggedIn: !!localStorage.getItem("adminData"),
 };
 export const loginAdminReducer = (state = initialStates, action) => {
-
-
   switch (action.type) {
-     case LOGIN_SERVICE_ADMIN:
-     return { ...state, data: action.payload, isLoggedIn: true };
+    case LOGIN_SERVICE_ADMIN:
+      return { ...state, data: action.payload, isLoggedIn: true };
     default:
       return state;
   }
@@ -720,7 +719,10 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
 const intialStateClientOpenModal = {
   isModalOpen: false,
 };
-export const openAddClientModalReducer = (state = intialStateClientOpenModal, action) => {
+export const openAddClientModalReducer = (
+  state = intialStateClientOpenModal,
+  action
+) => {
   switch (action.type) {
     case "OPEN_CLIENT_MODAL":
       return { ...state, isModalOpen: true };
@@ -799,17 +801,13 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
 
 //============================================================================= create by aayush for adminReport data api================================================
 
-const adminReportData= {
-AdminReportData: null,
-
+const adminReportData = {
+  AdminReportData: null,
 };
-export const getAdminReportDataReducer = (
-  state =adminReportData,
-  action
-) => {
+export const getAdminReportDataReducer = (state = adminReportData, action) => {
   switch (action.type) {
     case GET_ADMIN_REPORT_DATA:
-      return { ...state, AdminReportData: action.payload }
+      return { ...state, AdminReportData: action.payload };
     default:
       return state;
   }
@@ -817,16 +815,37 @@ export const getAdminReportDataReducer = (
 
 const ReportCrouserData = {
   Index: 0,
-  IsOpen: false
+  IsOpen: false,
 };
 
-export const ReportCrouserHandlerReducer = (state = ReportCrouserData, action) => {
+export const ReportCrouserHandlerReducer = (
+  state = ReportCrouserData,
+  action
+) => {
   switch (action.type) {
     case REPORT_CROUSER_HANDLER:
       return {
         ...state,
         Index: action.payload.Index,
-        IsOpen: action.payload.IsOpen
+        IsOpen: action.payload.IsOpen,
+      };
+    default:
+      return state;
+  }
+};
+
+// --------------------- Reducer of getClientModalData -------------------------
+
+const ClientModalData = {
+  ClientModalInformation: null,
+};
+
+export const getClientModalDataReducer = (state = ClientModalData, action) => {
+  switch (action.type) {
+    case GET_CLIENT_MODAL_INFORMATION:
+      return {
+        ...state,
+        ClientModalInformation: action.payload,
       };
     default:
       return state;

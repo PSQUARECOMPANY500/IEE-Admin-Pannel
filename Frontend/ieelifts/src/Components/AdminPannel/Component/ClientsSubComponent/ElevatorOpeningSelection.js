@@ -21,6 +21,11 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient
                 </span>
               )
           )}
+
+
+  
+
+
         </div>
         <div className="level-box-container">
           <div>

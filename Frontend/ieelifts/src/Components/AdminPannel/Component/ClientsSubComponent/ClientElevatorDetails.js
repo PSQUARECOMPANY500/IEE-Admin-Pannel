@@ -5,11 +5,34 @@ import LeftElevatorDetails from "./LeftElevatorDetails";
 import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
 import { HiArrowLeft } from "react-icons/hi";
 import ClientElevatorForm from "./ClientElevatorForm";
+import { getClientModalData } from "../../../../ReduxSetup/Actions/AdminActions";
+import { useDispatch, useSelector } from "react-redux";
 
-const ClientElevatorDetails = () => {
+const ClientElevatorDetails = ({ selectedClient }) => {
+  const dispatch = useDispatch();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
   const [selectedDegree, setSelectedDegree] = useState("90dL");
+
+  const clientModalInformation = useSelector((state) => {
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getClientModalDataReducer &&
+      state.AdminRootReducer.getClientModalDataReducer.ClientModalInformation
+    ) {
+      return state.AdminRootReducer.getClientModalDataReducer
+        .ClientModalInformation.response;
+    } else {
+      return null;
+    }
+  });
+  // console.log("clientModalInformation***********************************************************",clientModalInformation.dimensions.floors)
+  // console.log("Rajjjjjjjjjj",clientModalInformation.elevatorDetails.type)
+
+  useEffect(() => {
+    // dispatch(getClientModalData(selectedClient));   //to do in future -------------------
+    dispatch(getClientModalData("2024022"));
+  }, []);
 
   const array = [
     [true, false],
@@ -45,18 +68,27 @@ const ClientElevatorDetails = () => {
               <div className="client-form-elevator">
                 <ElevatorFormDetails
                   handleDegreeSelection={handleDegreeSelection}
-                  degree={selectedDegree}
+                  degree={
+                    clientModalInformation?.elevatorDetails?.sideOpening[0]
+                  }
+                  clientModalInformation={clientModalInformation}
                 />
 
                 <div className="client-form-elevator-details">
                   <LeftElevatorDetails
                     degree={{}}
                     capacityUnit={"Pr"}
-                    basementSelection={{ b1: true, b2: false }}
-                    groundOrStilt={"G"}
+                    // basementSelection={{ b1: true, b2: false }}
+                    basementSelection={
+                      clientModalInformation?.elevatorDetails?.stops?.Basement
+                    }
+                    groundOrStilt={
+                      clientModalInformation?.elevatorDetails?.stops?.FloorType
+                    }
                     handleInputValueChange={() => {}}
                     handleElevatorDetailsChange={() => {}}
                     handleDegreeSelection={() => {}}
+                    clientModalInformation={clientModalInformation}
                   />
                 </div>
 
@@ -92,14 +124,9 @@ const ClientElevatorDetails = () => {
                   <span className="client-form-heading-line"></span>
                 </div>
                 <div className="client-form-next-floor">
-                 
-
-                  <ClientElevatorForm/>
-
-
-
-
-
+                  <ClientElevatorForm
+                    clientModalInformation={clientModalInformation}
+                  />
                 </div>
               </div>
             )}
