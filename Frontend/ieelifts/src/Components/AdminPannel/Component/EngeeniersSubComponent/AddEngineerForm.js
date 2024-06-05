@@ -69,7 +69,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [pancardPhoto, SetPancardPhoto] = useState("");
   const [drivingLicensePhoto, SetDrivingLicensePhoto] = useState("");
   const [addharPhoto, SetAddharPhoto] = useState("");
-  console.log("dsdsd", addharPhoto);
+  // console.log("dsdsd", addharPhoto);
 
   const [isAddharCardNumberEmpty, setIsAddharCardNumberEmpty] = useState(false);
   const [isPancardsEmpty, setIsPancardsEmpty] = useState(false);
@@ -103,7 +103,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
     };
   }, []);
 
-  // console.log("raj", engID);
+  // console.log("idddd =>", engID);
 
   useEffect(() => {
     const getData = async () => {
@@ -307,83 +307,62 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
-    if (
-      !profilePhoto ||
-      !firstName ||
-      // !lastName ||
-      !mobileNumber ||
-      // !dateOfBirth ||
-      // !email ||
-      !address ||
-      !pinCode ||
-      // !city ||
-      !district ||
-      !state ||
-      !addharCardNumber ||
-      // !drivingLisience ||
-      // !pancards ||
-      !addharPhoto ||
-     
-      !EngggId ||
-      !alternativeNumber
-    ) {
-      toast.error("Plese fill all the fields");
-    }
+  
 
-    if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
-      setIsAddharCardNumberEmpty(true);
-      document
-        .getElementById("addharCardNumberInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
+    //   setIsAddharCardNumberEmpty(true);
+    //   document
+    //     .getElementById("addharCardNumberInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isPancardsEmpty && pancards.length <= 0) {
-      setIsPancardsEmpty(true);
-      document
-        .getElementById("pancardsInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isPancardsEmpty && pancards.length <= 0) {
+    //   setIsPancardsEmpty(true);
+    //   document
+    //     .getElementById("pancardsInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
-      setIsDrivingLisienceEmpty(true);
-      document
-        .getElementById("drivingLisienceInput")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
+    //   setIsDrivingLisienceEmpty(true);
+    //   document
+    //     .getElementById("drivingLisienceInput")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
-    if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
-      setIsAdditionalCourseEmpty(true);
-      document
-        .getElementById("additionalCourseData")
-        .classList.add("inputWithAttachment2");
-    }
+    // if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
+    //   setIsAdditionalCourseEmpty(true);
+    //   document
+    //     .getElementById("additionalCourseData")
+    //     .classList.add("inputWithAttachment2");
+    // }
 
     // conditioning for work experience border set up starts
-    if (showWorkExperience && jobDuration.length <= 0) {
-      SetJobDurationShow(true);
-      document.getElementById("jobDurationInput").classList.add("errorBorder");
-    }
-    if (showWorkExperience && companyName.length <= 0) {
-      SetCompanyNameShow(true);
-      document.getElementById("companyNameInput").classList.add("errorBorder");
-    }
+    // if (showWorkExperience && jobDuration.length <= 0) {
+    //   SetJobDurationShow(true);
+    //   document.getElementById("jobDurationInput").classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && companyName.length <= 0) {
+    //   SetCompanyNameShow(true);
+    //   document.getElementById("companyNameInput").classList.add("errorBorder");
+    // }
 
-    if (showWorkExperience && jobTitle.length <= 0) {
-      SetJobTitleShow(true);
-      document.getElementById("jobTitleInput").classList.add("errorBorder");
-    }
-    if (showWorkExperience && managerName.length <= 0) {
-      SetManagerNameShow(true);
-      document
-        .getElementById("managerInputNameInput")
-        .classList.add("errorBorder");
-    }
-    if (showWorkExperience && managerNumber.length <= 0) {
-      SetManagerNumberShow(true);
-      document
-        .getElementById("managerNumberInput")
-        .classList.add("errorBorder");
-    }
+    // if (showWorkExperience && jobTitle.length <= 0) {
+    //   SetJobTitleShow(true);
+    //   document.getElementById("jobTitleInput").classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && managerName.length <= 0) {
+    //   SetManagerNameShow(true);
+    //   document
+    //     .getElementById("managerInputNameInput")
+    //     .classList.add("errorBorder");
+    // }
+    // if (showWorkExperience && managerNumber.length <= 0) {
+    //   SetManagerNumberShow(true);
+    //   document
+    //     .getElementById("managerNumberInput")
+    //     .classList.add("errorBorder");
+    // }
 
     // conditioning for work experience border set up ends
 
@@ -408,21 +387,21 @@ const AddEngineerForm = ({ engID, onClose }) => {
     ];
 
     const checkRequiredFields = () => {
-      let isEmptyField = false;
-      requiredFields.forEach((field) => {
-        if (
-          !field?.value ||
-          typeof field.value !== "string" ||
-          field?.value?.trim() === ""
-        ) {
-          document.getElementById(field.id).classList.add("errorBorder");
-          isEmptyField = true;
-        }
-      });
+      // let isEmptyField = false;
+      // requiredFields.forEach((field) => {
+      //   if (
+      //     !field?.value ||
+      //     typeof field.value !== "string" ||
+      //     field?.value?.trim() === ""
+      //   ) {
+      //     document.getElementById(field.id).classList.add("errorBorder");
+      //     isEmptyField = true;
+      //   }
+      // });
 
-      if (isEmptyField) {
-        return true; // Return true if there are empty fields
-      }
+      // if (isEmptyField) {
+      //   return true; // Return true if there are empty fields
+      // }
     };
 
     checkRequiredFields();
@@ -464,7 +443,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
     console.log("Raj", editEnggPersonal)
 
     if(editEnggPersonal?.status === true) {
-      toast.success("engineer edited successfully");
+      toast.success("Engineer Edited successfully");
 
     }
 
@@ -497,20 +476,19 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       width: "100%",
                       height: "100%",
                       borderRadius: "8px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      objectFit: "contain",
+                      objectFit: "cover",
+                      objectPosition:"top",
                       border: "none",
                      
                       
                     }}
                     src={
-                      profilePhoto
+                      profilePhoto 
                         ? `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                         : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                     }
                   ></img>
+
                   <input
                     id="profilePhoto"
                     type="file"
@@ -565,7 +543,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="mobileNumberInput"
                       type="text"
                       placeholder="Mobile no"
-                      required
+                      
                       value={mobileNumber}
                       onChange={(e) => {
                         setMobileNumber(e.target.value);
@@ -582,7 +560,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="dateOfBirthInput"
                       type="text"
                       placeholder="Date of Birth"
-                      required
+                      
                       value={dateOfBirth}
                       onChange={(e) => {
                         setDateOfBirth(e.target.value);
@@ -602,7 +580,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="EnggIdInput"
                       type="text"
                       placeholder="Engg Id"
-                      required
+                      
                       value={EngggId}
                       onChange={(e) => {
                         setEnggId(e.target.value);
@@ -619,7 +597,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="AlternativeMobileNumber"
                       type="text"
                       placeholder="Alternative Number"
-                      required
+                      
                       value={alternativeNumber}
                       onChange={(e) => {
                         setAlternativeNumber(e.target.value);
@@ -639,7 +617,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="emailInput"
                       type="text"
                       placeholder="Email"
-                      required
+                      
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
@@ -668,7 +646,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     id="addressInput"
                     type="text"
                     placeholder="Address"
-                    required
+                    
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
@@ -687,7 +665,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="pinCodeInput"
                       type="number"
                       placeholder="Pincode"
-                      required
+                      
                       value={pinCode}
                       onChange={(e) => {
                         setPinCode(e.target.value);
@@ -704,7 +682,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="cityInput"
                       type="text"
                       placeholder="City"
-                      required
+                      
                       value={city}
                       onChange={(e) => {
                         setCity(e.target.value);
@@ -722,7 +700,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="districtInput"
                       type="text"
                       placeholder="District"
-                      required
+                      
                       readOnly
                       value={district}
                     />
@@ -732,7 +710,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       type="text"
                       placeholder="State"
                       readOnly
-                      required
+                      
                       value={state}
                     />
                   </div>
@@ -763,7 +741,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="addharCardNumberInput"
                           type="text"
                           placeholder="Aadhaar Card No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={addharCardNumber}
                           onChange={(e) => {
@@ -828,7 +806,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="pancardsInput"
                           type="text"
                           placeholder="Pancard No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={pancards}
                           onChange={(e) => {
@@ -880,7 +858,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="drivingLisienceInput"
                           type="text"
                           placeholder="Driving License No"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={drivingLisience}
                           onChange={(e) => {
@@ -1000,7 +978,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           id="additionalCourseData"
                           type="text"
                           placeholder="Additional Course"
-                          required
+                          
                           style={{ outline: "none" }}
                           value={additionalCourse}
                           onChange={(e) => {
@@ -1058,7 +1036,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="accountHolderNameInput"
                       type="text"
                       placeholder="Account Holder Name"
-                      required
+                     
                       value={accountHolderName}
                       onChange={(e) => {
                         setAccountHolderName(e.target.value);
@@ -1074,7 +1052,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="branchNameInput"
                       type="text"
                       placeholder="Branch Name"
-                      required
+                      
                       value={branchName}
                       onChange={(e) => {
                         setBranchName(e.target.value);
@@ -1092,7 +1070,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="accountNumberInput"
                       type="text"
                       placeholder="Account Number"
-                      required
+                      
                       value={accountNumber}
                       onChange={(e) => {
                         setAccountNumber(e.target.value);
@@ -1109,7 +1087,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="IFSCcodeInput"
                         type="text"
                         placeholder="IFSC Code"
-                        required
+                       
                         value={IFSCcode}
                         onChange={(e) => {
                           setIFSCcode(e.target.value);
@@ -1144,7 +1122,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         readOnly
                         type="text"
                         placeholder="Previos Work Experience"
-                        required
+                        
                         style={{ border: "none", outline: "none" }}
                       />
                       <CheckBox
@@ -1160,7 +1138,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobDurationInput"
                         type="text"
                         placeholder="Duration of Job"
-                        required
+                        
                         value={jobDuration}
                         onChange={(e) => {
                           setJobDuration(e.target.value);
@@ -1181,7 +1159,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="companyNameInput"
                         type="text"
                         placeholder="Company Name"
-                        required
+                        
                         value={companyName}
                         onChange={(e) => {
                           setCompanyName(e.target.value);
@@ -1199,7 +1177,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobTitleInput"
                         type="text"
                         placeholder="Job title"
-                        required
+                        
                         value={jobTitle}
                         onChange={(e) => {
                           setJobTitle(e.target.value);
@@ -1219,7 +1197,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerInputNameInput"
                         type="text"
                         placeholder="Manager Name"
-                        required
+                        
                         value={managerName}
                         onChange={(e) => {
                           setManagerName(e.target.value);
@@ -1237,7 +1215,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerNumberInput"
                         type="text"
                         placeholder="Manager No"
-                        required
+                        
                         value={managerNumber}
                         onChange={(e) => {
                           setManagerNumber(e.target.value);

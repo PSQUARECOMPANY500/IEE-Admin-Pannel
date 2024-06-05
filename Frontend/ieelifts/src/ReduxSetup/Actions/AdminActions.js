@@ -1271,3 +1271,16 @@ export const fetchFinalReportData = async (serviceId) => {
     console.log("error while fetching data", error);
   }
 };
+
+
+export const fetchEnggRatingData = async (serviceId) => {
+  try {
+    const response = await  axios.get(
+      `${config.apiUrl}/admin/getEnggRatingById/${serviceId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+
+  }
+}

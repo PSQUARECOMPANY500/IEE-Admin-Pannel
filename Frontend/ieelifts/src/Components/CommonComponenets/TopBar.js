@@ -329,6 +329,9 @@ const TopBar = (props) => {
           </>
         )}
 
+{/*----------------- created by Raj------------------------------- */}
+        {location.pathname === "/Engeeniers" && (
+
         <div style={{ display: "flex" }} ref={collectCashClickRef}>
           <span
             className="top-icon-bell"
@@ -338,9 +341,11 @@ const TopBar = (props) => {
             <img src={moneyIcon} />
           </span>
 
-
           {collectCash && <CollectCashModal onClose={handleCollectCash} />}
+
         </div>
+        )}
+
 
         <div style={{ display: "flex" }} ref={notificationClickRef}>
           <span

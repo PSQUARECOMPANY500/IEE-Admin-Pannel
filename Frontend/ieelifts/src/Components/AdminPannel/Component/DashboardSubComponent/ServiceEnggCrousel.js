@@ -89,7 +89,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 4,
           infinite: true,
           dots: true,

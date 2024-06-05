@@ -8,6 +8,7 @@ const [openPop, setOpenPop] = useState(false);
 
 const handleClose = () => {
     setOpenPop(false)
+    onClose();
 }
 
 
@@ -36,7 +37,7 @@ const handleClose = () => {
         <div className="innermembershippopup-modal-wrapper">
             <div className="innermembershippopup-modal-conntainer">
 
-            <InnerMembershipPopup onClose={handleClose}/>
+            <InnerMembershipPopup onClose={handleClose} />
             </div>
         </div>
     )}

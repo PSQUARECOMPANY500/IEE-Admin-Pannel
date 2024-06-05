@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { depositeEnggCash, fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import toast from "react-hot-toast";
 
 const CollectCashModal = ({ onClose }) => {

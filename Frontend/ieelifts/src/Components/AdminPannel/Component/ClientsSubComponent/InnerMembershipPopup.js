@@ -6,6 +6,8 @@ const InnerMembershipPopup = ({ onClose }) => {
     const handleFileUploadClick = () => {
         document.getElementById("fileInput").click();
       };
+
+      
   return (
     <div className="innerMembershipPopup-main">
 <IoCloseOutline onClick={onClose}  className="closeIconmembershippopup" />
