@@ -31,7 +31,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
 
   useEffect(() => {
     // dispatch(getClientModalData(selectedClient));   //to do in future -------------------
-    dispatch(getClientModalData("2024022"));
+    dispatch(getClientModalData("2024021"));
   }, []);
 
   const array = [
@@ -107,6 +107,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                     array={array}
                     handleClick={() => {}}
                     isClient={true}
+                    clientModalInformation={clientModalInformation}
                   />
                 </div>
               </div>

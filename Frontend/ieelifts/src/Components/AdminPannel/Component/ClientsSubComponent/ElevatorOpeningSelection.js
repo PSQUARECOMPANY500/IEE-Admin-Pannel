@@ -1,6 +1,7 @@
 import React from "react";
 
-const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient }) => {
+const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient, clientModalInformation }) => {
+
   return (
     <>
       <div className="level-main-container">
@@ -22,11 +23,7 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient
               )
           )}
 
-
-  
-
-
-        </div>
+    </div>
         <div className="level-box-container">
           <div>
             {Flevel &&

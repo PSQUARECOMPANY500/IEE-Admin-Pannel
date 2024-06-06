@@ -6614,7 +6614,13 @@ element.style {
   border-radius: 10px;
   padding: 10px;
   font-family: "poppins";
-  width: 100%;
+  /* width: 100%; */
+  width: 50%;
+}
+
+.PersonalDetailInputEmail {
+  display: flex;
+  gap: 1rem;
 }
 
 .EnggDetailHeading {
@@ -6816,6 +6822,18 @@ element.style {
 }
 
 .addFileName p {
+  color: #f8ac1d;
+  font-size: 0.7rem;
+}
+.addSelectRole {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.addSelectRole p {
   color: #f8ac1d;
   font-size: 0.7rem;
 }

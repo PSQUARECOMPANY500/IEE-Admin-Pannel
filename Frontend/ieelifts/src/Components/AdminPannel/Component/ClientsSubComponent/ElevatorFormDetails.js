@@ -15,7 +15,7 @@ const ElevatorFormDetails = ({
     numberofopenings: clientModalInformation?.elevatorDetails?.numberOfOpenings,
   });
 
-  console.log("dell" ,clientModalInformation?.elevatorDetails?.type)
+  // console.log("dell" ,clientModalInformation?.elevatorDetails?.type)
   // console.log("preetiiii",clientModalInformation.elevatorDetails.sideOpening)
 
 
