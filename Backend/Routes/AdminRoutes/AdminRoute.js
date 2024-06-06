@@ -231,4 +231,9 @@ router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById
 
 //by preet ------------------ 05/06/2024  ------------------------------------ client Service history --------------------------------
 
+
 router.get("/getClientServiceHistory/:JobOrderNumber", adminContoller.getClientServiceHistoryByJON)
+router.get("/getClientCallbackHistory/:JobOrderNumber", adminContoller.getClientCallbackByJON)
+
+
+

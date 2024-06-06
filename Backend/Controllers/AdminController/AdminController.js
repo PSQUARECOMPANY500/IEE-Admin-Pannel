@@ -2940,29 +2940,157 @@ module.exports.getEnggRatingById = async (req, res) => {
   }
 };
 
-
-
-//-------------------------------------------------------------------------------------------------------
-
-
+//----------------------------------------------------------------------------------------------------------------
 //fetch client Service History ------------------------------------------------------------------------------------
 
-module.exports.getClientServiceHistoryByJON = async (req,res) => {
+module.exports.getClientServiceHistoryByJON = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
     const clientServiceHistory = await AssignSecheduleRequest.find({
       JobOrderNumber,
+      ServiceProcess: "completed",
     });
 
-    
+    const serviceHistory = await Promise.all(
+      clientServiceHistory.map(async (item) => {
+        const EnggName = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        }).select("EnggName");
+        const checklistName = await ChecklistModal.findById(
+          item.AllotAChecklist
+        ).select("checklistName");
 
-    res.status(200).json({clientServiceHistory})
+        const ReportDetails = await ReportTable.find({
+          serviceId: item.RequestId,
+        });
 
+        const SparePartsChanged = [];
+
+        const filteredData = ReportDetails[0].questionsDetails.filter(
+          (question) =>
+            (question.questionResponse.isResolved &&
+              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              question.questionResponse.sparePartDetail.subsparePartspartid !==
+                "") ||
+            (question.questionResponse.isResolved &&
+              question.questionResponse.SparePartDescription !== "") ||
+            !question.questionResponse.isResolved
+        );
+
+        filteredData &&
+          filteredData.forEach((element) => {
+            if (
+              !element.questionResponse.isSparePartRequest &&
+              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              element.questionResponse.sparePartDetail.subsparePartspartid !==
+                "" &&
+              element.questionResponse.isResolved
+            ) {
+              SparePartsChanged.push(
+                element.questionResponse.sparePartDetail.subsparePartspartname
+              );
+            }
+          });
+
+        return {
+          item,
+          EnggName,
+          checklistName,
+          TotalAmount: ReportDetails[0].TotalAmount || 0,
+          SparePartsChanged,
+          Payment_Mode: ReportDetails[0].paymentMode,
+          PaymentDetail: ReportDetails[0].paymentDetils,
+        };
+      })
+    );
+
+    res.status(200).json({
+      serviceHistory,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
-      error: "Internal server error while fetching getClientServiceHistoryByJON"
+      error:
+        "Internal server error while fetching getClientServiceHistoryByJON",
     });
   }
 };
+
+//-----------------------------------------------------------------------------------------------------------------
+//fetch client Callback History ------------------------------------------------------------------------------------
+
+module.exports.getClientCallbackByJON = async (req, res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const clientCallbackHistory = await ServiceAssigntoEngg.find({
+      JobOrderNumber,
+      ServiceProcess: "completed",
+    });
+
+    const callbackHistory = await Promise.all(
+      clientCallbackHistory.map(async (item) => {
+        const EnggName = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        }).select("EnggName");
+        const checklistName = await ChecklistModal.findById(
+          item.AllotAChecklist
+        ).select("checklistName");
+
+        const ReportDetails = await ReportTable.find({
+          serviceId: item.callbackId,
+        });
+
+        const SparePartsChanged = [];
+
+        const filteredData = ReportDetails[0].questionsDetails.filter(
+          (question) =>
+            (question.questionResponse.isResolved &&
+              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              question.questionResponse.sparePartDetail.subsparePartspartid !==
+                "") ||
+            (question.questionResponse.isResolved &&
+              question.questionResponse.SparePartDescription !== "") ||
+            !question.questionResponse.isResolved
+        );
+
+        filteredData &&
+          filteredData.forEach((element) => {
+            if (
+              !element.questionResponse.isSparePartRequest &&
+              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              element.questionResponse.sparePartDetail.subsparePartspartid !==
+                "" &&
+              element.questionResponse.isResolved
+            ) {
+              SparePartsChanged.push(
+                element.questionResponse.sparePartDetail.subsparePartspartname
+              );
+            }
+          });
+        return {
+          item,
+          EnggName,
+          checklistName,
+          TotalAmount: ReportDetails[0].TotalAmount || 0,
+          SparePartsChanged,
+          Payment_Mode: ReportDetails[0].paymentMode,
+          PaymentDetail: ReportDetails[0].paymentDetils,
+        };
+      })
+    );
+
+    res.status(200).json({
+      callbackHistory,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching getClientCallbackByJON",
+    });
+  }
+};
+
+//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
