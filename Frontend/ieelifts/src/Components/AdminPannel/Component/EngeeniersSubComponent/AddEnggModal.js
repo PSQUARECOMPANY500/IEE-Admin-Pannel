@@ -38,6 +38,7 @@ const AddEnggModal = () => {
   const [drivingLisience, setDrivingLisience] = useState("");
   const [pancards, setPancard] = useState("");
   const [qualification, setQualification] = useState("");
+  const [role, setRole] = useState("");
   const [additionalCourse, setAdditionalCourse] = useState("");
   const [accountHolderName, setAccountHolderName] = useState("");
   const [branchName, setBranchName] = useState("");
@@ -108,6 +109,18 @@ const AddEnggModal = () => {
     },
   ];
 
+  const RoleData = [
+    {
+      value: "siteengineer",
+      label: "Site Engineer",
+    },
+    {
+      value: "erectionengineer",
+      label: "Erection Engineer",
+    },
+    
+  ]
+
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
     setPinCode(newEvent);
@@ -145,7 +158,12 @@ const AddEnggModal = () => {
 
   const onStateChange = (value) => {
     setQualification(value.value);
+
   };
+
+  const onRoleChange = (value) => {
+    setRole(value.value)
+  }
 
   const handleUploadClick = (documentType) => {
     switch (documentType) {
@@ -209,8 +227,9 @@ const AddEnggModal = () => {
       // !jobDuration ||
       // !companyName ||
       // !jobTitle ||
-      // !managerName 
-     !EngggId || !alternativeNumber
+      // !managerName
+      !EngggId ||
+      !alternativeNumber
     ) {
       toast.error("Plese fill all the fields");
     }
@@ -334,6 +353,7 @@ const AddEnggModal = () => {
     formData.append("mobileNumber", mobileNumber);
     formData.append("dateOfBirth", dateOfBirth);
     formData.append("email", email);
+    formData.append("role", role);
     formData.append("address", address);
     formData.append("pinCode", pinCode);
     formData.append("city", city);
@@ -372,6 +392,7 @@ const AddEnggModal = () => {
       setMobileNumber("");
       setDateOfBirth("");
       setEmail("");
+      setRole("");
       setAddress("");
       setCity("");
       setAddharCardNumber("");
@@ -463,7 +484,10 @@ const AddEnggModal = () => {
                       ref={fileInputRef5} // Attach fileInputRef to the input element
                     />
                   </div>
-                  <div className="personalDetailSec" style={{marginTop:"2.7rem"}}>
+                  <div
+                    className="personalDetailSec"
+                    style={{ marginTop: "2.7rem" }}
+                  >
                     <div className="PersonalDetailInput">
                       <input
                         id="firstNameInput"
@@ -510,7 +534,7 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
-                      
+
                       <input
                         id="dateOfBirthInput"
                         type="text"
@@ -545,7 +569,7 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
-                      
+
                       <input
                         id="AlternativeMobileNumber"
                         type="text"
@@ -561,15 +585,8 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
-                    </div> 
+                    </div>
                     {/*----------------------- engg id and alternative number section End -------------------------------- */}
-
-
-
-
-
-
-
 
                     <div className="PersonalDetailInputEmail">
                       <input
@@ -587,13 +604,46 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
+
+                      <div className="addSelectRole">
+                        <div
+                          className="inputWithAttachment"
+                          ref={(el) => (divRef.current[4] = el)}
+                          onClick={() => handleClick(4)}
+                          style={{ outline: "none" }}
+                        >
+                          <AddEnggAttachment
+                            width="100%"
+                            placeholder="Select Role"
+                            Details={RoleData}
+                            value={role}
+                            padding="4px"
+                            onStateChange={onRoleChange}
+                          />
+                          <input
+                            type="file"
+                           
+                            name="fields[]"
+                            onChange={(e) =>
+                              setRole(e.target.files[0])
+                            }
+                            style={{ display: "none" }}
+                            ref={fileInputRef3} // Attach fileInputRef to the input element
+                          />
+                         
+                        </div>
+                        {/* <p>{qualificationPhoto.name}</p> */}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               {/* --------------------------------------------------------------------------- Address details section starts--------------------------------------------------------------------------- */}
 
-              <div className="ExtraCiricularSection" style={{marginTop:"2.6rem"}}>
+              <div
+                className="ExtraCiricularSection"
+                style={{ marginTop: "2.6rem" }}
+              >
                 <div className="EnggDetailHeading">Address details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="EnggAddressInput">
@@ -913,8 +963,7 @@ const AddEnggModal = () => {
             {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 
             <div className="BankWorkSection">
-
-            <div className="ExtraCiricularSection">
+              <div className="ExtraCiricularSection">
                 <div className="EnggDetailHeading">Educational details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="mainPersonalDetialSection">
@@ -931,6 +980,7 @@ const AddEnggModal = () => {
                             placeholder="Select Qualification"
                             Details={QualificationData}
                             padding="4px"
+                            value={qualification}
                             onStateChange={onStateChange}
                           />
                           <input

@@ -117,7 +117,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const renderComponent = () => {
     switch (dropdowns[2].selectedOption) {
       case "Elevator details":
-        return <ClientElevatorDetails />;
+        return <ClientElevatorDetails selectedClient={selectedClient.JobOrderNumber} />;
       case "Service History":
         return <ClientServiceHistory />;
       case "Call Back History":
@@ -127,7 +127,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       case "SOS Calls":
         return <ClientSOSCall />;
       default:
-        return <ClientElevatorDetails />;
+        return <ClientElevatorDetails selectedClient={selectedClient.JobOrderNumber} />;
     }
   };
 
@@ -215,3 +215,6 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 };
 
 export default ClientModal;
+
+
+

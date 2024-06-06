@@ -2045,9 +2045,12 @@ code {
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 10rem;
   margin-top: 1rem;
+  padding:2rem 0px;
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+
 .client-elevatorform-main::-webkit-scrollbar {
   width: 3px;
   height: 20px;
@@ -2063,15 +2066,25 @@ code {
 }
 .patna{
   height: 80vh;
-  margin-bottom: -22rem;
+  margin-bottom: -20.5rem;
 
 }
 .basement-form-dimensions {
   padding: 0rem 2rem;
-  height: 80%;
-  margin-bottom: -13rem;
+  height: 50%;
+  margin-top: -1vw;
+  /* margin-bottom: 2vw; */
 
 } 
+.overhead-elevatorInput{
+  position: absolute;
+  top: 53.5%;
+
+}
+
+.dimenstions-container-point{
+  margin-top: -1.5vw;
+}
 
 .client-form-heading-arrow {
   display: flex;
@@ -2500,12 +2513,16 @@ code {
 }
 .basement-input-wrapper {
   display: grid;
+  /* background-color: lightpink; */
   grid-template-columns: 1fr 1fr;
   grid-row-gap: 1.8rem;
   grid-column-gap: 2rem;
 }
 .floor-header {
   display: flex;
+  /* background-color: lightpink; */
+  width: 92%;
+
   justify-content: space-between;
   margin: 1rem 0;
 }
@@ -2552,6 +2569,17 @@ code {
 
 .hidden-input {
   display: none;
+}
+
+.dimension-name-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dimension-name-wrapper p{
+  font-size: 0.85rem;
+  margin-top:0.5rem;
+  cursor: pointer;
 }
 
 .dimension-upload-btn {
@@ -2667,6 +2695,7 @@ code {
 /*--------------------------Author: Rahul Kumar ------02/05/2024--------------*/
 .floor-section {
   margin-top: 2.5rem;
+  position: relative;
 }
 .floor-input-wrapper {
   display: grid;
@@ -2692,6 +2721,7 @@ code {
   overflow-y: auto;
   max-height: 670px;
   overflow-x: hidden;
+  
   display: grid;
   padding-right: 2rem;
   padding-bottom: 1rem;
