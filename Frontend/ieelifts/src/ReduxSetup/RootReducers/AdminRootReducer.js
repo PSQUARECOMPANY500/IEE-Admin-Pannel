@@ -48,6 +48,7 @@ import { openAddClientModalReducer } from "../Reducers/AdminReducer";
 import { RegisterClientDataReducer } from "../Reducers/AdminReducer";
 import {getAdminReportDataReducer} from "../Reducers/AdminReducer";
 import { ReportCrouserHandlerReducer} from "../Reducers/AdminReducer";
+import {ClientFormDataFromApiReducer} from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -98,7 +99,8 @@ const AdminRootReducer = combineReducers({
   openAddClientModalReducer:openAddClientModalReducer,
   RegisterClientDataReducer:RegisterClientDataReducer,
   getAdminReportDataReducer:getAdminReportDataReducer,
-  ReportCrouserHandlerReducer:ReportCrouserHandlerReducer
+  ReportCrouserHandlerReducer:ReportCrouserHandlerReducer,
+  ClientFormDataFromApiReducer:ClientFormDataFromApiReducer
 });
 
 export default AdminRootReducer;

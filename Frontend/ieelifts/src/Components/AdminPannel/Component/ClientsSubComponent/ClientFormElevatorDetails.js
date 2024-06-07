@@ -1,26 +1,40 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
 import ElevatorDetails from "./ElevatorDetails";
+import { useSelector } from "react-redux";
 
 const ClientFormElevatorDetails = ({
   setValForDimention,
   setFLevel,
   Flevel,
   onDataChange,
-  validateData
+  validateData,
+  prevData,
 }) => {
+  const clientData = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
+        ?.elevatorDetails
+  ); //data
+
   //dropdown options
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
   const numberOfOpenings = [1, 2, 3];
-  // const pitDepth = [100, 200];
   const purpose = ["Hospital", "Automobil", "Passenger"];
   const typeOptions = ["gearless", "geared"];
-  const doorType = ["center opening", "Swing","Manual","Telescopic(LHS)","Telescopic(RHS)"];
-  const constructionMaterial = ["Brick", "RCC","Steel"];
+  const doorType = [
+    "center opening",
+    "Swing",
+    "Manual",
+    "Telescopic(LHS)",
+    "Telescopic(RHS)",
+  ];
+  const constructionMaterial = ["Brick", "RCC", "Steel"];
   //states
   const [elevatorData, setElevatorData] = useState({});
   const [array, setArray] = useState([]);
+  const [visible, setVisible] = useState(true);
   const [degree, setDegree] = useState({
     nintyDegreeLeft: "",
     nintyDegreeRight: "",
@@ -41,12 +55,10 @@ const ClientFormElevatorDetails = ({
     remarks: "",
   });
   const [validate, setValidate] = useState(false);
-  // console.log("elevatorDetails===>",elevatorDetails)
   //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
     setElevatorDetails((prevDetails) => ({
       ...prevDetails,
-      [fieldName]: value,
       [fieldName]: value,
     }));
     if (fieldName === "stops") {
@@ -80,6 +92,13 @@ const ClientFormElevatorDetails = ({
     elevatorDetails.groundOrStilt,
     elevatorDetails.basementSelection,
   ]);
+  const toggleVisibility = () => {
+    setVisible((prev) => !prev);
+  };
+
+  const handleOnClick = () => {
+    toggleVisibility();
+  };
 
   const handleInputValueChange = (field, newValue) => {
     if (field === "stops" || field === "numberOfOpenings") {
@@ -88,6 +107,7 @@ const ClientFormElevatorDetails = ({
         nintyDegreeRight: "",
         oneEightyDegree: "",
       });
+      setVisible(true);
     }
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue);
@@ -121,13 +141,14 @@ const ClientFormElevatorDetails = ({
 
     setElevatorOpenings(updatedElevatorOpenings);
   };
-  const handleNumberOfOpenings = (openings) => {
+  const handleNumberOfOpenings = (openings, prevData) => {
     setDegree({
       nintyDegreeLeft: "",
       nintyDegreeRight: "",
       oneEightyDegree: "",
     });
     handleElevatorDetailsChange("numberOfOpenings ", openings);
+
     const ele = [];
     for (let i = 0; i < Flevel.length; i++) {
       ele.push({ level: Flevel[i], openings: [] });
@@ -145,11 +166,15 @@ const ClientFormElevatorDetails = ({
   }
 
   const handleDegreeSelection = (value) => {
+    // setVisible(true);
+    // console.log("i am here", elevatorDetails.numberOfOpenings);
     setLevelAndOpeningsView(elevatorDetails.numberOfOpenings);
     setDefaultData(elevatorDetails.numberOfOpenings);
     if (
       elevatorDetails.numberOfOpenings === 2 ||
-      elevatorDetails.numberOfOpenings === 1
+      elevatorDetails.numberOfOpenings === 1 ||
+      elevatorDetails.numberOfOpenings === "1" ||
+      elevatorDetails.numberOfOpenings === "2"
     ) {
       setDegree({
         nintyDegreeLeft: "",
@@ -203,12 +228,14 @@ const ClientFormElevatorDetails = ({
       default:
         break;
     }
+    setVisible(true);
   };
 
   const setLevelAndOpeningsView = (openings) => {
     const arrayTobe = Array.from({ length: elevatorDetails.stops }, () =>
       Array(openings).fill(false)
     );
+
     setArray(arrayTobe);
   };
 
@@ -230,12 +257,16 @@ const ClientFormElevatorDetails = ({
   }, [elevatorDetails, degree, elevatorOpenings]);
 
   function validateElevatorData(data) {
-   
     if (!data.capacity || !data.capacityUnit || !data.constructionMaterial) {
       return false;
     }
     if (data.elevatorOpenings.length > 1) {
-      if (!data.degree || (!data.degree.nintyDegreeLeft && !data.degree.nintyDegreeRight && !data.degree.oneEightyDegree)) {
+      if (
+        !data.degree ||
+        (!data.degree.nintyDegreeLeft &&
+          !data.degree.nintyDegreeRight &&
+          !data.degree.oneEightyDegree)
+      ) {
         return false;
       }
     }
@@ -250,12 +281,16 @@ const ClientFormElevatorDetails = ({
     if (data.elevatorOpenings.length > 1) {
       for (let i = 0; i < data.elevatorOpenings.length; i++) {
         const opening = data.elevatorOpenings[i];
-        if (!opening.level || !opening.openings || opening.openings.length === 0) {
+        if (
+          !opening.level ||
+          !opening.openings ||
+          opening.openings.length === 0
+        ) {
           return false;
         }
       }
     }
-   
+
     if (
       !data.groundOrStilt ||
       !data.numberOfOpenings ||
@@ -273,9 +308,68 @@ const ClientFormElevatorDetails = ({
     onDataChange(elevatorData);
     const isValid = validateElevatorData(elevatorData);
     setValidate(isValid);
-    validateData(validate)
-  }, [elevatorData,onDataChange]);
+    validateData(validate);
+  }, [elevatorData, onDataChange]);
+  //------------------------------------------------------------------------------
+  useMemo(async () => {
+    if (clientData) {
+      const {
+        pitDepth,
+        type,
+        purpose,
+        capacity,
+        capacityUnit,
+        stops,
+        remarks,
+        sideOpening,
+        numberOfOpenings,
+        levelOpening,
+        doorType,
+        constructionMaterial
+      } = clientData;
+      setElevatorDetails((prev) => ({
+        ...prev,
+        pitDepth: pitDepth,
+        type: type,
+        purpose: purpose,
+        capacity: capacity,
+        capacityUnit: capacityUnit,
+        stops: stops?.numberOfStops,
+        groundOrStilt: stops?.FloorType,
+        doorType: doorType,
+        constructionMaterial: constructionMaterial,
+        basementSelection: {
+          B1: stops?.Basement ? true : false,
+          B2: stops?.Basement ? true : false,
+        },
+        numberOfOpenings: numberOfOpenings,
+        remarks: remarks,
+      }));
 
+      setDegree((prev) => ({
+        ...prev,
+        nintyDegreeLeft: sideOpening[0],
+        nintyDegreeRight: sideOpening[1],
+        oneEightyDegree: sideOpening[2],
+      }));
+      setElevatorOpenings(levelOpening);
+    }
+  }, [clientData]);
+
+  useEffect(() => {
+    let values = Object.values(degree).filter(
+      (value) => value !== "" && value !== undefined && value !== null
+    );
+    values = ["original", ...values];
+    setLevelAndOpeningsView(values.length);
+    elevatorOpenings.forEach((opening, index) => {
+      opening.openings.forEach((value) => {
+        handleClick(index, values.indexOf(value));
+      });
+    });
+  }, []);
+
+  //------------------------------------------------------------------------------
   return (
     <div className="client-form-elevator-details">
       <h5 className="client-form-details-heading">Elevator Details</h5>
@@ -300,9 +394,14 @@ const ClientFormElevatorDetails = ({
           stops={elevatorDetails.stops}
           handleElevatorDetailsChange={handleElevatorDetailsChange}
           groundOrStilt={elevatorDetails.groundOrStilt}
+          type={elevatorDetails.type}
+          purposeData={elevatorDetails.purpose}
+          doorTypeData={elevatorDetails.doorType}
+          constructionMaterialData={elevatorDetails.constructionMaterial}
+          numberOfOpeningsData={elevatorDetails.numberOfOpenings}
         />
 
-        {elevatorDetails.numberOfOpenings !== 0 &&
+        {/* {elevatorDetails.numberOfOpenings !== 0 &&
           elevatorDetails.stops !== 0 &&
           Object.values(degree).filter((val) => val !== "").length ===
             elevatorDetails.numberOfOpenings - 1 && (
@@ -317,8 +416,28 @@ const ClientFormElevatorDetails = ({
                 stops={elevatorDetails.stops}
               />
             </>
-          )}
+          )} */}
+        {!visible && (
+          <ElevatorOpeningSelection
+            Flevel={Flevel}
+            numberOfOpenings={elevatorDetails.numberOfOpenings}
+            degree={degree}
+            array={array}
+            handleClick={handleClick}
+            stops={elevatorDetails.stops}
+            prevData={prevData}
+            clientData={clientData}
+            handleNumberOfOpenings={handleNumberOfOpenings}
+          />
+        )}
 
+        <div
+          className={`dimention-btn ${!visible ? "hide" : ""}`}
+          onClick={handleOnClick}
+        >
+          Select openings{" "}
+          <img src="generateicon.png" alt="icon" className="generateIcon" />
+        </div>
         <div className="text-area-container">
           <textarea
             placeholder="Add Remarks"

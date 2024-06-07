@@ -5,6 +5,7 @@ import TextInput from "./ClientsReusableComponent/TextInput";
 import DimentionPitFloor from "./DimentionsPitFloor";
 import DimentionFloorTop from "./DimentionFloorTop";
 import { DimentionMidFloor } from "./DimentionMidFloor";
+import { useSelector } from "react-redux";
 
 // import { updateClientFormUsingPagination } from "../../../../ReduxSetup/Actions/AdminActions";
 // import { useDispatch } from "react-redux";
@@ -15,7 +16,6 @@ const ClientFormDimentions = ({
   forSecondClick,
   onDataChange,
 }) => {
-  // console.log("validata in dimension", validate)
   //states
   const [len, setLen] = useState();
   const [Basementlen, setBasementLen] = useState();
@@ -24,7 +24,10 @@ const ClientFormDimentions = ({
   const [levelData, setLevelData] = useState([]);
   const [click, setClick] = useState({});
   const [check, setCheck] = useState(validate);
-  // const dispatch = useDispatch();
+  const clientData = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
+  );
   const [basementWithPit, setBasementWithPit] = useState({
     shaftWidth: "",
     shaftDepth: "",
@@ -34,22 +37,15 @@ const ClientFormDimentions = ({
     pitDepth: "",
     fl: "",
     fr: "",
-    imageChanged: false,
-    isSet: false,
   });
-  // console.log("basementWithPit", basementWithPit);
   const [floorFrontData, setFloorFrontData] = useState({
     shaftWidth: "",
     shaftDepth: "",
     doorWidth: "",
     doorHeight: "",
     overhead: "",
-    imageChanged: false,
-    isSet: false,
   });
-
   const [fileNames, setFileNames] = useState({});
-
   useEffect(() => {
     const initialFormData = Flevel.map(() => ({
       shaftWidth: "",
@@ -59,27 +55,23 @@ const ClientFormDimentions = ({
       floorToFloorHeight: "",
       fl: "",
       fr: "",
-      imageChanged: false,
-      isSet: false,
     }));
     setLevelData(initialFormData);
   }, [Flevel]);
   const [dimentionsData, setDimentionsData] = useState({
-    basementWithPit: basementWithPit,
-    floorFrontData: floorFrontData,
-    levelData: levelData,
+    pitPoint: {...basementWithPit},
+    topPoint: {...floorFrontData},
+    floors: {...levelData},
   });
 
   useEffect(() => {
     setDimentionsData({
-      basementWithPit: basementWithPit,
-      levelData: levelData,
-      floorFrontData: floorFrontData,
+      pitPoint: {...basementWithPit},
+      floors: {...levelData},
+      topPoint: {...floorFrontData},
     });
   }, [basementWithPit, floorFrontData, levelData]);
-  // console.log("dimentionsData", dimentionsData);
-  //handler
-  // console.log("leveldata===>", levelData);
+
   const handleFileChangeInPit = (event, fieldName) => {
     const file = event.target.files[0];
     if (file) {
@@ -139,7 +131,6 @@ const ClientFormDimentions = ({
   };
 
   const handleInputChange = (index, event) => {
-    // console.log("handleInputChange====", index);
     const { name, value } = event.target;
     const toBeUpdate = levelData[index];
     toBeUpdate[name] = value;
@@ -149,8 +140,6 @@ const ClientFormDimentions = ({
     const newFormData = { ...levelData };
     // If the item is found, update it in newFormData
     newFormData[index] = toBeUpdate;
-
-    // console.log(newFormData[index], value, name);
 
     // newFormData[index] = {
     //   ...newFormData[index],
@@ -189,15 +178,89 @@ const ClientFormDimentions = ({
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  useMemo(() => {
+    if (clientData) {
+      const { pitPoint, floors, topPoint } = clientData?.dimensions;
+
+      setBasementWithPit(() => ({
+        shaftWidth: pitPoint?.shaftWidth,
+        shaftDepth: pitPoint?.shaftDepth,
+        doorWidth: pitPoint?.doorWidth,
+        doorHeight: pitPoint?.doorHeight,
+        floorToFloorHeight: pitPoint?.floorToFloorHeight,
+        pitDepth: pitPoint?.pitDepth,
+        fl: pitPoint?.fl,
+        fr: pitPoint?.fr,
+        sitePhotos: {
+          pit: pitPoint?.sitePhotos?.pitImage,
+          bottomToTop: pitPoint?.sitePhotos?.bottomToTopImages,
+          basementFront: pitPoint?.sitePhotos?.basementFrontImages,
+        },
+      }));
+      setFloorFrontData({
+        shaftWidth: topPoint?.shaftWidth,
+        shaftDepth: topPoint?.shaftDepth,
+        doorWidth: topPoint?.doorWidth,
+        doorHeight: pitPoint?.doorHeight,
+        floorToFloorHeight: topPoint?.floorToFloorHeight,
+        overhead: topPoint?.overhead,
+        sitePhotos: {
+          Overhead: topPoint?.sitePhotos?.overheadImages,
+          topFloorFront: topPoint?.sitePhotos?.floorFront,
+          topToBottom: topPoint?.sitePhotos?.bottomToTopImages,
+        },
+      });
+    }
+    setFileNames({
+      pit: clientData?.dimensions?.pitPoint?.sitePhotos?.pitImage?.split("-")[0],
+      bottomToTop:
+        clientData?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages?.split(
+          "-"
+        )[0],
+      basementFront:
+        clientData?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages?.split(
+          "-"
+        )[0],
+
+      Overhead:
+        clientData?.dimensions?.topPoint?.sitePhotos?.overheadImages?.split(
+          "-"
+        )[0],
+      topFloorFront:
+        clientData?.dimensions?.topPoint?.sitePhotos?.floorFront?.split("-")[0],
+      topToBottom:
+        clientData?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages?.split(
+          "-"
+        )[0],
+    });
+  }, [clientData]);
+
+  useEffect(() => {
+    if (
+      clientData &&
+      clientData.dimensions.floors.length === Flevel.length - 2
+    ) {
+      const updatedLevelData = [{}, ...clientData.dimensions.floors, {}];
+      setLevelData(updatedLevelData);
+      updatedLevelData.forEach((level, index) => {
+        if (index !== 0 && index !== updatedLevelData.length - 1) {
+          setFileNames((prevState) => ({
+            ...prevState,
+            [index]: level.sitePhotos?.split("-")[0],
+          }));
+          console.log(level.sitePhotos, index);
+        }
+      });
+    }
+  }, [visible]);
 
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
       <div
-        className={`dimention-btn ${visible ? "hide" : ""}   ${
-          !validate ? "disabled" : ""
-        } `}
+        // ${ !validate ? "disabled" : "" }
+        className={`dimention-btn ${visible ? "hide" : ""}  `}
         onClick={handleOnClick}
       >
         Generate dimensions{" "}

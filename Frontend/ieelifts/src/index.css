@@ -2383,6 +2383,10 @@ font-size: 0.9rem;
 margin-top: 1rem;
 color: #444444;
 }
+.generateOpening{
+  display: flex;
+  justify-self: end;
+}
 .generateIcon{
   height: 16px;
   width: 16px;
@@ -2396,7 +2400,9 @@ color: #444444;
 .client-dropdown{
   position: relative;
 }
-
+.email-error{
+  color: red !important;
+}
 .dropdown-input{
   outline: none;
   border :none;

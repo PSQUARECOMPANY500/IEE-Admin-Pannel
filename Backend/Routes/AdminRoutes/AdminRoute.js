@@ -233,6 +233,7 @@ router.get(
   "/getClientModalInformation/:jon",
   adminContoller.getClientModalInformation
 );
+router.put("/updateClientModalInformation", adminContoller.updateSecondStep);
 
 
 

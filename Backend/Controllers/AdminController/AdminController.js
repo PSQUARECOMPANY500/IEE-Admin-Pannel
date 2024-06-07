@@ -2606,23 +2606,24 @@ module.exports.postElevatorForm = async (req, res) => {
     const existingForm = await ElevatorFormSchema.findOne({
       "clientFormDetails.jon": jon,
     });
-  
+
     const membershipDocument = {
-      signedQuotation:(req?.files?.signedQuotation && req.files.signedQuotation.length > 0)
-      ? req.files.signedQuotation[0].filename
-      : existingForm.clientMembershipDocument.signedQuotation,
+      signedQuotation:
+        req?.files?.signedQuotation && req.files.signedQuotation.length > 0
+          ? req.files.signedQuotation[0].filename
+          : existingForm.clientMembershipDocument.signedQuotation,
       paymentForm:
-      (req?.files?.paymentForm && req.files.paymentForm.length > 0)
-      ? req.files.paymentForm[0].filename
-      : existingForm.clientMembershipDocument.paymentForm,
+        req?.files?.paymentForm && req.files.paymentForm.length > 0
+          ? req.files.paymentForm[0].filename
+          : existingForm.clientMembershipDocument.paymentForm,
       chequeForm:
-      (req?.files?.chequeForm && req.files.chequeForm.length > 0)
-      ? req.files.chequeForm[0].filename
-      : existingForm.clientMembershipDocument.chequeForm,
+        req?.files?.chequeForm && req.files.chequeForm.length > 0
+          ? req.files.chequeForm[0].filename
+          : existingForm.clientMembershipDocument.chequeForm,
       salesOrder:
-      (req?.files?.salesOrder && req.files.salesOrder.length > 0)
-      ? req.files.salesOrder[0].filename
-      : existingForm.clientMembershipDocument.salesOrder
+        req?.files?.salesOrder && req.files.salesOrder.length > 0
+          ? req.files.salesOrder[0].filename
+          : existingForm.clientMembershipDocument.salesOrder,
     };
 
     if (existingForm) {
@@ -2634,7 +2635,6 @@ module.exports.postElevatorForm = async (req, res) => {
       existingForm.clientMembershipDocument = membershipDocument;
       await existingForm.save();
       return res.status(200).json({ error: "data updated successfully" });
-
     }
     const elevatorFormSchema = new ElevatorFormSchema({
       clientFormDetails: JSON.parse(req.body.clientFormDetails),
@@ -2662,17 +2662,13 @@ module.exports.putElevatorForm = async (req, res) => {
     const newData = req.body;
     const JON = req.body.JON;
     delete newData.JON;
-    // console.log(typeof(JON));
     console.log(newData.stops);
-
     const updatedData = await ElevatorFormSchema.findOneAndUpdate(
       { "clientFormDetails.jon": JON },
       { elevatorDetails: newData },
       { new: true }
     );
-    // const data = await ElevatorFormSchema.findOne({ });
-    // console.log(data);
-    // console.log(updatedData);
+
     if (!updatedData) {
       return res.status(404).json({ error: "Data not found" });
     }
@@ -2783,19 +2779,51 @@ module.exports.getNotification = async (req, res) => {
 //   }
 // }
 
+function updateFormData(formData, fieldName, url) {
+  const parts = fieldName.replace(/\]/g, "").split("[");
+  console.log(formData);
+  parts.shift();
+  function update(obj, parts, url) {
+    console.log("Updating with:", parts, url);
+    const part = parts.shift();
+    console.log("Current part:", part);
+    if (parts.length === 0) {
+      if (Array.isArray(obj[part])) {
+        console.log("Array exists, pushing url");
+        obj[part].push(url);
+      } else if (obj[part]) {
+        console.log("Key exists, converting to array and pushing url");
+        obj[part] = [obj[part], url];
+      } else {
+        console.log("Creating new array with url");
+        obj[part] = [url];
+      }
+    } else {
+      if (!obj[part]) {
+        console.log("Creating new object or array for next level");
+        obj[part] = isNaN(part) ? {} : [];
+      }
+      console.log("Recursing with next level");
+      update(obj[part], parts, url);
+    }
+  }
+
+  update(formData, parts, url);
+}
+
 module.exports.updatElevatorDimensions = async (req, res) => {
   try {
     const files = req.files;
     const { JON } = req.body;
 
-    const data = req.body.data;
+    const getData = req.body.data;
     const Data = await ElevatorFormSchema.findOne({
       "clientFormDetails.jon": JON,
     });
 
-    const topPoint = data.floorFrontData;
-    const pitPoint = data.basementWithPit;
-    const floors = data.levelData;
+    const topPoint = getData.topPoint;
+    const pitPoint = getData.pitPoint;
+    const floors = getData.floors;
 
     floors.shift();
     floors.pop();
@@ -2804,37 +2832,29 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     Data.dimensions.pitPoint = pitPoint;
     Data.dimensions.floors = floors;
 
-    Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
-    Data.dimensions.pitPoint.sitePhotos.bottomToTopImages =
-      files[1].originalname;
-    Data.dimensions.pitPoint.sitePhotos.basementFrontImages =
-      files[2].originalname;
+    // console.log(files);
+    // Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
+    // Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].filename;
+    // Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].filename;
 
-    Data.dimensions.topPoint.sitePhotos.floorFront =
-      files[files.length - 3].originalname;
-    Data.dimensions.topPoint.sitePhotos.bottomToTopImages =
-      files[files.length - 2].originalname;
-    Data.dimensions.topPoint.sitePhotos.overheadImages =
-      files[files.length - 1].originalname;
+    // Data.dimensions.topPoint.sitePhotos.floorFront =
+    //   files[files.length - 3].filename;
+    // Data.dimensions.topPoint.sitePhotos.bottomToTopImages =
+    //   files[files.length - 2].filename;
+    // Data.dimensions.topPoint.sitePhotos.overheadImages =
+    //   files[files.length - 1].filename;
 
     let i = 0;
-    console.log(files.length);
-    files.forEach((file, index) => {
-      if (
-        index !== 0 &&
-        index !== 1 &&
-        index !== 2 &&
-        index !== files.length - 1 &&
-        index !== files.length - 2 &&
-        index !== files.length - 3
-      ) {
-        console.log(Data.dimensions.floors[i], index, i);
-        // Update Data.dimensions.floors[i] instead of Data.dimensions.floors[index]
-        Data.dimensions.floors[i].sitePhotos = file.originalname;
-        i++;
-      }
-    });
+    let data = Data.dimensions;
 
+    console.log(files);
+    files.forEach((file, index) => {
+      // console.log(Data.dimensions.floors[i], index, i);
+      // Data.dimensions.floors[i].sitePhotos = file.filename;
+      // i++;
+      updateFormData(data, file.fieldname, file.filename);
+    });
+    Data.dimensions = data;
     Data.save();
 
     res.status(200).json({ success: true, Data });
@@ -2855,11 +2875,19 @@ module.exports.getClientModalInformation = async (req, res) => {
     const response = await ElevatorFormSchema.findOne({
       "clientFormDetails.jon": jon,
     });
+
+    // console.log("responseoooooooooooooo",response);
+    // console.log("responseoooooooooooooo",response);
+
     if (!response) {
       return res.json({ success: false, message: "This JON is not found" });
     }
 
-    res.status(200).json({ response });
+    let dimensions = response.dimensions;
+
+    console.log(dimensions);
+
+    res.status(200).json({ success: true, response });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2867,3 +2895,79 @@ module.exports.getClientModalInformation = async (req, res) => {
     });
   }
 };
+
+/**
+ * <-----------------------------Author: Rahul Kumar---------------------05/06/2024---------->
+ * @Put Api for updating second step for client form
+ */
+
+module.exports.updateSecondStep = async (req, res) => {
+  try {
+    const files = req.files;
+    const newData = req.body;
+    const JON = req.body.JON;
+    delete newData.JON;
+    const { elevatorDetails, dimensions } = newData;
+
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate(
+      { "clientFormDetails.jon": JON }
+      // { elevatorDetails: elevatorDetails,
+      //   dimensions : dimensions
+      //  },
+      // { new: true }
+    );
+    updatedData.elevatorDetails = elevatorDetails;
+    updatedData.dimensions = dimensions;
+    const topPoint = dimensions.floorFrontData;
+    const pitpoint = dimensions.basementWithPit;
+    const floors = dimensions.levelData;
+    floors.shift();
+    floors.pop();
+
+    updatedData.dimensions.topPoint = topPoint;
+    updatedData.dimensions.pitPoint = pitpoint;
+    updatedData.dimensions.floors = floors;
+
+    updatedData.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
+    updatedData.dimensions.pitPoint.sitePhotos.bottomToTopImages =
+      files[1].filename;
+    updatedData.dimensions.pitPoint.sitePhotos.basementFrontImages =
+      files[2].filename;
+
+    updatedData.dimensions.topPoint.sitePhotos.floorFront =
+      files[files.length - 3].filename;
+    updatedData.dimensions.topPoint.sitePhotos.bottomToTopImages =
+      files[files.length - 2].filename;
+    updatedData.dimensions.topPoint.sitePhotos.overheadImages =
+      files[files.length - 1].filename;
+
+    let i = 0;
+    console.log(files.length);
+    files.forEach((file, index) => {
+      if (
+        index !== 0 &&
+        index !== 1 &&
+        index !== 2 &&
+        index !== files.length - 1 &&
+        index !== files.length - 2 &&
+        index !== files.length - 3
+      ) {
+        console.log(updatedData.dimensions.floors[i], index, i);
+        Data.dimensions.floors[i].sitePhotos = file.filename;
+        i++;
+      }
+    });
+    if (!updatedData) {
+      return res.status(404).json({ error: "Data not found" });
+    }
+    await updatedData.save();
+    res.status(200).json({ success: true, data: updatedData });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error",
+      message: err.message,
+    });
+  }
+};
+//--------------------------------------------------------------------------------------------

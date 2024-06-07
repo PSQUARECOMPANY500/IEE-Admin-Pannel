@@ -1,11 +1,12 @@
 // <-----------------------------  Author:- Rahul Kumar --------------30/4/24--------------------->
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
+  // console.log("value==>",value)
   //useState hooks
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState("");
-
+  const [selectedData, setSelectedData] = useState(value);
+  // console.log(selectedData)
   const opt = options; //options for dropdown
 
   const handleDataClick = (data) => {
@@ -13,7 +14,9 @@ const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
     onValueChange(name, data);
     setIsOpen(false);
   };
-
+useEffect(()=>{
+  setSelectedData(value)
+},[value])
   const handleIconClick = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -23,7 +26,7 @@ const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
         className="dropdown-input"
         placeholder={label}
         name={name}
-        value={value}
+        value={selectedData}
         readOnly
         onClick={handleIconClick}
       />{" "}

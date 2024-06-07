@@ -12,18 +12,20 @@ const TextInput = ({
   click,
   onBlur,
   onFocus,
-  id
-
+  id,
+  emailError
+  
 }) => {
   const handleCalendarToggle = (e) => {
     if (handleCalendarOpen) {
       handleCalendarOpen();
     }
   };
+  console.log("error",emailError)
   return (
     <div className="input-container" style={{ width: `${w}`,}} >
       <input
-        className="input-field"
+        className={`input-field ${type==="email" && emailError}?"email-error":""`}
         type={type}
         name={name}
         id={id}

@@ -2,6 +2,7 @@ import axios from "axios";
 import config from "../../config";
 
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
@@ -92,7 +93,7 @@ export const REGISTER_CLIENT_DATA = "REGISTER_CLIENT_DATA";
 export const UPDATE_CLIENT_DATA = "UPDATE_CLIENT_DATA";
 export const UPDATE_CLIENT_FORM_USING_PAGINATION =
   "UPDATE_CLIENT_FORM_USING_PAGINATION";
-
+export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1215,10 +1216,7 @@ export const ReportCrouserHandler = (Index, IsOpen) => {
 export const RegisterClientDataAction = (formData) => {
   return async (dispatch) => {
     try {
-      
-      console.log("====================================");
-      console.log("ojfpsdmfl;");
-      console.log("====================================");
+
       const response = await axios.post(
         `${config.apiUrl}/admin/registerClientData`,
         formData,
@@ -1228,7 +1226,7 @@ export const RegisterClientDataAction = (formData) => {
           },
         }
       );
-      console.log(response);
+     
 
       dispatch({
         type: REGISTER_CLIENT_DATA,
@@ -1258,11 +1256,9 @@ export const updateClientData = (formData) => {
     }
   };
 };
-
+//---------------------------------------Rahul Kumar----------------------------------------------------------
 // third step
 export const updateClientFormUsingPagination = (formData, jon) => {
-  // console.log("formData===>",formData);
-  // console.log("jon===>",jon);
   return async (dispatch) => {
     try {
       const response = await axios.put(
@@ -1286,6 +1282,30 @@ export const updateClientFormUsingPagination = (formData, jon) => {
     }
   };
 };
+//---------------------------------------------------------------------------------------------------------
+//-------------------------------Rahul Kumar ---------------------------------------------------------------
+
+export const putDataBasedOnJon = (response) => {
+  return async (dispatch) => {
+    try {
+      
+      if (!response) {
+        dispatch({
+          type: GET_CLIENT_FORM_DATA,
+          payload: {},
+        });
+        return;
+      }
+      dispatch({
+        type: GET_CLIENT_FORM_DATA,
+        payload: response.response,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+//------------------------------------------------------------------------------------------------------------
 
 export const getDataBasedOnJon = async (jon) => {
   if (!jon) {

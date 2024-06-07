@@ -1,26 +1,42 @@
 import React, { useEffect } from "react";
 
-const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick,numberOfOpenings,stops }) => {
-   
+const elevatorOpeningSelection = ({
+  Flevel,
+  degree,
+  array,
+  handleClick,
+  numberOfOpenings,
+  stops,
+}) => {
   return (
-    <>  
-      <div className={`level-main-container ${(numberOfOpenings===0 || numberOfOpenings===1 || stops==="" )?"display-block":""}`}>
+    <>
+      <div
+        className={`level-main-container ${
+          numberOfOpenings === 0 || numberOfOpenings === 1 || stops === ""
+            ? "display-block"
+            : ""
+        }`}
+      >
         <div className="level-heading">
           <div className="level-opening">
             <span className="levelHeading">Level</span>
             <span className="heading-badge">Original opening</span>
           </div>
-
           {Object.entries(degree).map(
             ([key, value], index, array) =>
-              value !== "" && (
-                <span className="heading-badge-dynamic" key={index}>
-                  {value === "90dL"
-                    ? "90° Left"
-                    : value === "90dR"
-                    ? "90° Right"
-                    : "180°"}
-                </span>
+              value !== "" &&
+              value !== undefined &&
+              value !== null && (
+                <React.Fragment key={index}>
+                  <span className="heading-badge-dynamic">
+                    {value === "90dL"
+                      ? "90° Left"
+                      : value === "90dR"
+                      ? "90° Right"
+                      : value === "180d" && "180°"}
+                  </span>
+                  {/* Rest of your code */}
+                </React.Fragment>
               )
           )}
         </div>
@@ -62,6 +78,5 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick,numberOfO
     </>
   );
 };
-
 
 export default elevatorOpeningSelection;

@@ -48,10 +48,10 @@ import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
 
 import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
 import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
-import {UPDATE_CLIENT_FORM_USING_PAGINATION} from "../Actions/AdminActions.js";
-import {GET_ADMIN_REPORT_DATA  } from "../Actions/AdminActions";
-import {REPORT_CROUSER_HANDLER} from "../Actions/AdminActions";
-
+import { UPDATE_CLIENT_FORM_USING_PAGINATION } from "../Actions/AdminActions.js";
+import { GET_ADMIN_REPORT_DATA } from "../Actions/AdminActions";
+import { REPORT_CROUSER_HANDLER } from "../Actions/AdminActions";
+import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -76,11 +76,9 @@ const initialStates = {
   isLoggedIn: !!localStorage.getItem("adminData"),
 };
 export const loginAdminReducer = (state = initialStates, action) => {
-
-
   switch (action.type) {
-     case LOGIN_SERVICE_ADMIN:
-     return { ...state, data: action.payload, isLoggedIn: true };
+    case LOGIN_SERVICE_ADMIN:
+      return { ...state, data: action.payload, isLoggedIn: true };
     default:
       return state;
   }
@@ -806,17 +804,13 @@ export const reducerfetchengdetails = (state = fetchengdetails, action) => {
 
 //============================================================================= create by aayush for adminReport data api================================================
 
-const adminReportData= {
-AdminReportData: null,
-
+const adminReportData = {
+  AdminReportData: null,
 };
-export const getAdminReportDataReducer = (
-  state =adminReportData,
-  action
-) => {
+export const getAdminReportDataReducer = (state = adminReportData, action) => {
   switch (action.type) {
     case GET_ADMIN_REPORT_DATA:
-      return { ...state, AdminReportData: action.payload }
+      return { ...state, AdminReportData: action.payload };
     default:
       return state;
   }
@@ -824,16 +818,19 @@ export const getAdminReportDataReducer = (
 
 const ReportCrouserData = {
   Index: 0,
-  IsOpen: false
+  IsOpen: false,
 };
 
-export const ReportCrouserHandlerReducer = (state = ReportCrouserData, action) => {
+export const ReportCrouserHandlerReducer = (
+  state = ReportCrouserData,
+  action
+) => {
   switch (action.type) {
     case REPORT_CROUSER_HANDLER:
       return {
         ...state,
         Index: action.payload.Index,
-        IsOpen: action.payload.IsOpen
+        IsOpen: action.payload.IsOpen,
       };
     default:
       return state;
@@ -876,17 +873,42 @@ export const UpdateClientDataReducer = (state = updateClientData, action) => {
       return state;
   }
 };
+//------------------------------------Rahul Kumar----------------------------------------------
 const updateClientFormData = {
-  updateClientFormData:null,
-}
-export const UpdateClientFormDataReducer= (state=updateClientFormData,action)=>{
-  switch(action.type){
+  updateClientFormData: null,
+};
+export const UpdateClientFormDataReducer = (
+  state = updateClientFormData,
+  action
+) => {
+  switch (action.type) {
     case UPDATE_CLIENT_FORM_USING_PAGINATION:
-      return{
+      return {
         ...state,
-        updateClientFormData:action.payload
+        updateClientFormData: action.payload,
       };
-      default:
-        return state;   
+    default:
+      return state;
   }
-}
+};
+//-----------------------------------------------------------------------------------------------
+//------------------------------------Rahul Kumar------------------------------------------------
+const ClientFormData = {
+  ClientFormData: null,
+};
+export const ClientFormDataFromApiReducer = (
+  state = ClientFormData,
+  action
+) => {
+  // console.log(action.payload);
+  switch (action.type) {
+    case GET_CLIENT_FORM_DATA:
+      return {
+        ...state,
+        ClientFormData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+//-----------------------------------------------------------------------------------------------

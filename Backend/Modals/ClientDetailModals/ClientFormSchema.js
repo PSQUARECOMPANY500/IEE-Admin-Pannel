@@ -150,7 +150,7 @@ const clientForm = new mongoose.Schema({
             type: String
         },
         numberOfOpenings: {
-            type: String
+            type: Number
         },
         sideOpening: [
             {
@@ -164,7 +164,7 @@ const clientForm = new mongoose.Schema({
                 level: {
                     type: String
                 },
-                opening: [
+                openings: [
                     {
                         type: String,
                         enum: ["original", "180d", "90dL", "90dR"]
@@ -203,10 +203,10 @@ const clientForm = new mongoose.Schema({
             pitDepth: {
                 type: String
             },
-            FL: {
+            fl: {
                 type: String
             },
-            FR: {
+            fr: {
                 type: String
             },
             sitePhotos: {

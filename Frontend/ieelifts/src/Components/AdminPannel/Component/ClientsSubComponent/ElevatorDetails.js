@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInput from "./ClientsReusableComponent/TextInput";
 
@@ -20,9 +19,14 @@ const ElevatorDetails = ({
   handleElevatorDetailsChange,
   groundOrStilt,
   handleDegreeSelection,
+  type,
+  purposeData,
+  doorTypeData,
+  constructionMaterialData,
+  numberOfOpeningsData
 }) => {
   const [click, setClick] = useState({});
-
+// console.log("==>",doorType)
   //handler
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
@@ -38,7 +42,6 @@ const ElevatorDetails = ({
     const { name } = e.target;
     setClick({ ...click, [name]: false });
   };
-  // console.log("stops===>",stops)
   return (
     <>
       <div className="client-elevator-input-wrapper">
@@ -60,6 +63,7 @@ const ElevatorDetails = ({
             name={"type"}
             options={typeOptions}
             onValueChange={handleInputValueChange}
+            value={type}
           />
         </div>
         <div>
@@ -68,6 +72,7 @@ const ElevatorDetails = ({
             name={"purpose"}
             options={purpose}
             onValueChange={handleInputValueChange}
+            value={purposeData}
           />
         </div>
         <div className="capacity-container">
@@ -172,6 +177,7 @@ const ElevatorDetails = ({
             name={"doorType"}
             options={doorType}
             onValueChange={handleInputValueChange}
+            value={doorTypeData}
           />
         </div>
         <div>
@@ -180,6 +186,7 @@ const ElevatorDetails = ({
             name={"constructionMaterial"}
             options={constructionMaterial}
             onValueChange={handleInputValueChange}
+            value={constructionMaterialData}
           />
         </div>
         <div className={`${stops===""?"disabled":""}`}>
@@ -188,6 +195,7 @@ const ElevatorDetails = ({
             name={"numberOfOpenings"}
             options={numberOfOpenings}
             onValueChange={handleInputValueChange}
+            value={numberOfOpeningsData}
           />
         </div>
         <div>

@@ -15,13 +15,13 @@ import {
   closeClientModalAction,
   updateClientData,
   getDataBasedOnJon,
+  putDataBasedOnJon,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import {
   RegisterClientDataAction,
   updateClientFormUsingPagination,
 } from "../../../../ReduxSetup/Actions/AdminActions";
-import axios from "axios";
 
 const ClientForm = () => {
   //state
@@ -32,7 +32,6 @@ const ClientForm = () => {
     clientArchitect: {},
   });
 
-  
   // console.log("allFormData====>", allFormData)
 
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
@@ -43,10 +42,15 @@ const ClientForm = () => {
   const [toggle, setToggle] = useState(true);
   const [validate, setValidate] = useState(false); //validation for dimensions
   const [validateNextBtn, setValidateNextBtn] = useState();
+  const [prevClientDetails, setPrevClientDetails] = useState([]);
+  const [prevData, setPrevData] = useState(false);
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
-  const [prevData, setPrevData] = useState(false);
+  const clientData = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
+  );
 
   const { jon } = allFormData.clientFormDetails;
   useEffect(() => {
@@ -55,9 +59,6 @@ const ClientForm = () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
-  useEffect(() => {
-    // console.log("dimentionsData--->",dimentionsData);
-  }, [dimentionsData]);
 
   //handler
   const validateData = (data) => {
@@ -128,23 +129,12 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
-   
-    
-    
-    
 
     if (prevData) {
       dispatch(RegisterClientDataAction(formData));
     } else {
       dispatch(RegisterClientDataAction(formData));
     }
-    // setAllFormData((prev) => ({
-    //   ...prev,
-    //   clientMembershipDocument: {},
-    // }));
-
- 
-
   };
   //-----------------------------------------------------
   const handlePreviousPage = () => {
@@ -199,7 +189,7 @@ const ClientForm = () => {
       doorType: doorType,
       levelOpening: elevatorOpenings.map(({ level, openings }) => ({
         level: level,
-        opening: openings.filter((opening) => opening !== ""),
+        openings: openings.filter((opening) => opening !== ""),
       })),
       pitDepth: pitDepth,
       purpose: purpose,
@@ -219,7 +209,6 @@ const ClientForm = () => {
     };
 
     dispatch(updateClientData(elevatorDetails));
-    // console.log(elevatorDetails);
   };
 
   //handle data in third step using pagination
@@ -291,25 +280,29 @@ const ClientForm = () => {
     setValidateNextBtn(val);
   }, [allFormData]);
   //-------------------------------------------------------------------------
-  //fecthing data from the api
 
   const fetchData = async (jon) => {
     try {
+      // dispatch(getDataBasedOnJon(jon));
       const data = await getDataBasedOnJon(jon);
-      // console.log("data==>", data);
-      if (data.response) {
-        const clientFormDetails = data.response.clientFormDetails
-          ? data.response.clientFormDetails
-          : {};
-        const clientSalesManDetails = data.response.clientSalesManDetails
-          ? data.response.clientSalesManDetails
-          : {};
-        const clientMembershipDocument = data.response.clientMembershipDocument
-          ? data.response.clientMembershipDocument
-          : {};
-        const clientArchitect = data.response.clientArchitect
-          ? data.response.clientArchitect
-          : {};
+      dispatch(putDataBasedOnJon(data));
+      // console.log("data==>",data)
+      // console.log("ClientFormData==>",clientData)
+      // const data = clientData;
+      // const data = prevClientDetails;
+      if (data?.response) {
+        const clientFormDetails = data?.response.clientFormDetails;
+
+        const clientSalesManDetails = data?.response?.clientSalesManDetails;
+
+        const clientMembershipDocument =
+          data?.response?.clientMembershipDocument;
+
+        const clientArchitect = data?.response?.clientArchitect;
+
+        const elevatorDetails = data?.response?.elevatorDetails;
+
+        const dimensions = data?.response?.dimensions;
 
         // Update state with fetched data
         setAllFormData({
@@ -318,7 +311,8 @@ const ClientForm = () => {
           clientMembershipDocument: clientMembershipDocument,
           clientArchitect: clientArchitect,
         });
-        setPrevData(true);
+        setClientElevatorDetails(elevatorDetails);
+        setDimentionsData(dimensions);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -330,6 +324,9 @@ const ClientForm = () => {
       });
     }
   };
+  useEffect(() => {
+    fetchData(jon);
+  }, [jon]);
   const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
   useEffect(() => {
     if (jon) {
@@ -344,8 +341,6 @@ const ClientForm = () => {
       clientMembershipDocument: {},
       clientArchitect: {},
     });
-    // setToggle(true);
-    // setValidateNextBtn(false)
   };
   return (
     <>
@@ -399,6 +394,8 @@ const ClientForm = () => {
                     Flevel={Flevel}
                     onDataChange={handleElevatorDetails}
                     validateData={validateData}
+                    initialValues={clientElevatorDetails}
+                    prevData={prevData}
                   />
                   <ClientFormDimentions
                     valforDimention={valforDimention}
@@ -409,6 +406,7 @@ const ClientForm = () => {
                       handleSecndStep();
                     }}
                     onDataChange={handleDimenstionsData}
+                    initialValues={dimentionsData}
                   />
                   <div className="button-container">
                     <Clientbutton

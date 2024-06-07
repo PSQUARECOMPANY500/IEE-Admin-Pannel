@@ -1,6 +1,5 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React, { useEffect, useMemo, useState,useRef } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInputs from "./ClientsReusableComponent/TextInput";
 
@@ -16,7 +15,7 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
     referenceName: "",
     sourceOfLead: "",
   });
- 
+//  console.log("initialValues",initialValues)
   // const { jon, userName, phoneNumber, alternativeNumber, email, reference, referenceName, sourceofLead } = initialValues;
   const [click, setClick] = useState({});
   const sourceOfLead = [
@@ -39,7 +38,7 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
       }
     }
   };
-
+  
   const handleClick = (e) => {
     const { name } = e.target;
     setClick({ ...click, [name]: true });
@@ -60,7 +59,6 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
    useMemo(()=>{
     setClientFormData(initialValues)
    },[initialValues])
-// console.log("emailError===>",emailError);
   return (
     <div className="client-form-details">
       <h5 className="client-form-details-heading">Client's Details</h5>
@@ -120,7 +118,8 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
             click={click.email}
             onBlur={handleClickFalse}
             type={"email"}
-          />
+            error={emailError}
+          /> 
         </div>
         <div>
           <ClientDropdown
