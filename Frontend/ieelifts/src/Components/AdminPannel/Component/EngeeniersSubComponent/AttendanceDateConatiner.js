@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getCheckInCheckOuts,
-  getClientCallbackHistory,
-  getEngineerAttendance,
-} from "../../../../ReduxSetup/Actions/AdminActions";
+import { getEngineerAttendance } from "../../../../ReduxSetup/Actions/AdminActions";
 import EngeeniersAttendanceCard from "./EngeeniersAttendanceCard";
 
 const AttendanceDateConatiner = ({ date, engID }) => {
@@ -13,7 +9,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   const [openCard, setOpenCard] = useState(false);
 
   const [selectedDateIndex, setSelectedDateIndex] = useState(null);
-  // console.log("ooooooooooooooooo",selectedDateIndex)
 
   // console.log("yyyyyyyyyyyyyyyyy", engID);
 
@@ -90,7 +85,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
     return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
   };
-  // console.log(dates, attendance);
+
   const renderDates = () => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {

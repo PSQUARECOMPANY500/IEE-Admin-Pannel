@@ -3093,9 +3093,9 @@ module.exports.getClientCallbackByJON = async (req, res) => {
   }
 };
 
-//-----------------------------------------------------------------------------------------------------------------
 
 
+//----------------------------------- getCheckInCheckOut controller ------------------------------------------------------------------------------
 
 module.exports.getCheckInCheckOut = async (req, res) => {
   try {

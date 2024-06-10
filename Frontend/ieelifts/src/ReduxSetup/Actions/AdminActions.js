@@ -1329,9 +1329,9 @@ export const getClientCallbackHistory = async (jonId) => {
   }
 }
 
+// ------------------------get checkin and chekc out in Attendance =▶ Raj -----------------------------------------------------------------------
 
 export const getCheckInCheckOuts = async (serviceId, date) => {
-  console.log("--------------------------",serviceId, date)
   try {
     const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
     return response.data;

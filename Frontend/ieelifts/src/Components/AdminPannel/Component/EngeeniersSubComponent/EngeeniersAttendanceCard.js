@@ -6,7 +6,7 @@ import { getCheckInCheckOuts } from "../../../../ReduxSetup/Actions/AdminActions
 import config from "../../../../config";
 
 const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
-  console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", engID, selectedDateIndex);
+  // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", engID, selectedDateIndex);
 
   const [isCliked, setIsCliked] = useState(false);
   const [isCliked2, setIsCliked2] = useState(false);
@@ -15,8 +15,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
   const [isArrowVisible, setIsArrowVisible] = useState(false);
   const [checkInCheckOutData, setCheckInCheckOutData] = useState([]);
 
-  console.log("planttt",checkInCheckOutData)
-  console.log("nnnnnnnnnnnnnnnnnnnnnn",checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0])
+  // console.log("planttt",checkInCheckOutData)
 
 
   const handleImage = () => {
@@ -59,10 +58,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box"
           }
         >
-          {/* <img
-            src="https://images.unsplash.com/photo-1567871268919-93826fc4ddad?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          /> */}
+         
           <img
             src={`${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}`}
             alt=""
