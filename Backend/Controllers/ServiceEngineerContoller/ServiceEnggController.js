@@ -77,59 +77,59 @@ const calculateTwotimedifference = (
 
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
-module.exports.RegisterServiceEngg = async (req, res) => {
-  try {
-    // Extract user data from the request body
-    const {
-      EnggId,
-      EnggPassword,
-      EnggName,
-      PhoneNumber,
-      EnggAddress,
-      EnggPhoto,
-    } = req.body;
+// module.exports.RegisterServiceEngg = async (req, res) => {
+//   try {
+//     // Extract user data from the request body
+//     const {
+//       EnggId,
+//       EnggPassword,
+//       EnggName,
+//       PhoneNumber,
+//       EnggAddress,
+//       EnggPhoto,
+//     } = req.body;
 
-    const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
-      EnggId,
-    });
-    if (ExistingServiceEngg) {
-      return res
-        .status(400)
-        .json({ error: "This Service Engineer ID already exists" });
-    }
+//     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
+//       EnggId,
+//     });
+//     if (ExistingServiceEngg) {
+//       return res
+//         .status(400)
+//         .json({ error: "This Service Engineer ID already exists" });
+//     }
 
-    // Create a new instance of the model with the user data
-    const newUser = await ServiceEnggBasicSchema.create({
-      EnggId,
-      EnggPassword,
-      EnggName,
-      PhoneNumber,
-      EnggAddress,
-      EnggPhoto,
-    });
-    // Respond with the saved user data
-    res
-      .status(201)
-      .json({ message: "service Engg Register Succesfully", user: newUser });
-  } catch (error) {
-    // Check for duplicate key error (unique constraint violation)
-    //console.log(error)
-    if (error.code === 11000) {
-      res.status(400).json({ error: "Duplicate key error" });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  }
-};
+//     // Create a new instance of the model with the user data
+//     const newUser = await ServiceEnggBasicSchema.create({
+//       EnggId,
+//       EnggPassword,
+//       EnggName,
+//       PhoneNumber,
+//       EnggAddress,
+//       EnggPhoto,
+//     });
+//     // Respond with the saved user data
+//     res
+//       .status(201)
+//       .json({ message: "service Engg Register Succesfully", user: newUser });
+//   } catch (error) {
+//     // Check for duplicate key error (unique constraint violation)
+//     //console.log(error)
+//     if (error.code === 11000) {
+//       res.status(400).json({ error: "Duplicate key error" });
+//     } else {
+//       res.status(500).json({ error: "Internal server error" });
+//     }
+//   }
+// };
 //===========\\=\\\\\\\\\\\====\=\=\=\==\=\=\=\=\=\=\=
 module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
     const bodyData = req.body;
-    console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
+    // console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
 // 
     // console.log("preet", req.body);
-    console.log("pankaj",bodyData.AlternativeNumber);
+    // console.log("pankaj",bodyData.AlternativeNumber);
     // console.log(bodyData);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
@@ -147,6 +147,7 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       EnggName: bodyData.firstName,
       EnggId: bodyData.EngggId,
       AlternativeNumber: bodyData.AlternativeNumber,
+      // EnggRole: bodyData.EnggRole,  tod ==> --------- unCommented --------------------------------
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
@@ -1688,14 +1689,17 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
 
     //update cash in Engg table------------
-if(JSON.parse(paymentdata).Payment_Method === 'Cash' ){
+if(JSON.parse(paymentdata).Payment_Method === 'Cash'){
    await ServiceEnggBasicSchema.findOneAndUpdate(
       {
         EnggId:ReportData.EnggId
       },
       { $inc: {AvailableCash:JSON.parse(paymentdata).Total_Amount} }
     );
-}
+}   // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
 
 
     const paymentPDF = req.files.report[0].filename;
@@ -1704,6 +1708,7 @@ if(JSON.parse(paymentdata).Payment_Method === 'Cash' ){
     ReportData.isVerify = true;
     ReportData.isActive = false;
     ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
+    ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
 
     await ReportData.save();
 

@@ -1,16 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getEngineerAttendance } from '../../../../ReduxSetup/Actions/AdminActions';
-import EngeeniersAttendanceCard from './EngeeniersAttendanceCard';
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCheckInCheckOuts,
+  getClientCallbackHistory,
+  getEngineerAttendance,
+} from "../../../../ReduxSetup/Actions/AdminActions";
+import EngeeniersAttendanceCard from "./EngeeniersAttendanceCard";
 
 const AttendanceDateConatiner = ({ date, engID }) => {
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
   const [openCard, setOpenCard] = useState(false);
 
+  const [selectedDateIndex, setSelectedDateIndex] = useState(null);
+  // console.log("ooooooooooooooooo",selectedDateIndex)
+
+  // console.log("yyyyyyyyyyyyyyyyy", engID);
 
   const handleCloseCard = () => {
-    setOpenCard(false)
+    setOpenCard(false);
+    setSelectedDateIndex(null);
   };
 
   const formRef = useRef();
@@ -19,8 +28,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       handleCloseCard();
     }
   };
-
-
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideModal);
@@ -49,7 +56,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       setDates(dates);
     };
 
-    console.log("i am here", engID);
+    // console.log("i am here", engID);
     if (date && engID) {
       dispatch(getEngineerAttendance(engID, date));
       selectedDate = date;
@@ -61,13 +68,17 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     updateDates();
   }, [dispatch, date, engID]);
 
-  const attendance = useSelector((state) => state?.AdminRootReducer?.engineerAttendanceReducer?.attendance?.attendanceData);
+  const attendance = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.engineerAttendanceReducer?.attendance
+        ?.attendanceData
+  );
 
   const getDayOfWeek = (dateStr) => {
     const [day, month, year] = dateStr.split("/");
     const dateObj = new Date(year, month - 1, day);
-    const options = { weekday: 'short' };
-    return new Intl.DateTimeFormat('en-US', options).format(dateObj);
+    const options = { weekday: "short" };
+    return new Intl.DateTimeFormat("en-US", options).format(dateObj);
   };
 
   const calculateTotalHours = (checkIn, checkOut) => {
@@ -77,56 +88,78 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const milliseconds = checkOutTime - checkInTime;
     const hours = Math.floor(milliseconds / (1000 * 60 * 60));
     const minutes = Math.floor((milliseconds % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+    return `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
   };
-  console.log(dates, attendance);
+  // console.log(dates, attendance);
   const renderDates = () => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {
       renderedDates.push(
-
+        // console.log("prretttttt", dates[i]),
         <>
-        <div className="DatesCard" style={{ cursor: "pointer" }}
-         onClick={() => setOpenCard(true)} key={i}>
-          <div className="DateCardData">
-            <h5>{dates && dates[i] ? dates[i].split("/")[0] : "--"}</h5>
-            <h5>{dates && dates[i] ? getDayOfWeek(dates[i]) : "--"}</h5>
-          </div>
-          <div className="DateCardData">
-            <h5>{attendance && attendance[i]?.Check_In ? attendance[i].Check_In.time.substring(0, 5) : "--"}</h5>
-            <h5>Check In</h5>
-          </div>
-          <span className="HoriZontalLine AHoriZontalLine"></span>
-          <div className="DateCardData">
-            <h5>{attendance && attendance[i]?.Check_Out ? attendance[i].Check_Out.time.substring(0, 5) : "--"}</h5>
-            <h5>Check out</h5>
-          </div>
-          <span className="HoriZontalLine AHoriZontalLine"></span>
-          <div className="DateCardData">
-            <h5>{calculateTotalHours(attendance && attendance[i]?.Check_In?.time, attendance && attendance[i]?.Check_Out?.time)}</h5>
-            <h5>Total Hours</h5>
-          </div>
-        </div>
-
-        {openCard && (
-          <div className='client-modal-wrapper'>
-            <div ref={formRef} className='engeenierattendance-modal-container'>
-               <EngeeniersAttendanceCard onClose={handleCloseCard}/>
+          <div
+            className="DatesCard"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOpenCard(true);
+              setSelectedDateIndex(dates[i]);
+            }}
+            key={i}
+          >
+            <div className="DateCardData">
+              <h5>{dates && dates[i] ? dates[i].split("/")[0] : "--"}</h5>
+              <h5>{dates && dates[i] ? getDayOfWeek(dates[i]) : "--"}</h5>
+            </div>
+            <div className="DateCardData">
+              <h5>
+                {attendance && attendance[i]?.Check_In
+                  ? attendance[i].Check_In.time.substring(0, 5)
+                  : "--"}
+              </h5>
+              <h5>Check In</h5>
+            </div>
+            <span className="HoriZontalLine AHoriZontalLine"></span>
+            <div className="DateCardData">
+              <h5>
+                {attendance && attendance[i]?.Check_Out
+                  ? attendance[i].Check_Out.time.substring(0, 5)
+                  : "--"}
+              </h5>
+              <h5>Check out</h5>
+            </div>
+            <span className="HoriZontalLine AHoriZontalLine"></span>
+            <div className="DateCardData">
+              <h5>
+                {calculateTotalHours(
+                  attendance && attendance[i]?.Check_In?.time,
+                  attendance && attendance[i]?.Check_Out?.time
+                )}
+              </h5>
+              <h5>Total Hours</h5>
             </div>
           </div>
-        )}
 
+          {openCard && (
+            <div className="client-modal-wrapper">
+              <div
+                ref={formRef}
+                className="engeenierattendance-modal-container"
+              >
+                <EngeeniersAttendanceCard
+                  onClose={handleCloseCard}
+                  engID={engID}
+                  selectedDateIndex={selectedDateIndex}
+                />
+              </div>
+            </div>
+          )}
         </>
       );
     }
     return renderedDates;
   };
 
-  return (
-    <div className="DatesContainer">
-      {renderDates()}
-    </div>
-  );
+  return <div className="DatesContainer">{renderDates()}</div>;
 };
 
 export default AttendanceDateConatiner;

@@ -33,7 +33,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
   useEffect(() => {}, [clientFormData]);
 
   console.log("carrr", clientModalInformation);
-  console.log("preet", clientModalInformation.dimensions.pitPoint.doorHeight);
+  // console.log("preet", clientModalInformation.dimensions.pitPoint.doorHeight);
 
   return (
     <div className="client-elevatorform-main">
@@ -147,21 +147,24 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     <div className="dimension-name-wrapper">
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pitImage)}>
                         {
+                          clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pitImage ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.pitImage
+                            ?.sitePhotos?.pitImage?.split('-')[0] : " "
                         }
                       </p>
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages[0])}>
                         {
+                          clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages[0] ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.bottomToTopImages[0]
+                            ?.sitePhotos?.bottomToTopImages[0]?.split('-')[0] : ''
                         }
                       </p>
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages)}>
                         {
+                         clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.basementFrontImages
-                        }
+                            ?.sitePhotos?.basementFrontImages[0]?.split('-')[0] : ''
+                        } 
                       </p>
                      
                     </div>
@@ -274,20 +277,23 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     <div className="dimension-name-wrapper">
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.overheadImages)}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.overheadImages ? 
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.overheadImages
+                            ?.sitePhotos?.overheadImages[0]?.split("-")[0]  : ''
                         }
                       </p>
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages[0])}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages[0] ?
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.bottomToTopImages[0]
+                            ?.sitePhotos?.bottomToTopImages[0]?.split("-")[0] : ''
                         }
                       </p>
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.floorFront)}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.floorFront ? 
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.floorFront
+                            ?.sitePhotos?.floorFront?.split("-")[0] : ''
                         }
                       </p>
                     </div>
@@ -384,7 +390,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
 
                         <div className="dimension-name-wrapper">
                           <p onClick={() => openIt(item.sitePhotos)}>
-                            {item.sitePhotos}</p>
+                            {item.sitePhotos ? item.sitePhotos?.split('-')[0] : ''}</p>
                         </div>
                       </div>
                     </div>

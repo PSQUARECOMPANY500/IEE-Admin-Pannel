@@ -21,7 +21,8 @@ router.post("/requestCallbacks",checkClientServiceExist, clientController.Reques
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
-router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
+// router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
+router.post("/imediateServiceRequest",clientController.imediateServiceRequest); //await implement middlweware -----------------------------------!!!!!!!!!!!!!
 
 router.post("/createReferal", clientController.referalUser);
 // router.post("/createReferal", verifyToken('client'), clientController.referalUser);

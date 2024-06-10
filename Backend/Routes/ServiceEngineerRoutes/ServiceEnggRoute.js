@@ -17,7 +17,7 @@ const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmen
 
 
 //-------------------------------------- All Post Requests -------------------------------
-router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
+// router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
 
 //---------------------------------------------------------------------------------------------- --------------------- ---------------
 router.post(

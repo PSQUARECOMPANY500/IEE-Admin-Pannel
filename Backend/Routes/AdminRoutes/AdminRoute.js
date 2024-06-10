@@ -227,3 +227,16 @@ router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);
 //by preet ------------------ 03/06/2024  ------------------------------------  Add Engg Rating Data --------------------------------
 
 router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById)
+
+
+//by preet ------------------ 05/06/2024  ------------------------------------ client Service history --------------------------------
+
+
+router.get("/getClientServiceHistory/:JobOrderNumber", adminContoller.getClientServiceHistoryByJON)
+router.get("/getClientCallbackHistory/:JobOrderNumber", adminContoller.getClientCallbackByJON)
+
+
+
+// By Raj ----------------------------10/06/2024-----------------------get checkin checkout asset-------------------------------------------------
+
+router.get("/getCheckInCheckOut/:ServiceEnggId", adminContoller.getCheckInCheckOut)

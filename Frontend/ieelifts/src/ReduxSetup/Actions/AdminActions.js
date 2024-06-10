@@ -1261,7 +1261,7 @@ export const depositeEnggCash = async (EnggId, AvailableCash) => {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-//   -------  fetch final report for admin -------
+//   -------  fetch final report for admin -------by Raj
 
 export const fetchFinalReportData = async (serviceId) => {
   try {
@@ -1274,7 +1274,7 @@ export const fetchFinalReportData = async (serviceId) => {
   }
 };
 
-// ---------------------------Get Rating data in rating.js page --------------------------------------------------------------------------------------------------------------
+// ---------------------------Get Rating data in rating.js page =▶ Raj --------------------------------------------------------------------------------------------------------------
 
 export const fetchEnggRatingData = async (serviceId) => {
   try {
@@ -1287,7 +1287,7 @@ export const fetchEnggRatingData = async (serviceId) => {
   }
 };
 
-// ------------------------------------------Get Client Modal information page ------------------------------------------------------------------------------------------
+// ------------------------------------------Get Client Modal information page =▶ Raj------------------------------------------------------------------------------------------
 
 export const getClientModalData = (jonId) => {
   return async (dispatch) => {
@@ -1305,22 +1305,38 @@ export const getClientModalData = (jonId) => {
   };
 };
 
+// --------------------------------get Client service history data  =▶ Raj ---------------------
+
+export const getClientServiceHistory = async (jonId) => {
+
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+  }
+}
 
 
+// -----------------------------get Client callabck history =▶ Raj -----------------------------------------------------------------------
+
+export const getClientCallbackHistory = async (jonId) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+  }
+}
 
 
-// export const getClientModalData = (jonId) => {
-//   return async (dispatch) => {
-//     try {
-//       const response = await axios.get(
-//         `${config.apiUrl}/admin/getClientModalInformation/${jonId}`
-//       );
-//       dispatch({
-//         type: GET_CLIENT_MODAL_INFORMATION,
-//         payload: response.data,
-//       });
-//     } catch (error) {
-//       console.log("error while fetching data", error);
-//     }
-//   };
-// };
+export const getCheckInCheckOuts = async (serviceId, date) => {
+  console.log("--------------------------",serviceId, date)
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+
+  }
+}

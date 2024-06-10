@@ -1733,6 +1733,12 @@ code {
   margin-bottom: 10px;
 }
 
+.informationTable-loader{
+ position: absolute;
+ top: 350%;
+ left: 50%;
+}
+
 .spare-part-table-container::-webkit-scrollbar-thumb {
   background-color: #f8ac1d;
   border-radius: 20px;
