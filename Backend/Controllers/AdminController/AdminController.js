@@ -2875,10 +2875,6 @@ module.exports.getClientModalInformation = async (req, res) => {
     const response = await ElevatorFormSchema.findOne({
       "clientFormDetails.jon": jon,
     });
-
-    // console.log("responseoooooooooooooo",response);
-    // console.log("responseoooooooooooooo",response);
-
     if (!response) {
       return res.json({ success: false, message: "This JON is not found" });
     }

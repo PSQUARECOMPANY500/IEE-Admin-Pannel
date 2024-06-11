@@ -11,12 +11,15 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
     phoneNumber: "",
     alternativeNumber: "",
     email: "",
-    reference: "",
+    dateOfHandover:"",
+    address:"",
+    pincode:"",
+    state:"",
+    district:"",
+    city:"",
     referenceName: "",
     sourceOfLead: "",
   });
-//  console.log("initialValues",initialValues)
-  // const { jon, userName, phoneNumber, alternativeNumber, email, reference, referenceName, sourceofLead } = initialValues;
   const [click, setClick] = useState({});
   const sourceOfLead = [
     "Website",
@@ -25,16 +28,16 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
     "client",
     "Architect",
   ];
-  const [emailError, setEmailError] = useState("");
+  const [emailError, setEmailError] = useState(true);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
     setClientFormData({ ...clientFormData, [name]: value });
     if (name === 'email') {
       if (!emailRegex.test(value)) {
-        setEmailError('Invalid email address');
+        setEmailError(true);
       } else {
-        setEmailError('valid email address');
+        setEmailError(false);
       }
     }
   };
@@ -56,6 +59,11 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
+  useEffect(() => {
+    if (clientFormData.email) {
+      setEmailError(!emailRegex.test(clientFormData.email));
+    }
+  }, [clientFormData.email]);
    useMemo(()=>{
     setClientFormData(initialValues)
    },[initialValues])
@@ -109,7 +117,7 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
           />
         </div>
         <div>
-          <TextInputs
+           <TextInputs
             label={"Email"}
             name={"email"}
             onFocus={handleClick}
@@ -118,9 +126,84 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
             click={click.email}
             onBlur={handleClickFalse}
             type={"email"}
-            error={emailError}
+            emailError={emailError}
           /> 
+         
         </div>
+        <div>
+           <TextInputs
+            label={"Date of handover"}
+            name={"dateOfHandover"}
+            onFocus={handleClick}
+            value={clientFormData.dateOfHandover}
+            onChange={hadleInputChnage}
+            click={click.dateOfHandover}
+            onBlur={handleClickFalse}
+          />        
+        </div>
+        <div className="address-container">
+           <TextInputs
+            label={"address"}
+            name={"address"}
+            onFocus={handleClick}
+            value={clientFormData.address}
+            onChange={hadleInputChnage}
+            click={click.address}
+            onBlur={handleClickFalse}
+       
+          /> 
+         
+        </div>
+        <div>
+           <TextInputs
+            label={"pincode"}
+            name={"pincode"}
+            onFocus={handleClick}
+            value={clientFormData.pincode}
+            onChange={hadleInputChnage}
+            click={click.pincode}
+            onBlur={handleClickFalse}
+    
+          /> 
+         
+        </div>
+        <div>
+           <TextInputs
+            label={"state"}
+            name={"state"}
+            onFocus={handleClick}
+            value={clientFormData.state}
+            onChange={hadleInputChnage}
+            click={click.state}
+            onBlur={handleClickFalse}
+           
+          /> 
+         
+        </div>
+        <div>
+           <TextInputs
+            label={"district"}
+            name={"district"}
+            onFocus={handleClick}
+            onChange={hadleInputChnage}
+            value={clientFormData.district}
+            click={click.district}
+            onBlur={handleClickFalse}
+          />  
+        </div>
+        <div>
+           <TextInputs
+            label={"city"}
+            name={"city"}
+            onFocus={handleClick}
+            value={clientFormData.city}
+            onChange={hadleInputChnage}
+            click={click.city}
+            onBlur={handleClickFalse}
+          /> 
+         
+        </div>
+
         <div>
           <ClientDropdown
             label={"Source of Lead"}
@@ -131,7 +214,7 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
 
           />
         </div>
-        <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
+        {/* <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
           <TextInputs
             label={"Reference"}
             name={"reference"}
@@ -141,7 +224,7 @@ const ClientFormDetails = ({ onDataChange,initialValues }) => {
             click={click.reference}
             onBlur={handleClickFalse}
           />
-        </div>
+        </div> */}
         <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
           <TextInputs
             label={"Refernce Name"}

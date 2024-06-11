@@ -108,7 +108,7 @@ const ClientFormElevatorDetails = ({
         oneEightyDegree: "",
       });
       setVisible(true);
-    }
+    } 
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue);
   };

@@ -62,7 +62,7 @@ const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
   }, [initialValues]);
   return (
     <div className="client-membership-document">
-      <h5 className="client-form-details-heading">Client's Membership</h5>
+      {/* <h5 className="client-form-details-heading">Client's Membership</h5>
       <hr className="client-form-hr" />
       <div className="client-warranty-container">
         <div
@@ -97,32 +97,32 @@ const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
         >
           Platinum
         </div>
-      </div>
+      </div> */}
       <h5 className="client-form-details-heading client-document">Document</h5>
       <hr className="client-form-hr" />
       <div className="client-document-child-wrapper client-form-input-wrapper">
-        <div>
+        <div className="file-uploader">
           <FileUploader
             label={"Signed Quotation"}
             onFileSelect={handleFileSelect}
             apiDataName={initialValues.signedQuotation}
           />
         </div>
-        <div>
+        <div className="file-uploader">
           <FileUploader
             label={"Payment Form"}
             onFileSelect={handleFileSelect}
             apiDataName={initialValues.paymentForm}
           />
         </div>
-        <div>
+        <div className="file-uploader">
           <FileUploader
             label={"Cheque form"}
             onFileSelect={handleFileSelect}
             apiDataName={initialValues.chequeForm}
           />
         </div>
-        <div>
+        <div className="file-uploader">
           <FileUploader
             label={"Sales Order"}
             onFileSelect={handleFileSelect}

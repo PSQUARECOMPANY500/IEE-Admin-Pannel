@@ -11,6 +11,7 @@ import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import debounce from "../../../../utils/debounce";
+import toast, { Toaster } from "react-hot-toast";
 import {
   closeClientModalAction,
   updateClientData,
@@ -31,9 +32,6 @@ const ClientForm = () => {
     clientMembershipDocument: {},
     clientArchitect: {},
   });
-
-  // console.log("allFormData====>", allFormData)
-
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
   const [dimentionsData, setDimentionsData] = useState({});
   const dispatch = useDispatch();
@@ -62,12 +60,9 @@ const ClientForm = () => {
 
   //handler
   const validateData = (data) => {
-    //handler for validation data
     setValidate(data);
-    // console.log("Parent--validate--->",data)
   };
   const handleDimenstionsData = (data) => {
-    //handle Dimenstions data from dimenstion component
     setDimentionsData(data);
   };
   const handleClientFormDetails = (data) => {
@@ -215,6 +210,8 @@ const ClientForm = () => {
   //----------------------------------------------------------------
   const handleThirdStep = () => {
     dispatch(updateClientFormUsingPagination(dimentionsData, jon));
+    toast.success("client details added");
+    closeModal();
   };
   //----------------------------------------------------------------
   function validateClientForm(allFormData) {
@@ -254,7 +251,6 @@ const ClientForm = () => {
       }
     }
     if (
-      !selectedMembership ||
       !signedQuotation ||
       !paymentForm ||
       !salesOrder
@@ -353,22 +349,27 @@ const ClientForm = () => {
             <div>
               {toggle ? (
                 <div className="client-form-container">
-                  <ClientFormDetails
+                 <div className="client-form-left-container">
+                 <ClientFormDetails
                     onDataChange={handleClientFormDetails}
                     initialValues={allFormData.clientFormDetails}
-                  />
-                  <ClientSalesManDetails
-                    onDataChange={handleClientSalesManDetails}
-                    initialValues={allFormData.clientSalesManDetails}
                   />
                   <ClientMembershipDocument
                     onDataChange={handleClientMembershipDocument}
                     initialValues={allFormData.clientMembershipDocument}
                   />
+                 </div>
+                 <div>
+                 <ClientSalesManDetails
+                    onDataChange={handleClientSalesManDetails}
+                    initialValues={allFormData.clientSalesManDetails}
+                  />
+                  
                   <ClientArchitect
                     onDataChange={handleClientArchitect}
                     initialValues={allFormData.clientArchitect}
                   />
+                 </div>
                   <div className="button-container">
                     <Clientbutton
                       value={"Reset"}
@@ -407,6 +408,7 @@ const ClientForm = () => {
                     }}
                     onDataChange={handleDimenstionsData}
                     initialValues={dimentionsData}
+                    changeInStops={clientElevatorDetails?.stops}
                   />
                   <div className="button-container">
                     <Clientbutton

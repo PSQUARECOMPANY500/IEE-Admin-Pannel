@@ -21,11 +21,11 @@ const TextInput = ({
       handleCalendarOpen();
     }
   };
-  console.log("error",emailError)
+
   return (
     <div className="input-container" style={{ width: `${w}`,}} >
       <input
-        className={`input-field ${type==="email" && emailError}?"email-error":""`}
+        className={`input-field ${type==="email" && emailError}?"":"email-error"`}
         type={type}
         name={name}
         id={id}
@@ -53,7 +53,7 @@ const TextInput = ({
       </label>
       <span className="input-highlight" style={{width:click?'100%':'0%'}}></span>
       <span className='input-exist'></span>
-      <p style={{ fontSize:'0.9rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem', color:"#1D1D1D", fontFamily:"Poppins"}}>{value}</p>
+      <p style={{ fontSize:'0.9rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem', color:"#1D1D1D", fontFamily:"Poppins" ,color: type === 'email' && emailError ? 'red' : '#1D1D1D',}}>{value}</p>
     </div>
   );
 };

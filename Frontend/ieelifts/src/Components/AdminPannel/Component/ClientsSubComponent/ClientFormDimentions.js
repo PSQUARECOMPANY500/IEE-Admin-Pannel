@@ -1,20 +1,15 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
 import React, { useState, useEffect, useMemo } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
-import TextInput from "./ClientsReusableComponent/TextInput";
 import DimentionPitFloor from "./DimentionsPitFloor";
 import DimentionFloorTop from "./DimentionFloorTop";
 import { DimentionMidFloor } from "./DimentionMidFloor";
 import { useSelector } from "react-redux";
-
-// import { updateClientFormUsingPagination } from "../../../../ReduxSetup/Actions/AdminActions";
-// import { useDispatch } from "react-redux";
 const ClientFormDimentions = ({
-  valforDimention,
   Flevel,
   validate,
   forSecondClick,
   onDataChange,
+  changeInStops
 }) => {
   //states
   const [len, setLen] = useState();
@@ -46,6 +41,7 @@ const ClientFormDimentions = ({
     overhead: "",
   });
   const [fileNames, setFileNames] = useState({});
+  //----------------------------------------------------------------
   useEffect(() => {
     const initialFormData = Flevel.map(() => ({
       shaftWidth: "",
@@ -63,7 +59,9 @@ const ClientFormDimentions = ({
     topPoint: {...floorFrontData},
     floors: {...levelData},
   });
-
+  useEffect(()=>{
+    setVisible(false)
+  },[changeInStops])
   useEffect(() => {
     setDimentionsData({
       pitPoint: {...basementWithPit},
@@ -134,17 +132,8 @@ const ClientFormDimentions = ({
     const { name, value } = event.target;
     const toBeUpdate = levelData[index];
     toBeUpdate[name] = value;
-
-    // Find the index of the item to be updated in newFormData
-
     const newFormData = { ...levelData };
-    // If the item is found, update it in newFormData
     newFormData[index] = toBeUpdate;
-
-    // newFormData[index] = {
-    //   ...newFormData[index],
-    //   [name]: value,
-    // };
     setLevelData(newFormData);
   };
   const handleClick = (e) => {

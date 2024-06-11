@@ -26,12 +26,28 @@ const clientForm = new mongoose.Schema({
             type: String,
             // required: true
         },
+        dateOfHandover:{
+            type:Date
+        },
+        address:{
+            type: String
+        },
+        pincode:{
+            type:String
+        },
+        state:{
+            type:String
+        },
+        district:{
+            type:String
+        },
+        city:{
+            type:String
+        }
+        ,
         sourceOfLead: {
             type: String,
             // required: true
-        },
-        reference: {
-            type: String
         },
         referenceName: {
             type: String
@@ -58,6 +74,9 @@ const clientForm = new mongoose.Schema({
         discountInRupees: {
             type:String,
             // required: true
+        },
+        mdDiscountInPercentage: {
+            type:String
         },
         finalAmount: {
             type:String,

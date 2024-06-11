@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import React from "react";
 import TextInput from "../ClientsSubComponent/ClientsReusableComponent/TextInput";
+import PercentageInput from "./ClientsReusableComponent/PercentageInput";
 
 const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
   const [clientFormData, setClientFormData] = useState({
@@ -12,8 +13,9 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
     discountInPercentage: "",
     discountAmount: "",
     finalAmount: "",
+    mdDiscountInPercentage: "",
   });
-
+  // console.log(clientFormData.mdDiscountInPercentage)
   const [click, setClick] = useState({});
 
   const handleInputChange = (e) => {
@@ -42,11 +44,10 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
       discountInRupees,
       discountInPercentage,
       discountAmount,
+      mdDiscountInPercentage
     } = clientFormData;
     const contentname = e.target.name;
     const pricevalue = Number(e.target.value);
-
-    // console.log(">>>>>>>>>>",contentname, pricevalue)
 
     if (contentname === "quotatedPrice" && finalPrice > 0) {
       const result = pricevalue - finalPrice;
@@ -88,7 +89,32 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
         ...prev,
         finalAmount: fAmount,
       }));
+      const mdDiscountInPercentage = ((discountAmount/finalPrice) * 100).toFixed(2);
+      setClientFormData((prev) => ({
+       ...prev,
+        mdDiscountInPercentage: mdDiscountInPercentage,
+      }));
     }
+
+    if(mdDiscountInPercentage!=="" && mdDiscountInPercentage!==undefined){
+      const discountAmount = finalPrice * (mdDiscountInPercentage/100);
+      const fAmount = finalPrice - discountAmount;
+      setClientFormData((prev) => ({
+       ...prev,
+        discountAmount: (discountAmount).toFixed(2),
+        finalAmount: (fAmount).toFixed(2),
+      }));
+    }
+  };
+  const handleMdPercentChange = (data)=>{
+    setClientFormData((prev) => ({
+     ...prev,
+      mdDiscountInPercentage: data,
+    }));
+  }
+  const handleMdPercentBlur = (e) => {
+    handleClickFalse(e);
+    calculateValues(e);
   };
   useEffect(() => {
     onDataChange(clientFormData);
@@ -182,12 +208,21 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
             click={click.discountInPercentage}
             onBlur={(e) => {
               handleClickFalse(e);
-              calculateValues(e);
+              calculateValues(e);                               
             }}
           />
         </div>
       </div>
-      <div className="client-form-input-wrapper quotation">MD-Discount</div>
+      <div className="quotation client-form-md-discount">
+        <div>
+        MD-Discount
+        </div>
+        <div>
+        <PercentageInput handleMdPercentChange={handleMdPercentChange} mdDiscountInPercentage={clientFormData?.mdDiscountInPercentage}
+        onBlur={handleMdPercentBlur}
+         />
+        </div>
+      </div>
       <div className="md-discount-container">
         <div>
           <TextInput
