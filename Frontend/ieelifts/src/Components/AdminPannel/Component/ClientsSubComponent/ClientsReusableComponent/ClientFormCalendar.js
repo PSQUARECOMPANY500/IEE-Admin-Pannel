@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const AttendanceCalendar = ({ setTodayDate }) => {
+const ClientFormCalendar = ({ setTodayDate }) => {
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
@@ -35,9 +35,11 @@ const AttendanceCalendar = ({ setTodayDate }) => {
       )
     );
     setASelectedDate(newSelectedDate);
-    const formattedDate = newSelectedDate.toISOString().split('T')[0];
+    
+    // const formattedDate = newSelectedDate.toISOString().split('T')[0];
+    const formattedDate = newSelectedDate.toLocaleDateString('en-IN');
     setTodayDate(formattedDate);
-    console.log(`Selected Date: ${formattedDate}`);
+    
   };
 
 
@@ -171,4 +173,4 @@ const AttendanceCalendar = ({ setTodayDate }) => {
   );
 };
 
-export default AttendanceCalendar;
+export default ClientFormCalendar;

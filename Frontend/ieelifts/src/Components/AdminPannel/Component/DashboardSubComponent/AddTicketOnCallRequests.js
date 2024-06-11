@@ -263,8 +263,6 @@
      setengDate(formattedDate);
  
      dispatch(getBookedSlotsforEnggsAction(formattedDate));
- 
- 
    }
  
  

@@ -279,13 +279,9 @@ const ClientForm = () => {
 
   const fetchData = async (jon) => {
     try {
-      // dispatch(getDataBasedOnJon(jon));
       const data = await getDataBasedOnJon(jon);
       dispatch(putDataBasedOnJon(data));
-      // console.log("data==>",data)
-      // console.log("ClientFormData==>",clientData)
-      // const data = clientData;
-      // const data = prevClientDetails;
+     
       if (data?.response) {
         const clientFormDetails = data?.response.clientFormDetails;
 
@@ -377,7 +373,7 @@ const ClientForm = () => {
                       handleAction={handleReset}
                     />
 
-                    <div className={`${validateNextBtn ? "" : "disabled"}`}>
+                    <div className={`${!validateNextBtn ? "" : "disabled"}`}>
                       <Clientbutton
                         value={"Next"}
                         className={"client-form-button-yellow"}

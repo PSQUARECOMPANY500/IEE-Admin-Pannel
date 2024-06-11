@@ -27,7 +27,7 @@ const clientForm = new mongoose.Schema({
             // required: true
         },
         dateOfHandover:{
-            type:Date
+            type:String,
         },
         address:{
             type: String

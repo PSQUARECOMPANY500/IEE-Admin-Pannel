@@ -1867,6 +1867,13 @@ code {
   grid-column-gap: 15rem;
   margin-top: 1rem;
 }
+
+@media screen and (min-width: 769px) and (max-width: 1600px) {
+  .client-form-container {
+    grid-column-gap: 7rem;
+  }
+}
+
 .client-form-left-container{
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -1971,8 +1978,69 @@ text-align: center;
 .percentage-input:focus {
   opacity: 1;
 }
+/* ------------------------------------------------------ */
+.clientDateContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-family: "Poppins";
+}
+.labelContainer{
+  font-size: 0.9rem;
+  color: #1D1D1D;
+}
+.inputWrapper {
+  position: relative;
+}
+
+.inputLabel {
+  position: absolute;
+  /* left: 0.4em; */
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity 0.3s;
+  opacity: 0.5;
+}
+
+.inputLabel.hidden {
+  opacity: 0;
+}
+
+.iconContainer {
+  position: absolute;
+  right: 0.5rem; /* Adjust this value to position the icon inside the input */
+  top: 50%;
+  transform: translateY(-50%);
+   /* Ensures the icon doesn't block input interaction */
+  cursor: pointer;
+}
+.calendarContainer{
+  position: absolute;
+  z-index: 5;
+}
+.calendarIcon {
+  width: 1.5rem; /* Adjust size as needed */
+  height: auto;
+}
+
+.clientDateInput {
+  outline: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: 1px solid #44444473;
+  cursor: text;
+ 
+  width: 100%;
+  /* padding-left: 2rem; Add left padding to make space for the label and icon */
+  padding-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  font-size: 1rem;
+  color: #444444;
+}
 
 
+/* ------------------------------------------------------ */
 /* ----------------------------------------------------------- */
 .client-form-input-wrapper > *:nth-child(7) {
   grid-column: 1 / span 2; /* Span across both columns */
