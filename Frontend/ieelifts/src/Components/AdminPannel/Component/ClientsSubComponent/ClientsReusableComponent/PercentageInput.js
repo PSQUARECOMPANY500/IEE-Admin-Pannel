@@ -1,11 +1,8 @@
+//------------------------------------Rahul Kumar-------------------------------
 import React, { useState,useEffect } from 'react';
-
-
 const PercentageInput = ({handleMdPercentChange,mdDiscountInPercentage,onBlur}) => {
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState('');
-//  console.log("value",value)
-console.log("mdDiscountInPercentage",mdDiscountInPercentage)
   const handleFocus = () => {
     setFocused(true);
   };

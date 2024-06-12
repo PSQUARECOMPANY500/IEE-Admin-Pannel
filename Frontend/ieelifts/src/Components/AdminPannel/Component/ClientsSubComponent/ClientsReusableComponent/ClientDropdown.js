@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from "react";
 
 const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
-  // console.log("value==>",value)
   //useState hooks
   const [isOpen, setIsOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(value);
-  // console.log(selectedData)
+ 
   const opt = options; //options for dropdown
 
   const handleDataClick = (data) => {

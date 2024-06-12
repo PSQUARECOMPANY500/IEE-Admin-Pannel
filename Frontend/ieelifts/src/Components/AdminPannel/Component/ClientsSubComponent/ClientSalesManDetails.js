@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import { useState, useEffect, useMemo } from "react";
 import React from "react";
 import TextInput from "../ClientsSubComponent/ClientsReusableComponent/TextInput";
@@ -15,14 +16,12 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
     finalAmount: "",
     mdDiscountInPercentage: "",
   });
-  // console.log(clientFormData.mdDiscountInPercentage)
   const [click, setClick] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setClientFormData((prevClientFormData) => {
       const updatedFormData = { ...prevClientFormData, [name]: value };
-      // valueCalucalte(name, value, updatedFormData); // Pass the updated form data to the calculation function
       return updatedFormData;
     });
   };

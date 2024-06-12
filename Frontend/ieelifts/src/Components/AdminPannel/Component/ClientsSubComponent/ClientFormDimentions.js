@@ -12,8 +12,6 @@ const ClientFormDimentions = ({
   changeInStops
 }) => {
   //states
-  const [len, setLen] = useState();
-  const [Basementlen, setBasementLen] = useState();
   const [visible, setVisible] = useState(false);
   const [basementLevel, setBasemnetLevel] = useState([]);
   const [levelData, setLevelData] = useState([]);
@@ -181,9 +179,9 @@ const ClientFormDimentions = ({
         fl: pitPoint?.fl,
         fr: pitPoint?.fr,
         sitePhotos: {
-          pit: pitPoint?.sitePhotos?.pitImage,
-          bottomToTop: pitPoint?.sitePhotos?.bottomToTopImages,
-          basementFront: pitPoint?.sitePhotos?.basementFrontImages,
+          pit: pitPoint?.sitePhotos?.pit,
+          bottomToTop: pitPoint?.sitePhotos?.bottomToTop,
+          basementFront: pitPoint?.sitePhotos?.basementFront,
         },
       }));
       setFloorFrontData({
@@ -194,31 +192,31 @@ const ClientFormDimentions = ({
         floorToFloorHeight: topPoint?.floorToFloorHeight,
         overhead: topPoint?.overhead,
         sitePhotos: {
-          Overhead: topPoint?.sitePhotos?.overheadImages,
-          topFloorFront: topPoint?.sitePhotos?.floorFront,
-          topToBottom: topPoint?.sitePhotos?.bottomToTopImages,
+          Overhead: topPoint?.sitePhotos?.Overhead,
+          topFloorFront: topPoint?.sitePhotos?.topFloorFront,
+          bottomToTopImages: topPoint?.sitePhotos?.bottomToTopImages,
         },
       });
     }
     setFileNames({
-      pit: clientData?.dimensions?.pitPoint?.sitePhotos?.pitImage?.split("-")[0],
+      pit: clientData?.dimensions?.pitPoint?.sitePhotos?.pit?.split("-")[0],
       bottomToTop:
-        clientData?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages?.split(
+        clientData?.dimensions?.pitPoint?.sitePhotos?.bottomToTop?.split(
           "-"
         )[0],
       basementFront:
-        clientData?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages?.split(
+        clientData?.dimensions?.pitPoint?.sitePhotos?.basementFront?.split(
           "-"
         )[0],
 
       Overhead:
-        clientData?.dimensions?.topPoint?.sitePhotos?.overheadImages?.split(
+        clientData?.dimensions?.topPoint?.sitePhotos?.Overhead?.split(
           "-"
         )[0],
       topFloorFront:
-        clientData?.dimensions?.topPoint?.sitePhotos?.floorFront?.split("-")[0],
+        clientData?.dimensions?.topPoint?.sitePhotos?.topFloorFront?.split("-")[0],
       topToBottom:
-        clientData?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages?.split(
+        clientData?.dimensions?.topPoint?.sitePhotos?.topToBottom?.split(
           "-"
         )[0],
     });

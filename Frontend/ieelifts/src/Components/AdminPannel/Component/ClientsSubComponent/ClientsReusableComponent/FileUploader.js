@@ -1,3 +1,4 @@
+//------------------------------------Rahul Kumar-------------------------------
 import React, { useEffect, useState } from "react";
 
 const FileUploader = ({ label, onFileSelect, apiDataName }) => {
@@ -5,7 +6,6 @@ const FileUploader = ({ label, onFileSelect, apiDataName }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    console.log("files==>", file);
 
     if (file) {
       setFileName(file.name);
