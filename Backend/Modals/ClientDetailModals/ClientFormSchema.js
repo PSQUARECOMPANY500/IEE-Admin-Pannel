@@ -26,23 +26,23 @@ const clientForm = new mongoose.Schema({
             type: String,
             // required: true
         },
-        dateOfHandover:{
-            type:String,
+        dateOfHandover: {
+            type: String,
         },
-        address:{
+        address: {
             type: String
         },
-        pincode:{
-            type:String
+        pincode: {
+            type: String
         },
-        state:{
-            type:String
+        state: {
+            type: String
         },
-        district:{
-            type:String
+        district: {
+            type: String
         },
-        city:{
-            type:String
+        city: {
+            type: String
         }
         ,
         sourceOfLead: {
@@ -55,63 +55,63 @@ const clientForm = new mongoose.Schema({
     },
     clientSalesManDetails: {
         salesmanId: {
-            type:String
+            type: String
             // required: true
         },
         salesmanName: {
-            type:String
+            type: String
             // required: true
         },
 
         discountAmount: {
-            type:String,
+            type: String,
             // required: true
         },
         discountInPercentage: {
-            type:String,
+            type: String,
             // required: true
         },
         discountInRupees: {
-            type:String,
+            type: String,
             // required: true
         },
         mdDiscountInPercentage: {
-            type:String
+            type: String
         },
         finalAmount: {
-            type:String,
+            type: String,
             // required: true
         },
         finalPrice: {
-            type:String,
+            type: String,
             // required: true
         },
         quotatedPrice: {
-            type:String,
+            type: String,
             // required: true
         },
-    
+
 
     },
     clientMembershipDocument: {
-        selectedMembership:{
-        type: String,
-        enum: ["Warranty", "Silver", "Gold", "Platnium"],
-        // required: true}
-    },paymentForm:{
-        type:String,
+        selectedMembership: {
+            type: String,
+            enum: ["Warranty", "Silver", "Gold", "Platnium"],
+            // required: true}
+        }, paymentForm: {
+            type: String,
+        },
+        chequeForm: {
+            type: String
+        },
+        salesOrder: {
+            type: String
+        },
+        signedQuotation: {
+            type: String
+        },
     },
-    chequeForm:{
-        type:String
-    },
-    salesOrder:{
-        type:String
-    },
-    signedQuotation:{
-        type:String
-    },
-    },
-    
+
     clientArchitect: {
         architectName: {
             type: String,
