@@ -211,7 +211,7 @@ const ClientForm = () => {
   const handleThirdStep = () => {
     dispatch(updateClientFormUsingPagination(dimentionsData, jon));
     toast.success("client details added");
-    closeModal();
+    // closeModal();
   };
   //----------------------------------------------------------------
   function validateClientForm(allFormData) {

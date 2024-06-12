@@ -1568,10 +1568,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2525,7 +2525,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2781,34 +2781,42 @@ module.exports.getNotification = async (req, res) => {
 
 function updateFormData(formData, fieldName, url) {
   const parts = fieldName.replace(/\]/g, "").split("[");
-  console.log(formData);
   parts.shift();
+  if (parts[0] === 'floors') {
+    let index = parts[2];
+    parts[2] = parts[1];
+    parts[1] = [index - 1];
+  }
+  console.log(parts, url)
+
   function update(obj, parts, url) {
-    console.log("Updating with:", parts, url);
     const part = parts.shift();
-    console.log("Current part:", part);
     if (parts.length === 0) {
       if (Array.isArray(obj[part])) {
-        console.log("Array exists, pushing url");
         obj[part].push(url);
       } else if (obj[part]) {
-        console.log("Key exists, converting to array and pushing url");
-        obj[part] = [obj[part], url];
+        if (Array.isArray(obj[part])) {
+          obj[part].push(url);
+        } else {
+          obj[part] = [obj[part], url];
+        }
       } else {
-        console.log("Creating new array with url");
-        obj[part] = [url];
+        // console.log("hoisahdkas")
+        obj[part] = url;
+        console.log("obj[part]", obj[part], part)
       }
     } else {
+      // console.log(Object.keys(obj[part]))
       if (!obj[part]) {
-        console.log("Creating new object or array for next level");
-        obj[part] = isNaN(part) ? {} : [];
+        obj[part] = isNaN(parts[0]) ? {} : [];
       }
-      console.log("Recursing with next level");
+      console.log(obj[part])
       update(obj[part], parts, url);
     }
   }
 
   update(formData, parts, url);
+  // console.log(formData)
 }
 
 module.exports.updatElevatorDimensions = async (req, res) => {
@@ -2832,7 +2840,7 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     Data.dimensions.pitPoint = pitPoint;
     Data.dimensions.floors = floors;
 
-    // console.log(files);
+    console.log(files);
     // Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
     // Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].filename;
     // Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].filename;
@@ -2847,13 +2855,17 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     let i = 0;
     let data = Data.dimensions;
 
-    console.log(files);
     files.forEach((file, index) => {
       // console.log(Data.dimensions.floors[i], index, i);
       // Data.dimensions.floors[i].sitePhotos = file.filename;
       // i++;
       updateFormData(data, file.fieldname, file.filename);
+
+      // console.log(file)
     });
+    // console.log("=================")
+    // console.log(data)
+    // console.log("=================")
     Data.dimensions = data;
     Data.save();
 
