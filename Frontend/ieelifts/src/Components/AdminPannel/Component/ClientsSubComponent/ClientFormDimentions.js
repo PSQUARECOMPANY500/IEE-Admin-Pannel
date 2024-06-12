@@ -53,18 +53,18 @@ const ClientFormDimentions = ({
     setLevelData(initialFormData);
   }, [Flevel]);
   const [dimentionsData, setDimentionsData] = useState({
-    pitPoint: {...basementWithPit},
-    topPoint: {...floorFrontData},
-    floors: {...levelData},
+    pitPoint: { ...basementWithPit },
+    topPoint: { ...floorFrontData },
+    floors: { ...levelData },
   });
-  useEffect(()=>{
+  useEffect(() => {
     setVisible(false)
-  },[changeInStops])
+  }, [changeInStops])
   useEffect(() => {
     setDimentionsData({
-      pitPoint: {...basementWithPit},
-      floors: {...levelData},
-      topPoint: {...floorFrontData},
+      pitPoint: { ...basementWithPit },
+      floors: { ...levelData },
+      topPoint: { ...floorFrontData },
     });
   }, [basementWithPit, floorFrontData, levelData]);
 
@@ -215,8 +215,8 @@ const ClientFormDimentions = ({
         )[0],
       topFloorFront:
         clientData?.dimensions?.topPoint?.sitePhotos?.topFloorFront?.split("-")[0],
-      topToBottom:
-        clientData?.dimensions?.topPoint?.sitePhotos?.topToBottom?.split(
+      bottomToTopImages:
+        clientData?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages?.split(
           "-"
         )[0],
     });
