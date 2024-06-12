@@ -334,7 +334,6 @@ const ClientForm = () => {
       clientArchitect: {},
     }); 
   };
- 
   return (
     <>
       {clientModalOperation && (
@@ -379,8 +378,7 @@ const ClientForm = () => {
                       <Clientbutton
                         value={"Next"}
                         className={"client-form-button-yellow"}
-                        handleAction={handleNextPage}
-                        
+                        handleAction={handleNextPage} 
                       />
                     </div>
                   </div>

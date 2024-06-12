@@ -6,7 +6,6 @@ import ClientDateInput from "./ClientsReusableComponent/ClientDateInput";
 import ClientFormCalendar from "./ClientsReusableComponent/ClientFormCalendar";
 
 const ClientFormDetails = ({ onDataChange, initialValues }) => {
-  const [date, setTodayDate] = useState();
   const calendarRef = useRef(null);
   const [clientFormData, setClientFormData] = useState({
     jon: "",
@@ -67,7 +66,7 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
     }
   }, [clientFormData.email]);
   useMemo(() => {
-    setClientFormData(initialValues);
+    setClientFormData(initialValues || {});
   }, [initialValues]);
  
   const [showCalendar, setShowCalendar] = useState(false);
