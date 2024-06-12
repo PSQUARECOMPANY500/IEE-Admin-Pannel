@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React from "react";
 import TextInput from "./ClientsReusableComponent/TextInput";
 
@@ -14,9 +15,6 @@ export const DimentionMidFloor = ({
   index,
 }) => {
 
-
-  console.log("index====>",index)
-  // console.log("Level data====>",levelData)
   return (
     
     <div className="floor-section">

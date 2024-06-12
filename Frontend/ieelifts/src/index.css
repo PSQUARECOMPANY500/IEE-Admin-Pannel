@@ -1868,7 +1868,7 @@ code {
   margin-top: 1rem;
 }
 
-@media screen and (min-width: 769px) and (max-width: 1600px) {
+@media screen and (min-width: 900px) and (max-width: 1600px) {
   .client-form-container {
     grid-column-gap: 7rem;
   }

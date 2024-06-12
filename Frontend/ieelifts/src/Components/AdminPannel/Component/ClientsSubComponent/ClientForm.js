@@ -211,7 +211,7 @@ const ClientForm = () => {
   const handleThirdStep = () => {
     dispatch(updateClientFormUsingPagination(dimentionsData, jon));
     toast.success("client details added");
-    closeModal();
+    // closeModal();
   };
   //----------------------------------------------------------------
   function validateClientForm(allFormData) {
@@ -307,7 +307,7 @@ const ClientForm = () => {
         setDimentionsData(dimensions);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      
       setAllFormData({
         clientFormDetails: {},
         clientSalesManDetails: {},
@@ -332,8 +332,9 @@ const ClientForm = () => {
       clientSalesManDetails: {},
       clientMembershipDocument: {},
       clientArchitect: {},
-    });
+    }); 
   };
+ 
   return (
     <>
       {clientModalOperation && (
@@ -371,6 +372,7 @@ const ClientForm = () => {
                       value={"Reset"}
                       className={"client-form-button-red"}
                       handleAction={handleReset}
+                      
                     />
 
                     <div className={`${!validateNextBtn ? "" : "disabled"}`}>
@@ -378,7 +380,7 @@ const ClientForm = () => {
                         value={"Next"}
                         className={"client-form-button-yellow"}
                         handleAction={handleNextPage}
-                        // onClick={handleSubmmitEnggData}
+                        
                       />
                     </div>
                   </div>

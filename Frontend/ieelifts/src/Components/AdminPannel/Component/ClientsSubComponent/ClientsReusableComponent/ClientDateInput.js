@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 const ClientDateInput = ({onCalendarToggle,dateOfHandover }) => {
   const [inputValue, setInputValue] = useState('');
-  console.log("inputValue",inputValue)
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-//    console.log("date of handover",dateOfHandover)
 useEffect(()=>{
     setInputValue(dateOfHandover)
 },[dateOfHandover])

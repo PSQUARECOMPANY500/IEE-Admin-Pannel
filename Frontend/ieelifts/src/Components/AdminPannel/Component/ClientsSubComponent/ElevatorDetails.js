@@ -1,3 +1,4 @@
+// <-----------------------------  Author:- Rahul kumar ----------------------------------->
 import React, { useState } from "react";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInput from "./ClientsReusableComponent/TextInput";
@@ -26,7 +27,6 @@ const ElevatorDetails = ({
   numberOfOpeningsData
 }) => {
   const [click, setClick] = useState({});
-// console.log("==>",doorType)
   //handler
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
