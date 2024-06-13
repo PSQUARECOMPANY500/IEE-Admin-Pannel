@@ -7,6 +7,7 @@ const PercentageInput = ({handleMdPercentChange,mdDiscountInPercentage,onBlur}) 
     setFocused(true);
   };
   
+ 
   const handleBlur = (e) => {
     if (value?.trim() === '') {
       setFocused(false);

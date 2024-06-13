@@ -2787,7 +2787,7 @@ function updateFormData(formData, fieldName, url) {
     parts[2] = parts[1];
     parts[1] = [index - 1];
   }
-  console.log(parts, url)
+  
 
   function update(obj, parts, url) {
     const part = parts.shift();
@@ -2810,13 +2810,13 @@ function updateFormData(formData, fieldName, url) {
       if (!obj[part]) {
         obj[part] = isNaN(parts[0]) ? {} : [];
       }
-      console.log(obj[part])
+     
       update(obj[part], parts, url);
     }
   }
 
   update(formData, parts, url);
-  // console.log(formData)
+  
 }
 
 module.exports.updatElevatorDimensions = async (req, res) => {
@@ -2840,7 +2840,7 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     Data.dimensions.pitPoint = pitPoint;
     Data.dimensions.floors = floors;
 
-    console.log(files);
+   
     // Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
     // Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].filename;
     // Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].filename;
@@ -2856,16 +2856,12 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     let data = Data.dimensions;
 
     files.forEach((file, index) => {
-      // console.log(Data.dimensions.floors[i], index, i);
-      // Data.dimensions.floors[i].sitePhotos = file.filename;
-      // i++;
+     
       updateFormData(data, file.fieldname, file.filename);
 
-      // console.log(file)
+      
     });
-    // console.log("=================")
-    // console.log(data)
-    // console.log("=================")
+   
     Data.dimensions = data;
     Data.save();
 
@@ -2893,7 +2889,7 @@ module.exports.getClientModalInformation = async (req, res) => {
 
     let dimensions = response.dimensions;
 
-    console.log(dimensions);
+   
 
     res.status(200).json({ success: true, response });
   } catch (error) {
@@ -2950,7 +2946,7 @@ module.exports.updateSecondStep = async (req, res) => {
       files[files.length - 1].filename;
 
     let i = 0;
-    console.log(files.length);
+   
     files.forEach((file, index) => {
       if (
         index !== 0 &&
@@ -2960,7 +2956,7 @@ module.exports.updateSecondStep = async (req, res) => {
         index !== files.length - 2 &&
         index !== files.length - 3
       ) {
-        console.log(updatedData.dimensions.floors[i], index, i);
+        
         Data.dimensions.floors[i].sitePhotos = file.filename;
         i++;
       }

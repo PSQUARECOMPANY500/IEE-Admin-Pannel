@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
 import ElevatorDetails from "./ElevatorDetails";
 import { useSelector } from "react-redux";
@@ -11,6 +11,7 @@ const ClientFormElevatorDetails = ({
   onDataChange,
   validateData,
   prevData,
+  changeInData
 }) => {
   const clientData = useSelector(
     (state) =>
@@ -64,6 +65,7 @@ const ClientFormElevatorDetails = ({
     if (fieldName === "stops") {
       setDefaultData(value);
     }
+    changeInData(false)
   };
 
   useEffect(() => {
@@ -140,6 +142,7 @@ const ClientFormElevatorDetails = ({
     });
 
     setElevatorOpenings(updatedElevatorOpenings);
+    changeInData(false)
   };
   const handleNumberOfOpenings = (openings, prevData) => {
     setDegree({
@@ -166,8 +169,6 @@ const ClientFormElevatorDetails = ({
   }
 
   const handleDegreeSelection = (value) => {
-    // setVisible(true);
-    // console.log("i am here", elevatorDetails.numberOfOpenings);
     setLevelAndOpeningsView(elevatorDetails.numberOfOpenings);
     setDefaultData(elevatorDetails.numberOfOpenings);
     if (
@@ -229,6 +230,7 @@ const ClientFormElevatorDetails = ({
         break;
     }
     setVisible(true);
+    changeInData(false)
   };
 
   const setLevelAndOpeningsView = (openings) => {
@@ -339,8 +341,8 @@ const ClientFormElevatorDetails = ({
         doorType: doorType,
         constructionMaterial: constructionMaterial,
         basementSelection: {
-          B1: stops?.Basement ? true : false,
-          B2: stops?.Basement ? true : false,
+          B1: stops?.Basement[0]==="B1" ? true : false,
+          B2: stops?.Basement[1]==="B2" ? true : false,
         },
         numberOfOpenings: numberOfOpenings,
         remarks: remarks,
@@ -368,7 +370,7 @@ const ClientFormElevatorDetails = ({
       });
     });
   }, []);
-
+   
   //------------------------------------------------------------------------------
   return (
     <div className="client-form-elevator-details">

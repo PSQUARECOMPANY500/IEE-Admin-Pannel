@@ -1,11 +1,11 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInputs from "./ClientsReusableComponent/TextInput";
-import ClientDateInput from "./ClientsReusableComponent/ClientDateInput"; 
+import ClientDateInput from "./ClientsReusableComponent/ClientDateInput";
 import ClientFormCalendar from "./ClientsReusableComponent/ClientFormCalendar";
 
-const ClientFormDetails = ({ onDataChange, initialValues }) => {
+const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   const calendarRef = useRef(null);
   const [clientFormData, setClientFormData] = useState({
     jon: "",
@@ -22,6 +22,24 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
     referenceName: "",
     sourceOfLead: "",
   });
+  useLayoutEffect(() => {
+    setClientFormData({
+      jon: "",
+      userName: "",
+      phoneNumber: "",
+      alternativeNumber: "",
+      email: "",
+      dateOfHandover: "",
+      address: "",
+      pincode: "",
+      state: "",
+      district: "",
+      city: "",
+      referenceName: "",
+      sourceOfLead: "",
+    });
+  }, [reset]);
+
   const [click, setClick] = useState({});
   const sourceOfLead = [
     "Website",
@@ -68,7 +86,7 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
   useMemo(() => {
     setClientFormData(initialValues || {});
   }, [initialValues]);
- 
+
   const [showCalendar, setShowCalendar] = useState(false);
 
   const handleCalendarToggle = () => {
@@ -83,30 +101,28 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
 
   useEffect(() => {
     if (showCalendar) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showCalendar]);
   const [selectedDate, setSelectedDate] = useState();
   const handleDateChange = (date) => {
-    setClientFormData((prev)=>(
-      {
-         ...prev,
-          dateOfHandover: date
-      }
-    ))
+    setClientFormData((prev) => ({
+      ...prev,
+      dateOfHandover: date,
+    }));
     setSelectedDate(date);
   };
-   useEffect(()=>{
-    if(clientFormData.dateOfHandover!==""){
-      setShowCalendar(false)
+  useEffect(() => {
+    if (clientFormData.dateOfHandover !== "") {
+      setShowCalendar(false);
     }
-   },[clientFormData.dateOfHandover])
+  }, [clientFormData.dateOfHandover]);
   return (
     <div className="client-form-details">
       <h5 className="client-form-details-heading">Client's Details</h5>
@@ -169,17 +185,18 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
             emailError={emailError}
           />
         </div>
-        <div>  
-          <ClientDateInput  
+        <div>
+          <ClientDateInput
             onCalendarToggle={handleCalendarToggle}
             dateOfHandover={clientFormData.dateOfHandover}
           />
-           <div className="calendarContainer"  ref={calendarRef}>
-        {showCalendar && <ClientFormCalendar setTodayDate={handleDateChange}/>}
-       
+          <div className="calendarContainer" ref={calendarRef}>
+            {showCalendar && (
+              <ClientFormCalendar setTodayDate={handleDateChange} />
+            )}
+          </div>
         </div>
-        </div>
-       
+
         <div className="address-container">
           <TextInputs
             label={"address"}
@@ -245,17 +262,6 @@ const ClientFormDetails = ({ onDataChange, initialValues }) => {
             value={clientFormData.sourceOfLead}
           />
         </div>
-        {/* <div className={`${clientFormData.sourceOfLead==="Reference"?"":"disabled"}`}>
-          <TextInputs
-            label={"Reference"}
-            name={"reference"}
-            onFocus={handleClick}
-            value={clientFormData.reference}
-            onChange={hadleInputChnage}
-            click={click.reference}
-            onBlur={handleClickFalse}
-          />
-        </div> */}
         <div
           className={`${
             clientFormData.sourceOfLead === "Reference" ? "" : "disabled"

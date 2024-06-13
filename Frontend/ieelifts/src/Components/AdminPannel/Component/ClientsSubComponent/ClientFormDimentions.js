@@ -9,14 +9,15 @@ const ClientFormDimentions = ({
   validate,
   forSecondClick,
   onDataChange,
-  changeInStops
+  visible,
+  changeInData,
 }) => {
+  console.log("changeInData",changeInData)
   //states
-  const [visible, setVisible] = useState(false);
-  const [basementLevel, setBasemnetLevel] = useState([]);
+  // const [basementLevel, setBasemnetLevel] = useState([]);
   const [levelData, setLevelData] = useState([]);
   const [click, setClick] = useState({});
-  const [check, setCheck] = useState(validate);
+  // const [check, setCheck] = useState(validate);
   const clientData = useSelector(
     (state) =>
       state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
@@ -57,9 +58,7 @@ const ClientFormDimentions = ({
     topPoint: { ...floorFrontData },
     floors: { ...levelData },
   });
-  useEffect(() => {
-    setVisible(false)
-  }, [changeInStops])
+
   useEffect(() => {
     setDimentionsData({
       pitPoint: { ...basementWithPit },
@@ -145,7 +144,7 @@ const ClientFormDimentions = ({
   };
 
   const toggleVisibility = () => {
-    setVisible((prev) => !prev);
+    changeInData(!visible);
   };
 
   const handleOnClick = () => {
@@ -210,11 +209,11 @@ const ClientFormDimentions = ({
         )[0],
 
       Overhead:
-        clientData?.dimensions?.topPoint?.sitePhotos?.Overhead?.split(
+        clientData?.dimensions?.topPoint?.sitePhotos?.Overhead?.split("-")[0],
+      topFloorFront:
+        clientData?.dimensions?.topPoint?.sitePhotos?.topFloorFront?.split(
           "-"
         )[0],
-      topFloorFront:
-        clientData?.dimensions?.topPoint?.sitePhotos?.topFloorFront?.split("-")[0],
       bottomToTopImages:
         clientData?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages?.split(
           "-"
@@ -235,7 +234,6 @@ const ClientFormDimentions = ({
             ...prevState,
             [index]: level.sitePhotos?.split("-")[0],
           }));
-          console.log(level.sitePhotos, index);
         }
       });
     }
@@ -245,14 +243,16 @@ const ClientFormDimentions = ({
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
-      <div
+     {
+      !visible && <div
         // ${ !validate ? "disabled" : "" }
-        className={`dimention-btn ${visible ? "hide" : ""}  `}
+        className={`dimention-btn ${visible ? "hide" : ""} ${ !validate ? "disabled" : "" }  `}
         onClick={handleOnClick}
       >
         Generate dimensions{" "}
         <img src="generateicon.png" alt="icon" className="generateIcon" />
       </div>
+     }
       {visible && (
         <div className="dimenstions-container">
           {Flevel.slice(startIndex, endIndex).map((level, index) => (

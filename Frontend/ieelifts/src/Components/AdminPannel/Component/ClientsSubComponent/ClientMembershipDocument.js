@@ -1,10 +1,9 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useState, useEffect, useMemo } from "react";
-import AnimatedInput from "../ClientsSubComponent/ClientsReusableComponent/AnimatedInput";
+import React, { useState, useEffect, useMemo,useLayoutEffect } from "react";
 import FileUploader from "../ClientsSubComponent/ClientsReusableComponent/FileUploader";
-const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
-  const [selectedMembership, setSelectedMembership] = useState("Warranty");
-  const [uploadedFiles, setUploadedFiles] = useState({});
+const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
+  // const [selectedMembership, setSelectedMembership] = useState("Warranty");
+  // const [uploadedFiles, setUploadedFiles] = useState({});
   const [membershipData, setMembershipData] = useState({
     selectedMembership: "Warranty",
     signedQuotation: "",
@@ -13,6 +12,14 @@ const ClientMembershipDocument = ({ onDataChange, initialValues }) => {
     chequeForm: "",
   });
 
+  useLayoutEffect(() => {
+    setMembershipData({
+      signedQuotation: "",
+      paymentForm: "",
+      salesOrder: "",
+      chequeForm: "",
+    });
+  }, [reset]);
   //handler
   const handleMembershipChange = (membership) => {
     setMembershipData({

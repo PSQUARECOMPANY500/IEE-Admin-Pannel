@@ -32,6 +32,7 @@ const ClientForm = () => {
     clientMembershipDocument: {},
     clientArchitect: {},
   });
+  const [visible, setVisible] = useState(true);
   const [clientElevatorDetails, setClientElevatorDetails] = useState();
   const [dimentionsData, setDimentionsData] = useState({});
   const dispatch = useDispatch();
@@ -39,8 +40,8 @@ const ClientForm = () => {
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
   const [validate, setValidate] = useState(false); //validation for dimensions
+  const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
-  const [prevClientDetails, setPrevClientDetails] = useState([]);
   const [prevData, setPrevData] = useState(false);
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
@@ -59,6 +60,7 @@ const ClientForm = () => {
   }, []);
 
   //handler
+
   const validateData = (data) => {
     setValidate(data);
   };
@@ -95,6 +97,7 @@ const ClientForm = () => {
   };
   //------------------handle next page-------------------
   const handleNextPage = () => {
+    changeInData(false);
     setToggle(false);
 
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
@@ -124,7 +127,7 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
-
+   
     if (prevData) {
       dispatch(RegisterClientDataAction(formData));
     } else {
@@ -135,7 +138,6 @@ const ClientForm = () => {
   const handlePreviousPage = () => {
     setToggle(true);
   };
-
   const closeModal = () => {
     setAllFormData({
       clientFormDetails: {},
@@ -146,7 +148,6 @@ const ClientForm = () => {
     dispatch(closeClientModalAction());
     setToggle(true);
   };
-
   const handleOverlayClick = (event) => {
     if (event.target.classList.contains("add-client-wrapper")) {
       setAllFormData({
@@ -158,7 +159,6 @@ const ClientForm = () => {
       closeModal();
     }
   };
-
   const handleSecndStep = () => {
     const {
       basementSelection,
@@ -202,17 +202,23 @@ const ClientForm = () => {
       type: type,
       numberOfOpenings: numberOfOpenings,
     };
-
-    dispatch(updateClientData(elevatorDetails));
+    dispatch(updateClientData(elevatorDetails))
   };
 
   //handle data in third step using pagination
   //----------------------------------------------------------------
   const handleThirdStep = () => {
-    dispatch(updateClientFormUsingPagination(dimentionsData, jon));
-    toast.success("client details added");
-    // closeModal();
+    dispatch(updateClientFormUsingPagination(dimentionsData, jon))
+      .then(() => {
+        toast.success("Client details added.");
+        closeModal();
+      })
+      .catch((error) => {
+        console.error("Error submitting client details:", error);
+        toast.error("Failed to add client details.");
+      });
   };
+  
   //----------------------------------------------------------------
   function validateClientForm(allFormData) {
     const {
@@ -228,9 +234,14 @@ const ClientForm = () => {
       phoneNumber,
       alternativeNumber,
       email,
-      reference,
       referenceName,
       sourceOfLead,
+      dateOfHandover,
+      address,
+      pincode,
+      state,
+      district,
+      city,
     } = clientFormDetails;
     const {
       finalPrice,
@@ -240,21 +251,29 @@ const ClientForm = () => {
       discountAmount,
       finalAmount,
     } = clientSalesManDetails;
-    if (!jon || !userName || !phoneNumber || !alternativeNumber || !email) {
+    if (
+      !jon ||
+      !userName ||
+      !phoneNumber ||
+      !alternativeNumber ||
+      !email ||
+      !dateOfHandover ||
+      !address ||
+      !pincode ||
+      !state ||
+      !district ||
+      !city
+    ) {
       return false;
     }
     if (sourceOfLead === "Reference") {
-      if (!reference || !referenceName) {
+      if (!referenceName) {
         return false;
       } else {
         return true;
       }
     }
-    if (
-      !signedQuotation ||
-      !paymentForm ||
-      !salesOrder
-    ) {
+    if (!signedQuotation || !paymentForm || !salesOrder) {
       return false;
     }
     if (
@@ -281,7 +300,7 @@ const ClientForm = () => {
     try {
       const data = await getDataBasedOnJon(jon);
       dispatch(putDataBasedOnJon(data));
-     
+
       if (data?.response) {
         const clientFormDetails = data?.response.clientFormDetails;
 
@@ -307,7 +326,6 @@ const ClientForm = () => {
         setDimentionsData(dimensions);
       }
     } catch (error) {
-      
       setAllFormData({
         clientFormDetails: {},
         clientSalesManDetails: {},
@@ -332,8 +350,14 @@ const ClientForm = () => {
       clientSalesManDetails: {},
       clientMembershipDocument: {},
       clientArchitect: {},
-    }); 
+    });
+  makeReset(reset+1)
   };
+  //------------------------------------------------------------------------
+  const changeInData = (state) => {
+    setVisible(state);
+  };
+
   return (
     <>
       {clientModalOperation && (
@@ -345,40 +369,43 @@ const ClientForm = () => {
             <div>
               {toggle ? (
                 <div className="client-form-container">
-                 <div className="client-form-left-container">
-                 <ClientFormDetails
-                    onDataChange={handleClientFormDetails}
-                    initialValues={allFormData.clientFormDetails}
-                  />
-                  <ClientMembershipDocument
-                    onDataChange={handleClientMembershipDocument}
-                    initialValues={allFormData.clientMembershipDocument}
-                  />
-                 </div>
-                 <div>
-                 <ClientSalesManDetails
-                    onDataChange={handleClientSalesManDetails}
-                    initialValues={allFormData.clientSalesManDetails}
-                  />
-                  
-                  <ClientArchitect
-                    onDataChange={handleClientArchitect}
-                    initialValues={allFormData.clientArchitect}
-                  />
-                 </div>
+                  <div className="client-form-left-container">
+                    <ClientFormDetails
+                      onDataChange={handleClientFormDetails}
+                      reset={reset}
+                      initialValues={allFormData.clientFormDetails}
+                    />
+                    <ClientMembershipDocument
+                      onDataChange={handleClientMembershipDocument}
+                      initialValues={allFormData.clientMembershipDocument}
+                      reset={reset}
+                    />
+                  </div>
+                  <div>
+                    <ClientSalesManDetails
+                      onDataChange={handleClientSalesManDetails}
+                      initialValues={allFormData.clientSalesManDetails}
+                      reset={reset}
+                    />
+
+                    <ClientArchitect
+                      onDataChange={handleClientArchitect}
+                      initialValues={allFormData.clientArchitect}
+                      reset={reset}
+                    />
+                  </div>
                   <div className="button-container">
                     <Clientbutton
                       value={"Reset"}
                       className={"client-form-button-red"}
                       handleAction={handleReset}
-                      
                     />
 
-                    <div className={`${!validateNextBtn ? "" : "disabled"}`}>
+                    <div className={`${validateNextBtn ? "" : "disabled"}`}>
                       <Clientbutton
                         value={"Next"}
                         className={"client-form-button-yellow"}
-                        handleAction={handleNextPage} 
+                        handleAction={handleNextPage}
                       />
                     </div>
                   </div>
@@ -393,11 +420,12 @@ const ClientForm = () => {
                     validateData={validateData}
                     initialValues={clientElevatorDetails}
                     prevData={prevData}
+                    changeInData={changeInData}
                   />
                   <ClientFormDimentions
                     valforDimention={valforDimention}
                     Flevel={Flevel}
-                    // validateData={validate}
+                    validateData={validate}
                     validate={validate}
                     forSecondClick={() => {
                       handleSecndStep();
@@ -405,18 +433,24 @@ const ClientForm = () => {
                     onDataChange={handleDimenstionsData}
                     initialValues={dimentionsData}
                     changeInStops={clientElevatorDetails?.stops}
+                    visible={visible}
+                    changeInData={changeInData}
                   />
                   <div className="button-container">
-                    <Clientbutton
-                      value={"Back"}
-                      className={"client-form-button-yellow"}
-                      handleAction={handlePreviousPage}
-                    />
-                    <Clientbutton
-                      value={"Submit"}
-                      className={"client-form-button-submit"}
-                      handleAction={handleThirdStep}
-                    />
+                    <div>
+                      <Clientbutton
+                        value={"Back"}
+                        className={"client-form-button-yellow"}
+                        handleAction={handlePreviousPage}
+                      />
+                    </div>
+                    <div className={!visible && "disabled"}>
+                      <Clientbutton
+                        value={"Submit"}
+                        className={"client-form-button-submit"}
+                        handleAction={handleThirdStep}
+                      />
+                    </div>
                   </div>
                 </div>
               )}

@@ -155,8 +155,7 @@ const EngeeniersCard = () => {
 
   }
 
-
-
+console.log("currentengImg",currentengImg)
   return (
     <>
       <div className="EngeeniersCard" style={{ gridTemplateColumns: isFirst || isSecond ? '2fr 1fr' : '1fr', gridTemplateAreas: isSecond && "'SingleEng'" }} >

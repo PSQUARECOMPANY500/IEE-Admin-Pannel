@@ -2008,10 +2008,9 @@ text-align: center;
 
 .iconContainer {
   position: absolute;
-  right: 0.5rem; /* Adjust this value to position the icon inside the input */
+  right: 0.5rem; 
   top: 50%;
   transform: translateY(-50%);
-   /* Ensures the icon doesn't block input interaction */
   cursor: pointer;
 }
 .calendarContainer{
@@ -2019,7 +2018,7 @@ text-align: center;
   z-index: 5;
 }
 .calendarIcon {
-  width: 1.5rem; /* Adjust size as needed */
+  width: 1.5rem;
   height: auto;
 }
 
@@ -2030,11 +2029,9 @@ text-align: center;
   border-top: none;
   border-bottom: 1px solid #44444473;
   cursor: text;
- 
   width: 100%;
-  /* padding-left: 2rem; Add left padding to make space for the label and icon */
   padding-bottom: 0.5rem;
-  padding-top: 0.75rem;
+  padding-top: 0.55rem;
   font-size: 1rem;
   color: #444444;
 }
@@ -2043,24 +2040,20 @@ text-align: center;
 /* ------------------------------------------------------ */
 /* ----------------------------------------------------------- */
 .client-form-input-wrapper > *:nth-child(7) {
-  grid-column: 1 / span 2; /* Span across both columns */
+  grid-column: 1 / span 2;
 }
 
 .client-form-hr {
   color: #444444;
   opacity: 0.54;
-
 }
-
 .client-warranty-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   margin-top: 1rem;
   color: #444444;
 }
-
 .warranty-button {
-
   width: 6rem;
   text-align: center;
   border-radius: 6px;
@@ -2070,11 +2063,9 @@ text-align: center;
   white-space: nowrap;
   cursor: pointer;
 }
-
 .warranty-button.selected {
   background-color: #F8AC1D;
 }
-
 .warranty-button-design {
   display: flex;
   justify-content: center;
@@ -2085,11 +2076,9 @@ text-align: center;
   font-size: 1rem;
   font-weight: 500;
 }
-
 .client-document {
   margin-top: 2rem;
 }
-
 .client-document-child-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2539,6 +2528,7 @@ align-items: center;
 font-size: 0.9rem;
 margin-top: 1rem;
 color: #444444;
+cursor: pointer;
 }
 .generateOpening{
   display: flex;

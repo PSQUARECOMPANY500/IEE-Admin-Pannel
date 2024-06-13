@@ -1,10 +1,10 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo,useLayoutEffect } from "react";
 import React from "react";
 import TextInput from "../ClientsSubComponent/ClientsReusableComponent/TextInput";
 import PercentageInput from "./ClientsReusableComponent/PercentageInput";
 
-const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
+const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
   const [clientFormData, setClientFormData] = useState({
     salesmanId: "",
     salesmanName: "",
@@ -16,6 +16,20 @@ const ClientSalesManDetails = ({ onDataChange,initialValues }) => {
     finalAmount: "",
     mdDiscountInPercentage: "",
   });
+
+  useLayoutEffect(() => {
+    setClientFormData({
+      salesmanId: "",
+      salesmanName: "",
+      finalPrice: "",
+      quotatedPrice: "",
+      discountInRupees: "",
+      discountInPercentage: "",
+      discountAmount: "",
+      finalAmount: "",
+      mdDiscountInPercentage: "",
+    });
+  }, [reset]);
   const [click, setClick] = useState({});
 
   const handleInputChange = (e) => {

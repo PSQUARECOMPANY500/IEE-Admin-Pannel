@@ -1,13 +1,22 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useLayoutEffect } from "react";
 import TextInput from "./ClientsReusableComponent/TextInput";
-const ClientArchitect = ({ onDataChange,initialValues }) => {
+const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
   const [clientFormData, setClientFormData] = useState({
     architectName: "",
     architectNumber: "",
     contractorName: "",
     name: "",
   });
+
+  useLayoutEffect(() => {
+    setClientFormData({
+      architectName: "",
+    architectNumber: "",
+    contractorName: "",
+    name: "",
+    });
+  }, [reset]);
   const [click, setClick] = useState({});
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;

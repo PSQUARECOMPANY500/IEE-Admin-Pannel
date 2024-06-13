@@ -190,8 +190,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const parts = file.mimetype.split("/")[1];
     const fileName = file.originalname.split(".")[0];
-
-    cb(null, `${fileName}.${parts}-${Date.now()}`);
+    cb(null, `${fileName}-${Date.now()}.${parts}`);
   },
 });
 const upload = multer({ storage: storage });
