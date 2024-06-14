@@ -35,7 +35,6 @@ const elevatorOpeningSelection = ({
                       ? "90° Right"
                       : value === "180d" && "180°"}
                   </span>
-                  {/* Rest of your code */}
                 </React.Fragment>
               )
           )}
@@ -64,7 +63,7 @@ const elevatorOpeningSelection = ({
                         className={`level-selector ${
                           array[rI][cI] ? "level-selector-active" : ""
                         }`}
-                        onClick={() => handleClick(rI, cI)}
+                        onClick={() => handleClick(rI, cI,true)}
                         key={colIndex}
                       ></span>
                     );

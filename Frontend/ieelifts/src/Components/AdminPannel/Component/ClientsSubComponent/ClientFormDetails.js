@@ -1,5 +1,11 @@
 // <-----------------------------  Author:- Rahul kumar ----------------------------------->
-import React, { useEffect, useMemo, useState, useRef, useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import ClientDropdown from "./ClientsReusableComponent/ClientDropdown";
 import TextInputs from "./ClientsReusableComponent/TextInput";
 import ClientDateInput from "./ClientsReusableComponent/ClientDateInput";
@@ -23,21 +29,23 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
     sourceOfLead: "",
   });
   useLayoutEffect(() => {
-    setClientFormData({
-      jon: "",
-      userName: "",
-      phoneNumber: "",
-      alternativeNumber: "",
-      email: "",
-      dateOfHandover: "",
-      address: "",
-      pincode: "",
-      state: "",
-      district: "",
-      city: "",
-      referenceName: "",
-      sourceOfLead: "",
-    });
+    if (reset !== undefined) {
+      setClientFormData({
+        jon: "",
+        userName: "",
+        phoneNumber: "",
+        alternativeNumber: "",
+        email: "",
+        dateOfHandover: "",
+        address: "",
+        pincode: "",
+        state: "",
+        district: "",
+        city: "",
+        referenceName: "",
+        sourceOfLead: "",
+      });
+    }
   }, [reset]);
 
   const [click, setClick] = useState({});

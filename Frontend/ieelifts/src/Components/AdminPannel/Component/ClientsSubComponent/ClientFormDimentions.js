@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useLayoutEffect } from "react";
 import DimentionPitFloor from "./DimentionsPitFloor";
 import DimentionFloorTop from "./DimentionFloorTop";
 import { DimentionMidFloor } from "./DimentionMidFloor";
@@ -12,12 +12,9 @@ const ClientFormDimentions = ({
   visible,
   changeInData,
 }) => {
-  console.log("changeInData",changeInData)
   //states
-  // const [basementLevel, setBasemnetLevel] = useState([]);
   const [levelData, setLevelData] = useState([]);
   const [click, setClick] = useState({});
-  // const [check, setCheck] = useState(validate);
   const clientData = useSelector(
     (state) =>
       state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
@@ -53,6 +50,7 @@ const ClientFormDimentions = ({
     }));
     setLevelData(initialFormData);
   }, [Flevel]);
+
   const [dimentionsData, setDimentionsData] = useState({
     pitPoint: { ...basementWithPit },
     topPoint: { ...floorFrontData },
@@ -88,10 +86,10 @@ const ClientFormDimentions = ({
     if (file) {
       setLevelData((prevState) => ({
         ...prevState,
-        sitePhotos: {
-          ...prevState.sitePhotos,
-          [fieldName]: file,
-        },
+        [fieldName]:{
+          ...prevState[fieldName],
+           sitePhotos: file
+        }
       }));
       setFileNames((prevState) => ({
         ...prevState,
@@ -166,7 +164,7 @@ const ClientFormDimentions = ({
   };
   useMemo(() => {
     if (clientData) {
-      const { pitPoint, floors, topPoint } = clientData?.dimensions;
+      const { pitPoint, topPoint } = clientData?.dimensions;
 
       setBasementWithPit(() => ({
         shaftWidth: pitPoint?.shaftWidth,
@@ -227,32 +225,46 @@ const ClientFormDimentions = ({
       clientData.dimensions.floors.length === Flevel.length - 2
     ) {
       const updatedLevelData = [{}, ...clientData.dimensions.floors, {}];
-      setLevelData(updatedLevelData);
-      updatedLevelData.forEach((level, index) => {
-        if (index !== 0 && index !== updatedLevelData.length - 1) {
-          setFileNames((prevState) => ({
-            ...prevState,
-            [index]: level.sitePhotos?.split("-")[0],
-          }));
-        }
+      setLevelData(
+        updatedLevelData.map((level) => ({
+          shaftWidth: level?.shaftWidth || "",
+          shaftDepth: level?.shaftDepth || "",
+          doorWidth: level?.doorWidth || "",
+          doorHeight: level?.doorHeight || "",
+          floorToFloorHeight: level?.floorToFloorHeight || "",
+          fl: level?.fl || "",
+          fr: level?.fr || "",
+          sitePhotos: level?.sitePhotos || "",
+        }))
+      );
+
+      updatedLevelData.map((level, index) => {
+        let name = level?.sitePhotos?.split("-")[0] || "";
+        setFileNames((prev) => ({
+          ...prev,
+          [index]: name,
+        }));
       });
     }
-  }, [visible]);
+  }, [clientData, Flevel.length, visible]);
+   
+
 
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
-     {
-      !visible && <div
-        // ${ !validate ? "disabled" : "" }
-        className={`dimention-btn ${visible ? "hide" : ""} ${ !validate ? "disabled" : "" }  `}
-        onClick={handleOnClick}
-      >
-        Generate dimensions{" "}
-        <img src="generateicon.png" alt="icon" className="generateIcon" />
-      </div>
-     }
+      {!visible && (
+        <div
+          className={`dimention-btn ${visible ? "hide" : ""} ${
+            !validate ? "disabled" : ""
+          }  `}
+          onClick={handleOnClick}
+        >
+          Generate dimensions{" "}
+          <img src="generateicon.png" alt="icon" className="generateIcon" />
+        </div>
+      )}
       {visible && (
         <div className="dimenstions-container">
           {Flevel.slice(startIndex, endIndex).map((level, index) => (

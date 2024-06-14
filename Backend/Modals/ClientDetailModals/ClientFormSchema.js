@@ -4,6 +4,13 @@
 const mongoose = require("mongoose");
 
 const clientForm = new mongoose.Schema({
+  membership: {
+    type: String,
+    enum: ["warrenty", "gold", "silver", "platinum"],
+  },
+  profilePic: {
+    type: String,
+  },
   clientFormDetails: {
     //First part of the form
     jon: {

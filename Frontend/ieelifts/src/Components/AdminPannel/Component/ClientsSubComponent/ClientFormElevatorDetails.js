@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useLayoutEffect } from "react";
 import ElevatorOpeningSelection from "./ElevatorOpeningSelection";
 import ElevatorDetails from "./ElevatorDetails";
 import { useSelector } from "react-redux";
@@ -11,7 +11,7 @@ const ClientFormElevatorDetails = ({
   onDataChange,
   validateData,
   prevData,
-  changeInData
+  changeInData,
 }) => {
   const clientData = useSelector(
     (state) =>
@@ -55,6 +55,7 @@ const ClientFormElevatorDetails = ({
     numberOfOpenings: 0,
     remarks: "",
   });
+
   const [validate, setValidate] = useState(false);
   //handler
   const handleElevatorDetailsChange = (fieldName, value) => {
@@ -65,7 +66,7 @@ const ClientFormElevatorDetails = ({
     if (fieldName === "stops") {
       setDefaultData(value);
     }
-    changeInData(false)
+    changeInData(false);
   };
 
   useEffect(() => {
@@ -110,39 +111,43 @@ const ClientFormElevatorDetails = ({
         oneEightyDegree: "",
       });
       setVisible(true);
-    } 
+    }
     setValForDimention(newValue);
     handleElevatorDetailsChange(field, newValue);
   };
 
-  const handleClick = (row, colIndex) => {
+  const handleClick = (row, colIndex, check) => {
     setArray((prevArray) => {
       const newArray = [...prevArray];
       newArray[row][colIndex] = !newArray[row][colIndex];
       return newArray;
     });
-    let values = Object.values(degree).filter((value) => value !== "");
+    let values = Object.values(degree).filter(
+      (value) => value !== "" && value !== undefined && value !== null
+    );
     values = ["original", ...values];
 
     const levelValue = Flevel[row];
 
-    const updatedElevatorOpenings = elevatorOpenings.map((item) => {
-      if (item.level === levelValue) {
-        let newOpenings;
-        if (item.openings.includes(values[colIndex])) {
-          newOpenings = item.openings.filter(
-            (value) => value !== values[colIndex]
-          );
-        } else {
-          newOpenings = [...item.openings, values[colIndex]];
+    if (check) {
+      const updatedElevatorOpenings = elevatorOpenings.map((item) => {
+        if (item.level === levelValue) {
+          let newOpenings;
+          if (item.openings.includes(values[colIndex])) {
+            newOpenings = item.openings.filter(
+              (value) => value !== values[colIndex]
+            );
+          } else {
+            newOpenings = [...item.openings, values[colIndex]];
+          }
+          return { ...item, openings: newOpenings };
         }
-        return { ...item, openings: newOpenings };
-      }
-      return item;
-    });
+        return item;
+      });
 
-    setElevatorOpenings(updatedElevatorOpenings);
-    changeInData(false)
+      setElevatorOpenings(updatedElevatorOpenings);
+    }
+    changeInData(false);
   };
   const handleNumberOfOpenings = (openings, prevData) => {
     setDegree({
@@ -230,7 +235,7 @@ const ClientFormElevatorDetails = ({
         break;
     }
     setVisible(true);
-    changeInData(false)
+    changeInData(false);
   };
 
   const setLevelAndOpeningsView = (openings) => {
@@ -327,7 +332,7 @@ const ClientFormElevatorDetails = ({
         numberOfOpenings,
         levelOpening,
         doorType,
-        constructionMaterial
+        constructionMaterial,
       } = clientData;
       setElevatorDetails((prev) => ({
         ...prev,
@@ -341,8 +346,8 @@ const ClientFormElevatorDetails = ({
         doorType: doorType,
         constructionMaterial: constructionMaterial,
         basementSelection: {
-          B1: stops?.Basement[0]==="B1" ? true : false,
-          B2: stops?.Basement[1]==="B2" ? true : false,
+          B1: stops?.Basement[0] === "B1" ? true : false,
+          B2: stops?.Basement[1] === "B2" ? true : false,
         },
         numberOfOpenings: numberOfOpenings,
         remarks: remarks,
@@ -366,11 +371,11 @@ const ClientFormElevatorDetails = ({
     setLevelAndOpeningsView(values.length);
     elevatorOpenings.forEach((opening, index) => {
       opening.openings.forEach((value) => {
-        handleClick(index, values.indexOf(value));
+        handleClick(index, values.indexOf(value), false);
       });
     });
   }, []);
-   
+
   //------------------------------------------------------------------------------
   return (
     <div className="client-form-elevator-details">

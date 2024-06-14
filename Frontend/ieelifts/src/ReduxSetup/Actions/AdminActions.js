@@ -94,6 +94,7 @@ export const UPDATE_CLIENT_DATA = "UPDATE_CLIENT_DATA";
 export const UPDATE_CLIENT_FORM_USING_PAGINATION =
   "UPDATE_CLIENT_FORM_USING_PAGINATION";
 export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
+export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1216,7 +1217,13 @@ export const ReportCrouserHandler = (Index, IsOpen) => {
 export const RegisterClientDataAction = (formData) => {
   return async (dispatch) => {
     try {
-
+      if (!formData) {
+        dispatch({
+          type: REGISTER_CLIENT_DATA,
+          payload: {},
+        });
+        return;
+      }
       const response = await axios.post(
         `${config.apiUrl}/admin/registerClientData`,
         formData,
@@ -1226,7 +1233,6 @@ export const RegisterClientDataAction = (formData) => {
           },
         }
       );
-     
 
       dispatch({
         type: REGISTER_CLIENT_DATA,
@@ -1239,8 +1245,7 @@ export const RegisterClientDataAction = (formData) => {
 };
 
 export const updateClientData = (formData) => {
-  // console.log("rahul ...........", formData);
-
+    
   return async (dispatch) => {
     try {
       const response = await axios.put(
@@ -1261,6 +1266,13 @@ export const updateClientData = (formData) => {
 export const updateClientFormUsingPagination = (formData, jon) => {
   return async (dispatch) => {
     try {
+      if (!jon) {
+        dispatch({
+          type: UPDATE_CLIENT_FORM_USING_PAGINATION,
+          payload: {},
+        });
+        return;
+      }
       const response = await axios.put(
         `${config.apiUrl}/admin/putElevatorDimensions`,
         {
@@ -1288,7 +1300,6 @@ export const updateClientFormUsingPagination = (formData, jon) => {
 export const putDataBasedOnJon = (response) => {
   return async (dispatch) => {
     try {
-      
       if (!response) {
         dispatch({
           type: GET_CLIENT_FORM_DATA,
@@ -1305,7 +1316,6 @@ export const putDataBasedOnJon = (response) => {
     }
   };
 };
-//------------------------------------------------------------------------------------------------------------
 
 export const getDataBasedOnJon = async (jon) => {
   if (!jon) {
@@ -1321,3 +1331,5 @@ export const getDataBasedOnJon = async (jon) => {
     console.log("error while fetching data", error);
   }
 };
+
+//------------------------------------------------------------------------------------------------------------

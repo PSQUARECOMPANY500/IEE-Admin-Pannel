@@ -3,7 +3,6 @@ import React, { useState, useEffect, useMemo,useLayoutEffect } from "react";
 import FileUploader from "../ClientsSubComponent/ClientsReusableComponent/FileUploader";
 const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
   // const [selectedMembership, setSelectedMembership] = useState("Warranty");
-  // const [uploadedFiles, setUploadedFiles] = useState({});
   const [membershipData, setMembershipData] = useState({
     selectedMembership: "Warranty",
     signedQuotation: "",
@@ -58,17 +57,16 @@ const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
         break;
     }
   };
-  // console.log("membershipData==>",membershipData);
   useEffect(() => {
     onDataChange(membershipData);
    
   }, [membershipData]);
   useMemo(() => {
-    // console.log(initialValues);
     setMembershipData(initialValues);
   }, [initialValues]);
   return (
     <div className="client-membership-document">
+    
       {/* <h5 className="client-form-details-heading">Client's Membership</h5>
       <hr className="client-form-hr" />
       <div className="client-warranty-container">

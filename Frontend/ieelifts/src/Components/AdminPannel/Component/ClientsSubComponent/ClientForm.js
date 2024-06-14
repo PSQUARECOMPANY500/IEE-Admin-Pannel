@@ -11,7 +11,7 @@ import ClientFormDimentions from "./ClientFormDimentions";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import debounce from "../../../../utils/debounce";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   closeClientModalAction,
   updateClientData,
@@ -46,11 +46,6 @@ const ClientForm = () => {
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
-  const clientData = useSelector(
-    (state) =>
-      state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
-  );
-
   const { jon } = allFormData.clientFormDetails;
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -58,9 +53,9 @@ const ClientForm = () => {
       document.body.style.overflow = "scroll";
     };
   }, []);
-
+  //  const [triggerFunction, setTriggerFunction]=useState(false);
+  let triggerFunction = 0;
   //handler
-
   const validateData = (data) => {
     setValidate(data);
   };
@@ -127,7 +122,7 @@ const ClientForm = () => {
       JSON.stringify(clientSalesManDetails)
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
-   
+
     if (prevData) {
       dispatch(RegisterClientDataAction(formData));
     } else {
@@ -145,8 +140,9 @@ const ClientForm = () => {
       clientMembershipDocument: {},
       clientArchitect: {},
     });
-    dispatch(closeClientModalAction());
+    handleReset();
     setToggle(true);
+    dispatch(closeClientModalAction());
   };
   const handleOverlayClick = (event) => {
     if (event.target.classList.contains("add-client-wrapper")) {
@@ -202,7 +198,7 @@ const ClientForm = () => {
       type: type,
       numberOfOpenings: numberOfOpenings,
     };
-    dispatch(updateClientData(elevatorDetails))
+    dispatch(updateClientData(elevatorDetails));
   };
 
   //handle data in third step using pagination
@@ -211,14 +207,18 @@ const ClientForm = () => {
     dispatch(updateClientFormUsingPagination(dimentionsData, jon))
       .then(() => {
         toast.success("Client details added.");
+        dispatch(updateClientFormUsingPagination());
+        dispatch(putDataBasedOnJon());
+        dispatch(RegisterClientDataAction());
         closeModal();
       })
       .catch((error) => {
         console.error("Error submitting client details:", error);
         toast.error("Failed to add client details.");
       });
+    // setTriggerFunction(true);
+    triggerFunction++;
   };
-  
   //----------------------------------------------------------------
   function validateClientForm(allFormData) {
     const {
@@ -226,7 +226,7 @@ const ClientForm = () => {
       clientSalesManDetails,
       clientMembershipDocument,
     } = allFormData;
-    const { selectedMembership, signedQuotation, paymentForm, salesOrder } =
+    const { signedQuotation, paymentForm, salesOrder } =
       clientMembershipDocument;
     const {
       jon,
@@ -351,13 +351,19 @@ const ClientForm = () => {
       clientMembershipDocument: {},
       clientArchitect: {},
     });
-  makeReset(reset+1)
+    setClientElevatorDetails({});
+    setDimentionsData({});
+    dispatch(updateClientFormUsingPagination());
+    dispatch(putDataBasedOnJon());
+    dispatch(RegisterClientDataAction());
+    makeReset((prev) => {
+      return prev + 1;
+    });
   };
   //------------------------------------------------------------------------
   const changeInData = (state) => {
     setVisible(state);
   };
-
   return (
     <>
       {clientModalOperation && (
@@ -421,6 +427,8 @@ const ClientForm = () => {
                     initialValues={clientElevatorDetails}
                     prevData={prevData}
                     changeInData={changeInData}
+                    reset={reset}
+                    setTriggerFunction={triggerFunction}
                   />
                   <ClientFormDimentions
                     valforDimention={valforDimention}
@@ -435,6 +443,7 @@ const ClientForm = () => {
                     changeInStops={clientElevatorDetails?.stops}
                     visible={visible}
                     changeInData={changeInData}
+                    reset={reset}
                   />
                   <div className="button-container">
                     <div>

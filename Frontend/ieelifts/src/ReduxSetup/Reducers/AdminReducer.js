@@ -52,6 +52,7 @@ import { UPDATE_CLIENT_FORM_USING_PAGINATION } from "../Actions/AdminActions.js"
 import { GET_ADMIN_REPORT_DATA } from "../Actions/AdminActions";
 import { REPORT_CROUSER_HANDLER } from "../Actions/AdminActions";
 import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
+import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -907,6 +908,19 @@ export const ClientFormDataFromApiReducer = (
         ...state,
         ClientFormData: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  ClientFormData: {},
+};
+
+export const ClearClientFormData = (state = initialState, action) => {
+  switch (action.type) {
+    case CLEAR_CLIENT_FORM_DATA:
+      return initialState;
     default:
       return state;
   }

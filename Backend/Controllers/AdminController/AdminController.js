@@ -1568,10 +1568,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2525,7 +2525,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+              "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2637,6 +2637,7 @@ module.exports.postElevatorForm = async (req, res) => {
       return res.status(200).json({ error: "data updated successfully" });
     }
     const elevatorFormSchema = new ElevatorFormSchema({
+      membership:"warrenty",
       clientFormDetails: JSON.parse(req.body.clientFormDetails),
       clientSalesManDetails: JSON.parse(req.body.clientSalesManDetails),
       clientArchitect: JSON.parse(req.body.clientArchitect),
@@ -2782,41 +2783,33 @@ module.exports.getNotification = async (req, res) => {
 function updateFormData(formData, fieldName, url) {
   const parts = fieldName.replace(/\]/g, "").split("[");
   parts.shift();
-  if (parts[0] === 'floors') {
-    let index = parts[2];
-    parts[2] = parts[1];
-    parts[1] = [index - 1];
-  }
-  
-
   function update(obj, parts, url) {
     const part = parts.shift();
     if (parts.length === 0) {
       if (Array.isArray(obj[part])) {
-        obj[part].push(url);
+        obj[part] = url;
       } else if (obj[part]) {
         if (Array.isArray(obj[part])) {
-          obj[part].push(url);
+          obj[part] = url;
         } else {
-          obj[part] = [obj[part], url];
+          obj[part] = url;
         }
       } else {
-        // console.log("hoisahdkas")
         obj[part] = url;
-        console.log("obj[part]", obj[part], part)
       }
     } else {
-      // console.log(Object.keys(obj[part]))
       if (!obj[part]) {
         obj[part] = isNaN(parts[0]) ? {} : [];
       }
-     
+      if (!isNaN(parts[0])) {
+        console.log(parts[0]);
+        parts[0] = parts[0] - 1;
+      }
       update(obj[part], parts, url);
     }
   }
 
   update(formData, parts, url);
-  
 }
 
 module.exports.updatElevatorDimensions = async (req, res) => {
@@ -2840,7 +2833,6 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     Data.dimensions.pitPoint = pitPoint;
     Data.dimensions.floors = floors;
 
-   
     // Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
     // Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].filename;
     // Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].filename;
@@ -2854,14 +2846,11 @@ module.exports.updatElevatorDimensions = async (req, res) => {
 
     let i = 0;
     let data = Data.dimensions;
-
+    console.log(files);
     files.forEach((file, index) => {
-     
       updateFormData(data, file.fieldname, file.filename);
-
-      
     });
-   
+
     Data.dimensions = data;
     Data.save();
 
@@ -2888,8 +2877,6 @@ module.exports.getClientModalInformation = async (req, res) => {
     }
 
     let dimensions = response.dimensions;
-
-   
 
     res.status(200).json({ success: true, response });
   } catch (error) {
@@ -2946,7 +2933,7 @@ module.exports.updateSecondStep = async (req, res) => {
       files[files.length - 1].filename;
 
     let i = 0;
-   
+
     files.forEach((file, index) => {
       if (
         index !== 0 &&
@@ -2956,7 +2943,6 @@ module.exports.updateSecondStep = async (req, res) => {
         index !== files.length - 2 &&
         index !== files.length - 3
       ) {
-        
         Data.dimensions.floors[i].sitePhotos = file.filename;
         i++;
       }
