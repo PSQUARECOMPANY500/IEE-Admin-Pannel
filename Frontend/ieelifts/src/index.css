@@ -699,7 +699,6 @@ code {
   width: 70%;
   gap: 10%;
   margin-right: 3rem;
-}
 
 .clients {
   display: flex;
@@ -887,6 +886,7 @@ code {
 
 .callsContainer {
   height: 25rem;
+  /* background-color: lightsalmon; */
   overflow-y: scroll;
   padding-right: 0.5rem;
 }
@@ -1089,6 +1089,8 @@ code {
 
 .offerButtonContainer {
   margin-top: 1rem;
+  /* background-color: red; */
+  height:6vh;
 }
 
 .offerButton {
@@ -1111,12 +1113,39 @@ code {
 }
 
 .offerButtons {
-  display: flex;
+  /* display: flex; */
+  display: none;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 0.6rem;
+  margin-top: -1.3vw;
+  /* margin-bottom:2rem; */
+/* margin-bottom:-0.1rem; */
 }
+#offerButtonWarppers{
+  margin-top: -0.2rem;
+}
+
+.offerButtonContainer:hover .offerButtons {
+  display: flex;
+
+}
+
+.offerButtons-show {
+  display: flex;
+}
+
+.offerButtons-hide {
+  display: none;
+}
+
+#offerDiscountBtn{
+  background-color:transparent;
+  color:#0f351d;
+  height:5.5vh;
+  margin-top: 0.2rem;
+}
+
 
 .offer {
   width: 100%;
@@ -1216,8 +1245,15 @@ code {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+ 
 }
 
+}
+.notificationmembershipwrapper{
+  /* background-color: saddlebrown; */
+  height: 14.5vh;
+  margin-top: -2rem;
+}
 .inputNotification {
   padding: 0.79rem 1rem;
   height: auto;
@@ -1242,7 +1278,9 @@ code {
 
 .chevronDownMembership {
   position: absolute;
-  top: 64%;
+  top: 63%;
+  /* top: 20%; */
+
   right: 6rem;
   transform: translateY(-55%);
   cursor: pointer;

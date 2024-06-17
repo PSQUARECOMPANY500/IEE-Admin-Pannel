@@ -17,7 +17,6 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
   // console.log("planttt",checkInCheckOutData)
 
-
   const handleImage = () => {
     setIsCliked(!isCliked);
     setIsArrowVisible(!isArrowVisible);
@@ -38,13 +37,15 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const getCheckInOut = await getCheckInCheckOuts('1111', selectedDateIndex);  //to do ---> Make If dynamic put this (engID) in first Argument
+      const getCheckInOut = await getCheckInCheckOuts(
+        "1111",
+        selectedDateIndex
+      ); //to do ---> Make If dynamic put this (engID) in first Argument
       setCheckInCheckOutData(getCheckInOut);
     };
 
     getData();
   }, []);
-
 
   return (
     <div className="engeeniersattendancecard-main">
@@ -58,11 +59,17 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box"
           }
         >
-         
+          
+
           <img
-            src={`${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}`}
-            alt=""
-          />
+            src={
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
+                ? `${config.documentUrl}/uplodes/${
+                    checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
+                  }`
+                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+            }
+          ></img>
         </div>
         <div
           onClick={handleImage2}
@@ -72,10 +79,17 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box"
           }
         >
+         
+
           <img
-            src={`${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]}`}
-            alt=""
-          />
+            src={
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
+                ? `${config.documentUrl}/uplodes/${
+                    checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
+                  }`
+                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+            }
+          ></img>
         </div>
         <button>Check Out</button>
         <div
@@ -86,10 +100,17 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box2"
           }
         >
+         
+
           <img
-            src={`${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0]}`}
-            alt=""
-          />
+            src={
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
+                ? `${config.documentUrl}/uplodes/${
+                    checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0]
+                  }`
+                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+            }
+          ></img>
         </div>
         <div
           onClick={handleImage4}
@@ -99,10 +120,16 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box2"
           }
         >
-          <img
-            src={`${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[1]}`}
-            alt=""
-          />
+          
+           <img
+            src={
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
+                ? `${config.documentUrl}/uplodes/${
+                    checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[1]
+                  }`
+                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+            }
+          ></img>
         </div>
       </div>
       <div className="engeeniersattendancecard-right">

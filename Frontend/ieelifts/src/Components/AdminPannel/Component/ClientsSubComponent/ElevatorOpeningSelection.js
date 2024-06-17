@@ -2,6 +2,7 @@ import React from "react";
 
 const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient, clientModalInformation }) => {
 
+
   return (
     <>
       <div className="level-main-container">
