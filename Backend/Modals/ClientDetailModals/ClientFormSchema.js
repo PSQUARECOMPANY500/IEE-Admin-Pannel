@@ -112,7 +112,7 @@ const clientForm = new mongoose.Schema({
     contractorName: {
       type: String,
     },
-    name: {
+    contractorNumber: {
       type: String,
     },
   },

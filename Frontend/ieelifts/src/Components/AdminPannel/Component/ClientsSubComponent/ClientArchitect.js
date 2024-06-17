@@ -6,7 +6,7 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
     architectName: "",
     architectNumber: "",
     contractorName: "",
-    name: "",
+    contractorNumber: "",
   });
 
   useLayoutEffect(() => {
@@ -14,7 +14,7 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
       architectName: "",
     architectNumber: "",
     contractorName: "",
-    name: "",
+    contractorNumber: "",
     });
   }, [reset]);
   const [click, setClick] = useState({});
@@ -79,12 +79,12 @@ useMemo(()=>{
         </div>
         <div>
           <TextInput
-            label={"Name"}
-            name={"name"}
+            label={"Number"}
+            name={"contractorNumber"}
             onFocus={handleClick}
-            value={clientFormData.name}
+            value={clientFormData.contractorNumber}
             onChange={hadleInputChnage}
-            click={click.name}
+            click={click.contractorNumber}
             onBlur={handleClickFalse}
           />
         </div>

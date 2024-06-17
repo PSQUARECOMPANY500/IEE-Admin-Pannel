@@ -34,6 +34,14 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if(name==="discountAmount"){
+      setClientFormData((prev)=>(
+        {
+          ...prev,
+          mdDiscountInPercentage:""
+        }
+      ))
+    }
     setClientFormData((prevClientFormData) => {
       const updatedFormData = { ...prevClientFormData, [name]: value };
       return updatedFormData;

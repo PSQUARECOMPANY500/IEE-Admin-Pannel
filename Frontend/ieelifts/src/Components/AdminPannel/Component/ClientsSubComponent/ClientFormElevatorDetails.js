@@ -439,7 +439,7 @@ const ClientFormElevatorDetails = ({
         )}
 
         <div
-          className={`dimention-btn ${!visible ? "hide" : ""}`}
+          className={`dimention-btn ${!visible ? "hide" : ""} ${degree.nintyDegreeLeft!==""|| degree.nintyDegreeRight!==""|| degree.oneEightyDegree!==""?"":"disabled"}`}
           onClick={handleOnClick}
         >
           Select openings{" "}

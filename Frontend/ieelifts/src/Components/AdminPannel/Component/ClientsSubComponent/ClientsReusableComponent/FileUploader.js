@@ -37,7 +37,7 @@ const FileUploader = ({ label, onFileSelect, apiDataName }) => {
         className="fileInput"
         onChange={handleFileChange}
       />
-      <label htmlFor={inputId}>
+      <label htmlFor={inputId} className="filename">
         <span>{fileName}</span>
         <img src="chainIcon.png" className="file-upload-icon" />
       </label>
