@@ -10,7 +10,7 @@ import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 import EnggLocation from "./EnggLocationSection/EnggLocation";
-import { getCurrentDateAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
+import { getCurrentDateAssignServiceRequestAction, getadminReportData } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import {
   getFilterLocation,
@@ -19,6 +19,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegStar } from "react-icons/fa";
+import RepotImage from "./RepotImage";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
@@ -35,11 +36,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
-  console.log("rteportdata", RedportData);
 
+
+  
   useEffect(() => {
     const fetchData = () => {
-      // dispatch(getFilterLocation());
+
       dispatch(getEngineerNames());
     };
     fetchData();
@@ -80,6 +82,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+
     if (currentDateServiceRequest) {
       setHandleServiceSelection(
         Array(currentDateServiceRequest.length).fill(false)
@@ -89,6 +92,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   //get current date callback
   const currentDateCallback = useSelector((state) => {
+
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getCurrentDateAssignCalbackAction &&
@@ -103,6 +107,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
+
     if (currentDateCallback) {
       setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     }
@@ -125,11 +130,27 @@ const TaskLocationSection = forwardRef((props, ref) => {
     if (filterConditions) {
       let data;
       if (services) {
+        if (
+          currentDateServiceRequest &&
+          currentDateServiceRequest.length === 0
+        ) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateServiceRequest;
       }
       if (ticket) {
+        if (currentDateCallback && currentDateCallback.length === 0) {
+          setFilterData(null);
+          return;
+        }
         data = currentDateCallback;
       }
+      if (data && data.length === 0) {
+        console.log("In data.length");
+        return setFilterData(null);
+      }
+
       const statusFilter = filterConditions.filter(
         (type) => type.type === "status"
       );
@@ -139,20 +160,20 @@ const TaskLocationSection = forwardRef((props, ref) => {
       const locationFilter = filterConditions.filter(
         (type) => type.type === "location"
       );
-      let statusData,
-        engineerData,
-        locationData = [];
+
+      // Add guards before accessing filterConditions
+      let statusData = [],
+        engineerData = [];
       if (statusFilter) {
         statusFilter.forEach(async (status) => {
           const { condition } = status;
-          let sData = data.filter(
-            (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
-          );
-          if (statusData) {
-            statusData = [...statusData, ...sData];
-          } else {
-            statusData = [...sData];
+          let sData = [];
+          if (data && data.length !== 0) {
+            sData = data.filter(
+              (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
+            );
           }
+          statusData = [...statusData, ...sData];
         });
       }
 
@@ -169,11 +190,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
       }
       let filteredData = [];
 
-      if (statusData && engineerData) {
+      if (statusData.length && engineerData.length) {
         filteredData = statusData.filter((status) => {
           return engineerData.some((engineer) => status._id === engineer._id);
         });
-      } else if (statusData) {
+      } else if (statusData.length) {
         filteredData = statusData;
       } else {
         filteredData = engineerData;
@@ -224,16 +245,26 @@ const TaskLocationSection = forwardRef((props, ref) => {
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
+
+    // console.log("andi toofan.......................................................................", reportData)
+
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
+
       setHandleReportData(false);
-      setReportData(reportData?.callbackId);
+      setReportData(reportData?.callbackId || reportData?.RequestId);
+  
     } else {
       //console.log(reportData)
       setHandleReportData(true);
       setReportData(reportData);
     }
+    //may be change logic in future make by aayush
+    dispatch(getadminReportData(reportData?.callbackId || reportData?.RequestId));
+    
   }
+
+
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
@@ -298,16 +329,14 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                        const reportData = value;
-
-                        // console.log("ticket", value);
-
+                        let reportData = value;
                         return (
                           <div
-                            className={`ticket-card ${
+                          style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
+                             className={`ticket-card ${
                               handleCallbackSelection[index] &&
                               "service-card-selected"
-                            }`}
+                            }` }
                             onClick={() => handleReportSectionData(reportData)}
                           >
                             <div className="ticket-sub-card-row">
@@ -315,7 +344,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5>Name:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.clientName.toUpperCase()}</h5>
+                                <h5>{value.clientName}</h5>
                               </div>
                             </div>
 
@@ -324,7 +353,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5> ENGINEER:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.enggName.toUpperCase()}</h5>
+                                <h5>{value.enggName}</h5>
                               </div>
                             </div>
 
@@ -336,7 +365,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                         );
                       })
                     : filterData?.map((value, index) => {
-                        const reportData = value;
+                        let reportData = value;
                         return (
                           <div
                             className={`ticket-card ${
@@ -377,7 +406,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                        const reportData = serviceData;
+                        let reportData = serviceData;
                         return (
                           <div
                             className={`service-card ${
@@ -385,8 +414,9 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               "service-card-selected"
                             }`}
                             onClick={() => handleReportSectionData(reportData)}
+                      
                           >
-                            <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row" >
                               <div className="ticket-sub-card-row-right">
                                 <h5>Name:</h5>
                               </div>
@@ -412,10 +442,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                         );
                       })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                        const reportServiceData = serviceData;
+                      const reportServiceData = serviceData
 
                         return (
                           <div
+                            style={{backgroundColor:`${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
                             className={`service-card ${
                               handleServiceSelection[index] &&
                               "service-card-selected"
@@ -466,6 +497,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
+              
                   />
                 </div>
               </div>

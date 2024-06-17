@@ -14,21 +14,23 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
-import { useMediaQuery } from '@react-hook/media-query';
+import { useMediaQuery } from "@react-hook/media-query";
+import { MdOutlineEmergency } from "react-icons/md";
+
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 
 const Sidebar = ({ children }) => {
-  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+  const smallLaptopSizes = useMediaQuery(
+    "(min-width: 769px) and (max-width: 1280px)"
+  );
   const location = useLocation();
-  const initialIsOpen=smallLaptopSizes?false:true
+  const initialIsOpen = smallLaptopSizes ? false : true;
   const [isOpen, setIsOpen] = useState(initialIsOpen);
   const [toogleOpen, settoogleClose] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
- 
-
 
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
@@ -41,18 +43,18 @@ const Sidebar = ({ children }) => {
 
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
-    !smallLaptopSizes&& setIsOpen(!isOpen);
+    !smallLaptopSizes && setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
     console.log("clicked");
     settoogleClose(!toogleOpen);
-    !smallLaptopSizes&& setIsOpen(isOpen);
+    !smallLaptopSizes && setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
     console.log("image clicked");
-    !smallLaptopSizes&& setIsOpen(!isOpen);
+    !smallLaptopSizes && setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
@@ -78,38 +80,51 @@ const Sidebar = ({ children }) => {
   };
 
   // menu dropdown Items
-  const menueItems = [
-    {
-      Path: "/Dashboard",
-      name: "Dashboard",
-      icon: <MdDashboard />,
-    },
-    {
-      Path: "/Requests",
-      name: "Requests",
-      icon: <RiGitPullRequestFill />,
-    },
-    {
-      Path: "/Clients",
-      name: "Clients",
-      icon: <MdOutlineAirlineSeatReclineNormal />,
-    },
-    {
-      Path: "/Memberships",
-      name: "Memberships",
-      icon: <MdOutlineCardMembership />,
-    },
-    {
-      Path: "/Engeeniers",
-      name: "Engineers",
-      icon: <MdEngineering />,
-    },
-    {
-      Path: "/SOS",
-      name: "sos",
-      icon: <MdEngineering />,
-    },
-  ];
+  let menueItems;
+  const role = localStorage.getItem("Role");
+  if (role === "CRM") {
+    menueItems = [
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+    ];
+  } else if (role === "ServiceAdmin") {
+    menueItems = [
+      {
+        Path: "/Dashboard",
+        name: "Dashboard",
+        icon: <MdDashboard />,
+      },
+      {
+        Path: "/Requests",
+        name: "Requests",
+        icon: <RiGitPullRequestFill />,
+      },
+      {
+        Path: "/Clients",
+        name: "Clients",
+        icon: <MdOutlineAirlineSeatReclineNormal />,
+      },
+      {
+        Path: "/Memberships",
+        name: "Memberships",
+        icon: <MdOutlineCardMembership />,
+      },
+      {
+        Path: "/Engeeniers",
+        name: "Engineers",
+        icon: <MdEngineering />,
+      },
+      {
+        Path: "/Sosrequest",
+        name: "sos",
+        icon: <MdOutlineEmergency />
+        ,
+      },
+    ];
+  }
 
   useEffect(() => {
     // Update top bar heading when location changes
@@ -129,6 +144,9 @@ const Sidebar = ({ children }) => {
         break;
       case "/Clients":
         setTopBarHeading("Clients");
+        break;
+      case "/Sosrequest":
+        setTopBarHeading("SOS");
         break;
       // Add more cases for other pages
       default:
@@ -171,7 +189,9 @@ const Sidebar = ({ children }) => {
 
       <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
-          {!toogleOpen&& !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
+          {!toogleOpen && !smallLaptopSizes && (
+            <div className="overlay" onClick={toogleMenue}></div>
+          )}
 
           <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
             <h1
@@ -180,7 +200,9 @@ const Sidebar = ({ children }) => {
             >
               <img
                 className="logo-image"
-                style={{ width:smallLaptopSizes?'80px':isOpen ? "100px" : "60px" }}
+                style={{
+                  width: smallLaptopSizes ? "80px" : isOpen ? "100px" : "60px",
+                }}
                 src={logo}
                 alt="logo"
               />
@@ -260,7 +282,11 @@ const Sidebar = ({ children }) => {
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu":"sub-menu-wrap"
+                toogleOpen
+                  ? "sub-menu-wrap"
+                  : !smallLaptopSizes
+                  ? "sub-menu-wrap open-menu"
+                  : "sub-menu-wrap"
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
@@ -302,7 +328,7 @@ const Sidebar = ({ children }) => {
                   style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                     <FiChevronUp style={{ fontSize: "20px" }} />
+                  <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -364,11 +390,11 @@ const Sidebar = ({ children }) => {
                   )}
                 </span> */}
 
-<span
+                <span
                   style={{ fontSize: isOpen ? "16px" : "0px" }}
-                  className={`menu-icon ${officeMenuOpen  ? "rotate" : ""}` }   
+                  className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
                 >
-                     <FiChevronUp style={{ fontSize: "20px"}} />
+                  <FiChevronUp style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>
@@ -402,9 +428,9 @@ const Sidebar = ({ children }) => {
             {/* OFFICE MENUE items goes here ends */}
           </nav>
         </div>
-          <div className="circle">SOS</div>
+        <div className="circle">SOS</div>
       </div>
-  
+
       <main>{children}</main>
     </div>
   );

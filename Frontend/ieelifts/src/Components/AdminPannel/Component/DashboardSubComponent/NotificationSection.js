@@ -1,71 +1,112 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import NotificationSlides from "./NotificationSlides";
+import { getNotificationDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
+
+// const def = {
+//   "All":3,
+//   "Client":0,
+//   "Enginner":0
+// }
 
 const NotificationSection = () => {
-  const notifications = [
-    {
-      category: "All",
-      description: "Notification text 1",
-      time: "20 minutes ago",
-      imageUrl: "https://example.com/image1.png",
-    },
-    {
-      category: "Enginner",
-      description: "Notification text 2",
-      time: "30 minutes ago",
-      imageUrl: "https://example.com/image2.png",
-    },
-    {
-      category: "Client",
-      description: "client text 3",
-      time: "40 minutes ago",
-      imageUrl: "https://example.com/image3.png",
-    },
-    {
-      category: "Client",
-      description: "client text 3",
-      time: "40 minutes ago",
-      imageUrl: "https://example.com/image3.png",
-    },
-    {
-      category: "Client",
-      description: "client text 3",
-      time: "40 minutes ago",
-      imageUrl: "https://example.com/image3.png",
-    },
-    {
-      category: "Client",
-      description: "client text 3",
-      time: "40 minutes ago",
-      imageUrl: "https://example.com/image3.png",
-    },
-    {
-      category: "Client",
-      description: "client text 3",
-      time: "40 minutes ago",
-      imageUrl: "https://example.com/image3.png",
-    },
-  ];
+  const [lengthCount, setLengthCount] = useState({
+    All: 0,
+    Client: 0,
+    Enginner: 0,
+  });
 
-  const [filteredNotifications, setFilteredNotifications] = useState([
-    ...notifications,
-  ]);
+  const [mypplength,setmypplength] = useState(0);
+  const [allnotificationdata, setallNotificationData] = useState();
+
+  const [combineNotifications, setConbineNotifications] = useState();
+  const [Enggnotificationdata, setEnggNotificationData] = useState();
+  const [Clientnotificationdata, setClientNotificationData] = useState();
+
+  const length =
+    combineNotifications?.length +
+    Enggnotificationdata?.length +
+    Clientnotificationdata?.length;
+  // console.log('65656565', length);
+
+  // console.log("All", allnotificationdata);
+  // console.log("Client", Clientnotificationdata);
+  // console.log("Engg", Enggnotificationdata);
+
+  const getNotificationData = async () => {
+    const data = await getNotificationDataAction();
+    
+    setallNotificationData(data);
+
+  };
+
+  useLayoutEffect(() => {
+    
+   
+    getNotificationData();
+  }, []);
+
+  useEffect(() => {
+    if (allnotificationdata) {
+      //----------------------------------------------------------------
+      const enggNotifications = allnotificationdata.response.filter((data) => {
+        return data.Owner.includes("Engg");
+      });
+      const enggNotificationData = enggNotifications.map((data) =>
+        JSON.parse(data.Data)
+      );
+      setEnggNotificationData(enggNotificationData);
+
+      //----------------------------------------------------------------
+      const clientNotifications = allnotificationdata.response.filter(
+        (data) => {
+          return data.Owner.includes("Client");
+        }
+      );
+      const clientNotificationData = clientNotifications.map((data) =>
+        JSON.parse(data.Data)
+      );
+      setClientNotificationData(clientNotificationData);
+
+      //----------------------------------------------------------------
+      const BothNotification = allnotificationdata.response.map((data) =>
+        JSON.parse(data.Data)
+      );
+      setConbineNotifications(BothNotification);
+
+     
+    }
+  }, [allnotificationdata]);
+
+
+
+  useEffect(()=>{
+    handleNotificationData("All")
+  },[combineNotifications])
+
+
+  const [notification, setNotifications] = useState([]);
+  // console.log("mahi mahi",notification)
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const handleNotificationData = (category) => {
-    if (selectedCategory !== category) {
+    if (category === "All") {
+      setNotifications(combineNotifications);
       setSelectedCategory(category);
-
-      if (category === "All") {
-        setFilteredNotifications(notifications);
-      } else {
-        const filtered = notifications.filter(
-          (notification) => notification.category === category
-        );
-        setFilteredNotifications(filtered);
-      }
+    } else if (category === "Enginner") {
+      setNotifications(Enggnotificationdata);
+      setSelectedCategory(category);
+    } else if (category === "Client") {
+      setNotifications(Clientnotificationdata);
+      setSelectedCategory(category);
     }
   };
+  
+  useEffect(() => {
+    setLengthCount((prev) => ({
+      ...prev,
+      [selectedCategory]: mypplength,
+    }))
+  },[selectedCategory,mypplength])
 
   return (
     <div className="parent-Notification-div">
@@ -73,7 +114,7 @@ const NotificationSection = () => {
         <div className="notification-body">
           <div className="notification-heading">
             <p>Notification</p>
-            <p>25</p>
+            <p>{lengthCount.All}</p>
           </div>
 
           <div className="notification-navigators">
@@ -84,7 +125,7 @@ const NotificationSection = () => {
               onClick={() => handleNotificationData("All")}
             >
               <p>All</p>
-              <p>2</p>
+              <p>{(lengthCount.All && lengthCount.All) || 0}</p>
             </div>
             <div
               className={`notification-buttons ${
@@ -93,7 +134,7 @@ const NotificationSection = () => {
               onClick={() => handleNotificationData("Enginner")}
             >
               <p>Enginner</p>
-              <p>5</p>
+              <p>{(lengthCount.Enginner && lengthCount.Enginner) || 0}</p>
             </div>
             <div
               className={`notification-buttons ${
@@ -102,13 +143,19 @@ const NotificationSection = () => {
               onClick={() => handleNotificationData("Client")}
             >
               <p>Client</p>
-              <p>4</p>
+              <p>{(lengthCount.Client && lengthCount.Client) || 0}</p>
             </div>
           </div>
         </div>
 
         <div className="notification-archives">
-          <NotificationSlides notifications={filteredNotifications} />
+          <NotificationSlides
+            notifications={notification}
+            notificationcount={(e) =>{
+              setmypplength(e)
+              }
+            }
+          />
         </div>
       </div>
     </div>

@@ -9,12 +9,15 @@ const {
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 
-const uploaded = require("../../Multer/EnggAttachmentUpload");
+const {uploaded} = require("../../Multer/EnggAttachmentUpload");
 
-const uploadReportAttachment = require("../../Multer/ReportAttachmentUploads");
+
+
+const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmentUploads");
+
 
 //-------------------------------------- All Post Requests -------------------------------
-router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
+// router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
 
 //---------------------------------------------------------------------------------------------- --------------------- ---------------
 router.post(
@@ -53,11 +56,11 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation", serviceEnggContoller.createEnggLocation);
+router.post("/createEnggLocation", serviceEnggContoller.createEnggLocation);     
 router.post(
   "/createEnggLocationOnAttendance",
-  serviceEnggContoller.CreateEnggLocationOnAttendance
-);
+  serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
+);  
 
 //------------------------------------- All Get Requests -----------------------------------------
 // router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
@@ -155,7 +158,16 @@ const checkOutAttendance = async (req, res, next) => {
 };
 
 const checkInorOutAttendance = async (req, res, next) => {
-  const { ServiceEnggId } = req.body;
+
+  let ServiceEnggId;
+
+  if (!req.body || Object.keys(req.body).length === 0) {
+      ({ServiceEnggId}  = req.query);
+  } else {
+    ({ServiceEnggId} = req.body);
+  }
+
+
   if (ServiceEnggId) {
     const date = new Date().toLocaleDateString("en-GB");
     const checkIn = await EnggAttendanceServiceRecord.findOne({
@@ -171,7 +183,7 @@ const checkInorOutAttendance = async (req, res, next) => {
     if (checkIn?.Check_In?.time && checkIn?.Check_Out?.time) {
       return res
         .status(403)
-        .json({ message: "Break is not applicable after CheckedOut" });
+        .json({ status:"checkedout",message: "Break is not applicable after CheckedOut" });
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
@@ -243,11 +255,11 @@ router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount);
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves);
 // --- by preet 15/03/2024 ---
 router.get(
-  "/getAssignCalbackDetailForEnggApp/:callbackId",
+  "/getAssignCalbackDetailForEnggApp/:callbackId",checkInorOutAttendance,
   serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId
 );
 router.get(
-  "/getAssignServiceRequestDetailForEnggApp/:RequestId",
+  "/getAssignServiceRequestDetailForEnggApp/:RequestId",checkInorOutAttendance,
   serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId
 );
 
@@ -292,9 +304,21 @@ router.get(
 // --by Preet 31/03/2024 ------------
 //route to handle update paymanet details and update spare part request also.
 router.post(
-  "/upadatePaymentDetails",
+  "/upadatePaymentDetails", reportPdf.fields([
+    {
+      name: "report",
+      maxCount: 1,
+    },
+  ]),
   serviceEnggContoller.UpdatePaymentDetilsAndSparePartRequested
 );
+
+
+
+
+
+
+
 
 // --by Preet 05/04/2024 ------------
 router.get(
@@ -345,6 +369,52 @@ router.put(
   serviceEnggContoller.EnggOnLunchBreak
 );
 
+//emit on 01/05/2024 ---
+
+// router.post(
+//   "/clientPayment",
+//   serviceEnggContoller.clientPayment
+// );
+
+router.post(
+  "/paymentLink",
+  serviceEnggContoller.paymentLink
+);
+
+router.post(
+  "/verifyPaymentLink",
+  serviceEnggContoller.verifyPaymentLink
+);
+
+router.post(
+  "/generatePaymentQr",
+  serviceEnggContoller.generatePaymentQr
+);
+
+router.post(
+  "/getPaymentStatus",
+  serviceEnggContoller.getPaymentStatus
+);
+
+router.post(
+  "/resendPaymentLink",
+  serviceEnggContoller.resendPaymentLink
+);
+
+router.post(
+  "/updatePaymentStatus",
+  serviceEnggContoller.updatePaymentStatus
+);
 //=================================================================================//=================================================================================
+
+
+
+router.post("/updateTrackerInformations", serviceEnggContoller.handleTrackerPostionClientApp);
+
+
+
+
+
+
 
 module.exports = router;

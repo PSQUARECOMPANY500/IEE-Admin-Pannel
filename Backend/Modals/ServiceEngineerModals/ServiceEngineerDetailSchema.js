@@ -1,76 +1,36 @@
-// const mongoose = require("mongoose");
-// const Schema = mongoose.Schema;
-
-// const EnggBasicDetail = new Schema(
-//   {
-//     EnggId: {
-//       type: String,
-//       required: true,
-//       unique: true,
-//     },
-//     EnggPassword: {
-//       type: String,
-//       required: true,
-//     },
-//     EnggName: {
-//       type: String,
-//       required: true,
-//     },
-//     PhoneNumber: {
-//       type: Number,
-//       required: true,
-//       unique: true,
-//     },
-//     EnggAddress: {
-//       type: String,
-//       required: true,
-//     },
-//     EnggPhoto: {
-//       type: String,
-//       unique: true,
-//     },
-//   },
-//   {
-//     timestamps: true,
-//   }
-// );
-
-// const ServiceEnggBasicInfo = mongoose.model(
-//   "ServiceEnggBasicDetails",
-//   EnggBasicDetail
-// );
-
-// module.exports = ServiceEnggBasicInfo;
-
-
-//to do --> ***
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const EnggBasicDetail = new Schema(
   {
-    EnggId: {
+    EnggId: {            
       type: String,
+    },
+    AlternativeNumber: {  
+      type: String,
+    },
+    EnggRole:{
+      type: String,
+      // required: true,
     },
     EnggPassword: {
       type: String,
     },
     EnggName: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggLastName: {
       type: String,
-      required: true,
+      // required: true,
     },
     PhoneNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggAddress: {
       type: String,
-      required: true,
+      // required: true,
     },
     EnggPhoto: {
       type: String,
@@ -78,83 +38,83 @@ const EnggBasicDetail = new Schema(
     },
     DateOfBirth: {
       type: String,
-      required: true,
+      // required: true,
     },
     Email: {
       type: String,
-      unique: true,
+      // unique: true,
     },
     PinCode: {
       type: String,
-      required: true,
+      // required: true,
     },
     City: {
       type: String,
-      required: true,
+      // required: true,
     },
     District: {
       type: String,
-      required: true,
+      // required: true,
     },
     State: {
       type: String,
-      required: true,
+      // required: true,
     },
     AddharCardNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     DrivingLicenseNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     PanCardNo: {
       type: String,
-      required: true,
+      // required: true,
     },
     Qualification: {
       type: String,
-      required: true,
+      // required: true,
     },
     AdditionalCourse: {
       type: String,
-      required: true,
+      // required: true,
     },
     AccountHolderName: {
       type: String,
-      required: true,
+      // required: true,
     },
     BranchName: {
       type: String,
-      required: true,
+      // required: true,
     },
     AccountNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     IFSCcode: {
       type: String,
-      required: true,
+      // required: true,
     },
     AddharPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     DrivingLicensePhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     PancardPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     QualificationPhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     AdditionalCoursePhoto: {
       type: String,
-      required: true,
+      // required: true,
     },
     DurationOfJob: {
       type: String,
@@ -171,6 +131,10 @@ const EnggBasicDetail = new Schema(
     ManagerNo: {
       type: String,
     },
+    AvailableCash: {
+      type: Number,
+      default:0
+    }
   },
   {
     timestamps: true,

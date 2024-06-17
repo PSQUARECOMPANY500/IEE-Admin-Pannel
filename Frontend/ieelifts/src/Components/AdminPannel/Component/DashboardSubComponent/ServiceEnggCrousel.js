@@ -28,7 +28,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   }, [ticketUpdate]);
 
   //-------------------------------------------------------------------------------------------------------------------------------
-  const getBasicData = useSelector((state) => {
+  const getBasicData = useSelector((state) => {       
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getEnggBasicDataForCrouserReducer &&
@@ -89,7 +89,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 4,
           infinite: true,
           dots: true,
@@ -147,7 +147,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const dataOnPin = useSelector((state) => {
     return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer?.enggLocationOnPin
   })
-//console.log("data",dataOnPin)
+
   useEffect(() => {
     if (getBasicData) {
       getBasicData.forEach((data) => {
@@ -197,16 +197,16 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
         >
           {assignedArray?.map((item, index) => {
             if(item.ServiceEnggId === dataOnPin){
-              return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  /> //preet sir please add border 
+              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={true} /> //preet sir please add border 
             }else{
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={false} />
             }
           })}
           {notAssignedArray?.map((item, index) => {
            if(item.ServiceEnggId === dataOnPin){
-            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />//preet sir please add border 
+            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={true}/>//preet sir please add border 
           }else{
-            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  />
+            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={false}/>
           }
         })}
         </Slider>

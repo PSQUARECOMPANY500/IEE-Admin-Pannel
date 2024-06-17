@@ -16,8 +16,7 @@ const AdminInfo = new Schema({
     },
     Role:{ 
         type: String,
-        enum: ["ServiceAdmin", "HRAdmin", "SalesAdmin"],
-        default: "ServiceAdmin",
+        enum: ["ServiceAdmin", "CRM", "HRAdmin","InventoryManagement","DesignModule","SalesAdmin"],
     },
     AdminId:{ 
         type:String,

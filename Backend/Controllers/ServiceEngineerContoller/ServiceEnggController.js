@@ -37,6 +37,10 @@ const ReportInfoModel = require("../../Modals/ReportModal/ReportModal");
 
 const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
+const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema");
+
+const Razorpay = require("razorpay");
+
 const axios = require("axios");
 require("dotenv").config();
 
@@ -73,58 +77,60 @@ const calculateTwotimedifference = (
 
 // ---------------------------------------------------------------------------------------------------------------------
 // [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
-module.exports.RegisterServiceEngg = async (req, res) => {
-  try {
-    // Extract user data from the request body
-    const {
-      EnggId,
-      EnggPassword,
-      EnggName,
-      PhoneNumber,
-      EnggAddress,
-      EnggPhoto,
-    } = req.body;
+// module.exports.RegisterServiceEngg = async (req, res) => {
+//   try {
+//     // Extract user data from the request body
+//     const {
+//       EnggId,
+//       EnggPassword,
+//       EnggName,
+//       PhoneNumber,
+//       EnggAddress,
+//       EnggPhoto,
+//     } = req.body;
 
-    const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
-      EnggId,
-    });
-    if (ExistingServiceEngg) {
-      return res
-        .status(400)
-        .json({ error: "This Service Engineer ID already exists" });
-    }
+//     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
+//       EnggId,
+//     });
+//     if (ExistingServiceEngg) {
+//       return res
+//         .status(400)
+//         .json({ error: "This Service Engineer ID already exists" });
+//     }
 
-    // Create a new instance of the model with the user data
-    const newUser = await ServiceEnggBasicSchema.create({
-      EnggId,
-      EnggPassword,
-      EnggName,
-      PhoneNumber,
-      EnggAddress,
-      EnggPhoto,
-    });
-    // Respond with the saved user data
-    res
-      .status(201)
-      .json({ message: "service Engg Register Succesfully", user: newUser });
-  } catch (error) {
-    // Check for duplicate key error (unique constraint violation)
-    //console.log(error)
-    if (error.code === 11000) {
-      res.status(400).json({ error: "Duplicate key error" });
-    } else {
-      res.status(500).json({ error: "Internal server error" });
-    }
-  }
-};
+//     // Create a new instance of the model with the user data
+//     const newUser = await ServiceEnggBasicSchema.create({
+//       EnggId,
+//       EnggPassword,
+//       EnggName,
+//       PhoneNumber,
+//       EnggAddress,
+//       EnggPhoto,
+//     });
+//     // Respond with the saved user data
+//     res
+//       .status(201)
+//       .json({ message: "service Engg Register Succesfully", user: newUser });
+//   } catch (error) {
+//     // Check for duplicate key error (unique constraint violation)
+//     //console.log(error)
+//     if (error.code === 11000) {
+//       res.status(400).json({ error: "Duplicate key error" });
+//     } else {
+//       res.status(500).json({ error: "Internal server error" });
+//     }
+//   }
+// };
 //===========\\=\\\\\\\\\\\====\=\=\=\==\=\=\=\=\=\=\=
 module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
     const bodyData = req.body;
-
-    console.log(formData);
-    console.log(req.files);
+    // console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
+// 
+    // console.log("preet", req.body);
+    // console.log("pankaj",bodyData.AlternativeNumber);
+    // console.log(bodyData);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
       PhoneNumber: bodyData.mobileNumber,
@@ -136,12 +142,16 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
         .json({ message: "Engg is Already Exist with thius Mobile Number" });
     }
 
+
     const enggData = await ServiceEnggBasicSchema.create({
       EnggName: bodyData.firstName,
+      EnggId: bodyData.EngggId,
+      AlternativeNumber: bodyData.AlternativeNumber,
+      // EnggRole: bodyData.EnggRole,  tod ==> --------- unCommented --------------------------------
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
-      EnggPhoto: formData.profilePhoto[0].filename,
+      EnggPhoto: formData?.profilePhoto ? formData?.profilePhoto[0]?.filename : "",
       DateOfBirth: bodyData.dateOfBirth,
       Email: bodyData.email,
       PinCode: bodyData.pinCode,
@@ -157,17 +167,19 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       BranchName: bodyData.branchName,
       AccountNumber: bodyData.accountNumber,
       IFSCcode: bodyData.IFSCcode,
-      AddharPhoto: formData.addharPhoto[0].filename,
-      DrivingLicensePhoto: formData.drivingLicensePhoto[0].filename,
-      PancardPhoto: formData.pancardPhoto[0].filename,
-      QualificationPhoto: formData.qualificationPhoto[0].filename,
-      AdditionalCoursePhoto: formData.additionalCoursePhoto[0].filename,
+      AddharPhoto:  formData?.addharPhoto ? formData?.addharPhoto[0]?.filename : "",
+      DrivingLicensePhoto: formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "",
+      PancardPhoto: formData?.pancardPhoto ? formData?.pancardPhoto[0]?.filename : "",
+      QualificationPhoto: formData?.qualificationPhoto ? formData?.qualificationPhoto[0]?.filename : "",
+      AdditionalCoursePhoto: formData?.additionalCoursePhoto ? formData?.additionalCoursePhoto[0]?.filename : "",
       DurationOfJob: bodyData.jobDuration,
       CompanyName: bodyData.companyName,
       JobTitle: bodyData.jobTitle,
       ManagerName: bodyData.managerName,
       ManagerNo: bodyData.managerNumber,
     });
+
+
 
     res
       .status(201)
@@ -189,7 +201,7 @@ module.exports.loginEngg = async (req, res) => {
 
     const rating = await engineerRating.find({ ServiceEnggId: EnggId });
 
-    console.log("enggId", rating);
+    // console.log("enggId", rating);
     let count = 0;
 
     rating.map((item) => (count += item.Rating));
@@ -298,8 +310,8 @@ module.exports.getEnggDetail = async (req, res) => {
 module.exports.createEnggLocation = async (req, res) => {
   // onswipe of the engg update allotdetails , jobordernumber(if joborder number is not present create a new array) starting and ending location
   try {
-    const { ServiceEnggId, JobOrderNumber, latitude, longitude } = req.body;
-    if (ServiceEnggId && JobOrderNumber && latitude && longitude) {
+    const { ServiceEnggId, JobOrderNumber } = req.body;
+    if (ServiceEnggId && JobOrderNumber) {
       const AttendanceCreatedDate = new Date()
         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
         .split(",")[0];
@@ -308,6 +320,23 @@ module.exports.createEnggLocation = async (req, res) => {
         ServiceEnggId,
         AttendanceCreatedDate,
       });
+
+      if (!enggLocation) {
+        return res.status(404).send({ mesasge: "No Engg location found" });
+      }
+
+      const latitude = enggLocation.currentLocation.coordinates[0];
+      const longitude = enggLocation.currentLocation.coordinates[1];
+
+      if (
+        enggLocation?.AllotDetails[0]?.startingLocation?.coordinates?.length >=
+        0
+      ) {
+        return res.status(404).json({
+          message: "Location already marked",
+        });
+      }
+
       if (enggLocation) {
         // EnggLocation found, iterate over AllotDetails array
         let jobOrderFound = false;
@@ -333,7 +362,7 @@ module.exports.createEnggLocation = async (req, res) => {
               type: "Point",
               coordinates: [latitude, longitude],
             },
-            endingLocation: { type: "Point", coordinates: [] },
+
             createdDate: AttendanceCreatedDate,
           });
         }
@@ -346,7 +375,7 @@ module.exports.createEnggLocation = async (req, res) => {
       }
     }
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     res
       .status(500)
       .json({ error: "Internal server error in Location creation" });
@@ -360,6 +389,15 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
   try {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
+
+    // console.log(
+    //   "enngglocation serviceid ",
+    //   ServiceEnggId,
+    //   " latitude ",
+    //   latitude,
+    //   " longitute ",
+    //   longitude
+    // );
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -422,7 +460,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    console.log(serviceEnggId);
+    // console.log(serviceEnggId);
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
@@ -595,7 +633,6 @@ module.exports.EnggCheckIn = async (req, res) => {
   //console.log("req of checkin",req.params.ServiceEnggId)
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
-    console.log("ServiceEnggId", ServiceEnggId);
     const images = req.files;
     const frontimagename = images?.frontimage[0].filename;
     const backimagename = images?.backimage[0].filename;
@@ -620,10 +657,10 @@ module.exports.EnggCheckIn = async (req, res) => {
       return res.status(201).json(time);
     }
     return res
-      .status(500)
+      .status(400)
       .json({ error: "ServiceEnggId or IsAttendance not find" });
   } catch (error) {
-    //console.error(error);
+    console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in EnggCheckIn" });
@@ -742,7 +779,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
 module.exports.EnggOnSecondHalfBreak = async (req, res) => {
   try {
     const { ServiceEnggId } = req.body;
-    console.log("ServiceEnggId get in backend = ", ServiceEnggId);
+    // console.log("ServiceEnggId get in backend = ", ServiceEnggId);
     if (ServiceEnggId) {
       const time = new Date().toLocaleTimeString("en-IN", {
         timeZone: "Asia/Kolkata",
@@ -887,7 +924,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       Leave_Reason,
       Document: document,
     });
-    console.log("document", document);
+    // console.log("document", document);
     res
       .status(200)
       .json({ success: true, message: "Leave Created successfully", response });
@@ -942,10 +979,13 @@ module.exports.validateOtpForClient = async (req, res) => {
         ServiceEnggId,
         JobOrderNumber,
       });
-      if (response) {
-        return res.status(200).json({ success: true });
+      const time1 = new Date(response.time).getTime();
+      const date = new Date().getTime();
+      const expireTime = date - time1;
+      if (expireTime > 300000) {
+        return res.status(200).json({ success: false, message: "OTP expired" });
       } else {
-        return res.status(404).json({ success: false });
+        return res.status(404).json({ success: true });
       }
     }
     return res.status(500).json({ error: "Enter valid data" });
@@ -963,6 +1003,8 @@ module.exports.generateOtpForClient = async (req, res) => {
   try {
     const { ServiceEnggId, JobOrderNumber, PhoneNumber } = req.body;
 
+    const date = new Date().toISOString();
+
     if (ServiceEnggId && JobOrderNumber && PhoneNumber) {
       const otp = Math.floor(1000 + Math.random() * 9000);
 
@@ -971,14 +1013,8 @@ module.exports.generateOtpForClient = async (req, res) => {
         otp: otp,
         ServiceEnggId: ServiceEnggId,
         JobOrderNumber: JobOrderNumber,
+        time: date,
       });
-      if (response) {
-        const timer = 5 * 60000;
-
-        setTimeout(async () => {
-          await OtpDetails.findByIdAndDelete({ _id: response._id });
-        }, timer);
-      }
       // Prepare data and config for the API request
 
       const apiKey = process.env.MESSAGE_API_KEY;
@@ -1010,7 +1046,7 @@ module.exports.generateOtpForClient = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in generateOtpForClient" });
@@ -1023,7 +1059,7 @@ module.exports.EnggReportResponse = async (req, res) => {
   try {
     const { checklistName, subcategories } = req.body;
     if (checklistName && subcategories) {
-      const response = await Report.create({
+      const response = await ReportInfoModel.create({
         checklistName: checklistName,
         subcategories: subcategories,
       });
@@ -1058,18 +1094,61 @@ module.exports.EnggReportQuestionFetch = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
+const calculateEarlyLate = (timetocalculate) =>{
+  const currentTime = new Date();
+  const [hours, minutes, seconds] = timetocalculate.split(':').map(Number);
+  const targetTime = new Date(currentTime);
+  targetTime.setHours(hours, minutes, seconds, 0);
+  return targetTime;
+}
+
+const caluclateCheckInCheckOutStatus = (attendanceTime,caltime) => {
+  if(calculateEarlyLate(attendanceTime) > calculateEarlyLate(caltime[1])){
+          return 'Late'
+  }else if(calculateEarlyLate(attendanceTime) <= calculateEarlyLate(caltime[1])  && calculateEarlyLate(attendanceTime) >= calculateEarlyLate(caltime[0]) ){
+    return 'On Time'   
+  }else if(calculateEarlyLate(attendanceTime) < calculateEarlyLate(caltime[0])){
+    return 'Early'
+  }
+}
+
+
+
 module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
   try {
     const Id = req.params.ServiceEnggId;
     if (Id) {
       const date = new Date().toLocaleDateString("en-GB");
+      const time = new Date().toLocaleTimeString("en-GB");
       const response = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId: Id,
         Date: date,
       });
+
+      let Check_In_status
+      let Check_Out_status
+      // const timeresdposne = calculateEarlyLate('9:00:00');
+      if(response.Check_In.time){
+        Check_In_status = caluclateCheckInCheckOutStatus(response.Check_In.time,['08:45:00','09:15:00'])
+      }
+      if(response.Check_Out.time){
+        Check_Out_status = caluclateCheckInCheckOutStatus(response.Check_Out.time,['17:15:00','17:45:00'])
+      }
+      
+
+
+   
+
+      // console.log("this is the time ",timeresdposne  );
+      
+      // console.log("Reponse for checkin", response.Check_In.time)
+      // console.log("Reponse for checkout", response.Check_Out.time)
+
       return res.status(200).json({
         Check_In: response.Check_In.time,
+        Check_In_status,
         Check_Out: response.Check_Out.time,
+        Check_Out_status
       });
     }
     return res.status(500).json({ error: "ServiceEnggId Not Found" });
@@ -1100,7 +1179,7 @@ module.exports.AssignCallbackDataForEnggAppByCallbackId = async (req, res) => {
     const CallbackDetail = await clientRequestImidiateVisit.findOne({
       callbackId: callbackData.callbackId,
     });
-    console.log(callbackData.callbackId);
+    // console.log(callbackData.callbackId);
     if (!CallbackDetail) {
       return res.status(404).json({ message: "no CallbackDetail data found" });
     }
@@ -1168,7 +1247,7 @@ module.exports.getChecklistByIdAndServiceType = async (req, res) => {
   try {
     const { checklistId } = req.params;
 
-    console.log(checklistId);
+    // console.log(checklistId);
 
     const checkList = await CheckList.findById({ _id: checklistId });
 
@@ -1197,7 +1276,7 @@ module.exports.getAllSparePartdetails = async (req, res) => {
       return res.status(401).json({ message: "Spare Part is not Present" });
     }
 
-    console.log(spareParts);
+    // console.log(spareParts);
 
     return res.status(200).json({ spareParts });
   } catch (error) {
@@ -1220,6 +1299,9 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
+    // console.log("20",req.body)
+    // console.log("21",req.files)
+
     const serviceExist = await ReportInfoModel.findOne({
       serviceId: reqs.serviceId,
     });
@@ -1240,9 +1322,10 @@ module.exports.GenerateReportByEngg = async (req, res) => {
       ReportData = await ReportInfoModel.create({
         serviceId: reqs.serviceId,
         EnggId: reqs.EnggId,
+        JobOrderNumber: reqs.JobOrderNumber,
         questionsDetails: QuestionResponse,
         subCategoriesphotos: uploaddata,
-        paymentMode: "cash",
+        paymentMode: "Cash",
         paymentDetils: "paymentDetils",
         // isActive: true,
       });
@@ -1256,6 +1339,45 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     });
   }
 };
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//api to handle the functionlity of tracker in the client app
+module.exports.handleTrackerPostionClientApp = async (req, res) => {
+  try {
+    const { serviceId, EnggId, JobOrderNumber, Steps } = req.body;
+
+    // console.log(serviceId);
+    // console.log(Steps);
+
+    const havea = await ReportInfoModel.findOne({
+      serviceId: serviceId,
+    });
+
+    if (havea) {
+      await ReportInfoModel.findOneAndUpdate(
+        { serviceId: serviceId },
+        { EnggId: EnggId, Steps: Steps, JobOrderNumber: JobOrderNumber }
+      );
+    } else {
+      await ReportInfoModel.create({
+        serviceId: serviceId,
+        EnggId: EnggId,
+        JobOrderNumber: JobOrderNumber,
+        Steps: Steps,
+      });
+    }
+
+    res.status(200).json({ message: "info update succesfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error Genrating Report by Engg",
+    });
+  }
+};
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getEngineerLeaves = async (req, res) => {
@@ -1276,14 +1398,15 @@ module.exports.getEngineerLeveCount = async (req, res) => {
   try {
     const { ServiceEnggId } = req.query;
     // console.log("working inside this");
-    console.log(ServiceEnggId);
+    // console.log(ServiceEnggId);
     const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
-    console.log("leaves", leaves);
+    // console.log("leaves", leaves);
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ message: "No leaves found" });
     }
     const approved = leaves.filter((leave) => leave.IsApproved === "Approved");
     const count = approved[approved.length - 1].UsedLeave;
+    // console.log(count);
     res.status(200).json({
       success: true,
       leavesUsed: count,
@@ -1402,6 +1525,9 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     const reportData = await ReportInfoModel.findOne({ serviceId });
 
+    const getMemberShipDetails = await memberShipTable.findOne({
+      JobOrderNumber: reportData.JobOrderNumber,
+    });
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
     }
@@ -1449,11 +1575,38 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     });
 
+    const caluclatePriceAsPerMemeberShip = (memeberShip, partprice) => {
+      if (memeberShip === "platinum" && partprice < 20000) {
+        return 0;
+      } else if (memeberShip === "gold" && partprice < 8000) {
+        return 0;
+      } else if (memeberShip === "silver" && partprice < 1000) {
+        return 0;
+      } else {
+        return partprice;
+      }
+    };
+
+    const membership = getMemberShipDetails.MembershipType;
+    // price caluclate login insiode the spare part
+    const caluclatePrice = SparePartsChanged.map((item) => {
+      const sparePartPrice = item.questionResponse.sparePartDetail.partsprice;
+      return caluclatePriceAsPerMemeberShip(membership, sparePartPrice);
+    });
+    const totalPrice = caluclatePrice.reduce(
+      (acc, curr) => acc + parseInt(curr),
+      0
+    );
+    TotalAmount.push(totalPrice);
+
+    // price caluclate login insiode the spare part
+
     res.status(200).json({
       IssuesResolved,
       IssuesNotResolved,
       SparePartsChanged,
       SparePartsRequested,
+      TotalAmount,
     });
   } catch (error) {
     console.log(error);
@@ -1474,6 +1627,8 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const getData = await ReportInfoModel.find({ EnggId });
 
+    // console.log("preet",getData[0].Steps);
+
     if (!getData) {
       return res
         .status(404)
@@ -1488,19 +1643,24 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const FianlData = getData?.filter((data) => data.isActive === true);
 
+    // console.log("==>", FianlData);
+
     if (FianlData.length === 0) {
       return res
         .status(200)
         .json({ message: "No Active Report Found With This Engg Id" });
     }
 
-    const ServiceId = getData[0].serviceId;
+    const ServiceId = FianlData[0].serviceId;
     const ReEvaluateData =
       FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
+
+    // console.log(ReEvaluateData);
     res.status(200).json({
       ServiceId: ServiceId,
       subCategoriesId: ReEvaluateData.subCategoriesId,
       subcategoryname: ReEvaluateData.subcategoryname,
+      Steps: getData[0].Steps,
     });
   } catch (error) {
     console.log(error);
@@ -1517,17 +1677,38 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
 module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
-    const { serviceId, paymentDetils } = req.body;
+    const { serviceId, paymentdata } = req.body;
 
+    // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
+    console.log("ReportData", ReportData.EnggId);
 
     if (!ReportData) {
       return res.status(404).json({ message: "Report Not Found" });
     }
 
-    ReportData.paymentDetils = paymentDetils;
+
+    //update cash in Engg table------------
+if(JSON.parse(paymentdata).Payment_Method === 'Cash'){
+   await ServiceEnggBasicSchema.findOneAndUpdate(
+      {
+        EnggId:ReportData.EnggId
+      },
+      { $inc: {AvailableCash:JSON.parse(paymentdata).Total_Amount} }
+    );
+}   // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
+
+
+    const paymentPDF = req.files.report[0].filename;
+
+    ReportData.paymentDetils = paymentPDF;
     ReportData.isVerify = true;
     ReportData.isActive = false;
+    ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
+    ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
 
     await ReportData.save();
 
@@ -1535,16 +1716,13 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       (value) => value.questionResponse.isSparePartRequest === true
     );
 
-    // console.log("FilteredData == >",FilteredData);
-    // console.log("FilteredData ReportData",ReportData.questionsDetails[25].questionResponse.isSparePartRequest);
-
     const FinalFilteredData = await Promise.all(
       FilteredData.map(async (item) => {
         const sparePartRequestDate = new Date()
           .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
           .split(",")[0];
         const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
-        const newSparePartRequest = new sparePartRequestTable({
+        const newSparePartRequest = await sparePartRequestTable.create({
           EnggId: ReportData.EnggId,
           sparePartId: questionResponse.sparePartDetail.subsparePartspartid,
           quantity: "default",
@@ -1555,13 +1733,46 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           SubSparePartName: questionResponse.sparePartDetail.sparePartsname,
           Date: sparePartRequestDate,
         });
-        return await newSparePartRequest.save();
+        // return await newSparePartRequest.save();
+        // console.log("newSparePartRequest", newSparePartRequest);
       })
     );
-    // console.log("FinalFilteredData",FilteredData)
-    // console.log("FinalFilteredData2",FinalFilteredData)
 
-    return res.status(200).json({ FinalFilteredData });
+    const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
+      callbackId: serviceId,
+    });
+    const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
+      RequestId: serviceId,
+    });
+
+    if (updateTaskStatusCallback) {
+      updateTaskStatusCallback.ServiceProcess = "completed";
+      await updateTaskStatusCallback.save();
+    } else {
+      updateTaskStatusServiceRequest.ServiceProcess = "completed";
+      await updateTaskStatusServiceRequest.save();
+    }
+
+    //-------------------------------------------------------------------------------
+    const updateInCallbackTable = await clientRequestImidiateVisit.findOne({
+      callbackId: serviceId,
+    });
+    const updateInServiceTable = await serviceRequest.findOne({
+      RequestId: serviceId,
+    });
+
+    if (updateInCallbackTable) {
+      updateInCallbackTable.isDead = true;
+      await updateInCallbackTable.save();
+    }
+    if (updateInServiceTable) {
+      updateInServiceTable.isDead = true;
+      await updateInServiceTable.save();
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Report Submitted Successfully", status: "success" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -1632,7 +1843,7 @@ module.exports.EnggSecondhalfinfo = async (req, res) => {
 
     if (ServiceEnggId) {
       const date = new Date().toLocaleDateString("en-GB");
-      console.log("date = ", date);
+      // console.log("date = ", date);
       const result = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId,
         Date: date,
@@ -1680,7 +1891,7 @@ module.exports.EnggLunchBreakinfo = async (req, res) => {
     const { ServiceEnggId } = req.params;
     if (ServiceEnggId) {
       const date = new Date().toLocaleDateString("en-GB");
-      console.log("date = ", date);
+      // console.log("date = ", date);
       const result = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId,
         Date: date,
@@ -1768,5 +1979,422 @@ module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
   }
 };
 
-//==================================================================
-//==================================================================
+//====================================================Razorpay-api-starts=======================================================================
+//amit on 01/05/2024 ---
+
+//function to create razor-Pay instance
+// //Done, Touch this api at your own risk.
+
+// module.exports.clientPayment = async (req, res) => {
+//   try {
+//     const { amount, currency, JON } = req.body;
+
+//     if (!amount || !currency) {
+//       return res
+//         .status(400)
+//         .json({ message: "Amount and currency are required." });
+//     }
+//     const receipt = JON || "receipt#1";
+
+//     const instance = new Razorpay({
+//       key_id: process.env.key_id,
+//       key_secret: process.env.key_secret,
+//     });
+
+//     const order = await instance.orders.create({
+//       amount: amount,
+//       currency: currency,
+//       receipt: receipt,
+//       partial_payment: false,
+//     });
+
+
+
+//     if (order.statusCode === 400) {
+//       return res
+//         .status(400)
+//         .json({ message: "Something Went Wrong", data: order });
+//     }
+//     return res
+//       .status(200)
+//       .json({ message: "Order created successfully", data: order });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ error: "Internal Server Error enggPayment" });
+//   }
+// };
+
+
+
+
+
+//amit on 2/05/2024 and 3/05/2024
+//function for the paymentLink generation and verification
+
+//Done, Touch this api at your own risk.
+module.exports.paymentLink = async (req, res) => {
+  try {
+    const { amount, currency, description, name, contact, serviceId } =
+      req.body;
+
+    if (!amount || !currency || !name || !contact || !serviceId) {
+      return res.status(400).json({
+        message:
+          "Amount , currency , name , contact and serviceId are required.",
+      });
+    }
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const data = await ReportInfoModel.findOne({ serviceId });
+
+    if (data.payment_id && data.paymentType === "Link") {
+      const id = data.payment_id;
+      const response = await instance.paymentLink.fetch(id);
+      if (response.status === "created") {
+        return res.status(200).json({ type: "Link", data: response });
+      } else if (response.status === "paid") {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    }
+
+    const Time = new Date();
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const fiveMinutesInSeconds = 17 * 60;
+
+    const newTimestamp = currentTimestamp + fiveMinutesInSeconds;
+
+    const response = await instance.paymentLink.create({
+      amount: amount,
+      currency: currency,
+      description: description || "service payment",
+      expire_by: newTimestamp,
+      customer: {
+        name: name,
+        email: " ",
+        contact: contact,
+      },
+      notify: {
+        sms: true,
+        email: false,
+      },
+      reminder_enable: true,
+    });
+
+    const isoTimeString = new Date(Time).toISOString();
+    await ReportInfoModel.findOneAndUpdate(
+      { serviceId },
+      {
+        paymentType: "Link",
+        payment_id: response.id,
+        paymentTime: isoTimeString,
+      }
+    );
+    return res.status(200).json({ response });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error in paymentLink ! Contact Developer",
+      error: error,
+    });
+  }
+};
+//just for testing! Done, Touch this api at your own risk.
+module.exports.verifyPaymentLink = async (req, res) => {
+  try {
+    const { razorpayLink } = req.body;
+
+    if (!razorpayLink) {
+      return res.status(400).json({ message: "razorpayLink is required." });
+    }
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const response = await instance.paymentLink.fetch(razorpayLink);
+    if (!response) {
+      return res.status(404).json({ message: "Payment link not found." });
+    }
+    return res.status(200).json({ response });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error in verifyPaymentLink! Contact Developer.",
+      error: error,
+    });
+  }
+};
+//Done, Touch this api at your own risk.
+module.exports.generatePaymentQr = async (req, res) => {
+  try {
+    const { amount, JobOrderNumber, serviceId } = req.body;
+
+    if (!amount || !JobOrderNumber || !serviceId) {
+      return res.status(400).json({
+        message: "Amount , JobOrderNumbe and serviceId are required.",
+      });
+    }
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+    const data = await ReportInfoModel.findOne({ serviceId });
+    if (data.payment_id && data.paymentType === "Qr") {
+      const id = data.payment_id;
+      const response = await instance.qrCode.fetch(id);
+      if (response.status === "active") {
+        return res.status(200).json({ type: "Qr", response: response });
+      } else if (
+        response.status === "closed" &&
+        response.close_reason === "paid"
+      ) {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    }
+
+    const client = await clientDetailSchema.findOne({
+      JobOrderNumber: JobOrderNumber,
+    });
+
+    let customerid = client.Razorpay_customer_ID;
+
+    if (!customerid) {
+      const customer = await instance.customers.create({
+        name: client.name,
+        contact: client.PhoneNumber,
+        email: "",
+        fail_existing: 0,
+      });
+
+      customerid = customer.id;
+
+      await clientDetailSchema.findOneAndUpdate(
+        { JobOrderNumber },
+        { Razorpay_customer_ID: customerid }
+      );
+    }
+
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const fiveMinutesInSeconds = 5 * 60;
+
+    const newTimestamp = currentTimestamp + fiveMinutesInSeconds;
+
+    const response = await instance.qrCode.create({
+      type: "upi_qr",
+      name: "Store Front Display",
+      usage: "single_use",
+      fixed_amount: true,
+      payment_amount: amount,
+      description: "For Service Payment",
+      customer_id: customerid,
+      close_by: newTimestamp,
+      notes: {
+        purpose: "Service Payment",
+      },
+    });
+    const Time = new Date();
+    const isoTimeString = new Date(Time).toISOString();
+    await ReportInfoModel.findOneAndUpdate(
+      { serviceId },
+      { paymentType: "Qr", payment_id: response.id, paymentTime: isoTimeString }
+    );
+    return res.status(200).json({ status: "success", response: response });
+  } catch (error) {
+    console.error("Error in generatePaymentQr:", error);
+    return res.status(500).json({
+      message: "Internal server error in generatePaymentQr! Contact Developer.",
+      error: error,
+    });
+  }
+};
+//Done, Touch this api at your own risk.
+module.exports.getPaymentStatus = async (req, res) => {
+  try {
+    const { serviceId } = req.body;
+    if (!serviceId) {
+      return res.status(400).json({ message: "serviceId is required." });
+    }
+    const data = await ReportInfoModel.findOne({ serviceId });
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    if (data.paymentType === "Qr") {
+      const id = data.payment_id;
+      const response = await instance.qrCode.fetch(id);
+
+      if (response.status === "active") {
+        return res.status(200).json({ type: "Qr", response: response });
+      } else if (
+        response.status === "closed" &&
+        response.close_reason === "paid"
+      ) {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      } else {
+        return res.status(400).json({ status: "error", message: "expired" });
+      }
+    }
+    if (data.paymentType === "Link") {
+      const id = data.payment_id;
+      const response = await instance.paymentLink.fetch(id);
+
+      if (response.status === "created") {
+        return res.status(200).json({ type: "Link", response: response });
+      } else if (response.status === "paid") {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      } else {
+        return res.status(400).json({ status: "error", message: "expired" });
+      }
+    }
+    return res
+      .status(400)
+      .json({ status: "error", message: "payment not initiated" });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error in verifyPaymentLink! Contact Developer.",
+      error: error,
+    });
+  }
+};
+
+//Done, touch this api at your own risk
+module.exports.resendPaymentLink = async (req, res) => {
+  try {
+    const { serviceId } = req.body;
+
+    if (!serviceId) {
+      return res.status(400).json({
+        status: "error",
+        message: "serviceId is required.",
+      });
+    }
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const data = await ReportInfoModel.findOne({ serviceId });
+    if (data) {
+      if (data.payment_id) {
+        const id = data.payment_id;
+
+        const response = await instance.paymentLink.fetch(id);
+        if (response.status === "created") {
+          const Timestamp = new Date();
+          Timestamp.setMinutes(Timestamp.getMinutes() + 2);
+
+          const fTimestamp = new Date(data.paymentTime);
+
+          const timeDifference = Math.abs(Timestamp - fTimestamp) / 1000;
+          if (timeDifference < 120) {
+            return res
+              .status(400)
+              .json({ status: "error", time_left: timeDifference });
+          } else {
+            if (data.payment_id) {
+              const response = await instance.paymentLink.notifyBy(
+                data.payment_id,
+                "sms"
+              );
+              const fTimestamp = new Date();
+              fTimestamp.setMinutes(fTimestamp.getMinutes() + 2);
+              data.paymentTime = fTimestamp.toISOString();
+              await data.save();
+              return res
+                .status(200)
+                .json({ status: "success", data: response });
+            }
+          }
+        } else if (response.status === "paid") {
+          return res
+            .status(200)
+            .json({ status: "success", message: "Payment successful" });
+        } else {
+          return res.status(400).json({
+            status: "error",
+            message: "Link is Expired",
+          });
+        }
+      }
+    }
+    return res.status(400).json({
+      status: "error",
+      message: "resend failed no existing payment Link found",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Internal server error in resendPaymentLink! Contact Developer.",
+      error: error,
+    });
+  }
+};
+
+//Done, Touch this api at your own risk.
+module.exports.updatePaymentStatus = async (req, res) => {
+  try {
+    const { serviceId } = req.body;
+    // console.log(serviceId);
+    if (!serviceId) {
+      return res.status(400).json({ message: "serviceId is required." });
+    }
+    const data = await ReportInfoModel.findOne({ serviceId });
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    if (data.paymentType === "Qr") {
+      const id = data.payment_id;
+      const response = await instance.qrCode.fetch(id);
+
+      if (response.status === "active") {
+        await instance.qrCode.close(id);
+        data.payment_id = " ";
+        data.paymentType = " ";
+        await data.save();
+      } else if (
+        response.status === "closed" &&
+        response.close_reason === "paid"
+      ) {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    }
+    if (data.paymentType === "Link") {
+      const id = data.payment_id;
+      const response = await instance.paymentLink.fetch(id);
+
+      if (response.status === "created") {
+        await instance.paymentLink.cancel(id);
+        data.payment_id = " ";
+        data.paymentType = " ";
+        await data.save();
+      } else if (response.status === "paid") {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    }
+    return res.status(200).json({ status: "success", message: "Pass" });
+  } catch (error) {
+    return res.status(500).json({
+      message:
+        "Internal server error in updatePaymentStatus! Contact Developer.",
+      error: error,
+    });
+  }
+};
+//=======================================================Razorpay-api-ends====================================================================

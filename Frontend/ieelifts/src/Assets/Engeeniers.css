@@ -540,6 +540,7 @@ body {
 
 .Icon_Color {
   color: #F8AC1D;
+  cursor: pointer;
 }
 
 .ODetailsColumn h5 {
@@ -1657,11 +1658,13 @@ tr>td:nth-child(2) {
 }
 
 .footer-rating h5 span {
-  font-size: 0.6rem;
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
   font-family: "Poppins";
   font-weight: 600;
   letter-spacing: 0.0099rem;
 }
+
 
 .rating_star {
   color: #F8AC1D;
@@ -1796,7 +1799,8 @@ tr>td:nth-child(2) {
 }
 
 
-.rating-quetions-container-textarea textarea {
+
+.rating-quetions-container-may{
   box-shadow: inset 1px 2px 3px #00000029, 1px 2px 5px #00000029;
   border: 1px solid #00000008;
   background-color: #FFFFFF;
@@ -1805,14 +1809,14 @@ tr>td:nth-child(2) {
   resize: none;
   height: 90%;
   width: 90%;
-  font-size: 1rem;
-  padding: 0.5rem;
-  color: #89848459;
+  font-size: 0.9rem;
+  padding: 0.7rem;
+
+  /* color: #89848459; */
+  color: #1b1b1b;
   text-align: left;
   font-family: 'Poppins';
   font-weight: 400;
-
-
 }
 
 .rating-quiz-row {
@@ -1850,15 +1854,15 @@ tr>td:nth-child(2) {
   color: #1D1D1D;
   font-weight: 500;
   font-family: "Poppins";
-  background-color: #F8AC1D;
+  background-color: transparent;
   border: 1px solid #F8AC1D;
   border-radius: 3px;
   cursor: pointer;
 }
 
-.rating-quiz-row-buttons button:nth-child(2) {
+/* .rating-quiz-row-buttons button:nth-child(2) {
   background-color: transparent;
-}
+ }  */
 
 
 .rating-quetions-container-head h5 {
@@ -1866,6 +1870,7 @@ tr>td:nth-child(2) {
   font-family: "Poppins";
   font-weight: 500;
   font-size: 0.9rem;
+  margin-left: -1vw;
   display: flex;
   gap: 0.3rem;
 }

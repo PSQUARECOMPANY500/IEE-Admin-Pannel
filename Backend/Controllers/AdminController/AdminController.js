@@ -38,11 +38,17 @@ const SparePartTable = require("../../Modals/SpearParts/SparePartRequestModel");
 
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
+const ElevatorFormSchema = require("../../Modals/ClientDetailModals/ClientFormSchema");
+
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
+const Notification = require("../../Modals/NotificationModal/notificationModal");
+const { response } = require("express");
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -607,10 +613,13 @@ module.exports.AssignServiceRequests = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
+      RepresentativeName,
+      RepresentativeNumber,
     } = req.body;
 
     let callback;
-
+    // console.log("RepresentativeName--",RepresentativeName)
+    // console.log("RepresentativeNumber--",RepresentativeNumber)
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
@@ -628,6 +637,8 @@ module.exports.AssignServiceRequests = async (req, res) => {
           Date,
           Message,
           ServiceProcess,
+          RepresentativeName,
+          RepresentativeNumber,
         },
         {
           new: true,
@@ -643,8 +654,23 @@ module.exports.AssignServiceRequests = async (req, res) => {
         Date,
         Message,
         ServiceProcess,
+        RepresentativeName,
+        RepresentativeNumber,
       });
     }
+
+    await getAllServiceRequest.findOneAndUpdate(
+      {
+        RequestId,
+      },
+      {
+        RepresentativeName,
+        RepresentativeNumber,
+      },
+      {
+        new: true,
+      }
+    );
 
     const populatedService = await AssignSecheduleRequest.findById(Request._id)
       .populate("AllotAChecklist")
@@ -1151,9 +1177,11 @@ module.exports.getEngAssignSlotsDetails = async (req, res) => {
 //function to handle login service Engg (Preet)
 module.exports.loginServiceAdmin = async (req, res) => {
   try {
-    const { AdminId, Password } = req.body;
-
+    const { AdminId, Password, Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });
+    /*  if(Admin.Role !== Role){
+      return res.status(401).json({status:"error", message: "permission denied" });
+    }   */
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -1163,7 +1191,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
       _id: Admin._id,
       AdminName: Admin.AdminName,
       Phone: Admin.Phone,
-      Role: Admin.ServiceAdmin,
+      Role: Admin.Role,
       AdminId: Admin.AdminId,
     });
 
@@ -2306,7 +2334,7 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceEnggId: assignment.ServiceId,
           });
-          console.log("rating", Rating);
+          // console.log("rating", Rating);
           return {
             ...assignment,
             rating: Rating.Rating,
@@ -2465,8 +2493,8 @@ module.exports.fetchDeniedSparePart = async (req, res) => {
 module.exports.fetchReportForAdmin = async (req, res) => {
   try {
     const { serviceId } = req.params;
-
     const ReportData = await ReportTable.findOne({ serviceId });
+    const Rating = await EnggRating.findOne({ ServiceId: serviceId });
 
     const MCRoom = {
       IssuesResolved: [],
@@ -2474,7 +2502,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsChanged: [],
       SparePartsRequested: [],
     };
-
     const CabinFloors = {
       IssuesResolved: [],
       IssuesNotResolved: [],
@@ -2494,8 +2521,10 @@ module.exports.fetchReportForAdmin = async (req, res) => {
       SparePartsRequested: [],
     };
 
-    const ReportImages = ReportData.subCategoriesphotos;
+    // console.log("22222222222222",ReportData.paymentMode);
+    // console.log("22222222222222",ReportData.paymentDetils);
 
+    const ReportImages = ReportData.subCategoriesphotos;
     const sortedData = (keys, arr) => {
       const arrData = arr.filter(
         (question) =>
@@ -2507,7 +2536,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
       );
-
       arrData.forEach((item) => {
         if (item.questionResponse.isResolved) {
           keys.IssuesResolved.push(item);
@@ -2522,7 +2550,6 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         ) {
           keys.SparePartsChanged.push(item);
         }
-
         if (
           item.questionResponse.isSparePartRequest &&
           item.questionResponse.sparePartDetail.sparePartsType !== "" &&
@@ -2538,10 +2565,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         acc[item.subcategoryname] = [];
       }
       acc[item.subcategoryname].push(item);
-
       return acc;
     }, {});
-
     Object.keys(transformedData).forEach((key) => {
       if (key === "M/C Room") {
         sortedData(MCRoom, transformedData[key]);
@@ -2553,15 +2578,16 @@ module.exports.fetchReportForAdmin = async (req, res) => {
         sortedData(PitArea, transformedData[key]);
       }
     });
-
     const finalReportedData = {
       MCRoom,
       CabinFloors,
       CartopShaft,
       PitArea,
+      PaymentMode: ReportData?.paymentMode,
+      PaymentDetails: ReportData?.paymentDetils,
     };
 
-    res.status(200).json({ finalReportedData, ReportImages });
+    res.status(200).json({ finalReportedData, ReportImages, Rating });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -2570,8 +2596,529 @@ module.exports.fetchReportForAdmin = async (req, res) => {
   }
 };
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * <-----------------------------Author: Rahul Kumar---------------------01/05/2024---------->
+ */
+
+//post client form controller
+module.exports.postElevatorForm = async (req, res) => {
+  try {
+    const {
+      clientDetails,
+      salesManDetails,
+      quotation,
+      clientMembership,
+      documents,
+      architectDetails,
+      elevatorDetails,
+      dimensions,
+    } = req.body;
+
+    const elevatorFormSchema = new ElevatorFormSchema({
+      clientDetails,
+      salesManDetails,
+      quotation,
+      clientMembership,
+      documents,
+      architectDetails,
+      elevatorDetails,
+      dimensions,
+    });
+
+    await elevatorFormSchema.save();
+
+    res.status(200).json({ msg: "data submit successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error",
+      message: err.message,
+    });
+  }
+};
+
+//put request
+
+module.exports.putElevatorForm = async (req, res) => {
+  try {
+    const { JON } = req.body;
+    const newData = req.body;
+    console.log(JON);
+    console.log(newData);
+
+    const updatedData = await ElevatorFormSchema.findOneAndUpdate(
+      { JON: JON },
+      newData,
+      { new: true }
+    );
+    console.log(updatedData);
+    if (!updatedData) {
+      return res.status(404).json({ error: "Data not found" });
+    }
+    res.status(200).json(updatedData);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error",
+      message: err.message,
+    });
+  }
+};
+
+module.exports.getNotification = async (req, res) => {
+  try {
+    const now = new Date()
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
+    const response = await Notification.find({ Date: now });
+    // console.log("response", response);
+    if (response) {
+      return res.status(200).json({ status: "success", response: response });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+};
+
+// by aayush for rating admin=================================
+
+// By Raj for get client modal information -------------↓↓
+
+module.exports.getClientModalInformation = async (req, res) => {
+  try {
+    const { jon } = req.params;
+    const response = await RegisteredElevatorForm.findOne({
+      "clientFormDetails.jon": jon,
+    });
+    if (!response) {
+      return res
+        .status(404)
+        .json({ success: false, message: "This JON is not found" });
+    }
+
+    res.status(200).json({ response });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Internal server error while fetching Notification",
+    });
+  }
+};
+
+// function handle get all engg personal details by Id -----------------------
+// by Raj---------------
+
+module.exports.getEnggPersonalData = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const enggDetails = await ServiceEnggBasicSchema.findOne({
+      EnggId,
+    });
+
+    if (!enggDetails) {
+      return res.status(404).json({
+        message: "No services Engg found for the specified Service Engineer ID",
+      });
+    }
+
+    res.status(200).json({
+      message: "servicesc Engg retrieved by ID successfully",
+      enggDetails,
+    });
+  } catch (error) {
+    console.error("Error getting enng detail", error);
+    res.status(500).json({
+      error: "Internal server Error",
+    });
+  }
+};
+//-------------------------------------------------------------------------------------------------------------
+// edit engg details form API
+
+//-------------------------------------------------------------------------------------------------------------
+// edit engg details form API preet
+
+module.exports.editEnggDetailsForm = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
+
+    const formData = req.files;
+    const bodyData = req.body;
+
+    const EnggDataChecker = await ServiceEnggBasicSchema.findOne({ EnggId });
+
+    const EnggData = await ServiceEnggBasicSchema.findOneAndUpdate(
+      {
+        EnggId,
+      },
+      {
+        EnggName: bodyData.firstName,
+        EnggId: bodyData.EngggId,
+        AlternativeNumber: bodyData.AlternativeNumber,
+        EnggLastName: bodyData.lastName,
+        PhoneNumber: bodyData.mobileNumber,
+        EnggAddress: bodyData.address,
+        EnggPhoto: formData?.profilePhoto
+          ? formData?.profilePhoto[0]?.filename
+          : EnggDataChecker.EnggPhoto
+          ? EnggDataChecker.EnggPhoto
+          : "",
+        DateOfBirth: bodyData.dateOfBirth,
+        Email: bodyData.email,
+        PinCode: bodyData.pinCode,
+        City: bodyData.city,
+        District: bodyData.district,
+        State: bodyData.state,
+        AddharCardNo: bodyData.addharCardNumber,
+        DrivingLicenseNo: bodyData.drivingLisience,
+        PanCardNo: bodyData.pancards,
+        Qualification: bodyData.qualification,
+        AdditionalCourse: bodyData.additionalCourse,
+        AccountHolderName: bodyData.accountHolderName,
+        BranchName: bodyData.branchName,
+        AccountNumber: bodyData.accountNumber,
+        IFSCcode: bodyData.IFSCcode,
+        AddharPhoto: formData?.addharPhoto
+          ? formData?.addharPhoto[0]?.filename
+          : EnggDataChecker.AddharPhoto
+          ? EnggDataChecker.AddharPhoto
+          : "",
+        DrivingLicensePhoto: formData?.drivingLicensePhoto
+          ? formData?.drivingLicensePhoto[0]?.filename
+          : EnggDataChecker.DrivingLicensePhoto
+          ? EnggDataChecker.DrivingLicensePhoto
+          : "",
+        PancardPhoto: formData?.pancardPhoto
+          ? formData?.pancardPhoto[0]?.filename
+          : EnggDataChecker.PancardPhoto
+          ? EnggDataChecker.PancardPhoto
+          : "",
+        QualificationPhoto: formData?.qualificationPhoto
+          ? formData?.qualificationPhoto[0]?.filename
+          : EnggDataChecker.QualificationPhoto
+          ? EnggDataChecker.QualificationPhoto
+          : "",
+        AdditionalCoursePhoto: formData?.additionalCoursePhoto
+          ? formData?.additionalCoursePhoto[0]?.filename
+          : EnggDataChecker.AdditionalCoursePhoto
+          ? EnggDataChecker.AdditionalCoursePhoto
+          : "",
+        DurationOfJob: bodyData.jobDuration,
+        CompanyName: bodyData.companyName,
+        JobTitle: bodyData.jobTitle,
+        ManagerName: bodyData.managerName,
+        ManagerNo: bodyData.managerNumber,
+      },
+      {
+        new: true,
+      }
+    );
+
+    // console.log("abiiiiiii",EnggData)
+
+    if (!EnggData) {
+      return res.status(404).json({ message: "This JON is not found" });
+    }
+
+    res
+      .status(200)
+      .json({ status: true, message: "Engg Profile updated Succesfully" });
+
+    // console.log("dooooooooooo", EnggData);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching editEnggDetailsForm",
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------
+//api to add Engg Cash in Engg Table By admin
+// module.exports.addEnggCashByAdmin = async (req,res) => {
+// try {
+//   const {EnggId, AvailableCash} = req.body;
+
+//  await ServiceEnggBasicSchema.findOneAndUpdate(
+//     {
+//       EnggId
+//     },
+//     { $inc: {AvailableCash:AvailableCash} }
+//   );
+
+//   res.status(200).json({message: 'Add Cash Successfully'})
+// } catch (error) {
+//   console.log(error);
+//   return res.status(500).json({
+//     error: "Internal server error while add cash Details",
+//   });
+// }
+// }
+//-------------------------------------------------------------------------------------------------------------
+
+//api to DepositeEnggCash To admin  //todo
+
+module.exports.DepositeEnggCash = async (req, res) => {
+  try {
+    const { EnggId, AvailableCash } = req.body;
+
+    await ServiceEnggBasicSchema.findOneAndUpdate(
+      {
+        EnggId,
+      },
+      { $inc: { AvailableCash: -AvailableCash } }
+    );
+
+    res.status(200).json({ message: "Deposite Cash Successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while add Deposite Details",
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------
+
+//get Engg Rating By Engg ID
+
+module.exports.getEnggRatingById = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+
+    const ratingData = await EnggRating.find({ ServiceEnggId });
+
+    // console.log("jjjjjjj", ratingData);
+
+    const rating = await Promise.all(
+      ratingData.map(async (item) => {
+        const assignCallback = await ServiceAssigntoEngg.findOne({
+          callbackId: item.ServiceId,
+        });
+        const assignService = await AssignSecheduleRequest.findOne({
+          RequestId: item.ServiceId,
+        });
+        const clientDetails = await clientDetailSchema.findOne({
+          JobOrderNumber: item.JobOrderNumber,
+        });
+
+        const slots = assignCallback?.Slot || assignService?.Slot;
+        const clientName = clientDetails?.name;
+        const clientAddress = clientDetails?.Address;
+        const ClientRating = item;
+
+        return {
+          clientName,
+          clientAddress,
+          slots,
+          ClientRating,
+        };
+      })
+    );
+
+    // Calculate the average rating
+    const totalRatings = ratingData.reduce((sum, item) => sum + item.Rating, 0);
+    const averageRating = ratingData.length
+      ? (totalRatings / ratingData.length).toFixed(1)
+      : 0;
+
+    // console.log("rating",rating)
+
+    res.status(200).json({ rating, averageRating });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching rating",
+    });
+  }
+};
+
+//----------------------------------------------------------------------------------------------------------------
+//fetch client Service History ------------------------------------------------------------------------------------
+
+module.exports.getClientServiceHistoryByJON = async (req, res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const clientServiceHistory = await AssignSecheduleRequest.find({
+      JobOrderNumber,
+      ServiceProcess: "completed",
+    });
+
+    const serviceHistory = await Promise.all(
+      clientServiceHistory.map(async (item) => {
+        const EnggName = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        }).select("EnggName");
+        const checklistName = await ChecklistModal.findById(
+          item.AllotAChecklist
+        ).select("checklistName");
+
+        const ReportDetails = await ReportTable.find({
+          serviceId: item.RequestId,
+        });
+
+        const SparePartsChanged = [];
+
+        const filteredData = ReportDetails[0].questionsDetails.filter(
+          (question) =>
+            (question.questionResponse.isResolved &&
+              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              question.questionResponse.sparePartDetail.subsparePartspartid !==
+                "") ||
+            (question.questionResponse.isResolved &&
+              question.questionResponse.SparePartDescription !== "") ||
+            !question.questionResponse.isResolved
+        );
+
+        filteredData &&
+          filteredData.forEach((element) => {
+            if (
+              !element.questionResponse.isSparePartRequest &&
+              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              element.questionResponse.sparePartDetail.subsparePartspartid !==
+                "" &&
+              element.questionResponse.isResolved
+            ) {
+              SparePartsChanged.push(
+                element.questionResponse.sparePartDetail.subsparePartspartname
+              );
+            }
+          });
+
+        return {
+          item,
+          EnggName,
+          checklistName,
+          TotalAmount: ReportDetails[0].TotalAmount || 0,
+          SparePartsChanged,
+          Payment_Mode: ReportDetails[0].paymentMode,
+          PaymentDetail: ReportDetails[0].paymentDetils,
+        };
+      })
+    );
+
+    res.status(200).json({
+      serviceHistory,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error:
+        "Internal server error while fetching getClientServiceHistoryByJON",
+    });
+  }
+};
+
+//-----------------------------------------------------------------------------------------------------------------
+//fetch client Callback History ------------------------------------------------------------------------------------
+
+module.exports.getClientCallbackByJON = async (req, res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const clientCallbackHistory = await ServiceAssigntoEngg.find({
+      JobOrderNumber,
+      ServiceProcess: "completed",
+    });
+
+    const callbackHistory = await Promise.all(
+      clientCallbackHistory.map(async (item) => {
+        const EnggName = await ServiceEnggData.findOne({
+          EnggId: item.ServiceEnggId,
+        }).select("EnggName");
+        const checklistName = await ChecklistModal.findById(
+          item.AllotAChecklist
+        ).select("checklistName");
+
+        const ReportDetails = await ReportTable.find({
+          serviceId: item.callbackId,
+        });
+
+        const SparePartsChanged = [];
+
+        const filteredData = ReportDetails[0].questionsDetails.filter(
+          (question) =>
+            (question.questionResponse.isResolved &&
+              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              question.questionResponse.sparePartDetail.subsparePartspartid !==
+                "") ||
+            (question.questionResponse.isResolved &&
+              question.questionResponse.SparePartDescription !== "") ||
+            !question.questionResponse.isResolved
+        );
+
+        filteredData &&
+          filteredData.forEach((element) => {
+            if (
+              !element.questionResponse.isSparePartRequest &&
+              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              element.questionResponse.sparePartDetail.subsparePartspartid !==
+                "" &&
+              element.questionResponse.isResolved
+            ) {
+              SparePartsChanged.push(
+                element.questionResponse.sparePartDetail.subsparePartspartname
+              );
+            }
+          });
+        return {
+          item,
+          EnggName,
+          checklistName,
+          TotalAmount: ReportDetails[0].TotalAmount || 0,
+          SparePartsChanged,
+          Payment_Mode: ReportDetails[0].paymentMode,
+          PaymentDetail: ReportDetails[0].paymentDetils,
+        };
+      })
+    );
+
+    res.status(200).json({
+      callbackHistory,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while fetching getClientCallbackByJON",
+    });
+  }
+};
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------- getCheckInCheckOut controller ------------------------------------------------------------------------------
+
+module.exports.getCheckInCheckOut = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+
+    const {Date} =  req.query;
+
+
+    // if (!ServiceEnggId || !Date) {
+    //   return res.status(400).json({ error: 'ServiceEnggId  are required' });
+    // }
+
+    const record = await EnggAttendanceServiceRecord.findOne({ ServiceEnggId, Date });
+
+    if (!record) {
+      return res.status(404).json({ message: 'Record not found' });
+    }
+
+    res.json(record);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+

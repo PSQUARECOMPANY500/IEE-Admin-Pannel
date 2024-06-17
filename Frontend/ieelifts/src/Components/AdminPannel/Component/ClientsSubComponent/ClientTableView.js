@@ -4,9 +4,13 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
+import ClientModal from "./ClientModal";
 
 const ClientTableView = ({ clientData }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null)
+
 
   useLayoutEffect(() => {
     if (clientData) {
@@ -28,6 +32,19 @@ const ClientTableView = ({ clientData }) => {
       return newCheckboxStates;
     });
   };
+
+  const HandleCardClick = (data) => {
+    setSelectedClient(data)
+    setShowClientModal(true)
+
+
+  }
+
+
+   //Function to handle closing modal
+   const handleCloseModal = () => {
+    setShowClientModal(false)
+  }
 
 
 
@@ -79,7 +96,9 @@ const ClientTableView = ({ clientData }) => {
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index}>
+                  <tr className="selected" key={index} 
+                  onClick={() => HandleCardClick(data)}
+                  >
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
@@ -90,7 +109,7 @@ const ClientTableView = ({ clientData }) => {
                     <td className="JON">{data.JobOrderNumber}</td>
                     <td className="name">{data?.name}</td>
                     <td className="checkbox">{data?.PhoneNumber}</td>
-                    <td className="address">S{data?.Address}</td>
+                    <td className="address">{data?.Address}</td>
                     <td className="callback">
                       {data?.callback ? data?.callback : 0}
                     </td>
@@ -105,6 +124,10 @@ const ClientTableView = ({ clientData }) => {
           </table>
         </div>
       </div>
+
+      <ClientModal  showClientModal={showClientModal}
+        handleCloseModal={handleCloseModal}
+        selectedClient={selectedClient}/>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { fetchAllCallbackReducer } from "../Reducers/AdminReducer";
+import { fetchAllCallbackReducer, getClientModalDataReducer } from "../Reducers/AdminReducer";
 import { fetchCallbackDetailWithCallbackIdReducer } from "../Reducers/AdminReducer";
 import { fetchAllClientDetailReducer } from "../Reducers/AdminReducer";
 import { fetchChecklistReducer } from "../Reducers/AdminReducer";
@@ -44,6 +44,9 @@ import { engineerRequestedLeaveReducer } from "../Reducers/AdminReducer";
 import { fetchassignedEnggDetailsReducer } from "../Reducers/AdminReducer";
 import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
 import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
+import { openAddClientModalReducer } from "../Reducers/AdminReducer";
+import {getAdminReportDataReducer} from "../Reducers/AdminReducer";
+import { ReportCrouserHandlerReducer} from "../Reducers/AdminReducer";
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -91,6 +94,10 @@ const AdminRootReducer = combineReducers({
   fetchassignedEnggDetailsReducer: fetchassignedEnggDetailsReducer,
   onClickEnggCartEnggLocationReducer: onClickEnggCartEnggLocationReducer,
   onClickEnggPinEnggLocationReducer: onClickEnggPinEnggLocationReducer,
+  openAddClientModalReducer:openAddClientModalReducer,
+  getAdminReportDataReducer:getAdminReportDataReducer,
+  ReportCrouserHandlerReducer:ReportCrouserHandlerReducer,
+  getClientModalDataReducer:getClientModalDataReducer
 });
 
 export default AdminRootReducer;

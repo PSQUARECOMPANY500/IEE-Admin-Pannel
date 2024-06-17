@@ -82,6 +82,13 @@ export const GET_ENGINEER_LEAVE_HISTORY = "GET_ENGINEER_LEAVE_HISTORY";
 export const APPROVE_LEAVE_BY_ADMIN = "APPROVE_LEAVE_BY_ADMIN";
 export const GET_ENGINEER_REQUESTED_LEAVE = "GET_ENGINEER_REQUESTED_LEAVE";
 export const GET_ENGINEER_ATTENDANCE = "GET_ENGINEER_ATTENDANCE";
+export const GET_ADMIN_REPORT_DATA = "GET_ADMIN_REPORT_DATA";
+export const REPORT_CROUSER_HANDLER = "REPORT_CROUSER_HANDLER";
+
+export const OPEN_CLIENT_MODAL = "OPEN_CLIENT_MODAL";
+export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
+
+export const GET_CLIENT_MODAL_INFORMATION = "GET_CLIENT_MODAL_INFORMATION";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -162,25 +169,26 @@ export const getSparePartRequestedByEnggIdAction = async (EnggId) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //function to handle login Service Admin
-export const loginServiceAdminAction = (AdminId, Password) => {
+export const loginServiceAdminAction = (AdminId, Password, Role) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`${config.apiUrl}/admin/loginAdmin`, {
         AdminId,
         Password,
+        Role,
       });
-      localStorage.setItem("adminData", JSON.stringify(response.data.token));
+      if (response.data.Admin.Role != Role) {
+        toast.error(`Permission denied for ${Role}`);
+      } else {
+        localStorage.setItem("adminData", JSON.stringify(response.data.token));
+        localStorage.setItem("Role", response.data.Admin.Role);
+        dispatch({
+          type: LOGIN_SERVICE_ADMIN,
+          payload: response,
+        });
 
-      dispatch({
-        type: LOGIN_SERVICE_ADMIN,
-        payload: response.data,
-      });
-
-      toast.success("login successfully");
-
-      setTimeout(() => {
-        window.location.href = "/Dashboard";
-      }, 1000); // Delay in milliseconds
+        toast.success("login successfully");
+      }
     } catch (error) {
       toast.error("Please fill the correct Details");
       console.log("error while fetching Eng_details", error);
@@ -341,11 +349,15 @@ export const assignserviceRequestByAdmin = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  RepresentativeName,
+  RepresentativeNumber
 ) => {
   return async (dispatch) => {
     try {
-      //console.log("assign",ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,name,enggJon)
+      console.log("RepresentativeName", RepresentativeName);
+      console.log("RepresentativeNumber", RepresentativeNumber);
+
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -356,6 +368,8 @@ export const assignserviceRequestByAdmin = (
           Slot,
           Date,
           Message,
+          RepresentativeName,
+          RepresentativeNumber,
         }
       );
 
@@ -890,6 +904,14 @@ export const openAddEngggModalAction = () => ({
 export const closeAddEngggModalAction = () => ({
   type: "CLOSE_MODAL",
 });
+
+//-------------------------x
+export const openAddClientModalAction = () => ({
+  type: "OPEN_CLIENT_MODAL",
+});
+export const closeClientModalAction = () => ({
+  type: "CLOSE_CLIENT_MODAL",
+});
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -991,9 +1013,10 @@ export const updatePassswordAction = async (email, newPassword) => {
   }
 };
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-export const fetchEngDetails = (email, otp) => {
+//---------------------------------------------------------------------------------fetchEngDetailsf-----------------------------------------------------------------------------
+export const fetchEngDetails = () => {
   return async (dispatch) => {
+    console.log(dispatch);
     try {
       const response = await axios.get(
         `${config.apiUrl}/serviceEngg/getAllEngDetails`
@@ -1138,3 +1161,182 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 };
 
 // {/armaan-dev}
+
+//-------------------------------------------------------------------------------------------------------
+//amit and preet get notification data from backend
+
+export const getNotificationDataAction = async () => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching Notification data", error);
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------
+
+//===============================create by aayush for admin report data change end point and pass callback id=============================================================================
+
+export const getadminReportData = (callbackId) => {
+  //if any problem occur then call from useEffect and some change are lefts also update end point and check for callback id
+
+  return async (dispatch) => {
+    if (!callbackId) {
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getReportForAdmin/${callbackId}`
+      );
+      dispatch({
+        type: GET_ADMIN_REPORT_DATA,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+export const ReportCrouserHandler = (Index, IsOpen) => {
+  return async (dispatch) => {
+    dispatch({
+      type: REPORT_CROUSER_HANDLER,
+      payload: { Index, IsOpen },
+    });
+  };
+};
+
+// -------------Created by Raj---------------------------------------------------------------
+//--------------- Action to handle fetch Engg personal dets by Id---------------------------------------------
+
+export const fetchEnggPersonalData = async (EnggId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getEnggPersonalData/${EnggId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Eng_Personal_details", error);
+  }
+};
+
+// ---------------Edit personal data --------------------------------------------------
+
+export const editEnggPersonalData = async (EnggId, formData) => {
+  try {
+    const response = await axios.put(
+      `${config.apiUrl}/admin/editEnggDetails/${EnggId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("sunday", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Edit_Eng_Personal_details", error);
+  }
+};
+
+// -----------Deposite Enginner cash to admin collect cash------------------------------------------------
+
+export const depositeEnggCash = async (EnggId, AvailableCash) => {
+  try {
+    const response = await axios.put(
+      `${config.apiUrl}/admin/depositeEnggCash`,
+      {
+        EnggId,
+        AvailableCash,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Deposit Engineer Cash", error);
+  }
+};
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//   -------  fetch final report for admin -------by Raj
+
+export const fetchFinalReportData = async (serviceId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/serviceEngg/fetchFinalReport/${serviceId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+// ---------------------------Get Rating data in rating.js page =▶ Raj --------------------------------------------------------------------------------------------------------------
+
+export const fetchEnggRatingData = async (serviceId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getEnggRatingById/${serviceId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
+
+// ------------------------------------------Get Client Modal information page =▶ Raj------------------------------------------------------------------------------------------
+
+export const getClientModalData = (jonId) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getClientModalInformation/${jonId}`
+      );
+      dispatch({
+        type: GET_CLIENT_MODAL_INFORMATION,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+// --------------------------------get Client service history data  =▶ Raj ---------------------
+
+export const getClientServiceHistory = async (jonId) => {
+
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+  }
+}
+
+
+// -----------------------------get Client callabck history =▶ Raj -----------------------------------------------------------------------
+
+export const getClientCallbackHistory = async (jonId) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+  }
+}
+
+// ------------------------get checkin and chekc out in Attendance =▶ Raj -----------------------------------------------------------------------
+
+export const getCheckInCheckOuts = async (serviceId, date) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+
+  }
+}

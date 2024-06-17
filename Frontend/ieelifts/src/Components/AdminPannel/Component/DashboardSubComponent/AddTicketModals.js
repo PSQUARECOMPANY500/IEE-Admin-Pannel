@@ -17,6 +17,7 @@ import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/Adm
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import config from "../../../../config";
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -159,7 +160,7 @@ console.log("userCallBackDetail",userCallBackDetail)
   }, [getEnggState]);
 
   const [rn , setrn] = useState("Enter Representative Name (Optional)")
-  const [rnum , setrum] = useState("Enter Representative Number (Optional)")
+  const [rnum , setrum] = useState("Enter Representative Number (Optional)");
 
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
@@ -324,7 +325,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                 </div>
               </div>
 
-
+            
 
               <div className="req-client-information-section">
                 <form className="req-client-form">
@@ -518,6 +519,7 @@ console.log("userCallBackDetail",userCallBackDetail)
 
 
                     {/*engg detail div start here------------------------------------------------------------------------------  */}
+                    
                     <div className="sub-engg-detail-section">
 
                       <h1>ENGINEER DETAILS</h1>
@@ -527,14 +529,15 @@ console.log("userCallBackDetail",userCallBackDetail)
                           {getEnggState ? (
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                              src={engDetails.enggPhoto}
+                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               alt="lift"
                             />
                           ) : (
                             <SkeltonLoader width="90px" height="90px" marginBottom='1.6rem' />
                           )}
                         </div>
-
+                       
+                        {/* engDetails.enggPhoto */}
                         <div style={{ width: "50%" }}>
                           {getEnggState ? (
                             <div className="elevator-detail-row">
@@ -702,14 +705,14 @@ console.log("userCallBackDetail",userCallBackDetail)
                   </div>
                 </div>
                 <div className="grid-form-container2">
-
+                    {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input placeholder={`${rn}`} />
+                    <input placeholder={`${rn}`} onChange={(e)=> setrn(e.target.value)} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder={`${rnum}`} />
+                    <input placeholder={`${rnum}`} onChange={(e)=> setrum(e.target.value)}/>
                   </div>
 
                   <div className="col75">
@@ -728,6 +731,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                       onChange={(e) => {
                         setMessage(e.target.value);
                       }}
+
                     ></textarea>
 
                   </div>

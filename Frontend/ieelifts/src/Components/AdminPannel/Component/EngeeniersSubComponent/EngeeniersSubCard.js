@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+import config from "../../../../config";
 
 const EngeeniersSubCard = (props) => {
 
@@ -20,109 +21,7 @@ const EngeeniersSubCard = (props) => {
   }, [])
 
 
-  // const data = [
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Jack",
-  //     ID: "1111",
-
-  //     RATING: "A",
-  //     ADDRESS: "123 Main St",
-  //     LEAVES: "2",
-  //     DOOR: "Blue",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Alice",
-  //     ID: "789012",
-  //     RATING: "B",
-  //     ADDRESS: "456 Elm St",
-  //     LEAVES: "3",
-  //     DOOR: "Red",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Bob",
-  //     ID: "345678",
-  //     RATING: "C",
-  //     ADDRESS: "789 Oak St",
-  //     LEAVES: "1",
-  //     DOOR: "Green",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Emily",
-  //     ID: "901234",
-  //     RATING: "A+",
-  //     ADDRESS: "567 Pine St",
-  //     LEAVES: "4",
-  //     DOOR: "Yellow",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Michael",
-  //     ID: "567890",
-  //     RATING: "B-",
-  //     ADDRESS: "890 Cedar St",
-  //     LEAVES: "2",
-  //     DOOR: "Purple",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Sarah",
-  //     ID: "234567",
-  //     RATING: "A-",
-  //     ADDRESS: "345 Walnut St",
-  //     LEAVES: "3",
-  //     DOOR: "Orange",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "David",
-  //     ID: "678901",
-  //     RATING: "C+",
-  //     ADDRESS: "901 Maple St",
-  //     LEAVES: "1",
-  //     DOOR: "Pink",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Emma",
-  //     ID: "345678",
-  //     RATING: "A-",
-  //     ADDRESS: "234 Oak St",
-  //     LEAVES: "2",
-  //     DOOR: "Brown",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "William",
-  //     ID: "890123",
-  //     RATING: "B",
-  //     ADDRESS: "678 Elm St",
-  //     LEAVES: "3",
-  //     DOOR: "Gray",
-  //   },
-  //   {
-  //     Spare: 15,
-  //     Cash: 150000,
-  //     NAME: "Olivia",
-  //     ID: "456789",
-  //     RATING: "A",
-  //     ADDRESS: "123 Birch St",
-  //     LEAVES: "1",
-  //     DOOR: "White",
-  //   },
-  // ];
+  
 
 
 
@@ -147,23 +46,24 @@ const EngeeniersSubCard = (props) => {
 
   }
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto) => {
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto);
+    handleEnggNameDoubleClick(EnggId,EnggName, EnggPhoto, AvailableCash);
   };
-
 
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {engData.engdetails && engData.engdetails.combinedData.map((e, index) => (
-          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+         
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto , e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-              <img src={e.EnggPhoto} alt={`Image for ID`} />
+              <img src={`${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`} />
+              
               </div>
               <div className="EngCardDetailsR">
                 <div class="table-container">
@@ -184,7 +84,7 @@ const EngeeniersSubCard = (props) => {
               </h5>
               <span className="HoriZontalLine"></span>
               <h5>
-                Cash:<span>{e.Cash}</span>
+                Cash:<span>{e.AvailableCash}</span>
               </h5>
             </div>
             <div className="EngCardMessage"></div>
