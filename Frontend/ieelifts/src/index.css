@@ -1908,7 +1908,7 @@ code {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 10rem;
+  grid-column-gap: 12rem;
   margin-top: 1rem;
 
 }
@@ -1922,13 +1922,14 @@ code {
 .client-form-left-container{
   display: grid;
   grid-template-rows: 1fr 1fr;
-  width: 80%;
+  width: 100%;
 }
 .client-form-right-container{
   width: 100%;
 }
 .client-form-details {
   padding: 3rem 2rem 0 2rem;
+
 }
 
 .client-salesman-details {
@@ -1937,7 +1938,6 @@ code {
 
 .client-membership-document {
   padding: 0 2rem;
-
 }
 
 .client-architect {
@@ -2559,6 +2559,7 @@ border: 1px solid #F8AC1D;
   font-size: 0.88rem;
   font-family: poppins;
   padding-bottom: 5px;
+  width: 18rem !important;
 }
 .file-upload>input{
   border: none;
