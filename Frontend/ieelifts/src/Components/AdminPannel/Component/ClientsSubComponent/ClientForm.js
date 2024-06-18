@@ -387,7 +387,7 @@ const ClientForm = () => {
                       reset={reset}
                     />
                   </div>
-                  <div>
+                  <div className="client-form-right-container">
                     <ClientSalesManDetails
                       onDataChange={handleClientSalesManDetails}
                       initialValues={allFormData.clientSalesManDetails}
