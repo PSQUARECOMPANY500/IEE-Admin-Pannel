@@ -1,43 +1,52 @@
 // <-----------------------------  Author:- Rahul Kumar --------------30/4/24--------------------->
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-const ClientDropdown = ({ options, name, label, onValueChange,  w , }) => {
+const ClientDropdown = ({ options, name, label, onValueChange,  w ,value }) => {
   //useState hooks
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedData, setSelectedData] = useState('');
-
+  const [selectedData, setSelectedData] = useState(value);
+ 
   const opt = options; //options for dropdown
-  function toCamelCase(str) {
-    // Check if the string is empty or null
-    if (!str) return str;
-
-    // Split the string into words
-    let words = str.split(/\s+/);
-
-    // Capitalize the first letter of each word except the first one and concatenate them
-    let camelCaseStr = words.map((word, index) => index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1)).join('');
-
-    return camelCaseStr;
-  }
 
   const handleDataClick = (data) => {
     setSelectedData(data);
-    let field = toCamelCase(label)
-    onValueChange(field, data)
+    onValueChange(name, data);
     setIsOpen(false);
   };
-
+useEffect(()=>{
+  setSelectedData(value)
+},[value])
   const handleIconClick = () => {
-    setIsOpen(prevState => !prevState);
-  }
+    setIsOpen((prevState) => !prevState);
+  };
   return (
-    <div className='client-dropdown'>
-      <input className='dropdown-input' placeholder={label} style={{ width: `${w}`,}} name={name} value={selectedData} readOnly onClick={handleIconClick} /> <span className='dropdown-icon-container'><img src='./dropdownicon.png' alt='dropdown icon' onClick={handleIconClick} /></span>
+    <div className="client-dropdown">
+      <input
+        className="dropdown-input"
+        placeholder={label}
+        name={name}
+        value={selectedData}
+        readOnly
+        onClick={handleIconClick}
+      />{" "}
+      <span className="dropdown-icon-container">
+        <img
+          src="./dropdownicon.png"
+          alt="dropdown icon"
+          onClick={handleIconClick}
+        />
+      </span>
       {isOpen && (
-        <div className='option-container'>
+        <div className="option-container">
           <ul>
             {opt.map((option, index) => (
-              <li className='option-li' key={index} onClick={() => handleDataClick(option)}>{option}</li>
+              <li
+                className="option-li"
+                key={index}
+                onClick={() => handleDataClick(option)}
+              >
+                {option}
+              </li>
             ))}
           </ul>
         </div>
@@ -47,4 +56,3 @@ const ClientDropdown = ({ options, name, label, onValueChange,  w , }) => {
 };
 
 export default ClientDropdown;
-// <-----------------------------  Author:- Rahul Kumar --------------30/4/24--------------------->

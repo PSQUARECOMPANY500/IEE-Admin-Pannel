@@ -296,6 +296,7 @@ const TopBar = (props) => {
 
                 <i className="search-btn ">
                   <RiSearchLine className="iconColor" />
+                  <RiSearchLine className="iconColor" />
                 </i>
               </div>
             </span>
@@ -347,34 +348,35 @@ const TopBar = (props) => {
         )}
 
 
-        <div style={{ display: "flex" }} ref={notificationClickRef}>
-          <span
-            className="top-icon-bell"
-            onClick={handleNotfication}
-            ref={notificationRef}
-          >
-            <HiOutlineBell className="iconColor" />{" "}
-          </span>
 
-          <div className="dot"></div>
+        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
+          <div style={{ display: "flex" }} ref={notificationClickRef}>
+            <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+              <HiOutlineBell className="iconColor" />{" "}
+            </span>
 
-          {location.pathname === "/Engeeniers" && (
-            <div className="add-Engg-button" onClick={openModalHandle}>
-              Add Engeenier
-            </div>
-          )}
+            <div className="dot"></div>
+
+            {location.pathname === "/Engeeniers" && (
+              <div className="add-Engg-button" onClick={openModalHandle}>
+                Add Engeenier
+              </div>
+            )}
 
           {showNotification && <NotificationSection />}
-        </div>
+        </div> )}
 
         {location.pathname === "/Clients" && (
           <div className="add-client-button" onClick={openClientModalHandle}>
             Add Client
           </div>
         )}
+
       </div>
     </div>
   );
+
+  
 };
 
 export default TopBar;

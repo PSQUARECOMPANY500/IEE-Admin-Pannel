@@ -17,59 +17,58 @@ const MembershipCard = ({
     DemoData.dataType === "Warrenty"
       ? "membership_card_title_warrenty"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_title_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_title_gold"
-      : "membership_card_title_silver";
+        ? "membership_card_title_platinum"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_title_gold"
+          : "membership_card_title_silver";
 
   const borderClass =
     DemoData.dataType === "Warrenty"
       ? "membership_card_warrenty"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_gold"
-      : "membership_card_silver";
+        ? "membership_card_platinum"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_gold"
+          : "membership_card_silver";
 
   const shadowClass =
     DemoData.dataType === "Warrenty"
       ? "membership_card_warrenty_shadow"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_platinum_shadow"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_gold_shadow"
-      : DemoData.dataType === "Silver"
-      ? "membership_card_silver_shadow"
-      : "total_revenue_outer_shadow";
+        ? "membership_card_platinum_shadow"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_gold_shadow"
+          : DemoData.dataType === "Silver"
+            ? "membership_card_silver_shadow"
+            : "total_revenue_outer_shadow";
 
   const cardColor =
     DemoData.dataType === "Warrenty"
       ? "membership_card_counts_warrenty"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_counts_platinum"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_counts_gold"
-      : "membership_card_counts_silver";
+        ? "membership_card_counts_platinum"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_counts_gold"
+          : "membership_card_counts_silver";
 
   const hoverShadow =
     DemoData.dataType === "Warrenty"
       ? "membership_card_warrenty_hover"
       : DemoData.dataType === "Platinum"
-      ? "membership_card_platinum_hover"
-      : DemoData.dataType === "Gold"
-      ? "membership_card_gold_hover"
-      : "membership_card_silver_hover";
+        ? "membership_card_platinum_hover"
+        : DemoData.dataType === "Gold"
+          ? "membership_card_gold_hover"
+          : "membership_card_silver_hover";
 
   return (
     <>
       <div
-        className={`membership_card   ${
-          order === 1 && setClick
+        className={`membership_card   ${order === 1 && setClick
             ? `membership_card_expand ${borderClass} `
             : setClick
-            ? `membership_card_expand_non ${hoverShadow}`
-            : `${shadowClass}`
-        } `}
+              ? `membership_card_expand_non ${hoverShadow}`
+              : `${shadowClass}`
+          } `}
         style={{
           order: order,
           padding: order !== 1 && setClick ? "3% 6% 6% 6%" : undefined,
@@ -95,11 +94,10 @@ const MembershipCard = ({
             />
             {order === 1 && setClick && (
               <div
-                className={`${
-                  order === 1 && setClick && clickCount !== 1
+                className={`${order === 1 && setClick && clickCount !== 1
                     ? "animation"
                     : "animationExpand"
-                } expansion_labels`}
+                  } expansion_labels`}
               >
                 <MembershipCardDetails
                   DemoData={DemoData}
@@ -159,9 +157,8 @@ const MembershipCard = ({
 
         {DemoData === "" && setClick && (
           <div
-            className={`total_revenue_outer ${
-              order === 1 && clickCount === 1 ? "animationExpand" : ""
-            }`}
+            className={`total_revenue_outer ${order === 1 && clickCount === 1 ? "animationExpand" : ""
+              }`}
           >
             <div className="total_revenue">
               <p className="total_revenue_heading">Total Revenue</p>

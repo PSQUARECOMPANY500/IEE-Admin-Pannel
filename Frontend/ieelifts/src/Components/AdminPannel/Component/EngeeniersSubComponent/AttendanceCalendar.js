@@ -37,6 +37,7 @@ const AttendanceCalendar = ({ setTodayDate }) => {
     setASelectedDate(newSelectedDate);
     const formattedDate = newSelectedDate.toISOString().split('T')[0];
     setTodayDate(formattedDate);
+    console.log(`Selected Date: ${formattedDate}`);
   };
 
 

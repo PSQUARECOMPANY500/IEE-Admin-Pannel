@@ -117,7 +117,7 @@ const MembershipExpired = ({ DemoData, count }) => {
             </div>
           ) : (
             <div
-              className={`membership_card_scrollable membership_card_scrollable_expired 
+              className={`${count !== undefined ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
           ${!count && "membership_card_scrollable_expanded"}
           `}
               ref={ref}

@@ -129,9 +129,9 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                   <span className="client-form-heading-line"></span>
                 </div>
                 <div className="client-form-next-floor">
-                  <ClientElevatorForm
-                    clientModalInformation={clientModalInformation}
-                  />
+                
+                  <ClientElevatorForm/>
+
                 </div>
               </div>
             )}
