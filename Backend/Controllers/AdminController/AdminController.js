@@ -42,6 +42,8 @@ const ElevatorFormSchema = require("../../Modals/ClientDetailModals/ClientFormSc
 
 const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema");
 
+const MembershipTable = require("../../Modals/MemebershipModal/MembershipDataSchema");
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -967,49 +969,7 @@ module.exports.getAssignServiceRequestByServiceRequestId = async (req, res) => {
   }
 };
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to handle create client memenership
-
-module.exports.createClientMemebership = async (req, res) => {
-  try {
-    const {
-      JobOrderNumber,
-      MemebershipType,
-      StartDate,
-      Duration,
-      Discount,
-      PricePaid,
-      isRenewed,
-      isExpired,
-      isDisable,
-    } = req.body;
-
-    const MemberShipDetails = await AssignMemeberships.create({
-      JobOrderNumber,
-      MemebershipType,
-      StartDate: new Date(StartDate),
-      Duration,
-      Discount,
-      PricePaid,
-      isRenewed,
-      isExpired,
-      isDisable,
-    });
-
-    res.status(201).json({
-      message: "memebership created successfully",
-      MemberShipDetails,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: "intenal server error",
-    });
-  }
-};
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to get the membership data
+//------------------------------------------------------------------------------------------------------------------------------------
 module.exports.getClientMemebership = async (req, res) => {
   try {
     const membershipData = await AssignMemeberships.find();
@@ -1182,6 +1142,8 @@ module.exports.loginServiceAdmin = async (req, res) => {
       return res.status(401).json({status:"error", message: "permission denied" });
     }   */
 
+    console.log(AdminId, Password, Role);
+
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
@@ -1212,7 +1174,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
 
 module.exports.createServiceAdmin = async (req, res) => {
   try {
-    const { AdminName, Password, Phone, Role, AdminId } = req.body;
+    const { AdminName, Password, Phone, Role, AdminId, email } = req.body;
 
     const newData = await serviceAdmin.create({
       AdminName,
@@ -1220,6 +1182,7 @@ module.exports.createServiceAdmin = async (req, res) => {
       Phone,
       Role,
       AdminId,
+      email,
     });
 
     return res.status(201).json({
@@ -1796,7 +1759,30 @@ module.exports.getClientDetail = async (req, res) => {
 
 // {armaan-dev}
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// function to handle create client memenership
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function to handle create client memenership  {Pankaj -Preet}
 module.exports.createClientMemebership = async (req, res) => {
   try {
     const {
@@ -1810,22 +1796,24 @@ module.exports.createClientMemebership = async (req, res) => {
       isExpired,
       isDisable,
     } = req.body;
+
     const startDate = new Date(StartDate);
     const durationInMonths = Number(Duration);
     const EndDate = new Date(
       startDate.setMonth(startDate.getMonth() + durationInMonths)
     );
-    const clientData = await clientDetailSchema.findOne({
-      JobOrderNumber,
-    });
+    const clientData = await clientDetailSchema.findOne({ JobOrderNumber });
+
     if (!clientData) {
       return res.status(404).json({
         error: "Client not found",
       });
     }
+
     // Update client membership type
     clientData.MembershipType = MembershipType;
     await clientData.save();
+
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
       MembershipType,
@@ -1838,6 +1826,7 @@ module.exports.createClientMemebership = async (req, res) => {
       isExpired,
       isDisable,
     });
+
     res.status(201).json({
       message: "memebership created successfully",
       MemberShipDetails,
@@ -1849,6 +1838,184 @@ module.exports.createClientMemebership = async (req, res) => {
     });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//================================================================================----------------------------------
+//================================================================================----------------------------------
+module.exports.createMemberShipOnTable = async (req, res) => {
+  try {
+    const {
+      JobOrderNumber,
+      MembershipType,
+      StartDate,
+      Duration,
+      Discount,
+      PricePaidisRenewed,
+      isExpired,
+      isDisable,
+      PaymentDetails,
+    } = req.body;
+
+    const startDate = new Date(StartDate);
+    const durationInMonths = Number(Duration);
+    const EndDate = new Date(
+      startDate.setMonth(startDate.getMonth() + durationInMonths)
+    );
+    const clientData = await clientDetailSchema.findOne({ JobOrderNumber });
+
+    if (!clientData) {
+      return res.status(404).json({
+        error: "Client not found",
+      });
+    }
+
+    const MemberShipDetails = await AssignMemeberships.create({
+      JobOrderNumber,
+      MembershipType,
+      StartDate: new Date(StartDate),
+      EndDate,
+      Duration,
+      Discount,
+      PricePaid,
+      isRenewed,
+      isExpired,
+      isDisable,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while Creating MemberShip",
+    });
+  }
+};
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+module.exports.GetMembershipPrice = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// controller to handle membership details (for example in client app shows what services and what price is in (all the data is hande by this api))
+
+module.exports.postMembershipData = async (req, res) => {
+  try {
+    const { MembershipPrice, MembershipName, ServiceOffer } = req.body;
+
+    const details = await MembershipTable.create({
+      MembershipPrice,
+      MembershipName,
+      ServiceOffer,
+    });
+
+    res.status(201).json({
+      details,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while Registering membership data",
+    });
+  }
+};
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//controller to handle give Membership discount
+ module.exports.offerMemberShipDiscount = async (req,res) => {
+  try {
+    const { Discount, JobOrderNumber } = req.body;
+
+    const AddDiscount = await clientDetailSchema.findOne({JobOrderNumber})
+
+    if(!AddDiscount){
+      return res.status(404).json({
+        error: "Client not found",
+      });
+    }
+
+    AddDiscount.MembershipDiscount = Discount;
+    await AddDiscount.save();
+
+    res.status(201).json({
+      message: "Membership Discount added successfully",
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while adding Membership Discount",
+    });
+  }
+ };
+
+
+//================================================================================----------------------------------
+//================================================================================----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // ---------------------------------------------------------------------
 // {armaan-dev}

@@ -236,4 +236,11 @@ router.get("/getClientServiceHistory/:JobOrderNumber", adminContoller.getClientS
 router.get("/getClientCallbackHistory/:JobOrderNumber", adminContoller.getClientCallbackByJON)
 
 
+router.post("/registerNewMembershipData", adminContoller.postMembershipData)
+
+
+
+router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
+
+
 

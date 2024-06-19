@@ -10,7 +10,7 @@ const memebership = new Schema(
     },
     MembershipType: {
       type: String,
-      enum: ["warrenty", "gold", "platinum", "silver"],
+      enum: ["Inwarrenty", "Gold", "Platinum", "Silver"],
       required: true,
     },
     StartDate: {
@@ -22,7 +22,7 @@ const memebership = new Schema(
     },
     Duration: {
       type: String,
-      required: true,
+      default:'12'
     },
     Discount: {
       type: String,
@@ -57,6 +57,16 @@ const memebership = new Schema(
       required: true,
       default: false,
     },
+    IsPaid: {
+      type: Boolean,
+      default: false,
+    },
+    OrderId:{
+      type: String,
+    },
+    MembershipInvoice: {
+      type: String
+    }
   },
   {
     timestamps: true,

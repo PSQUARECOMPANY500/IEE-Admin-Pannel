@@ -55,11 +55,8 @@ const AddEnggModal = () => {
   const [state, setState] = useState("");
   const [IFSCcode, setIFSCcode] = useState("");
   const [fetchIFSCCode, setfetchIFSCCode] = useState("");
-
   const [EngggId, setEnggId] = useState("");
   const [alternativeNumber, setAlternativeNumber] = useState("");
-  console.log(alternativeNumber);
-
   //attachmnents
   const [additionalCoursePhoto, SetAdditionalCoursePhoto] = useState("");
   const [qualificationPhoto, SetQualificationPhoto] = useState("");
@@ -118,8 +115,7 @@ const AddEnggModal = () => {
       value: "erectionengineer",
       label: "Erection Engineer",
     },
-    
-  ]
+  ];
 
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
@@ -158,12 +154,11 @@ const AddEnggModal = () => {
 
   const onStateChange = (value) => {
     setQualification(value.value);
-
   };
 
   const onRoleChange = (value) => {
-    setRole(value.value)
-  }
+    setRole(value.value);
+  };
 
   const handleUploadClick = (documentType) => {
     switch (documentType) {
@@ -198,41 +193,7 @@ const AddEnggModal = () => {
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
 
-    if (
-      !profilePhoto ||
-      !firstName ||
-      // !lastName ||
-      !mobileNumber ||
-      // !dateOfBirth ||
-      // !email ||
-      !address ||
-      !pinCode ||
-      // !city ||
-      !district ||
-      !state ||
-      !addharCardNumber ||
-      // !drivingLisience ||
-      // !pancards ||
-      !addharPhoto ||
-      // !pancardPhoto ||
-      // !drivingLicensePhoto ||
-      // !additionalCourse ||
-      // !qualificationPhoto ||
-      // !additionalCoursePhoto ||
-      // !qualification ||
-      // !accountHolderName ||
-      // !branchName ||
-      // !accountNumber ||
-      // !IFSCcode ||
-      // !jobDuration ||
-      // !companyName ||
-      // !jobTitle ||
-      // !managerName
-      !EngggId ||
-      !alternativeNumber
-    ) {
-      toast.error("Plese fill all the fields");
-    }
+
 
     if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
       setIsAddharCardNumberEmpty(true);
@@ -240,27 +201,6 @@ const AddEnggModal = () => {
         .getElementById("addharCardNumberInput")
         .classList.add("inputWithAttachment2");
     }
-
-    // if (!isPancardsEmpty && pancards.length <= 0) {
-    //   setIsPancardsEmpty(true);
-    //   document
-    //     .getElementById("pancardsInput")
-    //     .classList.add("inputWithAttachment2");
-    // }
-
-    // if (!isDrivingLisienceEmpty && drivingLisience.length <= 0) {
-    //   setIsDrivingLisienceEmpty(true);
-    //   document
-    //     .getElementById("drivingLisienceInput")
-    //     .classList.add("inputWithAttachment2");
-    // }
-
-    // if (!isAdditionalCourseEmpty && additionalCourse.length <= 0) {
-    //   setIsAdditionalCourseEmpty(true);
-    //   document
-    //     .getElementById("additionalCourseData")
-    //     .classList.add("inputWithAttachment2");
-    // }
 
     // conditioning for work experience border set up starts
     if (showWorkExperience && jobDuration.length <= 0) {
@@ -294,34 +234,12 @@ const AddEnggModal = () => {
     const requiredFields = [
       { value: profilePhoto, id: "profilePhoto" },
       { value: firstName, id: "firstNameInput" },
-      // { value: lastName, id: "lastNameInput" },
+
       { value: mobileNumber, id: "mobileNumberInput" },
-      // { value: dateOfBirth, id: "dateOfBirthInput" },
-      // { value: email, id: "emailInput" },
+
       { value: address, id: "addressInput" },
       { value: pinCode, id: "pinCodeInput" },
-      // { value: city, id: "cityInput" },
-      // { value: district, id: "districtInput" },
-      // { value: state, id: "stateInput" },
-      // { value: addharCardNumber, id: "addharCardNumberInput" },
-      // { value: drivingLisience, id: "drivingLisienceInput" },
-      // { value: pancards, id: "pancardsInput" },
-      // { value: addharPhoto, id: "addharPhotoInput" },
-      // { value: pancardPhoto, id: "pancardPhotoInput" },
-      // { value: drivingLicensePhoto, id: "drivingLicensePhotoInput" },
-      // { value: additionalCourse, id: "additionalCourseInput" },
-      // { value: qualificationPhoto, id: "qualificationPhotoInput" },
-      // { value: additionalCoursePhoto, id: "additionalCoursePhotoInput" },
-      // { value: qualification, id: "qualificationInput" },
-      // { value: accountHolderName, id: "accountHolderNameInput" },
-      // { value: branchName, id: "branchNameInput" },
-      // { value: accountNumber, id: "accountNumberInput" },
-      // { value: IFSCcode, id: "IFSCcodeInput" },
-      // { value: jobDuration, id: "jobDurationInput" },
-      // { value: companyName, id: "companyNameInput" },
-      // { value: jobTitle, id: "jobTitleInput" },
-      // { value: managerName, id: "managerNameInput" },
-      // { value: managerNumber, id: "managerNumberInput" },
+
       { value: EngggId, id: "EnggIdInput" },
       { value: alternativeNumber, id: "AlternativeMobileNumber" },
     ];
@@ -346,6 +264,23 @@ const AddEnggModal = () => {
 
     checkRequiredFields();
 
+    if (
+      // !profilePhoto ||
+      !firstName ||
+      !mobileNumber ||
+      !address ||
+      !pinCode ||
+      !district ||
+      !state ||
+      !addharCardNumber ||
+      !addharPhoto ||
+      !EngggId ||
+      !alternativeNumber
+    ) {
+      toast.error("Plese fill all the fields");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("profilePhoto", profilePhoto);
     formData.append("firstName", firstName);
@@ -353,7 +288,7 @@ const AddEnggModal = () => {
     formData.append("mobileNumber", mobileNumber);
     formData.append("dateOfBirth", dateOfBirth);
     formData.append("email", email);
-    formData.append("role", role);
+    formData.append("EnggRole", role);
     formData.append("address", address);
     formData.append("pinCode", pinCode);
     formData.append("city", city);
@@ -384,6 +319,10 @@ const AddEnggModal = () => {
 
     const response = await RegistrationEnggDetails(formData);
     console.log("response", response);
+
+    if(response.status === 200){
+      toast.error(response.data.message);
+    }
 
     if (response?.status === 201) {
       setProfilePhoto("");
@@ -622,15 +561,11 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
-                           
                             name="fields[]"
-                            onChange={(e) =>
-                              setRole(e.target.files[0])
-                            }
+                            onChange={(e) => setRole(e.target.files[0])}
                             style={{ display: "none" }}
                             ref={fileInputRef3} // Attach fileInputRef to the input element
                           />
-                         
                         </div>
                         {/* <p>{qualificationPhoto.name}</p> */}
                       </div>
@@ -868,97 +803,6 @@ const AddEnggModal = () => {
               </div>
 
               {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
-
-              {/* <div className="ExtraCiricularSection">
-                <div className="EnggDetailHeading">Educational details</div>
-                <div className="ExtraCiricularSectionInputFields">
-                  <div className="mainPersonalDetialSection">
-                    <div className="PersonalDetailInput">
-                      <div className="addFileName">
-                        <div
-                          className="inputWithAttachment"
-                          ref={(el) => (divRef.current[4] = el)}
-                          onClick={() => handleClick(4)}
-                          style={{ outline: "none" }}
-                        >
-                          <AddEnggAttachment
-                            width="100%"
-                            placeholder="Select Qualification"
-                            Details={QualificationData}
-                            padding="4px"
-                            onStateChange={onStateChange}
-                          />
-                          <input
-                            type="file"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetQualificationPhoto(e.target.files[0])
-                            }
-                            style={{ display: "none" }}
-                            ref={fileInputRef3} // Attach fileInputRef to the input element
-                          />
-                          <SlLink
-                            style={{ marginRight: "22px", cursor: "pointer" }}
-                            onClick={() =>
-                              handleUploadClick("QualificationPhoto")
-                            }
-                          />
-                        </div>
-                        <p>{qualificationPhoto.name}</p>
-                      </div>
-
-                      <div className="addFileName">
-                        <div
-                          className={
-                            isAdditionalCourseEmpty
-                              ? "inputWithAttachment2"
-                              : "inputWithAttachment"
-                          }
-                          ref={(el) => (divRef.current[4] = el)}
-                          onClick={() => handleClick(4)}
-                          style={{ outline: "none" }}
-                        >
-                          <input
-                            id="additionalCourseData"
-                            type="text"
-                            placeholder="Additional Course"
-                            required
-                            style={{ outline: "none" }}
-                            value={additionalCourse}
-                            onChange={(e) => {
-                              setAdditionalCourse(e.target.value);
-                              if (e.target.value.trim() !== "") {
-                                setIsAdditionalCourseEmpty(false);
-                                document
-                                  .getElementById("additionalCourseData")
-                                  .classList.remove("errorBorder");
-                              } else {
-                                setIsAdditionalCourseEmpty(true);
-                              }
-                            }}
-                          />
-                          <input
-                            type="file"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetAdditionalCoursePhoto(e.target.files[0])
-                            }
-                            style={{ display: "none" }}
-                            ref={fileInputRef4} // Attach fileInputRef to the input element\
-                          />
-                          <SlLink
-                            style={{ marginRight: "22px", cursor: "pointer" }}
-                            onClick={() =>
-                              handleUploadClick("AdditionalCoursePhoto")
-                            }
-                          />
-                        </div>
-                        <p>{additionalCoursePhoto.name}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
             </div>
             {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
 

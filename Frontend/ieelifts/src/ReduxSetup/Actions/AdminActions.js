@@ -105,9 +105,8 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
-
-    console.log(response.data);
     return response;
+
   } catch (error) {
     console.log("error while fetching data", error);
   }
