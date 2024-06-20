@@ -834,7 +834,7 @@ export const ReportCrouserHandlerReducer = (
   }
 };
 
-// --------------------- Reducer of getClientModalData -------------------------
+// ------------------------------------------ Reducer of getClientModalData ------------------------------------------------------------------------------------------------------
 
 const ClientModalData = {
   ClientModalInformation: null,
