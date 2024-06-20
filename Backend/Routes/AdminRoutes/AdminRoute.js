@@ -7,6 +7,9 @@ const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller
 const ClientController = require("../../Controllers/ClientController/ClientController");
 
 const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
+
+const { token } = require("../../Controllers/AdminController/AdminController")
+
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -241,6 +244,14 @@ router.post("/registerNewMembershipData", adminContoller.postMembershipData)
 
 
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
+
+
+router.post('/registerFirebaseToken', adminContoller.firebaseTokenForPushNotificationPurpose);
+
+
+
+router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
+
 
 
 
