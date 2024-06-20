@@ -28,7 +28,6 @@ const EngeeniersSubCard = (props) => {
 
 
   const handleSingleClick = (index) => {
-
     if (!isDoubleClick) {
       setIsDoubleClick(false);
       clearTimeout(singleClickTimeout);
@@ -43,8 +42,6 @@ const EngeeniersSubCard = (props) => {
 
     setSingleClickTimeout(timeout);
     setIsActive(index);
-
-
   }
 
   const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
@@ -77,8 +74,6 @@ const EngeeniersSubCard = (props) => {
                   <div class="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
                   <div class="table-item">ID</div>
                   <div class="table-item">{e.EnggId}</div>
-                  <div class="table-item">RATING</div>
-                  <div class="table-item">{e.averageRating}</div>
                   <div class="table-item">LEAVES</div>
                   <div class="table-item">0</div>
                 </div>

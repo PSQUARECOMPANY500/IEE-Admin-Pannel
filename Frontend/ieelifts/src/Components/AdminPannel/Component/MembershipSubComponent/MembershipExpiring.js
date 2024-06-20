@@ -12,6 +12,7 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const MembershipExpiring = ({ DemoData, count }) => {
+
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -96,6 +97,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
           : DemoData.dataType === "Silver"
             ? "membership_card_scrollable_silver"
             : "total_revenue_outer_border";
+
   return (
     <>
       {ref && (
@@ -122,7 +124,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
             </>
           ) : (
             <div
-              className={`membership_card_scrollable ${!count && "membership_card_scrollable_expanded"
+              className={`${count !== undefined ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable "
                 } ${scrollbar}`}
               ref={ref}
             >

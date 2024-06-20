@@ -1,16 +1,27 @@
-// <-----------------------------  Author:- Armaan Singh ----------------------------------->
 import React, { useState, useRef, useEffect } from "react";
 
 const OfferButton = ({ isExpired, dataType }) => {
   const [showHistory, setShowHistory] = useState(false);
+  const [clickedButtonIndex, setClickedButtonIndex] = useState(null);
   const historyRef = useRef(null);
-
-  const toggleHistory = () => {
-    setShowHistory(!showHistory);
-  };
 
   const handleClickOutside = (event) => {
     if (historyRef.current && !historyRef.current.contains(event.target)) {
+      setShowHistory(false);
+    }
+  };
+
+  const handleButtonClick = (index) => {
+    setClickedButtonIndex(index);
+    setShowHistory(true); 
+  };
+
+  const handleMouseEnter = () => {
+    setShowHistory(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (clickedButtonIndex === null) {
       setShowHistory(false);
     }
   };
@@ -41,55 +52,45 @@ const OfferButton = ({ isExpired, dataType }) => {
       : "";
 
   return (
-    <div className="offerButtonContainer">
+    <div className="offerButtonContainer" ref={historyRef}>
       <div>
-        {
-          <div
-            className="offerButtons"
-            style={showHistory ? { opacity: 1 } : { opacity: 0 }}
-          >
+        <div
+          className={`offerButtons ${showHistory ? 'offerButtons-show' : 'offerButtons-hide'}`}
+        >
+          {["15%", "25%", "35%", "other"].map((text, index) => (
             <button
+              id="offerButtonWarppers"
+              key={index}
               className={`offerButton offer ${buttonClass} ${
                 isExpired && "offerButtonExpired"
               }`}
+              style={
+                clickedButtonIndex === index
+                  ? { backgroundColor: "#0f351d", color: "white" }
+                  : {}
+              }
+              onClick={() => handleButtonClick(index)}
             >
-              15%
+              {text}
             </button>
-            <button
-              className={`offerButton offer ${buttonClass} ${
-                isExpired && "offerButtonExpired"
-              }`}
-            >
-              25%
-            </button>
-            <button
-              className={`offerButton offer ${buttonClass} ${
-                isExpired && "offerButtonExpired"
-              }`}
-            >
-              35%
-            </button>
-            <button
-              className={`offerButton offer ${buttonClass} ${
-                isExpired && "offerButtonExpired"
-              }`}
-            >
-              other
-            </button>
-          </div>
-        }
-        <div onClick={toggleHistory} ref={historyRef}>
+          ))}
+        </div>
+        <div>
           <button
-            className={`offerButton offerButtonMain ${buttonClass}  offerButtonMainGold${
+            id="offerDiscountBtn"
+            className={`offerButton offerButtonMain ${buttonClass} ${
               isExpired && "offerMainExpired offerButtonMainExpired"
             } ${
               showHistory &&
               `${
                 isExpired
                   ? "offerButtonMainSelectedExpired"
-                  : `offerButtonMainSelected ${selectedButtonClass} `
+                  : `offerButtonMainSelected ${selectedButtonClass}`
               }`
             }`}
+            style={clickedButtonIndex !== null ? { backgroundColor: "#0f351d", color: "white" } : {}}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             Offer Discount
           </button>

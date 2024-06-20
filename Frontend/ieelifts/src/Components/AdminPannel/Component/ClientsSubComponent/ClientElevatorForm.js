@@ -33,7 +33,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
   useEffect(() => {}, [clientFormData]);
 
   console.log("carrr", clientModalInformation);
-  console.log("preet", clientModalInformation.dimensions.pitPoint.doorHeight);
+  console.log("preet", clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)
 
   return (
     <div className="client-elevatorform-main">
@@ -122,7 +122,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     </div>
                     <div className="dimension-btn-wrapper">
                       <label className="dimension-btn"
-                       onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pitImage)}>
+                       onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pit)}>
                       Pit
                      
                         
@@ -130,7 +130,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                       </label>
                       <div className="dimension-upload-btn">
                         <label className="dimension-btn"
-                        onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages[0])}>
+                        onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTop)}>
                           <span>Bottom to Top</span>
                           {/* <input className="hidden-input" type="file" /> */}
                         </label>
@@ -145,23 +145,26 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     </div>
 
                     <div className="dimension-name-wrapper">
-                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pitImage)}>
+                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pit)}>
                         {
+                          clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pit ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.pitImage
+                            ?.sitePhotos?.pit?.split('-')[0] : " "
                         }
                       </p>
-                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTopImages[0])}>
+                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTop)}>
                         {
+                          clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTop ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.bottomToTopImages[0]
+                            ?.sitePhotos?.bottomToTop?.split('-')[0] : ''
                         }
                       </p>
-                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages)}>
+                      <p onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFront)}>
                         {
+                         clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFront ? 
                           clientModalInformation?.dimensions?.pitPoint
-                            ?.sitePhotos?.basementFrontImages
-                        }
+                            ?.sitePhotos?.basementFront?.split('-')[0] : ''
+                        } 
                       </p>
                      
                     </div>
@@ -251,7 +254,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     </div>
                     <div className="dimension-btn-wrapper">
                       <label className="dimension-btn"
-                      onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.overheadImages)}>
+                      onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)}>
                         Pit
                         {/* <input className="hidden-input" type="file" /> */}
                       </label>
@@ -264,7 +267,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                       </div>
                       <div className="dimension-upload-btn">
                         <label className="dimension-btn"
-                        onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.floorFront)}>
+                        onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.topFloorFront)}>
                           <span>Basement Front</span>
                           {/* <input className="hidden-input" type="file" /> */}
                         </label>
@@ -272,22 +275,25 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                     </div>
 
                     <div className="dimension-name-wrapper">
-                      <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.overheadImages)}>
+                      <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? 
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.overheadImages
+                            ?.sitePhotos?.Overhead?.split("-")[0]  : ''
                         }
                       </p>
                       <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages[0])}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages[0] ?
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.bottomToTopImages[0]
+                            ?.sitePhotos?.bottomToTopImages[0]?.split("-")[0] : ''
                         }
                       </p>
-                      <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.floorFront)}>
+                      <p onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.topFloorFront)}>
                         {
+                          clientModalInformation?.dimensions?.topPoint?.sitePhotos?.topFloorFront ? 
                           clientModalInformation?.dimensions?.topPoint
-                            ?.sitePhotos?.floorFront
+                            ?.sitePhotos?.topFloorFront?.split("-")[0] : ''
                         }
                       </p>
                     </div>
@@ -384,7 +390,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
 
                         <div className="dimension-name-wrapper">
                           <p onClick={() => openIt(item.sitePhotos)}>
-                            {item.sitePhotos}</p>
+                            {item.sitePhotos ? item.sitePhotos?.split('-')[0] : ''}</p>
                         </div>
                       </div>
                     </div>

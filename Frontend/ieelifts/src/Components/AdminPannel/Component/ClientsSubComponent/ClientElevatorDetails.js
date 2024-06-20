@@ -12,6 +12,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
   const dispatch = useDispatch();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
+  
   const [selectedDegree, setSelectedDegree] = useState("90dL");
 
   const clientModalInformation = useSelector((state) => {
@@ -26,13 +27,15 @@ const ClientElevatorDetails = ({ selectedClient }) => {
       return null;
     }
   });
-  // console.log("clientModalInformation***********************************************************",clientModalInformation.dimensions.floors)
-  // console.log("Rajjjjjjjjjj",clientModalInformation.elevatorDetails.type)
+  console.log("clientModalInformation***********************************************************",clientModalInformation)
+  // console.log("Rajjjjjjjjjj",clientModalInformation.elevatorDetails.levelOpening)
 
   useEffect(() => {
     // dispatch(getClientModalData(selectedClient));   //to do in future -------------------
-    dispatch(getClientModalData("2024021"));
+    dispatch(getClientModalData("2024022"));
+    
   }, []);
+  
 
   const array = [
     [true, false],
@@ -105,11 +108,12 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                     Flevel={Flevel}
                     degree={{}}
                     array={array}
-                    handleClick={() => {}}
+                   
                     isClient={true}
                     clientModalInformation={clientModalInformation}
                   />
                 </div>
+                
               </div>
             ) : (
               <div>
@@ -125,9 +129,9 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                   <span className="client-form-heading-line"></span>
                 </div>
                 <div className="client-form-next-floor">
-                  <ClientElevatorForm
-                    clientModalInformation={clientModalInformation}
-                  />
+                
+                  <ClientElevatorForm/>
+
                 </div>
               </div>
             )}

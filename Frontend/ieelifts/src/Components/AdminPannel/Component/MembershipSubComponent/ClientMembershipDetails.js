@@ -63,7 +63,7 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
                   Mybutton={buttonSelect}
                   setButtonSelect={setButtonSelect}
                 />
-                <div>
+                <div className="notificationmembershipwrapper">
                   <NotificationMembership
                     isExpired={isExpired}
                     dataType={dataType}

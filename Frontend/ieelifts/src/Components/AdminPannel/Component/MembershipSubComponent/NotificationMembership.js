@@ -40,6 +40,7 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
       : "sendButtonWarrenty";
 
   return (
+    
     <div className="NotificationContainer">
       <div ref={dropdownRef} className="inputNotification">
         <input

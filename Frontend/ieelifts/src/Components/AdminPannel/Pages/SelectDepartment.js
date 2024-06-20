@@ -9,7 +9,7 @@ import crm from "../../../Assets/Images/customer-relationship-management@2x.png"
 const SelectDepartment = () => {
   const [departmentValue, setDepartmentValue] = useState("");
   const [isSelection, setIsSelection] = useState(false);
-const naviagate = useNavigate();
+  const naviagate = useNavigate();
   const departments = [
     {
       id: 1,
@@ -25,16 +25,16 @@ const naviagate = useNavigate();
     },
     {
       id: 3,
-      name: "Sales Admin",
-      value: "SalesAdmin",
+      name: "Erection Admin",
+      value: "ErectionAdmin",
       image: crm,
     },
   ];
 
   const handleDepartmentName = () => {
-    naviagate('/login',{
-        state: { value: departmentValue },
-      })
+    naviagate('/login', {
+      state: { value: departmentValue },
+    })
   };
   const handleToGetName = (value, index) => {
     setDepartmentValue(value);
@@ -47,9 +47,8 @@ const naviagate = useNavigate();
         {departments.map((department, index) => {
           return (
             <div
-              className={`department-name-div ${
-                isSelection === index ? "selected-border" : ""
-              }`}
+              className={`department-name-div ${isSelection === index ? "selected-border" : ""
+                }`}
               onClick={() => handleToGetName(department.value, index)}
             >
               <div className="department-icon">
