@@ -846,7 +846,9 @@ display: none;
 .iconColor {
   color: #343434;
 }
-
+.excelIcon {
+ 
+}
 .search-box {
   display: flex;
 }

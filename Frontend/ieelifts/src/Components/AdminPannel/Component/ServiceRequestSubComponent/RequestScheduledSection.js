@@ -15,23 +15,20 @@ import {
   getFilterLocation,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
-
+import { CSVLink, CSVDownload } from "react-csv";
 const RequestScheduledSection = ({ setRenderTicket }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   const dropdownClickRef = useRef();
   // modal manage states
-
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
-
-  console.log(reqCheckboxStates)
   const [filterConditions, setfilterConditions] = useState();
-
-
+  const [icon, setIcon] = useState(true); 
+  const [data, setData]= useState([]);
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
@@ -42,7 +39,6 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
     (state) =>
       state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
   );
-
   const filterDropdowns = [
     { name: "membership", options: ["Warrenty", "Platinum", "Gold", "Silver"] },
     { name: "location", options: locations },
@@ -53,8 +49,6 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   };
 
   const closeModal = () => setShowTicketModal(false);
-
-
 
   const openModal = (modalNumber) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -81,7 +75,6 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
           handler();
         }
       };
-
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
@@ -98,7 +91,13 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
   //aayush code end for filter
-
+  const getCondition = (data) =>{
+    setIcon(data)
+  }
+  const getData = (data)=>{
+    setData(data)
+  }
+  console.log(data)
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -125,8 +124,8 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               Scheduled
             </button>
           </div>
-
-          <div className="icon-align-div">
+          {
+            icon?(<div className="icon-align-div">
             <div className="right-side-icons">
 
               {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<span className="top-icon">
@@ -141,16 +140,11 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                     }}
                     value={searchText}
                   />
-
-                  <i className="search-btn "
-
-
-                  >
-
+                  <i className="search-btn">
                     <RiSearchLine className="iconColor" />
                   </i>
                 </div>
-              </span>) : (<img src={pdfIcon}/>)) : (<span className="top-icon">
+              </span>) : (<img src={pdfIcon}/>)):(<span className="top-icon">
                 <div className="search-box">
                   <input
                     type="text"
@@ -168,16 +162,13 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                   //   const data = filtersearch(searchText, allCD);
                   //   setFilteredCD(data);
                   // }}
-
                   >
-
                     <RiSearchLine className="iconColor" />
                   </i>
                 </div>
               </span>)}
 
             </div>
-
             {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
               <p className="filter-icon"
                 onClick={handleFilter}
@@ -209,10 +200,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                 </div>
               )}
             </div>)}
-
-
             {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? ((<div
-
               className="sub-components-ticket-filter"
               onClick={() => openModal(0)}
             >
@@ -230,22 +218,22 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                 {""}
               </p>
             </div>)}
-
-
             {showTicketModal &&
               (
                 <AddTicketOnCallRequests
-
                   closeModal={closeModal}
                   showTicketModal={showTicketModal}
                   setRenderTicket={setRenderTicket}
                   requestSection={true}
                 />
-
               )
 
             }
-          </div>
+          </div>):(<CSVLink data={data} ><img className="excelIcon"
+                src={execelIcon} 
+                style={{ boxShadow: "0px 3px 6px #00000029" }} 
+              /></CSVLink>)
+          }
         </div>
 
         <>
@@ -258,6 +246,8 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               filterConditions={filterConditions}
               reqCheckboxStates={reqCheckboxStates}
               setReqCheckboxStates={setReqCheckboxStates}
+              getCondition={getCondition}
+              getData={getData}
             />
           ) : (
             <ServiceScheduledTable searchText={searchText} />

@@ -11,10 +11,6 @@ import config from "../../../../config";
 
 const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHover }) => {
   const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
-
-  console.log("traj", item)
-
-
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState([false]);
@@ -24,8 +20,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
   const handleMessageBoxClose = () => {
     setShowMessage(false);
   };
-
-
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
       item.filteredServiceAssignmentsWithClientName.forEach((itemData) => {
@@ -38,9 +32,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
     }
   };
   assignArray(item);
-
-
-
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
@@ -116,9 +107,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
           )}
         </div>
       </div>
-
-
-
       <div className="main-head-div">
         {renderArray.length == 0 ? (
           <div className="skill-box">

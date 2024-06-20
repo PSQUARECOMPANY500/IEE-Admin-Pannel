@@ -19,7 +19,7 @@ const LeftElevatorDetails = ({
     
   });
 
-  console.log( "groundOrStilt",groundOrStilt)
+  // console.log( "groundOrStilt",groundOrStilt)
 
 
   // console.log("preetttttttttt",clientModalInformation.elevatorDetails.stops.Basement)

@@ -27,7 +27,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
       return null;
     }
   });
-  console.log("clientModalInformation***********************************************************",clientModalInformation)
+  // console.log("clientModalInformation***********************************************************",clientModalInformation)
   // console.log("Rajjjjjjjjjj",clientModalInformation.elevatorDetails.levelOpening)
 
   useEffect(() => {

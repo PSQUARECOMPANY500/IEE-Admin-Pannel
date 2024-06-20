@@ -1,17 +1,18 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useState, useLayoutEffect } from "react";
-import { HiChevronUpDown } from "react-icons/hi2";
+import React, { useState, useLayoutEffect,useEffect } from "react";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
 import ClientModal from "./ClientModal";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const ClientTableView = ({ clientData }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
-  const [selectedClient, setSelectedClient] = useState(null)
-
-
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [csvData,setCsvData] = useState([]);
+  const [selectedClientArray,setSelectedClientArray]= useState([]);
+ 
   useLayoutEffect(() => {
     if (clientData) {
       setCheckboxStates(Array(clientData.length).fill(false));
@@ -22,6 +23,11 @@ const ClientTableView = ({ clientData }) => {
     if (clientData) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
+       if(!allChecked){
+        setSelectedClientArray(clientData);
+       }else{
+        setSelectedClientArray([]);
+       }
     }
   };
 
@@ -31,23 +37,32 @@ const ClientTableView = ({ clientData }) => {
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
+   let ans = selectedClientArray.includes(clientData[index]);
+   if(ans){
+    const removeIndex = selectedClientArray.findIndex( item => item === clientData[index] );
+     selectedClientArray.splice(removeIndex,1);
+   }else{
+    setSelectedClientArray((prev)=>(
+      [ ...prev,
+        clientData[index]
+     ]
+    ))
+   } 
   };
 
-  const HandleCardClick = (data) => {
-    setSelectedClient(data)
-    setShowClientModal(true)
-
-
+  let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name)));
+  console.log(uniqueData)
+ const HandleCardClick = (data) => {
+    // setShowClientModal(true)
   }
-
-
    //Function to handle closing modal
    const handleCloseModal = () => {
     setShowClientModal(false)
   }
 
-
-
+const handleExcelIconClick = () =>{
+  setCsvData(uniqueData)
+}
   return (
     <div className="table_view">
       <div className="sub_table_view">
@@ -88,7 +103,8 @@ const ClientTableView = ({ clientData }) => {
 
             {checkboxStates.includes(true)&& <div className="doc-container">
             <img src={pdfIcon}/>
-            <img src={execelIcon}/>
+            <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
+            {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
               </div>}
 
             {/* TABLE BODY STARTS */}
