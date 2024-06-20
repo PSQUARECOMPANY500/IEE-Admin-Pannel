@@ -264,8 +264,6 @@ import config from "../../../../config";
      setengDate(formattedDate);
  
      dispatch(getBookedSlotsforEnggsAction(formattedDate));
- 
- 
    }
  
  

@@ -12,8 +12,9 @@ const TextInput = ({
   click,
   onBlur,
   onFocus,
+  id,
+  emailError
   
-
 }) => {
   const handleCalendarToggle = (e) => {
     if (handleCalendarOpen) {
@@ -21,18 +22,14 @@ const TextInput = ({
     }
   };
 
-  
-
-
-
   return (
     <div className="input-container" style={{ width: `${w}`,}} >
       <input
-        className="input-field"
+        className={`input-field ${type==="email" && emailError}?"":"email-error"`}
         type={type}
         name={name}
-        id={name}
-        autoComplete={name}
+        id={id}
+        autoComplete={id}
         onChange={onChange}
         readOnly={read}
         value={value}
@@ -40,10 +37,8 @@ const TextInput = ({
         onFocus={onFocus}
         onBlur={onBlur}
         onClick={handleCalendarOpen}
-      
       />
-    
-      <label htmlFor={name} className={'input-label'}
+      <label htmlFor={id} className={'input-label'}
         style={{
           top:  click ? "-20px":'0px',
           color:  click ? "#1D1D1D":'#1D1D1D',
@@ -58,8 +53,7 @@ const TextInput = ({
       </label>
       <span className="input-highlight" style={{width:click?'100%':'0%'}}></span>
       <span className='input-exist'></span>
-      <p style={{ fontSize:'1rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem', }}>{value}</p>
-      
+      <p style={{ fontSize:'0.9rem',position:'absolute',left:click&&'0%',right:!click&&'0%',top:'0.6rem', color:"#1D1D1D", fontFamily:"Poppins" ,color: type === 'email' && emailError ? 'red' : '#1D1D1D',}}>{value}</p>
     </div>
   );
 };

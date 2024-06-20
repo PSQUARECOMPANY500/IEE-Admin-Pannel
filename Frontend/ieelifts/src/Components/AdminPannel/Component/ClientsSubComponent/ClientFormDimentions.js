@@ -1,319 +1,340 @@
 // <-----------------------------  Author:- Rahul Kumar ----------------------------------->
-import React, { useState, useEffect, useMemo } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
-import TextInput from "./ClientsReusableComponent/TextInput";
-const ClientFormDimentions = ({ valforDimention, Flevel }) => {
-  const [len, setLen] = useState();
-  const [Basementlen, setBasementLen] = useState();
-  const [visible,setVisible]=useState(false)
-
-  useMemo(() => {
-    let count = 0;
-    let bCount = 0;
-    Flevel.forEach((data) => {
-      if (data.includes("level")) {
-        count++;
-      }
-      if (
-        data.includes("Ground") ||
-        data.includes("B1") ||
-        data.includes("B2") ||
-        data.includes("Stilt")
-      ) {
-        bCount++;
-      }
-    });
-    setLen(count);
-    setBasementLen(bCount);
-  }, [Flevel]);
-  const elementsArray = Array.from({ length: len - 1 }, (_, index) => index);
-
-  const BasementElementsArray = Array.from(
-    { length: Basementlen },
-    (_, index) => index
+import React, { useState, useEffect, useMemo,useLayoutEffect } from "react";
+import DimentionPitFloor from "./DimentionsPitFloor";
+import DimentionFloorTop from "./DimentionFloorTop";
+import { DimentionMidFloor } from "./DimentionMidFloor";
+import { useSelector } from "react-redux";
+const ClientFormDimentions = ({
+  Flevel,
+  validate,
+  forSecondClick,
+  onDataChange,
+  visible,
+  changeInData,
+}) => {
+  //states
+  const [levelData, setLevelData] = useState([]);
+  const [click, setClick] = useState({});
+  const clientData = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.ClientFormDataFromApiReducer?.ClientFormData
   );
-
-  const [clientFormData, setClientFormData] = useState({
+  const [basementWithPit, setBasementWithPit] = useState({
     shaftWidth: "",
     shaftDepth: "",
+    doorWidth: "",
+    doorHeight: "",
+    floorToFloorHeight: "",
+    pitDepth: "",
+    fl: "",
+    fr: "",
   });
-  const [click, setClick] = useState({});
-  const hadleInputChnage = (e) => {
-    const { name, value } = e.target;
-    setClientFormData({ ...clientFormData, [name]: value });
+  const [floorFrontData, setFloorFrontData] = useState({
+    shaftWidth: "",
+    shaftDepth: "",
+    doorWidth: "",
+    doorHeight: "",
+    overhead: "",
+  });
+  const [fileNames, setFileNames] = useState({});
+  //----------------------------------------------------------------
+  useEffect(() => {
+    const initialFormData = Flevel.map(() => ({
+      shaftWidth: "",
+      shaftDepth: "",
+      doorWidth: "",
+      doorHeight: "",
+      floorToFloorHeight: "",
+      fl: "",
+      fr: "",
+    }));
+    setLevelData(initialFormData);
+  }, [Flevel]);
+
+  const [dimentionsData, setDimentionsData] = useState({
+    pitPoint: { ...basementWithPit },
+    topPoint: { ...floorFrontData },
+    floors: { ...levelData },
+  });
+
+  useEffect(() => {
+    setDimentionsData({
+      pitPoint: { ...basementWithPit },
+      floors: { ...levelData },
+      topPoint: { ...floorFrontData },
+    });
+  }, [basementWithPit, floorFrontData, levelData]);
+
+  const handleFileChangeInPit = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setBasementWithPit((prevState) => ({
+        ...prevState,
+        sitePhotos: {
+          ...prevState.sitePhotos,
+          [fieldName]: file,
+        },
+      }));
+      setFileNames((prevState) => ({
+        ...prevState,
+        [fieldName]: file.name,
+      }));
+    }
+  };
+  const handleFileChangeInLevel = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setLevelData((prevState) => ({
+        ...prevState,
+        [fieldName]:{
+          ...prevState[fieldName],
+           sitePhotos: file
+        }
+      }));
+      setFileNames((prevState) => ({
+        ...prevState,
+        [fieldName]: file.name,
+      }));
+    }
+  };
+  const handleFileChangeInFloorFront = (event, fieldName) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFloorFrontData((prevState) => ({
+        ...prevState,
+        sitePhotos: {
+          ...prevState.sitePhotos,
+          [fieldName]: file,
+        },
+      }));
+      setFileNames((prevState) => ({
+        ...prevState,
+        [fieldName]: file.name,
+      }));
+    }
   };
 
+  const handleInputChangeInPit = (e) => {
+    const { name, value } = e.target;
+    setBasementWithPit((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleInputChangeInPFloorFront = (e) => {
+    const { name, value } = e.target;
+    setFloorFrontData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleInputChange = (index, event) => {
+    const { name, value } = event.target;
+    const toBeUpdate = levelData[index];
+    toBeUpdate[name] = value;
+    const newFormData = { ...levelData };
+    newFormData[index] = toBeUpdate;
+    setLevelData(newFormData);
+  };
   const handleClick = (e) => {
-    const { name } = e.target;
-    setClick({ ...click, [name]: true });
+    const { id } = e.target;
+    setClick((prevClick) => ({ ...prevClick, [id]: true }));
   };
 
   const handleClickFalse = (e) => {
-    const { name } = e.target;
-    setClick({ ...click, [name]: false });
+    const { id } = e.target;
+    setClick((prevClick) => ({ ...prevClick, [id]: false }));
   };
 
   const toggleVisibility = () => {
-    setVisible(prev => !prev); 
+    changeInData(!visible);
   };
 
-  useEffect(() => {}, [clientFormData]);
+  const handleOnClick = () => {
+    toggleVisibility();
+    forSecondClick();
+  };
+  useEffect(() => {
+    onDataChange(dimentionsData);
+  }, [dimentionsData]);
+  //-----------------------pagination state and handler------------------------------
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 2;
+
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+  useMemo(() => {
+    if (clientData) {
+      const { pitPoint, topPoint } = clientData?.dimensions;
+
+      setBasementWithPit(() => ({
+        shaftWidth: pitPoint?.shaftWidth,
+        shaftDepth: pitPoint?.shaftDepth,
+        doorWidth: pitPoint?.doorWidth,
+        doorHeight: pitPoint?.doorHeight,
+        floorToFloorHeight: pitPoint?.floorToFloorHeight,
+        pitDepth: pitPoint?.pitDepth,
+        fl: pitPoint?.fl,
+        fr: pitPoint?.fr,
+        sitePhotos: {
+          pit: pitPoint?.sitePhotos?.pit,
+          bottomToTop: pitPoint?.sitePhotos?.bottomToTop,
+          basementFront: pitPoint?.sitePhotos?.basementFront,
+        },
+      }));
+      setFloorFrontData({
+        shaftWidth: topPoint?.shaftWidth,
+        shaftDepth: topPoint?.shaftDepth,
+        doorWidth: topPoint?.doorWidth,
+        doorHeight: pitPoint?.doorHeight,
+        floorToFloorHeight: topPoint?.floorToFloorHeight,
+        overhead: topPoint?.overhead,
+        sitePhotos: {
+          Overhead: topPoint?.sitePhotos?.Overhead,
+          topFloorFront: topPoint?.sitePhotos?.topFloorFront,
+          bottomToTopImages: topPoint?.sitePhotos?.bottomToTopImages,
+        },
+      });
+    }
+    setFileNames({
+      pit: clientData?.dimensions?.pitPoint?.sitePhotos?.pit?.split("-")[0],
+      bottomToTop:
+        clientData?.dimensions?.pitPoint?.sitePhotos?.bottomToTop?.split(
+          "-"
+        )[0],
+      basementFront:
+        clientData?.dimensions?.pitPoint?.sitePhotos?.basementFront?.split(
+          "-"
+        )[0],
+
+      Overhead:
+        clientData?.dimensions?.topPoint?.sitePhotos?.Overhead?.split("-")[0],
+      topFloorFront:
+        clientData?.dimensions?.topPoint?.sitePhotos?.topFloorFront?.split(
+          "-"
+        )[0],
+      bottomToTopImages:
+        clientData?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages?.split(
+          "-"
+        )[0],
+    });
+  }, [clientData]);
+
+  useEffect(() => {
+    if (
+      clientData &&
+      clientData.dimensions.floors.length === Flevel.length - 2
+    ) {
+      const updatedLevelData = [{}, ...clientData.dimensions.floors, {}];
+      setLevelData(
+        updatedLevelData.map((level) => ({
+          shaftWidth: level?.shaftWidth || "",
+          shaftDepth: level?.shaftDepth || "",
+          doorWidth: level?.doorWidth || "",
+          doorHeight: level?.doorHeight || "",
+          floorToFloorHeight: level?.floorToFloorHeight || "",
+          fl: level?.fl || "",
+          fr: level?.fr || "",
+          sitePhotos: level?.sitePhotos || "",
+        }))
+      );
+
+      updatedLevelData.map((level, index) => {
+        let name = level?.sitePhotos?.split("-")[0] || "";
+        setFileNames((prev) => ({
+          ...prev,
+          [index]: name,
+        }));
+      });
+    }
+  }, [clientData, Flevel.length, visible]);
+   
+
+
   return (
     <div className="client-form-dimensions">
       <h5 className="client-form-details-heading">Dimensions</h5>
       <hr className="client-form-hr" />
-      <div className="dimention-btn" onClick={toggleVisibility}>Generate dimensions</div>
-      {
-        visible&& <div className="dimenstions-container">
-        {/* basement wrapper */}
-        {BasementElementsArray &&
-          BasementElementsArray.map((index) => {
-            return(
-            <div className="basement-section">
-              <div className="floor-header">
-                <div className="floor-heading">Basement</div>
-                <div className="mmBtn">mm</div>
-              </div>
-              <div className="basement-input-wrapper">
-                <div>
-                  <TextInput
-                    label={"Shaft Width"}
-                    name={"shaftWidth"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.shaftWidth}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.shaftWidth}
-                    onBlur={handleClickFalse}
+      {!visible && (
+        <div
+          className={`dimention-btn ${visible ? "hide" : ""} ${
+            !validate ? "disabled" : ""
+          }  `}
+          onClick={handleOnClick}
+        >
+          Generate dimensions{" "}
+          <img src="generateicon.png" alt="icon" className="generateIcon" />
+        </div>
+      )}
+      {visible && (
+        <div className="dimenstions-container">
+          {Flevel.slice(startIndex, endIndex).map((level, index) => (
+            <React.Fragment key={startIndex + index}>
+              {startIndex + index === 0 && (
+                <DimentionPitFloor
+                  basementWithPit={basementWithPit}
+                  handleClick={handleClick}
+                  handleInputChangeInPit={handleInputChangeInPit}
+                  click={click}
+                  handleFileChangeInPit={handleFileChangeInPit}
+                  fileNames={fileNames}
+                  handleClickFalse={handleClickFalse}
+                  Flevel={Flevel}
+                />
+              )}
+              {startIndex + index > 0 &&
+                startIndex + index < Flevel.length - 1 && (
+                  <DimentionMidFloor
+                    levelData={levelData}
+                    handleClick={handleClick}
+                    handleInputChange={(e) =>
+                      handleInputChange(startIndex + index, e)
+                    }
+                    click={click}
+                    handleFileChangeInLevel={(e) =>
+                      handleFileChangeInLevel(e, startIndex + index)
+                    }
+                    fileNames={fileNames}
+                    handleClickFalse={handleClickFalse}
+                    Flevel={Flevel}
+                    LevelName={Flevel[startIndex + index]}
+                    index={startIndex + index}
                   />
-                </div>
-                <div>
-                  <TextInput
-                    label={"Shaft Depth"}
-                    name={"shaftDepth"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.shaftDepth}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.shaftDepth}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"Door Width"}
-                    name={"doorWidth"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.doorWidth}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.doorWidth}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"Door Height"}
-                    name={"doorHeight"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.doorHeight}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.doorHeight}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"Floor to Floor Height"}
-                    name={"floorToFloorHeight"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.floorToFloorHeight}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.floorToFloorHeight}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"Pit Depth"}
-                    name={"pitDepth"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.pitDepth}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.pitDepth}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"FL"}
-                    name={"fl"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.fl}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.fl}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-                <div>
-                  <TextInput
-                    label={"FR"}
-                    name={"fr"}
-                    // name paste here from useState
-
-                    onFocus={handleClick}
-                    // same name paste here from useState
-                    value={clientFormData.fr}
-                    onChange={hadleInputChnage}
-                    // name paste here from useState
-                    click={click.fr}
-                    onBlur={handleClickFalse}
-                  />
-                </div>
-              </div>
-              <div className="site-photos">Site Photos</div>
-              <div className="dimension-btn-wrapper">
-                <div className="dimension-btn">Pit</div>
-                <div className="dimension-upload-btn">
-                  <span>
-                    Bottom to Top{" "}
-                    <img src="./uploadIcon.png " className="upload-icon" />
-                  </span>
-                </div>
-                <div className="dimension-upload-btn">
-                  <span>
-                    {" "}
-                    Basement Front{" "}
-                    <img src="./uploadIcon.png" className="upload-icon" />
-                  </span>
-                </div>
-              </div>
-            </div>
-            )
-          })}
-
-        {/* floor start SOLVED*/}
-        {elementsArray &&
-          elementsArray.map((index) => (
-            <div className="floor-section">
-              <div className="floor">
-                <div className="floor-heading floor-margin">Floor 1</div>
-                <div>
-                  <div className="floor-input-wrapper">
-                    <div>
-                      <AnimatedInput
-                        label={"Shaft Width"}
-                        name={"Shaft Width"}
-                      />
-                    </div>
-                    <div>
-                      <AnimatedInput
-                        label={"Shaft Depth"}
-                        name={"Shaft Depth"}
-                      />
-                    </div>
-                    <div>
-                      <AnimatedInput label={"Door Width"} name={"Door Width"} />
-                    </div>
-                    <div>
-                      <AnimatedInput
-                        label={"Door Height"}
-                        name={"Door Height"}
-                      />
-                    </div>
-                    <div>
-                      <AnimatedInput
-                        label={"Floor to Floor Height"}
-                        name={"Floor to Floor Height"}
-                      />
-                    </div>
-                    <div className="floor-fl-fr-container">
-                      <AnimatedInput label={"FL"} name={"FL"} />
-                      <AnimatedInput label={"FR"} name={"FR"} />
-                    </div>
-                  </div>
-                  <div className="site-photos">Site Photos</div>
-                  <div className="dimension-btn-wrapper">
-                    <div className="dimension-btn">Floor Front</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                )}
+              {startIndex + index === Flevel.length - 1 && (
+                <DimentionFloorTop
+                  floorFrontData={floorFrontData}
+                  handleClick={handleClick}
+                  handleInputChangeInPFloorFront={
+                    handleInputChangeInPFloorFront
+                  }
+                  click={click}
+                  handleFileChangeInFloorFront={handleFileChangeInFloorFront}
+                  fileNames={fileNames}
+                  handleClickFalse={handleClickFalse}
+                />
+              )}
+            </React.Fragment>
           ))}
-
-        {/* floor top SOLVED*/}
-
-        <div className="floor-section">
-          <div className="floor">
-            <div className="floor-heading floor-margin">Floor Front</div>
-            <div>
-              <div className="floor-input-wrapper">
-                <div>
-                  <AnimatedInput label={"Shaft Width"} name={"Shaft Width"} />
-                </div>
-                <div>
-                  <AnimatedInput label={"Shaft Depth"} name={"Shaft Depth"} />
-                </div>
-                <div>
-                  <AnimatedInput label={"Door Width"} name={"Door Width"} />
-                </div>
-                <div>
-                  <AnimatedInput label={"Door Height"} name={"Door Height"} />
-                </div>
-              </div>
-              <div className="overhead-input">
-                <AnimatedInput label={"Overhead (opt)"} name={"Overhead"} />
-              </div>
-              <div className="site-photos">Site Photos</div>
-              <div className="dimension-btn-wrapper">
-                <label className="dimension-btn">
-                  Floor Front
-                  <input className="hidden-input" type="file" />
-                </label>
-                <div className="dimension-upload-btn">
-                  <span>
-                    Top to Bottom{" "}
-                    <img src="./uploadIcon.png " className="upload-icon" />
-                  </span>
-                </div>
-                <div className="dimension-upload-btn">
-                  <span>
-                    {" "}
-                    Overhead{" "}
-                    <img src="./uploadIcon.png" className="upload-icon" />
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="dimention-pagination-btn-wrapper">
+            {currentPage > 0 && (
+              <span
+                className="pagination-btn left"
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                <img src="leftLightBtn.png" alt="leftBtn" />
+              </span>
+            )}
+            {currentPage < Math.ceil(Flevel.length / itemsPerPage) - 1 && (
+              <span
+                className="pagination-btn right"
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                <img src="rightLightBtn.png" alt="rightBtn" />
+              </span>
+            )}
           </div>
         </div>
-      </div>
-      }
+      )}
     </div>
   );
 };

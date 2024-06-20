@@ -36,6 +36,8 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [role, setRole] = useState("");
 
   const [profilePhoto, setProfilePhoto] = useState("");
+  console.log("8888888888888888888",profilePhoto.length)
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -160,6 +162,9 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
         setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
+
+        console.log("vvvvvvvvvvvvvvvvvvv",getEnggBasicData.enggDetails.EnggPhoto.length)
+
       }
     };
 
@@ -502,9 +507,9 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       border: "none",
                     }}
                     src={
-                      profilePhoto
-                        ? `${config.documentUrl}/EnggAttachments/${profilePhoto}`
-                        : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                      profilePhoto.length === 0 
+                        ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                        : `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                     }
                   ></img>
 

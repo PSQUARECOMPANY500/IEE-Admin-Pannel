@@ -15,6 +15,7 @@ const EngeeniersSubCard = (props) => {
   const engData = useSelector((state) => {
     return state?.AdminRootReducer?.reducerfetchengdetails
   });
+  // console.log("====================",engData.engdetails.combinedData)
 
   useEffect(() => {
     dispatch(fetchEngDetails());
@@ -24,7 +25,6 @@ const EngeeniersSubCard = (props) => {
 
 
   const handleSingleClick = (index) => {
-
     if (!isDoubleClick) {
       setIsDoubleClick(false);
       clearTimeout(singleClickTimeout);
@@ -39,8 +39,6 @@ const EngeeniersSubCard = (props) => {
 
     setSingleClickTimeout(timeout);
     setIsActive(index);
-
-
   }
 
   const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
@@ -55,11 +53,16 @@ const EngeeniersSubCard = (props) => {
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {engData.engdetails && engData.engdetails.combinedData.map((e, index) => (
-         
+
           <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId,e.EnggName,e.EnggPhoto , e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-              <img src={`${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`} />
+              <img src={
+                e.EnggPhoto.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
+                `${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}
+                
+                
+                />
               
               </div>
               <div className="EngCardDetailsR">
@@ -68,8 +71,6 @@ const EngeeniersSubCard = (props) => {
                   <div class="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
                   <div class="table-item">ID</div>
                   <div class="table-item">{e.EnggId}</div>
-                  <div class="table-item">RATING</div>
-                  <div class="table-item">{e.averageRating}</div>
                   <div class="table-item">LEAVES</div>
                   <div class="table-item">0</div>
                 </div>

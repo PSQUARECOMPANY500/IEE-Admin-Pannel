@@ -15,6 +15,7 @@ import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatAction
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import Rating from "./Rating";
 import EditEngineerDetails from "./EditEngineerDetails";
+import config from "../../../../config";
 
 const EngeeniersCard = () => {
   const [currentComponent, setCurrentComponent] = useState();
@@ -26,6 +27,8 @@ const EngeeniersCard = () => {
   const [engID, setEngID] = useState(null);
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
+
+
   const [currentengCash, setCurrentEngCash] = useState(null);
   
 
@@ -198,7 +201,12 @@ const EngeeniersCard = () => {
               <div className="SubPDetails">
                 <div className="Pimg">
                   {/* <img src={currentengImg} alt="eng persnol image" /> */}
-                  <img src={`http://localhost:8000/api/document/EnggAttachments/${currentengImg}`} alt="eng persnol image" />
+                  <img src={
+                    currentengImg?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
+                    `${config.documentUrl}/EnggAttachments/${currentengImg}`} alt="eng persnol image" 
+                    
+                    
+                    />
                 </div>
                 <h1>
                   Name:<span>{currentEngName}</span>
@@ -209,7 +217,7 @@ const EngeeniersCard = () => {
                 ID: <span>{engID}</span>
               </h1>
               <h1>
-                Spare Parts: <span>15</span>
+                Spare Parts: <span>25</span>
               </h1>
               <h1 className="ooo">
                 Cash In Hand: <span>{currentengCash}</span>

@@ -2,6 +2,7 @@ import axios from "axios";
 import config from "../../config";
 
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
@@ -90,6 +91,16 @@ export const CLOSE_CLIENT_MODAL = "CLOSE_CLIENT_MODAL";
 
 export const GET_CLIENT_MODAL_INFORMATION = "GET_CLIENT_MODAL_INFORMATION";
 
+export const REGISTER_CLIENT_DATA = "REGISTER_CLIENT_DATA";
+export const UPDATE_CLIENT_DATA = "UPDATE_CLIENT_DATA";
+export const UPDATE_CLIENT_FORM_USING_PAGINATION =
+  "UPDATE_CLIENT_FORM_USING_PAGINATION";
+export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
+export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
+
+
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -105,9 +116,8 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
-
-    console.log(response.data);
     return response;
+
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -1305,20 +1315,179 @@ export const getClientModalData = (jonId) => {
   };
 };
 
-// --------------------------------get Client service history data  =▶ Raj ---------------------
+export const RegisterClientDataAction = (formData) => {
+  return async (dispatch) => {
+    try {
+      if (!formData) {
+        dispatch({
+          type: REGISTER_CLIENT_DATA,
+          payload: {},
+        });
+        return;
+      }
+      const response = await axios.post(
+        `${config.apiUrl}/admin/registerClientData`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-export const getClientServiceHistory = async (jonId) => {
+      dispatch({
+        type: REGISTER_CLIENT_DATA,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updateClientData = (formData) => {
+    
+  return async (dispatch) => {
+    try {
+      const response = await axios.put(
+        `${config.apiUrl}/admin/updateClientForm`,
+        formData
+      );
+      dispatch({
+        type: UPDATE_CLIENT_DATA,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//---------------------------------------Rahul Kumar----------------------------------------------------------
+// third step
+export const updateClientFormUsingPagination = (formData, jon) => {
+  return async (dispatch) => {
+    try {
+      if (!jon) {
+        dispatch({
+          type: UPDATE_CLIENT_FORM_USING_PAGINATION,
+          payload: {},
+        });
+        return;
+      }
+      const response = await axios.put(
+        `${config.apiUrl}/admin/putElevatorDimensions`,
+        {
+          JON: jon,
+          data: formData,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      dispatch({
+        type: UPDATE_CLIENT_FORM_USING_PAGINATION,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//---------------------------------------------------------------------------------------------------------
+//-------------------------------Rahul Kumar ---------------------------------------------------------------
+
+export const putDataBasedOnJon = (response) => {
+  return async (dispatch) => {
+    try {
+      if (!response) {
+        dispatch({
+          type: GET_CLIENT_FORM_DATA,
+          payload: {},
+        });
+        return;
+      }
+      dispatch({
+        type: GET_CLIENT_FORM_DATA,
+        payload: response.response,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  };
+};
+
+export const getDataBasedOnJon = async (jon) => {
+  if (!jon) {
+    return;
+  }
 
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientModalInformation/${jon}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("error while fetching data", error);
   }
-}
+};
+
+//------------------------------------------------------------------------------------------------------------
 
 
-// -----------------------------get Client callabck history =▶ Raj -----------------------------------------------------------------------
+// -------------Created by Raj---------------------------------------------------------------
+//--------------- Action to handle fetch Engg personal dets by Id---------------------------------------------
+
+// export const fetchEnggPersonalData = async (EnggId) => {
+//   try {
+//     const response = await axios.get(
+//       `${config.apiUrl}/admin/getEnggPersonalData/${EnggId}`
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error while fetching Eng_Personal_details", error);
+//   }
+// };
+
+// ---------------Edit personal data --------------------------------------------------
+
+// export const editEnggPersonalData = async (EnggId, formData) => {
+//   try {
+//     const response = await axios.put(
+//       `${config.apiUrl}/admin/editEnggDetails/${EnggId}`,
+//       formData,
+//       {
+//         headers: {
+//           "Content-Type": "multipart/form-data",
+//         },
+//       }
+//     );
+//     console.log("sunday", response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error while fetching Edit_Eng_Personal_details", error);
+//   }
+// };
+
+// -----------Deposite Enginner cash to admin collect cash------------------------------------------------
+
+// export const depositeEnggCash = async (EnggId, AvailableCash) => {
+//   try {
+//     const response = await axios.put(
+//       `${config.apiUrl}/admin/depositeEnggCash`,
+//       {
+//         EnggId,
+//         AvailableCash,
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error while fetching Deposit Engineer Cash", error);
+//   }
+// };
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 export const getClientCallbackHistory = async (jonId) => {
   try {
@@ -1329,7 +1498,15 @@ export const getClientCallbackHistory = async (jonId) => {
   }
 }
 
-// ------------------------get checkin and chekc out in Attendance =▶ Raj -----------------------------------------------------------------------
+export const getClientServiceHistory = async (jonId) => {
+
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+  }
+}
 
 export const getCheckInCheckOuts = async (serviceId, date) => {
   try {

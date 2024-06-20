@@ -29,7 +29,6 @@ body::-webkit-scrollbar-thumb {
 
 .main-container {
   width: 100%;
-  /* height: 100vh; */
   background: #fff9ef;
   position: relative;
 }
@@ -58,7 +57,7 @@ main {
   top: 0;
   box-shadow: 2px 4px 10px #99886b66;
   display: flex;
-  z-index: 999;
+  z-index: 4;
   justify-content: center;
   align-items: baseline;
   height: 100vh;
@@ -620,7 +619,7 @@ span::after {
   margin-top: 0px;
   position: fixed;
   top: 0;
-  z-index: 999;
+  z-index: 3;
   padding-left: 18rem;
   box-shadow: 2px 4px 10px #99886b66;
   /* gap: 65%; */
@@ -1074,7 +1073,6 @@ footer a:hover {
 
 .slick-list {
   overflow: visible;
-  z-index: 99;
 }
 
 .basic-info {
@@ -2742,7 +2740,7 @@ footer a:hover {
 /* assign ticket modal css starts */
 /*----------------------------------------------------------------------------changes by aayush malviya start from here---------------------------------------------------------------------- */
 .modal-wrapper,
-.client-modal-wrapper {
+.client-modal-wrapper  {
   position: fixed;
   left: 0;
   right: 0;
@@ -2787,11 +2785,9 @@ footer a:hover {
   width: 100%;
 }
 
-.child-modal-container,
-.client-child-modal-container {
+.child-modal-container {
   height: 45rem;
   width: 100%;
-
   position: relative;
   border-radius: 8px;
 }
@@ -3431,6 +3427,16 @@ margin-top: 10px;
   align-items: center;
   padding-top: 1rem;
   justify-content: center;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  z-index: 9999;
 }
 
 .cross-icon {
@@ -4278,8 +4284,7 @@ element.style {
 }
 
 .parent-div {
-  /* zindex 2 to 0 by aayush creating problem in report image crouser */
-  /* z-index: 2; */
+  z-index: 2;
   position: relative;
 }
 
@@ -4729,7 +4734,7 @@ element.style {
 
 .notification-data {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   gap: 8px;
   padding: 10px 0px;
@@ -4754,11 +4759,9 @@ element.style {
 
 .notification-buttons-operations {
   display: flex;
-  justify-content: space-between;
   font-size: 0.8rem;
   font-weight: 500;
   gap: 8px;
-  width: 100%;
 }
 
 .noti-dec-time p:first-child {
@@ -4770,15 +4773,11 @@ element.style {
   font-size: 0.7rem;
   font-weight: 500;
 }
-.noti-dec-time p:nth-child(3) {
-  font-size: 0.7rem;
-  font-weight: 500;
-}
 
-.notification-buttons-operations p:first-child {
+.notification-buttons-operations p {
   background: #ffff;
   color: #343434;
-  padding: 3px 15px;
+  padding: 2px 6px;
   border-radius: 5px;
   font-size: 0.7rem;
   cursor: pointer;
@@ -4789,7 +4788,7 @@ element.style {
   font-size: 10px;
 }
 
-.notification-buttons-operations p:first-child:hover {
+.notification-buttons-operations p:hover {
   background: #f8ac1d;
 }
 
@@ -5574,9 +5573,9 @@ element.style {
 .McRoomCard {
   height: 90%;
   width: 40%;
+  border: 1px solid #707070;
   border-radius: 4px;
   display: flex;
-  position: relative;
   align-items: center;
   justify-content: center;
 }
@@ -5689,6 +5688,7 @@ element.style {
 }
 
 .CardShiftCards {
+  height: 15%;
   width: 100%;
   position: relative;
 }
@@ -5800,6 +5800,7 @@ element.style {
   display: flex;
   justify-content: space-between;
   padding: 1rem 8rem 1rem 3rem;
+  height: 17%;
 }
 
 .Amount h5 {
@@ -5936,25 +5937,27 @@ element.style {
 }
 
 .RatingButton button {
-  width: 3rem;
+  padding: 0rem 0.6rem;
   text-transform: capitalize;
-  background-color: transparent;
+  background-color: #f8ac1ddb;
   border: 1px solid #f8ac1d;
   opacity: 1;
   border-radius: 3px;
-  text-align: center;
+  text-align: left;
   font-family: "Poppins";
+  /* font: normal normal normal 10px/16px Poppins; */
   letter-spacing: 0px;
   color: #444444;
   opacity: 1;
   font-size: 0.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.RatingButton .active-button {
-  background-color: #f8ac1ddb;
+.RatingButton>button:nth-child(2) {
+  padding: 0rem 0.8rem;
+  border: 1px solid #f8ac1d;
+  opacity: 1;
+  background-color: transparent;
+  text-transform: capitalize;
 }
 
 .RatingContainerRow h5 {
@@ -6127,7 +6130,6 @@ element.style {
   padding-left: 24px;
   position: relative;
   margin-bottom: 1rem;
-  cursor: pointer;
 }
 
 .service-card-selected {
@@ -6461,7 +6463,7 @@ element.style {
   left: 0%;
   height: 100%;
   width: 100%;
-  z-index: 999;
+
 }
 
 .add-engg-modal {
@@ -6813,15 +6815,15 @@ element.style {
   white-space: nowrap;
 }
 
-.addFileName {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+.addFileName{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
-.addFileName p {
+.addFileName p {  
   color: #f8ac1d;
   font-size: 0.7rem;
 }
@@ -7488,7 +7490,6 @@ element.style {
 
   .service-card {
     height: 5.5rem;
-    cursor: pointer;
   }
 
   .CarouselButtons {

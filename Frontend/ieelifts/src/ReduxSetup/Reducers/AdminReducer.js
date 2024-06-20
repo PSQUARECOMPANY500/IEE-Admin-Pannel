@@ -45,10 +45,16 @@ import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
 import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
 import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
 import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
+
+import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
+import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
+import { UPDATE_CLIENT_FORM_USING_PAGINATION } from "../Actions/AdminActions.js";
 import { GET_ADMIN_REPORT_DATA } from "../Actions/AdminActions";
 import { REPORT_CROUSER_HANDLER } from "../Actions/AdminActions";
-import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
+import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
+import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 
+import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -816,7 +822,9 @@ export const getAdminReportDataReducer = (state = adminReportData, action) => {
 const ReportCrouserData = {
   Index: 0,
   IsOpen: false,
+  IsOpen: false,
 };
+
 
 export const ReportCrouserHandlerReducer = (
   state = ReportCrouserData,
@@ -847,6 +855,94 @@ export const getClientModalDataReducer = (state = ClientModalData, action) => {
         ...state,
         ClientModalInformation: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+//-----------------------------------------------------------------------------------------------------------------
+//Reducer to handle registerclient data form
+const registerClientFormData = {
+  registerClientData: null,
+};
+
+export const RegisterClientDataReducer = (
+  state = registerClientFormData,
+  action
+) => {
+  switch (action.type) {
+    case REGISTER_CLIENT_DATA:
+      return {
+        ...state,
+        registerClientData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const updateClientData = {
+  updateClientData: null,
+};
+
+export const UpdateClientDataReducer = (state = updateClientData, action) => {
+  switch (action.type) {
+    case UPDATE_CLIENT_DATA:
+      return {
+        ...state,
+        updateClientData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+//------------------------------------Rahul Kumar----------------------------------------------
+const updateClientFormData = {
+  updateClientFormData: null,
+};
+export const UpdateClientFormDataReducer = (
+  state = updateClientFormData,
+  action
+) => {
+  switch (action.type) {
+    case UPDATE_CLIENT_FORM_USING_PAGINATION:
+      return {
+        ...state,
+        updateClientFormData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+//-----------------------------------------------------------------------------------------------
+//------------------------------------Rahul Kumar------------------------------------------------
+const ClientFormData = {
+  ClientFormData: null,
+};
+export const ClientFormDataFromApiReducer = (
+  state = ClientFormData,
+  action
+) => {
+  // console.log(action.payload);
+  switch (action.type) {
+    case GET_CLIENT_FORM_DATA:
+      return {
+        ...state,
+        ClientFormData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  ClientFormData: {},
+};
+
+export const ClearClientFormData = (state = initialState, action) => {
+  switch (action.type) {
+    case CLEAR_CLIENT_FORM_DATA:
+      return initialState;
     default:
       return state;
   }

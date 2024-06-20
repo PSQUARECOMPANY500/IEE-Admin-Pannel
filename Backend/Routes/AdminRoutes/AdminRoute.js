@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
 const express = require("express");
 const router = express.Router();
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
@@ -6,7 +9,12 @@ const adminContoller = require("../../Controllers/AdminController/AdminControlle
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const ClientController = require("../../Controllers/ClientController/ClientController");
 
+const uploadClientData = require("../../Multer/ClientDocumentUpload");
+
 const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
+
+const { token } = require("../../Controllers/AdminController/AdminController")
+
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -170,8 +178,97 @@ router.get("/getNotification", adminContoller.getNotification);
  * <------------------------------Author: Rahul Kumar ------------01/05/2024------------->
  */
 
-router.post("/clientForm", adminContoller.postElevatorForm);
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/uplodes/");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+//   },
+// });
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/ElevatorDimensions/");
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    const fileName = file.originalname.split(".")[0];
+    cb(null, `${fileName}-${Date.now()}.${parts}`);
+  },
+});
+const upload = multer({ storage: storage });
+
+router.put(
+  "/putElevatorDimensions",
+  upload.any(),
+  adminContoller.updatElevatorDimensions
+);
+// ---------------------------- Armaan Singh 29/04/2024 ----------------------------
+
+router.post(
+  "/registerClientData",
+  uploadClientData.fields([
+    {
+      name: "signedQuotation",
+      maxCount: 1,
+    },
+    {
+      name: "paymentForm",
+      maxCount: 1,
+    },
+    {
+      name: "salesOrder",
+      maxCount: 1,
+    },
+    {
+      name: "chequeForm",
+      maxCount: 1,
+    },
+  ]),
+  adminContoller.postElevatorForm
+);
+
 router.put("/updateClientForm", adminContoller.putElevatorForm);
+
+
+router.get(
+  "/getClientModalInformation/:jon",
+  adminContoller.getClientModalInformation
+);
+router.put("/updateClientModalInformation", adminContoller.updateSecondStep);
+
+
+
+
+
+
+//by preet ------------------ 30/05/2024  ------------------------------------  Add Engg cash Data --------------------------------
+
+// router.put("/addEnggCash", adminContoller.addEnggCashByAdmin);
+router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);
+
+
+
+//by preet ------------------ 03/06/2024  ------------------------------------  Add Engg Rating Data --------------------------------
+
+router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById)
+
+
+//by preet ------------------ 05/06/2024  ------------------------------------ client Service history --------------------------------
+
+
+router.get("/getClientServiceHistory/:JobOrderNumber", adminContoller.getClientServiceHistoryByJON)
+router.get("/getClientCallbackHistory/:JobOrderNumber", adminContoller.getClientCallbackByJON)
+
+
+
+// By Raj ----------------------------10/06/2024-----------------------get checkin checkout asset-------------------------------------------------
+
+router.get("/getCheckInCheckOut/:ServiceEnggId", adminContoller.getCheckInCheckOut)   //
+
+
 
 // --------------------------Create by Raj-----------------23/05/2024 ----------> 
 
@@ -180,7 +277,7 @@ router.get(
   adminContoller.getClientModalInformation
 );
 
-router.get("/getEnggPersonalData/:EnggId", adminContoller.getEnggPersonalData);
+router.get("/getEnggPersonalData/:EnggId", adminContoller.getEnggPersonalData);  //
 
 //by preet ------------------ 27/05/2024  ------------------------------------  edit Engg formData --------------------------------
 
@@ -212,31 +309,37 @@ router.put(
       maxCount: 1,
     },
   ]),
-  adminContoller.editEnggDetailsForm
+  adminContoller.editEnggDetailsForm            //
 );
 
+
+
+
+
+
+router.post("/registerNewMembershipData", adminContoller.postMembershipData)
+
+
+
+router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
+
+
+router.post('/registerFirebaseToken', adminContoller.firebaseTokenForPushNotificationPurpose);
+
+
+
+router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = router;
-
-//by preet ------------------ 30/05/2024  ------------------------------------  Add Engg cash Data --------------------------------
-
-// router.put("/addEnggCash", adminContoller.addEnggCashByAdmin);
-router.put("/depositeEnggCash", adminContoller.DepositeEnggCash);
-
-
-
-//by preet ------------------ 03/06/2024  ------------------------------------  Add Engg Rating Data --------------------------------
-
-router.get("/getEnggRatingById/:ServiceEnggId", adminContoller.getEnggRatingById)
-
-
-//by preet ------------------ 05/06/2024  ------------------------------------ client Service history --------------------------------
-
-
-router.get("/getClientServiceHistory/:JobOrderNumber", adminContoller.getClientServiceHistoryByJON)
-router.get("/getClientCallbackHistory/:JobOrderNumber", adminContoller.getClientCallbackByJON)
-
-
-
-// By Raj ----------------------------10/06/2024-----------------------get checkin checkout asset-------------------------------------------------
-
-router.get("/getCheckInCheckOut/:ServiceEnggId", adminContoller.getCheckInCheckOut)
