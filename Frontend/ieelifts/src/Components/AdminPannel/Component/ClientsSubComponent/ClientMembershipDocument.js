@@ -105,7 +105,7 @@ const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
       </div> */}
       <h5 className="client-form-details-heading client-document">Document</h5>
       <hr className="client-form-hr" />
-      <div className="client-document-child-wrapper client-form-input-wrapper">
+      <div className="client-document-child-wrapper client-form-document-input-wrapper">
         <div className="file-uploader">
           <FileUploader
             label={"Signed Quotation"}
