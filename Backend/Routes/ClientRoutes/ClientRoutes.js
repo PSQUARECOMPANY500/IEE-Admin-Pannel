@@ -17,11 +17,12 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
 router.post("/requestCallbacks",checkClientServiceExist, clientController.RequestCallbacks);
+router.post("/requestCallbacks", clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
-// router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
+router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
 router.post("/imediateServiceRequest",clientController.imediateServiceRequest); //await implement middlweware -----------------------------------!!!!!!!!!!!!!
 
 router.post("/createReferal", clientController.referalUser);
@@ -65,5 +66,16 @@ router.post(
       clientController.clientPayment
     );
     
+
+router.get("/getMembershipData",clientController.getMembershipFeatuesDetails)
+router.get("/getMembershipDiscount/:JobOrderNumber",clientController.getMembershipDiscount)
+
+
+router.get("/checkpaymentstatusandmakeinvoice/:JobOrderNumber", clientController.checkPaymentStatusAndMakeInvoice)
+
+
+router.post('/registerFirebaseToken', clientController.firebaseTokenForPushNotificationPurpose);
+
+
 
 module.exports = router;

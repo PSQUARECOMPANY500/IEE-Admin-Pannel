@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { offerDiscountByServiceId } from "../../../../ReduxSetup/Actions/AdminActions";
+import toast from "react-hot-toast";
 
-const OfferButton = ({ isExpired, dataType }) => {
+
+const OfferButton = ({ isExpired, dataType, clientDetail }) => {
   const [showHistory, setShowHistory] = useState(false);
+  const [discount, setDiscount] = useState();
   const [clickedButtonIndex, setClickedButtonIndex] = useState(null);
   const historyRef = useRef(null);
 
@@ -11,9 +15,20 @@ const OfferButton = ({ isExpired, dataType }) => {
     }
   };
 
-  const handleButtonClick = (index) => {
+  // console.log("discount",discount)
+
+  const handleButtonClick = (text, index) => {
+    setDiscount(text);
     setClickedButtonIndex(index);
-    setShowHistory(true); 
+    setShowHistory(true);
+  };
+  const handleOfferDiscount = async () => {
+    if(!discount){
+      toast.error("Please select discount");
+      return;
+    }
+    await offerDiscountByServiceId(clientDetail?.responseData?.jobOrderNumber,discount,18);
+    setDiscount("");
   };
 
   const handleMouseEnter = () => {
@@ -25,6 +40,8 @@ const OfferButton = ({ isExpired, dataType }) => {
       setShowHistory(false);
     }
   };
+
+  // console.log("clientDetail", clientDetail?.responseData?.jobOrderNumber);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -55,9 +72,11 @@ const OfferButton = ({ isExpired, dataType }) => {
     <div className="offerButtonContainer" ref={historyRef}>
       <div>
         <div
-          className={`offerButtons ${showHistory ? 'offerButtons-show' : 'offerButtons-hide'}`}
+          className={`offerButtons ${
+            showHistory ? "offerButtons-show" : "offerButtons-hide"
+          }`}
         >
-          {["15%", "25%", "35%", "other"].map((text, index) => (
+          {["15", "25", "35", "40"].map((text, index) => (
             <button
               id="offerButtonWarppers"
               key={index}
@@ -66,12 +85,12 @@ const OfferButton = ({ isExpired, dataType }) => {
               }`}
               style={
                 clickedButtonIndex === index
-                  ? { backgroundColor: "#0f351d", color: "white" }
+                  ? { backgroundColor: "#c10000", color: "white" }
                   : {}
               }
-              onClick={() => handleButtonClick(index)}
+              onClick={() => handleButtonClick(text, index)}
             >
-              {text}
+              {text}%
             </button>
           ))}
         </div>
@@ -88,9 +107,14 @@ const OfferButton = ({ isExpired, dataType }) => {
                   : `offerButtonMainSelected ${selectedButtonClass}`
               }`
             }`}
-            style={clickedButtonIndex !== null ? { backgroundColor: "#0f351d", color: "white" } : {}}
+            style={
+              clickedButtonIndex !== null
+                ? { backgroundColor: "#c10000", color: "white" }
+                : {}
+            }
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={() => handleOfferDiscount()}
           >
             Offer Discount
           </button>

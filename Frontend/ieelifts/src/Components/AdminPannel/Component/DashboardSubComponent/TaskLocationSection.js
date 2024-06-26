@@ -344,7 +344,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5>Name:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.clientName}</h5>
+                                <h5>{value?.clientName}</h5>
                               </div>
                             </div>
 
@@ -353,7 +353,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5> ENGINEER:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.enggName}</h5>
+                                <h5>{value?.enggName}</h5>
                               </div>
                             </div>
 

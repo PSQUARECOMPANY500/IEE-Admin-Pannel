@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from "react";
-import AnimatedInput from "./ClientsReusableComponent/AnimatedInput";
 import ElevatorInput from "./ClientsReusableComponent/ElevatorInput";
 
 const ClientElevatorForm = ({ clientModalInformation }) => {
   const [clientFormData, setClientFormData] = useState({
     pitdepth: clientModalInformation?.dimensions?.pitPoint?.pitDepth,
-    shaftWidth: clientModalInformation.dimensions.pitPoint.shaftWidth,
-    shaftDepth: clientModalInformation.dimensions.pitPoint.shaftDepth,
-    fl: clientModalInformation.dimensions.pitPoint.fl,
-    fr: clientModalInformation.dimensions.pitPoint.fr,
-    pitPoint: clientModalInformation.dimensions.pitPoint.pitDepth,
-    doorHeight: clientModalInformation.dimensions.pitPoint.doorHeight,
-    doorWidth: clientModalInformation.dimensions.pitPoint.doorWidth,
+    shaftWidth: clientModalInformation?.dimensions?.pitPoint?.shaftWidth,
+    shaftDepth: clientModalInformation?.dimensions?.pitPoint?.shaftDepth,
+    fl: clientModalInformation?.dimensions?.pitPoint?.fl,
+    fr: clientModalInformation?.dimensions?.pitPoint?.fr,
+    pitPoint: clientModalInformation?.dimensions?.pitPoint?.pitDepth,
+    doorHeight: clientModalInformation?.dimensions?.pitPoint?.doorHeight,
+    doorWidth: clientModalInformation?.dimensions?.pitPoint?.doorWidth,
     floorToFloorHeight:
-      clientModalInformation.dimensions.pitPoint.floorToFloorHeight,
-    toppointdoorHeight: clientModalInformation.dimensions.topPoint.doorHeight,
-    toppointdoorWidth: clientModalInformation.dimensions.topPoint.doorWidth,
-    toppointshaftDepth: clientModalInformation.dimensions.topPoint.shaftDepth,
-    toppointshaftWidth: clientModalInformation.dimensions.topPoint.shaftWidth,
-    overhead: clientModalInformation.dimensions.topPoint.overhead,
+      clientModalInformation?.dimensions?.pitPoint?.floorToFloorHeight,
+    toppointdoorHeight: clientModalInformation?.dimensions?.topPoint?.doorHeight,
+    toppointdoorWidth: clientModalInformation?.dimensions?.topPoint?.doorWidth,
+    toppointshaftDepth: clientModalInformation?.dimensions?.topPoint?.shaftDepth,
+    toppointshaftWidth: clientModalInformation?.dimensions?.topPoint?.shaftWidth,
+    overhead: clientModalInformation?.dimensions?.topPoint?.overhead,
   });
 
   const hadleInputChnage = (e) => {
@@ -33,13 +32,13 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
   useEffect(() => {}, [clientFormData]);
 
   console.log("carrr", clientModalInformation);
-  console.log("preet", clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)
+  // console.log("preet", clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)
 
   return (
     <div className="client-elevatorform-main">
       <div className="patna">
         <div className="basement-form-dimensions">
-          <div className="floor-header">
+          <div className="floor-headers">
             <div className="floor-heading">Pit Point </div>
             <div className="mmBtn">mm</div>
           </div>
@@ -121,25 +120,25 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                       Site Photos
                     </div>
                     <div className="dimension-btn-wrapper">
-                      <label className="dimension-btn"
+                      <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                        onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.pit)}>
                       Pit
                      
                         
-                        {/* <input className="hidden-input" type="file" /> */}
+                       
                       </label>
                       <div className="dimension-upload-btn">
-                        <label className="dimension-btn"
+                        <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                         onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.bottomToTop)}>
                           <span>Bottom to Top</span>
-                          {/* <input className="hidden-input" type="file" /> */}
+                         
                         </label>
                       </div>
                       <div className="dimension-upload-btn">
-                        <label className="dimension-btn"
+                        <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                         onClick={() => openIt(clientModalInformation?.dimensions?.pitPoint?.sitePhotos?.basementFrontImages)}>
                           <span>Basement Front</span>
-                          {/* <input className="hidden-input" type="file" /> */}
+                        
                         </label>
                       </div>
                     </div>
@@ -178,7 +177,7 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
 
       <div className="patna">
         <div className="basement-form-dimensions">
-          <div className="floor-header">
+          <div className="floor-headers">
             <div className="floor-heading">Top Point </div>
             <div className="mmBtn">mm</div>
           </div>
@@ -239,37 +238,34 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
                         />
                       </div>
 
-                      <div className="overhead-elevatorInput">
+                      <div className="overhead-elevatorInput2">
                         <ElevatorInput
                           label={"Overhead (opt)"}
                           name={"Overhead"}
                           value={clientFormData.overhead}
-                          w="25.8vw"
+                          w="12vw"
                         />
                       </div>
                     </div>
 
-                    <div style={{ marginTop: "3.9vw" }} className="site-photos">
+                    <div style={{ marginTop: "17px" }} className="site-photos">
                       Site Photos
                     </div>
                     <div className="dimension-btn-wrapper">
-                      <label className="dimension-btn"
+                      <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                       onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead)}>
                         Pit
-                        {/* <input className="hidden-input" type="file" /> */}
                       </label>
                       <div className="dimension-upload-btn">
-                        <label className="dimension-btn"
+                        <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                         onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.bottomToTopImages[0])}>
                           <span>Bottom to Top</span>
-                          {/* <input className="hidden-input" type="file" /> */}
                         </label>
                       </div>
                       <div className="dimension-upload-btn">
-                        <label className="dimension-btn"
+                        <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} className="dimension-btn"
                         onClick={() => openIt(clientModalInformation?.dimensions?.topPoint?.sitePhotos?.topFloorFront)}>
                           <span>Basement Front</span>
-                          {/* <input className="hidden-input" type="file" /> */}
                         </label>
                       </div>
                     </div>
@@ -305,11 +301,11 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
         </div>
       </div>
 
-      {clientModalInformation.dimensions &&
+      {clientModalInformation?.dimensions &&
         clientModalInformation?.dimensions?.floors?.map((item) => (
           <div className="patna">
             <div className="basement-form-dimensions">
-              <div className="floor-header">
+              <div className="floor-headers">
                 <div className="floor-heading">Basement 1</div>
                 <div className="mmBtn">mm</div>
               </div>
@@ -380,9 +376,8 @@ const ClientElevatorForm = ({ clientModalInformation }) => {
 
                         <div className="site-photos">Site Photos</div>
                         <div className="dimension-btn-wrapper">
-                          <label onClick={() => openIt(item.sitePhotos)} className="dimension-btn">
+                          <label style={{backgroundColor: clientModalInformation?.dimensions?.topPoint?.sitePhotos?.Overhead ? "#f8ac1d" : "transparent"}} onClick={() => openIt(item.sitePhotos)} className="dimension-btn">
                             Floor Front
-                            {/* <input className="hidden-input" type="file" /> */}
                           </label>
 
                           

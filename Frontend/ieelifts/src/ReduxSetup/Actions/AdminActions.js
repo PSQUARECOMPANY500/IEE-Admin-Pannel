@@ -116,9 +116,8 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
-
-    console.log(response.data);
     return response;
+
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -1535,3 +1534,21 @@ console.log("rrrrrrrrrrrrrr",todo)
     console.log("error while fetching data", error);
   }
 };
+
+// ----------------------action of Offer discount by service id---------------------------
+
+export const offerDiscountByServiceId = async (JobOrderNumber, Discount, GST) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/offerDiscountByServiceEngg`,{
+      JobOrderNumber,
+      Discount,
+      GST
+    });
+    toast.success("Membership Discount added successfully");
+
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+
+  }
+}

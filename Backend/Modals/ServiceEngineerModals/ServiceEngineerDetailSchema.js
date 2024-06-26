@@ -41,8 +41,7 @@ const EnggBasicDetail = new Schema(
       // required: true,
     },
     Email: {
-      type: String,
-      // unique: true,
+      type: String
     },
     PinCode: {
       type: String,
@@ -134,6 +133,13 @@ const EnggBasicDetail = new Schema(
     AvailableCash: {
       type: Number,
       default:0
+    },
+    ActiveDevice:{
+      type:String,
+      default:""
+    },
+    firebaseToken:{
+      type:String
     }
   },
   {
@@ -143,8 +149,8 @@ const EnggBasicDetail = new Schema(
 
 // Generate a random 6-digit number as EnggId
 EnggBasicDetail.pre("save", function (next) {
-  if (!this.EnggId || !this.EnggPassword) {
-    this.EnggId = Math.floor(100000 + Math.random() * 900000).toString();
+  if (!this.EnggPassword) {
+    // this.EnggId = Math.floor(100000 + Math.random() * 900000).toString();
     this.EnggPassword = Math.floor(100000 + Math.random() * 900000).toString();
 
   }

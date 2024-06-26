@@ -108,11 +108,9 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
 
   };
 
-  const filteredNotifications = notifications
-    ?.map((notification) => generateMessage(notification))
-    ?.filter((data) => data !== null);
+  const filteredNotifications = notifications?.map((notification) => generateMessage(notification))?.filter((data) => data !== null);
 
-  // console.log(filteredNotifications.length)
+  console.log("iiiiiiiiiiiiiiiiiiiii",filteredNotifications)
 
   notificationcount(filteredNotifications?.length)
 
@@ -120,6 +118,9 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
     <div key={key} className="notification-all">
       {" "}
       {filteredNotifications?.map((data,index) => (
+
+        console.log("[[[[[[[[[[[[[[[[", data),
+        
           <div
             key={index}
             className="notification-data"

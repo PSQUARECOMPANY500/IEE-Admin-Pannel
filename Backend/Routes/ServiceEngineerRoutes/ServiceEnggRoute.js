@@ -8,12 +8,14 @@ const {
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
+const clientContoller = require("../../Controllers/ClientController/ClientController");
 
 const {uploaded} = require("../../Multer/EnggAttachmentUpload");
 
 
 
 const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmentUploads");
+const checkClientDeviceLogins = require("../../Middleware/CheckLoginDeviceVerify");
 
 
 //-------------------------------------- All Post Requests -------------------------------
@@ -56,9 +58,9 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation", serviceEnggContoller.createEnggLocation);     
+router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);     
 router.post(
-  "/createEnggLocationOnAttendance",
+  "/createEnggLocationOnAttendance",checkClientDeviceLogins,
   serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
 );  
 
@@ -79,7 +81,7 @@ router.get(
 );
 router.get("/getServiceEngg/:EnggId", serviceEnggContoller.getEnggDetail);
 router.get(
-  "/getEngScheduleData/:ServiceEnggId",
+  "/getEngScheduleData/:ServiceEnggId",checkClientDeviceLogins,
   serviceEnggContoller.getEngScheduleData
 );
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
@@ -92,6 +94,9 @@ const storage = multer.diskStorage({
     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
   },
 });
+
+//----------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------
 const storage2 = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/uplodes/leaveAttachment");
@@ -103,8 +108,8 @@ const storage2 = multer.diskStorage({
   },
 });
 const upload2 = multer({ storage: storage2 });
-
 const upload = multer({ storage: storage });
+
 
 const uploadImg = upload.fields([
   {
@@ -192,16 +197,19 @@ const checkInorOutAttendance = async (req, res, next) => {
 };
 
 //----------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------
 
-router.get("/getTime", serviceEnggContoller.EnggTime);
+router.get("/getTime",checkClientDeviceLogins, serviceEnggContoller.EnggTime);
 router.post(
   "/enggCheckIn/:ServiceEnggId",
+  checkClientDeviceLogins,
   checkInAttendance,
   uploadImg,
   serviceEnggContoller.EnggCheckIn
 );
 router.put(
   "/enggCheckOut/:ServiceEnggId",
+  checkClientDeviceLogins,
   checkOutAttendance,
   uploadImg,
   serviceEnggContoller.EnggCheckOut
@@ -250,16 +258,18 @@ router.post(
 ); // todo - change the route name
 // router.post("/pankaj", serviceEnggContoller.testingApi);
 
+
+
 router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount);
 
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves);
 // --- by preet 15/03/2024 ---
 router.get(
-  "/getAssignCalbackDetailForEnggApp/:callbackId",checkInorOutAttendance,
+  "/getAssignCalbackDetailForEnggApp/:callbackId",checkClientDeviceLogins,checkInorOutAttendance,
   serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId
 );
 router.get(
-  "/getAssignServiceRequestDetailForEnggApp/:RequestId",checkInorOutAttendance,
+  "/getAssignServiceRequestDetailForEnggApp/:RequestId",checkClientDeviceLogins,checkInorOutAttendance,
   serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId
 );
 
@@ -276,7 +286,7 @@ router.get("/getSparePart", serviceEnggContoller.getAllSparePartdetails);
 //----by preet 22/03/2024 ---
 
 router.post(
-  "/generateReport",
+  "/generateReport",checkClientDeviceLogins,
   uploadReportAttachment.fields([
     {
       name: "photoss",
@@ -337,34 +347,39 @@ router.get(
 
 // 31/03/2024
 router.get(
-  "/getfirsthalftime/:ServiceEnggId",
+  "/getfirsthalftime/:ServiceEnggId",checkClientDeviceLogins,
   serviceEnggContoller.EnggFirsthalfinfo
 );
 
 router.get(
   "/getsecondhalftime/:ServiceEnggId",
+  checkClientDeviceLogins,
   serviceEnggContoller.EnggSecondhalfinfo
 );
 
 router.get(
   "/getLunchBreaktime/:ServiceEnggId",
+  checkClientDeviceLogins,
   serviceEnggContoller.EnggLunchBreakinfo
 );
 
 router.put(
   "/enggOnFirstHalfBreak",
+  checkClientDeviceLogins,
   checkInorOutAttendance,
   serviceEnggContoller.EnggOnFirstHalfBreak
 );
 
 router.put(
   "/enggOnSecondHalfBreak",
+  checkClientDeviceLogins,
   checkInorOutAttendance,
   serviceEnggContoller.EnggOnSecondHalfBreak
 );
 
 router.put(
   "/enggOnLunchBreak",
+  checkClientDeviceLogins,
   checkInorOutAttendance,
   serviceEnggContoller.EnggOnLunchBreak
 );
@@ -410,6 +425,14 @@ router.post(
 
 
 router.post("/updateTrackerInformations", serviceEnggContoller.handleTrackerPostionClientApp);
+
+
+router.post("/canclePaymentLink", serviceEnggContoller.canclePaymentLink);
+
+
+
+router.post('/registerFirebaseToken', clientContoller.firebaseTokenForPushNotificationPurpose);
+
 
 
 

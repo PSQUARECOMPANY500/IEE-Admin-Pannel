@@ -15,12 +15,30 @@ const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbac
 
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
-const memberShipDetails = require("../../Modals/MemebershipModal/MembershipsSchema")
+const memberShipDetails = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const ReportTable = require("../../Modals/ReportModal/ReportModal");
+
+const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
+
 const Razorpay = require("razorpay");
 
+const puppeteer = require("puppeteer");
+
 const moment = require("moment");
+
+const fs = require("fs");
+const path = require("path");
+// var pdf = require("pdf-node");
+
+const htmlpdf = require("html-pdf");
+var pdf = require("pdf-creator-node");
+const { JSDOM } = require("jsdom");
+
+const { jsPDF } = require("jspdf");
+
+const pdfFormat = require("../../public/MembershipInvoice/membershipInvoiceTemplate");
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
 
@@ -232,13 +250,18 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
     // console.log('hero',client)
 
     if (!client || client.Password !== password) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res
+        .status(200)
+        .json({ status: "error", message: "Invalid credentials" });
     }
 
     const token = generateToken({ Number });
-    res
-      .status(200)
-      .json({ message: "You are logged in Successfully", client, token });
+    res.status(200).json({
+      status: "success",
+      message: "You are logged in Successfully",
+      client,
+      token,
+    });
   } catch (error) {
     console.error("Error logging in client:", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -442,6 +465,9 @@ module.exports.getAllClientServices = async (req, res) => {
 
 //.............................................api to verify token ...........................................................
 const jwt = require("jsonwebtoken");
+const {
+  createMemberShipOnTable,
+} = require("../AdminController/AdminController");
 
 module.exports.verifyClient = (req, res) => {
   let token = req.header("Authorization");
@@ -638,29 +664,29 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
 // convert the format for Am/Pm
 
 const convertTo12HourFormat = (time24) => {
-  let [hours, minutes] = time24.split(':');
+  let [hours, minutes] = time24.split(":");
 
   hours = parseInt(hours, 10);
 
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const ampm = hours >= 12 ? "PM" : "AM";
 
   hours = hours % 12 || 12;
 
   return `${hours}:${minutes} ${ampm}`;
-}
+};
 
-
-module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> middlaware implemented 
+module.exports.getCurrentScheduleService = async (req, res) => {
+  // to do -> middlaware implemented
   try {
     const { JobOrderNumber } = req.params;
 
     const currentDate = new Date().toLocaleDateString("en-GB");
 
     const service = await serviceRequest.find({
-      JobOrderNumber
+      JobOrderNumber,
     });
     const callback = await clientRequestCallback.find({
-      JobOrderNumber
+      JobOrderNumber,
     });
 
     let data = [];
@@ -711,8 +737,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
     const rating = await engineerRating.findOne({
       ServiceId: data[0][0].ServiceId || data[0][0].callbackId,
     });
-    console.log("rating for testing",rating);
-
+    console.log("rating for testing", rating);
 
     console.log("preet saii ---> ", data);
     // first case 1:
@@ -739,18 +764,27 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         status: "success",
         message:
           currentDate === data[0][0].Date
-            ? `Service Today at ${convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0])}`
-            : currentDate > data[0][0].Date ? "Service Expired" : "Service Booked",
-        time: currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat((data[0][0].Slot[0]).split('-')[0]) +"-"+ convertTo12HourFormat((data[0][0].Slot[0]).split('-')[1]),
+            ? `Service Today at ${convertTo12HourFormat(
+                data[0][0].Slot[0].split("-")[0]
+              )}`
+            : currentDate > data[0][0].Date
+            ? "Service Expired"
+            : "Service Booked",
+        time:
+          currentDate > data[0][0].Date
+            ? "(Awaiting Cancelation)"
+            : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
+              "-" +
+              convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.ServiceId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
         rating: false,
       });
     } else if (
-      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) && service[0]?.isDead === false,
-      !rating &&
-      data[0][0].ServiceProcess === "completed"
+      ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+        service[0]?.isDead === false,
+      !rating && data[0][0].ServiceProcess === "completed")
     ) {
       //case 3
       res.status(200).json({
@@ -759,12 +793,11 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
         time: data[0][0].Slot,
         date: data[0][0].Date,
         liveTracking: false,
-        rating: true,   // add Enggid and ServiceId  ----------------------------------------------------------
+        rating: true, // add Enggid and ServiceId  ----------------------------------------------------------
         enggId: data[0][0]?.ServiceEnggId,
         trackingId: data[0][0]?.ServiceId || data[0][0]?.callbackId,
       });
-    }  
-    else {
+    } else {
       res.status(200).json({
         status: "complete",
         message: "Schedule your service",
@@ -784,18 +817,17 @@ module.exports.getCurrentScheduleService = async (req, res) => {   // to do -> m
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
 //api to get steps and engg deatil for tracker in client application...
 
-module.exports.getStepsAndEnggDetail = async (req,res) => {
+module.exports.getStepsAndEnggDetail = async (req, res) => {
   try {
-    const {trackerId}  = req.params;
+    const { trackerId } = req.params;
 
     const getData = await ReportTable.findOne({ serviceId: trackerId });
 
-    const enggDetails = await ServiceEnggBasicSchema.findOne({EnggId: getData.EnggId});
+    const enggDetails = await ServiceEnggBasicSchema.findOne({
+      EnggId: getData.EnggId,
+    });
 
     let data = [];
 
@@ -804,59 +836,62 @@ module.exports.getStepsAndEnggDetail = async (req,res) => {
     });
     const resp1 = await assignCallback.findOne({
       callbackId: trackerId,
-
     });
 
-    if(resp && resp != null && resp != undefined) {
+    if (resp && resp != null && resp != undefined) {
       data = resp;
-    }else if(resp1 && resp1 != null && resp1 != undefined){
+    } else if (resp1 && resp1 != null && resp1 != undefined) {
       data = resp1;
     }
 
+    console.log(data);
 
-console.log(data);
+    function processSlots(slots) {
+      if (slots.length === 1) {
+        return [slots[0]];
+      } else if (slots.length > 1) {
+        const startTime = slots[0].split("-")[0];
+        const endTime = slots[slots.length - 1].split("-")[1];
+        return [`${startTime}-${endTime}`];
+      }
+      return "";
+    }
 
-function processSlots(slots) {
-  if (slots.length === 1) {
-      return [slots[0]];
-  } else if (slots.length > 1) {
-      const startTime = slots[0].split('-')[0];
-      const endTime = slots[slots.length - 1].split('-')[1];
-      return [`${startTime}-${endTime}`];
-  }
-  return '';
-}
-
-const calucalteTime = processSlots(data.Slot)
-console.log("Calculating", calucalteTime);
+    const calucalteTime = processSlots(data.Slot);
+    console.log("Calculating", calucalteTime);
 
     const responsedata = {
       enggname: enggDetails.EnggName,
       enggId: getData.EnggId,
       enggImage: enggDetails.EnggPhoto,
       enggPhone: enggDetails.PhoneNumber,
-      slot: convertTo12HourFormat((calucalteTime[0]).split('-')[0]) +"-"+ convertTo12HourFormat((calucalteTime[0]).split('-')[1]),
-    }
+      slot:
+        convertTo12HourFormat(calucalteTime[0].split("-")[0]) +
+        "-" +
+        convertTo12HourFormat(calucalteTime[0].split("-")[1]),
+    };
 
-    res.status(200).json({status:"success", steps: getData.Steps, EnggDetails: responsedata});
-
+    res.status(200).json({
+      status: "success",
+      steps: getData.Steps,
+      EnggDetails: responsedata,
+    });
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .json({ error: "Error while fetching current active client service" })
+      .json({ error: "Error while fetching current active client service" });
   }
 };
-
 
 //-------------------------------------------------------------------------------------------------------------------------------------
 //razor pay API  client can purchase memebership...
 
 module.exports.clientPayment = async (req, res) => {
   try {
-    const { amount, currency, JON, MembershipType} = req.body;
+    const { amount, currency, JON, MembershipType, Discount } = req.body;
 
-    console.log("MembershipType",MembershipType)
+    console.log("MembershipType", MembershipType);
 
     if (!amount || !currency) {
       return res
@@ -876,13 +911,40 @@ module.exports.clientPayment = async (req, res) => {
       receipt: receipt,
       partial_payment: false,
     });
+
+    // console.log("================", order.id); //save in Membership Table
+
     if (order.statusCode === 400) {
       return res
         .status(400)
         .json({ message: "Something Went Wrong", data: order });
     }
 
-    const orderDetail = await memberShipDetails.find({})
+    const clientData = await RegisterClientDetails.findOne({
+      JobOrderNumber: JON,
+    });
+
+    if (!clientData) {
+      return res.status(404).json({
+        error: "Client not found",
+      });
+    }
+    // Update client membership type
+    clientData.MembershipType = MembershipType;
+    await clientData.save();
+
+    const startDate = new Date();
+    const EndDate = new Date(startDate.setMonth(startDate.getMonth() + 12));
+    await memberShipDetails.create({
+      JobOrderNumber: JON,
+      MembershipType,
+      StartDate: new Date(),
+      EndDate,
+      Discount,
+      PricePaid: amount,
+      OrderId: order.id,
+      MembershipInvoice: "MembershipInvoice.pdf",
+    });
 
     return res
       .status(200)
@@ -893,4 +955,236 @@ module.exports.clientPayment = async (req, res) => {
   }
 };
 
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//controller to handle check Payment status Through Order_Id and Make Pdf(Membership Invoice)
+const caluclateMembershipPriceAndTime = async (
+  MembershipData,
+  updateMembership
+) => {
+  const LastSecondCount = MembershipData[MembershipData.length - 2];
+  // console.log("=============================",LastSecondCount.EndDate);
+  if (new Date(LastSecondCount.EndDate) < Date.now()) {
+    const dataExpires = await memberShipDetails.findOneAndUpdate(
+      { OrderId: LastSecondCount.OrderId },
+      { isDisable: true }
+    );
+    return 0;
+  }
+  const differenceInDays = new Date(LastSecondCount.EndDate) - Date.now();
+  const dateDifference = Math.floor(differenceInDays / (1000 * 60 * 60 * 24));
+
+  const MembershipPriceData = await createMemberShipOnTables.findOne({
+    MembershipName:
+      LastSecondCount.MembershipType === "warrenty"
+        ? "Platinum"
+        : LastSecondCount.MembershipType,
+  });
+
+  const PriviousMembershipPrice =
+    (MembershipPriceData.MembershipPrice / 365) * dateDifference; //previous membership price
+
+  const appliedMembership = await createMemberShipOnTables.findOne({
+    MembershipName: updateMembership.MembershipType,
+  });
+
+  const appliedMembershipPriceDaysToBeAdded =
+    PriviousMembershipPrice / (appliedMembership.MembershipPrice / 365);
+
+  return appliedMembershipPriceDaysToBeAdded;
+};
+module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const MembershipData = await memberShipDetails.find({ JobOrderNumber });
+
+    const Details = MembershipData[MembershipData.length - 1];
+
+    if (Details.IsPaid === true) {
+      const data = {
+        MembershipType: Details.MembershipType,
+        EndDate: Details.EndDate,
+        PricePaid: Details.PricePaid,
+        MembershipInvoice: Details.MembershipInvoice,
+      };
+      return res.status(200).json({ status: "success", Details: data });
+    }
+
+    const instance = new Razorpay({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    });
+
+    const order = await instance.orders.fetch(Details.OrderId);
+
+    if (order.status === "paid") {
+      const updateMembership = await memberShipDetails.findOneAndUpdate(
+        { OrderId: Details.OrderId },
+        { IsPaid: true }
+      );
+
+      const DaysToBeAdded = await caluclateMembershipPriceAndTime(
+        MembershipData,
+        updateMembership
+      );
+
+      const newDate = new Date();
+      newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+
+      const finalPurchase = await memberShipDetails.findOneAndUpdate(
+        { OrderId: Details.OrderId },
+        { EndDate: newDate }
+      );
+
+      const data = {
+        MembershipType: finalPurchase.MembershipType,
+        EndDate: finalPurchase.EndDate,
+        PricePaid: finalPurchase.PricePaid,
+        MembershipInvoice: finalPurchase.MembershipInvoice,
+      };
+
+      const ClientData = await RegisterClientDetails.find({ JobOrderNumber });
+      const appliedMembership = await createMemberShipOnTables.findOne({
+        MembershipName: finalPurchase.MembershipType,
+      });
+
+      const billData = {
+        ClientData,
+        finalPurchase,
+        appliedMembership,
+      };
+
+      const fileName = `membershipInvoice${JobOrderNumber}${new Date().getTime()}.pdf`;
+      const htmlFilePath = await pdfFormat(billData);
+      (options = {
+        height: "1200px",
+        width: "850px",
+        format: "A4",
+      }),
+        htmlpdf
+          .create(htmlFilePath, options)
+          .toFile(
+            path.join(
+              process.cwd(),
+              `./public/MembershipInvoice/MembershipBillReport/${fileName}`
+            ),
+            function (err, res) {
+              // to do chage file path
+              if (err) return console.error(err);
+              console.log(res);
+            }
+          );
+
+      await memberShipDetails.findOneAndUpdate(
+        { OrderId: Details.OrderId },
+        { MembershipInvoice: fileName }
+      );
+
+      return res.status(200).json({
+        status: "success",
+        Details: data,
+      });
+    } else {
+      await memberShipDetails.findOneAndDelete({ OrderId: Details.OrderId });
+      const Detail = MembershipData[MembershipData.length - 1];
+
+      const data = {
+        MembershipType: Detail.MembershipType,
+        EndDate: Detail.EndDate,
+        PricePaid: Detail.PricePaid,
+        MembershipInvoice: Detail.MembershipInvoice,
+      };
+      return res.status(200).json({ status: "success", Details: data });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+};
 //-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------- controller to get membership data includes Price and Featues Details ------------------------------------
+module.exports.getMembershipFeatuesDetails = async (req, res) => {
+  try {
+    const membershipData = await createMemberShipOnTables.find({});
+
+    return res.status(201).json({
+      membershipData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while fetching membership data",
+    });
+  }
+};
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------- controller to get Membership Discount --------------------------------
+
+module.exports.getMembershipDiscount = async (req, res) => {
+  try {
+    const { JobOrderNumber } = req.params;
+
+    const clientData = await RegisterClientDetails.findOne({
+      JobOrderNumber,
+    }).select("MembershipDiscount");
+
+    return res.status(201).json({
+      clientData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while fetching membership Discount",
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+//register firebase token for Push Notification Purpose
+
+// Define the tokens array
+
+// Define and export the function
+module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
+  try {
+    const { userId, firebaseToken } = req.body;
+
+    console.log("------------------->", userId, firebaseToken);
+
+    const splitedData = userId.split("@")[0];
+    const splitedData1 = userId.split("@")[1];
+
+    console.log("--------------->",splitedData,splitedData1);
+
+    let clientToken;
+    let enggToken;
+
+    if (splitedData === "client") {
+      clientToken = await RegisterClientDetails.findOneAndUpdate(
+        { JobOrderNumber: splitedData1 },
+        { firebaseToken }
+      );
+    } else if (splitedData === "engg") {
+      enggToken = await ServiceEnggBasicSchema.findOneAndUpdate(
+        { EnggId: splitedData1 },
+        { firebaseToken }
+      );
+    }
+
+    res.status(200).json({message:"Token added successfully", status: "success"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      error: "Error while savinf firebase notification token",
+    });
+  }
+};

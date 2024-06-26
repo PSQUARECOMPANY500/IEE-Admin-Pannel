@@ -135,19 +135,23 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
       PhoneNumber: bodyData.mobileNumber,
     });
+    console.log("EnggAlreadyExist",EnggAlreadyExist);
+    console.log("EnggAlreadyExist11111111111",bodyData.EnggId);
 
-    if (!EnggAlreadyExist) {
+
+
+    if (EnggAlreadyExist.length > 0) {
       return res
-        .status(400)
-        .json({ message: "Engg is Already Exist with thius Mobile Number" });
+        .status(200)
+        .json({ message: "Engg is Already Exist with this Mobile Number" });
     }
 
 
     const enggData = await ServiceEnggBasicSchema.create({
       EnggName: bodyData.firstName,
-      EnggId: bodyData.EngggId,
+      EnggId: bodyData.EnggId,
       AlternativeNumber: bodyData.AlternativeNumber,
-      // EnggRole: bodyData.EnggRole,  tod ==> --------- unCommented --------------------------------
+      EnggRole: bodyData.EnggRole, 
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
@@ -195,13 +199,21 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
 //function to handle serviceEngg Login
 module.exports.loginEngg = async (req, res) => {
   try {
+    const DeviceId = req.headers['device-id']
     const { EnggId, password } = req.body;
+
+    console.log("00000000000000",req.body)
+    console.log("))))))))))))))",req.headers)
+
+    // console.log("90000000000000000000",DeviceId);
     //firstly check the Engg is exist or not
-    const Engg = await ServiceEnggBasicSchema.findOne({ EnggId });
+    
 
-    const rating = await engineerRating.find({ ServiceEnggId: EnggId });
+    const [Engg, rating] = await Promise.all([
+      ServiceEnggBasicSchema.findOneAndUpdate({ EnggId }, { ActiveDevice: DeviceId }),
+      engineerRating.find({ ServiceEnggId: EnggId })
+    ]);
 
-    // console.log("enggId", rating);
     let count = 0;
 
     rating.map((item) => (count += item.Rating));
@@ -215,8 +227,8 @@ module.exports.loginEngg = async (req, res) => {
     res.json({
       Engg,
       success: true,
-      allotedAdmin: "65e0103005fd2695f3aaf6d4",
-      adminName: "Parabh Simaran",
+      allotedAdmin: "65e0103005fd2695f3aaf6d4",    //to do dynamic
+      adminName: "Parabh Simaran",                //to do dynamic
       Rating,
       token,
     });
@@ -1399,7 +1411,7 @@ module.exports.getEngineerLeveCount = async (req, res) => {
     const { ServiceEnggId } = req.query;
     // console.log("working inside this");
     // console.log(ServiceEnggId);
-    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });0
     // console.log("leaves", leaves);
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ message: "No leaves found" });
@@ -1627,8 +1639,6 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const getData = await ReportInfoModel.find({ EnggId });
 
-    // console.log("preet",getData[0].Steps);
-
     if (!getData) {
       return res
         .status(404)
@@ -1655,12 +1665,21 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
     const ReEvaluateData =
       FianlData[0].questionsDetails[FianlData[0].questionsDetails.length - 1];
 
+    // Checksum for the subCategoriesId and subcategoryname  -- Dark_Shadow
+    if (!ReEvaluateData || ReEvaluateData === undefined) {
+      return res.status(200).json({
+        ServiceId: ServiceId,
+        subCategoriesId: "No Data Found",
+        subcategoryname: "No Data Found",
+        Steps: FianlData[0].Steps,
+      });
+    }
     // console.log(ReEvaluateData);
-    res.status(200).json({
+    return res.status(200).json({
       ServiceId: ServiceId,
       subCategoriesId: ReEvaluateData.subCategoriesId,
       subcategoryname: ReEvaluateData.subcategoryname,
-      Steps: getData[0].Steps,
+      Steps: FianlData[0].Steps,
     });
   } catch (error) {
     console.log(error);
@@ -2398,3 +2417,66 @@ module.exports.updatePaymentStatus = async (req, res) => {
   }
 };
 //=======================================================Razorpay-api-ends====================================================================
+
+
+
+
+module.exports.canclePaymentLink = async (req, res) => {
+  const { serviceId } = req.body;
+
+  const data = await ReportInfoModel.findOne({ serviceId });
+
+  if (!data) {
+    return res.status(404).json({ message: "No data found" });
+  }
+
+  const instance = new Razorpay({
+    key_id: process.env.key_id,
+    key_secret: process.env.key_secret,
+  });
+
+  try {
+    if (data.paymentType === "Qr") {
+      const id = data.payment_id;
+      const response = await instance.qrCode.fetch(id);
+      if (response.status === "active") {
+        await instance.qrCode.close(id);
+        data.payment_id = " ";
+        data.paymentType = " ";
+        await data.save();
+        return res.status(200).json({
+          status: "success",
+          message: "Payment Qr cancelled Successfully.",
+        });
+      } else if (
+        response.status === "closed" &&
+        response.close_reason === "paid"
+      ) {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    } else if (data.paymentType === "Link") {
+      const id = data.payment_id;
+      const response = await instance.paymentLink.fetch(id);
+      console.log("response ==== >>>> ", response);
+      if (response.status === "created") {
+        await instance.paymentLink.cancel(id);
+        data.payment_id = " ";
+        data.paymentType = " ";
+        await data.save();
+        return res.status(200).json({
+          status: "success",
+          message: "Payment Link cancelled Successfully.",
+        });
+      } else if (response.status === "captured" || response.status === "paid") {
+        return res
+          .status(200)
+          .json({ status: "success", message: "Payment already done" });
+      }
+    }
+  } catch (error) {
+    console.log("this is the error", error);
+    res.status(204).json({ status: "error", message: error });
+  }
+};

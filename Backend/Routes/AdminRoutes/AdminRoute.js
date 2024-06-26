@@ -12,6 +12,9 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 const uploadClientData = require("../../Multer/ClientDocumentUpload");
 
 const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
+
+const { token } = require("../../Controllers/AdminController/AdminController")
+
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -313,6 +316,20 @@ router.put(
 router.post('/todo/addTodo', adminContoller.AddTodo);
 
 
+
+
+
+router.post("/registerNewMembershipData", adminContoller.postMembershipData)
+
+
+
+router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
+
+
+
+
+
+// router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
 
 
 

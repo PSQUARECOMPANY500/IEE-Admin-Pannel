@@ -31,22 +31,50 @@ function App() {
 
   const role = localStorage.getItem("Role");
 
-
   return (
     <>
       <Routes>
         {/* login routes */}
         <Route
-          path="/" element={
-            !isLoggedIn ? <LoginPage name='select departments'><SelectDepartment /></LoginPage> :
-              (
-                <Navigate to={role === "CRM" ? "/Clients" : role === "ErectionAdmin" ?
-                  "/ErectionDashboard" : "/Dashboard"} />
-              )
+          path="/"
+          element={
+            !isLoggedIn ? (
+              <LoginPage name="select departments">
+                <SelectDepartment />
+              </LoginPage>
+            ) : (
+              <Navigate
+                to={
+                  role === "CRM"
+                    ? "/Clients"
+                    : role === "ErectionAdmin"
+                    ? "/ErectionDashboard"
+                    : "/Dashboard"
+                }
+              />
+            )
           }
         />
-        <Route path="/login" element={!isLoggedIn ? <LoginPage><LoginPageInput /></LoginPage> : <Navigate to={role === "CRM" ? "/Clients" : role === "ErectionAdmin" ?
-          "/ErectionDashboard" : "/Dashboard"} />} />
+        <Route
+          path="/login"
+          element={
+            !isLoggedIn ? (
+              <LoginPage>
+                <LoginPageInput />
+              </LoginPage>
+            ) : (
+              <Navigate
+                to={
+                  role === "CRM"
+                    ? "/Clients"
+                    : role === "ErectionAdmin"
+                    ? "/ErectionDashboard"
+                    : "/Dashboard"
+                }
+              />
+            )
+          }
+        />
         <Route
           path="/forgetpassword"
           element={
@@ -55,8 +83,15 @@ function App() {
                 <SendPasswordVerificationCode />
               </LoginPage>
             ) : (
-              <Navigate to={role === "CRM" ? "/Clients" : role === "ErectionAdmin" ?
-                "/ErectionDashboard" : "/Dashboard"} />
+              <Navigate
+                to={
+                  role === "CRM"
+                    ? "/Clients"
+                    : role === "ErectionAdmin"
+                    ? "/ErectionDashboard"
+                    : "/Dashboard"
+                }
+              />
             )
           }
         />
@@ -68,8 +103,15 @@ function App() {
                 <ForgetPasswordOTP />
               </LoginPage>
             ) : (
-              <Navigate to={role === "CRM" ? "/Clients" : role === "ErectionAdmin" ?
-                "/ErectionDashboard" : "/Dashboard"} />
+              <Navigate
+                to={
+                  role === "CRM"
+                    ? "/Clients"
+                    : role === "ErectionAdmin"
+                    ? "/ErectionDashboard"
+                    : "/Dashboard"
+                }
+              />
             )
           }
         />
@@ -81,8 +123,15 @@ function App() {
                 <EnterNewPassword />
               </LoginPage>
             ) : (
-              <Navigate to={role === "CRM" ? "/Clients" : role === "ErectionAdmin" ?
-                "/ErectionDashboard" : "/Dashboard"} />
+              <Navigate
+                to={
+                  role === "CRM"
+                    ? "/Clients"
+                    : role === "ErectionAdmin"
+                    ? "/ErectionDashboard"
+                    : "/Dashboard"
+                }
+              />
             )
           }
         />
@@ -104,7 +153,7 @@ function App() {
         <Route
           path="/Dashboard"
           element={
-            (isLoggedIn && role === "ServiceAdmin") ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Dashboard />
               </Sidebar>
@@ -116,7 +165,7 @@ function App() {
         <Route
           path="/ErectionDashboard"
           element={
-            (isLoggedIn && role === "ErectionAdmin") ? (
+            isLoggedIn && role === "ErectionAdmin" ? (
               <Sidebar>
                 <ErectionDashboard />
               </Sidebar>
@@ -128,7 +177,7 @@ function App() {
         <Route
           path="/ErectionEngeeniers"
           element={
-            (isLoggedIn && role === "ErectionAdmin") ? (
+            isLoggedIn && role === "ErectionAdmin" ? (
               <Sidebar>
                 <ErectionEngineers />
               </Sidebar>
@@ -140,7 +189,7 @@ function App() {
         <Route
           path="/Requests"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Request />
               </Sidebar>
@@ -152,7 +201,7 @@ function App() {
         <Route
           path="/Memberships"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Membership />
               </Sidebar>
@@ -164,7 +213,7 @@ function App() {
         <Route
           path="/Engeeniers"
           element={
-            (isLoggedIn && (role === "ServiceAdmin")) ? (
+            isLoggedIn && role === "ServiceAdmin" ? (
               <Sidebar>
                 <Enggeniers />
               </Sidebar>
@@ -176,7 +225,7 @@ function App() {
         <Route
           path="/Clients"
           element={
-            (isLoggedIn && (role === "ServiceAdmin" || role === "CRM")) ? (
+            isLoggedIn && (role === "ServiceAdmin" || role === "CRM") ? (
               <Sidebar>
                 <Clients />
               </Sidebar>
@@ -188,13 +237,7 @@ function App() {
 
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
-
-
-
-
-
       </Routes>
-
     </>
   );
 }
