@@ -1891,8 +1891,9 @@ code {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 15rem;
+  grid-column-gap: 12rem;
   margin-top: 1rem;
+
 }
 
 @media screen and (min-width: 900px) and (max-width: 1600px) {
@@ -1904,9 +1905,14 @@ code {
 .client-form-left-container {
   display: grid;
   grid-template-rows: 1fr 1fr;
+  width: 100%;
+}
+.client-form-right-container{
+  width: 100%;
 }
 .client-form-details {
   padding: 3rem 2rem 0 2rem;
+
 }
 
 .client-salesman-details {
@@ -1920,8 +1926,8 @@ code {
 .client-architect {
   padding: 2rem;
 }
-.file-uploader {
-  margin-top: 0.4rem;
+.file-uploader{
+  margin-top: 0rem;
 }
 .client-form-details-heading {
   color: #444444;
@@ -1937,7 +1943,14 @@ code {
   grid-row-gap: 1.5rem;
   margin-top: 1rem;
 }
-.client-form-md-discount {
+.client-form-document-input-wrapper{
+  display: grid;
+  grid-template-columns: 46.5% 46.5%;
+  grid-column-gap: 3.1rem;
+  margin-top: 0.2rem;
+  grid-row-gap: 0.2rem;
+}
+.client-form-md-discount{
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
@@ -2516,6 +2529,7 @@ text-align: center;
   font-size: 0.88rem;
   font-family: poppins;
   padding-bottom: 5px;
+  width: 18rem !important;
 }
 .file-upload > input {
   border: none;
@@ -2584,13 +2598,14 @@ text-align: center;
   font-family: Poppins;
   font-size: 0.9;
 }
-.dropdown-icon-container {
+.dropdown-icon-container -client-form{
   position: absolute;
   right: 0;
   cursor: pointer;
 }
 
-.option-container {
+
+.option-container{
   position: absolute;
   border: 1px solid #70707080;
   border-radius: 10px;

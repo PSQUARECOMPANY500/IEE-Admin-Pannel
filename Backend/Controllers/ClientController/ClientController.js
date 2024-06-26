@@ -1010,34 +1010,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
       return res.status(200).json({ status: "success", Details: data });
     }
 
-    // const htmlFilePath = fs.readFileSync(
-    //   path.join(
-    //     process.cwd(),
-    //     "./public/MembershipInvoice/membershipInvoiceTemplate.html"
-    //   ),
-    //   "utf-8"
-    // );
-    const htmlFilePath = await pdfFormat("preet");
-
-  
-
-    options = {
-      height: '1000px', // allowed units: mm, cm, in, px
-      // width: "8in", // allowed units: mm, cm, in, px
-      format: "A4", // allowed units: A3, A4, A5, Legal, Letter, Tabloid
-      // orientation: "portrait", // portrait or landscape
-    },
-
-
-      htmlpdf
-        .create(htmlFilePath, options)
-        .toFile("./outputfile.pdf", function (err, res) {   // to do chage file path
-          if (err) return console.error(err);
-          console.log(res);
-        });
-
-    return res.status(200).json({ status: "success", Details: "data" });   // to do -- remove this line
-
     const instance = new Razorpay({
       key_id: process.env.key_id,
       key_secret: process.env.key_secret,
@@ -1051,7 +1023,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         { IsPaid: true }
       );
 
-     
       const DaysToBeAdded = await caluclateMembershipPriceAndTime(
         MembershipData,
         updateMembership
@@ -1059,9 +1030,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
 
       const newDate = new Date();
       newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
-
-      //       const newDate = new Date();
-      // newDate.setDate(newDate.getDate() + 365);
 
       const finalPurchase = await memberShipDetails.findOneAndUpdate(
         { OrderId: Details.OrderId },
@@ -1074,6 +1042,43 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         PricePaid: finalPurchase.PricePaid,
         MembershipInvoice: finalPurchase.MembershipInvoice,
       };
+
+      const ClientData = await RegisterClientDetails.find({ JobOrderNumber });
+      const appliedMembership = await createMemberShipOnTables.findOne({
+        MembershipName: finalPurchase.MembershipType,
+      });
+
+      const billData = {
+        ClientData,
+        finalPurchase,
+        appliedMembership,
+      };
+
+      const fileName = `membershipInvoice${JobOrderNumber}${new Date().getTime()}.pdf`;
+      const htmlFilePath = await pdfFormat(billData);
+      (options = {
+        height: "1200px",
+        width: "850px",
+        format: "A4",
+      }),
+        htmlpdf
+          .create(htmlFilePath, options)
+          .toFile(
+            path.join(
+              process.cwd(),
+              `./public/MembershipInvoice/MembershipBillReport/${fileName}`
+            ),
+            function (err, res) {
+              // to do chage file path
+              if (err) return console.error(err);
+              console.log(res);
+            }
+          );
+
+      await memberShipDetails.findOneAndUpdate(
+        { OrderId: Details.OrderId },
+        { MembershipInvoice: fileName }
+      );
 
       return res.status(200).json({
         status: "success",
@@ -1144,14 +1149,42 @@ module.exports.getMembershipDiscount = async (req, res) => {
 //-------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
 
-// --------------------------- API to Purchase Membership Through Client APP -------------------------
-module.exports.purchaseMembershipThroughClientAPP = async (req, res) => {
+//register firebase token for Push Notification Purpose
+
+// Define the tokens array
+
+// Define and export the function
+module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
   try {
+    const { userId, firebaseToken } = req.body;
+
+    console.log("------------------->", userId, firebaseToken);
+
+    const splitedData = userId.split("@")[0];
+    const splitedData1 = userId.split("@")[1];
+
+    console.log("--------------->",splitedData,splitedData1);
+
+    let clientToken;
+    let enggToken;
+
+    if (splitedData === "client") {
+      clientToken = await RegisterClientDetails.findOneAndUpdate(
+        { JobOrderNumber: splitedData1 },
+        { firebaseToken }
+      );
+    } else if (splitedData === "engg") {
+      enggToken = await ServiceEnggBasicSchema.findOneAndUpdate(
+        { EnggId: splitedData1 },
+        { firebaseToken }
+      );
+    }
+
+    res.status(200).json({message:"Token added successfully", status: "success"});
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      error: "Error while Purchasing Membership through Client",
+      error: "Error while savinf firebase notification token",
     });
   }
 };
-//-------------------------------------------------------------------------------------------------------------------------------------

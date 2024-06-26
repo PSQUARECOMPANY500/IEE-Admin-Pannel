@@ -1,30 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient, clientModalInformation }) => {
-
-
+const elevatorOpeningSelection = ({
+  Flevel,
+  degree,
+  array,
+  handleClick,
+  numberOfOpenings,
+  stops,
+}) => {
   return (
     <>
-      <div className="level-main-container">
+      <div
+        className={`level-main-container ${
+          numberOfOpenings === 0 || numberOfOpenings === 1 || stops === ""
+            ? "display-block"
+            : ""
+        }`}
+      >
         <div className="level-heading">
-          <span className="levelHeading">Level</span>
-          <span className="heading-badge-originals">Original opening</span>
-          <span className="heading-badges180">180</span>
-
+          <div className="level-opening">
+            <span className="levelHeading">Level</span>
+            <span className="heading-badge">Original opening</span>
+          </div>
           {Object.entries(degree).map(
             ([key, value], index, array) =>
-              value !== "" && (
-                <span className="heading-badge" key={index}>
-                  {value === "90dL"
-                    ? "90° Left"
-                    : value === "90dR"
-                    ? "90° Right"
-                    : "180°"}
-                </span>
+              value !== "" &&
+              value !== undefined &&
+              value !== null && (
+                <React.Fragment key={index}>
+                  <span className="heading-badge-dynamic">
+                    {value === "90dL"
+                      ? "90° Left"
+                      : value === "90dR"
+                      ? "90° Right"
+                      : value === "180d" && "180°"}
+                  </span>
+                </React.Fragment>
               )
           )}
-
-    </div>
+        </div>
         <div className="level-box-container">
           <div>
             {Flevel &&
@@ -42,28 +56,19 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient
               const rI = rowIndex;
               return (
                 <div className="level-selector-parent" key={rowIndex}>
-                  {/* Render the heading for each row */}
-                  <span className="level-heading">
-                    {rowIndex === 0 ? "B/W" : `Level${rowIndex}`}
-                  </span>
                   {row.map((col, colIndex) => {
                     const cI = colIndex;
                     return (
                       <span
                         className={`level-selector ${
-                          array[rI][cI]
-                          ? isClient 
-                            ? "level-selector-active client-active"
-                            : "level-selector-active"
-                            : ""
+                          array[rI][cI] ? "level-selector-active" : ""
                         }`}
-                        onClick={() => handleClick(rowIndex, colIndex)}
+                        onClick={() => handleClick(rI, cI,true)}
                         key={colIndex}
                       ></span>
                     );
                   })}
                 </div>
-        
               );
             })}
           </div>

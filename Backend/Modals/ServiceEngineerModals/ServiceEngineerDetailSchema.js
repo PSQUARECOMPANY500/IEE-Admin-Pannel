@@ -137,6 +137,9 @@ const EnggBasicDetail = new Schema(
     ActiveDevice:{
       type:String,
       default:""
+    },
+    firebaseToken:{
+      type:String
     }
   },
   {

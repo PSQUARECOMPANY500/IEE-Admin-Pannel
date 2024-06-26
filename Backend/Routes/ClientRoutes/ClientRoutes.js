@@ -74,4 +74,8 @@ router.get("/getMembershipDiscount/:JobOrderNumber",clientController.getMembersh
 router.get("/checkpaymentstatusandmakeinvoice/:JobOrderNumber", clientController.checkPaymentStatusAndMakeInvoice)
 
 
+router.post('/registerFirebaseToken', clientController.firebaseTokenForPushNotificationPurpose);
+
+
+
 module.exports = router;

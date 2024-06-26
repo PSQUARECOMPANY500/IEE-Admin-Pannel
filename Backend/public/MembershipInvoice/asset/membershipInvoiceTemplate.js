@@ -1,8 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const moment = require("moment");
-
 const crossIconPath = path.join(
   process.cwd(),
   "./public/MembershipInvoice/asset/crossIcon.png"
@@ -49,9 +47,6 @@ const imageConvertor = async (crossIconPath) => {
 };
 
 const pdfFormat = async (data) => {
-
-    console.log("preettttttttttttttttttttt",data.appliedMembership.MembershipPrice);
-
   return `
 <head>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,7 +105,7 @@ body {
                             )} alt="phoneIcon" class="icon"
                                     style="height: 15px; margin-left: 5px;"></td>
                             <td>
-                                <p style="margin-left:7px; margin-top:0px; white-space: nowrap">093566-13000</p>
+                                <p style="margin-left:7px; margin-top:0px;">093566</p>
                             </td>
 
                             <td> <img src=${await imageConvertor(
@@ -138,15 +133,16 @@ body {
 
             <div class="left-precenter" style="line-height:0.7rem; position: absolute;">
                 <h3>TO</h3>
-                <p>${data.ClientData[0].name}</p>
-                <p>${data.ClientData[0].Address}</p>
-                <p>${data.ClientData[0].PhoneNumber}</p>
+                <p>Vivek singh</p>
+                <p>Director Health Services Sector-35</p>
+                <p>160059</p>
+                <p>+91-7884512455</p>
             </div>
 
             <div class="right-precenter" style="line-height:0.7rem; position: absolute; right: 0;">
-                <p><span style="font-weight: 600;">JON NO:</span>${data.ClientData[0].JobOrderNumber}</p>
-                <p><span style="font-weight: 600;"> INVOICE NO:</span> ${(String(data.ClientData[0]._id)).slice(-5)}</p>
-                <p><span style="font-weight: 600;">Date:</span>${moment(new Date().toISOString()).format("DD-MM-YYYY")}</p>
+                <p><span style="font-weight: 600;">JON NO:</span> 24551</p>
+                <p><span style="font-weight: 600;"> INVOICE NO:</span> 24551</p>
+                <p><span style="font-weight: 600;">Date:</span> 25-04-2024</p>
             </div>
 
         </div>
@@ -169,13 +165,13 @@ body {
                                 <thead>
 
                                     <tr>
-                                        <th >Date</th>
+                                        <th>Date</th>
                                         <th>Type</th>
                                         <th style="white-space:nowrap;">Service Period</th>
                                         <th>Amount</th>
-                                        <th>Discount</th>
                                         <th>SGST</th>
                                         <th>CGST</th>
+                                        <th>Discount</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
@@ -184,14 +180,14 @@ body {
 
                             <tbody>
                                 <tr>
-                                <td style="padding: 40px 45px 30px 45px; white-space: nowrap">${moment(new Date().toISOString()).format("DD-MM-YYYY")}</td>
-                                <td style="padding: 20px 45px;">${data.finalPurchase.MembershipType}</td>
-                                <td style="padding: 20px 45px;">1</td>
-                                <td style="padding: 20px 45px;">${data.appliedMembership.MembershipPrice}</td>
-                                <td style="padding: 20px 45px;">${Number(data.appliedMembership.MembershipPrice) - (Number(data.appliedMembership.MembershipPrice) - (Number(data.appliedMembership.MembershipPrice) * Number(data.finalPurchase.Discount) / 100))}</td>
-                                <td style="padding: 20px 45px;">${((Number(data.appliedMembership.MembershipPrice) - (Number(data.appliedMembership.MembershipPrice) * Number(data.finalPurchase.Discount)) / 100) * 9) / 100}</td>
-                                <td style="padding: 20px 45px;">${((Number(data.appliedMembership.MembershipPrice) - (Number(data.appliedMembership.MembershipPrice) * Number(data.finalPurchase.Discount)) / 100) * 9) / 100}</td>
-                                <td style="padding: 20px 45px;">${data.finalPurchase.PricePaid}</td>
+                                    <td style="padding: 20px 50px;">11:02:2024</td>
+                                    <td style="padding: 20px 50px;">Gold</td>
+                                    <td style="padding: 20px 50px;">1</td>
+                                    <td style="padding: 20px 50px;">42,000</td>
+                                    <td style="padding: 20px 50px;">3,780</td>
+                                    <td style="padding: 20px 50px;">3,780</td>
+                                    <td style="padding: 20px 50px;">0</td>
+                                    <td style="padding: 20px 50px;">0</td>
                                 </tr>
                             </tbody>
 
@@ -211,24 +207,96 @@ body {
 
                     <table style="margin-top:1rem;">
                         <tbody>
-                        ${(data.appliedMembership.ServiceOffer).map((item)=>{
-                            if(!item.isAvailable) return;
-                            return(
-                                `<tr>
-                                    <td>
-                                        <div
-                                            style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p style="margin-left:0.6rem;">${item.ServiceDescription}</p>
-                                    </td>
-                                </tr>`
-                            )
-                        }).join('')
-                        }
-                           
-                            
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">LABOUR AND LUBRICATION</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">MINOR PARTS COVERED</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">6 SERVICE VISITS</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">AI-BASED ANALYTICS</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">MAJOR PARTS COVERED</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">12 SERVICE VISITS</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">6 TECHNICAL PREVENTIVE SAFETY ANALYSIS</p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">ANNUAL EQUIPMENT AUDIT </p>
+                                </td>
+                            </tr>
+                            <tr style="margin-top:6rem;">
+                                <td>
+                                    <div
+                                        style="width: 20px; height: 20px; background-color: #F8AC1D; border-radius: 50%;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p style="margin-left:0.6rem;">ANNUAL SAFETY AUDIT</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
 

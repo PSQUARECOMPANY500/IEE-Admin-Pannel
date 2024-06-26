@@ -202,6 +202,9 @@ module.exports.loginEngg = async (req, res) => {
     const DeviceId = req.headers['device-id']
     const { EnggId, password } = req.body;
 
+    console.log("00000000000000",req.body)
+    console.log("))))))))))))))",req.headers)
+
     // console.log("90000000000000000000",DeviceId);
     //firstly check the Engg is exist or not
     
