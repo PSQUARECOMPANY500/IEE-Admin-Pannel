@@ -1517,3 +1517,21 @@ export const getCheckInCheckOuts = async (serviceId, date) => {
 
   }
 }
+
+// ----------------------action of Offer discount by service id---------------------------
+
+export const offerDiscountByServiceId = async (JobOrderNumber, Discount, GST) => {
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/offerDiscountByServiceEngg`,{
+      JobOrderNumber,
+      Discount,
+      GST
+    });
+    toast.success("Membership Discount added successfully");
+
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching data", error)
+
+  }
+}

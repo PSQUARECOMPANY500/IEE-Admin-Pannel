@@ -18,6 +18,7 @@ import { useMediaQuery } from '@react-hook/media-query';
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
+import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
 
 const Sidebar = ({ children }) => {
   const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
@@ -122,6 +123,7 @@ const Sidebar = ({ children }) => {
         name: "sos",
         icon: <MdEngineering />,
       },
+      
     ];
   } else if (role === "ErectionAdmin") {
     menueItems = [
@@ -164,6 +166,10 @@ const Sidebar = ({ children }) => {
         break;
       case "/ErectionEngeeniers":
         setTopBarHeading("Engineers");
+        break;
+      // Add more cases for other pages
+      case "/todo":
+        setTopBarHeading("ToDo");
         break;
       // Add more cases for other pages
       default:
@@ -301,7 +307,7 @@ const Sidebar = ({ children }) => {
             >
               <div className="sub-menu">
                 <hr></hr>
-                <Link to="/" className="sub-menue-link">
+                <Link to="/todo" className="sub-menue-link">
                   <p>Todo</p>
                 </Link>
                 <Link to="/" className="sub-menue-link">

@@ -16,7 +16,7 @@ import ClientElevatorDetails from "./ClientElevatorDetails";
 
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const modalRef = useRef();
-  // const cardRef = useRef();
+  
 
   // Close modal when clicking outside of it
   const handleClickOutsideModal = (event) => {

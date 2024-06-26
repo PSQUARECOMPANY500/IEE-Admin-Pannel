@@ -8,8 +8,8 @@ const elevatorOpeningSelection = ({ Flevel, degree, array, handleClick, isClient
       <div className="level-main-container">
         <div className="level-heading">
           <span className="levelHeading">Level</span>
-          <span className="heading-badge-original">Original opening</span>
-          <span className="heading-badge180">180</span>
+          <span className="heading-badge-originals">Original opening</span>
+          <span className="heading-badges180">180</span>
 
           {Object.entries(degree).map(
             ([key, value], index, array) =>

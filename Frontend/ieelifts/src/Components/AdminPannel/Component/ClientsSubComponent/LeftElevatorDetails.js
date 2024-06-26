@@ -17,12 +17,13 @@ const LeftElevatorDetails = ({
     numberofopenings: "04",
     contructionmaterial: clientModalInformation?.elevatorDetails?.constructionMaterial,
     
+    
   });
 
   console.log( "groundOrStilt",groundOrStilt)
 
 
-  // console.log("preetttttttttt",clientModalInformation.elevatorDetails.stops.Basement)
+  console.log("preetttttttttt",clientModalInformation)
 
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
@@ -46,7 +47,7 @@ const LeftElevatorDetails = ({
         </div>
 
         <div className="capacity-container">
-          <div>
+          {/* <div>
             <AnimatedInput
               label={"10"}
               w="15vw"
@@ -55,7 +56,17 @@ const LeftElevatorDetails = ({
               disabled={true}
               
             />
-          </div>
+          </div> */}
+
+          <div>
+          <ElevatorInput
+            label={"courseName"}
+            name={"types"}
+            value={clientFormData.purpose}
+            onChange={hadleInputChnage}
+            w="15vw"
+          />
+        </div>
           <div className="left-selector-container">
             <div className="selector-container">
               <span
