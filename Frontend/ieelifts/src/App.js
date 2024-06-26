@@ -22,6 +22,7 @@ import SelectDepartment from "./Components/AdminPannel/Pages/SelectDepartment";
 import ErectionDashboard from "./Components/ErectionPannel/MainMenu/ErectionDashboard";
 import ErectionEngineers from "./Components/ErectionPannel/MainMenu/ErectionEngineers";
 import { useState } from "react";
+import Todo  from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
 
 function App() {
   const isLoggedIn = useSelector(
@@ -86,7 +87,18 @@ function App() {
           }
         />
 
-
+<Route
+          path="/todo"
+          element={
+            (isLoggedIn && role === "ServiceAdmin") ? (
+              <Sidebar>
+                <Todo/>
+              </Sidebar>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
 
         {/* pages routes */}
         <Route

@@ -165,6 +165,9 @@ const Sidebar = ({ children }) => {
       case "/ErectionEngeeniers":
         setTopBarHeading("Engineers");
         break;
+      case "/todo":
+        setTopBarHeading("Todo");
+        break;
       // Add more cases for other pages
       default:
         setTopBarHeading("Default Heading");
@@ -301,7 +304,7 @@ const Sidebar = ({ children }) => {
             >
               <div className="sub-menu">
                 <hr></hr>
-                <Link to="/" className="sub-menue-link">
+                <Link to="/todo" className="sub-menue-link">
                   <p>Todo</p>
                 </Link>
                 <Link to="/" className="sub-menue-link">

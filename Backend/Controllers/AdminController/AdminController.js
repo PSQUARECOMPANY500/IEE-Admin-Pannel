@@ -49,7 +49,7 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 const { response } = require("express");
-
+const TodoSchema = require('../../Modals/TodoModel/TodoSchema');
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3357,5 +3357,24 @@ module.exports.DepositeEnggCash = async (req, res) => {
     });
   }
 };
+
+/**
+ * ---------------------------------------Rahul Kumar 24/06/2024---------------------------
+ */
+// api to add todo task
+module.exports.AddTodo = async (req, res)=>{
+  try{
+    const {todo} = req.body;
+      await TodoSchema.create(todo);     
+      res.status(200).json({
+        message: "Task added successfully"
+      })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while adding the task"
+    })
+  }
+} 
 
 //-------------------------------------------------------------------------------------------------------

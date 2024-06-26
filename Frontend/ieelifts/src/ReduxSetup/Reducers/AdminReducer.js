@@ -55,6 +55,7 @@ import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 
 import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
+import {ADD_TODO} from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -947,3 +948,22 @@ export const ClearClientFormData = (state = initialState, action) => {
       return state;
   }
 };
+
+// const addTodo = {
+//   todo: null,
+// };
+
+// export const addTodoReducer = (
+//   state = addTodo,
+//   action
+// ) => {
+//   switch (action.type) {
+//     case ADD_TODO:
+//       return {
+//         ...state,
+//         addTodo: action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// }; 

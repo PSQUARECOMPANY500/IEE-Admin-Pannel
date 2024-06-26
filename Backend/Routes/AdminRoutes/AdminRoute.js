@@ -309,6 +309,8 @@ router.put(
   adminContoller.editEnggDetailsForm            //
 );
 
+//---------route to add todo ----------Rahul Kumar------------------
+router.post('/todo/addTodo', adminContoller.AddTodo);
 
 
 

@@ -97,7 +97,7 @@ export const UPDATE_CLIENT_FORM_USING_PAGINATION =
   "UPDATE_CLIENT_FORM_USING_PAGINATION";
 export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
 export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
-
+export const ADD_TODO = "ADD_TODO";
 
 
 
@@ -1518,3 +1518,20 @@ export const getCheckInCheckOuts = async (serviceId, date) => {
 
   }
 }
+
+//-------------------Rahul Kumar-----------------------
+export const addTodo = async (todo) => {
+console.log("rrrrrrrrrrrrrr",todo)
+  try {
+  
+    const response = await axios.post(
+      `${config.apiUrl}/admin/todo/addTodo`,{
+        todo
+      }
+   );
+    console.log(response.data);
+    return response;
+  } catch (error) {
+    console.log("error while fetching data", error);
+  }
+};
