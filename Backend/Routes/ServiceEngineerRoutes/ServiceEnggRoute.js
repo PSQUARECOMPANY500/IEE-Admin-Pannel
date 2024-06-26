@@ -8,6 +8,7 @@ const {
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
+const clientContoller = require("../../Controllers/ClientController/ClientController");
 
 const {uploaded} = require("../../Multer/EnggAttachmentUpload");
 
@@ -257,6 +258,8 @@ router.post(
 ); // todo - change the route name
 // router.post("/pankaj", serviceEnggContoller.testingApi);
 
+
+
 router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount);
 
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves);
@@ -425,6 +428,11 @@ router.post("/updateTrackerInformations", serviceEnggContoller.handleTrackerPost
 
 
 router.post("/canclePaymentLink", serviceEnggContoller.canclePaymentLink);
+
+
+
+router.post('/registerFirebaseToken', clientContoller.firebaseTokenForPushNotificationPurpose);
+
 
 
 

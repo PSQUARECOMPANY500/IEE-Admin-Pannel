@@ -47,7 +47,11 @@ const clientRegister = new Schema(
     },
     MembershipDiscount:{
       type: String
+    },
+    firebaseToken:{
+      type: String
     }
+
   },
   {
     timestamp: true,

@@ -324,11 +324,10 @@ router.post("/registerNewMembershipData", adminContoller.postMembershipData)
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
 
 
-router.post('/registerFirebaseToken', adminContoller.firebaseTokenForPushNotificationPurpose);
 
 
 
-router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
+// router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
 
 
 
