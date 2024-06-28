@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { LuPlus } from "react-icons/lu";
 import TodoFormCalender from "./TodoFormCalender";
 import AddTask from "./AddTask";
@@ -8,35 +8,40 @@ import { LuStretchHorizontal } from "react-icons/lu";
 import { IoTodayOutline } from "react-icons/io5";
 import WeekCalender from "./WeekCalender";
 import DayCalender from "./DayCalender";
+import TodoCard from "./TodoCard";
+import TodoCardUpcoming from "./TodoCardUpcoming";
+import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";  //todo : // to plese correct the nomenclecture (same name as Action)
+import { jwtDecode } from "jwt-decode";
 
 const Todo = () => {
-  const [clientFormData, setClientFormData] = useState();
-
+  const [todo,setTodo] = useState();
   const [selectedView, setSelectedView] = useState("Month");
-
   const [selectedDate, setSelectedDate] = useState();
-
   const [isOpen, setIsOpen] = useState(false);
-
+  const [taskAdded,setTaskAdded] = useState(false)
+  const token = localStorage.getItem("adminData");
+  const decoded = jwtDecode(token);
   const handleOpenAddClick = () => {
     setIsOpen(true);
   };
   const handleCloseAddClick = () => {
     setIsOpen(false);
   };
-
   const handleDateChange = (date) => {
-    setClientFormData((prev) => ({
-      ...prev,
-      dateOfHandover: date,
-    }));
     setSelectedDate(date);
   };
-
   const handleViewClick = (view) => {
     setSelectedView(view);
   };
 
+  useEffect(()=>{
+    const getData = async ()=>{
+       const data =  await getTodo(decoded.user.AdminId)
+       setTodo(data.data);
+    }
+    getData()
+    setTaskAdded(false)
+ },[taskAdded])
   return (
     <div>
       <div className="sub_todo_view">
@@ -91,7 +96,6 @@ const Todo = () => {
             onClick={() => handleViewClick("Week")}
              className="TodoDates-inner">
               <LuStretchHorizontal />
-
               <p>Week</p>
             </div>
             <div style={{borderBottom:selectedView === "Day" ? "2px solid #F8AC1D" : "1px solid #7070702E"}}
@@ -104,17 +108,19 @@ const Todo = () => {
           </div>
           <div 
            className="TodoformWrapper"
-          >
-            
-            {selectedView === "Month" && <TodoFormCalender setTodayDate={handleDateChange} />}
-            {selectedView === "Week" && <WeekCalender setTodayDate={handleDateChange}/>}
-            {selectedView === "Day" && <DayCalender setTodayDate={handleDateChange}/>}
+          >           
+            {selectedView === "Month" && <TodoFormCalender setTodayDate={handleDateChange} tasks={todo} />}
+            {selectedView === "Week" && <WeekCalender setTodayDate={handleDateChange} data={todo}/>}
+            {selectedView === "Day" && <DayCalender setTodayDate={handleDateChange} tasks={todo}/>}
             <CalendarSummary />
           </div>
         </div>
       </div>
-
-      <div>{isOpen && <AddTask onClose={handleCloseAddClick} />}</div>
+      <div className="todo-card-parent">
+            <TodoCard/>
+            <TodoCardUpcoming/>
+        </div>
+      <div>{isOpen && <AddTask onClose={handleCloseAddClick} data={todo} setFlag={setTaskAdded}/>}</div>
     </div>
   );
 };

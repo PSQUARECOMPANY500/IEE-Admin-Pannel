@@ -2,7 +2,7 @@ import React, { useRef, useState,useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import WeekCalendarTask from "./WeekCalendarTask";
 
-const WeekCalender = ({ setTodayDate }) => {
+const WeekCalender = ({ setTodayDate,data }) => {   //todo : //make the name same as props when pass parent to child or child to parent
   const AMonthyearRef = useRef(null);
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
@@ -44,7 +44,7 @@ const WeekCalender = ({ setTodayDate }) => {
       date.getFullYear() === today.getFullYear()
     );
   };
-  
+ 
   const formatDate = (date) => {
     const day = date.getDate();
     const month = date.toLocaleString('default', { month: 'long' });
@@ -54,9 +54,11 @@ const WeekCalender = ({ setTodayDate }) => {
   const extractDayDateMonth = (date) => {
     const day = date.toLocaleString('default', { weekday: 'long' });
     const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear(); 
     const dayOfMonth = date.getDate();
-    return { day, month, dayOfMonth };
+    return { day, month, dayOfMonth, year };
   };
+  
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -78,8 +80,6 @@ const WeekCalender = ({ setTodayDate }) => {
       Date.UTC(acurrentDate.getFullYear(), acurrentDate.getMonth(), day)
     );
     setASelectedDate(newSelectedDate);
-
-    // const formattedDate = newSelectedDate.toISOString().split('T')[0];
     const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
     setTodayDate(formattedDate);
   };
@@ -105,9 +105,9 @@ const WeekCalender = ({ setTodayDate }) => {
        </div>
        {
         currentWeek.map((day,index)=>{
-          const { day: dayName, month, dayOfMonth } = extractDayDateMonth(day);
+          const { day: dayName, month, dayOfMonth,year } = extractDayDateMonth(day);
           return(
-            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index}/>
+            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data}/>
           )
         })
        }

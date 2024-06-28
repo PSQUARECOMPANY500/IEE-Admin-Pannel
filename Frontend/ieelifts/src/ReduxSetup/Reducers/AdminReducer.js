@@ -1,4 +1,4 @@
-import { GET_ALL_CALLBACK } from "../Actions/AdminActions";
+import { GET_ALL_CALLBACK, GET_TODO } from "../Actions/AdminActions";
 import { GET_CALLBACK_BY_ID } from "../Actions/AdminActions";
 import { GET_ALL_CLIENT_DETAIL } from "../Actions/AdminActions";
 import { GET_ALL_CHECKLIST } from "../Actions/AdminActions";
@@ -967,3 +967,19 @@ export const ClearClientFormData = (state = initialState, action) => {
 //       return state;
 //   }
 // }; 
+
+const allTodos ={
+  todos:null,
+}
+
+export const getTodosReducer = (state=allTodos,action) =>{
+  switch(action.type){
+    case GET_TODO:
+      return {
+        ...state,
+        todos:action.payload,
+      }
+      default:
+        return state;
+  }
+}

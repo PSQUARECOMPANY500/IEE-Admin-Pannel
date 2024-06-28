@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "react-csv": "^2.2.2"
+    "jwt-decode": "^4.0.0",
+    "react-csv": "^2.2.2",
+    "react-time-picker": "^7.0.0"
   }
 }

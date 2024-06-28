@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  font-family: "Poppins";
 }
 
 /* set body scroll property starts */
@@ -634,9 +635,7 @@ font-weight: 600;
   cursor: pointer;
   font-size: .6rem;
 }
-
-
-.todoaday {
+/* .todoaday {
   padding:0.7rem;
   cursor: pointer;
     font-size: 0.8rem;
@@ -644,9 +643,7 @@ font-weight: 600;
 width: 144px;
   height:83px;
   border: 1px solid #707070;
-  
-
-}
+} */
 
 .aday:hover {
   background-color: #FEF3DE;
@@ -670,16 +667,15 @@ width: 144px;
   padding: 0rem 3rem;
 }
 
-
 .adays-todo{
   display: grid;
   grid-template-columns: repeat(7, 9%);
   grid-column-gap:3.2rem;
-  padding: 1rem 1rem;
-  padding-top:2rem;
-  height:93%;
-  /* background-color: rgb(23, 153, 192); */
+  padding: 1rem;
+  height:100%;
   position: relative;
+  margin-top: 1.2rem;
+
 }
 
 .calendar-box {
@@ -845,7 +841,6 @@ cursor: pointer;
   display: flex;
   justify-content: center;
   text-align: center;
-   margin-left: 2rem;
 }
 .meetings-wrapper{
   display: flex;
@@ -875,34 +870,40 @@ cursor: pointer;
 }
 
 .addTask-main{
-  width: 450px;
-  position: absolute;
-  top: 23.6%;
-  left: 73.8%;
-  z-index: 99;
+font-family: "Poppins";
+width: 450px;
+position: absolute;
+top: 23.6%;
+left: 73.8%;
+z-index: 99;
 height: 626px;
 background-color:white;
 display: flex;
 align-items: center;
 justify-content: center;
 border: 1px solid #70707033;
-
 }
 .task-content-inner p{
   font-size:0.9rem;
-  /* font-weight:500; */
 }
 
 .addtask-upper{
   width: 400px;
  height: 600px;
-  /* background-color: lightgrey; */
-
 }
 .task-content{
   margin-top:2rem;
   position: relative;
+  overflow-y: auto;
+   height: 480px;
 }
+.task-content::-webkit-scrollbar{
+  width: 3px;
+}
+.task-content::-webkit-scrollbar{
+  background-color: #F8AC1D;
+}
+
 .create-task{
   display: flex;
   align-items: center;
@@ -934,28 +935,6 @@ color: #00000091;
 padding: 0px 0.7rem;
 /* background-color: transparent; */
 }
-.addtask-bottom button{
-  width: 123px;
-height: 45px;
-background: #F8AC1D 0% 0% no-repeat padding-box;
-border-radius: 5px;
-border: none;
-margin-top:1rem;
-font-size: 1rem;
-display: flex;
-cursor: pointer;
-align-items: center;
-justify-content: center;
-gap: 10px;
-opacity: 1;
-}
-
-.addtask-bottom button p{
-font-size:15px;
-color: #444444;
-font-weight:500;
-}
-
 .closeAddtask{
 font-size:1.7rem;
 cursor: pointer;
@@ -968,9 +947,94 @@ cursor: pointer;
 .calenderIcon{
   position: absolute;
   left: 83%;
-  top: 49%;
+  top: 47%;
   cursor: pointer;
   }
+  .task-time-container{
+    padding: 0.8rem 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2rem;
+    font-size: 0.8rem;
+  }
+.calendar-summary-time-border{
+  height: 48px;
+  background-color: #7070705b;
+  width: 1px;
+  justify-content: center;
+  align-items: center;
+}
+.meetings-flex-time{
+  display: flex;
+  align-items: center;
+}
+.todo-dropdown-input{
+  border: 1px solid #8E8E8E;
+  border-radius: 10px;
+  outline: none;
+  height: 2rem;
+  width: 22.9rem;
+  padding: 1.3rem 1rem;
+  cursor: pointer;
+}
+
+.todo-dropdown-icon-container{
+   margin-left: -2rem;
+   cursor: pointer;
+}
+
+
+
+.todo-option-container{
+  position: absolute;
+  border: 1px solid #70707080;
+  border-radius: 10px;
+  color: #8e8e8e;
+  font-size: 1rem;
+  width: 92.5%;
+  height: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.6rem;
+  opacity: 1;
+  margin-top: 0.4rem;
+  font-family: Poppins;
+  background-color: #fff;
+  z-index: 10;
+}
+.todo-option-container > ul {
+  list-style-type: none;
+  opacity: 0.54;
+  font-size: 1rem;
+}
+.todo-option-container > ul > li {
+  cursor: pointer;
+}
+.option-li {
+  padding: 0.2rem;
+  transition: background-color 0.3s ease;
+}
+.option-li:hover {
+  background-color: #fef3de;
+  color: black;
+  border-radius: 7px;
+  padding: 0.2rem;
+  opacity: 1;
+  color: #f8ac1d;
+}
+
+.task-input-wrapper{
+  margin-bottom: 1rem;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator{
+   font-size: 1.3rem;
+   opacity: 0.7;
+   position: absolute;
+   right: 44px;
+  }
+  
 /*---------todo css-----ends---------------------*/
 
 /* border css */
@@ -1041,10 +1105,8 @@ margin-left: 2rem;
 }
 .todo_table-container {
   height: 75vh;
-  /* overflow-y: auto; */
   width:79vw;
   margin-left: -0.8rem;
-  /* background-color: lightsalmon; */
 }
 .todo_table_top{
   display: flex;
@@ -1117,9 +1179,9 @@ font-weight: 500;
   z-index: 1;
   display: block;
   width: 55vw;
-
   background-color: #FFFBF4;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .Attendance {
@@ -1188,9 +1250,6 @@ width: 144px;
   height:83px;
   border-top: 1px solid #70707049;
   border-left:1px solid #70707049;
- 
-  
-
 }
 .empty-cell{
   padding:0.7rem;
@@ -1222,13 +1281,10 @@ width: 144px;
 }
 
 .days-header-todo {
-
   font-weight: bold;
   width: 100%;
-  /* padding-left: 1.2rem; */
   position: absolute;
   display: grid;
-  /* text-align: center; */
   grid-template-columns: repeat(7, 9%);
   grid-column-gap:4rem;
   font-size: 0.9rem;
@@ -1244,7 +1300,7 @@ width: 144px;
   top: 23.6%;
   left: 73.8%;
   z-index: 99;
-height: 626px;
+  height: 69%;
 background-color:white;
 display: flex;
 align-items: center;
@@ -1254,14 +1310,12 @@ border: 1px solid #70707033;
 }
 .task-content-inner p{
   font-size:0.9rem;
-  /* font-weight:500; */
 }
 
 .addtask-upper{
   width: 400px;
  height: 600px;
   /* background-color: lightgrey; */
-
 }
 .task-content{
   margin-top:2rem;
@@ -1297,8 +1351,7 @@ padding: 0px 0.7rem;
 background-color: transparent;
 }
 .addtask-bottom button{
-  width: 123px;
-height: 45px;
+
 background: #F8AC1D 0% 0% no-repeat padding-box;
 border-radius: 5px;
 border: none;
@@ -1309,7 +1362,7 @@ cursor: pointer;
 align-items: center;
 justify-content: center;
 gap: 10px;
-opacity: 1;
+padding: 0.7rem 0.5rem;
 }
 
 .addtask-bottom button p{
@@ -1330,12 +1383,6 @@ cursor: pointer;
   top: 55%;
 }
 
-
-
-
-
-
-
 .adays-todo{
   display: grid;
   grid-template-columns: repeat(7, 9%);
@@ -1343,9 +1390,8 @@ cursor: pointer;
   padding: 1rem 1rem;
   padding-top:2rem;
   height:93%;
-
-  /* background-color: rgb(23, 153, 192); */
   position: relative;
+
 }
 
 .calendar-box {
@@ -1493,15 +1539,6 @@ justify-content: center;
   border: none;
 }
 
-.calenderIcon{
-position: absolute;
-left: 83%;
-top: 49%;
-cursor: pointer;
-
-}
-
-
 .calendar-summary{
   background-color: #FFF9EF;
   border-top-left-radius: 1rem;
@@ -1581,7 +1618,6 @@ cursor: pointer;
   align-items: center;
   width: 50%;
   border-radius: 5px;
-  background-color: #F8AC1D;
 }
 .task-container{
   display: grid;
@@ -1754,7 +1790,6 @@ align-items: center;
 }
 .time-row{
   display: flex;
-  min-height: 2rem;
 }
 .time-row-hr{
   height: 1px;
@@ -1793,14 +1828,48 @@ align-items: center;
   font-size: 1rem;
   font-weight: 500;
 }
+.time-task-container{
+  display: grid;
+  border-bottom: 1px solid #7070705b;
+  font-size: 0.9rem;
+   grid-template-columns: 4fr 1fr 2.5fr 1fr 1.5fr;
+   padding: 0.6rem 0;
+}
+.task-time{
+  display: flex;
+   align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+.icon-day-container{
+  display: flex;
+  align-items: center;
+}
+.meeting-name{
+  margin-left: 0.8rem;
+}
 
-
-
-
-
-
-
-
+.time-slots{
+  overflow-y: auto;
+  height: 90%;
+  padding-bottom:2rem;
+}
+.time-slots::-webkit-scrollbar{
+  width: 3px;
+}
+.time-slots::-webkit-scrollbar-thumb{
+  background-color: #F8AC1D;
+}
+.badge-container{
+  margin-left: 4rem;
+  display: flex;
+  height: 2.4rem;
+}
+.week-badge-container{
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1rem;
+}
 
 /* ------------------------------------------------------- */
 

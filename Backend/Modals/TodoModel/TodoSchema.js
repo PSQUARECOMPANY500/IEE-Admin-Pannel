@@ -13,11 +13,17 @@ const todoSchema = new mongoose.Schema({
    taskDate:{
     type: String
    },
+   taskTime:{
+      type: String
+   },
    status:{
     type: String
    },
    priority:{
     type: String
+   },
+   adminId:{
+      type: String
    }
 })
 

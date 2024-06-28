@@ -314,7 +314,7 @@ router.put(
 
 //---------route to add todo ----------Rahul Kumar------------------
 router.post('/todo/addTodo', adminContoller.AddTodo);
-
+router.get('/todo/getTodo/:adminId',adminContoller.getAllTodos);
 
 
 

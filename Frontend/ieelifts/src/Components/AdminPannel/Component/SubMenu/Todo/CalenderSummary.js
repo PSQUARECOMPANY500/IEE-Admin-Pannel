@@ -1,10 +1,13 @@
+import CalendarSummaryWeek from './CalendarSummaryWeek';
+import CalendarSummaryDay from './CalendarSummaryDay';
 import React,{useState,useEffect}from 'react'
 import { RiArrowDropDownLine } from "react-icons/ri";
  const CalendarSummary = () => {
-    const [currentWeek, setCurrentWeek] = useState([]);
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-   
+  const [currentWeek, setCurrentWeek] = useState([]);
+    const [activeView,setAcitveView] = useState('day')
+   const dayWeekToggle = (view) => {
+        setAcitveView(view)
+   }
     useEffect(() => {
       generateCurrentWeek(new Date());
     }, []);
@@ -30,7 +33,6 @@ import { RiArrowDropDownLine } from "react-icons/ri";
         const dayOfMonth = date.getDate();
         return { day, month, dayOfMonth };
       };
-
   return (
    <div className='calendar-summary'>
        <div className='calendar-summary-heading'>
@@ -43,48 +45,21 @@ import { RiArrowDropDownLine } from "react-icons/ri";
         </div>
         <div className='calendar-schedules-date'>
         19 April 2024
-        </div>
-        
+        </div>  
        </div>
-
-
        <div className='day-week-container'>
            <div className='day-week-button'>
-                <div className='day-button'>
+                <div className={`day-button ${activeView==="day"?"day-week-active":""}`} onClick={()=>dayWeekToggle('day')}>
                     Day
                 </div>
-                <div className='week-button'>
+                <div className={`week-button ${activeView==="week"?"day-week-active":""}`} onClick={()=>dayWeekToggle('week')}>
                     Week
                 </div>
            </div>
         </div>
+        {activeView==="day"?(<CalendarSummaryDay/>):activeView==="week"?(<CalendarSummaryWeek/>):""}
 
-        <div className='all-task-container'>
-          {
-            currentWeek.map((task, index)=>{
-                const { day:dayName,dayOfMonth } = extractDayDateMonth(task);
-                return(
-                    <div className='task-container' key={index}>
-            <div className='task-date-container'>{dayOfMonth}<br/> {dayName.slice(0,3)} </div>
-            <div className='calendar-summary-border'></div>
-            <div className='meetings-wrapper'>
-                <div className='meetings-flex'>
-                <div><span>4</span> <span>Meetings</span> </div>
-                </div>
-                <div className='meetings-flex'>
-                <div><span>2</span> <span>Callbacks</span></div>       
-                </div>
-            </div>
-            <div className='calendar-summary-border'></div>
-            <div className='icon-container'>
-            <RiArrowDropDownLine className='dropdownIcon'/>
-            </div>
-        </div>
-                )
-            })
-          }
-        
-        </div>
+       
    </div>
   )
 }

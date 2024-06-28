@@ -3445,7 +3445,21 @@ module.exports.AddTodo = async (req, res)=>{
     })
   }
 } 
-
+module.exports.getAllTodos = async (req,res) =>{
+  const adminId = req.params.adminId;
+  try{
+    const todos = await TodoSchema.find({adminId:adminId});
+    res.status(200).json({
+      message: "Success",
+      data: todos
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while fetching the task"
+    })
+  }
+}
 //-------------------------------------------------------------------------------------------------------
 
 

@@ -1,22 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { LuPlus } from "react-icons/lu";
 import { RxCross1 } from "react-icons/rx";
 import { GoCalendar } from "react-icons/go";
 import ClientFormCalendar from "../../ClientsSubComponent/ClientsReusableComponent/ClientFormCalendar";
-import { useDispatch } from "react-redux";
-import { addTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
+import { addTodo, getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-hot-toast";
-const AddTask = ({ onClose }) => {
+import TodoDropdown from "./TodoDropdown";
+const AddTask = ({ onClose,setFlag}) => {
   const [openCalender, setOpenCalender] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
-  const dispatch = useDispatch();
+  let statusOption = ["In Progress","Completed","Ongoing","In review"];
+  let priorityOption = ["Urgent","High","Medium","Low"];
+  const token = localStorage.getItem("adminData");
+  const decoded = jwtDecode(token);
   const [todo, setTodo] = useState({
     taskName: "",
     memberId: "",
     status: "",
     priority: "",
-    taskDate: ""
+    taskDate: "",
+    taskTime: "",
+    adminId: decoded.user.AdminId
   })
 
   const [errors, setErrors] = useState({
@@ -25,8 +31,11 @@ const AddTask = ({ onClose }) => {
     taskDate: false,
     status: false,
     priority: false,
+    taskTime:false
   });
-
+  const handleDropdownChange = (name,data) =>{
+    setTodo({...todo, [name]:data});
+  }
   const handleDateChange = (date) => {
      setTodo((prev)=>(
         {
@@ -52,6 +61,7 @@ const AddTask = ({ onClose }) => {
         taskDate: todo.taskDate === "",
         status: todo.status === "",
         priority: todo.priority === "",
+        taskTime: todo.taskTime === ""
       };
   
       setErrors(newErrors);
@@ -77,6 +87,10 @@ const AddTask = ({ onClose }) => {
       toast.error("Please select priority");
       return false;
     }
+    if (todo.taskTime === "") {
+      toast.error("Please select time");
+      return false;
+    }
     return true;
   }
   const handleOpenCalender = () => {
@@ -99,7 +113,10 @@ const AddTask = ({ onClose }) => {
     };
   }, [openCalender]);
 
+   
+
     const addTask = async (e)=>{
+        
         e.preventDefault();
        if(validate()){
         const response = await addTodo(todo)
@@ -111,10 +128,14 @@ const AddTask = ({ onClose }) => {
            memberId: "",
            status: "",
            priority: "",
-           taskDate: ""
+           taskDate: "",
+           taskTime: "",
+           adminId: decoded.user.AdminId
         })
        }  
+       setFlag(true);
     }
+   
   return (
     <div className="addTask-main">
       <div className="addtask-upper">
@@ -160,16 +181,25 @@ const AddTask = ({ onClose }) => {
                 onClick={() => handleOpenCalender()}
               />
             </div>
-
+            <div className="task-content-inner">
+              <p>Time</p>
+              <input
+                type="time"
+                placeholder="Enter Time"
+                value={todo.taskTime}
+                onChange={handleInputChange}
+                name="taskTime"
+                className={errors.taskTime ? "validateInput" : ""}
+              />
+            </div>
+           
             <div className="ClientFormCalendar-todo" ref={calendarRef}>
               {openCalender && (
                 <ClientFormCalendar setTodayDate={handleDateChange} />
               )}
             </div>
-            <div className="task-content-inner">
+            {/* <div className="task-content-inner">
               <p>Status</p>
-              {/* <input type="text" placeholder="Ongoing" /> */}
-
               <select
                 id="todoInput"
                 name="status"
@@ -201,12 +231,18 @@ const AddTask = ({ onClose }) => {
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
               </select>
-            </div>
+            </div> */}
+             <div className="task-input-wrapper">
+             <TodoDropdown label={"Select Status"} options={statusOption} onValueChange={handleDropdownChange} name={"status"}/>
+             </div>
+             <div>
+             <TodoDropdown label={"Select Priority"} options={priorityOption} onValueChange={handleDropdownChange} name={"priority"}/>
+             </div>
           </div>
 
           <div className="addtask-bottom">
             <button>
-              <p>Create Task</p>
+              <p>Create Task 1</p>
               <LuPlus className="plusIcon" />
             </button>
           </div>

@@ -3121,8 +3121,8 @@ text-align: center;
 
 /* --------------------------------Animated Input CSS---------------------------------- */
 input:-webkit-autofill {
-  -webkit-text-fill-color: #330152;
-  -webkit-box-shadow: 0 0 0px 1000px #ece7e1 inset;
+  background-color: transparent !important;
+  -webkit-background-color: transparent !important;
 }
 
 .input-container {

@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import ReactDOM from "react-dom";
+import TodoTaskBadge from "./TodoTaskBadge";
 
-const TodoFormCalender = ({ setTodayDate }) => {
+const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
 
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
-  var surroundingDates = [];
 
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
@@ -28,11 +29,12 @@ const TodoFormCalender = ({ setTodayDate }) => {
 
   const ahandleDayClick = (day) => {
     const newSelectedDate = new Date(
-      Date.UTC(acurrentDate.getFullYear(), acurrentDate.getMonth(), day)
+      acurrentDate.getFullYear(),
+      acurrentDate.getMonth(),
+      day
     );
     setASelectedDate(newSelectedDate);
 
-    // const formattedDate = newSelectedDate.toISOString().split('T')[0];
     const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
     setTodayDate(formattedDate);
   };
@@ -44,14 +46,7 @@ const TodoFormCalender = ({ setTodayDate }) => {
       day
     );
     const dayElement = document.createElement("div");
-    dayElement.classList.add("todoaday")
-   
-    // const taksElement = document.createElement("div");
-    // taksElement.classList.add("aayush")
-    
-    if (date.getDay() === 0 || date.getDay() === 6) {
-        dayElement.classList.add("sutrday");
-      }
+    dayElement.classList.add("todoaday");
 
     if (date.toDateString() === new Date().toDateString()) {
       dayElement.classList.add("current");
@@ -63,10 +58,32 @@ const TodoFormCalender = ({ setTodayDate }) => {
       dayElement.classList.add("selected");
     }
 
+
+    const tasksForTheDay = tasks.filter((task) => {
+      const [day, month, year] = task.taskDate.split('/').map(Number);
+      const taskDate = new Date(year, month - 1, day);
+      return taskDate.toDateString() === date.toDateString();
+    });
+
+    if (tasksForTheDay.length > 0) {
+      dayElement.classList.add("has-task");
+    }
+
     dayElement.textContent = day;
     dayElement.addEventListener("click", () => {
       ahandleDayClick(day);
     });
+
+    const tasksContainer = document.createElement("div");
+    tasksContainer.classList.add("tasks-container");
+
+    if (tasksForTheDay.length > 0) {
+      const badgeContainer = document.createElement("div");
+      tasksContainer.appendChild(badgeContainer);
+      ReactDOM.render(<TodoTaskBadge task={tasksForTheDay[0]} />, badgeContainer);
+    }
+
+    dayElement.appendChild(tasksContainer);
     ADayContainerRef.current.appendChild(dayElement);
   };
 
@@ -95,30 +112,38 @@ const TodoFormCalender = ({ setTodayDate }) => {
     )} ${acurrentDate.getFullYear()}`;
 
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
+          
     const daysHeader = document.createElement("div");
     daysHeader.classList.add("days-header-todo");
 
     daysOfWeek.forEach((dayOfWeek) => {
       const dayHeader = document.createElement("div");
-      console.log(dayOfWeek);
       dayHeader.textContent = dayOfWeek;
       daysHeader.appendChild(dayHeader);
     });
-    
+
+    ADayContainerRef.current.appendChild(daysHeader);
 
     const firstDayIndex = firstDay.getDay();
 
     for (let i = 0; i < firstDayIndex; i++) {
       const emptyCell = document.createElement("div");
-      emptyCell.classList.add("empty-cell-todo");
+      emptyCell.classList.add("empty-cell");
       ADayContainerRef.current.appendChild(emptyCell);
     }
 
-    ADayContainerRef.current.appendChild(daysHeader);
-
     for (let day = 1; day <= lastDay.getDate(); day++) {
       acreateDayElement(day);
+    }
+
+    // Add empty cells to fill the last row if necessary
+    const lastDayIndex = (firstDayIndex + lastDay.getDate()) % 7;
+    if (lastDayIndex !== 0) {
+      for (let i = lastDayIndex; i < 7; i++) {
+        const emptyCell = document.createElement("div");
+        emptyCell.classList.add("empty-cell");
+        ADayContainerRef.current.appendChild(emptyCell);
+      }
     }
   };
 
@@ -127,29 +152,24 @@ const TodoFormCalender = ({ setTodayDate }) => {
       return;
     }
 
-    // Calculate the preceding dates
+    var surroundingDates = [];
     for (let i = 2; i > 0; i--) {
       const precedingDate = new Date(aselectedDate);
       precedingDate.setDate(aselectedDate.getDate() - i);
       surroundingDates.push(precedingDate);
     }
-
-    // Add the selected date
     surroundingDates.push(new Date(aselectedDate));
-
-    // Calculate the following dates
     for (let i = 1; i <= 2; i++) {
       const followingDate = new Date(aselectedDate);
       followingDate.setDate(aselectedDate.getDate() + i);
       surroundingDates.push(followingDate);
     }
   };
-
-
   useEffect(() => {
     ArenderCalendar();
     DateSelect();
-  }, [acurrentDate, aselectedDate]);
+  }, [acurrentDate, aselectedDate, tasks]);
+  
   return (
     <div className="TodoHistory">
       <div className="Todocalendar" id="Todocalendar" ref={ACalendarRef}>
@@ -177,4 +197,4 @@ const TodoFormCalender = ({ setTodayDate }) => {
   );
 };
 
-export default TodoFormCalender;
+export default TodoFormCalendar;
