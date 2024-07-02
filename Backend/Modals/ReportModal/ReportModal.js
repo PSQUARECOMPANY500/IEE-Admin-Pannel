@@ -113,8 +113,12 @@ const ReportInfo = new Schema({
   TotalAmount:{
     type:Number,
     default:0,
+  },
+  Date:{
+    type:String,
   }
-});
+}
+);
 
 const ReportInfoModel = mongoose.model("Report", ReportInfo);
 

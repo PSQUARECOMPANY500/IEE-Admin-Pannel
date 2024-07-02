@@ -51,14 +51,6 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 
-
-
-
-
-
-
-
-
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2225,7 +2217,7 @@ module.exports.updatePassword = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.status(200).json({ message: "Password updated successfully" });
+    return res.status(200).json({ success:'true', message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     return res
@@ -3436,11 +3428,124 @@ module.exports.DepositeEnggCash = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------
 
+// Api to handle get Revenue under SparePart Details in EnggSection in frontend
 
+module.exports.getEnggSparePartRevenueData = async (req, res) => {
+  try {
+    const { EnggId } = req.params;
 
+    const sparePartData = await ReportTable.find({ EnggId, isVerify: true });
+    
+    if (sparePartData.length === 0) {
+      return res.status(200).json({ message: "no Spare part data Present" });
+    }
+    const SparePartsChanged = [];
+
+    const sparePartRevenueData = await Promise.all(
+      sparePartData.map(async (item) => {
+        const ClientName = await clientDetailSchema
+          .findOne({ JobOrderNumber: item.JobOrderNumber })
+          .select("JobOrderNumber name");
+
+        const filteredData = sparePartData[0].questionsDetails.filter(
+          (question) =>
+            (question.questionResponse.isResolved &&
+              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              question.questionResponse.sparePartDetail.subsparePartspartid !==
+                "") ||
+            (question.questionResponse.isResolved &&
+              question.questionResponse.SparePartDescription !== "") ||
+            !question.questionResponse.isResolved
+        );
+
+        filteredData &&
+          filteredData.forEach((element) => {
+            if (
+              !element.questionResponse.isSparePartRequest &&
+              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+              element.questionResponse.sparePartDetail.subsparePartspartid !==
+                "" &&
+              element.questionResponse.isResolved
+            ) {
+              SparePartsChanged.push(element.questionResponse.sparePartDetail);
+            }
+          });
+
+        return {
+          ClientName,
+          Date: item.Date,
+          paymentMode:item.paymentMode,
+          SparePartsChanged,
+        };
+      })
+    );
+
+    res.status(200).json({ sparePartRevenueData });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error getSparePartRevenueData",
+    });
+  }
+};
 
 //-----------------------------------------------------------------------------------------------------------------
+
+//api to handle get sparePart profitSummary graph Data in Engineers section
+
+module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
+  try {
+    const { EnggId } = req.params;
+      
+
+    //get current week data with the help pf current Date----------------------------
+    const getWeekDays = (date) => {
+      const dayNames = ["Sunday", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const daysOfWeek = [];
+    
+      // Get the current day of the week (0 is Sunday, 1 is Monday, ..., 6 is Saturday)
+      const currentDay = date.getDay();    
+      // Calculate the date for the start of the week (Sunday)
+      const startOfWeek = new Date(date);
+      startOfWeek.setDate(date.getDate() - currentDay);
+      // Iterate through the days of the week
+      for (let i = 1; i < 7; i++) {
+        const weekDay = new Date(startOfWeek);
+        weekDay.setDate(startOfWeek.getDate() + i);
+        daysOfWeek.push({
+          date: weekDay.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
+          dayName: dayNames[weekDay.getDay()]
+        });
+      }
+    
+      return daysOfWeek;
+    };
+    
+    const today = new Date();
+    const weekDays = getWeekDays(today);
+  
+//-------------------------------------------------------------------------------
+
+   const WeeklyData =await Promise.all(weekDays.map(async(day) => {
+      return await ReportTable.find({ EnggId, isVerify: true, Date:day.date})
+     })) 
+     
+     const result = WeeklyData.map((dayData, index) => {
+      const totalAmount = dayData.reduce((sum, report) => sum + report.TotalAmount, 0);
+      return {
+        dayName: weekDays[index].dayName,
+        totalAmount: totalAmount
+      };
+     })
+
+     res.status(200).json({ result });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error getSpare Graph Data",
+    });
+  }
+}
+
 //-----------------------------------------------------------------------------------------------------------------
-
-
-

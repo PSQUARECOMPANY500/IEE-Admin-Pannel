@@ -14,9 +14,9 @@ const SpareParts = (props) => {
       case "c2":
         return <SparePartRequests  engID={engID}/>;
       case "c3":
-        return <Revenue  />;
+        return <Revenue engID={engID} />;
       default:
-        return <Revenue />;
+        return <Revenue engID={engID} />;
     }
   };
 

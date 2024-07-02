@@ -12,7 +12,7 @@ import config from "../../../../config";
 const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHover }) => {
   const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
 
-  console.log("traj", item)
+  // console.log("traj", item)
 
 
   const dropdownClickRef = useRef();

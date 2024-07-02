@@ -51,6 +51,8 @@ const TicketSection = ({ setTicketUpdate }) => {
     }
   });
 
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",fetchCallbacks)
+
   //.................................................................ax13-search-func-starts----------------------------------------------------------
   const [searchText, setSearchText] = useState("");
   const [filteredCD, setFilteredCD] = useState([]);
@@ -310,7 +312,6 @@ const TicketSection = ({ setTicketUpdate }) => {
 
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
-    console.log("re-rendering ho rahi hai");
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);
@@ -761,6 +762,8 @@ const TicketSection = ({ setTicketUpdate }) => {
               ) : (
                 filteredCD?.map((data, index) => {
                   const currentCallbackId = data.callbackId;
+                  const IsDead = data.isDead;
+                  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",IsDead)
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;
@@ -871,19 +874,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                           openModal(1, currentCallbackId, EngId, isAssigned)
                         }
                       >
-                        {isAssigned ? (
-                          <AssignDropdown
-                            customAssignName="assignNameColor"
-                            name={EngName}
-                            isAssigned={isAssigned}
-                          />
-                        ) : (
-                          <AssignDropdown
-                            customAssign="assignColor"
-                            name="Assign"
-                          />
-                        )}
-                      </td>
+                        {isAssigned ? ( IsDead ? (<AssignDropdown  customAssign="assignResolved"  name="RESOLVED"  />) : (<AssignDropdown customAssignName="assignNameColor" name={EngName}  isAssigned={isAssigned}  />) ) : ( <AssignDropdown  customAssign="assignColor"  name="Assign"  />)}
+                      </td>  
+                      {/* todo : To be Changed in future */}
                     </tr>
                   );
                 })

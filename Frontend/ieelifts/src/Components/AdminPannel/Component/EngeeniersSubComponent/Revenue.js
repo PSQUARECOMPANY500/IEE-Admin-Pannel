@@ -3,7 +3,10 @@ import SparePartRevenueTable from './SparePartRevenueTable'
 import Charts from './Charts'
 import ProgressBar from './ProgressBar'
 
-const Revenue = () => {
+const Revenue = ({engID}) => {
+
+  // console.log("-------------------->?>?",engID)
+
   return (
     <div className='revenue'>
       <div className='sub-revenue'>
@@ -18,7 +21,7 @@ const Revenue = () => {
               <p>Revenue</p>
              </div>
             </div>
-            <Charts />
+            <Charts engID={engID}/>
           </div>
           <div className='sub-revenue-top-right'>
             <div className='sub-revenue-top-right-head'>
@@ -41,7 +44,7 @@ const Revenue = () => {
 
         </div>
         <div className='sub-revenue-bottom'>
-          <SparePartRevenueTable />
+          <SparePartRevenueTable engID={engID} />
         </div>
       </div>
     </div>

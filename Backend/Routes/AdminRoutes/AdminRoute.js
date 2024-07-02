@@ -332,7 +332,10 @@ router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscoun
 
 
 
+router.get('/getEnggSparePartRevenueData/:EnggId',adminContoller.getEnggSparePartRevenueData);
 
+
+router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSparePartProfitSummaryGraphData);
 
 
 

@@ -34,28 +34,38 @@ const EnterNewPassword = () => {
   }, [location]);
 
   const handlePasswordUpdate = async () => {
+    console.log("firstPassword", firstPassword);
+    console.log("secondPassword", secondPassword);
+
     if (!firstPassword || !secondPassword) {
-      toast.error("Please Fill The Fields");
+      return toast.error("Please Fill The Fields");
     }
 
     if (firstPassword !== secondPassword) {
-      toast.error("Password Not Matched");
+      return toast.error("Password Not Matched");
+    }
+
+    if (passswordMessage) {
+      return toast.error(passswordMessage);
     }
 
     const email = sessionStorage.getItem("ForgeteEmail");
     const data = await updatePassswordAction(email, firstPassword);
     sessionStorage.removeItem("ForgeteEmail");
 
-
-    console.log(data);
+    if (data.success === "true") {
+      toast.success("Password updated successfully");
+      Navigate("/login");
+    } else {
+      toast.error("Failed to update password");
+    }
   };
 
   const handlePasswordChange = (passsword) => {
     setFirstPassword(passsword);
-
     const passwordPattern =
       /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/;
-    if (!passwordPattern.test(firstPassword)) {
+    if (!passwordPattern.test(passsword)) {
       setPasswordMessage(
         "Password must contain at least one letter, one number, and be at least 6 characters long."
       );

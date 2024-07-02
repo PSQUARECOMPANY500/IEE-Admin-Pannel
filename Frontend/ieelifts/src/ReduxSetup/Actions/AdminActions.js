@@ -1012,7 +1012,6 @@ export const updatePassswordAction = async (email, newPassword) => {
       email,
       newPassword,
     });
-    toast.success("Password updated Successfully, wait while redirecting...");
     setTimeout(() => {
       window.location.href = "/";
     }, 2000);
@@ -1498,6 +1497,9 @@ export const getClientCallbackHistory = async (jonId) => {
   }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 export const getClientServiceHistory = async (jonId) => {
 
   try {
@@ -1508,6 +1510,9 @@ export const getClientServiceHistory = async (jonId) => {
   }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 export const getCheckInCheckOuts = async (serviceId, date) => {
   try {
     const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
@@ -1517,3 +1522,28 @@ export const getCheckInCheckOuts = async (serviceId, date) => {
 
   }
 }
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//Action to handle get Revenue Data sin revenu page table in spare part Section
+export const getRevenueTablerDataAction = async (EnggId) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getEnggSparePartRevenueData/${EnggId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Revenue Table data", error)
+  }
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+//Action to handle GetSparePartProfitSummaryGraphData 
+
+export const GetSparePartProfitSummaryGraphDataAction = async (EnggId) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/GetSparePartProfitSummaryGraphData/${EnggId}`)
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching Revenue Table data", error)
+  }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------

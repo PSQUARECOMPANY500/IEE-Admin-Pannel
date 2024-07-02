@@ -1535,11 +1535,14 @@ module.exports.getFinalReportDetails = async (req, res) => {
   try {
     const { serviceId } = req.params;
 
-    const reportData = await ReportInfoModel.findOne({ serviceId });
+    const reportData = await ReportInfoModel.findOne({ serviceId }); 
+    console.log("tttttttttttttttttttt",reportData.JobOrderNumber)
 
     const getMemberShipDetails = await memberShipTable.findOne({
-      JobOrderNumber: reportData.JobOrderNumber,
+      JobOrderNumber:reportData.JobOrderNumber,isDisable:false
     });
+    console.log("***********",getMemberShipDetails)
+
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
     }
@@ -1698,6 +1701,10 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
   try {
     const { serviceId, paymentdata } = req.body;
 
+    const sparePartRequestDate = new Date()
+    .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+    .split(",")[0];
+
     // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
     console.log("ReportData", ReportData.EnggId);
@@ -1728,6 +1735,7 @@ console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
     ReportData.isActive = false;
     ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
     ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
+    ReportData.Date = sparePartRequestDate                         // await testing --------------------------------------- // // //////////////////////////////////////
 
     await ReportData.save();
 
@@ -1737,9 +1745,7 @@ console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
 
     const FinalFilteredData = await Promise.all(
       FilteredData.map(async (item) => {
-        const sparePartRequestDate = new Date()
-          .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-          .split(",")[0];
+       
         const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
         const newSparePartRequest = await sparePartRequestTable.create({
           EnggId: ReportData.EnggId,

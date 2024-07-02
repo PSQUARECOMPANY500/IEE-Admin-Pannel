@@ -36,7 +36,7 @@ const clientRegister = new Schema(
       type: String,
       required: true,
     },
-    MembershipType: {
+    MembershipTpye: {
       type: String,
     },
     CallbackCount: {
