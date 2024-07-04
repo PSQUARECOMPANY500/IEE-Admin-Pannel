@@ -52,6 +52,7 @@ const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 const { response } = require("express");
 const TodoSchema = require('../../Modals/TodoModel/TodoSchema');
+
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3460,13 +3461,39 @@ module.exports.getAllTodos = async (req,res) =>{
     })
   }
 }
+
+module.exports.updateTask = async (req,res) => {
+  const id = req.params.id;
+  const status = 'Completed'
+  try{
+    await TodoSchema.findByIdAndUpdate(id, {status: status});
+    res.status(200).json({
+      message: "Task status updated successfully"
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while updating the task status"
+    })
+  }
+}
+
+module.exports.deleteTask = async (req,res) => {
+  const id = req.params.id;
+  try{
+    await TodoSchema.findByIdAndDelete(id);
+    res.status(200).json({
+      message: "Task deleted successfully"
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while deleting the task"
+    })
+  }
+}
 //-------------------------------------------------------------------------------------------------------
 
-
-
-
-//-----------------------------------------------------------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------
 
 
 

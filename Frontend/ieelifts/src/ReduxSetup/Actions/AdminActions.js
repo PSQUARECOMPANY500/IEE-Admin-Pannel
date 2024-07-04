@@ -1521,7 +1521,6 @@ export const getCheckInCheckOuts = async (serviceId, date) => {
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {
   try {
-  
     const response = await axios.post(
       `${config.apiUrl}/admin/todo/addTodo`,{
         todo
@@ -1543,6 +1542,22 @@ export const getTodo = async (adminId) => {
   }
 }
 
+export const deleteTodo = async (id) => {
+  try {
+    const response = await axios.delete(`${config.apiUrl}/admin/todo/removeTodo/${id}`);
+    return response;
+  }catch(error){
+    console.log("error while deleting data", error);
+  }
+}
+export const updateStatus = async (id) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/todo/updateStatus/${id}`);
+    return response;
+  }catch(error){
+    console.log("error while updating status", error);
+  }
+}
 // ----------------------action of Offer discount by service id---------------------------
 
 export const offerDiscountByServiceId = async (JobOrderNumber, Discount, GST) => {

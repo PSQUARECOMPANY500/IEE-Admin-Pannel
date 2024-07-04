@@ -33,12 +33,15 @@ const Todo = () => {
   const handleViewClick = (view) => {
     setSelectedView(view);
   };
+  const getData = async ()=>{
+    const data =  await getTodo(decoded.user.AdminId)
+    setTodo(data.data);
+ }
 
+  const handleTaskUpdate = ()=>{
+    getData();
+  }
   useEffect(()=>{
-    const getData = async ()=>{
-       const data =  await getTodo(decoded.user.AdminId)
-       setTodo(data.data);
-    }
     getData()
     setTaskAdded(false)
  },[taskAdded])
@@ -82,8 +85,7 @@ const Todo = () => {
               <p>Missed</p>
             </div>
           </div>
-
-          <div className="TodoDates">
+           <div className="TodoDates">
             <div
               style={{ borderBottom: selectedView === "Month" ? "2px solid #F8AC1D" : "1px solid #7070702E" }}
               className="TodoDates-inner"
@@ -109,16 +111,16 @@ const Todo = () => {
           <div 
            className="TodoformWrapper"
           >           
-            {selectedView === "Month" && <TodoFormCalender setTodayDate={handleDateChange} tasks={todo} />}
-            {selectedView === "Week" && <WeekCalender setTodayDate={handleDateChange} data={todo}/>}
-            {selectedView === "Day" && <DayCalender setTodayDate={handleDateChange} tasks={todo}/>}
+            {selectedView === "Month" && <TodoFormCalender setTodayDate={handleDateChange} tasks={todo} handleTaskUpdate={handleTaskUpdate}/>}
+            {selectedView === "Week" && <WeekCalender setTodayDate={handleDateChange} data={todo} handleTaskUpdate={handleTaskUpdate}/>}
+            {selectedView === "Day" && <DayCalender setTodayDate={handleDateChange} tasks={todo} handleTaskUpdate={handleTaskUpdate}/>}
             <CalendarSummary />
           </div>
         </div>
       </div>
       <div className="todo-card-parent">
             <TodoCard/>
-            <TodoCardUpcoming/>
+            <TodoCardUpcoming taskAdded={taskAdded}/>
         </div>
       <div>{isOpen && <AddTask onClose={handleCloseAddClick} data={todo} setFlag={setTaskAdded}/>}</div>
     </div>

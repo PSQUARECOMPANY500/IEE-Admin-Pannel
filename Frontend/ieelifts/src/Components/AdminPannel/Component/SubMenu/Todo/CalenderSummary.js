@@ -1,15 +1,18 @@
 import CalendarSummaryWeek from './CalendarSummaryWeek';
 import CalendarSummaryDay from './CalendarSummaryDay';
 import React,{useState,useEffect}from 'react'
-import { RiArrowDropDownLine } from "react-icons/ri";
  const CalendarSummary = () => {
   const [currentWeek, setCurrentWeek] = useState([]);
     const [activeView,setAcitveView] = useState('day')
+    const [month,setMonth] = useState();
+    const [date,setDate] = useState();
+    const [year,setYear] = useState();
    const dayWeekToggle = (view) => {
         setAcitveView(view)
    }
     useEffect(() => {
       generateCurrentWeek(new Date());
+      setCurrentDate();
     }, []);
   
     const generateCurrentWeek = (date) => {
@@ -22,17 +25,14 @@ import { RiArrowDropDownLine } from "react-icons/ri";
         week.push(new Date(startOfWeek));
         startOfWeek.setDate(startOfWeek.getDate() + 1);
       }
-      
       setCurrentWeek(week);
-    //   setStartDate(formatDate(week[0]));
-    //   setEndDate(formatDate(week[5]));
     };
-    const extractDayDateMonth = (date) => {
-        const day = date.toLocaleString('default', { weekday: 'long' });
-        const month = date.toLocaleString('default', { month: 'long' });
-        const dayOfMonth = date.getDate();
-        return { day, month, dayOfMonth };
-      };
+
+     const setCurrentDate = ( ) =>{
+        setDate(new Date().toLocaleDateString('en-US', { day: 'numeric' }))
+        setMonth(new Date().toLocaleDateString('en-US', { month: 'long' }))
+        setYear(new Date().getFullYear())
+       }
   return (
    <div className='calendar-summary'>
        <div className='calendar-summary-heading'>
@@ -44,7 +44,9 @@ import { RiArrowDropDownLine } from "react-icons/ri";
         Schedules
         </div>
         <div className='calendar-schedules-date'>
-        19 April 2024
+        { 
+          `${date} ${month} ${year}`
+        }
         </div>  
        </div>
        <div className='day-week-container'>

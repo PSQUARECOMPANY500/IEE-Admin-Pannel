@@ -3,14 +3,12 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ReactDOM from "react-dom";
 import TodoTaskBadge from "./TodoTaskBadge";
 
-const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
+const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate}) => {
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
-
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
-
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -57,8 +55,6 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
     ) {
       dayElement.classList.add("selected");
     }
-
-
     const tasksForTheDay = tasks.filter((task) => {
       const [day, month, year] = task.taskDate.split('/').map(Number);
       const taskDate = new Date(year, month - 1, day);
@@ -80,12 +76,13 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
     if (tasksForTheDay.length > 0) {
       const badgeContainer = document.createElement("div");
       tasksContainer.appendChild(badgeContainer);
-      ReactDOM.render(<TodoTaskBadge task={tasksForTheDay[0]} />, badgeContainer);
+      ReactDOM.render(<TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} />, badgeContainer);
     }
-
     dayElement.appendChild(tasksContainer);
     ADayContainerRef.current.appendChild(dayElement);
   };
+
+  //day element end
 
   const ArenderCalendar = () => {
     if (!ADayContainerRef.current) {
@@ -135,8 +132,6 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
     for (let day = 1; day <= lastDay.getDate(); day++) {
       acreateDayElement(day);
     }
-
-    // Add empty cells to fill the last row if necessary
     const lastDayIndex = (firstDayIndex + lastDay.getDate()) % 7;
     if (lastDayIndex !== 0) {
       for (let i = lastDayIndex; i < 7; i++) {
@@ -146,7 +141,6 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
       }
     }
   };
-
   const DateSelect = () => {
     if (!aselectedDate) {
       return;
@@ -169,7 +163,6 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
     ArenderCalendar();
     DateSelect();
   }, [acurrentDate, aselectedDate, tasks]);
-  
   return (
     <div className="TodoHistory">
       <div className="Todocalendar" id="Todocalendar" ref={ACalendarRef}>
@@ -186,7 +179,6 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [] }) => {
             </button>
           </div>
         </div>
-
         <div
           className="adays-todo"
           id="daysContainer"

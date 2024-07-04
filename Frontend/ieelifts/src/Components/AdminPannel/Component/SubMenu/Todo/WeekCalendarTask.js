@@ -15,8 +15,7 @@ const monthMap = {
   "November": 11,
   "December": 12
 };
-
-const WeekCalendarTask = ({ day, month, date, isToday, data, year }) => {
+const WeekCalendarTask = ({ day, month, date, isToday, data, year,handleTaskUpdate }) => {
   const [currentMonth, setCurrentMonth] = useState(null);
   const [visibleTasks, setVisibleTasks] = useState([]);
   useEffect(() => {
@@ -26,7 +25,7 @@ const WeekCalendarTask = ({ day, month, date, isToday, data, year }) => {
   useEffect(() => {
     if (currentMonth !== null) {
       const formattedDate = `${date}/${currentMonth}/${year}`;
-      const tasksForDate = data.filter(item => item.taskDate === formattedDate);
+      const tasksForDate = data?.filter(item => item?.taskDate === formattedDate);
       setVisibleTasks(tasksForDate);
     }
   }, [date, currentMonth, year, data]);
@@ -34,15 +33,15 @@ const WeekCalendarTask = ({ day, month, date, isToday, data, year }) => {
     <>
       <div className="week-day-row-container">
         <div className="week-day-month-wrapper">
-          <div className="todo-week-day">{day.slice(0, 3)}</div>
-          <div className="todo-week-month">{month.slice(0, 3)}</div>
+          <div className="todo-week-day">{day?.slice(0, 3)}</div>
+          <div className="todo-week-month">{month?.slice(0, 3)}</div>
         </div>
         <div className={`todo-week-date-badge ${isToday ? "highlight" : ""}`}>
           {date}
         </div>
         <div className='week-badge-container'>
         {visibleTasks.map((task, index) => (
-          <TodoTaskBadge key={index} task={task} />
+          <TodoTaskBadge key={index} task={task} handleTaskUpdate={handleTaskUpdate} />
         ))}
         </div>
       </div>

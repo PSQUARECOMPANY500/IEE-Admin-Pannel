@@ -2574,7 +2574,7 @@ text-align: center;
 .hide {
   display: none;
 }
-/* client-dropdown */
+
 
 .client-dropdown {
   position: relative;
@@ -2591,6 +2591,7 @@ text-align: center;
   width: 100%;
   font-family: Poppins;
   cursor: pointer;
+  position: relative;
 }
 .dropdown-input::placeholder {
   margin-bottom: 1rem;
@@ -2598,12 +2599,11 @@ text-align: center;
   font-family: Poppins;
   font-size: 0.9;
 }
-.dropdown-icon-container -client-form{
+.dropdown-icon-container-client-form{
   position: absolute;
   right: 0;
   cursor: pointer;
 }
-
 
 .option-container{
   position: absolute;

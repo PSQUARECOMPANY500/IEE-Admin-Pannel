@@ -324,8 +324,8 @@ router.post("/registerNewMembershipData", adminContoller.postMembershipData)
 
 
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
-
-
+router.get('/todo/updateStatus/:id',adminContoller.updateTask);
+router.delete('/todo/removeTodo/:id',adminContoller.deleteTask);
 
 
 

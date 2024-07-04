@@ -233,10 +233,10 @@ const AddTask = ({ onClose,setFlag}) => {
               </select>
             </div> */}
              <div className="task-input-wrapper">
-             <TodoDropdown label={"Select Status"} options={statusOption} onValueChange={handleDropdownChange} name={"status"}/>
+             <TodoDropdown label={"Select Status"} options={statusOption} onValueChange={handleDropdownChange} name={"status"} errors={errors.status}/>
              </div>
              <div>
-             <TodoDropdown label={"Select Priority"} options={priorityOption} onValueChange={handleDropdownChange} name={"priority"}/>
+             <TodoDropdown label={"Select Priority"} options={priorityOption} onValueChange={handleDropdownChange} name={"priority"} errors={errors.priority}/>
              </div>
           </div>
 

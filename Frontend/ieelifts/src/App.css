@@ -433,30 +433,31 @@ justify-content: center;
 gap: 10px;
 opacity: 1;
 }
-
 .todo_table_top button p{
 font-size:15px;
 font-weight: 600;
+color: #444444;
 }
 .plusIcon{
   font-size:20px;
+  color: #444444;
 }
-/* todo card css stars*/
+/* todo card css starts*/
 .todo-card-parent{
   margin-left: 2.1rem;
   margin-top: 1rem;
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 .todo-card{
-top: 60rem;
-left: 19.68rem;
 width: 46rem;
-height: auto;
+height: 22rem;
 background: #FFFFFF 0% 0% no-repeat padding-box;
 box-shadow: 2px 4px 10px #99886B66;
 border-radius: 10px;
-padding-bottom: 1.5rem;
+overflow-y: hidden;
+margin-bottom: 3rem;
 }
 .todo-card-header{
 top: 60rem;
@@ -482,13 +483,22 @@ align-items: center;
    margin-right: 1.2rem;
 }
 .todo-card-header-child-one{
-  margin-left: 1.2rem;
-  font: 1.2rem Poppins;
+margin-left: 1.2rem;
+font: 1.2rem Poppins;
 color: #FFFDF8;
 font-weight: 500;
 }
 .todo-card-body{
   margin-top: 1.8rem;
+  overflow-y: scroll;
+  height: 100%;
+  padding-bottom: 7rem;
+}
+.todo-card-body::-webkit-scrollbar{
+  width: 4px;
+}
+.todo-card-body::-webkit-scrollbar-thumb{
+  background-color: #F8AC1D;
 }
 .single-todo-task{
   width: 93%;
@@ -501,6 +511,8 @@ font-weight: 500;
 .todo-task-number{
   border-right: 1px solid #00000073;
   padding: 0 2rem;
+  font-size: 1rem;
+ 
 }
 .single-todo-task-data{
   display: flex;
@@ -553,7 +565,6 @@ margin-left: 2rem;
 }
 .todo_table_top{
   display: flex;
-  /* padding: 0 2rem; */
   align-items: center;
   justify-content: space-between;
 }
@@ -565,7 +576,7 @@ margin-left: 2rem;
 
 }
 .todo_table_top button{
-  width: 123px;
+width: 123px;
 height: 45px;
 background: #F8AC1D 0% 0% no-repeat padding-box;
 border-radius: 5px;
@@ -595,12 +606,11 @@ font-weight: 600;
   position: relative;
   z-index: 1;
   display: block;
-  /* height:60vh; */
+  height:62vh;
   width: 55vw;
-
   background-color: #FFFBF4;
-  
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .Attendance {
@@ -610,11 +620,7 @@ font-weight: 600;
   display: grid;
   padding: .5rem .5rem;
   grid-template-columns: 30% 70%;
-
-
-
 }
-
 
 .Todo-header {
   background-color: #FFFBF4;
@@ -650,6 +656,7 @@ width: 144px;
   color: #F8AC1D;
 }
 
+
 .days-header-todo {
 
   font-weight: bold;
@@ -667,7 +674,7 @@ width: 144px;
   padding: 0rem 3rem;
 }
 
-.adays-todo{
+/* .adays-todo{
   display: grid;
   grid-template-columns: repeat(7, 9%);
   grid-column-gap:3.2rem;
@@ -675,8 +682,7 @@ width: 144px;
   height:100%;
   position: relative;
   margin-top: 1.2rem;
-
-}
+} */
 
 .calendar-box {
   text-align: center;
@@ -875,7 +881,7 @@ width: 450px;
 position: absolute;
 top: 23.6%;
 left: 73.8%;
-z-index: 99;
+z-index: 2;
 height: 626px;
 background-color:white;
 display: flex;
@@ -900,10 +906,9 @@ border: 1px solid #70707033;
 .task-content::-webkit-scrollbar{
   width: 3px;
 }
-.task-content::-webkit-scrollbar{
+.task-content::-webkit-scrollbar-thumb{
   background-color: #F8AC1D;
 }
-
 .create-task{
   display: flex;
   align-items: center;
@@ -927,13 +932,12 @@ background-color: transparent;
   width: 365px;
   margin-top:0.7rem;
   outline: none;
-color: #00000091;
+  color: #00000091;
   margin-bottom:1rem;
   height: 43px;
   border-radius:10px;
   border: 1px solid #8E8E8E;
 padding: 0px 0.7rem;
-/* background-color: transparent; */
 }
 .closeAddtask{
 font-size:1.7rem;
@@ -970,7 +974,8 @@ cursor: pointer;
   display: flex;
   align-items: center;
 }
-.todo-dropdown-input{
+.todo-
+{
   border: 1px solid #8E8E8E;
   border-radius: 10px;
   outline: none;
@@ -980,12 +985,15 @@ cursor: pointer;
   cursor: pointer;
 }
 
+
 .todo-dropdown-icon-container{
    margin-left: -2rem;
    cursor: pointer;
 }
-
-
+.todo-dropdown-icon{
+  height: 12px;
+  width: 12px;
+}
 
 .todo-option-container{
   position: absolute;
@@ -1027,13 +1035,14 @@ cursor: pointer;
 .task-input-wrapper{
   margin-bottom: 1rem;
 }
-
 input[type="time"]::-webkit-calendar-picker-indicator{
    font-size: 1.3rem;
    opacity: 0.7;
    position: absolute;
    right: 44px;
+   cursor: pointer;
   }
+
   
 /*---------todo css-----ends---------------------*/
 
@@ -1197,11 +1206,9 @@ font-weight: 500;
   display: flex;
   align-items: center;
   width:17vw;
-  /* height: 5vh; */
   margin-left:38.5vw;
-  margin-top:5px;
+  margin-top: 1.2rem;
   gap:1.6rem;
-  /* background-color: lightpink; */
 }
 
 .todo_green_circle{
@@ -1230,7 +1237,6 @@ color: #444444;
   font-size: .8rem;
 }
 
-
 #aprevBtn,
 #anextBtn {
   background: none;
@@ -1240,25 +1246,44 @@ color: #444444;
   font-size: .6rem;
 }
 
-
 .todoaday {
   padding:0.7rem;
   cursor: pointer;
-    font-size: 0.8rem;
+  font-size: 0.8rem;
   color: black;
-width: 144px;
-  height:83px;
-  border-top: 1px solid #70707049;
-  border-left:1px solid #70707049;
+  width: 144px;
+  height:100px;
+  border: 1px solid #70707049;
 }
+.todo-dropdown-input{
+  border: 1px solid #8E8E8E;
+  border-radius: 10px;
+  outline: none;
+  height: 2rem;
+  width: 22.9rem;
+  padding: 1.3rem 1rem;
+  cursor: pointer;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset; 
+  box-shadow: 0 0 0 1000px white inset; 
+}
+
+.current {
+  border: 1px solid #F8AC1D;
+ }
+.tasks-container{
+   margin-left: -2rem;
+   margin-top: 0.8rem;
+}
+
 .empty-cell{
   padding:0.7rem;
   cursor: pointer;
   font-size: 0.8rem;
   color: black;
   width: 30px;
-  height:30px;
-   
+  height:30px; 
 }
 .empty-cell-todo{
   padding:0.7rem;
@@ -1269,7 +1294,6 @@ width: 144px;
   height:83px;
   border-top: 1px solid #70707049;
   border-left:1px solid #70707049;
-  
 }
 
 .sutrday{
@@ -1299,7 +1323,7 @@ width: 144px;
   position: absolute;
   top: 23.6%;
   left: 73.8%;
-  z-index: 99;
+  z-index: 2;
   height: 69%;
 background-color:white;
 display: flex;
@@ -1319,7 +1343,7 @@ border: 1px solid #70707033;
 }
 .task-content{
   margin-top:2rem;
-  position: relative;
+  /* position: relative; */
 }
 .create-task{
   display: flex;
@@ -1337,6 +1361,7 @@ border: 1px solid #70707033;
 padding: 0px 1rem;
 background-color: transparent;
 
+
 }
 #cars{
   width: 365px;
@@ -1351,7 +1376,6 @@ padding: 0px 0.7rem;
 background-color: transparent;
 }
 .addtask-bottom button{
-
 background: #F8AC1D 0% 0% no-repeat padding-box;
 border-radius: 5px;
 border: none;
@@ -1370,8 +1394,6 @@ font-size:15px;
 color: #444444;
 font-weight:500;
 }
-
-
 .closeAddtask{
 font-size:1.7rem;
 cursor: pointer;
@@ -1382,7 +1404,6 @@ cursor: pointer;
   left:4%;
   top: 55%;
 }
-
 .adays-todo{
   display: grid;
   grid-template-columns: repeat(7, 9%);
@@ -1391,14 +1412,11 @@ cursor: pointer;
   padding-top:2rem;
   height:93%;
   position: relative;
-
 }
-
 .calendar-box {
   text-align: center;
   width: 100%;
 }
-
 .ui-datepicker-header,
 .calendar-title {
   font-size: 18px;
@@ -1488,13 +1506,12 @@ justify-content: center;
 }
 
 .day.current {
-  /* background-color: #FEF3DE; */
   color: #f8ac1d;
   border-radius: 50%;
   height: 30px;
   width: 30px;
 }
-
+ 
 .day.current:hover {
   background-color: white;
 }
@@ -1510,11 +1527,9 @@ justify-content: center;
   height: 30px;
   width: 30px;
 }
-
 .ui-datepicker-title {
   order: 2;
 }
-
 #dateInput {
   width: 100%;
   padding: 0.5rem;
@@ -1527,25 +1542,20 @@ justify-content: center;
   border: none;
   font-family: "Poppins";
   outline-color: #f8ac1d;
-  
 }
-
 .ui-datepicker {
   position: absolute;
 }
-
 #dateInput:hover {
   box-shadow: 0px 0px 5px #f8ac1d80;
   border: none;
 }
-
 .calendar-summary{
   background-color: #FFF9EF;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   overflow: hidden;
 }
-
 .calendar-summary-heading{
   background-color: #FEF3DE;
   color: #444444;
@@ -1563,8 +1573,6 @@ justify-content: center;
   font-size: 0.9rem;
   font-weight: 500;
   justify-content:space-between;
-
-
 }
 .calendar-schedules-dot{
   background-color: #F8AC1D;
@@ -1626,14 +1634,12 @@ cursor: pointer;
    grid-template-columns: 2fr 1fr 4fr 1fr 2fr;
 }
 .task-date-container{
- /* padding: 0.4rem 0 0.4rem 2rem;  */
   padding: 0.8rem 0;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-left: 2rem;
- 
 }
 .calendar-summary-border{
   height: 48px;
@@ -1690,14 +1696,16 @@ cursor: pointer;
   height: 2rem;
   cursor: pointer;
   left: 52%;
-  top:19%;
+  top:20%;
   background-color:white;
   position: absolute;
-  z-index: 999;
+  /* z-index: 999; */
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 
 .TodoDates-inner{
   display: flex;
@@ -1734,16 +1742,15 @@ cursor: pointer;
   background-color: #00000029;
   border-radius: 10px;
   width: 46px;
-height: 42px;
-color: #444444;
-font-size: 0.8rem;
-display: flex;
-justify-content: center;
-align-items: center;
+  height: 42px;
+  color: #444444;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .week-day-month-wrapper{
   margin-right: 0.5rem;
-  /* margin-top: 0.4rem; */
 }
 .todo-task-badge{
   background-color: #FEF3DE;
@@ -1753,6 +1760,81 @@ align-items: center;
   padding-right: 2rem;
   padding-left: 0.3rem;
   position: relative;
+  cursor: pointer;
+
+}
+.todo-task-badge:hover > .badge-popup {
+  display: block;
+}
+
+.todo-task-hover-container{
+  position: absolute;
+  /* top: -100%;
+  right: 20%;
+  z-index: 5;
+  display: none; */
+}
+
+.todo-task-hover-container.down::after {
+  bottom: -15px; left: calc(50% - 15px);
+}
+.todo-task-hover-container.down::after {
+  border-top-color: #a53d38;
+  border-bottom: 0;
+}
+
+.todo-task-parent{
+  position: relative;
+}
+.todo-task-parent:hover >.badge-popup{
+  display: block;
+}
+.badge-icon-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.badge-popup {
+  font-family: "Poppins";
+  position: absolute;
+  padding: 8px 12px;
+  margin: 20px 0;
+  border-radius: 5px;
+  width: 8rem;
+  font-size: 1rem;
+  text-align: center;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #0000001C;
+  border: 1px solid #70707080;
+  display: none;
+  z-index: 2;
+  top: -170%;
+  cursor: pointer;
+
+}
+
+.badge-deleteIcon{
+  color: #D6D3CD;
+}
+.badge-deleteIcon:hover{
+   color: red;
+}
+.badge-icon{
+  color: #D6D3CD;
+}
+.badge-icon:hover{
+  color: #F8AC1D;
+}
+.badge-popup::after {
+  content: "";
+  position: absolute;
+  bottom: -17px; 
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: #70707080 transparent transparent transparent;
 }
 
 .todo-task-badge-task{
@@ -1767,12 +1849,20 @@ align-items: center;
   position: absolute;
   top: 2px;
   right:-10px;
-  background-color:#C10000;
+  /* background-color:#C10000; */
   height: 5px;
   width: 5px;
   border-radius: 50%;
 }
-
+.todo-task-badge-dot-yellow{
+    background-color:#F8AC1D;
+}
+.todo-task-badge-dot-green{
+  background-color: #46A70A;
+}
+.task-completed{
+  color:#46A70A !important;
+}
 .custom-hr{
   height: 1px;
   background-color: #00000029;
@@ -1891,11 +1981,6 @@ align-items: center;
   animation-timing-function: ease-in 0.5s all;
   display: none;
 }
-
-/* .user-info{
-  animation-duration: 1s;
-  animation-timing-function: ease-in .2s all; 
-} */
 
 @keyframes sliders {
   from {
@@ -9140,3 +9225,8 @@ a[href^="http://maps.google.com/maps"]
   border-radius: 50%;
   padding: 0px 9px;
 }
+
+
+
+
+

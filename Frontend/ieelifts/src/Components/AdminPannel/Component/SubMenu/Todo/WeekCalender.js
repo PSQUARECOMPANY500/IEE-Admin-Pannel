@@ -2,18 +2,17 @@ import React, { useRef, useState,useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import WeekCalendarTask from "./WeekCalendarTask";
 
-const WeekCalender = ({ setTodayDate,data }) => {   //todo : //make the name same as props when pass parent to child or child to parent
+const WeekCalender = ({ setTodayDate,data,handleTaskUpdate }) => {  
   const AMonthyearRef = useRef(null);
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
   const [currentWeek, setCurrentWeek] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
- 
   useEffect(() => {
     generateCurrentWeek(new Date());
   }, []);
-
+  console.log(handleTaskUpdate)
   const generateCurrentWeek = (date) => {
     const startOfWeek = new Date(date);
     const dayOfWeek = startOfWeek.getDay();
@@ -107,7 +106,7 @@ const WeekCalender = ({ setTodayDate,data }) => {   //todo : //make the name sam
         currentWeek.map((day,index)=>{
           const { day: dayName, month, dayOfMonth,year } = extractDayDateMonth(day);
           return(
-            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data}/>
+            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data} handleTaskUpdate={handleTaskUpdate}/>
           )
         })
        }
