@@ -4,16 +4,21 @@ import { TbMessage2 } from "react-icons/tb";
 import TaskChart from "./TaskPieChart";
 import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
-
-import { useSelector } from "react-redux";
-import RepotImage from "./RepotImage";
 import config from "../../../../config";
 
-const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHover }) => {
-  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+const ServiceEnggDataOnCrousel = ({
+  item,
+  index,
+  len,
+  setClick,
+  setOnClick,
+  isHover,
+}) => {
+  const smallLaptopSizes = useMediaQuery(
+    "(min-width: 769px) and (max-width: 1280px)"
+  );
 
   // console.log("traj", item)
-
 
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -24,7 +29,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
   const handleMessageBoxClose = () => {
     setShowMessage(false);
   };
-
 
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
@@ -38,8 +42,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
     }
   };
   assignArray(item);
-
-
 
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
@@ -56,15 +58,12 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
     }, [ref, handler]);
   };
 
-
   const handleMesageBox = (index) => {
     setShowMessage((prev) => ({
       ...prev,
       [index]: !prev[index],
-
     }));
   };
-
 
   const handleOutsideClick = useCallback(() => {
     setShowMessage(false);
@@ -72,9 +71,23 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
 
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
-  return (
-<div className={"main-crouser"} style={isHover?{ boxShadow: "0.3px  #F8AC1D80", borderColor: "#F8AC1D80", borderStyle: "solid" }:{}} key={index} onClick={() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}>
+  const [handleborder, setHandleBorder] = useState(true);
 
+  return (
+    <div
+      className="main-crouser"
+      style={{
+        boxShadow: isHover ? "none" : "2px 4px 10px #99886b66",
+        borderColor: isHover ? "#F8AC1D80" : "transparent",
+        borderStyle: isHover ? "solid" : "none", 
+        borderWidth: "1px",
+      }}
+      key={index}
+      onClick={() => {
+        setClick(item.ServiceEnggId);
+        setOnClick((prev) => !prev);
+      }}
+    >
       <div className="second-carusel">
         <div className="basic-info">
           <img
@@ -85,7 +98,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
               width: "50px",
               borderRadius: "100%",
               objectFit: "cover",
-              objectPosition:"top"
+              objectPosition: "top",
             }}
           />
           <div className="engg-profile">
@@ -98,7 +111,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
         </div>
 
         <div className="message-icon" ref={dropdownClickRef}>
-          <span onClick={() => handleMesageBox(index)} >
+          <span onClick={() => handleMesageBox(index)}>
             <TbMessage2 className="message-box-crouser" />
           </span>
           {/* <div className="message-dot"></div> */}
@@ -111,13 +124,14 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
               }}
               className="engg-message"
             >
-              <MessageBox onClose={handleMessageBoxClose} EnggId={item.EnggObjId} />
+              <MessageBox
+                onClose={handleMessageBoxClose}
+                EnggId={item.EnggObjId}
+              />
             </div>
           )}
         </div>
       </div>
-
-
 
       <div className="main-head-div">
         {renderArray.length == 0 ? (
@@ -216,7 +230,16 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
           />
           <div
             className="dropdown-menu"
-            style={{ left: len - 1 === index ? "-165px" : smallLaptopSizes ?"-440%":"-400%" ,marginTop:'-40px',boxShadow: '0px 10px 20px #00000049', }}
+            style={{
+              left:
+                len - 1 === index
+                  ? "-165px"
+                  : smallLaptopSizes
+                  ? "-440%"
+                  : "-400%",
+              marginTop: "-40px",
+              boxShadow: "0px 10px 20px #00000049",
+            }}
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
@@ -257,3 +280,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
 };
 
 export default ServiceEnggDataOnCrousel;
+
+{
+  /* <div className={"main-crouser"} style={isHover || onclick ? { boxShadow: "0.3px  #F8AC1D80", borderColor: "#F8AC1D80", borderStyle: "solid" }:{}} key={index} onClick={() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) } }> */
+}

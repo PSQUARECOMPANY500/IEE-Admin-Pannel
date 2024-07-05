@@ -51,8 +51,6 @@ const TicketSection = ({ setTicketUpdate }) => {
     }
   });
 
-  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",fetchCallbacks)
-
   //.................................................................ax13-search-func-starts----------------------------------------------------------
   const [searchText, setSearchText] = useState("");
   const [filteredCD, setFilteredCD] = useState([]);
@@ -763,7 +761,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                 filteredCD?.map((data, index) => {
                   const currentCallbackId = data.callbackId;
                   const IsDead = data.isDead;
-                  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",IsDead)
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;

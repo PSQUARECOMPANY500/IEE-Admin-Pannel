@@ -4,7 +4,7 @@ import ReportIssue from "./ReportIssue";
 import ReportCrouserData from "./ReportCrouserData";
 
 function ReportTable({ handleRedportData, RedportData }) {
-  console.log("preet", RedportData);
+
   // console.log("handleRedportData", handleRedportData);
 
   // const [currentIndex, setCurrentIndex] = useState(0);

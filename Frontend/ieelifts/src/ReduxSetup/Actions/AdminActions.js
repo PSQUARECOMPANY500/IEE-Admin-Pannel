@@ -98,9 +98,6 @@ export const UPDATE_CLIENT_FORM_USING_PAGINATION =
 export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
 export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
 
-
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -117,7 +114,6 @@ export const RegistrationEnggDetails = async (formData) => {
       }
     );
     return response;
-
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -1058,10 +1054,17 @@ export const assignedEnggDetails = (ServiceEnggId) => {
   };
 };
 
+//----------------------------------------------------------------------------------------------------------
 //emit action for engg location
 export const onClickEnggCart = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
+      if (ServiceEnggId === undefined || !ServiceEnggId) {
+        dispatch({
+          type: UPDATE_ENGG_CART_LOCATION,
+          payload: ServiceEnggId,
+        });
+      }
       dispatch({
         type: UPDATE_ENGG_LOCATION,
         payload: ServiceEnggId,
@@ -1071,11 +1074,18 @@ export const onClickEnggCart = (ServiceEnggId) => {
     }
   };
 };
+//----------------------------------------------------------------------------------------------------------
 
 //emit action for updating engg cart on click of pin
 export const onClickPinCart = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
+      if (ServiceEnggId === undefined || !ServiceEnggId) {
+        dispatch({
+          type:  UPDATE_ENGG_CART_LOCATION,
+          payload: ServiceEnggId,
+        });
+      }
       dispatch({
         type: UPDATE_ENGG_CART_LOCATION,
         payload: ServiceEnggId,
@@ -1084,7 +1094,8 @@ export const onClickPinCart = (ServiceEnggId) => {
       console.log("error while UPDATE_ENGG_LOCATION", error);
     }
   };
-}; // {/armaan-dev}
+}; 
+// {/armaan-dev}
 export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
     try {
@@ -1345,7 +1356,6 @@ export const RegisterClientDataAction = (formData) => {
 };
 
 export const updateClientData = (formData) => {
-    
   return async (dispatch) => {
     try {
       const response = await axios.put(
@@ -1434,7 +1444,6 @@ export const getDataBasedOnJon = async (jon) => {
 
 //------------------------------------------------------------------------------------------------------------
 
-
 // -------------Created by Raj---------------------------------------------------------------
 //--------------- Action to handle fetch Engg personal dets by Id---------------------------------------------
 
@@ -1490,60 +1499,80 @@ export const getDataBasedOnJon = async (jon) => {
 
 export const getClientCallbackHistory = async (jonId) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("Error while fetching data", error);
   }
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 export const getClientServiceHistory = async (jonId) => {
-
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientServiceHistory/${jonId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("Error while fetching data", error);
   }
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 export const getCheckInCheckOuts = async (serviceId, date) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
-
+    console.log("Error while fetching data", error);
   }
-}
-
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle get Revenue Data sin revenu page table in spare part Section
 export const getRevenueTablerDataAction = async (EnggId) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getEnggSparePartRevenueData/${EnggId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getEnggSparePartRevenueData/${EnggId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching Revenue Table data", error)
+    console.log("Error while fetching Revenue Table data", error);
   }
-}
+};
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-//Action to handle GetSparePartProfitSummaryGraphData 
+//Action to handle GetSparePartProfitSummaryGraphData
 
 export const GetSparePartProfitSummaryGraphDataAction = async (EnggId) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/GetSparePartProfitSummaryGraphData/${EnggId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/GetSparePartProfitSummaryGraphData/${EnggId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching Revenue Table data", error)
+    console.log("Error while fetching Revenue Table data", error);
   }
-}
+};
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+//custom hook to get the response to handle get engg checkin or not on toadays date
+
+export const getEnggCheckinOrNotOnToadaysDate = async (EnggId) => {
+  try {
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getEnggCheckInOrNotOnCurrentDate/${EnggId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error while fetching todays Engg check In data", error);
+  }
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------

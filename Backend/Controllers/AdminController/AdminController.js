@@ -3548,4 +3548,35 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
   }
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
+
+
+
+//api to get check engg checkIn or Not on Current date
+
+module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req,res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+
+    const selectedDate = new Date();
+    const today = new Date(selectedDate);
+    const formattedDate = today.toLocaleDateString('en-GB'); // 'en-GB' locale gives you DD/MM/YYYY format
+
+    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({ServiceEnggId,Date:formattedDate});
+
+    if(!isEnggCheckIn) {
+      return res.status(200).json({ isCheckIn: false });
+    }
+
+    return res.status(200).json({ isCheckIn: true });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while getting engg CheckIn Data",
+    });
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------

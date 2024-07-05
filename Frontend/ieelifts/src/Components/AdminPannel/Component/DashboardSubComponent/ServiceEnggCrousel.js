@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ServiceEnggDataOnCrousel from "./ServiceEnggDataOnCrousel";
 import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import { getEnggCheckinOrNotOnToadaysDate } from "../../../../ReduxSetup/Actions/AdminActions";
+
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
 import { onClickEnggCart } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -28,7 +30,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   }, [ticketUpdate]);
 
   //-------------------------------------------------------------------------------------------------------------------------------
-  const getBasicData = useSelector((state) => {       
+  const getBasicData = useSelector((state) => {
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getEnggBasicDataForCrouserReducer &&
@@ -41,7 +43,6 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       return null;
     }
   });
-
 
   useEffect(() => {
     if (getBasicData) {
@@ -125,39 +126,41 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const handleBeforeChange = (oldIndex, newIndex) => {
     setCurrentSlide(newIndex);
   };
-  //onClick location section 
-  const [click, setClick] = useState("")
-  const [hitclick, setHitClick] = useState(null)
-  const [onclick, setOnClick] = useState(false)
- 
+  //onClick location section
+  const [click, setClick] = useState("");
+  const [hitclick, setHitClick] = useState(null);
+  const [onclick, setOnClick] = useState(false);
+  const [checkChecIn, setCheckIn] = useState();
+
   useEffect(() => {
- 
     if (hitclick === click) {
-      dispatch(onClickEnggCart(""))
-      setHitClick(null)
+      dispatch(onClickEnggCart(""));
+      setHitClick(null);
+      setClick(null);
+      setCheckIn(!checkChecIn);
+    } else {
+      const getData = async () => {
+        const data = await getEnggCheckinOrNotOnToadaysDate(click);
+        setCheckIn(data?.isCheckIn);
+      };
+      getData();
+      setHitClick(click);
+      dispatch(onClickEnggCart(click));
     }
-    else {
-      setHitClick(click)
-      dispatch(onClickEnggCart(click))
-    }
-
-  }, [onclick])
-
+  }, [onclick]);
 
   const dataOnPin = useSelector((state) => {
-    return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer?.enggLocationOnPin
-  })
+    return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer
+      ?.enggLocationOnPin;
+  });
 
   useEffect(() => {
-    if (getBasicData) {
-      getBasicData.forEach((data) => {
-        if (data.ServiceEnggId === dataOnPin) {
-          console.log(data.ServiceEnggId)
-        }
-      });
+    if (dataOnPin === undefined) {
+      setCheckIn(false);
+      setClick("");
+      setHitClick(null);
     }
-
-  }, [dataOnPin])
+  }, [dataOnPin]);
 
   return (
     <div style={{ marginTop: "20px" }} className="parent-div">
@@ -196,19 +199,63 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           beforeChange={handleBeforeChange}
         >
           {assignedArray?.map((item, index) => {
-            if(item.ServiceEnggId === dataOnPin){
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={true} /> //preet sir please add border 
-            }else{
-              return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick} isHover={false} />
+            if (
+              item.ServiceEnggId === dataOnPin ||
+              (item.ServiceEnggId === click && checkChecIn)
+            ) {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={true}
+                />
+              );
+            } else {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={false}
+                />
+              );
             }
           })}
           {notAssignedArray?.map((item, index) => {
-           if(item.ServiceEnggId === dataOnPin){
-            return  <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={true}/>//preet sir please add border 
-          }else{
-            return <ServiceEnggDataOnCrousel item={item} index={index} len={len} setClick={setClick} setOnClick={setOnClick}  isHover={false}/>
-          }
-        })}
+            if (
+              item.ServiceEnggId === dataOnPin ||
+              (item.ServiceEnggId === click && checkChecIn)
+            ) {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={true}
+                  click={click}
+                />
+              );
+            } else {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  click={click}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={false}
+                />
+              );
+            }
+          })}
         </Slider>
       )}
     </div>

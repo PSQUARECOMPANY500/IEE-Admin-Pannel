@@ -1048,20 +1048,24 @@ footer a:hover {
   gap: 4rem;
   display: flex;
   position: relative;
-  box-shadow: 2px 4px 10px #99886b66;
+  /* box-shadow: ; */
   /* border-width: 1px; */
-
+  /* box-shadow: 1px 2px 5px #f8ac1d80 */
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 0 2px 1px; */
   /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+}
+
+.slick-slide::selection{
+  box-shadow: none;
 }
 
 .slick-dots {
   display: none !important;
 }
 
-.slick-slide:hover {
-  box-shadow: 1px 2px 5px #f8ac1d80;
-  border-color: solid #f8ac1d80;
+.main-crouser:hover {
+  box-shadow: 1px 2px 5px #f8ac1d80 !important;
+  border-color: solid #f8ac1d80 !important; 
 }
 
 .slick-slider .slick-track {

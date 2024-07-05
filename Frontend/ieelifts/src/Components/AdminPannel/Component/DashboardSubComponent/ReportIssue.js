@@ -1,7 +1,6 @@
 import React from "react";
 
 const ReportIssue = ({ RedportData }) => {
- console.log("report data 31",RedportData);
   const src = RedportData?.ClientPhoto;
 
   return RedportData ? (

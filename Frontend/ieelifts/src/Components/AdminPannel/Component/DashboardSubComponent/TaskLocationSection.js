@@ -127,7 +127,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    if (filterConditions) {
+    if (filterConditions?.length > 0) {
       let data;
       if (services) {
         if (
@@ -147,7 +147,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
         data = currentDateCallback;
       }
       if (data && data.length === 0) {
-        console.log("In data.length");
         return setFilterData(null);
       }
 
@@ -246,8 +245,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
 
-    // console.log("andi toofan.......................................................................", reportData)
-
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
 
@@ -255,7 +252,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
       setReportData(reportData?.callbackId || reportData?.RequestId);
   
     } else {
-      //console.log(reportData)
       setHandleReportData(true);
       setReportData(reportData);
     }
@@ -374,7 +370,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             }`}
                             onClick={() => handleReportSectionData(reportData)}
                           >
-                            {/* {console.log("this is value", value)} */}
                             <div className="ticket-sub-card-row">
                               <div className="ticket-sub-card-row-right">
                                 <h5>Name:</h5>
@@ -497,7 +492,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
-              
                   />
                 </div>
               </div>

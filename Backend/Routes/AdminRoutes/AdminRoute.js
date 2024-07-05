@@ -339,7 +339,7 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 
 
-
+router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
 
 
 
