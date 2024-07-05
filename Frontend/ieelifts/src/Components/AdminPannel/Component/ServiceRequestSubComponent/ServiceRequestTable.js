@@ -10,7 +10,11 @@ import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/Ad
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import ServiceRequestModals from "./ServiceRequestModals";
 
-const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
+const ServiceRequestTable = ({
+  setRenderTicket2,
+  searchText,
+  filterConditions,
+}) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
   const [RequestId, setRequestId] = useState();
@@ -23,7 +27,89 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [showTicketModal4, setShowTicketModal4] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState([]);
+  const [filterData, setFilterData] = useState([]);
+  const [getFilterConditions, setGetFilterConditions] = useState(false);
+  const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
+
+  useEffect(() => {
+    if (filterConditions && filterConditions.length === 0) {
+      setGetFilterConditions(false);
+      setFilterData([]);
+    }
+    if (filterConditions && filterConditions.length > 0) {
+      if (filteredCD.length === 0) {
+        setGetFilterConditions(false);
+        setFilterData([]);
+        return;
+      }
+      let data = filteredCD;
+      const membershipFilter = filterConditions.filter(
+        (filter) => filter.type === "membership"
+      );
+      const locationFilter = filterConditions.filter(
+        (filter) => filter.type === "location"
+      );
+
+      let membershipData,
+        locationData = [];
+      if (membershipFilter) {
+        let mData = [];
+        membershipFilter.forEach((membership) => {
+          const { condition } = membership;
+
+          if (data && data.length !== 0) {
+            mData = data.filter(
+              (d) =>
+                d.clientDetail.Membership.toLowerCase() ===
+                condition.toLowerCase()
+            );
+          }
+          if (membershipData) {
+            membershipData = [...membershipData, ...mData];
+          } else {
+            membershipData = [...mData];
+          }
+        });
+      }
+
+      if (locationFilter) {
+        let lData = [];
+        locationFilter.forEach((location) => {
+          const { condition } = location;
+          if (data && data.length !== 0) {
+            lData = data.filter((d) =>
+              d.clientDetail.Address.toLowerCase().includes(
+                condition.toLowerCase()
+              )
+            );
+          }
+          if (locationData) {
+            locationData = [...locationData, ...lData];
+          } else {
+            locationData = [...lData];
+          }
+        });
+      }
+
+      let responseData = [];
+      if (
+        membershipData &&
+        membershipData.length > 0 &&
+        locationData &&
+        locationData.length > 0
+      ) {
+        responseData = membershipData.filter((d) => locationData.includes(d));
+      } else if (membershipData && membershipData.length > 0) {
+        responseData = membershipData;
+      } else if (locationData && locationData.length > 0) {
+        responseData = locationData;
+      }
+
+      setFilterData(responseData);
+      setGetFilterConditions(true);
+    }
+    console.log("filterData", filterData);
+  }, [filterConditions]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -136,33 +222,40 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
   }
   useEffect(() => {
     if (filteredCD) {
-      setCheckboxStates(Array(filteredCD.length).fill(false));
+      setReqCheckboxStates(Array(filteredCD.length).fill(false));
     }
   }, [filteredCD]);
 
   const handleCheckBoxAll = () => {
     if (filteredCD) {
-      const allChecked = checkboxStates.every((isChecked) => isChecked);
-      setCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+      const allChecked =
+        filteredCD && reqCheckboxStates?.every((isChecked) => isChecked);
+
+      setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
     }
   };
 
   const handleCheckBoxSingle = (index) => {
-    setCheckboxStates((prevStates) => {
+    setReqCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
   };
+
   return (
     <div className="service-request-table">
+      <div className="table-shadow"></div>
       <table>
         <thead>
           <tr>
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={checkboxStates.every((isChecked) => isChecked)}
+                checked={
+                  filteredCD &&
+                  reqCheckboxStates.every((isChecked) => isChecked)
+                }
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>
@@ -233,6 +326,76 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
                 </td>
               </tr>
             </>
+          ) : getFilterConditions ? (
+            filterData?.map((value, index) => {
+              const isAssignedValue = value?.isAssigned;
+              const enngID = value?.AssignedEng?.id;
+              const name = value?.AssignedEng?.name;
+
+              // Due to returning of null here there is an issue in indexing due to which the checkboxes are giving trouble
+              // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
+
+              // Check if isAssigned is true, if not, don't render the row
+              if (isAssignedValue) {
+                reqCheckboxStates[index] = true;
+                return null;
+              }
+
+              return (
+                <tbody key={value._id}>
+                  <tr className="selected">
+                    <td>
+                      <CheckBox
+                        id={`checkbox-${index}`}
+                        checked={reqCheckboxStates[index]}
+                        handleCheckboxChange={() => handleCheckBoxSingle(index)}
+                      />
+                    </td>
+                    <td>{value.JobOrderNumber}</td>
+                    <td>{value?.clientDetail?.name}</td>
+                    <td>{value?.clientDetail?.PhoneNumber}</td>
+
+                    <td>
+                      <div className="dropdown-address">
+                        <span>
+                          {limitAddress(value?.clientDetail?.Address, 15)}
+                        </span>
+
+                        <div className="dropdown-adddress-menu">
+                          <div className="drop-address">
+                            <p>{value?.clientDetail?.Address}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td>{value?.TypeOfIssue}</td>
+                    <td>GOLD</td>
+                    <td>{value?.RequestDate}</td>
+                    <td>{value?.RequestTime}</td>
+
+                    <td
+                      onClick={() =>
+                        openModal(4, value?.RequestId, isAssignedValue, enngID)
+                      }
+                    >
+                      {isAssignedValue ? (
+                        <AssignDropdown
+                          customAssignName="assignNameColor"
+                          name={name}
+                          isAssigned={isAssigned}
+                        />
+                      ) : (
+                        <AssignDropdown
+                          customAssign="assignColor"
+                          name="Assign"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              );
+            })
           ) : (
             filteredCD?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
@@ -244,7 +407,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
 
               // Check if isAssigned is true, if not, don't render the row
               if (isAssignedValue) {
-                checkboxStates[index] = true;
+                reqCheckboxStates[index] = true;
                 return null;
               }
 
@@ -254,7 +417,7 @@ const ServiceRequestTable = ({ setRenderTicket2, searchText }) => {
                     <td>
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={reqCheckboxStates[index]}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>

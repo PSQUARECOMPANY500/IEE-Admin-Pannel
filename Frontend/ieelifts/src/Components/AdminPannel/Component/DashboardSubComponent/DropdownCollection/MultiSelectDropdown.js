@@ -13,6 +13,7 @@ const MultiSelectDropdown = ({
   isAssigned,
   EnggName,
   editchange,
+  
 }) => {
   const [selectedValue, setSelectedValue] = useState([]);
 
@@ -28,27 +29,27 @@ const MultiSelectDropdown = ({
     control: (provided, state) => ({
       ...provided,
       backgroundColor: state.isFocused ? "white" : "white",
-      boxShadow: state.isFocused
-        ? "none"
-        : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
-
+      boxShadow: state.isFocused ? "none" : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
-
       borderRadius: "5px",
-      fontSize: "0.8rem", // Font size of the control
-      // height:'30px',
-    
+      fontSize: "0.8rem",
+      height:'auto',
+      padding:'0',
+      display: "flex", // Add display flex
+      alignItems: "center", // Add align-items center
+  
+
       ":hover": {
-        // border:'1px solid #F8AC1D',
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
-       
       },
-    }),    placeholder: (provided) => ({
+    }),
+    placeholder: (provided) => ({
       ...provided,
-      fontSize: "0.8rem", // Adjust the font size here
+      fontSize: "0.8rem",
       fontFamily:'Poppins',
       opacity:'0.6',
+  
     }),
     menu: (provided) => ({
       ...provided,
@@ -62,31 +63,47 @@ const MultiSelectDropdown = ({
       backgroundColor: state.isSelected ? "#FFFFFF" : "#FFFFFF",
       color: state.isSelected ? "white" : "black",
       fontSize: "0.8rem",
+ 
       ":hover": {
-        backgroundColor: "#FEF3DE", // Background color of the remove icon on click
-        color: "#F8AC1D", // Text color of the remove icon on click
+        backgroundColor: "#FEF3DE",
+        color: "#F8AC1D",
         borderRadius: "5px",
       },
     }),
     multiValue: (provided) => ({
       ...provided,
-      backgroundColor: "#FEF3DE", // Background color of tags
+      backgroundColor: "#FEF3DE",
       borderRadius: "15px",
+      fontSize: "0.8rem",
+   
     }),
     multiValueLabel: (provided) => ({
       ...provided,
-      color: "#F8AC1D", // Text color of tags
+      color: "#F8AC1D",
+
     }),
     multiValueRemove: (provided, state) => ({
       ...provided,
-      color: state.isHovered ? "white" : "#F8AC1D", // Text color of the remove icon
-      backgroundColor: state.isHovered ? "#F8AC1D" : "transparent", // Background color of the remove icon on hover
+      color: state.isHovered ? "white" : "#F8AC1D",
+      backgroundColor: state.isHovered ? "#F8AC1D" : "transparent",
+
       ":hover": {
-        backgroundColor: "#FEF3DE", // Background color of the remove icon on click
-        color: "#F8AC1D", // Text color of the remove icon on click
+
+        backgroundColor: "#FEF3DE",
+        color: "#F8AC1D",
       },
     }),
+    valueContainer: (provided) => ({
+      ...provided,
+      height:'auto',
+  
+   
+      
+
+    }),
   };
+  
+  
 
   const handleChange = (selectedOption) => {
     console.log("dropdoen information : ", selectedOption);

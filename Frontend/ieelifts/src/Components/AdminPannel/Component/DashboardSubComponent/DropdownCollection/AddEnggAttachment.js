@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
 const AddEnggAttachment = ({
@@ -8,9 +8,11 @@ const AddEnggAttachment = ({
   Details,
   onStateChange,
   isAssigned,
+  value,
   editchange,
 }) => {
   const selectedValue = Details || [];
+  
 
   const options = selectedValue.map((details) => ({
     value: details._id || details.value,
@@ -18,6 +20,24 @@ const AddEnggAttachment = ({
   }));
 
   const [selectedOption, setSelectedOption] = useState(null);
+
+
+  // useEffect(() => {
+  //   // Update selected option when value prop changes
+  //   if (value) {
+  //     const foundOption = options.find((option) => option.value === value);
+  //     setSelectedOption(foundOption || null);
+  //   }
+  // }, [value, options]);
+
+  useEffect(() => {
+    // Update selected option when value prop changes
+    if (value !== selectedOption?.value) {
+      const foundOption = options.find((option) => option.value === value);
+      setSelectedOption(foundOption || null);
+    }
+  }, [value, options, selectedOption]);
+  
 
   const handleChange = (selected) => {
     setSelectedOption(selected);

@@ -8,9 +8,10 @@ import AddTicketModals from "../DashboardSubComponent/AddTicketModals";
 const ServiceScheduledTable = () => {
   const [showTicketModal5, setShowTicketModal5] = useState(false);
   const [checkedAll, setCheckedAll] = useState(false);
-  const [checkboxStates, setCheckboxStates] = useState({});
+  const [checkboxStates, setCheckboxStates] = useState([]);
   const [totalCheckboxes, setTotalCheckboxes] = useState(0);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState(0);
+  
 
   const handleCheckBoxAll = () => {
     const updatedStates = {};
@@ -61,6 +62,7 @@ const ServiceScheduledTable = () => {
 
   return (
     <div className="service-schedule-table">
+      <div className="table-shadow"></div>
       <table>
         <thead>
           <tr>

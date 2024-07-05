@@ -50,7 +50,7 @@ module.exports.CreateChat = async (req,res) => {
 
 module.exports.sendMessage = async (req,res) =>{   
     try {
-        const {Sender , Content, ChatId } = req.body;
+        const {Sender , Content, ChatId, serviceId } = req.body;
 
         if(!Sender || !Content || !ChatId){
             return res.status(400).json({message:'Invalid data pass in the Request'})
@@ -59,19 +59,14 @@ module.exports.sendMessage = async (req,res) =>{
         var newMessage = {
             Sender,
             Content,
-            ChatId
+            ChatId,
+            serviceId
         }
 
         var message = await MessageModal.create(newMessage);
 
         message = await message.populate("ChatId");
         console.log("reached here succcccesssfulllly")
-        // io.on("connection", (socket) => {
-        //     console.log(`Api connected-----------------------------: ${socket.id}`);
-        //   });
-
-        // io.emit('newMessage', newMessage);
-
         return res.json(message);
 
     } catch (error) {

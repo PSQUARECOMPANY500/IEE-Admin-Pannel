@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ServiceEnggDataOnCrousel from "./ServiceEnggDataOnCrousel";
 import { getEnggBasicDataForCrouserAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import { getEnggCheckinOrNotOnToadaysDate } from "../../../../ReduxSetup/Actions/AdminActions";
+
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
+import { onClickEnggCart } from "../../../../ReduxSetup/Actions/AdminActions";
 const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const dispatch = useDispatch();
 
@@ -87,7 +90,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 4,
           infinite: true,
           dots: true,
@@ -123,6 +126,42 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   const handleBeforeChange = (oldIndex, newIndex) => {
     setCurrentSlide(newIndex);
   };
+  //onClick location section
+  const [click, setClick] = useState("");
+  const [hitclick, setHitClick] = useState(null);
+  const [onclick, setOnClick] = useState(false);
+  const [checkChecIn, setCheckIn] = useState();
+
+  useEffect(() => {
+    if (hitclick === click) {
+      dispatch(onClickEnggCart(""));
+      setHitClick(null);
+      setClick(null);
+      setCheckIn(!checkChecIn);
+    } else {
+      const getData = async () => {
+        const data = await getEnggCheckinOrNotOnToadaysDate(click);
+        setCheckIn(data?.isCheckIn);
+      };
+      getData();
+      setHitClick(click);
+      dispatch(onClickEnggCart(click));
+    }
+  }, [onclick]);
+
+  const dataOnPin = useSelector((state) => {
+    return state?.AdminRootReducer?.onClickEnggPinEnggLocationReducer
+      ?.enggLocationOnPin;
+  });
+
+  useEffect(() => {
+    if (dataOnPin === undefined) {
+      setCheckIn(false);
+      setClick("");
+      setHitClick(null);
+    }
+  }, [dataOnPin]);
+
   return (
     <div style={{ marginTop: "20px" }} className="parent-div">
       <div className="carosel-Navigators-icon">
@@ -159,12 +198,64 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           {...settings}
           beforeChange={handleBeforeChange}
         >
-          {assignedArray?.map((item, index) => (
-            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-          ))}
-          {notAssignedArray?.map((item, index) => (
-            <ServiceEnggDataOnCrousel item={item} index={index} len={len} />
-          ))}
+          {assignedArray?.map((item, index) => {
+            if (
+              item.ServiceEnggId === dataOnPin ||
+              (item.ServiceEnggId === click && checkChecIn)
+            ) {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={true}
+                />
+              );
+            } else {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={false}
+                />
+              );
+            }
+          })}
+          {notAssignedArray?.map((item, index) => {
+            if (
+              item.ServiceEnggId === dataOnPin ||
+              (item.ServiceEnggId === click && checkChecIn)
+            ) {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={true}
+                  click={click}
+                />
+              );
+            } else {
+              return (
+                <ServiceEnggDataOnCrousel
+                  item={item}
+                  click={click}
+                  index={index}
+                  len={len}
+                  setClick={setClick}
+                  setOnClick={setOnClick}
+                  isHover={false}
+                />
+              );
+            }
+          })}
         </Slider>
       )}
     </div>

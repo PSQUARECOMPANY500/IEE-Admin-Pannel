@@ -4,7 +4,7 @@ import MembershipSubCard from "./MembershipSubCard";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { requestLimitedClientDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import MembershipLoader from "./MembershipLoader";
+import Loader from "../../../CommonComponenets/Loader";
 import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
@@ -69,7 +69,7 @@ const MembershipExpired = ({ DemoData, count }) => {
           setPage((prevPage) => prevPage + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
     return;
   };
 
@@ -113,11 +113,11 @@ const MembershipExpired = ({ DemoData, count }) => {
 
           {loader ? (
             <div className="loder_Container">
-              <MembershipLoader />
+              <Loader />
             </div>
           ) : (
             <div
-              className={`membership_card_scrollable membership_card_scrollable_expired 
+              className={`${count !== undefined ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
           ${!count && "membership_card_scrollable_expanded"}
           `}
               ref={ref}

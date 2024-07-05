@@ -1,21 +1,43 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React from "react";
+import React, { useState } from "react";
 import { GoPerson } from "react-icons/go";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
+import ClientModal from "./ClientModal";
 
-const clientCardView = ({ clientData }) => {
+const ClientCardView = ({ clientData }) => {
+  const [showClientModal, setShowClientModal] = useState(false);
+
+  const [selectedClient, setSelectedClient] = useState(null)
+
   function setBoxShadow(type) {
     return type === "warrenty"
       ? "clientCardShadowWarrenty"
       : type === "platinum"
-      ? "clientCardShadowPlatinum"
-      : type === "gold"
-      ? "clientCardShadowGold"
-      : type === "silver" 
-      ? "clientCardShadowSilver"
-      : "noMembershipP";
+        ? "clientCardShadowPlatinum"
+        : type === "gold"
+          ? "clientCardShadowGold"
+          : type === "silver"
+            ? "clientCardShadowSilver"
+            : "noMembershipP";
   }
+
+  // ------------------Raj------------------------------------------------
+
+  //Function to handle open modal
+  const HandleCardClick = (client) => {
+    setSelectedClient(client)
+    setShowClientModal(true)
+
+
+  }
+
+  //Function to handle closing modal
+  const handleCloseModal = () => {
+    setShowClientModal(false)
+  }
+
+
   return (
     <div className="ClientCatainer">
       {clientData &&
@@ -23,10 +45,11 @@ const clientCardView = ({ clientData }) => {
           <div
             key={index}
             className={`clientCard ${setBoxShadow(client.MembershipType)}`}
+            onClick={() => HandleCardClick(client)}
           >
             <div className="clientInfo">
               <div className="clientCards">
-                <div className="client ">
+                <div className="client">
                   <p>
                     <GoPerson />
                   </p>
@@ -35,15 +58,15 @@ const clientCardView = ({ clientData }) => {
                     : client.name}
                 </div>
 
-                <div className="client ">
+                <div className="client">
                   <p>
                     <IoCallOutline />
                   </p>
                   <p>{client.PhoneNumber}</p>
                 </div>
               </div>
-              <div className="clientCards ">
-                <div className="client ">
+              <div className="clientCards">
+                <div className="client">
                   <p>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +85,7 @@ const clientCardView = ({ clientData }) => {
                   </p>
                   <p>{client.JobOrderNumber}</p>
                 </div>
-                <div className="client ">
+                <div className="client">
                   <p>
                     <GrHomeRounded />
                   </p>
@@ -83,7 +106,7 @@ const clientCardView = ({ clientData }) => {
                 <p className="Info">
                   {client.CallbackCount ? client.CallbackCount : 0}
                 </p>
-                <p cla>CallBack</p>
+                <p>CallBack</p>
               </div>
               <div className="client2">
                 <p className="Info">{client.DateOfHandover}</p>
@@ -92,8 +115,16 @@ const clientCardView = ({ clientData }) => {
             </div>
           </div>
         ))}
+
+      {/* --------------------------------Raj--------------------- */}
+
+      <ClientModal
+        showClientModal={showClientModal}
+        handleCloseModal={handleCloseModal}
+        selectedClient={selectedClient} />
+
     </div>
   );
-};
+}
 
-export default clientCardView;
+export default ClientCardView

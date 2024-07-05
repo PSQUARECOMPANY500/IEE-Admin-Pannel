@@ -3,37 +3,71 @@ import EngeeniersSubCard from "./EngeeniersSubCard";
 import EngChatNav from "./EngChatNav";
 import { CiVideoOn } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
-import { FaRegFileAlt } from "react-icons/fa";
+import { FaRegFileAlt, FaSadCry } from "react-icons/fa";
 import Attendance from "./Attendance";
-import Ratings from "./Ratings";
 import TaskHistory from "./TaskHistory";
 import SpareParts from "./SpareParts";
 import { MdSend } from "react-icons/md";
-
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
-
 import { useDispatch, useSelector } from "react-redux";
 import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import Rating from "./Rating";
+import EditEngineerDetails from "./EditEngineerDetails";
+import config from "../../../../config";
 
 const EngeeniersCard = () => {
-  const [isChatOpen, setIsChatOpen] = useState(true);
-  const [currentComponent, setCurrentComponent] = useState(null);
+  const [currentComponent, setCurrentComponent] = useState();
+  const [isFirst, setIsFirst] = useState(false);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [isSecond, setIsSecond] = useState(false);
+  const [borderMergin, setBorderMargin] = useState(0);
+  const [engID, setEngID] = useState(null);
+  const [currentEngName, setCurrentEngName] = useState(null);
+  const [currentengImg, setCurrentEngImg] = useState(null);
+
+
+  const [currentengCash, setCurrentEngCash] = useState(null);
+  
+
+
+  
+  const formRef = useRef();
+  const handleClickOutsideModal = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      handleCloseModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
+
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash) => {
+    setEngID(engId);
+    setCurrentEngName(engName);
+    setCurrentEngImg(engImg);
+    setCurrentEngCash(engCash)
+  };
   // Render the selected component
   const renderSelectedComponent = () => {
     switch (currentComponent) {
       case "c1":
-        return <TaskHistory />;
+        return <TaskHistory engID={engID} />;
       case "c2":
-        return <Attendance />;
+        return <Attendance engID={engID} />;
       case "c3":
-        return <Ratings />;
+        return <Rating engID={engID} />;
       case "c4":
-        return <SpareParts />;
+        return <SpareParts engID={engID} />;
       default:
-        return <Attendance />;
+        return <TaskHistory engID={engID} />;
     }
   };
 
@@ -42,7 +76,6 @@ const EngeeniersCard = () => {
   const fileInputField = useRef(null);
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
-
   const [messageData, setMessageData] = useState();
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
@@ -57,6 +90,10 @@ const EngeeniersCard = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0].name);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
 
   useEffect(() => {
@@ -117,7 +154,7 @@ const EngeeniersCard = () => {
         messageData,
         chatCreated?._id
       )
-    ); //todo - in future the id is dynamic as come from login user
+    );
     setMessageData("");
 
     if (textareaRef.current) {
@@ -136,48 +173,102 @@ const EngeeniersCard = () => {
     scroll();
   }, [getMessages]);
 
+  const handleCurrentComponent = (c, m) => {
+    setCurrentComponent(c);
+    setBorderMargin(m);
+  };
+
   return (
     <>
-      <div className={isChatOpen ? "EngeeniersCardT" : "EngeeniersCardF"}>
-        {isChatOpen && (
-          <EngeeniersSubCard
-            isChatOpen={isChatOpen}
-            setIsChatOpen={setIsChatOpen}
-          />
-        )}
-        <div
-          className="SingleEng"
-          style={{ display: isChatOpen ? "none" : "block" }}
-        >
+      <div
+        className="EngeeniersCard"
+        style={{
+          gridTemplateColumns: isFirst || isSecond ? "2fr 1fr" : "1fr",
+          gridTemplateAreas: isSecond && "'SingleEng'",
+        }}
+      >
+        <EngeeniersSubCard
+          isFirst={isFirst}
+          setIsFirst={setIsFirst}
+          isSecond={isSecond}
+          setIsSecond={setIsSecond}
+          handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+        />
+
+        <div className="SingleEng" style={{ display: isSecond && "block" }}>
           <div className="SubSingleEng">
             <div className="PDetails">
               <div className="SubPDetails">
-                <div className="Pimg"></div>
+                <div className="Pimg">
+                  {/* <img src={currentengImg} alt="eng persnol image" /> */}
+                  <img src={
+                    currentengImg?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
+                    `${config.documentUrl}/EnggAttachments/${currentengImg}`} alt="eng persnol image" 
+                    
+                    
+                    />
+                </div>
                 <h1>
-                  Name: <span>Jack Smith</span>
+                  Name:<span>{currentEngName}</span>
                 </h1>
               </div>
 
               <h1>
-                ID: <span>1111</span>
+                ID: <span>{engID}</span>
               </h1>
               <h1>
-                Spare Parts: <span>15</span>
+                Spare Parts: <span>25</span>
               </h1>
-              <h1>
-                Cash In Hand: <span>150,0000</span>
+              <h1 className="ooo">
+                Cash In Hand: <span>{currentengCash}</span>
               </h1>
-              <FaRegFileAlt className="Icon_Color" />
+              <FaRegFileAlt
+                className="Icon_Color"
+                onClick={() => setOpenModal(true)}
+              />
             </div>
             <div className="ODetailsColumn">
-              <h5 onClick={() => setCurrentComponent("c1")}>Task History</h5>
-              <h5 onClick={() => setCurrentComponent("c2")}>Attendence</h5>
+              <h5
+                onClick={() => {
+                  handleCurrentComponent("c1", 0);
+                }}
+                style={{ color: borderMergin === 0 && "#F8AC1DAD" }}
+              >
+                Task History
+              </h5>
+              <h5
+                onClick={() => handleCurrentComponent("c2", 17)}
+                style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
+              >
+                Attendence
+              </h5>
+              <h5
+                onClick={() => handleCurrentComponent("c3", 32)}
+                style={{ color: borderMergin === 32 && "#F8AC1DAD" }}
+              >
+                Rating
+              </h5>
+              <h5
+                onClick={() => handleCurrentComponent("c4", 49)}
+                style={{ color: borderMergin === 49 && "#F8AC1DAD" }}
+              >
+                Spare parts
+              </h5>
+            </div>
+            <div className="vertical-line">
+              <div
+                className="overlay-vertical-line"
+                style={{ marginLeft: borderMergin + "rem" }}
+              ></div>
             </div>
             <div className="ODetails">{renderSelectedComponent()}</div>
           </div>
         </div>
 
-        <div className={isChatOpen ? "EngeeniersChatT" : "EngeeniersChatF"}>
+        <div
+          className="EngeeniersChatF"
+          style={{ display: isFirst || isSecond ? "block" : "none" }}
+        >
           <EngChatNav />
           <div className="EngChatBox">
             <div className="EngChatBoxHead">
@@ -255,7 +346,7 @@ const EngeeniersCard = () => {
                     <MdOutlineAttachFile />
                   </div>
                 </div>
-
+                ``
                 <p
                   className="send-messsage-eng-card "
                   onClick={handleSendMessage}
@@ -267,6 +358,14 @@ const EngeeniersCard = () => {
           </div>
         </div>
       </div>
+
+      {openModal && (
+        <div className="engineer-modal-wrapper">
+          <div className="engineer-modal-container" ref={formRef}>
+            <EditEngineerDetails engID={engID}  onClose={handleCloseModal} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

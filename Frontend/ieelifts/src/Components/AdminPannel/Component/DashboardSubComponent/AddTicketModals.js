@@ -17,6 +17,7 @@ import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/Adm
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import config from "../../../../config";
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -28,6 +29,7 @@ const AddTicketModals = ({
   isAssigned,
   setTicketUpdate,
 }) => {
+
   const dispatch = useDispatch();
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
@@ -102,7 +104,7 @@ const AddTicketModals = ({
     return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
       ?.callbackData?.callback;
   });
-
+console.log("userCallBackDetail",userCallBackDetail)
   //get eng state by use selector hook
 
   const getEnggState = useSelector((state) => {
@@ -117,12 +119,12 @@ const AddTicketModals = ({
     return;
   });
 
-  console.log("emit -=--=-=", getEnggState)
-
   const getAssignedCallbackDetails = useSelector((state) => {
     return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
   })
 
+ // console.log("getAssignedCallbackDetails",getAssignedCallbackDetails)
+ 
 
   useEffect(() => {
     if (isAssigned) {
@@ -157,6 +159,9 @@ const AddTicketModals = ({
     }
   }, [getEnggState]);
 
+  const [rn , setrn] = useState("Enter Representative Name (Optional)")
+  const [rnum , setrum] = useState("Enter Representative Number (Optional)");
+
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
     setName(userCallBackDetail?.clientDetail?.name || "");
@@ -166,7 +171,8 @@ const AddTicketModals = ({
     setDescription(userCallBackDetail?.Description || "");
     setDate(userCallBackDetail?.callbackDate || "");
     setTime(userCallBackDetail?.callbackTime || "");
-
+    setrn(userCallBackDetail?.RepresentativeName || "Enter Representative Name (Optional)");
+    setrum(userCallBackDetail?.RepresentativeNumber || "Enter Representative Number (Optional)");
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
@@ -204,7 +210,7 @@ const AddTicketModals = ({
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
-    console.log(selectedOptions)
+   // console.log(selectedOptions)
   };
 
 
@@ -319,7 +325,7 @@ const AddTicketModals = ({
                 </div>
               </div>
 
-
+            
 
               <div className="req-client-information-section">
                 <form className="req-client-form">
@@ -445,7 +451,7 @@ const AddTicketModals = ({
                     {date ? (<div className="membership-form-col2">
                       <p>{date}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
 
@@ -457,7 +463,7 @@ const AddTicketModals = ({
                     {time ? (<div className="membership-form-col2">
                       <p>{time}</p>
                     </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="200px" />
+                      <SkeltonLoader width="100px" />
                     </div>)}
 
                   </div>
@@ -513,6 +519,7 @@ const AddTicketModals = ({
 
 
                     {/*engg detail div start here------------------------------------------------------------------------------  */}
+                    
                     <div className="sub-engg-detail-section">
 
                       <h1>ENGINEER DETAILS</h1>
@@ -522,14 +529,15 @@ const AddTicketModals = ({
                           {getEnggState ? (
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                              src={engDetails.enggPhoto}
+                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               alt="lift"
                             />
                           ) : (
                             <SkeltonLoader width="90px" height="90px" marginBottom='1.6rem' />
                           )}
                         </div>
-
+                       
+                        {/* engDetails.enggPhoto */}
                         <div style={{ width: "50%" }}>
                           {getEnggState ? (
                             <div className="elevator-detail-row">
@@ -697,14 +705,14 @@ const AddTicketModals = ({
                   </div>
                 </div>
                 <div className="grid-form-container2">
-
+                    {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input placeholder="Enter Representative Name (Optional)" />
+                    <input placeholder={`${rn}`} onChange={(e)=> setrn(e.target.value)} />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder="Enter Representative Number (Optional)" />
+                    <input placeholder={`${rnum}`} onChange={(e)=> setrum(e.target.value)}/>
                   </div>
 
                   <div className="col75">
@@ -723,6 +731,7 @@ const AddTicketModals = ({
                       onChange={(e) => {
                         setMessage(e.target.value);
                       }}
+
                     ></textarea>
 
                   </div>

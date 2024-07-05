@@ -14,7 +14,13 @@ const OtpSchema = new Schema({
         type: String,
         required: true,
     },
+    time:{
+        type: String,
+    }
 });
+
+OtpSchema.index({ email: 1, createdAt: 1 });
+
 
 const OtpDetails = mongoose.model("OtpDetails", OtpSchema);
 module.exports = OtpDetails;

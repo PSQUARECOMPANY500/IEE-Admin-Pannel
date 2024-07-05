@@ -34,8 +34,43 @@ import { GET_FILTER_LOCATIONS } from "../Actions/AdminActions";
 import { GET_SEARCHED_CLIENTS } from "../Actions/AdminActions";
 import { CHANGE_MEMBERSHIP_LAYOUT_BUTTON } from "../Actions/AdminActions";
 import { LOGIN_SERVICE_ADMIN } from "../Actions/AdminActions";
-import { OPEN_MODAL } from "../Actions/AdminActions";
-import { CLOSE_MODAL } from "../Actions/AdminActions";
+import { GET_Engineer_Name } from "../Actions/AdminActions";
+import { VERIFY_OTP_PASSWORD } from "../Actions/AdminActions";
+import { FETCH_ENG_DETAILS } from "../Actions/AdminActions";
+import { GET_ENGINEER_LEAVE_HISTORY } from "../Actions/AdminActions";
+import { APPROVE_LEAVE_BY_ADMIN } from "../Actions/AdminActions";
+import { GET_ENGINEER_ATTENDANCE } from "../Actions/AdminActions";
+import { GET_ENGINEER_REQUESTED_LEAVE } from "../Actions/AdminActions";
+
+import { GET_ASSIGNED_ENGG_DETAILS } from "../Actions/AdminActions";
+import { UPDATE_ENGG_LOCATION } from "../Actions/AdminActions";
+import { UPDATE_ENGG_CART_LOCATION } from "../Actions/AdminActions";
+
+import { REGISTER_CLIENT_DATA } from "../Actions/AdminActions";
+import { UPDATE_CLIENT_DATA } from "../Actions/AdminActions";
+import { UPDATE_CLIENT_FORM_USING_PAGINATION } from "../Actions/AdminActions.js";
+import { GET_ADMIN_REPORT_DATA } from "../Actions/AdminActions";
+import { REPORT_CROUSER_HANDLER } from "../Actions/AdminActions";
+import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
+import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
+
+import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
+//----------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+//reducer to handle VerifyOTPPasswordReducer
+
+const initialState24 = {
+  isSuccess: null,
+};
+
+export const VerifyOTPPasswordReducer = (state = initialState24, action) => {
+  switch (action.type) {
+    case VERIFY_OTP_PASSWORD:
+      return { ...state, isSuccess: action.payload };
+    default:
+      return state;
+  }
+};
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +101,7 @@ export const getFilterDataReducer = (state = intialState22, action) => {
   }
 };
 const intialState21 = {
-  clients: null,
+  clients: [],
 };
 export const getClientsReducer = (state = intialState21, action) => {
   switch (action.type) {
@@ -550,6 +585,23 @@ export const filteringLocationsReducer = (state = locationsState, action) => {
   }
 };
 
+const engineerNameState = {
+  engineers: null,
+};
+
+export const engineersReducer = (state = engineerNameState, action) => {
+  switch (action.type) {
+    case GET_Engineer_Name:
+      return {
+        ...state,
+        engineers: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const searchingState = {
   clients: null,
 };
@@ -583,6 +635,75 @@ export const membershipButtonLayoutReducer = (state = buttonLayout, action) => {
   }
 };
 
+const engineerLeaveHistory = {
+  leaveHistory: null,
+};
+
+export const engineerLeaveHistoryReducer = (
+  state = engineerLeaveHistory,
+  action
+) => {
+  switch (action.type) {
+    case GET_ENGINEER_LEAVE_HISTORY:
+      return {
+        leaveHistory: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const approveLeave = {
+  leaveStatus: null,
+};
+
+export const approveLeaveByAdminReducer = (state = approveLeave, action) => {
+  switch (action.type) {
+    case APPROVE_LEAVE_BY_ADMIN:
+      return {
+        leaveStatus: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const requestedLeave = {
+  requestedLeave: null,
+};
+
+export const engineerRequestedLeaveReducer = (
+  state = requestedLeave,
+  action
+) => {
+  switch (action.type) {
+    case GET_ENGINEER_REQUESTED_LEAVE:
+      return {
+        requestedLeave: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const engineerAttendanceReducer = (
+  state = { attendance: null },
+  action
+) => {
+  switch (action.type) {
+    case GET_ENGINEER_ATTENDANCE:
+      return {
+        attendance: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
 // armaan-dev ends
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -599,4 +720,230 @@ export const modalOpenerReducer = (state = intialStateOpenModal, action) => {
       return state;
   }
 };
+
+//----------------------------------------------------------------------
+const intialStateClientOpenModal = {
+  isModalOpen: false,
+};
+export const openAddClientModalReducer = (
+  state = intialStateClientOpenModal,
+  action
+) => {
+  switch (action.type) {
+    case "OPEN_CLIENT_MODAL":
+      return { ...state, isModalOpen: true };
+    case "CLOSE_CLIENT_MODAL":
+      return { ...state, isModalOpen: false };
+    default:
+      return state;
+  }
+};
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//emit reducer for  enggpage task-section
+
+const assignedEnggDetails = {
+  EnggDetails: null,
+};
+export const fetchassignedEnggDetailsReducer = (
+  state = assignedEnggDetails,
+  action
+) => {
+  switch (action.type) {
+    case GET_ASSIGNED_ENGG_DETAILS:
+      return { ...state, EnggDetails: action.payload };
+    default:
+      return state;
+  }
+};
+
+//emit reducer for updating location
+const EnggLocation = {
+  enggLocation: null,
+};
+export const onClickEnggCartEnggLocationReducer = (
+  state = EnggLocation,
+  action
+) => {
+  switch (action.type) {
+    case UPDATE_ENGG_LOCATION:
+      return { ...state, enggLocation: action.payload };
+    default:
+      return state;
+  }
+};
+
+//emit reducer for updating location onClick of pin
+const EnggLocationPin = {
+  enggLocationOnPin: null,
+};
+export const onClickEnggPinEnggLocationReducer = (
+  state = EnggLocationPin,
+  action
+) => {
+  switch (action.type) {
+    case UPDATE_ENGG_CART_LOCATION:
+      return { ...state, enggLocationOnPin: action.payload };
+    default:
+      return state;
+  }
+};
+const fetchengdetails = {
+  engdetails: null,
+};
+
+export const reducerfetchengdetails = (state = fetchengdetails, action) => {
+  switch (action.type) {
+    case FETCH_ENG_DETAILS:
+      return {
+        ...state,
+        engdetails: action.payload,
+      };
+
+    default:
+      return state;
+  }
+};
+
+//============================================================================= create by aayush for adminReport data api================================================
+
+const adminReportData = {
+  AdminReportData: null,
+};
+export const getAdminReportDataReducer = (state = adminReportData, action) => {
+  switch (action.type) {
+    case GET_ADMIN_REPORT_DATA:
+      return { ...state, AdminReportData: action.payload };
+    default:
+      return state;
+  }
+};
+
+const ReportCrouserData = {
+  Index: 0,
+  IsOpen: false,
+  IsOpen: false,
+};
+
+
+export const ReportCrouserHandlerReducer = (
+  state = ReportCrouserData,
+  action
+) => {
+  switch (action.type) {
+    case REPORT_CROUSER_HANDLER:
+      return {
+        ...state,
+        Index: action.payload.Index,
+        IsOpen: action.payload.IsOpen,
+      };
+    default:
+      return state;
+  }
+};
+
+// --------------------- Reducer of getClientModalData -------------------------
+
+const ClientModalData = {
+  ClientModalInformation: null,
+};
+
+export const getClientModalDataReducer = (state = ClientModalData, action) => {
+  switch (action.type) {
+    case GET_CLIENT_MODAL_INFORMATION:
+      return {
+        ...state,
+        ClientModalInformation: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+//-----------------------------------------------------------------------------------------------------------------
+//Reducer to handle registerclient data form
+const registerClientFormData = {
+  registerClientData: null,
+};
+
+export const RegisterClientDataReducer = (
+  state = registerClientFormData,
+  action
+) => {
+  switch (action.type) {
+    case REGISTER_CLIENT_DATA:
+      return {
+        ...state,
+        registerClientData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const updateClientData = {
+  updateClientData: null,
+};
+
+export const UpdateClientDataReducer = (state = updateClientData, action) => {
+  switch (action.type) {
+    case UPDATE_CLIENT_DATA:
+      return {
+        ...state,
+        updateClientData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+//------------------------------------Rahul Kumar----------------------------------------------
+const updateClientFormData = {
+  updateClientFormData: null,
+};
+export const UpdateClientFormDataReducer = (
+  state = updateClientFormData,
+  action
+) => {
+  switch (action.type) {
+    case UPDATE_CLIENT_FORM_USING_PAGINATION:
+      return {
+        ...state,
+        updateClientFormData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+//-----------------------------------------------------------------------------------------------
+//------------------------------------Rahul Kumar------------------------------------------------
+const ClientFormData = {
+  ClientFormData: null,
+};
+export const ClientFormDataFromApiReducer = (
+  state = ClientFormData,
+  action
+) => {
+  // console.log(action.payload);
+  switch (action.type) {
+    case GET_CLIENT_FORM_DATA:
+      return {
+        ...state,
+        ClientFormData: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  ClientFormData: {},
+};
+
+export const ClearClientFormData = (state = initialState, action) => {
+  switch (action.type) {
+    case CLEAR_CLIENT_FORM_DATA:
+      return initialState;
+    default:
+      return state;
+  }
+};

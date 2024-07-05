@@ -11,19 +11,22 @@ import { CiGrid41 } from "react-icons/ci";
 import { TbListTree } from "react-icons/tb";
 import { useLocation } from "react-router-dom";
 import NotificationSection from "../AdminPannel/Component/DashboardSubComponent/NotificationSection";
-import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/AddEnggModal";
+// import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/";
 
 import { openAddEngggModalAction } from "../../ReduxSetup/Actions/AdminActions";
 import { LuSettings2 } from "react-icons/lu";
 import ClientFilterDropdown from "../AdminPannel/Component/ClientsSubComponent/ClientFilterDropdown";
 import { useDispatch, useSelector } from "react-redux";
+import moneyIcon from "../../../src/Assets/Images/money.png"
 import {
   changeLayout,
   getfilteredData,
   searchClients,
+  openAddClientModalAction,
 } from "../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -43,30 +46,45 @@ const useClickOutside = (ref, handler) => {
 const TopBar = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const notificationRef = useRef(null);
+  const collectCashRef = useRef(null);
+  const collectCashClickRef = useRef();
+  const notificationClickRef = useRef();
   const [showNotification, setShowNotification] = useState(false);
+  const [collectCash, setCollectCash] = useState(false)
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
+  const [openForm, setOpenForm] = useState(false);
+
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
-
   const [openEnggModal, setOpenEnggModal] = useState(false);
 
-  const handleNotificationBox = () => {
-    setShowNotification(!showNotification);
+  // -------------Debounced search function code by Raj -----------------------------------------------
+
+  const debounce = (func, delay) => {
+    let timeoutId;
+    return function (...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
   };
 
-  useLayoutEffect(() => {
-    if (searchValue !== "") {
-      dispatch(searchClients(searchValue));
-    }
-  }, [searchValue]);
+  const debouncedSearchClients = useCallback(
+    debounce((value) => {
+      dispatch(searchClients(value));
+    }, 1000),
+    [dispatch]
+  );
+
+  useEffect(() => {
+    debouncedSearchClients(searchValue || null);
+  }, [searchValue, debouncedSearchClients]);
 
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
   );
-
   useEffect(() => {
     if (filteredData) {
       setSearchValue("");
@@ -85,7 +103,7 @@ const TopBar = (props) => {
 
   useEffect(() => {
     if (membershipLayout === true) {
-      setIsGrid(!isGrid);
+      setIsGrid((prevIsGrid) => !prevIsGrid);
     }
     return () => {
       setIsGrid(false);
@@ -98,7 +116,7 @@ const TopBar = (props) => {
   };
 
   const handleTicketFilter = () => {
-    if (filteredData !== null && showTicketFilter == false) {
+    if (filteredData !== null && showTicketFilter === false) {
       dispatch(getfilteredData(null));
       setSearchValue("");
     }
@@ -115,9 +133,106 @@ const TopBar = (props) => {
 
   const dropdownClickRef = useRef();
   useClickOutside(dropdownClickRef, handleOutsideClick);
+
   const openModalHandle = () => {
     dispatch(openAddEngggModalAction());
   };
+
+  const openClientModalHandle = () => {
+    dispatch(openAddClientModalAction());
+  };
+
+  
+
+  // const handleClickOutsideCollectCashModal = (event) => {
+  //   if (collectCashRef.current && !collectCashRef.current.contains(event.target)) {
+  //     handleCollectCash();
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutsideCollectCashModal);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutsideCollectCashModal);
+  //   };
+  // }, []);
+
+
+  // const handleCloseForm = () => {
+  //   setOpenForm(false);
+  // };
+
+  // -------notification popup box code--------------------------------------------------------------------
+  const useClickOutsidenotification = (ref, handler) => {
+    useEffect(() => {
+      const handleClickOutsidenotification = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handler();
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutsidenotification);
+      return () => {
+        document.removeEventListener(
+          "mousedown",
+          handleClickOutsidenotification
+        );
+      };
+    }, [ref, handler]);
+  };
+
+  // this for collect cash
+  // const useClickOutsidecollectcash = (ref, handler) => {
+  //   useEffect(() => {
+  //     const handleClickOutsidecollectcash = (event) => {
+  //       if (ref.current && !ref.current.contains(event.target)) {
+  //         handler();
+  //       }
+  //     };
+
+  //     document.addEventListener("mousedown", handleClickOutsidecollectcash);
+  //     return () => {
+  //       document.removeEventListener(
+  //         "mousedown",
+  //         handleClickOutsidecollectcash
+  //       );
+  //     };
+  //   }, [ref, handler]);
+  // };
+
+
+  const handleNotfication = () => {
+    setShowNotification((prevState) => !prevState);
+  };
+  
+  
+  // collect cash
+  const handleCollectCash = () => {
+    setCollectCash((prevState) => !prevState)
+  }
+  const handleOutsideClicknotification = useCallback(() => {
+    setShowNotification(false);
+  }, []);
+
+  
+  // collect cash
+  // const handleClickOutsidecollectcash = useCallback(() => {
+  //   setCollectCash(false);
+  // }, []);
+
+  useClickOutsidenotification(
+    notificationClickRef,
+   
+    handleOutsideClicknotification
+  );
+
+  // collect cash
+  // useClickOutsidecollectcash(
+  //   collectCashClickRef,
+   
+  //   handleClickOutsidecollectcash
+  // );
 
   return (
     <div className="top-bar">
@@ -160,7 +275,7 @@ const TopBar = (props) => {
                 className={`search-input ${
                   searchValue.length > 0 && "inputSearchWritten"
                 }`}
-                value={searchValue}
+                value={searchValue || ""}
                 onChange={handleSearchChange}
               />
 
@@ -170,19 +285,22 @@ const TopBar = (props) => {
             </div>
           </span>
         ) : (
-          <span className="top-icon">
-            <div className="search-box">
-              <input
-                type="text"
-                placeholder="Search anything"
-                className="search-input"
-              />
+          <>
+            <span className="top-icon">
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder="Search anything"
+                  className="search-input"
+                />
 
-              <i className="search-btn ">
-                <RiSearchLine className="iconColor" />
-              </i>
-            </div>
-          </span>
+                <i className="search-btn ">
+                  <RiSearchLine className="iconColor" />
+                  <RiSearchLine className="iconColor" />
+                </i>
+              </div>
+            </span>
+          </>
         )}
 
         {location.pathname === "/Memberships" && (
@@ -193,47 +311,72 @@ const TopBar = (props) => {
 
         {location.pathname === "/Clients" && (
           <>
-            <div className="top-icon" style={{boxShadow:'none'}}>
+            <div
+              className="sub-components-ticket-filter"
+              style={{ boxShadow: "none" }}
+              ref={dropdownClickRef}
+            >
               {" "}
-              <div ref={dropdownClickRef}>
-                <p className="filter-icon" onClick={handleTicketFilter}>
-                  <LuSettings2 />
-                  {""}
-                </p>
-                {showTicketFilter && (
-                  <div
-                    ref={dropdownRef}
-                    style={{ position: "absolute", backgroundColor: "white" }}
-                  >
-                    <ClientFilterDropdown />
-                  </div>
-                )}
-              </div>
+              <p className="filter-icon" onClick={handleTicketFilter}>
+                <LuSettings2 />
+                {""}
+              </p>
+              {showTicketFilter && <ClientFilterDropdown />}
             </div>
+
             <div className="top-icon" onClick={clienttoggleGrid}>
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
           </>
         )}
 
-        <div style={{ display: "flex" }}>
-          <span className="top-icon-bell" onClick={handleNotificationBox}>
-            <HiOutlineBell />{" "}
+{/*----------------- created by Raj------------------------------- */}
+        {location.pathname === "/Engeeniers" && (
+
+        <div style={{ display: "flex" }} ref={collectCashClickRef}>
+          <span
+            className="top-icon-bell"
+            onClick={handleCollectCash}
+            ref={collectCashRef}
+          >
+            <img src={moneyIcon} />
           </span>
 
-          <div className="dot"></div>
+          {collectCash && <CollectCashModal onClose={handleCollectCash} />}
 
-          {location.pathname === "/Engeeniers" && (
-            <div className="add-Engg-button" onClick={openModalHandle}>
-              Add Engeenier
-            </div>
-          )}
+        </div>
+        )}
+
+
+
+        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
+          <div style={{ display: "flex" }} ref={notificationClickRef}>
+            <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+              <HiOutlineBell className="iconColor" />{" "}
+            </span>
+
+            <div className="dot"></div>
+
+            {location.pathname === "/Engeeniers" && (
+              <div className="add-Engg-button" onClick={openModalHandle}>
+                Add Engeenier
+              </div>
+            )}
 
           {showNotification && <NotificationSection />}
-        </div>
+        </div> )}
+
+        {location.pathname === "/Clients" && (
+          <div className="add-client-button" onClick={openClientModalHandle}>
+            Add Client
+          </div>
+        )}
+
       </div>
     </div>
   );
+
+  
 };
 
 export default TopBar;

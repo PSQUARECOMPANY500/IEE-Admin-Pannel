@@ -20,8 +20,10 @@ const MessageModel = new Schema({
     ChatId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"chatModal"
+    },
+    serviceId:{
+        type:String,
     }
-
 },
 {
     timestamps:true,

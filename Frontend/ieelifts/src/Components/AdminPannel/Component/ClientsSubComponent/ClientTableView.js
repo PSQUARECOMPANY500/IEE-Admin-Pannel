@@ -1,10 +1,16 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
+import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
+import execelIcon from "../../../../Assets/Images/execel-icon.png";
+import ClientModal from "./ClientModal";
 
 const ClientTableView = ({ clientData }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null)
+
 
   useLayoutEffect(() => {
     if (clientData) {
@@ -27,17 +33,33 @@ const ClientTableView = ({ clientData }) => {
     });
   };
 
+  const HandleCardClick = (data) => {
+    setSelectedClient(data)
+    setShowClientModal(true)
+
+
+  }
+
+
+   //Function to handle closing modal
+   const handleCloseModal = () => {
+    setShowClientModal(false)
+  }
+
+
+
   return (
     <div className="table_view">
       <div className="sub_table_view">
         <div className="client_table-container">
+          <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
           <table>
-            <thead>
+            <thead style={{zIndex:'1'}}> 
               <tr>
                 <th className="checkbox">
                   <CheckBox
                     id="checkbox1"
-                    checked={checkboxStates.every((isChecked) => isChecked)}
+                    checked={clientData && clientData.length > 0 && checkboxStates.every((isChecked) => isChecked)}
                     handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>
@@ -47,16 +69,16 @@ const ClientTableView = ({ clientData }) => {
                 <th>
                   <div>
                     <span>ADDRESS</span>
-                    <HiChevronUpDown />
-                    <span></span>
+                    {/* <HiChevronUpDown />
+                    <span></span> */}
                   </div>
                 </th>
                 <th>CallBacks</th>
                 <th className="membership">
                   <div>
                     <span>Membership</span>
-                    <HiChevronUpDown />
-                    <span></span>
+                    {/* <HiChevronUpDown />
+                    <span></span> */}
                   </div>
                 </th>
                 <th>Elevator</th>
@@ -64,23 +86,30 @@ const ClientTableView = ({ clientData }) => {
               </tr>
             </thead>
 
+            {checkboxStates.includes(true)&& <div className="doc-container">
+            <img src={pdfIcon}/>
+            <img src={execelIcon}/>
+              </div>}
+
             {/* TABLE BODY STARTS */}
 
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index}>
+                  <tr className="selected" key={index} 
+                  onClick={() => HandleCardClick(data)}
+                  >
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
-                        checked={checkboxStates[index]}
+                        checked={checkboxStates[index] || false}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
                     </td>
                     <td className="JON">{data.JobOrderNumber}</td>
                     <td className="name">{data?.name}</td>
                     <td className="checkbox">{data?.PhoneNumber}</td>
-                    <td className="address">S{data?.Address}</td>
+                    <td className="address">{data?.Address}</td>
                     <td className="callback">
                       {data?.callback ? data?.callback : 0}
                     </td>
@@ -95,6 +124,10 @@ const ClientTableView = ({ clientData }) => {
           </table>
         </div>
       </div>
+
+      <ClientModal  showClientModal={showClientModal}
+        handleCloseModal={handleCloseModal}
+        selectedClient={selectedClient}/>
     </div>
   );
 };

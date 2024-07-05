@@ -1,95 +1,325 @@
-import React, { useState, useEffect } from "react";
-import {
-  APIProvider,
-  Map,
-  Marker,
-  AdvancedMarker,
-  Pin,
-  InfoWindow,
-} from "@vis.gl/react-google-maps";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EnggLocationDetailsFetch } from "../../../../../ReduxSetup/Actions/AdminActions";
+import {
+  EnggLocationDetailsFetch,
+  onClickPinCart,
+} from "../../../../../ReduxSetup/Actions/AdminActions";
+import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
+import { onClickEnggCart  } from "../../../../../ReduxSetup/Actions/AdminActions";
 
-export default function EnggLocation() {
+const EnggLocation = () => {
   const dispatch = useDispatch();
-  const mainPosition = { lat: 30.715885973818526, lng: 76.6965589420526 };
-  const [open, setOpen] = useState(false);
-  const [mainopen, setMainOpen] = useState(false);
   const enggLocationDetails = useSelector((state) => {
     return state.AdminRootReducer?.EnggLocationDetailsFetchReducer
       ?.enggLocatioDetails;
   });
-  console.log("enggLocationDetails", enggLocationDetails);
+  const enggServiceID = useSelector(
+    (state) =>
+      state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
+  );
+  const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 };
+  const [center, setCenter] = useState({
+    lat: 30.715885973818526,
+    lng: 76.6965589420526,
+  });
+  const [mainOpen, setMainOpen] = useState(false);
+  const [pinIndex, setPinIndex] = useState(-1);
+  const [enggId, setEnggId] = useState("");
+  const [state, setState] = useState(0);
+
+
+
+  const enggMarkerSymbol = {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 10,
+    fillColor: "#0F351D",
+    fillOpacity: 1,
+    strokeColor: "white",
+    strokeWeight: 2,
+  };
+
+  const inactiveMarkerSymbol = {
+    path: window.google.maps.SymbolPath.CIRCLE,
+    scale: 15,
+    fillColor: "#F8AC1D",
+    fillOpacity: 1,
+    strokeColor: "white",
+    strokeWeight: 2,
+  };
+
+  const IEEmarkerSymbol = {
+    path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    scale: 10,
+    fillColor: "#0F351D",
+    fillOpacity: 1,
+    strokeColor: "white",
+    strokeWeight: 2,
+  };
 
   useEffect(() => {
-    dispatch(EnggLocationDetailsFetch());
-  }, []);
+    const fetchData = () => {
+      dispatch(EnggLocationDetailsFetch()).catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+    };
 
+    fetchData();
+    const intervalId = setInterval(fetchData, 20000); // 20 seconds in milliseconds
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (enggId) {
+      dispatch(onClickPinCart(enggId));
+    } else {
+      if(enggServiceID){
+        console.log("============enggServiceID", enggServiceID);
+        console.log("============enggId", enggId);
+        dispatch(onClickEnggCart("")); 
+        // setPinIndex(-1);
+        // setEnggId(null);
+      }
+      dispatch(onClickPinCart());
+    }
+  }, [dispatch, enggId, state]);
+
+  useMemo(() => {
+    if (enggLocationDetails) {
+      enggLocationDetails.forEach((data) => {
+        if (data.ServiceEnggId === enggServiceID) {
+          const lat = parseFloat(data.currentLocation.coordinates[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[1]);
+          setCenter({ lat, lng });
+        }
+      });
+      setPinIndex(-1);
+      setEnggId("");
+    }
+  }, [enggServiceID]);
+  
+  const mapStyles = [
+    {
+      featureType: "landscape.man_made",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#f7f1df",
+        },
+      ],
+    },
+    {
+      featureType: "landscape.natural",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#d0e3b4",
+        },
+      ],
+    },
+    {
+      featureType: "landscape.natural.terrain",
+      elementType: "geometry",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi.attraction",
+      elementType: "labels",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi.business",
+      elementType: "all",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi.medical",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#fbd3da",
+        },
+      ],
+    },
+    {
+      featureType: "poi.park",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#bde6ab",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry.stroke",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#ffe15f",
+        },
+      ],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry.stroke",
+      stylers: [
+        {
+          color: "#efd151",
+        },
+      ],
+    },
+    {
+      featureType: "road.arterial",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#ffffff",
+        },
+      ],
+    },
+    {
+      featureType: "road.local",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#ffffff",
+        },
+        {
+          visibility: "on",
+        },
+      ],
+    },
+    {
+      featureType: "road.local",
+      elementType: "labels.text",
+      stylers: [
+        {
+          visibility: "on",
+        },
+      ],
+    },
+    {
+      featureType: "transit.station.airport",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#cfb2db",
+        },
+      ],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [
+        {
+          color: "#a2daf2",
+        },
+      ],
+    },
+  ];
   return (
-    <APIProvider apiKey={"AIzaSyDqaTnQklfV5Ek9gmdbAuCk1qNIUyVyDC4"}>
-      <div style={{ height: "100%", width: "100%" }}>
-        <Map zoom={14} center={mainPosition} mapId={"4f48b9d7a475bd4d"}>
-          <AdvancedMarker
-            position={mainPosition}
-            onClick={() => setMainOpen(true)}
-          >
-            <Pin
-              background={"red"}
-              borderColor={"black"}
-              glyphColor={"black"}
+    <GoogleMap
+      zoom={12}
+      center={center}
+      mapContainerClassName="map-container"
+      options={{
+        mapTypeControl: true,
+        scaleControl: true,
+        streetViewControl: false,
+        rotateControl: true,
+        fullscreenControl: true,
+        styles: mapStyles,
+      }}
+    >
+      <Marker
+        position={IEELifts}
+        icon={IEEmarkerSymbol}
+        onClick={() => setMainOpen(!mainOpen)}
+      />
+
+      {mainOpen && (
+        <InfoWindow
+          position={IEELifts}
+          onCloseClick={() => setMainOpen(!mainOpen)}
+        >
+          <p>IEE LIFTS</p>
+        </InfoWindow>
+      )}
+      {enggLocationDetails &&
+        enggLocationDetails.map((data, index) => {
+          const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
+          const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
+          const position = { lat: latitude, lng: longitude };
+          const engId = data.ServiceEnggId;
+          const isActive =
+            data.ServiceEnggId === enggServiceID || pinIndex === index;
+          const markerSymbol = isActive
+            ? inactiveMarkerSymbol
+            : enggMarkerSymbol;
+          const isMarkerActive = pinIndex === index;
+          console.log(pinIndex)
+          return (
+            <Marker
+              key={index}
+              position={position}
+              icon={markerSymbol}
+              onClick={() => {
+                if (isMarkerActive && pinIndex>=0) {
+                  setPinIndex(-1);
+                  console.log("Marker is inactive");
+                  setEnggId(null);
+                  setState(state + 1);
+                } else {
+                  console.log("Marker is active");
+                  dispatch(onClickEnggCart(""));
+                  setEnggId(engId);
+                  setPinIndex(index);
+                  setState(state + 1);
+                }
+              }}
             />
-          </AdvancedMarker>
-          {mainopen && (
-            <InfoWindow
-              position={mainPosition}
-              onCloseClick={() => setMainOpen(null)}
-            >
-              <p>IEE LIFTS</p>
-            </InfoWindow>
-          )}
-          {enggLocationDetails &&
-            enggLocationDetails.map((data, index) => {
-              const latitude = parseFloat(
-                data.currentLocation.coordinates?.[0]
-              );
-              const longitude = parseFloat(
-                data.currentLocation.coordinates?.[1]
-              );
-              const position = { lat: latitude, lng: longitude };
-              const engname = data.serviceEnggIdDetails.EnggName;
-              const imgurl = data.serviceEnggIdDetails.EnggPhoto;
-              return (
-                <React.Fragment key={index}>
-                  <AdvancedMarker
-                    position={position}
-                    onClick={() => setOpen(index)}
-                  >
-                    <img
-                      style={{
-                        transform:
-                          "perspective(40px) rotateX(20deg) rotateZ(-45deg)",
-                        width: "30px",
-                        height: "30px",
-                        position: "relative",
-                        borderRadius: "50% 50% 50% 0",
-                      }}
-                      src={imgurl}
-                      alt="Pin"
-                    />
-                  </AdvancedMarker>
-                  {open === index && (
-                    <InfoWindow
-                      position={position}
-                      onCloseClick={() => setOpen(null)}
-                    >
-                      <p>{engname}</p>
-                    </InfoWindow>
-                  )}
-                </React.Fragment>
-              );
-            })}
-        </Map>
-      </div>
-    </APIProvider>
+          );
+        })}
+    </GoogleMap>
   );
-}
+};
+
+export default EnggLocation;

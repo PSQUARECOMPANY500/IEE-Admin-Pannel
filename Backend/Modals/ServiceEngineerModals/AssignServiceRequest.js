@@ -38,6 +38,12 @@ const AssignRequest = new Schema(
       enum: ["onGoing", "completed", "InCompleted"],
       default: "InCompleted",
     },
+    RepresentativeName:{
+      type: String,
+    },
+    RepresentativeNumber:{
+      type: String,
+    }
   },
   {
     timestamps: true,
