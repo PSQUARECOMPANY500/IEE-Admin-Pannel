@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { jwtDecode } from "jwt-decode";
-
 const TodoCardUpcoming = ({taskAdded})=>{
      const [todoData,setTodoData] = useState();
      const token = localStorage.getItem("adminData");
@@ -20,7 +19,6 @@ const TodoCardUpcoming = ({taskAdded})=>{
         let date = new Date();
         return date.getMinutes()
       }
-      console.log(getMinutes())
       const getUpcomingData = () => {
         const todayDate = getTodayDate();
         const hours = getHours();
@@ -28,17 +26,25 @@ const TodoCardUpcoming = ({taskAdded})=>{
         const currentTime = `${hours}:${minutes}`;
     
         let upcomingTasks = todoData?.filter(todo => {
-            if (todo.taskDate !== todayDate) {
-                return false;
+            if (todo.taskDate >= todayDate) {
+                const [taskHour, taskMinute] = todo.taskTime.split(":").map(Number);
+                const [currentHour, currentMinute] = currentTime.split(":").map(Number);
+                return taskHour > currentHour || (taskHour === currentHour && taskMinute >= currentMinute);
             }
-            const [taskHour, taskMinute] = todo.taskTime.split(":").map(Number);
-            const [currentHour, currentMinute] = currentTime.split(":").map(Number);
+        });
     
-            return taskHour > currentHour || (taskHour === currentHour && taskMinute >= currentMinute);
+        upcomingTasks?.sort((a, b) => {
+            if (a.taskDate !== b.taskDate) {
+                return new Date(a.taskDate) - new Date(b.taskDate);
+            }
+            const [aHour, aMinute] = a.taskTime.split(":").map(Number);
+            const [bHour, bMinute] = b.taskTime.split(":").map(Number);
+            return aHour - bHour || aMinute - bMinute;
         });
     
         setUpcomingTodo(upcomingTasks);
     };
+    
      useEffect(()=>{
         const getData = async() =>{
             const data = await getTodo(decoded.user.AdminId);
@@ -46,11 +52,9 @@ const TodoCardUpcoming = ({taskAdded})=>{
          }
          getData();
      },[taskAdded])
-    
      useEffect(()=>{
         getUpcomingData()
      },[todoData])
-
      function tConvert (time) {
         time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
       
@@ -72,17 +76,15 @@ const TodoCardUpcoming = ({taskAdded})=>{
         <div className="todo-card-body">
              {
               upcomingTodo && upcomingTodo.map((todo)=>(
-                    <div className="single-todo-task">
+                    <div className="single-todo-task" key={todo._id}>
                 <div className="single-todo-task-data">
                    <div className="todo-data-sub">
                    <span className="todo-task-number">{tConvert(todo?.taskTime)}</span>
                     <div className="todo-text-container">
                         <div className="todo-text">
-                        {/* Client meeting to discuss customization requests */}
                         {todo.taskName}
                         </div>
                         <div className="todo-text">
-                        {/* 28/02/2024 */}
                         {todo.taskDate}
                         </div>
                     </div>
@@ -94,40 +96,6 @@ const TodoCardUpcoming = ({taskAdded})=>{
             </div>
                 ))
              }
-            {/* <div className="single-todo-task">
-                <div className="single-todo-task-data">
-                   <div className="todo-data-sub">
-                   <span className="todo-task-number">1</span>
-                    <div className="todo-text-container">
-                        <div className="todo-text">
-                        Client meeting to discuss customization requests
-                        </div>
-                        <div className="todo-text">
-                        28/02/2024
-                        </div>
-                    </div>
-                   </div>
-                </div>
-                <div>
-                </div>
-            </div>
-            <div className="single-todo-task">
-                <div className="single-todo-task-data">
-                   <div className="todo-data-sub">
-                   <span className="todo-task-number">1</span>
-                    <div className="todo-text-container">
-                        <div className="todo-text">
-                        Client meeting to discuss customization requests
-                        </div>
-                        <div className="todo-text">
-                        28/02/2024
-                        </div>
-                    </div>
-                   </div>
-                </div>
-                <div>
-                </div>
-            </div> */}
         </div>
     </div>
     )

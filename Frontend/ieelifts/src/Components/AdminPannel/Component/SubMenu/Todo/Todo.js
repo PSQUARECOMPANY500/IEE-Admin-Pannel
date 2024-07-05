@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LuPlus } from "react-icons/lu";
 import TodoFormCalender from "./TodoFormCalender";
 import AddTask from "./AddTask";
@@ -10,15 +10,15 @@ import WeekCalender from "./WeekCalender";
 import DayCalender from "./DayCalender";
 import TodoCard from "./TodoCard";
 import TodoCardUpcoming from "./TodoCardUpcoming";
-import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";  //todo : // to plese correct the nomenclecture (same name as Action)
+import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { jwtDecode } from "jwt-decode";
-
 const Todo = () => {
-  const [todo,setTodo] = useState();
+  const [todo, setTodo] = useState();
   const [selectedView, setSelectedView] = useState("Month");
   const [selectedDate, setSelectedDate] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [taskAdded,setTaskAdded] = useState(false)
+  const [taskAdded, setTaskAdded] = useState(false);
+  const [taskUpdated, setTaskUpdated] = useState(false);
   const token = localStorage.getItem("adminData");
   const decoded = jwtDecode(token);
   const handleOpenAddClick = () => {
@@ -33,18 +33,22 @@ const Todo = () => {
   const handleViewClick = (view) => {
     setSelectedView(view);
   };
-  const getData = async ()=>{
-    const data =  await getTodo(decoded.user.AdminId)
-    setTodo(data.data);
- }
+  //   const getData = async ()=>{
+  //     const data =  await getTodo(decoded.user.AdminId)
+  //    setTodo(data.data);
 
-  const handleTaskUpdate = ()=>{
-    getData();
-  }
-  useEffect(()=>{
-    getData()
-    setTaskAdded(false)
- },[taskAdded])
+  //  }
+
+  const handleTaskUpdate = async () => {
+    const data = await getTodo(decoded.user.AdminId);
+    setTodo(data.data);
+    setTaskUpdated(!taskUpdated);
+  };
+  useEffect(() => {
+    handleTaskUpdate();
+    setTaskAdded(false);
+  }, [taskAdded]);
+
   return (
     <div>
       <div className="sub_todo_view">
@@ -85,44 +89,87 @@ const Todo = () => {
               <p>Missed</p>
             </div>
           </div>
-           <div className="TodoDates">
+          <div className="TodoDates">
             <div
-              style={{ borderBottom: selectedView === "Month" ? "2px solid #F8AC1D" : "1px solid #7070702E" }}
+              style={{
+                borderBottom:
+                  selectedView === "Month"
+                    ? "2px solid #F8AC1D"
+                    : "1px solid #7070702E",
+              }}
               className="TodoDates-inner"
               onClick={() => handleViewClick("Month")}
             >
               <MdOutlineCalendarViewMonth />
               <p>Month</p>
             </div>
-            <div style={{borderBottom: selectedView === "Week" ? "2px solid #F8AC1D" : "1px solid #7070702E"}}
-            onClick={() => handleViewClick("Week")}
-             className="TodoDates-inner">
+            <div
+              style={{
+                borderBottom:
+                  selectedView === "Week"
+                    ? "2px solid #F8AC1D"
+                    : "1px solid #7070702E",
+              }}
+              onClick={() => handleViewClick("Week")}
+              className="TodoDates-inner"
+            >
               <LuStretchHorizontal />
               <p>Week</p>
             </div>
-            <div style={{borderBottom:selectedView === "Day" ? "2px solid #F8AC1D" : "1px solid #7070702E"}}
-            onClick={() => handleViewClick("Day")}
-             className="TodoDates-inner">
+            <div
+              style={{
+                borderBottom:
+                  selectedView === "Day"
+                    ? "2px solid #F8AC1D"
+                    : "1px solid #7070702E",
+              }}
+              onClick={() => handleViewClick("Day")}
+              className="TodoDates-inner"
+            >
               <IoTodayOutline />
 
               <p>Day</p>
             </div>
           </div>
-          <div 
-           className="TodoformWrapper"
-          >           
-            {selectedView === "Month" && <TodoFormCalender setTodayDate={handleDateChange} tasks={todo} handleTaskUpdate={handleTaskUpdate}/>}
-            {selectedView === "Week" && <WeekCalender setTodayDate={handleDateChange} data={todo} handleTaskUpdate={handleTaskUpdate}/>}
-            {selectedView === "Day" && <DayCalender setTodayDate={handleDateChange} tasks={todo} handleTaskUpdate={handleTaskUpdate}/>}
+          <div className="TodoformWrapper">
+            {selectedView === "Month" && (
+              <TodoFormCalender
+                setTodayDate={handleDateChange}
+                tasks={todo}
+                handleTaskUpdate={handleTaskUpdate}
+              />
+            )}
+            {selectedView === "Week" && (
+              <WeekCalender
+                setTodayDate={handleDateChange}
+                data={todo}
+                handleTaskUpdate={handleTaskUpdate}
+              />
+            )}
+            {selectedView === "Day" && (
+              <DayCalender
+                setTodayDate={handleDateChange}
+                tasks={todo}
+                handleTaskUpdate={handleTaskUpdate}
+              />
+            )}
             <CalendarSummary />
           </div>
         </div>
       </div>
       <div className="todo-card-parent">
-            <TodoCard/>
-            <TodoCardUpcoming taskAdded={taskAdded}/>
-        </div>
-      <div>{isOpen && <AddTask onClose={handleCloseAddClick} data={todo} setFlag={setTaskAdded}/>}</div>
+        <TodoCard taskAdded={taskAdded} taskUpdated={taskUpdated} />
+        <TodoCardUpcoming taskAdded={taskAdded} />
+      </div>
+      <div>
+        {isOpen && (
+          <AddTask
+            onClose={handleCloseAddClick}
+            data={todo}
+            setFlag={setTaskAdded}
+          />
+        )}
+      </div>
     </div>
   );
 };

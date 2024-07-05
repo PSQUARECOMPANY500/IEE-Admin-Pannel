@@ -29,20 +29,7 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate }) => {
     }
     return timeSlots;
   };
-  // const handleNextDay = () =>{
-  //   let today = new Date();
-  //   // console.log("Today's date = " + today);
-    
-  //   let tomorrow = new Date();
-  //   tomorrow.setDate(today.getDate() + 1);
-    
-  //   // console.log(tomorrow);
-    
-  // }
-  // const handlePreviousDay = () =>{
-  //   console.log("handle previous day")
-  // }
-
+ 
   useEffect(() => {
     if (AMonthyearRef.current) {
       const options = {
@@ -70,12 +57,12 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate }) => {
     });
   };
 
-  const ahandleDayClick = (day) => {
-    const newSelectedDate = new Date(acurrentDate.getFullYear(), acurrentDate.getMonth(), day);
-    setASelectedDate(newSelectedDate);
-    const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
-    setTodayDate(formattedDate);
-  };
+  // const ahandleDayClick = (day) => {
+  //   const newSelectedDate = new Date(acurrentDate.getFullYear(), acurrentDate.getMonth(), day);
+  //   setASelectedDate(newSelectedDate);
+  //   const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
+  //   setTodayDate(formattedDate);
+  // };
 
   const parseTaskDate = (dateString) => {
     const [day, month, year] = dateString.split('/');

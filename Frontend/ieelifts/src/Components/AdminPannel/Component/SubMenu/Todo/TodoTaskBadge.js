@@ -3,7 +3,6 @@ import BadgeBubble from './BadgeBubble';
 import { deleteTodo, updateStatus } from '../../../../../ReduxSetup/Actions/AdminActions';
 import toast from "react-hot-toast";
 const TodoTaskBadge = ({task,handleTaskUpdate}) => {
-  console.log(task)
   const [status, setStatus] = useState();
   const getTodayDate = () =>{
     let date = new Date();
@@ -47,16 +46,15 @@ const TodoTaskBadge = ({task,handleTaskUpdate}) => {
   useEffect(()=>{
     compareTime()
   },[task])
-   const handleDelete =()=>{
-    deleteTodo(task?._id);
+   const handleDelete =async ()=>{
+   await deleteTodo(task?._id);
     toast.success("Task deleted successfully")
-    handleTaskUpdate();  
-    
+     handleTaskUpdate();  
    }
-   const handleUpdateStatus = ()=>{
-     updateStatus(task?._id);
-    handleTaskUpdate();
-    toast.success("Task status updated successfully")
+   const handleUpdateStatus =async()=>{
+    await updateStatus(task?._id);
+     toast.success("Task status updated successfully")
+      handleTaskUpdate();
    }
   return ( 
      <div className="todo-task-badge">

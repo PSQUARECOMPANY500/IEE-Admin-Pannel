@@ -12,7 +12,6 @@ const WeekCalender = ({ setTodayDate,data,handleTaskUpdate }) => {
   useEffect(() => {
     generateCurrentWeek(new Date());
   }, []);
-  console.log(handleTaskUpdate)
   const generateCurrentWeek = (date) => {
     const startOfWeek = new Date(date);
     const dayOfWeek = startOfWeek.getDay();

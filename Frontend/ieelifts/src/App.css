@@ -505,7 +505,7 @@ font-weight: 500;
    margin: auto;
    padding: 0.3rem;
    border-bottom: 1px solid #00000073;
-   padding-bottom: 0.8rem;
+   padding-bottom: 0.6rem;
    margin-bottom: 1.5rem; 
 }
 .todo-task-number{
@@ -1859,6 +1859,13 @@ cursor: pointer;
 }
 .todo-task-badge-dot-green{
   background-color: #46A70A;
+}
+.todo-task-badge-dot-red{
+  background-color:#C10000;
+}
+.todo-completed-check{
+  color: #389300;
+  font-size: 2rem;
 }
 .task-completed{
   color:#46A70A !important;

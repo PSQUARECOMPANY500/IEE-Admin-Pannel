@@ -4,7 +4,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { FaCircleCheck } from "react-icons/fa6";
 const BadgeBubble = ({handleDelete,handleUpdateStatus,status}) =>{
     return(
-        <div class="badge-popup">
+        <div className="badge-popup">
           <div className="badge-icon-container">
          <FaCircleCheck className={`badge-icon ${status==="Completed"?"task-completed":""}`} onClick={handleUpdateStatus}/>
          <BiEditAlt className="badge-icon" />

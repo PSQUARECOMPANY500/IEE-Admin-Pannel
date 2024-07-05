@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createRoot } from 'react-dom/client';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ReactDOM from "react-dom";
 import TodoTaskBadge from "./TodoTaskBadge";
@@ -37,50 +38,56 @@ const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate}) => {
     setTodayDate(formattedDate);
   };
 
-  const acreateDayElement = (day) => {
-    const date = new Date(
-      acurrentDate.getFullYear(),
-      acurrentDate.getMonth(),
-      day
-    );
-    const dayElement = document.createElement("div");
-    dayElement.classList.add("todoaday");
 
-    if (date.toDateString() === new Date().toDateString()) {
-      dayElement.classList.add("current");
-    }
-    if (
-      aselectedDate &&
-      date.toDateString() === new Date(aselectedDate).toDateString()
-    ) {
-      dayElement.classList.add("selected");
-    }
-    const tasksForTheDay = tasks.filter((task) => {
-      const [day, month, year] = task.taskDate.split('/').map(Number);
-      const taskDate = new Date(year, month - 1, day);
-      return taskDate.toDateString() === date.toDateString();
-    });
 
-    if (tasksForTheDay.length > 0) {
-      dayElement.classList.add("has-task");
-    }
+const acreateDayElement = (day) => {
+  const date = new Date(
+    acurrentDate.getFullYear(),
+    acurrentDate.getMonth(),
+    day
+  );
+  const dayElement = document.createElement("div");
+  dayElement.classList.add("todoaday");
 
-    dayElement.textContent = day;
-    dayElement.addEventListener("click", () => {
-      ahandleDayClick(day);
-    });
+  if (date.toDateString() === new Date().toDateString()) {
+    dayElement.classList.add("current");
+  }
+  if (
+    aselectedDate &&
+    date.toDateString() === new Date(aselectedDate).toDateString()
+  ) {
+    dayElement.classList.add("selected");
+  }
+  const tasksForTheDay = tasks.filter((task) => {
+    const [day, month, year] = task.taskDate.split('/').map(Number);
+    const taskDate = new Date(year, month - 1, day);
+    return taskDate.toDateString() === date.toDateString();
+  });
 
-    const tasksContainer = document.createElement("div");
-    tasksContainer.classList.add("tasks-container");
+  if (tasksForTheDay.length > 0) {
+    dayElement.classList.add("has-task");
+  }
 
-    if (tasksForTheDay.length > 0) {
-      const badgeContainer = document.createElement("div");
-      tasksContainer.appendChild(badgeContainer);
-      ReactDOM.render(<TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} />, badgeContainer);
-    }
-    dayElement.appendChild(tasksContainer);
-    ADayContainerRef.current.appendChild(dayElement);
-  };
+  dayElement.textContent = day;
+  dayElement.addEventListener("click", () => {
+    ahandleDayClick(day);
+  });
+
+  const tasksContainer = document.createElement("div");
+  tasksContainer.classList.add("tasks-container");
+
+  if (tasksForTheDay.length > 0) {
+    const badgeContainer = document.createElement("div");
+    tasksContainer.appendChild(badgeContainer);
+
+    // Create a root container and render the component
+    const root = createRoot(badgeContainer);
+    root.render(<TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} />);
+  }
+  dayElement.appendChild(tasksContainer);
+  ADayContainerRef.current.appendChild(dayElement);
+};
+
 
   //day element end
 
