@@ -12,6 +12,8 @@ import TodoCard from "./TodoCard";
 import TodoCardUpcoming from "./TodoCardUpcoming";
 import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { updateTodoData } from "../../../../../ReduxSetup/Actions/AdminActions";
 const Todo = () => {
   const [todo, setTodo] = useState();
   const [selectedView, setSelectedView] = useState("Month");
@@ -21,11 +23,13 @@ const Todo = () => {
   const [taskUpdated, setTaskUpdated] = useState(false);
   const token = localStorage.getItem("adminData");
   const decoded = jwtDecode(token);
+  const dispatch = useDispatch();
   const handleOpenAddClick = () => {
     setIsOpen(true);
   };
   const handleCloseAddClick = () => {
     setIsOpen(false);
+    dispatch(updateTodoData("",false))
   };
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -33,12 +37,6 @@ const Todo = () => {
   const handleViewClick = (view) => {
     setSelectedView(view);
   };
-  //   const getData = async ()=>{
-  //     const data =  await getTodo(decoded.user.AdminId)
-  //    setTodo(data.data);
-
-  //  }
-
   const handleTaskUpdate = async () => {
     const data = await getTodo(decoded.user.AdminId);
     setTodo(data.data);
@@ -137,6 +135,7 @@ const Todo = () => {
                 setTodayDate={handleDateChange}
                 tasks={todo}
                 handleTaskUpdate={handleTaskUpdate}
+                handleOpenAddClick={handleOpenAddClick}
               />
             )}
             {selectedView === "Week" && (
@@ -144,6 +143,7 @@ const Todo = () => {
                 setTodayDate={handleDateChange}
                 data={todo}
                 handleTaskUpdate={handleTaskUpdate}
+                handleOpenAddClick={handleOpenAddClick}
               />
             )}
             {selectedView === "Day" && (
@@ -151,6 +151,7 @@ const Todo = () => {
                 setTodayDate={handleDateChange}
                 tasks={todo}
                 handleTaskUpdate={handleTaskUpdate}
+                handleOpenAddClick={handleOpenAddClick}
               />
             )}
             <CalendarSummary />
@@ -167,6 +168,7 @@ const Todo = () => {
             onClose={handleCloseAddClick}
             data={todo}
             setFlag={setTaskAdded}
+            isupdate={false}
           />
         )}
       </div>

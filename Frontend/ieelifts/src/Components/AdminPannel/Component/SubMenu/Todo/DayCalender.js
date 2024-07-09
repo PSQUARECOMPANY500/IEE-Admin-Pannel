@@ -2,7 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import TodoTaskBadge from "./TodoTaskBadge";
 
-const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate }) => {
+// import { useDispatch } from "react-redux";
+
+const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }) => {
+
   const AMonthyearRef = useRef(null);
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(new Date());
@@ -136,7 +139,7 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate }) => {
               {tasks
                 .filter((task) => isTaskInTimeSlot(task, timeSlot))
                 .map((task, taskIndex) => (
-                  <TodoTaskBadge key={taskIndex} task={task} handleTaskUpdate={handleTaskUpdate}/>
+                  <TodoTaskBadge key={taskIndex} task={task} handleTaskUpdate={handleTaskUpdate} isMonth={false} handleOpenAddClick={handleOpenAddClick}/>
                 ))}
             </div>
           </React.Fragment>

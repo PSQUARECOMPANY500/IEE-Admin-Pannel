@@ -3,18 +3,21 @@ import { jwtDecode } from "jwt-decode";
 import { LuPlus } from "react-icons/lu";
 import { RxCross1 } from "react-icons/rx";
 import { GoCalendar } from "react-icons/go";
-import ClientFormCalendar from "../../ClientsSubComponent/ClientsReusableComponent/ClientFormCalendar";
-import { addTodo, getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
+import { addTodo,getTodoById,updateTodoDataById } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-hot-toast";
 import TodoDropdown from "./TodoDropdown";
-const AddTask = ({ onClose,setFlag}) => {
+import TodoAddCalendar from "./TodoAddCalendar";
+import { useSelector } from "react-redux";
+import TimeComponent from "./TimeComponent";
+const AddTask = ({ onClose,setFlag,isupdate}) => {
   const [openCalender, setOpenCalender] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
+  // const [showCalendar, setShowCalendar] = useState(false);
   const calendarRef = useRef(null);
   let statusOption = ["In Progress","Completed","Ongoing","In review"];
   let priorityOption = ["Urgent","High","Medium","Low"];
   const token = localStorage.getItem("adminData");
   const decoded = jwtDecode(token);
+   const {id,flag} = useSelector(state => state.AdminRootReducer.updateTodoDataReducer)
   const [todo, setTodo] = useState({
     taskName: "",
     memberId: "",
@@ -24,7 +27,6 @@ const AddTask = ({ onClose,setFlag}) => {
     taskTime: "",
     adminId: decoded.user.AdminId
   })
-
   const [errors, setErrors] = useState({
     taskName: false,
     memberId: false,
@@ -61,7 +63,7 @@ const AddTask = ({ onClose,setFlag}) => {
         taskDate: todo.taskDate === "",
         status: todo.status === "",
         priority: todo.priority === "",
-        taskTime: todo.taskTime === ""
+        taskTime: todo.taskTime === "0:00 AM"
       };
   
       setErrors(newErrors);
@@ -79,6 +81,10 @@ const AddTask = ({ onClose,setFlag}) => {
       toast.error("Please add date");
       return false;
     }
+    if (todo.taskTime === "0:00 AM") {
+      toast.error("Please select time");
+      return false;
+    }
     if (todo.status === "") {
       toast.error("Please select status");
       return false;
@@ -87,10 +93,7 @@ const AddTask = ({ onClose,setFlag}) => {
       toast.error("Please select priority");
       return false;
     }
-    if (todo.taskTime === "") {
-      toast.error("Please select time");
-      return false;
-    }
+   
     return true;
   }
   const handleOpenCalender = () => {
@@ -113,11 +116,7 @@ const AddTask = ({ onClose,setFlag}) => {
     };
   }, [openCalender]);
 
-   
-
-    const addTask = async (e)=>{
-        
-        e.preventDefault();
+    const addTask = async ()=>{
        if(validate()){
         const response = await addTodo(todo)
         if(response && response.status==200){
@@ -135,16 +134,41 @@ const AddTask = ({ onClose,setFlag}) => {
        }  
        setFlag(true);
     }
-   
+    const getTaskById = async(id) =>{
+       const response = await getTodoById(id)
+       if(response){
+        setTodo(response?.data)
+       }      
+    }
+  useEffect(()=>{
+     if(flag){
+      getTaskById(id)
+     }
+  },[id])
+     
+  const updateTodo = async(id,todo ) =>{
+      const response = await updateTodoDataById(id,todo);
+      if(response && response.status==200){
+         toast.success("Task updated successfully");
+      }
+      setFlag(true);
+      onClose();
+  } 
+  const handleTimeChange = (time) => {
+    setTodo((prev) => ({
+      ...prev,
+      taskTime: time
+    }));
+  }; 
   return (
     <div className="addTask-main">
       <div className="addtask-upper">
         <div className="create-task">
           {" "}
-          <p>Create Task</p>
-          <RxCross1 onClick={onClose} className="closeAddtask" />
+          <p>{flag?"Update Task":"Create Task"}</p>
+          <RxCross1 onClick={onClose} className="closeAddtask"/>
         </div>
-        <form onSubmit={addTask}>
+
           <div className="task-content">
             <div className="task-content-inner">
               <p>Task Name</p>
@@ -181,7 +205,7 @@ const AddTask = ({ onClose,setFlag}) => {
                 onClick={() => handleOpenCalender()}
               />
             </div>
-            <div className="task-content-inner">
+            {/* <div className="task-content-inner">
               <p>Time</p>
               <input
                 type="time"
@@ -191,62 +215,33 @@ const AddTask = ({ onClose,setFlag}) => {
                 name="taskTime"
                 className={errors.taskTime ? "validateInput" : ""}
               />
+            </div> */}
+            <div className="todo-time-container">
+              <p>Time</p>
+            <TimeComponent  onTimeChange={handleTimeChange} taskTime={todo.taskTime} errors={errors.taskTime} />
             </div>
            
             <div className="ClientFormCalendar-todo" ref={calendarRef}>
               {openCalender && (
-                <ClientFormCalendar setTodayDate={handleDateChange} />
+                <TodoAddCalendar setTodayDate={handleDateChange} />
               )}
             </div>
-            {/* <div className="task-content-inner">
-              <p>Status</p>
-              <select
-                id="todoInput"
-                name="status"
-                placeholder="Ongoing"
-                value={todo.status}
-                onChange={handleInputChange}
-                className={errors.status ? "validateInput" : "" }
-              >    <option value="">Select Status</option>
-                 <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Completed">Completed</option>
-                <option value="In review">In review</option>
-              </select>
-            </div>
-
-            <div className="task-content-inner">
-              <p>Priority</p>
-              <select
-                id="todoInput"
-                name="priority"
-                placeholder="High"
-                value={todo.priority}
-                onChange={handleInputChange}
-                className={errors.priority ? "validateInput" : ""}
-              >
-                 <option value="">Select Priority</option>
-                <option value="Urgent">Urgent</option>
-                <option value="High">High</option>
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-              </select>
-            </div> */}
              <div className="task-input-wrapper">
-             <TodoDropdown label={"Select Status"} options={statusOption} onValueChange={handleDropdownChange} name={"status"} errors={errors.status}/>
+             <TodoDropdown label={"Select Status"} options={statusOption} onValueChange={handleDropdownChange} name={"status"} errors={errors.status} value={todo.status}/>
              </div>
              <div>
-             <TodoDropdown label={"Select Priority"} options={priorityOption} onValueChange={handleDropdownChange} name={"priority"} errors={errors.priority}/>
+             <TodoDropdown label={"Select Priority"} options={priorityOption} onValueChange={handleDropdownChange} name={"priority"} errors={errors.priority} value={todo.priority}/>
              </div>
           </div>
-
           <div className="addtask-bottom">
-            <button>
-              <p>Create Task 1</p>
-              <LuPlus className="plusIcon" />
-            </button>
+            {
+              flag? (
+                <button onClick={() => updateTodo(id,todo)}>Update Task</button>
+              ) : (
+                <button onClick={addTask}>Add Task</button>
+              )
+            }
           </div>
-        </form>
       </div>
     </div>
   );

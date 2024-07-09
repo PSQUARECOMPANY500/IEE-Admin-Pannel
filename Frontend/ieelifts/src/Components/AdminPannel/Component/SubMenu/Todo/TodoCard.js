@@ -44,15 +44,15 @@ const TodoCard = ({ taskAdded, taskUpdated }) => {
     useEffect(() => {
         getCompletedTasks();
     }, [taskAdded, todoData]);
-    function tConvert (time) {
-        time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    function tConvert(time) {
+        time = time?.toString().match(/^([01]?\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
         if (time.length > 1) {
-          time = time.slice (1);
-          time[5] = +time[0] < 12 ? ' AM' : ' PM'; 
-          time[0] = +time[0] % 12 || 12; 
+            time = time.slice(1);
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'; 
+            time[0] = (+time[0] % 12 || 12).toString().padStart(2, '0');
         }
-        return time.join (''); 
-      }
+        return time.join(''); 
+    }    
     return (
         <div className="todo-card">
             <div className="todo-card-header">

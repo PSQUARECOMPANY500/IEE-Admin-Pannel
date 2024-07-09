@@ -99,7 +99,7 @@ export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
 export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
 export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
-
+export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -117,7 +117,6 @@ export const RegistrationEnggDetails = async (formData) => {
       }
     );
     return response;
-
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -1346,7 +1345,6 @@ export const RegisterClientDataAction = (formData) => {
 };
 
 export const updateClientData = (formData) => {
-    
   return async (dispatch) => {
     try {
       const response = await axios.put(
@@ -1435,7 +1433,6 @@ export const getDataBasedOnJon = async (jon) => {
 
 //------------------------------------------------------------------------------------------------------------
 
-
 // -------------Created by Raj---------------------------------------------------------------
 //--------------- Action to handle fetch Engg personal dets by Id---------------------------------------------
 
@@ -1491,41 +1488,43 @@ export const getDataBasedOnJon = async (jon) => {
 
 export const getClientCallbackHistory = async (jonId) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientCallbackHistory/${jonId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("Error while fetching data", error);
   }
-}
+};
 
 export const getClientServiceHistory = async (jonId) => {
-
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getClientServiceHistory/${jonId}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getClientServiceHistory/${jonId}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("Error while fetching data", error);
   }
-}
+};
 
 export const getCheckInCheckOuts = async (serviceId, date) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/getCheckInCheckOut/${serviceId}?Date=${date}`
+    );
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
-
+    console.log("Error while fetching data", error);
   }
-}
+};
 
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {
   try {
-    const response = await axios.post(
-      `${config.apiUrl}/admin/todo/addTodo`,{
-        todo
-      }
-   );
+    const response = await axios.post(`${config.apiUrl}/admin/todo/addTodo`, {
+      todo,
+    });
     console.log(response.data);
     return response;
   } catch (error) {
@@ -1535,43 +1534,102 @@ export const addTodo = async (todo) => {
 
 export const getTodo = async (adminId) => {
   try {
-      const response = await axios.get(`${config.apiUrl}/admin/todo/getTodo/${adminId}`);
-      return response.data;
-  }catch(error){
+    const response = await axios.get(
+      `${config.apiUrl}/admin/todo/getTodo/${adminId}`
+    );
+    return response.data;
+  } catch (error) {
     console.log("error while fetching data", error);
   }
-}
+};
 
 export const deleteTodo = async (id) => {
   try {
-    const response = await axios.delete(`${config.apiUrl}/admin/todo/removeTodo/${id}`);
+    const response = await axios.delete(
+      `${config.apiUrl}/admin/todo/removeTodo/${id}`
+    );
     return response;
-  }catch(error){
+  } catch (error) {
     console.log("error while deleting data", error);
   }
-}
+};
 export const updateStatus = async (id) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/todo/updateStatus/${id}`);
+    const response = await axios.get(
+      `${config.apiUrl}/admin/todo/updateStatus/${id}`
+    );
     return response;
-  }catch(error){
+  } catch (error) {
     console.log("error while updating status", error);
   }
-}
+};
 // ----------------------action of Offer discount by service id---------------------------
 
-export const offerDiscountByServiceId = async (JobOrderNumber, Discount, GST) => {
+export const offerDiscountByServiceId = async (
+  JobOrderNumber,
+  Discount,
+  GST
+) => {
   try {
-    const response = await axios.post(`${config.apiUrl}/admin/offerDiscountByServiceEngg`,{
-      JobOrderNumber,
-      Discount,
-      GST
-    });
+    const response = await axios.post(
+      `${config.apiUrl}/admin/offerDiscountByServiceEngg`,
+      {
+        JobOrderNumber,
+        Discount,
+        GST,
+      }
+    );
     toast.success("Membership Discount added successfully");
 
     return response.data;
   } catch (error) {
-    console.log("Error while fetching data", error)
+    console.log("Error while fetching data", error);
+  }
+};
 
+// export const updateTodoData = (id, flag) => {
+//   console.log(id,flag);
+//   return  async (dispatch=> {
+
+//     type: UPDATE_TODO_DATA,
+//     payload: {
+//       id,
+//       flag,
+//     },
+//   };
+// };
+
+export const updateTodoData = (id, flag) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_TODO_DATA,
+        payload: {
+          id,
+          flag,
+        },
+      });
+    } catch (error) {
+      console.log("error while dispaching action", error);
+    }
+  };
+};
+
+
+export const getTodoById = async (id) =>{
+  try{
+      const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
+      return response.data;
+  }catch(err){
+    console.log("error while getting the TodoById", err);
+  }
+}
+
+export const updateTodoDataById = async (id, todo) => {
+  try{
+    const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`,{todo})
+    return response;
+  }catch(err){
+    console.log("error while updating the TodoById", err);
   }
 }

@@ -3492,6 +3492,47 @@ module.exports.deleteTask = async (req,res) => {
     })
   }
 }
+
+module.exports.updateTaskById = async (req, res) => {
+  const id = req.params.id;
+  const { todo } = req.body;
+  const {taskName,memberId,taskDate,taskTime,status,priority,} = todo;
+
+  try {
+    const result = await TodoSchema.findByIdAndUpdate(id, {taskName:taskName,memberId:memberId,taskDate:taskDate,taskTime:taskTime,status:status,priority:priority }, { new: true });
+    if (!result) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+    res.status(200).json({
+      message: "Task updated successfully",
+      task: result,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while updating the task",
+    });
+  }
+}
+
+
+module.exports.getTodoById = async (req,res) => {
+  const id = req.params.id;
+  try{
+     const todo = await TodoSchema.findById(id);
+     res.status(200).json({
+      message: "Success",
+      data: todo
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while fetching the task"
+    })
+  }
+}
 //-------------------------------------------------------------------------------------------------------
 
 

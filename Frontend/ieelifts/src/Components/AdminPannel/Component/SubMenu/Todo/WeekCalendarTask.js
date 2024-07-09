@@ -15,7 +15,8 @@ const monthMap = {
   "November": 11,
   "December": 12
 };
-const WeekCalendarTask = ({ day, month, date, isToday, data, year,handleTaskUpdate }) => {
+const WeekCalendarTask = ({ day, month, date, isToday, data, year,handleTaskUpdate,handleOpenAddClick }) => {
+
   const [currentMonth, setCurrentMonth] = useState(null);
   const [visibleTasks, setVisibleTasks] = useState([]);
   useEffect(() => {
@@ -41,7 +42,7 @@ const WeekCalendarTask = ({ day, month, date, isToday, data, year,handleTaskUpda
         </div>
         <div className='week-badge-container'>
         {visibleTasks.map((task, index) => (
-          <TodoTaskBadge key={index} task={task} handleTaskUpdate={handleTaskUpdate} />
+          <TodoTaskBadge key={index} task={task} handleTaskUpdate={handleTaskUpdate} isMonth={false} handleOpenAddClick={handleOpenAddClick} />
         ))}
         </div>
       </div>

@@ -403,7 +403,7 @@ margin-left: 2rem;
   overflow: hidden;
 }
 .todo_table-container {
-  height: 50vh;
+  height: 60vh;
   /* overflow-y: auto; */
   width:80vw;
 }
@@ -512,7 +512,6 @@ font-weight: 500;
   border-right: 1px solid #00000073;
   padding: 0 2rem;
   font-size: 1rem;
- 
 }
 .single-todo-task-data{
   display: flex;
@@ -543,13 +542,10 @@ justify-content: center;
 align-items: center;
 }
 
-
-
 .sub_todo_view {
- 
   height: 75vh;
   width:81vw;
-margin-top: 8rem;
+  margin-top: 8rem;
 margin-left: 2rem;
   background-color: white;
   position: relative;
@@ -559,7 +555,7 @@ margin-left: 2rem;
   padding: 1rem 2rem;
 }
 .todo_table-container {
-  height: 71.5vh;
+  height: 76vh;
   width:79vw;
   margin-left: -0.8rem;
 }
@@ -573,7 +569,6 @@ margin-left: 2rem;
   font-weight: 500;
   color: #1D1D1D;
   font-size:1.5rem;
-
 }
 .todo_table_top button{
 width: 123px;
@@ -596,7 +591,6 @@ font-weight: 600;
 .plusIcon{
   font-size:20px;
 }
-
 
 .Todocalendar {
   margin-top: .8rem;
@@ -626,12 +620,27 @@ font-weight: 600;
   background-color: #FFFBF4;
   border-bottom: none;
   padding: 1rem;
+  text-align: center;
+  font-size: 1rem;
+  /* display: flex;
+  justify-content: center; */
 }
-
+.week-header{
+  text-align: center;
+   font-size: 1rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid #707070;
+   border-radius: 10px;
+   padding: 0.2rem 1.5rem;
+   margin-top: 0.5rem;
+   color: #444444;
+   font-weight: 500;
+}
 #monthYear {
   font-size: .8rem;
 }
-
 
 #aprevBtn,
 #anextBtn {
@@ -1043,7 +1052,93 @@ input[type="time"]::-webkit-calendar-picker-indicator{
    cursor: pointer;
   }
 
-  
+  .time-component-input{
+    border: none;
+    outline: none;
+    width: 100%;
+  }
+  .time-component-container{
+    border: 1px solid #8E8E8E;
+    border-radius: 10px;
+    width: 91%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.8rem; 
+  }
+  .todo-time-container{
+    margin-bottom: 1.5rem;
+  }
+  .todo-time-container p {
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  .time-icon{
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .time-selector{
+    display: flex;
+    width: 11rem;
+    background-color: #FFF9EF;
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    position: absolute;
+  }
+  .time-selector-hour{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 5rem;
+  }
+  .time-input{
+    outline: none;
+    width: 2.2rem;
+    height: 2rem;
+    border: 1px solid #F8AC1D;
+    border-radius: 3px;
+    padding: 0.5rem;
+    text-align: center;
+  }
+  .time-selector-icon{
+    color: #F8AC1D;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  .time-selector-icon-wrapper{
+    margin-bottom: -0.28rem;
+  }
+  .time-colon{
+    margin-top: 1.7rem;
+  }
+  .time-meridiem{
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .meridiem-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-left: 0.5rem;
+    align-items: center;
+  }
+  .meridiem-active{
+    background: transparent linear-gradient(128deg, #F8AC1D 0%, #F5EEE1 100%) 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 5px #F8AC1D;
+    border-radius: 3px;
+    color: white;
+    padding: 0.3rem;
+  }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 /*---------todo css-----ends---------------------*/
 
 /* border css */
@@ -1325,12 +1420,11 @@ input:-webkit-autofill {
   left: 73.8%;
   z-index: 2;
   height: 69%;
-background-color:white;
-display: flex;
-align-items: center;
-justify-content: center;
-border: 1px solid #70707033;
-
+  background-color:white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #70707033;
 }
 .task-content-inner p{
   font-size:0.9rem;

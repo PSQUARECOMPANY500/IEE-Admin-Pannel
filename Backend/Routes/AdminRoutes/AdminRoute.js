@@ -309,25 +309,21 @@ router.put(
       maxCount: 1,
     },
   ]),
-  adminContoller.editEnggDetailsForm            //
+  adminContoller.editEnggDetailsForm            
 );
-
-//---------route to add todo ----------Rahul Kumar------------------
-router.post('/todo/addTodo', adminContoller.AddTodo);
-router.get('/todo/getTodo/:adminId',adminContoller.getAllTodos);
-
-
 
 
 router.post("/registerNewMembershipData", adminContoller.postMembershipData)
-
-
-
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
+
+//--------- Todo all route ----------Rahul Kumar------------------
+router.post('/todo/addTodo', adminContoller.AddTodo);
+router.get('/todo/getTodo/:adminId',adminContoller.getAllTodos);
 router.get('/todo/updateStatus/:id',adminContoller.updateTask);
 router.delete('/todo/removeTodo/:id',adminContoller.deleteTask);
-
-
+router.get('/todo/getTodoById/:id',adminContoller.getTodoById);
+router.put('/todo/updateTodoById/:id',adminContoller.updateTaskById);
+//--------- Todo all route ----------Rahul Kumar--------------------
 
 // router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
 

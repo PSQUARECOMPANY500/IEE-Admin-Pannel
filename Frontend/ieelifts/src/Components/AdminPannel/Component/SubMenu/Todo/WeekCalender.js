@@ -2,13 +2,15 @@ import React, { useRef, useState,useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import WeekCalendarTask from "./WeekCalendarTask";
 
-const WeekCalender = ({ setTodayDate,data,handleTaskUpdate }) => {  
+const WeekCalender = ({ setTodayDate,data,handleTaskUpdate,handleOpenAddClick }) => {  
   const AMonthyearRef = useRef(null);
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(null);
   const [currentWeek, setCurrentWeek] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   useEffect(() => {
     generateCurrentWeek(new Date());
   }, []);
@@ -81,20 +83,25 @@ const WeekCalender = ({ setTodayDate,data,handleTaskUpdate }) => {
     const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
     setTodayDate(formattedDate);
   };
+  const calculateMonthYear = () => {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const monthIndex = acurrentDate.getMonth();
+    const year = acurrentDate.getFullYear();
+    setMonth(monthNames[monthIndex]);
+    setYear(year);
+    
+  }
+  useEffect(()=>{
+    calculateMonthYear();
+  },[])
 
   return (
     <div className="Todocalendar-week">
       <div className="Todo-header-main">
-        <div className="headers Todo-header">
-          <button id="aprevBtn" onClick={AhandlePrevClick}>
-            <FaChevronLeft />
-          </button>
-          <h2 id="monthYearTodo" ref={AMonthyearRef}>
-            Month Year
-          </h2>
-          <button id="anextBtn" onClick={AhandleNextClick}>
-            <FaChevronRight id="ArrowSize"/>
-          </button>
+      <div className="week-header">
+           {month},{year}
         </div>
       
       </div>
@@ -105,7 +112,7 @@ const WeekCalender = ({ setTodayDate,data,handleTaskUpdate }) => {
         currentWeek.map((day,index)=>{
           const { day: dayName, month, dayOfMonth,year } = extractDayDateMonth(day);
           return(
-            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data} handleTaskUpdate={handleTaskUpdate}/>
+            <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data} handleTaskUpdate={handleTaskUpdate} handleOpenAddClick={handleOpenAddClick}/>
           )
         })
        }

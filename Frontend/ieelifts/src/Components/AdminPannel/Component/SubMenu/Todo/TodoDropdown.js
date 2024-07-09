@@ -1,13 +1,12 @@
 import React,{useState,useRef,useEffect} from 'react';
-import { RiArrowDropDownLine } from "react-icons/ri";
-export const TodoDropdown = ({options,name,label, onValueChange, errors}) => {
+export const TodoDropdown = ({options,name,label, onValueChange,errors,value}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [selectedData, setSelectedData] = useState("");
   const handleIconClick = () => {
     setIsOpen((prevState) => !prevState);
   };
-  const handleDataClick = (data) => {
+  const handleDataClick = (data) => { 
     onValueChange(name,data)
     setSelectedData(data);
     setIsOpen(false);
@@ -17,14 +16,12 @@ export const TodoDropdown = ({options,name,label, onValueChange, errors}) => {
         setIsOpen(false);
     }
   };
-
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -32,7 +29,7 @@ export const TodoDropdown = ({options,name,label, onValueChange, errors}) => {
   
   return (
     <div className='todo-dropdown' ref={dropdownRef}>
-        <input placeholder={label} className={`todo-dropdown-input ${errors?"validateInput":""}`} name={name} value={selectedData} readOnly   onClick={handleIconClick}/>
+        <input placeholder={label} className={`todo-dropdown-input ${errors?"validateInput":""}`} name={name} value={value} readOnly  onClick={handleIconClick}/>
         <span className='todo-dropdown-icon-container'>
           <img src='./todo-dropdown-icon.png' alt='dropdown icon' className='todo-dropdown-icon'  onClick={handleIconClick}/>
         </span>

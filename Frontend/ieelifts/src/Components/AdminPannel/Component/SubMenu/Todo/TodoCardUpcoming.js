@@ -24,11 +24,13 @@ const TodoCardUpcoming = ({taskAdded})=>{
         const hours = getHours();
         const minutes = getMinutes();
         const currentTime = `${hours}:${minutes}`;
+        const formattedTime = tConvert(currentTime);
     
         let upcomingTasks = todoData?.filter(todo => {
             if (todo.taskDate >= todayDate) {
-                const [taskHour, taskMinute] = todo.taskTime.split(":").map(Number);
-                const [currentHour, currentMinute] = currentTime.split(":").map(Number);
+                const time =todo.taskTime.split(" ")[0]
+                const [taskHour, taskMinute] = time.split(":").map(Number);
+                const [currentHour, currentMinute] = formattedTime.split(":").map(Number);
                 return taskHour > currentHour || (taskHour === currentHour && taskMinute >= currentMinute);
             }
         });
@@ -55,16 +57,15 @@ const TodoCardUpcoming = ({taskAdded})=>{
      useEffect(()=>{
         getUpcomingData()
      },[todoData])
-     function tConvert (time) {
-        time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-      
+     function tConvert(time) {
+        time = time?.toString().match(/^([01]?\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
         if (time.length > 1) {
-          time = time.slice (1);
-          time[5] = +time[0] < 12 ? ' AM' : ' PM'; 
-          time[0] = +time[0] % 12 || 12; 
+            time = time.slice(1);
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'; 
+            time[0] = (+time[0] % 12 || 12).toString().padStart(2, '0');
         }
-        return time.join (''); 
-      }
+        return time.join(''); 
+    }    
     return(
         <div className="todo-card">
         <div className="todo-card-header todo-upcoming">

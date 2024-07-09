@@ -31,7 +31,7 @@ const Sidebar = ({ children }) => {
   const [menuIcon2, setMenueIcon2] = useState(true);
 
 
-
+   
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
@@ -91,7 +91,7 @@ const Sidebar = ({ children }) => {
       },
 
     ];
-  } else if (role === "ServiceAdmin") {
+  } else if (role==="ServiceAdmin") {
     menueItems = [
       {
         Path: "/Dashboard",
@@ -209,6 +209,9 @@ const Sidebar = ({ children }) => {
     Navigate("/");
   };
 
+  const handleToggleClose = () => {
+    settoogleClose(!toogleOpen);
+  }
   return (
     <div className="container">
       <TopBar isOpen={isOpen} heading={topBarHeading} />
@@ -310,7 +313,7 @@ const Sidebar = ({ children }) => {
             >
               <div className="sub-menu">
                 <hr></hr>
-                <Link to="/todo" className="sub-menue-link">
+                <Link to="/todo" className="sub-menue-link" onClick={handleToggleClose}>
                   <p>Todo</p>
                 </Link>
                 <Link to="/" className="sub-menue-link">

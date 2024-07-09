@@ -3,8 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ReactDOM from "react-dom";
 import TodoTaskBadge from "./TodoTaskBadge";
+import store from "../../../../../ReduxSetup/Store";
+import { Provider } from "react-redux";
+// import { useDispatch } from "react-redux";
 
-const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate}) => {
+const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate,handleOpenAddClick}) => {
+  // const dispatch = useDispatch();
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
@@ -82,7 +86,10 @@ const acreateDayElement = (day) => {
 
     // Create a root container and render the component
     const root = createRoot(badgeContainer);
-    root.render(<TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} />);
+    root.render(
+      <Provider store={store}>
+        <TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} isMonth={true} handleOpenAddClick={handleOpenAddClick}/>
+      </Provider>)
   }
   dayElement.appendChild(tasksContainer);
   ADayContainerRef.current.appendChild(dayElement);

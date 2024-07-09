@@ -55,7 +55,8 @@ import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 
 import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
-import {ADD_TODO} from "../Actions/AdminActions";
+import { UPDATE_TODO_DATA } from "../Actions/AdminActions";
+import { BiArch } from "react-icons/bi";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -982,4 +983,24 @@ export const getTodosReducer = (state=allTodos,action) =>{
       default:
         return state;
   }
+}
+
+const todoData = {
+  id:"",
+  flag:false,
+}
+
+export const updateTodoDataReducer = (state=todoData,action) =>{
+  switch(action.type){
+    case UPDATE_TODO_DATA:
+      return {
+       ...state,
+        id:action.payload.id,
+        flag:action.payload.flag,
+    
+      }
+        default:
+          return state;
+  }
+
 }
