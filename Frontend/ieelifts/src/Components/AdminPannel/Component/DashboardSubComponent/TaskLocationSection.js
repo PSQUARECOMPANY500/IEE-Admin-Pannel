@@ -38,7 +38,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
 
 
-  
+
   useEffect(() => {
     const fetchData = () => {
 
@@ -126,83 +126,61 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setTicket(false);
   };
 
+
   useEffect(() => {
-    if (filterConditions?.length > 0) {
-      let data;
-      if (services) {
-        if (
-          currentDateServiceRequest &&
-          currentDateServiceRequest.length === 0
-        ) {
-          setFilterData(null);
-          return;
-        }
-        data = currentDateServiceRequest;
-      }
-      if (ticket) {
-        if (currentDateCallback && currentDateCallback.length === 0) {
-          setFilterData(null);
-          return;
-        }
-        data = currentDateCallback;
-      }
-      if (data && data.length === 0) {
-        return setFilterData(null);
-      }
-
-      const statusFilter = filterConditions.filter(
-        (type) => type.type === "status"
-      );
-      const engineerFilter = filterConditions.filter(
-        (type) => type.type === "engineers"
-      );
-      const locationFilter = filterConditions.filter(
-        (type) => type.type === "location"
-      );
-
-      // Add guards before accessing filterConditions
-      let statusData = [],
-        engineerData = [];
-      if (statusFilter) {
-        statusFilter.forEach(async (status) => {
-          const { condition } = status;
-          let sData = [];
-          if (data && data.length !== 0) {
-            sData = data.filter(
-              (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
-            );
-          }
-          statusData = [...statusData, ...sData];
-        });
-      }
-
-      if (engineerFilter) {
-        engineerFilter.forEach((engineer) => {
-          const { condition } = engineer;
-          let eData = data.filter((d) => d.enggName === condition);
-          if (engineerData) {
-            engineerData = [...engineerData, ...eData];
-          } else {
-            engineerData = [...eData];
-          }
-        });
-      }
-      let filteredData = [];
-
-      if (statusData.length && engineerData.length) {
-        filteredData = statusData.filter((status) => {
-          return engineerData.some((engineer) => status._id === engineer._id);
-        });
-      } else if (statusData.length) {
-        filteredData = statusData;
-      } else {
-        filteredData = engineerData;
-      }
-      setFilterData(filteredData);
-    } else {
+    if (!filterConditions?.length) {
       setFilterData(null);
+      return;
     }
+
+    let data;
+    if (services) {
+      if (!currentDateServiceRequest?.length) {
+        setFilterData(null);
+        return;
+      }
+      data = currentDateServiceRequest;
+    } else if (ticket) {
+      if (!currentDateCallback?.length) {
+        setFilterData(null);
+        return;
+      }
+      data = currentDateCallback;
+    }
+
+    if (!data?.length) {
+      setFilterData(null);
+      return;
+    }
+
+    const statusFilter = filterConditions.filter(type => type.type === "status");
+    const engineerFilter = filterConditions.filter(type => type.type === "engineers");
+
+    const statusData = statusFilter.flatMap(status => {
+      const { condition } = status;
+      return data.filter(d => d.ServiceProcess.toLowerCase() === condition.toLowerCase());
+    });
+
+    const engineerData = engineerFilter.flatMap(engineer => {
+      const { condition } = engineer;
+      return data.filter(d => d.enggName === condition);
+    });
+
+    console.log("==================> enginerData", engineerData)
+    console.log("==================> statusData", statusData)
+
+    let filteredData;
+    if (statusFilter.length && engineerFilter.length) {
+      filteredData = statusData.filter(status =>
+        engineerData.some(engineer => status._id === engineer._id)
+      );
+    } else {
+      filteredData = statusData.length ? statusData : engineerData;
+    }
+
+    setFilterData(filteredData);
   }, [filterConditions, ticket]);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -257,7 +235,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
     //may be change logic in future make by aayush
     dispatch(getadminReportData(reportData?.callbackId || reportData?.RequestId));
-    
+
   }
 
 
@@ -353,13 +331,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               </div>
                             </div>
 
-                            <div className="ticket-card-bottom">
-                              <h5>{extractStartTime(value.Slot)}</h5>
-                              <h5>{extractEndTime(value.Slot)}</h5>
-                            </div>
+                          <div className="ticket-card-bottom">
+                            <h5>{extractStartTime(value.Slot)}</h5>
+                            <h5>{extractEndTime(value.Slot)}</h5>
                           </div>
-                        );
-                      })
+                        </div>
+                      );
+                    })
                     : filterData?.map((value, index) => {
                         let reportData = value;
                         return (
@@ -379,21 +357,21 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               </div>
                             </div>
 
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value.enggName.toUpperCase()}</h5>
-                              </div>
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
                             </div>
-                            <div className="ticket-card-bottom">
-                              <h5>{extractStartTime(value.Slot)}</h5>
-                              <h5>{extractEndTime(value.Slot)}</h5>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value.enggName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })}
+                          <div className="ticket-card-bottom">
+                            <h5>{extractStartTime(value.Slot)}</h5>
+                            <h5>{extractEndTime(value.Slot)}</h5>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </>
               )}
 
@@ -408,72 +386,71 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               handleServiceSelection[index] &&
                               "service-card-selected"
                             }`}
-                            onClick={() => handleReportSectionData(reportData)}
-                      
-                          >
-                            <div className="ticket-sub-card-row" >
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.clientName.toUpperCase()}</h5>
-                              </div>
-                            </div>
+                          onClick={() => handleReportSectionData(reportData)}
 
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.enggName.toUpperCase()}</h5>
-                              </div>
+                        >
+                          <div className="ticket-sub-card-row" >
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="service-card-bottom">
-                              <h5>{extractStartTime(serviceData.Slot)}</h5>
-                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData.clientName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData.enggName.toUpperCase()}</h5>
+                            </div>
+                          </div>
+
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          </div>
+                        </div>
+                      );
+                    })
                     : currentDateServiceRequest?.map((serviceData, index) => {
                       const reportServiceData = serviceData
 
-                        return (
-                          <div
-                            style={{backgroundColor:`${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
-                            className={`service-card ${
-                              handleServiceSelection[index] &&
-                              "service-card-selected"
+                      return (
+                        <div
+                          style={{ backgroundColor: `${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
+                          className={`service-card ${handleServiceSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            onClick={() =>
-                              handleReportSectionData(reportServiceData)
-                            }
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.clientName.toUpperCase()}</h5>
-                              </div>
+                          onClick={() =>
+                            handleReportSectionData(reportServiceData)
+                          }
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.enggName.toUpperCase()}</h5>
-                              </div>
-                            </div>
-                            <div className="service-card-bottom">
-                              <h5>{extractStartTime(serviceData.Slot)}</h5>
-                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData.clientName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })}
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData.enggName.toUpperCase()}</h5>
+                            </div>
+                          </div>
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </>
               )}
             </div>
