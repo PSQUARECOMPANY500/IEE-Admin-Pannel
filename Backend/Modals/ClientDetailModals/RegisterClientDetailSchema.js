@@ -36,19 +36,20 @@ const clientRegister = new Schema(
       type: String,
       required: true,
     },
-    MembershipTpye: {
+    MembershipType: {
       type: String,
+      enum: ["warrenty", "gold", "platinum", "silver"],
     },
     CallbackCount: {
       type: String,
     },
-    Razorpay_customer_ID:{
+    Razorpay_customer_ID: {
       type: String,
     },
-    MembershipDiscount:{
+    MembershipDiscount: {
       type: String
     },
-    firebaseToken:{
+    firebaseToken: {
       type: String
     }
 
