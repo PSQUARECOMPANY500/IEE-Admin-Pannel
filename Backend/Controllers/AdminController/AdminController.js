@@ -538,7 +538,7 @@ module.exports.getAllChecklist = async (req, res) => {
 module.exports.assignCallbacks = async (req, res) => {
   try {
 
-      // console.log("9999999999999999",req.body);
+    // console.log("9999999999999999",req.body);
 
     const {
       ServiceEnggId,
@@ -554,14 +554,14 @@ module.exports.assignCallbacks = async (req, res) => {
     let callback;
 
 
-    
+
 
     // Check if the callbackId already exists
     const existingCallback = await ServiceAssigntoEngg.findOne({
       callbackId,
     });
 
-    console.log("]]]]]",existingCallback)
+    console.log("]]]]]", existingCallback)
 
     if (existingCallback) {
       // Update existing data
@@ -595,7 +595,7 @@ module.exports.assignCallbacks = async (req, res) => {
         ServiceProcess,
       });
     }
-// console.log("***",callback._id)
+    // console.log("***",callback._id)
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
@@ -1458,6 +1458,7 @@ module.exports.filterClient = async (req, res) => {
             client.MembershipType &&
             client.MembershipType.toLowerCase() === condition.toLowerCase()
         );
+        console.log(membership);
         if (membershipData && membershipData.length) {
           membershipData = [...membershipData, ...membership];
         } else {
@@ -1547,10 +1548,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1560,9 +1561,9 @@ module.exports.filterClient = async (req, res) => {
     switch (sortType) {
       case "date":
         if (
-          membershipFilter.length ||
-          elevatorTypeFilter.length ||
-          locationFilter.filter
+          membershipFilter.length > 0 ||
+          elevatorTypeFilter.length > 0 ||
+          locationFilter.length > 0
         ) {
           if (sortcondition === "newest") {
             commonData.sort(
@@ -1578,6 +1579,7 @@ module.exports.filterClient = async (req, res) => {
               message: "Invalid date condition",
             });
           }
+          console.log("I am here", membershipFilter.length, elevatorTypeFilter.length, locationFilter.filter);
         } else {
           if (sortcondition === "newest") {
             clientData.sort(
@@ -1599,9 +1601,9 @@ module.exports.filterClient = async (req, res) => {
         break;
       case "name":
         if (
-          membershipFilter.length ||
-          elevatorTypeFilter.length ||
-          locationFilter.filter
+          membershipFilter.length > 0 ||
+          elevatorTypeFilter.length > 0 ||
+          locationFilter.length > 0
         ) {
           if (sortcondition === "a-z") {
             commonData.sort((a, b) => a.name.localeCompare(b.name));
@@ -1884,7 +1886,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2228,7 +2230,7 @@ module.exports.updatePassword = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.status(200).json({ success:'true', message: "Password updated successfully" });
+    return res.status(200).json({ success: 'true', message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     return res
@@ -2623,7 +2625,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -3085,8 +3087,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-          ? EnggDataChecker.EnggPhoto
-          : "",
+            ? EnggDataChecker.EnggPhoto
+            : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3105,28 +3107,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-          ? EnggDataChecker.AddharPhoto
-          : "",
+            ? EnggDataChecker.AddharPhoto
+            : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-          ? EnggDataChecker.DrivingLicensePhoto
-          : "",
+            ? EnggDataChecker.DrivingLicensePhoto
+            : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-          ? EnggDataChecker.PancardPhoto
-          : "",
+            ? EnggDataChecker.PancardPhoto
+            : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-          ? EnggDataChecker.QualificationPhoto
-          : "",
+            ? EnggDataChecker.QualificationPhoto
+            : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-          ? EnggDataChecker.AdditionalCoursePhoto
-          : "",
+            ? EnggDataChecker.AdditionalCoursePhoto
+            : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3243,7 +3245,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3255,7 +3257,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3315,7 +3317,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3327,7 +3329,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3446,7 +3448,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
     const { EnggId } = req.params;
 
     const sparePartData = await ReportTable.find({ EnggId, isVerify: true });
-    
+
     if (sparePartData.length === 0) {
       return res.status(200).json({ message: "no Spare part data Present" });
     }
@@ -3463,7 +3465,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3475,7 +3477,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3485,7 +3487,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
         return {
           ClientName,
           Date: item.Date,
-          paymentMode:item.paymentMode,
+          paymentMode: item.paymentMode,
           SparePartsChanged,
         };
       })
@@ -3504,18 +3506,18 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
 
 //api to handle get sparePart profitSummary graph Data in Engineers section
 
-module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
+module.exports.GetSparePartProfitSummaryGraphData = async (req, res) => {
   try {
     const { EnggId } = req.params;
-      
+
 
     //get current week data with the help pf current Date----------------------------
     const getWeekDays = (date) => {
       const dayNames = ["Sunday", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const daysOfWeek = [];
-    
+
       // Get the current day of the week (0 is Sunday, 1 is Monday, ..., 6 is Saturday)
-      const currentDay = date.getDay();    
+      const currentDay = date.getDay();
       // Calculate the date for the start of the week (Sunday)
       const startOfWeek = new Date(date);
       startOfWeek.setDate(date.getDate() - currentDay);
@@ -3528,28 +3530,28 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
           dayName: dayNames[weekDay.getDay()]
         });
       }
-    
+
       return daysOfWeek;
     };
-    
+
     const today = new Date();
     const weekDays = getWeekDays(today);
-  
-//-------------------------------------------------------------------------------
 
-   const WeeklyData =await Promise.all(weekDays.map(async(day) => {
-      return await ReportTable.find({ EnggId, isVerify: true, Date:day.date})
-     })) 
-     
-     const result = WeeklyData.map((dayData, index) => {
+    //-------------------------------------------------------------------------------
+
+    const WeeklyData = await Promise.all(weekDays.map(async (day) => {
+      return await ReportTable.find({ EnggId, isVerify: true, Date: day.date })
+    }))
+
+    const result = WeeklyData.map((dayData, index) => {
       const totalAmount = dayData.reduce((sum, report) => sum + report.TotalAmount, 0);
       return {
         dayName: weekDays[index].dayName,
         totalAmount: totalAmount
       };
-     })
+    })
 
-     res.status(200).json({ result });
+    res.status(200).json({ result });
 
   } catch (error) {
     console.log(error);
@@ -3565,7 +3567,7 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
 
 //api to get check engg checkIn or Not on Current date
 
-module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req,res) => {
+module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
   try {
     const { ServiceEnggId } = req.params;
 
@@ -3573,9 +3575,9 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req,res) => {
     const today = new Date(selectedDate);
     const formattedDate = today.toLocaleDateString('en-GB'); // 'en-GB' locale gives you DD/MM/YYYY format
 
-    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({ServiceEnggId,Date:formattedDate});
+    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({ ServiceEnggId, Date: formattedDate });
 
-    if(!isEnggCheckIn) {
+    if (!isEnggCheckIn) {
       return res.status(200).json({ isCheckIn: false });
     }
 
