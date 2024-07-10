@@ -3,6 +3,7 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const callbackAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
 const serviceAssigtoEngg = require("../../Modals/ServiceEngineerModals/AssignServiceRequest");
+
 const engineerRating = require("../../Modals/Rating/Rating");
 
 const {
@@ -40,6 +41,8 @@ const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestM
 const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const Razorpay = require("razorpay");
+
+// const twilio  = require('twilio')
 
 const axios = require("axios");
 require("dotenv").config();
@@ -126,19 +129,10 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
     const bodyData = req.body;
-    // console.log("Engg already exists -- ", formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "")
-// 
-    // console.log("preet", req.body);
-    // console.log("pankaj",bodyData.AlternativeNumber);
-    // console.log(bodyData);
 
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
       PhoneNumber: bodyData.mobileNumber,
     });
-    console.log("EnggAlreadyExist",EnggAlreadyExist);
-    console.log("EnggAlreadyExist11111111111",bodyData.EnggId);
-
-
 
     if (EnggAlreadyExist.length > 0) {
       return res
@@ -146,16 +140,17 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
         .json({ message: "Engg is Already Exist with this Mobile Number" });
     }
 
-
     const enggData = await ServiceEnggBasicSchema.create({
       EnggName: bodyData.firstName,
       EnggId: bodyData.EnggId,
       AlternativeNumber: bodyData.AlternativeNumber,
-      EnggRole: bodyData.EnggRole, 
+      EnggRole: bodyData.EnggRole,
       EnggLastName: bodyData.lastName,
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
-      EnggPhoto: formData?.profilePhoto ? formData?.profilePhoto[0]?.filename : "",
+      EnggPhoto: formData?.profilePhoto
+        ? formData?.profilePhoto[0]?.filename
+        : "",
       DateOfBirth: bodyData.dateOfBirth,
       Email: bodyData.email,
       PinCode: bodyData.pinCode,
@@ -171,19 +166,27 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       BranchName: bodyData.branchName,
       AccountNumber: bodyData.accountNumber,
       IFSCcode: bodyData.IFSCcode,
-      AddharPhoto:  formData?.addharPhoto ? formData?.addharPhoto[0]?.filename : "",
-      DrivingLicensePhoto: formData?.drivingLicensePhoto ? formData?.drivingLicensePhoto[0]?.filename : "",
-      PancardPhoto: formData?.pancardPhoto ? formData?.pancardPhoto[0]?.filename : "",
-      QualificationPhoto: formData?.qualificationPhoto ? formData?.qualificationPhoto[0]?.filename : "",
-      AdditionalCoursePhoto: formData?.additionalCoursePhoto ? formData?.additionalCoursePhoto[0]?.filename : "",
+      AddharPhoto: formData?.addharPhoto
+        ? formData?.addharPhoto[0]?.filename
+        : "",
+      DrivingLicensePhoto: formData?.drivingLicensePhoto
+        ? formData?.drivingLicensePhoto[0]?.filename
+        : "",
+      PancardPhoto: formData?.pancardPhoto
+        ? formData?.pancardPhoto[0]?.filename
+        : "",
+      QualificationPhoto: formData?.qualificationPhoto
+        ? formData?.qualificationPhoto[0]?.filename
+        : "",
+      AdditionalCoursePhoto: formData?.additionalCoursePhoto
+        ? formData?.additionalCoursePhoto[0]?.filename
+        : "",
       DurationOfJob: bodyData.jobDuration,
       CompanyName: bodyData.companyName,
       JobTitle: bodyData.jobTitle,
       ManagerName: bodyData.managerName,
       ManagerNo: bodyData.managerNumber,
     });
-
-
 
     res
       .status(201)
@@ -199,19 +202,21 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
 //function to handle serviceEngg Login
 module.exports.loginEngg = async (req, res) => {
   try {
-    const DeviceId = req.headers['device-id']
+    const DeviceId = req.headers["device-id"];
     const { EnggId, password } = req.body;
 
-    console.log("00000000000000",req.body)
-    console.log("))))))))))))))",req.headers)
+    console.log("00000000000000", req.body);
+    console.log("))))))))))))))", req.headers);
 
     // console.log("90000000000000000000",DeviceId);
     //firstly check the Engg is exist or not
-    
 
     const [Engg, rating] = await Promise.all([
-      ServiceEnggBasicSchema.findOneAndUpdate({ EnggId }, { ActiveDevice: DeviceId }),
-      engineerRating.find({ ServiceEnggId: EnggId })
+      ServiceEnggBasicSchema.findOneAndUpdate(
+        { EnggId },
+        { ActiveDevice: DeviceId }
+      ),
+      engineerRating.find({ ServiceEnggId: EnggId }),
     ]);
 
     let count = 0;
@@ -224,11 +229,14 @@ module.exports.loginEngg = async (req, res) => {
     }
 
     const token = generateEnggToken({ EnggId });
+    console.log("{", EnggId);
+    console.log("}", token);
+
     res.json({
       Engg,
       success: true,
-      allotedAdmin: "65e0103005fd2695f3aaf6d4",    //to do dynamic
-      adminName: "Parabh Simaran",                //to do dynamic
+      allotedAdmin: "65e0103005fd2695f3aaf6d4", //to do dynamic
+      adminName: "Parabh Simaran", //to do dynamic
       Rating,
       token,
     });
@@ -605,6 +613,8 @@ module.exports.getEngScheduleData = async (req, res) => {
       .json({ error: "Internal server error in getEnggAssignDetails" });
   }
 };
+
+//-----------------------------------------------------------------------------------------------------------
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
@@ -1058,7 +1068,7 @@ module.exports.generateOtpForClient = async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in generateOtpForClient" });
@@ -1106,25 +1116,28 @@ module.exports.EnggReportQuestionFetch = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
-const calculateEarlyLate = (timetocalculate) =>{
+const calculateEarlyLate = (timetocalculate) => {
   const currentTime = new Date();
-  const [hours, minutes, seconds] = timetocalculate.split(':').map(Number);
+  const [hours, minutes, seconds] = timetocalculate.split(":").map(Number);
   const targetTime = new Date(currentTime);
   targetTime.setHours(hours, minutes, seconds, 0);
   return targetTime;
-}
+};
 
-const caluclateCheckInCheckOutStatus = (attendanceTime,caltime) => {
-  if(calculateEarlyLate(attendanceTime) > calculateEarlyLate(caltime[1])){
-          return 'Late'
-  }else if(calculateEarlyLate(attendanceTime) <= calculateEarlyLate(caltime[1])  && calculateEarlyLate(attendanceTime) >= calculateEarlyLate(caltime[0]) ){
-    return 'On Time'   
-  }else if(calculateEarlyLate(attendanceTime) < calculateEarlyLate(caltime[0])){
-    return 'Early'
+const caluclateCheckInCheckOutStatus = (attendanceTime, caltime) => {
+  if (calculateEarlyLate(attendanceTime) > calculateEarlyLate(caltime[1])) {
+    return "Late";
+  } else if (
+    calculateEarlyLate(attendanceTime) <= calculateEarlyLate(caltime[1]) &&
+    calculateEarlyLate(attendanceTime) >= calculateEarlyLate(caltime[0])
+  ) {
+    return "On Time";
+  } else if (
+    calculateEarlyLate(attendanceTime) < calculateEarlyLate(caltime[0])
+  ) {
+    return "Early";
   }
-}
-
-
+};
 
 module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
   try {
@@ -1137,22 +1150,24 @@ module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
         Date: date,
       });
 
-      let Check_In_status
-      let Check_Out_status
+      let Check_In_status;
+      let Check_Out_status;
       // const timeresdposne = calculateEarlyLate('9:00:00');
-      if(response.Check_In.time){
-        Check_In_status = caluclateCheckInCheckOutStatus(response.Check_In.time,['08:45:00','09:15:00'])
+      if (response.Check_In.time) {
+        Check_In_status = caluclateCheckInCheckOutStatus(
+          response.Check_In.time,
+          ["08:45:00", "09:15:00"]
+        );
       }
-      if(response.Check_Out.time){
-        Check_Out_status = caluclateCheckInCheckOutStatus(response.Check_Out.time,['17:15:00','17:45:00'])
+      if (response.Check_Out.time) {
+        Check_Out_status = caluclateCheckInCheckOutStatus(
+          response.Check_Out.time,
+          ["17:15:00", "17:45:00"]
+        );
       }
-      
-
-
-   
 
       // console.log("this is the time ",timeresdposne  );
-      
+
       // console.log("Reponse for checkin", response.Check_In.time)
       // console.log("Reponse for checkout", response.Check_Out.time)
 
@@ -1160,7 +1175,7 @@ module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
         Check_In: response.Check_In.time,
         Check_In_status,
         Check_Out: response.Check_Out.time,
-        Check_Out_status
+        Check_Out_status,
       });
     }
     return res.status(500).json({ error: "ServiceEnggId Not Found" });
@@ -1411,7 +1426,8 @@ module.exports.getEngineerLeveCount = async (req, res) => {
     const { ServiceEnggId } = req.query;
     // console.log("working inside this");
     // console.log(ServiceEnggId);
-    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });0
+    const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
+    0;
     // console.log("leaves", leaves);
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ message: "No leaves found" });
@@ -1535,13 +1551,14 @@ module.exports.getFinalReportDetails = async (req, res) => {
   try {
     const { serviceId } = req.params;
 
-    const reportData = await ReportInfoModel.findOne({ serviceId }); 
-    console.log("tttttttttttttttttttt",reportData.JobOrderNumber)
+    const reportData = await ReportInfoModel.findOne({ serviceId });
+    console.log("tttttttttttttttttttt", reportData.JobOrderNumber);
 
     const getMemberShipDetails = await memberShipTable.findOne({
-      JobOrderNumber:reportData.JobOrderNumber,isDisable:false
+      JobOrderNumber: reportData.JobOrderNumber,
+      isDisable: false,
     });
-    console.log("***********",getMemberShipDetails)
+    console.log("***********", getMemberShipDetails);
 
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
@@ -1702,8 +1719,8 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     const { serviceId, paymentdata } = req.body;
 
     const sparePartRequestDate = new Date()
-    .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-    .split(",")[0];
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
 
     // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
@@ -1713,20 +1730,17 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       return res.status(404).json({ message: "Report Not Found" });
     }
 
-
     //update cash in Engg table------------
-if(JSON.parse(paymentdata).Payment_Method === 'Cash'){
-   await ServiceEnggBasicSchema.findOneAndUpdate(
-      {
-        EnggId:ReportData.EnggId
-      },
-      { $inc: {AvailableCash:JSON.parse(paymentdata).Total_Amount} }
-    );
-}   // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
+    if (JSON.parse(paymentdata).Payment_Method === "Cash") {
+      await ServiceEnggBasicSchema.findOneAndUpdate(
+        {
+          EnggId: ReportData.EnggId,
+        },
+        { $inc: { AvailableCash: JSON.parse(paymentdata).Total_Amount } }
+      );
+    } // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
-
+    console.log("tttttttttttttttt", JSON.parse(paymentdata).Total_Amount);
 
     const paymentPDF = req.files.report[0].filename;
 
@@ -1735,7 +1749,7 @@ console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
     ReportData.isActive = false;
     ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
     ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
-    ReportData.Date = sparePartRequestDate                         // await testing --------------------------------------- // // //////////////////////////////////////
+    ReportData.Date = sparePartRequestDate; // await testing --------------------------------------- // // //////////////////////////////////////
 
     await ReportData.save();
 
@@ -1745,7 +1759,6 @@ console.log("tttttttttttttttt",JSON.parse(paymentdata).Total_Amount)
 
     const FinalFilteredData = await Promise.all(
       FilteredData.map(async (item) => {
-       
         const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
         const newSparePartRequest = await sparePartRequestTable.create({
           EnggId: ReportData.EnggId,
@@ -2033,8 +2046,6 @@ module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
 //       partial_payment: false,
 //     });
 
-
-
 //     if (order.statusCode === 400) {
 //       return res
 //         .status(400)
@@ -2048,10 +2059,6 @@ module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
 //     return res.status(500).json({ error: "Internal Server Error enggPayment" });
 //   }
 // };
-
-
-
-
 
 //amit on 2/05/2024 and 3/05/2024
 //function for the paymentLink generation and verification
@@ -2424,9 +2431,6 @@ module.exports.updatePaymentStatus = async (req, res) => {
 };
 //=======================================================Razorpay-api-ends====================================================================
 
-
-
-
 module.exports.canclePaymentLink = async (req, res) => {
   const { serviceId } = req.body;
 
@@ -2486,3 +2490,214 @@ module.exports.canclePaymentLink = async (req, res) => {
     res.status(204).json({ status: "error", message: error });
   }
 };
+
+//-------------------------------------------------------------------------------------------------------------
+
+//API TO GET PERVIOS PENDING SERVICES ------------------------
+
+module.exports.getAllClientPreviousService = async (req, res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+
+    const currentDate = new Date();
+    const todayDate = currentDate.toLocaleDateString("en-GB");
+
+    const EnggCallback = await ServiceAssigntoEngg.find({ ServiceEnggId });
+    const EnggService = await AssignSecheduleRequest.find({ ServiceEnggId });
+
+    if (EnggCallback.length === 0 && EnggService.length === 0) {
+      return res.status(400).json({ message: "no callBack is assign to Engg" });
+    }
+
+    const allServices = [...EnggCallback, ...EnggService];
+
+    console.log("allServices",allServices)
+
+    const PreviousServices = allServices.filter((item) => {
+      return item.Date < todayDate && item.ServiceProcess === "InCompleted";
+    });
+
+    // console.log("PreviousServices", PreviousServices);
+
+    const RemainingAccepctedServices = await Promise.all(
+      PreviousServices.map(async (item) => {
+        const report = await ReportInfoModel.findOne({
+          serviceId: item.RequestId ? item.RequestId : item.callbackId,
+        });
+
+        if (report && report.Steps >= 2) {
+          return item;
+        }
+        return null;
+      })
+    );
+
+    const resultService = RemainingAccepctedServices.filter(
+      (service) => service !== null
+    );
+
+    // console.log("++++++++++", resultService);
+
+    const EngScheduleData = await Promise.all(
+      resultService.map(async (item) => {
+        const clientDetails = await clientDetailSchema
+          .find({ JobOrderNumber: item.JobOrderNumber })
+          .select("name Address PhoneNumber");
+        const EnggDetails = await ServiceEnggBasicSchema.find({
+          EnggId: item.ServiceEnggId,
+        }).select("EnggName");
+
+        return {
+          ...item._doc,
+          clientDetails,
+          EnggDetails,
+        };
+      })
+    );
+
+    res.status(200).json({ PendingServices: EngScheduleData });
+  } catch (error) {
+    console.log("this is the error", error);
+    res.status(204).json({ status: "error", message: error });
+  }
+};
+
+//--------------------------------service Engg login with OTP ----------------------------------------
+// api to handle service Engg login with OTP
+module.exports.serviceEnggLoginWithOtp = async (req, res) => {
+  try {
+    const { EnggId, PhoneNumber } = req.body;
+
+
+    // const date = new Date();
+    // const options = {
+    //   timeZone: "Asia/Kolkata",
+    //   year: "numeric",
+    //   month: "2-digit",
+    //   day: "2-digit",
+    //   hour: "2-digit",
+    //   minute: "2-digit",
+    //   second: "2-digit",
+    // };
+    // const formatter = new Intl.DateTimeFormat("en-US", options);
+    // const indiaTime = formatter.format(date);
+
+    // console.log("^^^^^^^^^^^^^^^^^^^^^^", indiaTime);
+
+    const Engineer = await ServiceEnggBasicSchema.findOne({
+      EnggId,
+      PhoneNumber,
+    });
+
+    if (!Engineer) {
+      return res.status(200).json({ message: "Phone Number is not matched" });
+    }
+
+    // const accountSid = process.env.TwlioSID;
+    // const authToken = process.env.TwlioSECRET;
+
+    // const client = twilio('ACd76c05e5041feb16a75f7a90a5de143a', 'a31167b09e8e7f1e6dc1450dc284f1db');
+
+    // client.messages.create({
+    //     body: 'Hello from twilio-node',
+    //     to: '+12345678901', // Text your number
+    //     from: '+12345678901', // From a valid Twilio number
+    //   })
+    //   .then((message) => console.log(message.sid));
+
+    // const message = await client.messages.create({
+    //   body: 'You have an appointment with Owl, Inc. on Friday, November 3 at 4:00 PM. Reply C to confirm.',
+    //   from:'+12512783329',
+    //   to: '+917889141836'
+    // });
+    // console.log(message.sid);
+
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    // Save OTP details to the database
+    const response = await OtpDetails.create({
+      otp: otp,
+      ServiceEnggId: EnggId,
+      createdAt:Date.now(),
+      expiresAt:Date.now() + 900000
+    });
+
+    // const apiKey = process.env.MESSAGE_API_KEY;
+    // console.log("---------------------------------",apiKey);
+    // const axiosConfig = {
+    // headers: {
+    // authorization: apiKey,
+    // "Content-Type": "application/json",
+    // },
+    // };
+    // const data = {
+    // variables_values: otp,
+    // route: "otp",
+    // numbers: PhoneNumber,
+    // };
+
+    // fast to SMS service is not working now : ToDo : fix the registration problem.................(TODO:)
+    // Send request to Fast2SMS API
+    // const response1 = await axios.post("https://www.fast2sms.com/dev/bulkV2",axiosConfig,data);
+    // const response23 = await axios.post(
+    // "https://www.fast2sms.com/dev/bulkV2",
+    // {
+    // variables_values: otp,
+    // route: "otp",
+    // numbers: PhoneNumber,
+    // },
+    // {
+    // headers: {
+    // authorization: apiKey,
+    // "Content-Type": "application/json",
+    // },
+    // }
+    // );
+
+    return res
+      .status(200)
+      .json({ success: true, message: "OTP sent successfully" });
+  } catch (error) {
+    console.log("this is the error", error);
+    res.status(500).json({ message: "errro while login with OTP" });
+  }
+};
+//------------------------------------------------------------------------------------------------------------
+
+
+// verify Engg OTP while logion with mobile device
+
+module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req,res) => {
+  try {
+    const {ServiceEnggId ,otp } = req.body;
+
+    const useOTPVerificationRecords = await OtpDetails.findOne({ ServiceEnggId });
+
+    console.log("@@@@@@@@@@@@@@@@@",useOTPVerificationRecords);
+
+    if(useOTPVerificationRecords.length <= 0){
+     return res.status(404).json({ message: "Account record does not exist, or has been verified already" });
+    }
+
+    const expiresAt = useOTPVerificationRecords.expiresAt
+
+    if(expiresAt < Date.now()) {
+      await OtpDetails.deleteMany({ ServiceEnggId });
+      return res.status(401).json({ message: "OTP expired. Please generate a new one." });
+    }
+    
+    if (useOTPVerificationRecords.otp === otp ){
+      await OtpDetails.deleteMany({ ServiceEnggId });
+      return res.status(200).json({ message: "OTP verify successfully" });
+    }else{
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    // console.log("##########################",expiresAt);
+
+
+
+  } catch (error) {
+    console.log("this is the error", error);
+    res.status(500).json({ message: "errro while Verifying with OTP" });
+  }
+}

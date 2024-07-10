@@ -4,8 +4,15 @@ import { getEngineerAttendance } from "../../../../ReduxSetup/Actions/AdminActio
 import EngeeniersAttendanceCard from "./EngeeniersAttendanceCard";
 
 const AttendanceDateConatiner = ({ date, engID }) => {
+
+  console.log("date#############", date);
+
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
+
+  console.log("dates",dates);
+
+
   const [openCard, setOpenCard] = useState(false);
 
   const [selectedDateIndex, setSelectedDateIndex] = useState(null);
@@ -37,6 +44,8 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const updateDates = () => {
       const len = 5;
       const today = new Date(selectedDate);
+
+      console.log("today----------->>",today);
 
       const dates = Array.from(
         {
@@ -70,11 +79,17 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   );
 
   const getDayOfWeek = (dateStr) => {
-    const [day, month, year] = dateStr.split("/");
+
+    if(dateStr === "Invalid Date") return;
+    console.log("getDayOfWeek",dateStr)
+
+    const [day, month, year] = dateStr?.split("/");
     const dateObj = new Date(year, month - 1, day);
+
     const options = { weekday: "short" };
-    return new Intl.DateTimeFormat("en-US", options).format(dateObj);
+    return new Intl.DateTimeFormat("en-US", options)?.format(dateObj);
   };
+
 
   const calculateTotalHours = (checkIn, checkOut) => {
     if (!checkIn || !checkOut) return "--";

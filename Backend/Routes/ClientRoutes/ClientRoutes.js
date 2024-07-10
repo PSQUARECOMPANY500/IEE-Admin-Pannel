@@ -17,15 +17,15 @@ router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
 router.post("/requestCallbacks",checkClientServiceExist, clientController.RequestCallbacks);
-router.post("/requestCallbacks", clientController.RequestCallbacks);
+// router.post("/requestCallbacks", clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
 router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
-router.post("/imediateServiceRequest",clientController.imediateServiceRequest); //await implement middlweware -----------------------------------!!!!!!!!!!!!!
+// router.post("/imediateServiceRequest",clientController.imediateServiceRequest); //await implement middlweware -----------------------------------!!!!!!!!!!!!!
 
-router.post("/createReferal", clientController.referalUser);
+// router.post("/createReferal", clientController.referalUser);
 // router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
@@ -50,7 +50,7 @@ router.get("/fetchClientServiceHistory/:JobOrderNumber", clientController.fetchC
 
 
 // ------------------------all Put Requests ----------------------------------------------------
-router.put("/updateCallbacks", clientController.updateCallbacks);
+// router.put("/updateCallbacks", clientController.updateCallbacks);
 router.put("/updateServiceRequest", clientController.updateServiceRequest);
 // router.post("/engineerRating",verifyToken('client'),clientController.Rating)
 

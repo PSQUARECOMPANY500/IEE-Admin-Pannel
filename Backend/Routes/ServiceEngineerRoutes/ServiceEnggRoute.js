@@ -80,10 +80,20 @@ router.get(
   serviceEnggContoller.getAssignedServices
 );
 router.get("/getServiceEngg/:EnggId", serviceEnggContoller.getEnggDetail);
+
+
+// router.get(
+//   "/getEngScheduleData/:ServiceEnggId",checkClientDeviceLogins,
+//   serviceEnggContoller.getEngScheduleData
+// );
 router.get(
-  "/getEngScheduleData/:ServiceEnggId",checkClientDeviceLogins,
+  "/getEngScheduleData/:ServiceEnggId",
   serviceEnggContoller.getEngScheduleData
 );
+
+
+
+
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
 
 const storage = multer.diskStorage({
@@ -435,9 +445,12 @@ router.post('/registerFirebaseToken', clientContoller.firebaseTokenForPushNotifi
 
 
 
+router.get('/getNotFullfillPreviousService/:ServiceEnggId', serviceEnggContoller.getAllClientPreviousService)
 
 
+router.post('/loginWithOTP',serviceEnggContoller.serviceEnggLoginWithOtp);
 
+router.post('/verifyEnggOTPWhileLoging', serviceEnggContoller.verifyEnggOTPWhileLogingWithMobileDevice);
 
 
 module.exports = router;
