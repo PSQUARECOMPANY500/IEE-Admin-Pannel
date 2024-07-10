@@ -230,6 +230,8 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       Date: currentDate,
     });
 
+    console.log("******************",currentDetailServiceRequest);
+
     if (currentDetailServiceRequest.length === 0) {
       return res.status(400).json({
         message: "no Service Request for today's",
@@ -262,9 +264,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ? ServiceRequestdetail.Description
           : null;
         const RepresentativeName =
-          ServiceRequestdetail.RepresentativeName || null;
+          ServiceRequestdetail?.RepresentativeName || null;
         const RepresentativeNumber =
-          ServiceRequestdetail.RepresentativeNumber || null;
+          ServiceRequestdetail?.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
@@ -283,6 +285,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       serviceRequestDetail,
     });
   } catch (error) {
+    console.log("get assign service request",error);
     return res.status(500).json({
       error: "Internal server error",
     });
