@@ -43,6 +43,7 @@ const ServiceRequestTable = ({
         return;
       }
       let data = filteredCD;
+      console.log(data);
       const membershipFilter = filterConditions.filter(
         (filter) => filter.type === "membership"
       );
@@ -60,7 +61,7 @@ const ServiceRequestTable = ({
           if (data && data.length !== 0) {
             mData = data.filter(
               (d) =>
-                d.clientDetail.Membership.toLowerCase() ===
+                d.clientDetail.MembershipType.toLowerCase() ===
                 condition.toLowerCase()
             );
           }

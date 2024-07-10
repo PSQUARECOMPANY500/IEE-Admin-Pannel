@@ -70,13 +70,25 @@ const FilterDropdown = ({
                   className="filter-icons"
                   onClick={() => handleFilter(dropdown.name)}
                 >
-                  <span>{`By ${dropdown.name === "engineers" ? "SE Names" : dropdown.name
-                    }`}</span>
                   {
-                    dropdown.name !== "clear" && (<span>
-                      <IoChevronDownSharp />
-                    </span>)
+                    dropdown.name !== "clear" ? (
+                      <>
+                        <span>
+                          {`By ${dropdown.name === "engineers" ? "SE Names" : dropdown.name
+                            }`}
+                        </span>
+                        {dropdown.name !== "clear" && (
+                          <span>
+                            <IoChevronDownSharp />
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span>Clear Filter</span>
+
+                    )
                   }
+
                 </div>
                 <div
                   className="listing-filter"
@@ -118,9 +130,11 @@ const FilterDropdown = ({
                   </ul>
                 </div>
               </div>
-              {index < filterDropdowns.length - 1 && (
-                <span className="horizontal-row-filter"></span>
-              )}
+              {
+                index < filterDropdowns.length - 1 && (
+                  <span className="horizontal-row-filter"></span>
+                )
+              }
 
               <>
                 {openFilter !== dropdown.name && (
@@ -140,9 +154,10 @@ const FilterDropdown = ({
                 )}
               </>
             </div>
-          ))}
-      </div>
-    </div>
+          ))
+        }
+      </div >
+    </div >
   );
 };
 
