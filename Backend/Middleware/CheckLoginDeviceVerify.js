@@ -6,11 +6,19 @@ const checkClientDeviceLogins = async (req, res, next) => {
 
   let Token = req.header("Authorization");
 
+  // console.log("\\\\\\\\\\\\\\\\",Token)
+
   const token = Token?.split(" ")[1];
 
   const user = jwtDecode(token);
 
+  // console.log("===",user)
+
+  // console.log("++++",user.user.EnggId);
+
   const EnggData = await serviceEnggSchema.find({ EnggId: user.user.EnggId });
+
+  // console.log("---",EnggData);
 
   if (EnggData[0].ActiveDevice !== DeviceId) {
     return res.status(200).json({

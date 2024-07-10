@@ -10,15 +10,19 @@ const checkClientServiceExist = async (req, res, next) => {
   const ClientServiceData = await callback.find({ JobOrderNumber });
   const ClientCallbackData = await service.find({ JobOrderNumber });
 
+  if(ClientCallbackData.length === 0 || ClientServiceData.length === 0){
+   return next();
+  }
+
   let data = [];
 
   if (ClientServiceData.length > 0) {
-    ClientServiceData.map((item) => {
+    ClientServiceData?.map((item) => {
       data.push(item);
     });
   }
   if (ClientCallbackData.length > 0) {
-    ClientCallbackData.map((item) => {
+    ClientCallbackData?.map((item) => {
       data.push(item);
     });
   }
@@ -26,14 +30,14 @@ const checkClientServiceExist = async (req, res, next) => {
   const AssignedFalse = data.filter((item) => !item.isAssigned);
   const AssignedTrue = data.filter((item) => item.isAssigned);
 
-  if(AssignedFalse.length > 0){
+  if(AssignedFalse.length >= 0){
       return res.status(200).json({
         status:'error',
           message: "Wait until previous Service is Assigned and Completed"
       })
   }
 
-  if (AssignedTrue.length > 0) {
+  if (AssignedTrue.length >= 0) {
     const checkComplete = await Promise.all(
       AssignedTrue.map(async (item) => {
         console.log(item.JobOrderNumber);
@@ -46,7 +50,7 @@ const checkClientServiceExist = async (req, res, next) => {
           ServiceProcess: "InCompleted",
         });
 
-        if (assignServices.length > 0 || assignCallbacks.length > 0) {
+        if (assignServices.length >= 0 || assignCallbacks.length >= 0) {
           return {
             JobOrderNumber: item.JobOrderNumber,
             assignServices,

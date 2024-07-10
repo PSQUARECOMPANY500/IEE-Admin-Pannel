@@ -10,6 +10,8 @@ const Attendance = (props) => {
   const { engID } = props;
 
   const [date, setTodayDate] = useState();
+  console.log("date&&&&&&&&&&&&",date)
+
   const [leaveRequested, setleaveRequested] = useState(null);
   return (
     <div className="Attendance">

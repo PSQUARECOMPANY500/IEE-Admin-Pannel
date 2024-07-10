@@ -534,6 +534,9 @@ module.exports.getAllChecklist = async (req, res) => {
 //function to handle   (assign callbacks to Engg)
 module.exports.assignCallbacks = async (req, res) => {
   try {
+
+      // console.log("9999999999999999",req.body);
+
     const {
       ServiceEnggId,
       JobOrderNumber,
@@ -547,10 +550,15 @@ module.exports.assignCallbacks = async (req, res) => {
 
     let callback;
 
+
+    
+
     // Check if the callbackId already exists
     const existingCallback = await ServiceAssigntoEngg.findOne({
       callbackId,
     });
+
+    console.log("]]]]]",existingCallback)
 
     if (existingCallback) {
       // Update existing data
@@ -584,7 +592,7 @@ module.exports.assignCallbacks = async (req, res) => {
         ServiceProcess,
       });
     }
-
+// console.log("***",callback._id)
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();

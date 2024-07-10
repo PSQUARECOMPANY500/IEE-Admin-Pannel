@@ -272,6 +272,9 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
 
 module.exports.RequestCallbacks = async (req, res) => {
   try {
+
+    console.log("preet")
+    console.log("######################", req.body)
     const {
       JobOrderNumber,
       callbackId,
@@ -295,6 +298,9 @@ module.exports.RequestCallbacks = async (req, res) => {
       RepresentativeName,
       RepresentativeNumber,
     });
+
+    console.log("888888888888",newCallback)
+
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
       Requests: newCallback,
