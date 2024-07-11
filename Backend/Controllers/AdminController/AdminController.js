@@ -262,7 +262,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           : null;
         const ClientDescription = ServiceRequestdetail
           ? ServiceRequestdetail.Description
-          : null;
+          : null; 
         const RepresentativeName =
           ServiceRequestdetail?.RepresentativeName || null;
         const RepresentativeNumber =
@@ -2711,21 +2711,14 @@ module.exports.postElevatorForm = async (req, res) => {
 
     const membershipDocument = {
       signedQuotation:
-        req?.files?.signedQuotation && req.files.signedQuotation.length > 0
-          ? req.files.signedQuotation[0].filename
-          : existingForm.clientMembershipDocument.signedQuotation,
+        req?.files?.signedQuotation && req.files.signedQuotation.length > 0 ? req.files.signedQuotation[0].filename ? req.files.signedQuotation[0].filename : existingForm.clientMembershipDocument.signedQuotation: "NA",
       paymentForm:
-        req?.files?.paymentForm && req.files.paymentForm.length > 0
-          ? req.files.paymentForm[0].filename
-          : existingForm.clientMembershipDocument.paymentForm,
+        req?.files?.paymentForm && req.files.paymentForm.length > 0 ? req.files.paymentForm[0].filename? req.files.paymentForm[0].filename: existingForm.clientMembershipDocument.paymentForm :"NA"
+        ,
       chequeForm:
-        req?.files?.chequeForm && req.files.chequeForm.length > 0
-          ? req.files.chequeForm[0].filename
-          : existingForm.clientMembershipDocument.chequeForm,
-      salesOrder:
-        req?.files?.salesOrder && req.files.salesOrder.length > 0
-          ? req.files.salesOrder[0].filename
-          : existingForm.clientMembershipDocument.salesOrder,
+        req?.files?.chequeForm && req.files.chequeForm.length > 0? req.files.chequeForm[0].filename ?  req.files.chequeForm[0].filename :existingForm.clientMembershipDocument.chequeForm: "NA",
+           salesOrder:
+        req?.files?.salesOrder && req.files.salesOrder.length > 0? req.files.salesOrder[0].filename ? req.files.salesOrder[0].filename : existingForm.clientMembershipDocument.salesOrder:"NA",
     };
 
     if (existingForm) {
@@ -2752,8 +2745,7 @@ module.exports.postElevatorForm = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error",
-      message: err.message,
+      error: "Internal server error"
     });
   }
 };

@@ -1575,6 +1575,8 @@ module.exports.getFinalReportDetails = async (req, res) => {
         !question.questionResponse.isResolved
     );
 
+    console.log("}}}}}}}}}}}",filteredData);
+
     const IssuesResolved = [];
     const IssuesNotResolved = [];
     const SparePartsChanged = [];
@@ -2480,7 +2482,7 @@ module.exports.canclePaymentLink = async (req, res) => {
           message: "Payment Link cancelled Successfully.",
         });
       } else if (response.status === "captured" || response.status === "paid") {
-        return res
+        return res``
           .status(200)
           .json({ status: "success", message: "Payment already done" });
       }
@@ -2511,7 +2513,7 @@ module.exports.getAllClientPreviousService = async (req, res) => {
 
     const allServices = [...EnggCallback, ...EnggService];
 
-    console.log("allServices",allServices)
+    console.log("allServices", allServices);
 
     const PreviousServices = allServices.filter((item) => {
       return item.Date < todayDate && item.ServiceProcess === "InCompleted";
@@ -2547,10 +2549,21 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           EnggId: item.ServiceEnggId,
         }).select("EnggName");
 
+        let Type;
+
+        if (item.callbackId) {
+          Type = await clientRequestImidiateVisit.findOne({
+            callbackId: item.callbackId,
+          });
+        } else {
+          Type = await serviceRequest.findOne({ RequestId: item.RequestId });
+        }
+
         return {
           ...item._doc,
           clientDetails,
           EnggDetails,
+          Type,
         };
       })
     );
@@ -2567,7 +2580,6 @@ module.exports.getAllClientPreviousService = async (req, res) => {
 module.exports.serviceEnggLoginWithOtp = async (req, res) => {
   try {
     const { EnggId, PhoneNumber } = req.body;
-
 
     // const date = new Date();
     // const options = {
@@ -2617,8 +2629,8 @@ module.exports.serviceEnggLoginWithOtp = async (req, res) => {
     const response = await OtpDetails.create({
       otp: otp,
       ServiceEnggId: EnggId,
-      createdAt:Date.now(),
-      expiresAt:Date.now() + 900000
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 900000,
     });
 
     // const apiKey = process.env.MESSAGE_API_KEY;
@@ -2663,41 +2675,46 @@ module.exports.serviceEnggLoginWithOtp = async (req, res) => {
 };
 //------------------------------------------------------------------------------------------------------------
 
-
 // verify Engg OTP while logion with mobile device
 
-module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req,res) => {
+module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req, res) => {
   try {
-    const {ServiceEnggId ,otp } = req.body;
+    const { ServiceEnggId, otp } = req.body;
 
-    const useOTPVerificationRecords = await OtpDetails.findOne({ ServiceEnggId });
+    const useOTPVerificationRecords = await OtpDetails.findOne({
+      ServiceEnggId,
+    });
 
-    console.log("@@@@@@@@@@@@@@@@@",useOTPVerificationRecords);
+    console.log("@@@@@@@@@@@@@@@@@", useOTPVerificationRecords);
 
-    if(useOTPVerificationRecords.length <= 0){
-     return res.status(404).json({ message: "Account record does not exist, or has been verified already" });
+    if (useOTPVerificationRecords.length <= 0) {
+      return res
+        .status(404)
+        .json({
+          message:
+            "Account record does not exist, or has been verified already",
+        });
     }
 
-    const expiresAt = useOTPVerificationRecords.expiresAt
+    const expiresAt = useOTPVerificationRecords.expiresAt;
 
-    if(expiresAt < Date.now()) {
+    if (expiresAt < Date.now()) {
       await OtpDetails.deleteMany({ ServiceEnggId });
-      return res.status(401).json({ message: "OTP expired. Please generate a new one." });
+      return res
+        .status(401)
+        .json({ message: "OTP expired. Please generate a new one." });
     }
-    
-    if (useOTPVerificationRecords.otp === otp ){
+
+    if (useOTPVerificationRecords.otp === otp) {
       await OtpDetails.deleteMany({ ServiceEnggId });
       return res.status(200).json({ message: "OTP verify successfully" });
-    }else{
+    } else {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
     // console.log("##########################",expiresAt);
-
-
-
   } catch (error) {
     console.log("this is the error", error);
     res.status(500).json({ message: "errro while Verifying with OTP" });
   }
-}
+};
