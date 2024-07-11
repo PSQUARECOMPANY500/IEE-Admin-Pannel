@@ -230,7 +230,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       Date: currentDate,
     });
 
-    console.log("******************",currentDetailServiceRequest);
+    console.log("******************", currentDetailServiceRequest);
 
     if (currentDetailServiceRequest.length === 0) {
       return res.status(400).json({
@@ -262,7 +262,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           : null;
         const ClientDescription = ServiceRequestdetail
           ? ServiceRequestdetail.Description
-          : null; 
+          : null;
         const RepresentativeName =
           ServiceRequestdetail?.RepresentativeName || null;
         const RepresentativeNumber =
@@ -285,7 +285,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       serviceRequestDetail,
     });
   } catch (error) {
-    console.log("get assign service request",error);
+    console.log("get assign service request", error);
     return res.status(500).json({
       error: "Internal server error",
     });
@@ -537,7 +537,6 @@ module.exports.getAllChecklist = async (req, res) => {
 //function to handle   (assign callbacks to Engg)
 module.exports.assignCallbacks = async (req, res) => {
   try {
-
     // console.log("9999999999999999",req.body);
 
     const {
@@ -553,15 +552,12 @@ module.exports.assignCallbacks = async (req, res) => {
 
     let callback;
 
-
-
-
     // Check if the callbackId already exists
     const existingCallback = await ServiceAssigntoEngg.findOne({
       callbackId,
     });
 
-    console.log("]]]]]", existingCallback)
+    console.log("]]]]]", existingCallback);
 
     if (existingCallback) {
       // Update existing data
@@ -1548,10 +1544,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1579,7 +1575,12 @@ module.exports.filterClient = async (req, res) => {
               message: "Invalid date condition",
             });
           }
-          console.log("I am here", membershipFilter.length, elevatorTypeFilter.length, locationFilter.filter);
+          console.log(
+            "I am here",
+            membershipFilter.length,
+            elevatorTypeFilter.length,
+            locationFilter.filter
+          );
         } else {
           if (sortcondition === "newest") {
             clientData.sort(
@@ -1886,7 +1887,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) { }
+  } catch (error) {}
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2230,7 +2231,9 @@ module.exports.updatePassword = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.status(200).json({ success: 'true', message: "Password updated successfully" });
+    return res
+      .status(200)
+      .json({ success: "true", message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     return res
@@ -2625,7 +2628,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+              "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2711,14 +2714,29 @@ module.exports.postElevatorForm = async (req, res) => {
 
     const membershipDocument = {
       signedQuotation:
-        req?.files?.signedQuotation && req.files.signedQuotation.length > 0 ? req.files.signedQuotation[0].filename ? req.files.signedQuotation[0].filename : existingForm.clientMembershipDocument.signedQuotation: "NA",
+        req?.files?.signedQuotation && req.files.signedQuotation.length > 0
+          ? req.files.signedQuotation[0].filename
+            ? req.files.signedQuotation[0].filename
+            : existingForm.clientMembershipDocument.signedQuotation
+          : "NA",
       paymentForm:
-        req?.files?.paymentForm && req.files.paymentForm.length > 0 ? req.files.paymentForm[0].filename? req.files.paymentForm[0].filename: existingForm.clientMembershipDocument.paymentForm :"NA"
-        ,
+        req?.files?.paymentForm && req.files.paymentForm.length > 0
+          ? req.files.paymentForm[0].filename
+            ? req.files.paymentForm[0].filename
+            : existingForm.clientMembershipDocument.paymentForm
+          : "NA",
       chequeForm:
-        req?.files?.chequeForm && req.files.chequeForm.length > 0? req.files.chequeForm[0].filename ?  req.files.chequeForm[0].filename :existingForm.clientMembershipDocument.chequeForm: "NA",
-           salesOrder:
-        req?.files?.salesOrder && req.files.salesOrder.length > 0? req.files.salesOrder[0].filename ? req.files.salesOrder[0].filename : existingForm.clientMembershipDocument.salesOrder:"NA",
+        req?.files?.chequeForm && req.files.chequeForm.length > 0
+          ? req.files.chequeForm[0].filename
+            ? req.files.chequeForm[0].filename
+            : existingForm.clientMembershipDocument.chequeForm
+          : "NA",
+      salesOrder:
+        req?.files?.salesOrder && req.files.salesOrder.length > 0
+          ? req.files.salesOrder[0].filename
+            ? req.files.salesOrder[0].filename
+            : existingForm.clientMembershipDocument.salesOrder
+          : "NA",
     };
 
     if (existingForm) {
@@ -2740,12 +2758,31 @@ module.exports.postElevatorForm = async (req, res) => {
     });
 
     await elevatorFormSchema.save();
+    console.log({
+      JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
+      name: clientFormDetails.userName,
+      PhoneNumber: clientFormDetails.phoneNumber,
+      Address: clientFormDetails.address,
+    });
+
+    await clientDetailSchema.create({
+      JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
+      name: elevatorFormSchema.clientFormDetails.userName,
+      PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
+      Address: elevatorFormSchema.clientFormDetails.address,
+      DateOfHandover: elevatorFormSchema.clientFormDetails.dateOfHandover
+        ? elevatorFormSchema.clientFormDetails.dateOfHandover
+        : "NA",
+      ModelType: elevatorFormSchema.elevatorDetails.type
+        ? elevatorFormSchema.elevatorDetails.type
+        : "NA",
+    });
 
     res.status(200).json({ msg: "data submit successfully" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error"
+      error: "Internal server error",
     });
   }
 };
@@ -3079,8 +3116,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-            ? EnggDataChecker.EnggPhoto
-            : "",
+          ? EnggDataChecker.EnggPhoto
+          : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3099,28 +3136,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-            ? EnggDataChecker.AddharPhoto
-            : "",
+          ? EnggDataChecker.AddharPhoto
+          : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-            ? EnggDataChecker.DrivingLicensePhoto
-            : "",
+          ? EnggDataChecker.DrivingLicensePhoto
+          : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-            ? EnggDataChecker.PancardPhoto
-            : "",
+          ? EnggDataChecker.PancardPhoto
+          : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-            ? EnggDataChecker.QualificationPhoto
-            : "",
+          ? EnggDataChecker.QualificationPhoto
+          : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-            ? EnggDataChecker.AdditionalCoursePhoto
-            : "",
+          ? EnggDataChecker.AdditionalCoursePhoto
+          : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3237,7 +3274,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3249,7 +3286,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3309,7 +3346,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3321,7 +3358,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3457,7 +3494,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3469,7 +3506,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3502,7 +3539,6 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req, res) => {
   try {
     const { EnggId } = req.params;
 
-
     //get current week data with the help pf current Date----------------------------
     const getWeekDays = (date) => {
       const dayNames = ["Sunday", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -3518,8 +3554,10 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req, res) => {
         const weekDay = new Date(startOfWeek);
         weekDay.setDate(startOfWeek.getDate() + i);
         daysOfWeek.push({
-          date: weekDay.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
-          dayName: dayNames[weekDay.getDay()]
+          date: weekDay.toLocaleDateString("en-IN", {
+            timeZone: "Asia/Kolkata",
+          }),
+          dayName: dayNames[weekDay.getDay()],
         });
       }
 
@@ -3531,31 +3569,37 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req, res) => {
 
     //-------------------------------------------------------------------------------
 
-    const WeeklyData = await Promise.all(weekDays.map(async (day) => {
-      return await ReportTable.find({ EnggId, isVerify: true, Date: day.date })
-    }))
+    const WeeklyData = await Promise.all(
+      weekDays.map(async (day) => {
+        return await ReportTable.find({
+          EnggId,
+          isVerify: true,
+          Date: day.date,
+        });
+      })
+    );
 
     const result = WeeklyData.map((dayData, index) => {
-      const totalAmount = dayData.reduce((sum, report) => sum + report.TotalAmount, 0);
+      const totalAmount = dayData.reduce(
+        (sum, report) => sum + report.TotalAmount,
+        0
+      );
       return {
         dayName: weekDays[index].dayName,
-        totalAmount: totalAmount
+        totalAmount: totalAmount,
       };
-    })
+    });
 
     res.status(200).json({ result });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error getSpare Graph Data",
     });
   }
-}
+};
 
 //-------------------------------------------------------------------------------------------------------------------
-
-
 
 //api to get check engg checkIn or Not on Current date
 
@@ -3565,23 +3609,24 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 
     const selectedDate = new Date();
     const today = new Date(selectedDate);
-    const formattedDate = today.toLocaleDateString('en-GB'); // 'en-GB' locale gives you DD/MM/YYYY format
+    const formattedDate = today.toLocaleDateString("en-GB"); // 'en-GB' locale gives you DD/MM/YYYY format
 
-    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({ ServiceEnggId, Date: formattedDate });
+    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId,
+      Date: formattedDate,
+    });
 
     if (!isEnggCheckIn) {
       return res.status(200).json({ isCheckIn: false });
     }
 
     return res.status(200).json({ isCheckIn: true });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error while getting engg CheckIn Data",
     });
   }
-}
-
+};
 
 //----------------------------------------------------------------------------------------------------------------------
