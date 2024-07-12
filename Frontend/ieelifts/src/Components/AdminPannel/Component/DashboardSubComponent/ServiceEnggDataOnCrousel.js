@@ -154,7 +154,7 @@ const ServiceEnggDataOnCrousel = ({
             </div>
             <div className="hover-icon-service">
               <div className="dropdown">
-                <span>{renderArray[0].ClientName.split(" ")[0]}</span>
+                <span>{renderArray[0].ClientName?.split(" ")[0]}</span>
                 <span>service E1</span>
                 <div className="dropdown-menu">
                   <div className="drop-parent">
@@ -187,7 +187,7 @@ const ServiceEnggDataOnCrousel = ({
 
               {renderArray.length > 1 ? (
                 <div className="dropdown2">
-                  <span>{renderArray[1].ClientName.split(" ")[0]}</span>
+                  <span>{renderArray[1].ClientName?.split(" ")[0]}</span>
                   <span>service E1</span>
 
                   <div className="dropdown-menu">
@@ -255,7 +255,7 @@ const ServiceEnggDataOnCrousel = ({
                             <div className="task-dot-on-complete"></div>
                           )}
                           <div className="taskmain-info">
-                            <p>{itemData.ClientName.split(" ")[0]}</p>
+                            <p>{itemData.ClientName?.split(" ")[0]}</p>
                             <p>{itemData.JobOrderNumber}</p>
                           </div>
                         </div>

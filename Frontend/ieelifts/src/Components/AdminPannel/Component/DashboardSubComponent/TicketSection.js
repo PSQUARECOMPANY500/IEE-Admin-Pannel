@@ -201,103 +201,104 @@ const TicketSection = ({ setTicketUpdate }) => {
 
       let responseData = [];
       if (
-        statusData &&
-        statusData.length > 0 &&
-        engineerData &&
-        engineerData.length > 0 &&
-        locationData &&
-        locationData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = statusData
           .filter((d) => engineerData.includes(d))
           .filter((d) => locationData.includes(d))
           .filter((d) => typeData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        engineerData &&
-        engineerData.length > 0 &&
-        locationData &&
-        locationData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0
       ) {
         responseData = statusData
           .filter((d) => engineerData.includes(d))
-          .filter((d) => locationData.includes(d));
+          .filter((d) => locationData.includes(d))
+          .filter((d) => typeData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        engineerData &&
-        engineerData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = statusData
           .filter((d) => engineerData.includes(d))
           .filter((d) => typeData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        locationData &&
-        locationData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = statusData
           .filter((d) => locationData.includes(d))
           .filter((d) => typeData.includes(d));
       } else if (
-        engineerData &&
-        engineerData.length > 0 &&
-        locationData &&
-        locationData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = engineerData
           .filter((d) => locationData.includes(d))
           .filter((d) => typeData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        engineerData &&
-        engineerData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        engineerFilter &&
+        engineerFilter.length > 0
       ) {
         responseData = statusData.filter((d) => engineerData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        locationData &&
-        locationData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0
       ) {
         responseData = statusData.filter((d) => locationData.includes(d));
       } else if (
-        statusData &&
-        statusData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        statusFilter &&
+        statusFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = statusData.filter((d) => typeData.includes(d));
       } else if (
-        engineerData &&
-        engineerData.length > 0 &&
-        locationData &&
-        locationData.length > 0
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        locationFilter &&
+        locationFilter.length > 0
       ) {
         responseData = engineerData.filter((d) => locationData.includes(d));
       } else if (
-        engineerData &&
-        engineerData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        engineerFilter &&
+        engineerFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = engineerData.filter((d) => typeData.includes(d));
       } else if (
-        locationData &&
-        locationData.length > 0 &&
-        typeData &&
-        typeData.length > 0
+        locationFilter &&
+        locationFilter.length > 0 &&
+        typeFilter &&
+        typeFilter.length > 0
       ) {
         responseData = locationData.filter((d) => typeData.includes(d));
       } else {
@@ -542,10 +543,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 setTicketUpdate={setTicketUpdate}
                 requestSection={false}
               />
-
             )}
-
-
           </div>
         </div>
 
@@ -871,8 +869,26 @@ const TicketSection = ({ setTicketUpdate }) => {
                           openModal(1, currentCallbackId, EngId, isAssigned)
                         }
                       >
-                        {isAssigned ? ( IsDead ? (<AssignDropdown  customAssign="assignResolved"  name="RESOLVED"  />) : (<AssignDropdown customAssignName="assignNameColor" name={EngName}  isAssigned={isAssigned}  />) ) : ( <AssignDropdown  customAssign="assignColor"  name="Assign"  />)}
-                      </td>  
+                        {isAssigned ? (
+                          IsDead ? (
+                            <AssignDropdown
+                              customAssign="assignResolved"
+                              name="RESOLVED"
+                            />
+                          ) : (
+                            <AssignDropdown
+                              customAssignName="assignNameColor"
+                              name={EngName}
+                              isAssigned={isAssigned}
+                            />
+                          )
+                        ) : (
+                          <AssignDropdown
+                            customAssign="assignColor"
+                            name="Assign"
+                          />
+                        )}
+                      </td>
                       {/* todo : To be Changed in future */}
                     </tr>
                   );
