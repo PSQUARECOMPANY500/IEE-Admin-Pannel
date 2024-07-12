@@ -2575,13 +2575,10 @@ text-align: center;
   display: none;
 }
 
-
 .client-dropdown {
   position: relative;
 }
-.email-error {
-  color: red !important;
-}
+
 .dropdown-input {
   outline: none;
   border: none;

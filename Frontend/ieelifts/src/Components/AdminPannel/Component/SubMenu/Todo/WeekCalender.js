@@ -59,30 +59,30 @@ const WeekCalender = ({ setTodayDate,data,handleTaskUpdate,handleOpenAddClick })
     return { day, month, dayOfMonth, year };
   };
   
-  const AhandlePrevClick = () => {
-    setACurrentDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setMonth(prevDate.getMonth() - 1);
-      return newDate;
-    });
-  };
-  const date = new Date();
+  // const AhandlePrevClick = () => {
+  //   setACurrentDate((prevDate) => {
+  //     const newDate = new Date(prevDate);
+  //     newDate.setMonth(prevDate.getMonth() - 1);
+  //     return newDate;
+  //   });
+  // };
+  // const date = new Date();
 
-  const AhandleNextClick = () => {
-    setACurrentDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setMonth(prevDate.getMonth() + 1);
-      return newDate;
-    });
-  };
-  const ahandleDayClick = (day) => {
-    const newSelectedDate = new Date(
-      Date.UTC(acurrentDate.getFullYear(), acurrentDate.getMonth(), day)
-    );
-    setASelectedDate(newSelectedDate);
-    const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
-    setTodayDate(formattedDate);
-  };
+  // const AhandleNextClick = () => {
+  //   setACurrentDate((prevDate) => {
+  //     const newDate = new Date(prevDate);
+  //     newDate.setMonth(prevDate.getMonth() + 1);
+  //     return newDate;
+  //   });
+  // };
+  // const ahandleDayClick = (day) => {
+  //   const newSelectedDate = new Date(
+  //     Date.UTC(acurrentDate.getFullYear(), acurrentDate.getMonth(), day)
+  //   );
+  //   setASelectedDate(newSelectedDate);
+  //   const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
+  //   setTodayDate(formattedDate);
+  // };
   const calculateMonthYear = () => {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"

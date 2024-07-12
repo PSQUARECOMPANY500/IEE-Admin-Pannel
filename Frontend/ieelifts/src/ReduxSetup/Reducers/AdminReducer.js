@@ -56,6 +56,7 @@ import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 
 import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
 import { UPDATE_TODO_DATA } from "../Actions/AdminActions";
+import { DELETE_TODO } from "../Actions/AdminActions";
 import { BiArch } from "react-icons/bi";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -334,7 +335,6 @@ export const assignServiceRequestDetailByRequestIdAction = (
   state = intialState8,
   action
 ) => {
-  // console.log("3");
 
   switch (action.type) {
     case GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID:
@@ -925,7 +925,6 @@ export const ClientFormDataFromApiReducer = (
   state = ClientFormData,
   action
 ) => {
-  // console.log(action.payload);
   switch (action.type) {
     case GET_CLIENT_FORM_DATA:
       return {
@@ -1003,4 +1002,18 @@ export const updateTodoDataReducer = (state=todoData,action) =>{
           return state;
   }
 
+}
+const deleteTodoFlag = {
+  flag: false
+}
+export const deleteTodoReducer = (state=deleteTodoFlag,action) => {
+  switch(action.type){
+    case DELETE_TODO:
+      return {
+       ...state,
+        flag:action.payload.flag,
+      }
+      default:
+        return state;
+  }
 }

@@ -100,6 +100,7 @@ export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
 export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
 export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
+export const DELETE_TODO = "DELETE_TODO";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -1633,3 +1634,19 @@ export const updateTodoDataById = async (id, todo) => {
     console.log("error while updating the TodoById", err);
   }
 }
+
+export const deletedTodo=(flag) => {
+  // console.log(flag)
+    return async (dispatch) => {
+      try{
+        dispatch({
+          type:DELETE_TODO,
+          payload:{
+            flag:flag
+          }
+        })
+      }catch(err){
+        console.log("error while updating delete flag", err);
+      }
+  }
+    }

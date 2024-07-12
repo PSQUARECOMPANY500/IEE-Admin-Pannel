@@ -185,6 +185,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
+            type={"number"} 
           />
         </div>
         <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
@@ -199,6 +200,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
+            type={"number"} 
           />
         </div>
         <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`} >
@@ -213,6 +215,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
+            type={"number"} 
           />
         </div>
         <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
@@ -231,6 +234,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);                               
             }}
+            type={"number"} 
           />
         </div>
       </div>
@@ -257,6 +261,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
+            type={"number"} 
           />
         </div>
         <div className={`${clientFormData.finalAmount===""?"disabled":""}`}>
@@ -271,6 +276,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
               handleClickFalse(e);
               calculateValues(e);
             }}
+            type={"number"} 
           />
         </div>
       </div>

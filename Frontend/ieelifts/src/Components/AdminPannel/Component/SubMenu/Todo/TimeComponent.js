@@ -3,7 +3,6 @@ import { IoTimeOutline } from "react-icons/io5";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 const TimeComponent = ({ onTimeChange,taskTime,errors }) => {
-  console.log(errors)
   const [clickIcon, setClickIcon] = useState(false);
   const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
@@ -66,9 +65,9 @@ const TimeComponent = ({ onTimeChange,taskTime,errors }) => {
   return (
     <div ref={timeComponentRef}>
       <div className={`time-component-container ${errors ?"validateInput":""}`}>
-        <input type='text' className={`time-component-input`} placeholder="00:00" value={taskTime} readOnly />
+        <input type='text' className={`time-component-input`} placeholder="00:00" value={taskTime} readOnly onClick={handleClick} />
         <label>
-          <IoTimeOutline className='time-icon' onClick={handleClick} />
+          <IoTimeOutline className='time-icon' onClick={handleClick}/>
         </label>
       </div>
       {

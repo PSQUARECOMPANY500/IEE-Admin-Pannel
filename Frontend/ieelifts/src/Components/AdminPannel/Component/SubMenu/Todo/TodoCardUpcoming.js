@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import { getTodo } from "../../../../../ReduxSetup/Actions/AdminActions";
 import { jwtDecode } from "jwt-decode";
+import { useSelector } from "react-redux";
 const TodoCardUpcoming = ({taskAdded})=>{
      const [todoData,setTodoData] = useState();
      const token = localStorage.getItem("adminData");
      const decoded = jwtDecode(token);
      const [upcomingTodo,setUpcomingTodo]= useState();
-    
+     const {flag} = useSelector(state => state.AdminRootReducer.deleteTodoReducer);
      const getTodayDate = () =>{
         let date = new Date();
          return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
@@ -24,36 +25,47 @@ const TodoCardUpcoming = ({taskAdded})=>{
         const hours = getHours();
         const minutes = getMinutes();
         const currentTime = `${hours}:${minutes}`;
-        const formattedTime = tConvert(currentTime);
+        
+        const convertTo24Hour = (time) => {
+            const [timePart, modifier] = time.split(' ');
+            let [hours, minutes] = timePart.split(':');
+            if (hours === '12') {
+                hours = '00';
+            }
+            if (modifier === 'PM') {
+                hours = parseInt(hours, 10) + 12;
+            }
+            return `${hours}:${minutes}`;
+        };
     
         let upcomingTasks = todoData?.filter(todo => {
-            if (todo.taskDate >= todayDate) {
-                const time =todo.taskTime.split(" ")[0]
-                const [taskHour, taskMinute] = time.split(":").map(Number);
-                const [currentHour, currentMinute] = formattedTime.split(":").map(Number);
+            if (todo.taskDate === todayDate) {
+                const taskTime24 = convertTo24Hour(todo.taskTime);
+                const [taskHour, taskMinute] = taskTime24.split(":").map(Number);
+                const [currentHour, currentMinute] = currentTime.split(":").map(Number);
                 return taskHour > currentHour || (taskHour === currentHour && taskMinute >= currentMinute);
             }
         });
-    
+         
         upcomingTasks?.sort((a, b) => {
-            if (a.taskDate !== b.taskDate) {
-                return new Date(a.taskDate) - new Date(b.taskDate);
-            }
-            const [aHour, aMinute] = a.taskTime.split(":").map(Number);
-            const [bHour, bMinute] = b.taskTime.split(":").map(Number);
+            const aTime24 = convertTo24Hour(a.taskTime);
+            const bTime24 = convertTo24Hour(b.taskTime);
+            const [aHour, aMinute] = aTime24.split(":").map(Number);
+            const [bHour, bMinute] = bTime24.split(":").map(Number);
             return aHour - bHour || aMinute - bMinute;
         });
     
         setUpcomingTodo(upcomingTasks);
     };
     
+    
+    const getData = async() =>{
+        const data = await getTodo(decoded.user.AdminId);
+        setTodoData(data.data);
+     }
      useEffect(()=>{
-        const getData = async() =>{
-            const data = await getTodo(decoded.user.AdminId);
-            setTodoData(data.data);
-         }
          getData();
-     },[taskAdded])
+     },[taskAdded,flag])
      useEffect(()=>{
         getUpcomingData()
      },[todoData])

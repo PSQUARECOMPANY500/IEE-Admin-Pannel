@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import BadgeBubble from './BadgeBubble';
-import { deleteTodo, updateStatus } from '../../../../../ReduxSetup/Actions/AdminActions';
+import { deletedTodo, deleteTodo, updateStatus } from '../../../../../ReduxSetup/Actions/AdminActions';
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from 'react-redux';
 
 
-
-const TodoTaskBadge = ({ task, handleTaskUpdate, isMonth,handleOpenAddClick }) => {
+const TodoTaskBadge = ({ task, handleTaskUpdate, isMonth,handleOpenAddClick,setTaskDeleted }) => {
 
   const [status, setStatus] = useState('');
+  const dispatch = useDispatch();
+  const {flag} = useSelector(state => state.AdminRootReducer.deleteTodoReducer);
   const getTodayDate = () => {
     let date = new Date();
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
@@ -58,11 +60,11 @@ const TodoTaskBadge = ({ task, handleTaskUpdate, isMonth,handleOpenAddClick }) =
   useEffect(() => {
     compareTime();
   }, [task]);
-
   const handleDelete = async () => {
-    await deleteTodo(task?._id);
-    toast.success("Task deleted successfully");
+   await deleteTodo(task?._id);
     handleTaskUpdate();
+    toast.success("Task deleted successfully");
+    dispatch(deletedTodo(!flag))
   }
 
   const handleUpdateStatus = async () => {

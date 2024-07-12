@@ -24,6 +24,8 @@ const Todo = () => {
   const token = localStorage.getItem("adminData");
   const decoded = jwtDecode(token);
   const dispatch = useDispatch();
+  const [taskDeleted, setTaskDeleted] = useState(false);
+  console.log("taskDeleted",taskDeleted)
   const handleOpenAddClick = () => {
     setIsOpen(true);
   };
@@ -46,7 +48,7 @@ const Todo = () => {
     handleTaskUpdate();
     setTaskAdded(false);
   }, [taskAdded]);
-
+  
   return (
     <div>
       <div className="sub_todo_view">
@@ -136,6 +138,8 @@ const Todo = () => {
                 tasks={todo}
                 handleTaskUpdate={handleTaskUpdate}
                 handleOpenAddClick={handleOpenAddClick}
+                setTaskDeleted={setTaskDeleted}
+               
               />
             )}
             {selectedView === "Week" && (

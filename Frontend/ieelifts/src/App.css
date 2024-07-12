@@ -603,7 +603,7 @@ font-weight: 600;
   height:62vh;
   width: 55vw;
   background-color: #FFFBF4;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 
@@ -1056,6 +1056,7 @@ input[type="time"]::-webkit-calendar-picker-indicator{
     border: none;
     outline: none;
     width: 100%;
+    cursor: pointer;
   }
   .time-component-container{
     border: 1px solid #8E8E8E;
@@ -1248,7 +1249,6 @@ font-weight: 500;
   font-size:20px;
 }
 
-
 .Todocalendar {
   margin-top: .8rem;
   border-radius: 8px;
@@ -1262,7 +1262,7 @@ font-weight: 500;
   overflow-x: auto;
 }
 .Todocalendar-week {
-  margin-top: 0.8rem;
+
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -1273,7 +1273,6 @@ font-weight: 500;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 65vh;
-
 }
 .Todocalendar-day {
   margin-top: .8rem;
@@ -1506,7 +1505,11 @@ cursor: pointer;
   padding-top:2rem;
   height:93%;
   position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
+
+
 .calendar-box {
   text-align: center;
   width: 100%;
@@ -2006,6 +2009,7 @@ cursor: pointer;
   margin-left: 2rem;
   color: #444444;
   font-size: 1rem;
+  overflow-x: hidden;
 }
 .font-size{
   font-size: 0.8rem;

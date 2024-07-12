@@ -22,10 +22,10 @@ const ClientFormElevatorDetails = ({
   //dropdown options
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
   const numberOfOpenings = [1, 2, 3];
-  const purpose = ["Hospital", "Automobil", "Passenger"];
-  const typeOptions = ["gearless", "geared"];
+  const purpose = ["Hospital", "Automobile", "Passenger"];
+  const typeOptions = ["Gearless", "Geared"];
   const doorType = [
-    "center opening",
+    "Center Opening",
     "Swing",
     "Manual",
     "Telescopic(LHS)",

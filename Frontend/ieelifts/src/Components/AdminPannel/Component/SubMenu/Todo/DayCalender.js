@@ -2,14 +2,11 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import TodoTaskBadge from "./TodoTaskBadge";
 
-// import { useDispatch } from "react-redux";
-
-const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }) => {
-
+const DayCalender = ({ tasks, handleTaskUpdate, handleOpenAddClick }) => {
   const AMonthyearRef = useRef(null);
   const [acurrentDate, setACurrentDate] = useState(new Date());
   const [aselectedDate, setASelectedDate] = useState(new Date());
-  
+
   const getCurrentFormattedDate = () => {
     const options = {
       day: "numeric",
@@ -18,7 +15,7 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }
     };
     return acurrentDate.toLocaleDateString("en-US", options);
   };
- 
+
   const generateTimeSlots = () => {
     const startTime = new Date();
     startTime.setHours(9, 30, 0);
@@ -32,7 +29,7 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }
     }
     return timeSlots;
   };
- 
+
   useEffect(() => {
     if (AMonthyearRef.current) {
       const options = {
@@ -60,13 +57,6 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }
     });
   };
 
-  // const ahandleDayClick = (day) => {
-  //   const newSelectedDate = new Date(acurrentDate.getFullYear(), acurrentDate.getMonth(), day);
-  //   setASelectedDate(newSelectedDate);
-  //   const formattedDate = newSelectedDate.toLocaleDateString("en-IN");
-  //   setTodayDate(formattedDate);
-  // };
-
   const parseTaskDate = (dateString) => {
     const [day, month, year] = dateString.split('/');
     return new Date(`${year}-${month}-${day}`);
@@ -81,35 +71,39 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }
       taskDate.getMonth() === selectedDate.getMonth() &&
       taskDate.getDate() === selectedDate.getDate()
     ) {
-      const [taskHours, taskMinutes] = task.taskTime.split(':').map(Number);
-      const [slotHours, slotMinutes] = slotTime.replace(/[^0-9:]/g, '').split(':').map(Number);
-      
-   
-      const taskPeriod = task.taskTime.includes('PM') && taskHours !== 12 ? taskHours + 12 : taskHours;
-      const taskTimeDate = new Date();
-      taskTimeDate.setHours(taskPeriod, taskMinutes, 0, 0);
+      const [taskTime, taskPeriod] = task.taskTime.split(' ');
+      const [taskHours, taskMinutes] = taskTime.split(':').map(Number);
+      let task24Hour = taskHours % 12 + (taskPeriod === 'PM' ? 12 : 0);
 
-      const slotPeriod = slotTime.includes('PM') && slotHours !== 12 ? slotHours + 12 : slotHours;
+      const taskTimeDate = new Date();
+      taskTimeDate.setHours(task24Hour, taskMinutes, 0, 0);
+
+      const [slotTimeStr, slotPeriod] = slotTime.split(' ');
+      const [slotHours, slotMinutes] = slotTimeStr.split(':').map(Number);
+      let slot24Hour = slotHours % 12 + (slotPeriod === 'PM' ? 12 : 0);
+
       const slotTimeDate = new Date();
-      slotTimeDate.setHours(slotPeriod, slotMinutes, 0, 0);
+      slotTimeDate.setHours(slot24Hour, slotMinutes, 0, 0);
       const nextSlotTimeDate = new Date(slotTimeDate);
       nextSlotTimeDate.setHours(slotTimeDate.getHours() + 1);
+
       return taskTimeDate >= slotTimeDate && taskTimeDate < nextSlotTimeDate;
     }
     return false;
   };
+
   const [hasContent, setHasContent] = useState(false);
   useEffect(() => {
     const myDiv = document.getElementById('badge-container');
-    if (myDiv.textContent.trim() !== "") {
+    if (myDiv && myDiv.textContent.trim() !== "") {
       setHasContent(true);
     }
-  }, []);
+  }, [tasks]);
 
   const divStyle = {
     minHeight: hasContent ? '0' : '2rem',
   };
-  
+
   return (
     <div className="Todocalendar-day">
       <div className="Todo-header-main">
@@ -126,7 +120,7 @@ const DayCalender = ({ setTodayDate, tasks,handleTaskUpdate,handleOpenAddClick }
         </div>
       </div>
       <div className="today-date">
-      <span> {getCurrentFormattedDate()}</span>
+        <span> {getCurrentFormattedDate()}</span>
       </div>
       <div className="time-slots">
         {generateTimeSlots().map((timeSlot, index) => (

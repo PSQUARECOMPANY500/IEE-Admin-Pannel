@@ -20,6 +20,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.shaftWidth}
                   onBlur={handleClickFalse}
                   id={`shaftWidth`}
+                  type={"number"}
                 />
               </div>
               <div>
@@ -32,6 +33,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.shaftDepth}
                   onBlur={handleClickFalse}
                   id={`shaftDepth`}
+                  type={"number"}
                 />
               </div>
               <div>
@@ -44,6 +46,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.doorWidth}
                   onBlur={handleClickFalse}
                   id={`doorWidth`}
+                  type={"number"}
                 />
               </div>
               <div>
@@ -56,6 +59,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.doorHeight}
                   onBlur={handleClickFalse}
                   id={`doorHeight`}
+                  type={"number"}
                 />
               </div>
               <div>
@@ -68,6 +72,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.floorToFloorHeight}
                   onBlur={handleClickFalse}
                   id={`floorToFloorHeight`}
+                  type={"number"}
                 />
               </div>
 
@@ -81,6 +86,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.pitDepth}
                   onBlur={handleClickFalse}
                   id={`pitDepth`}
+                  type={"number"}
                 />
               </div>
 
@@ -94,6 +100,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.fl}
                   onBlur={handleClickFalse}
                   id={`fl`}
+                  type={"number"}
                 />
               </div>
               <div>
@@ -106,6 +113,7 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   click={click.fr}
                   onBlur={handleClickFalse}
                   id={`fr`}
+                  type={"number"}
                 />
               </div>
             </div>

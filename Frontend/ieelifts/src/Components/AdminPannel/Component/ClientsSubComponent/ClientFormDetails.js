@@ -48,18 +48,23 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
     }
   }, [reset]);
 
+
+  
   const [click, setClick] = useState({});
-  const sourceOfLead = [
+  const sourceOfLead = [  // options for SourceOfLead dropdown
     "Website",
     "Reference",
     "Builder",
-    "client",
+    "Client",
     "Architect",
   ];
+  //error states
   const [emailError, setEmailError] = useState(true);
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hadleInputChnage = (e) => {
-    const { name, value } = e.target;
+    const { name, value} = e.target;
+     
     setClientFormData({ ...clientFormData, [name]: value });
     if (name === "email") {
       if (!emailRegex.test(value)) {
@@ -82,7 +87,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   const handleDropdown = (name, data) => {
     setClientFormData({ ...clientFormData, [name]: data });
   };
-
+  
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
@@ -160,24 +165,27 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
         </div>
         <div>
           <TextInputs
-            label={"Phone number"}
+            label={"Phone Number"}
             name={"phoneNumber"}
             onFocus={handleClick}
             value={clientFormData.phoneNumber}
             onChange={hadleInputChnage}
             click={click.phoneNumber}
-            onBlur={handleClickFalse}
+            onBlur={handleClickFalse}  //Phone Number
+            type={"number"} 
           />
         </div>
         <div>
           <TextInputs
-            label={"Alternative number"}
+            label={"Alternative Number"}
             name={"alternativeNumber"}
             onFocus={handleClick}
             value={clientFormData.alternativeNumber}
             onChange={hadleInputChnage}
             click={click.alternativeNumber}
-            onBlur={handleClickFalse}
+            onBlur={handleClickFalse}  //Alternative Number
+            type={"number"} 
+            isNumber={true}
           />
         </div>
         <div>
@@ -200,14 +208,14 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
           />
           <div className="calendarContainer" ref={calendarRef}>
             {showCalendar && (
-              <ClientFormCalendar setTodayDate={handleDateChange} />
+              <ClientFormCalendar setTodayDate={handleDateChange}/>
             )}
           </div>
         </div>
 
         <div className="address-container">
           <TextInputs
-            label={"address"}
+            label={"Address"}
             name={"address"}
             onFocus={handleClick}
             value={clientFormData.address}
@@ -218,18 +226,19 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
         </div>
         <div>
           <TextInputs
-            label={"pincode"}
+            label={"Pincode"}
             name={"pincode"}
             onFocus={handleClick}
             value={clientFormData.pincode}
             onChange={hadleInputChnage}
             click={click.pincode}
             onBlur={handleClickFalse}
+            type={"number"} 
           />
         </div>
         <div>
           <TextInputs
-            label={"state"}
+            label={"State"}
             name={"state"}
             onFocus={handleClick}
             value={clientFormData.state}
@@ -240,7 +249,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
         </div>
         <div>
           <TextInputs
-            label={"district"}
+            label={"District"}
             name={"district"}
             onFocus={handleClick}
             onChange={hadleInputChnage}
@@ -251,7 +260,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
         </div>
         <div>
           <TextInputs
-            label={"city"}
+            label={"City"}
             name={"city"}
             onFocus={handleClick}
             value={clientFormData.city}
@@ -263,7 +272,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
 
         <div>
           <ClientDropdown
-            label={"Source of Lead"}
+            label={"Source Of Lead"}
             options={sourceOfLead}
             onValueChange={handleDropdown}
             name={"sourceOfLead"}

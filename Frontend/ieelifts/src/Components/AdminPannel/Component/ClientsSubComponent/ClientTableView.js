@@ -50,8 +50,7 @@ const ClientTableView = ({ clientData }) => {
    } 
   };
 
-  let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name)));
-  console.log(uniqueData)
+  let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name))); 
  const HandleCardClick = (data) => {
     // setShowClientModal(true)
   }

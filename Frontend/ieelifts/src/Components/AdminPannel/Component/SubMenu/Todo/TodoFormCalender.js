@@ -7,7 +7,7 @@ import store from "../../../../../ReduxSetup/Store";
 import { Provider } from "react-redux";
 // import { useDispatch } from "react-redux";
 
-const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate,handleOpenAddClick}) => {
+const TodoFormCalendar = ({ setTodayDate, tasks = [],handleTaskUpdate,handleOpenAddClick,setTaskDeleted}) => {
   // const dispatch = useDispatch();
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
@@ -88,7 +88,7 @@ const acreateDayElement = (day) => {
     const root = createRoot(badgeContainer);
     root.render(
       <Provider store={store}>
-        <TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} isMonth={true} handleOpenAddClick={handleOpenAddClick}/>
+        <TodoTaskBadge task={tasksForTheDay[0]} handleTaskUpdate={handleTaskUpdate} isMonth={true} handleOpenAddClick={handleOpenAddClick} setTaskDeleted={setTaskDeleted}/>
       </Provider>)
   }
   dayElement.appendChild(tasksContainer);
@@ -173,6 +173,7 @@ const acreateDayElement = (day) => {
       surroundingDates.push(followingDate);
     }
   };
+ 
   useEffect(() => {
     ArenderCalendar();
     DateSelect();

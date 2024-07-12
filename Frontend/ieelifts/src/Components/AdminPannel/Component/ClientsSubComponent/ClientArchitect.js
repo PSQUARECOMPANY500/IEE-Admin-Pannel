@@ -64,6 +64,7 @@ useMemo(()=>{
             onChange={hadleInputChnage}
             click={click.architectNumber}
             onBlur={handleClickFalse}
+            type={"number"} 
           />
         </div>
         <div>
@@ -75,6 +76,7 @@ useMemo(()=>{
             onChange={hadleInputChnage}
             click={click.contractorName}
             onBlur={handleClickFalse}
+            
           />
         </div>
         <div>
@@ -86,6 +88,7 @@ useMemo(()=>{
             onChange={hadleInputChnage}
             click={click.contractorNumber}
             onBlur={handleClickFalse}
+            type={"number"} 
           />
         </div>
       </div>

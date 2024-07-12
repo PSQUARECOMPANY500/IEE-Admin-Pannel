@@ -70,7 +70,7 @@ const AddTask = ({ onClose,setFlag,isupdate}) => {
 
     if (todo.taskName === "") {
       toast.error("Please enter task name");
-       
+      
       return false;
     }
     if (todo.memberId === "") {
@@ -104,6 +104,7 @@ const AddTask = ({ onClose,setFlag,isupdate}) => {
       setOpenCalender(false);
     }
   };
+
   useEffect(() => {
     if (openCalender) {
       document.addEventListener("mousedown", handleClickOutside);
@@ -205,17 +206,7 @@ const AddTask = ({ onClose,setFlag,isupdate}) => {
                 onClick={() => handleOpenCalender()}
               />
             </div>
-            {/* <div className="task-content-inner">
-              <p>Time</p>
-              <input
-                type="time"
-                placeholder="Enter Time"
-                value={todo.taskTime}
-                onChange={handleInputChange}
-                name="taskTime"
-                className={errors.taskTime ? "validateInput" : ""}
-              />
-            </div> */}
+           
             <div className="todo-time-container">
               <p>Time</p>
             <TimeComponent  onTimeChange={handleTimeChange} taskTime={todo.taskTime} errors={errors.taskTime} />
