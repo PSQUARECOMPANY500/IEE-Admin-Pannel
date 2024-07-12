@@ -122,7 +122,7 @@ const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
         </div>
         <div className="file-uploader">
           <FileUploader
-            label={"Cheque form"}
+            label={"Cheque Form"}
             onFileSelect={handleFileSelect}
             apiDataName={initialValues.chequeForm}
           />

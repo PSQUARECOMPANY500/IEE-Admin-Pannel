@@ -48,8 +48,6 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
     }
   }, [reset]);
 
-
-  
   const [click, setClick] = useState({});
   const sourceOfLead = [  // options for SourceOfLead dropdown
     "Website",
@@ -61,22 +59,39 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   //error states
   const [emailError, setEmailError] = useState(true);
 
+   //helper functions 
+
+  function formatDate(inputDate) {
+  const parts = inputDate.split('/');
+  const day = parts[1].padStart(2, '0');  
+  const month = parts[0].padStart(2, '0'); 
+  const year = parts[2];
+  return `${month}/${day}/${year}`;
+}       
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hadleInputChnage = (e) => {
-    const { name, value} = e.target;
-     
+    const { name, value,type} = e.target;
+     if(name==='userName' || name==='city' || name==='state' || name==='district' || name==='referenceName' ){
+      const hasNumbers = /\d/.test(value)
+      if(hasNumbers){
+        return 
+      }
+     }
     setClientFormData({ ...clientFormData, [name]: value });
     if (name === "email") {
       if (!emailRegex.test(value)) {
         setEmailError(true);
-      } else {
+      }else if (type === "text") {
+        const textValue = value.replace(/[^a-zA-Z\s]/g, "");
+        setClientFormData({ ...clientFormData, [name]: textValue });
+      }else {
         setEmailError(false);
-      }
-    }
+      } 
+    } 
   };
   const handleClick = (e) => {
     const { name } = e.target;
-    setClick({ ...click, [name]: true });
+    setClick({ ...click, [name]: true }); 
   };
 
   const handleClickFalse = (e) => {
@@ -125,11 +140,13 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   }, [showCalendar]);
   const [selectedDate, setSelectedDate] = useState();
   const handleDateChange = (date) => {
+      const modifiedDate =  formatDate(date)
+    //chane the format of date
     setClientFormData((prev) => ({
       ...prev,
-      dateOfHandover: date,
+      dateOfHandover: modifiedDate,
     }));
-    setSelectedDate(date);
+    setSelectedDate(modifiedDate);
   };
   useEffect(() => {
     if (clientFormData.dateOfHandover !== "") {

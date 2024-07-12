@@ -34,6 +34,14 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    if(name==='salesmanName' ){
+      const hasNumbers = /\d/.test(value)
+      if(hasNumbers){
+        return 
+      }
+     }
+
     if(name==="discountAmount"){
       setClientFormData((prev)=>(
         {
@@ -175,7 +183,7 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
       <div className="quotation-container client-form-input-wrapper">
         <div >
           <TextInput
-            label={"Quotated Price"}
+            label={"Quoted  Price"}
             name={"quotatedPrice"}
             onFocus={handleClick}
             value={clientFormData.quotatedPrice}

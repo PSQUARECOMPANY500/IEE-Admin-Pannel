@@ -18,8 +18,16 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
     });
   }, [reset]);
   const [click, setClick] = useState({});
+
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
+    if(name==='architectName' || name==='contractorName' ){
+      const hasNumbers = /\d/.test(value)
+      if(hasNumbers){
+        return 
+      }
+     }
+    
     setClientFormData({ ...clientFormData, [name]: value });
   };
 
@@ -57,7 +65,7 @@ useMemo(()=>{
         </div>
         <div>
           <TextInput
-            label={"Number"}
+            label={"Phone Number"}
             name={"architectNumber"}
             onFocus={handleClick}
             value={clientFormData.architectNumber}
@@ -81,7 +89,7 @@ useMemo(()=>{
         </div>
         <div>
           <TextInput
-            label={"Number"}
+            label={"Phone Number"}
             name={"contractorNumber"}
             onFocus={handleClick}
             value={clientFormData.contractorNumber}

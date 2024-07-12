@@ -17,7 +17,7 @@ useEffect(()=>{
           Date Of Handover
         </label>
       </span>
-      <span className="iconContainer" >
+      <span className="iconContainer">
         <img
           src="calendarIcon.png"
           alt="calendarIcon"
@@ -31,6 +31,7 @@ useEffect(()=>{
         className="clientDateInput"
         value={inputValue}
         onChange={handleInputChange}
+        readOnly
       />
     </div>
   );

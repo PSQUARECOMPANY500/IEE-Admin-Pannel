@@ -439,11 +439,19 @@ const ClientFormElevatorDetails = ({
         )}
 
         <div
-          className={`dimention-btn ${!visible ? "hide" : ""} ${degree.nintyDegreeLeft!==""|| degree.nintyDegreeRight!==""|| degree.oneEightyDegree!==""?"":"disabled"}`}
+          className={`dimention-btn ${!visible ? "hide" : ""} ${
+            elevatorDetails.numberOfOpenings === 3 &&
+            Object.values(degree).filter((val) => val !== "").length === 2
+              ? ""
+              : elevatorDetails.numberOfOpenings === 2 &&
+                Object.values(degree).filter((val) => val !== "").length >= 1
+              ? ""
+              : "disabled"
+          }`}
           onClick={handleOnClick}
         >
-          Select openings{" "}
-          <img src="generateicon.png" alt="icon" className="generateIcon" />
+          Select Openings{" "}
+          <img src="generateicon.png" alt="icon" className="generateIcon"/>
         </div>
         <div className="text-area-container">
           <textarea
