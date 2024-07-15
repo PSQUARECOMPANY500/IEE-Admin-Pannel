@@ -1204,7 +1204,7 @@ footer a:hover {
 
 .dots2 {
   position: absolute;
-  top: 72%;
+  top: 50%;
   left: 0;
   transform: translateY(-50%);
   display: flex;
@@ -7193,7 +7193,7 @@ element.style {
   width: 1.125rem;
   height: 0.125rem;
   background: none;
-  tranform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
 .learn-next .circlenext .icon.arrow::before {
@@ -7238,7 +7238,7 @@ element.style {
 .learn-previous {
   width: 7.2rem;
   height: auto;
-  display: block;
+  display: inlin-block;
   cursor: pointer;
   outline: none;
   border: 0;

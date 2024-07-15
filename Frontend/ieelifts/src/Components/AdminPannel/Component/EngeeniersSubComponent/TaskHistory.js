@@ -75,8 +75,8 @@ const TaskHistory = (props) => {
                         </tbody>
                       </table>
                       <div className="ServiceCardsBottom">
-                        <h5>{service.Slot[0].split("-")[0]}</h5>
-                        <h5>{service.Slot[service.Slot.length -1 ].split("-")[1]}</h5>
+                        <h5>{service.Slot[0]?.split("-")[0]}</h5>
+                        <h5>{service.Slot[service.Slot.length -1 ]?.split("-")[1]}</h5>
                         <div className="star">
                           <h5>{service.rating}</h5>
                           <FaStar className="Icon_Color small-Icon" />
@@ -112,8 +112,8 @@ const TaskHistory = (props) => {
                         </tbody>
                       </table>
                       <div className="CallBackCardsBottom">
-                        <h5>{service.Slot[0].split("-")[0]}</h5>
-                        <h5>{service.Slot[service.Slot.length -1 ].split("-")[1]}</h5>
+                        <h5>{service.Slot[0]?.split("-")[0]}</h5>
+                        <h5>{service.Slot[service.Slot.length -1 ]?.split("-")[1]}</h5>
                         <div className="star">
                           <h5>{service.rating}</h5>
                           <FaStar className="Icon_Color small-Icon" />

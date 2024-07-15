@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "this i IEE lifts backend",
+  "description": "IEE lifts backend",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"

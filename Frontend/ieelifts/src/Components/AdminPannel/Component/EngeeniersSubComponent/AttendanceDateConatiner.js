@@ -117,7 +117,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
             key={i}
           >
             <div className="DateCardData">
-              <h5>{dates && dates[i] ? dates[i].split("/")[0] : "--"}</h5>
+              <h5>{dates && dates[i] ? dates[i]?.split("/")[0] : "--"}</h5>
               <h5>{dates && dates[i] ? getDayOfWeek(dates[i]) : "--"}</h5>
             </div>
             <div className="DateCardData">
