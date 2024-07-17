@@ -332,7 +332,7 @@ router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscoun
 
 
 
-router.get('/getEnggSparePartRevenueData/:EnggId',adminContoller.getEnggSparePartRevenueData);
+router.get('/getEnggSparePartRevenueData/:EnggId', adminContoller.getEnggSparePartRevenueData);
 
 
 router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSparePartProfitSummaryGraphData);
@@ -342,6 +342,9 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
 
 
+
+// api for putting data
+router.post("/putEngineerAttendence", adminContoller.putEngineerAttendence);
 
 
 module.exports = router;
