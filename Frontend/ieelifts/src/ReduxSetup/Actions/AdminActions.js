@@ -1526,7 +1526,6 @@ export const addTodo = async (todo) => {
     const response = await axios.post(`${config.apiUrl}/admin/todo/addTodo`, {
       todo,
     });
-    console.log(response.data);
     return response;
   } catch (error) {
     console.log("error while  adding todo", error);
@@ -1588,17 +1587,7 @@ export const offerDiscountByServiceId = async (
   }
 };
 
-// export const updateTodoData = (id, flag) => {
-//   console.log(id,flag);
-//   return  async (dispatch=> {
 
-//     type: UPDATE_TODO_DATA,
-//     payload: {
-//       id,
-//       flag,
-//     },
-//   };
-// };
 
 export const updateTodoData = (id, flag) => {
   return async (dispatch) => {

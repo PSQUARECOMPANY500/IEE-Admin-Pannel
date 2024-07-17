@@ -2020,6 +2020,7 @@ text-align: center;
   display: flex;
   align-items: center;
   font-family: "Poppins";
+  margin-top: -0.65rem;
 }
 .labelContainer {
   font-size: 0.9rem;
@@ -2036,8 +2037,8 @@ text-align: center;
   transform: translateY(-50%);
   transition: opacity 0.3s;
   opacity: 0.5;
-}
 
+}
 .inputLabel.hidden {
   opacity: 0;
 }

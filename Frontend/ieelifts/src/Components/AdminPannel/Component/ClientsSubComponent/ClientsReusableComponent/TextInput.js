@@ -39,7 +39,7 @@ const TextInput = ({
       }
     }
     
-  }, [value]);
+  }, [value,name]);
   //condition to check phone number input field
 
   

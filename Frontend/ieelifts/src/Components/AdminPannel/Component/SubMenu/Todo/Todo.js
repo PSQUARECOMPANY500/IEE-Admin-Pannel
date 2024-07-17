@@ -25,7 +25,7 @@ const Todo = () => {
   const decoded = jwtDecode(token);
   const dispatch = useDispatch();
   const [taskDeleted, setTaskDeleted] = useState(false);
-  console.log("taskDeleted",taskDeleted)
+
   const handleOpenAddClick = () => {
     setIsOpen(true);
   };

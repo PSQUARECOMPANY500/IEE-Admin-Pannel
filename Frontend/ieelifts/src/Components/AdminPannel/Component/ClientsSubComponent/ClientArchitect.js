@@ -27,6 +27,12 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
         return 
       }
      }
+     if(name==="contractorNumber" && value.length>10){
+      return;
+     }
+     if(name==="architectNumber" && value.length>10){
+      return;
+     }
     
     setClientFormData({ ...clientFormData, [name]: value });
   };

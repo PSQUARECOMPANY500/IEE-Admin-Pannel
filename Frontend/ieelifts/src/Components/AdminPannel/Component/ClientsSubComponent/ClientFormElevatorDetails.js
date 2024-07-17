@@ -440,10 +440,10 @@ const ClientFormElevatorDetails = ({
 
         <div
           className={`dimention-btn ${!visible ? "hide" : ""} ${
-            elevatorDetails.numberOfOpenings === 3 &&
+            elevatorDetails.numberOfOpenings === 3 || elevatorDetails.numberOfOpenings === "3"&&
             Object.values(degree).filter((val) => val !== "").length === 2
               ? ""
-              : elevatorDetails.numberOfOpenings === 2 &&
+              : elevatorDetails.numberOfOpenings === 2 || elevatorDetails.numberOfOpenings === "2" &&
                 Object.values(degree).filter((val) => val !== "").length >= 1
               ? ""
               : "disabled"

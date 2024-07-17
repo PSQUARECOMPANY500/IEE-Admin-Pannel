@@ -122,11 +122,12 @@ export const DimentionMidFloor = ({
                 }`}
               >
                 <span>Floor Front</span>
-                <img src="./uploadIcon.png" className="upload-icon" />
+                <img src="./uploadIcon.png" className="upload-icon" alt='uploadIcon'/>
                 <input
                   className="hidden-input"
                   type="file"
                   onChange={(e) => handleFileChangeInLevel(e)}
+                   accept=".jpeg,.jpg,.pdf"
                 />
               </label>
               {fileNames[index] && (

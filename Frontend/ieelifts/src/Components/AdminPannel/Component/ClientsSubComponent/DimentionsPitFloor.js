@@ -126,12 +126,12 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                   }`}
                 >
                   <span>Pit</span>
-                  <img src="./uploadIcon.png " className="upload-icon" />
+                  <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                   <input
                     className="hidden-input"
                     type="file"
                     onChange={(e) => handleFileChangeInPit(e, "pit")}
-                  
+                    accept=".jpeg,.jpg,.pdf"
                   />
                 </label>
                 {fileNames["pit"] && (
@@ -146,11 +146,12 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                     }`}
                   >
                     <span>Bottom to top</span>
-                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                     <input
                       className="hidden-input"
                       type="file"
                       onChange={(e) => handleFileChangeInPit(e, "bottomToTop")}
+                       accept=".jpeg,.jpg,.pdf"
                     />
                   </label>
 
@@ -169,11 +170,12 @@ const DimentionPitFloor = ({Flevel,basementWithPit, handleClick, handleInputChan
                     }`}
                   >
                     <span>Basement Front</span>
-                    <img src="./uploadIcon.png " className="upload-icon" />
+                    <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                     <input
                       className="hidden-input"
                       type="file"
                       onChange={(e) => handleFileChangeInPit(e, "basementFront")}
+                       accept=".jpeg,.jpg,.pdf"
                     />
                   </label>
                   {fileNames["basementFront"] && (

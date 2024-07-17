@@ -74,8 +74,19 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
      if(name==='userName' || name==='city' || name==='state' || name==='district' || name==='referenceName' ){
       const hasNumbers = /\d/.test(value)
       if(hasNumbers){
-        return 
+        return;
       }
+      //checking the length of phone number should not be geater than 10
+     }
+     if(name==="phoneNumber" && value.length>10 ){
+        return;
+     }
+     if(name==="alternativeNumber" && value.length>10){
+      return;
+     }
+     //checking the lenght of pincode should not be geater than 6 
+     if(name==="pincode" && value.length>6){
+      return;
      }
     setClientFormData({ ...clientFormData, [name]: value });
     if (name === "email") {
@@ -167,6 +178,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onChange={hadleInputChnage}
             click={click.jon}
             onBlur={handleClickFalse}
+            type={"number"}
           />
         </div>
         <div>
