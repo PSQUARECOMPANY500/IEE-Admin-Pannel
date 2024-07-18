@@ -13,6 +13,7 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-track {
   background: #ffffff;
+  display: none;
   /* color of the tracking area */
 }
 
