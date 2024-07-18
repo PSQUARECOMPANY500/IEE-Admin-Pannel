@@ -33,6 +33,7 @@ export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
 
 export const CHANGE_CLIENT_LAYOUT = "CHANGE_CLIENT_LAYOUT";
 export const CHANGE_MEMBERSHIP_LAYOUT = "CHANGE_MEMBERSHIP_LAYOUT";
+export const ENGINEER_SEARCH_HANDLER_STATE="ENGINEER_SEARCH_HANDLER_STATE";
 
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
@@ -1576,3 +1577,10 @@ export const getEnggCheckinOrNotOnToadaysDate = async (EnggId) => {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const engSearchHandler =  (Engkey)=>{
+    return {
+      type: ENGINEER_SEARCH_HANDLER_STATE,
+      payload: { Engkey }, 
+    };
+  }

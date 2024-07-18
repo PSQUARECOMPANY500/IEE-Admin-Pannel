@@ -9,6 +9,7 @@ import { GET_ALL_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_ASSIGN_CALLBACK_DETAILS } from "../Actions/AdminActions";
 import { GET_REQUEST_DETAIL_BY_REQUEST_ID } from "../Actions/AdminActions";
 import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from "../Actions/AdminActions";
+import {ENGINEER_SEARCH_HANDLER_STATE} from "../Actions/AdminActions";
 
 import { GET_ALL_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_ALL_ASSIGN_CALLBACK } from "../Actions/AdminActions";
@@ -947,3 +948,22 @@ export const ClearClientFormData = (state = initialState, action) => {
       return state;
   }
 };
+
+
+const SearchEngineers={
+  SearchEngineers:'',
+}
+
+//custom reducer for eng searching by aayush
+
+export const EngineerSearchHandler = (state = SearchEngineers, action) => {
+ switch(action.type){
+case ENGINEER_SEARCH_HANDLER_STATE:
+  return{
+    ...state,
+    SearchEngineers:action.payload.Engkey,
+  }
+   default:
+    return state;
+ }
+}

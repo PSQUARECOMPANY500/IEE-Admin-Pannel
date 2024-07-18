@@ -23,6 +23,7 @@ import {
   getfilteredData,
   searchClients,
   openAddClientModalAction,
+  engSearchHandler
 } from "../../ReduxSetup/Actions/AdminActions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -56,6 +57,7 @@ const TopBar = (props) => {
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [openForm, setOpenForm] = useState(false);
+  const [engSearchValue, setEngSearchValue] = useState()
 
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
@@ -81,6 +83,9 @@ const TopBar = (props) => {
   useEffect(() => {
     debouncedSearchClients(searchValue || null);
   }, [searchValue, debouncedSearchClients]);
+
+
+
 
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
@@ -234,6 +239,15 @@ const TopBar = (props) => {
   //   handleClickOutsidecollectcash
   // );
 
+  // eng  search code by aayush
+  const engSearch=(value)=>{
+    dispatch(engSearchHandler(value));
+  }
+
+  useEffect(()=>{
+   engSearch(engSearchValue || null)
+  },[engSearchValue,engSearch])
+
   return (
     <div className="top-bar">
       <div
@@ -286,12 +300,14 @@ const TopBar = (props) => {
           </span>
         ) : (
           <>
-            <span className="top-icon">
+            <span className="top-icon"  style={{display:location.pathname==='/Engeeniers'?'flex':'none'}}>
               <div className="search-box">
                 <input
                   type="text"
                   placeholder="Search anything"
                   className="search-input"
+                  value={engSearchValue || ""}
+                  onChange={(e)=>setEngSearchValue(e.target.value)}
                 />
 
                 <i className="search-btn ">

@@ -177,10 +177,6 @@ function App() {
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
 
-
-
-
-
       </Routes>
 
     </>

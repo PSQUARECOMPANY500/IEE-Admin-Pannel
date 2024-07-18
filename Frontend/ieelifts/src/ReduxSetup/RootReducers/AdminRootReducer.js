@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { fetchAllCallbackReducer, getClientModalDataReducer } from "../Reducers/AdminReducer";
+import { EngineerSearchHandler, fetchAllCallbackReducer, getClientModalDataReducer } from "../Reducers/AdminReducer";
 import { fetchCallbackDetailWithCallbackIdReducer } from "../Reducers/AdminReducer";
 import { fetchAllClientDetailReducer } from "../Reducers/AdminReducer";
 import { fetchChecklistReducer } from "../Reducers/AdminReducer";
@@ -101,7 +101,8 @@ const AdminRootReducer = combineReducers({
   getAdminReportDataReducer:getAdminReportDataReducer,
   ReportCrouserHandlerReducer:ReportCrouserHandlerReducer,
   getClientModalDataReducer:getClientModalDataReducer,
-  ClientFormDataFromApiReducer:ClientFormDataFromApiReducer
+  ClientFormDataFromApiReducer:ClientFormDataFromApiReducer,
+  EngineerSearchHandler:EngineerSearchHandler,
 });
 
 export default AdminRootReducer;

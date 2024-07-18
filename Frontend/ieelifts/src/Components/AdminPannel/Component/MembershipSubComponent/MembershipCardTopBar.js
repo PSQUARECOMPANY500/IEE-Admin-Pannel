@@ -47,6 +47,7 @@ const MembershipCardTopBar = ({
         <p>{DemoData?.Data?.details?.count}</p>
       </div>
     </div>
+  
   );
 };
 
