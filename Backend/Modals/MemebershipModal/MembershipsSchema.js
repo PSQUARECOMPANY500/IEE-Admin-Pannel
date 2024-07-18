@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const memebership = new Schema(
   {
     JobOrderNumber: {
-      type: Number,
+      type: String,
       required: true,
     },
     MembershipType: {

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import EngeeniersSubCard from "./EngeeniersSubCard";
 import EngChatNav from "./EngChatNav";
 import { CiVideoOn } from "react-icons/ci";
@@ -17,7 +18,10 @@ import Rating from "./Rating";
 import EditEngineerDetails from "./EditEngineerDetails";
 import config from "../../../../config";
 
+import { BsArrowLeft } from "react-icons/bs";
+
 const EngeeniersCard = () => {
+  const navigate = useNavigate();
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
 
@@ -28,12 +32,10 @@ const EngeeniersCard = () => {
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
 
+  const [onBackPress, setOnbackPress] = useState(false);
 
   const [currentengCash, setCurrentEngCash] = useState(null);
-  
 
-
-  
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
     if (formRef.current && !formRef.current.contains(event.target)) {
@@ -53,7 +55,7 @@ const EngeeniersCard = () => {
     setEngID(engId);
     setCurrentEngName(engName);
     setCurrentEngImg(engImg);
-    setCurrentEngCash(engCash)
+    setCurrentEngCash(engCash);
   };
   // Render the selected component
   const renderSelectedComponent = () => {
@@ -150,7 +152,7 @@ const EngeeniersCard = () => {
   const handleSendMessage = () => {
     dispatch(
       sendChatMessageAction(
-        "65d49276f60a227274baf8e1",
+        "65d49276f60a227274baf8e1",  //to be dynamic in future
         messageData,
         chatCreated?._id
       )
@@ -178,15 +180,16 @@ const EngeeniersCard = () => {
     setBorderMargin(m);
   };
 
+  const navigateOneStepBack = () => {
+    // <EngeeniersSubCard />
+   setIsSecond(false)
+    console.log("true engg design")
+    console.log("{{{{{",onBackPress);
+  };
+
   return (
     <>
-      <div
-        className="EngeeniersCard"
-        style={{
-          gridTemplateColumns: isFirst || isSecond ? "2fr 1fr" : "1fr",
-          gridTemplateAreas: isSecond && "'SingleEng'",
-        }}
-      >
+      {onBackPress ? (
         <EngeeniersSubCard
           isFirst={isFirst}
           setIsFirst={setIsFirst}
@@ -194,175 +197,200 @@ const EngeeniersCard = () => {
           setIsSecond={setIsSecond}
           handleEnggNameDoubleClick={handleEnggNameDoubleClick}
         />
-
-        <div className="SingleEng" style={{ display: isSecond && "block" }}>
-          <div className="SubSingleEng">
-            <div className="PDetails">
-              <div className="SubPDetails">
-                <div className="Pimg">
-                  {/* <img src={currentengImg} alt="eng persnol image" /> */}
-                  <img src={
-                    currentengImg?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
-                    `${config.documentUrl}/EnggAttachments/${currentengImg}`} alt="eng persnol image" 
-                    
-                    
-                    />
-                </div>
-                <h1>
-                  Name:<span>{currentEngName}</span>
-                </h1>
-              </div>
-
-              <h1>
-                ID: <span>{engID}</span>
-              </h1>
-              <h1>
-                Spare Parts: <span>25</span>
-              </h1>
-              <h1 className="ooo">
-                Cash In Hand: <span>{currentengCash}</span>
-              </h1>
-              <FaRegFileAlt
-                className="Icon_Color"
-                onClick={() => setOpenModal(true)}
-              />
-            </div>
-            <div className="ODetailsColumn">
-              <h5
-                onClick={() => {
-                  handleCurrentComponent("c1", 0);
-                }}
-                style={{ color: borderMergin === 0 && "#F8AC1DAD" }}
-              >
-                Task History
-              </h5>
-              <h5
-                onClick={() => handleCurrentComponent("c2", 17)}
-                style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
-              >
-                Attendence
-              </h5>
-              <h5
-                onClick={() => handleCurrentComponent("c3", 32)}
-                style={{ color: borderMergin === 32 && "#F8AC1DAD" }}
-              >
-                Rating
-              </h5>
-              <h5
-                onClick={() => handleCurrentComponent("c4", 49)}
-                style={{ color: borderMergin === 49 && "#F8AC1DAD" }}
-              >
-                Spare parts
-              </h5>
-            </div>
-            <div className="vertical-line">
-              <div
-                className="overlay-vertical-line"
-                style={{ marginLeft: borderMergin + "rem" }}
-              ></div>
-            </div>
-            <div className="ODetails">{renderSelectedComponent()}</div>
-          </div>
-        </div>
-
+      ) : (
         <div
-          className="EngeeniersChatF"
-          style={{ display: isFirst || isSecond ? "block" : "none" }}
+          className="EngeeniersCard"
+          style={{
+            gridTemplateColumns: isFirst || isSecond ? "2fr 1fr" : "1fr",
+            gridTemplateAreas: isSecond && "'SingleEng'",
+          }}
         >
-          <EngChatNav />
-          <div className="EngChatBox">
-            <div className="EngChatBoxHead">
-              <h6>online</h6>
-              <div className="EngChatBoxIcons">
-                <IoCallOutline />
-                <CiVideoOn />
-              </div>
-            </div>
-            <div className="EngChatMsg">
-              <div className="SubEngChatMsg Yello_Scrollbar">
-                <div className="engchatmsg-sender-side">
-                  <div className="engchatmsg-sender-message">
-                    <p>Hi there! How are you doing today?</p>
+          <EngeeniersSubCard
+            isFirst={isFirst}
+            setIsFirst={setIsFirst}
+            isSecond={isSecond}
+            setIsSecond={setIsSecond}
+            handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+          />
+
+          <div className="SingleEng" style={{ display: isSecond && "block" }}>
+            <div className="SubSingleEng">
+              <div className="PDetails">
+                <div className="SubPDetails">
+                  <div
+                    onClick={navigateOneStepBack}
+                    style={{ marginRight: "16px", cursor: "pointer" }}
+                  >
+                    <BsArrowLeft />
                   </div>
+
+                  <div className="Pimg">
+                    {/* <img src={currentengImg} alt="eng persnol image" /> */}
+                    <img
+                      src={
+                        currentengImg?.length === 0
+                          ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                          : `${config.documentUrl}/EnggAttachments/${currentengImg}`
+                      }
+                      alt="eng persnol image"
+                    />
+                  </div>
+                  <h1>
+                    Name:<span>{currentEngName}</span>
+                  </h1>
                 </div>
 
-                <div className=".engchatmsg-reciver-side">
-                  <div className="engchatmsg-reciver-message">
-                    <p>Hey! I'm doing well, thanks. How about you?</p>
-                  </div>
-                </div>
-                <div className="engchatmsg-sender-side">
-                  <div className="engchatmsg-sender-message">
-                    <p>
-                      I'm good too, thanks for asking. Did you do anything
-                      interesting recently?
-                    </p>
-                  </div>
-                </div>
-
-                <div className=".engchatmsg-reciver-side">
-                  <div className="engchatmsg-reciver-message">
-                    <p>
-                      Not much, just caught up on some reading and went for a
-                      walk. How about you?
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="agdam-eng-card">
-              <div className="eng-card-message-text">
-                <textarea
-                  placeholder="Enter message"
-                  ref={textareaRef}
-                  onInput={handleInput}
-                  style={{
-                    resize: "none",
-                    minHeight: "50px",
-                    height: `${textareaHeight}px`,
-                    fontFamily: "Poppins",
-                  }}
-                  className="text-area-message-eng-card"
-                  onChange={(e) => setMessageData(e.target.value)}
-                  value={messageData}
+                <h1>
+                  ID: <span>{engID}</span>
+                </h1>
+                <h1>
+                  Spare Parts: <span>25</span>
+                </h1>
+                <h1 className="ooo">
+                  Cash In Hand: <span>{currentengCash}</span>
+                </h1>
+                <FaRegFileAlt
+                  className="Icon_Color"
+                  onClick={() => setOpenModal(true)}
                 />
               </div>
+              <div className="ODetailsColumn">
+                <h5
+                  onClick={() => {
+                    handleCurrentComponent("c1", 0);
+                  }}
+                  style={{ color: borderMergin === 0 && "#F8AC1DAD" }}
+                >
+                  Task History
+                </h5>
+                <h5
+                  onClick={() => handleCurrentComponent("c2", 17)}
+                  style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
+                >
+                  Attendence
+                </h5>
+                <h5
+                  onClick={() => handleCurrentComponent("c3", 32)}
+                  style={{ color: borderMergin === 32 && "#F8AC1DAD" }}
+                >
+                  Rating
+                </h5>
+                <h5
+                  onClick={() => handleCurrentComponent("c4", 49)}
+                  style={{ color: borderMergin === 49 && "#F8AC1DAD" }}
+                >
+                  Spare parts
+                </h5>
+              </div>
+              <div className="vertical-line">
+                <div
+                  className="overlay-vertical-line"
+                  style={{ marginLeft: borderMergin + "rem" }}
+                ></div>
+              </div>
+              <div className="ODetails">{renderSelectedComponent()}</div>
+            </div>
+          </div>
 
-              <div className="user-attachment4-eng-card">
-                <div className="user-attachment2-eng-card">
-                  <input
-                    id="file-upload"
-                    type="file"
-                    name="file"
-                    onChange={handleFileChange}
-                    ref={fileInputField}
-                    style={{ display: "none" }}
-                  ></input>
-                  <div
-                    onClick={() => fileInputField.current.click()}
-                    style={{ marginTop: "3px" }}
-                  >
-                    <MdOutlineAttachFile />
+          <div
+            className="EngeeniersChatF"
+            style={{ display: isFirst || isSecond ? "block" : "none" }}
+          >
+            <EngChatNav />
+            <div className="EngChatBox">
+              <div className="EngChatBoxHead">
+                <h6>online</h6>
+                <div className="EngChatBoxIcons">
+                  <IoCallOutline />
+                  <CiVideoOn />
+                </div>
+              </div>
+              <div className="EngChatMsg">
+                <div className="SubEngChatMsg Yello_Scrollbar">
+                  <div className="engchatmsg-sender-side">
+                    <div className="engchatmsg-sender-message">
+                      <p>Hi there! How are you doing today?</p>
+                    </div>
+                  </div>
+
+                  <div className=".engchatmsg-reciver-side">
+                    <div className="engchatmsg-reciver-message">
+                      <p>Hey! I'm doing well, thanks. How about you?</p>
+                    </div>
+                  </div>
+                  <div className="engchatmsg-sender-side">
+                    <div className="engchatmsg-sender-message">
+                      <p>
+                        I'm good too, thanks for asking. Did you do anything
+                        interesting recently?
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className=".engchatmsg-reciver-side">
+                    <div className="engchatmsg-reciver-message">
+                      <p>
+                        Not much, just caught up on some reading and went for a
+                        walk. How about you?
+                      </p>
+                    </div>
                   </div>
                 </div>
-                ``
-                <p
-                  className="send-messsage-eng-card "
-                  onClick={handleSendMessage}
-                >
-                  {swapIcon ? <MdOutlineMic /> : <MdSend />}
-                </p>
+              </div>
+
+              <div className="agdam-eng-card">
+                <div className="eng-card-message-text">
+                  <textarea
+                    placeholder="Enter message"
+                    ref={textareaRef}
+                    onInput={handleInput}
+                    style={{
+                      resize: "none",
+                      minHeight: "50px",
+                      height: `${textareaHeight}px`,
+                      fontFamily: "Poppins",
+                    }}
+                    className="text-area-message-eng-card"
+                    onChange={(e) => setMessageData(e.target.value)}
+                    value={messageData}
+                  />
+                </div>
+
+                <div className="user-attachment4-eng-card">
+                  <div className="user-attachment2-eng-card">
+                    <input
+                      id="file-upload"
+                      type="file"
+                      name="file"
+                      onChange={handleFileChange}
+                      ref={fileInputField}
+                      style={{ display: "none" }}
+                    ></input>
+                    <div
+                      onClick={() => fileInputField.current.click()}
+                      style={{ marginTop: "3px" }}
+                    >
+                      <MdOutlineAttachFile />
+                    </div>
+                  </div>
+                  ``
+                  <p
+                    className="send-messsage-eng-card "
+                    onClick={handleSendMessage}
+                  >
+                    {swapIcon ? <MdOutlineMic /> : <MdSend />}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {openModal && (
         <div className="engineer-modal-wrapper">
           <div className="engineer-modal-container" ref={formRef}>
-            <EditEngineerDetails engID={engID}  onClose={handleCloseModal} />
+            <EditEngineerDetails engID={engID} onClose={handleCloseModal} />
           </div>
         </div>
       )}

@@ -38,14 +38,16 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
   useEffect(() => {
     const getData = async () => {
       const getCheckInOut = await getCheckInCheckOuts(
-        "1111",
+       engID,
         selectedDateIndex
-      ); //to do ---> Make If dynamic put this (engID) in first Argument
+      ); 
       setCheckInCheckOutData(getCheckInOut);
     };
 
     getData();
   }, []);
+
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0])
 
   return (
     <div className="engeeniersattendancecard-main">
@@ -63,11 +65,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
           <img
             src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
-                ? `${config.documentUrl}/uplodes/${
-                    checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
-                  }`
-                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0] ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}`: "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
             }
           ></img>
         </div>

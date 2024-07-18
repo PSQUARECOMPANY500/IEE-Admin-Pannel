@@ -897,7 +897,7 @@ module.exports.clientPayment = async (req, res) => {
   try {
     const { amount, currency, JON, MembershipType, Discount } = req.body;
 
-    console.log("MembershipType", MembershipType);
+    console.log("MembershipType",  req.body);
 
     if (!amount || !currency) {
       return res
@@ -998,13 +998,24 @@ const caluclateMembershipPriceAndTime = async (
 
   return appliedMembershipPriceDaysToBeAdded;
 };
+
+
 module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
+    // console.log("*******************",req.params);
+
     const MembershipData = await memberShipDetails.find({ JobOrderNumber });
 
+    // console.log("222222222222222222222222222",MembershipData);
+
+
+
     const Details = MembershipData[MembershipData.length - 1];
+    // console.log("8888888888888888888888",Details);
+
+
 
     if (Details.IsPaid === true) {
       const data = {
@@ -1034,13 +1045,19 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         updateMembership
       );
 
-      const newDate = new Date();
+      console.log("|||||||||||||||||||||||||||",DaysToBeAdded);
+
+      let newDate = new Date();
       newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+
+      console.log(".......................",newDate)
 
       const finalPurchase = await memberShipDetails.findOneAndUpdate(
         { OrderId: Details.OrderId },
         { EndDate: newDate }
       );
+
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!",finalPurchase);
 
       const data = {
         MembershipType: finalPurchase.MembershipType,
@@ -1048,6 +1065,8 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         PricePaid: finalPurchase.PricePaid,
         MembershipInvoice: finalPurchase.MembershipInvoice,
       };
+
+      
 
       const ClientData = await RegisterClientDetails.find({ JobOrderNumber });
       const appliedMembership = await createMemberShipOnTables.findOne({
@@ -1086,13 +1105,17 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         { MembershipInvoice: fileName }
       );
 
+      console.log("+++++++++++++++++++++++++++++++++++++++++++++++",data);
+
       return res.status(200).json({
         status: "success",
         Details: data,
       });
     } else {
       await memberShipDetails.findOneAndDelete({ OrderId: Details.OrderId });
+      
       const Detail = MembershipData[MembershipData.length - 1];
+      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%",Detail);
 
       const data = {
         MembershipType: Detail.MembershipType,

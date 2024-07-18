@@ -2750,7 +2750,7 @@ footer a:hover {
   right: 0;
   bottom: 0;
   top: 0;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
   z-index: 9999;
   width: 100%;
 }
@@ -7707,4 +7707,31 @@ a[href^="http://maps.google.com/maps"]
   border: 1px solid #444444;
   border-radius: 50%;
   padding: 0px 9px;
+}
+
+
+
+.css-y7kf8-placeholder {
+  grid-area: 1 / 1 / 2 / 3;
+  color: rgb(128, 128, 128);
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: 0.8rem;
+  /* margin-bottom: 9px!important; */
+  font-family: Poppins;
+  opacity: 0.6;
+}
+
+.css-7sud1x-control {
+  justify-content: center;
+  align-items: center;
+}
+
+.css-y7kf8-placeholder {
+  margin-bottom: 6px;
+}
+
+.css-1hb7zxy-IndicatorsContainer {
+  position: relative;
+  top: -4px;
 }

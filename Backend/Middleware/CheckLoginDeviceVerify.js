@@ -6,9 +6,9 @@ const checkClientDeviceLogins = async (req, res, next) => {
 
   let Token = req.header("Authorization");
 
-  // console.log("\\\\\\\\\\\\\\\\",Token)
+  console.log("\\\\\\\\\\\\\\\\",Token)
 
-  const token = Token?.split(" ")[1];
+  const token = Token && Token?.split(" ")[1];
 
   const user = jwtDecode(token);
 

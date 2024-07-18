@@ -410,39 +410,59 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    // console.log(
-    //   "enngglocation serviceid ",
-    //   ServiceEnggId,
-    //   " latitude ",
-    //   latitude,
-    //   " longitute ",
-    //   longitude
-    // );
+ console.log("location latitude and langitude",latitude, longitude);
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
         .split(",")[0];
-      const response = await EnggLocationModel.findOneAndUpdate(
-        { ServiceEnggId, AttendanceCreatedDate },
-        {
-          currentLocation: {
-            type: "Point",
-            coordinates: [latitude, longitude],
-          },
-        }
-      );
+
+
+      // const response = await EnggLocationModel.findOneAndUpdate(
+      //   { ServiceEnggId, AttendanceCreatedDate },
+      //   {
+      //     currentLocation: {
+      //       type: "Point",
+      //       coordinates: [latitude, longitude],
+      //     },
+      //   }
+      // );
+
       //console.log(response)
-      if (!response) {
-        await EnggLocationModel.create({
-          ServiceEnggId,
+      // if (!response) {
+        // await EnggLocationModel.create({
+          // ServiceEnggId,
           //mark Attandance Logic here
-          currentLocation: {
+          // currentLocation: {
+            // type: "Point",
+            // coordinates: [latitude, longitude],
+          // },
+      //   });
+      // // }
+
+      const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
+
+      console.log("++++++----------",response.currentLocation.coordinates);
+
+      if (response) {
+        let coordinate;
+        coordinate = {
+          origin: `${latitude}, ${longitude}`,
+          destination: `${latitude}, ${longitude}`
+        }
+       response.currentLocation.coordinates.push(coordinate)
+       await response.save();
+      }else{
+        await EnggLocationModel.create({ServiceEnggId,currentLocation: {
             type: "Point",
-            coordinates: [latitude, longitude],
+            coordinates: {
+              origin: `${latitude}, ${longitude}`,
+               destination: `${latitude}, ${longitude}`
+            },
           },
-        });
+        })
       }
+
       res
         .status(200)
         .json({ message: "Attendance marked and Location connection started" });
@@ -486,6 +506,8 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       ...detail.toObject(),
       serviceEnggIdDetails: serviceEnggId[index],
     }));
+
+    // console.log("location data----------------",combinedData);
 
     res.status(200).json({
       message: "Services Engg Location retrieved by his/her ID successfully",
@@ -1610,11 +1632,11 @@ module.exports.getFinalReportDetails = async (req, res) => {
     });
 
     const caluclatePriceAsPerMemeberShip = (memeberShip, partprice) => {
-      if (memeberShip === "platinum" && partprice < 20000) {
+      if (memeberShip === "Platinum" && partprice < 20000) {
         return 0;
-      } else if (memeberShip === "gold" && partprice < 8000) {
+      } else if (memeberShip === "Gold" && partprice < 8000) {
         return 0;
-      } else if (memeberShip === "silver" && partprice < 1000) {
+      } else if (memeberShip === "Silver" && partprice < 1000) {
         return 0;
       } else {
         return partprice;
