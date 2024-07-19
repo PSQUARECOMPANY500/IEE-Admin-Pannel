@@ -1207,7 +1207,7 @@ module.exports.updateClientProfile = async (req, res) => {
     if ((!JobOrderNumber && !name && !email && !phone)) {
       return res.status(400).json({ success: false, message: "Profile updation failed due to missing fields" })
     }
-    
+
     if ((!profilePic && (profile && profile.fieldname === undefined)) === undefined) {
       return res.status(400).json({ success: false, message: "Profile updation failed due to missing fields for picture" })
     }
@@ -1220,8 +1220,7 @@ module.exports.updateClientProfile = async (req, res) => {
       Password: password,
       email
     })
-
-    let profilePicture = profilePic || profile;
+    // changes in the other elevator forms table
 
     return res.status(200).json({
       success: true,
