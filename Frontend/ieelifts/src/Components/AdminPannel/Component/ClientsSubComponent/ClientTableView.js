@@ -5,8 +5,10 @@ import CheckBox from "../DashboardSubComponent/CheckBox";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
 import ClientModal from "./ClientModal";
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const ClientTableView = ({ clientData }) => {
+const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null)
@@ -36,8 +38,6 @@ const ClientTableView = ({ clientData }) => {
   const HandleCardClick = (data) => {
     setSelectedClient(data)
     setShowClientModal(true)
-
-
   }
 
 
@@ -51,7 +51,7 @@ const ClientTableView = ({ clientData }) => {
   return (
     <div className="table_view">
       <div className="sub_table_view">
-        <div className="client_table-container">
+        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)} style={{overflowX:'hidden'}}>
           <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
           <table>
             <thead style={{zIndex:'1'}}> 
@@ -119,7 +119,40 @@ const ClientTableView = ({ clientData }) => {
                     <td className="address">{data.ModelType}</td>
                     <td className="address">{data.DateOfHandover}</td>
                   </tr>
-                ))}
+                ))}    
+{isLoading? <>        <tr style={{ overflowX: "hidden" }}>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        width={"80vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                      />
+                    </td>
+                  </tr>          
+</>:''}
+    
+                
             </tbody>
           </table>
         </div>

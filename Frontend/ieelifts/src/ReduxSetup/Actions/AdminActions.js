@@ -778,15 +778,20 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-export const getClients = () => {
+export const getClients = (page) => {
+
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/AllClients`);
+      const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
+     
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) {
+
+    }
+    
   };
 };
 

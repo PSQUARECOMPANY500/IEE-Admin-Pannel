@@ -8,14 +8,17 @@ import ClientForm from "../ClientsSubComponent/ClientForm";
 
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
+  const [page, setPage] = useState(1); //make this is in redux for global purposes
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getClients());
-  },[dispatch]);
-
+  
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients
+  );
+  
+  const totalPage = useSelector(
+    (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.totalPage
   );
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
@@ -30,12 +33,40 @@ const Clients = () => {
   const searchClient = useSelector(
     (state) => state?.AdminRootReducer?.searchClientReducer?.clients?.clients
   );
+  
+  useEffect(() => {
+   
+    const getClient = async () => {
+      if(page>=totalPage){
+        return setIsLoading(false);
+      }
+      await dispatch(getClients(page));
+      setIsLoading(false)
+    }
 
+    getClient();
+  }, [page, dispatch]);
   useEffect(() => {
     if (clientLayout !== undefined) {
       setLayout(clientLayout === "grid" ? "grid" : "list");
     }
   }, [clientLayout]);
+
+  const hadnleInfiniteScroll = (e, isTableScroll = false) => {
+    const { scrollHeight, clientHeight, scrollTop } = isTableScroll ? e.target : document.documentElement
+    if (scrollTop + clientHeight === scrollHeight) {
+      setPage((prev) => prev + 1);
+    }
+    setIsLoading(true)
+
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', hadnleInfiniteScroll)
+    return () => {
+      window.removeEventListener('scroll', hadnleInfiniteScroll)
+    }
+  }, [])
 
   const renderClientView = () => {
     let dataToRender;
@@ -46,18 +77,18 @@ const Clients = () => {
     } else {
       dataToRender = clients;
     }
-    
+
     if (layout === "grid") {
-      console.log("Grid view");
-      return <ClientCardView clientData={dataToRender} />;
+      return <ClientCardView clientData={dataToRender} isLoading={isLoading} />;
     } else {
-      
-      return <ClientTableView clientData={dataToRender} />;
+
+      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} />;
     }
   };
 
-  return <div className="main-container">
-      <ClientForm/>
+
+  return <div className="main-container" >
+    <ClientForm />
     {renderClientView()}
 
   </div>;
