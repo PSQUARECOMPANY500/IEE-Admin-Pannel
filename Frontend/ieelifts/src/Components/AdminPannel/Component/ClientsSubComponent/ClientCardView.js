@@ -22,6 +22,7 @@ const ClientCardView = ({ clientData }) => {
             : "noMembershipP";
   }
 
+
   // ------------------Raj------------------------------------------------
 
   //Function to handle open modal

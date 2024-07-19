@@ -9332,6 +9332,68 @@ a[href^="http://maps.google.com/maps"]
 }
 
 
+/*service history css start */
+/* --------------------Rahul Kumar---------------------------------- */
+.service-history-wrapper{
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+  margin-top: 1rem;
+  text-transform: capitalize;
+}
+.service-history-client-details{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 4rem;
+}
+.service-history-heading>h6{
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #1D1D1D;
+   font-weight: 500;
+}
+.service-icon-color{
+  color: #FAC665;
+  font-size: 1.5rem;
+}
+.service-history-hr{
+  height: 1px;
+  background-color: #707070;
+  margin: auto;
+  opacity: 0.4;
+}
+.hr-client-width{
+  width: 90%;
+}
+.hr-architect-width{
+  width: 88%;
+}
+.hr-salesman-width{
+  width: 87%;
+}
+.service-history-heading{
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.service-history-client-details-child-wrappper{
+  display: grid;
+  grid-template-columns:repeat(5,2.4fr);
+  margin-top: 1rem;
 
+}
+.service-history-client-heading{
+  color: #8E8E8E;
+  font-size: 1rem;
+}
+.service-history-client-child-color{
+  color: #444444;
+  font-size: 1rem;
+}
+
+/* --------------------------end--------------------------------- */
 
 

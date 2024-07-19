@@ -5,21 +5,22 @@ import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
 import ClientModal from "./ClientModal";
 import { CSVLink, CSVDownload } from "react-csv";
+import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const ClientTableView = ({ clientData }) => {
+const ClientTableView = ({ clientData,isFiltered }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [csvData,setCsvData] = useState([]);
   const [selectedClientArray,setSelectedClientArray]= useState([]);
- 
+   console.log(isFiltered);
   useLayoutEffect(() => {
     if (clientData) {
       setCheckboxStates(Array(clientData.length).fill(false));
     }
   }, [clientData]);
 
-  const handleCheckBoxAll = () => {
+  const handleCheckBoxAll = async () => {
     if (clientData) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
@@ -29,8 +30,12 @@ const ClientTableView = ({ clientData }) => {
         setSelectedClientArray([]);
        }
     }
+    if(!isFiltered){
+      const {data} = await getAllClient()
+      console.log(data)
+      setSelectedClientArray(data);
+    }
   };
-
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
@@ -39,7 +44,7 @@ const ClientTableView = ({ clientData }) => {
     });
    let ans = selectedClientArray.includes(clientData[index]);
    if(ans){
-    const removeIndex = selectedClientArray.findIndex( item => item === clientData[index] );
+    const removeIndex = selectedClientArray.findIndex( item => item === clientData[index]);
      selectedClientArray.splice(removeIndex,1);
    }else{
     setSelectedClientArray((prev)=>(
@@ -49,19 +54,20 @@ const ClientTableView = ({ clientData }) => {
     ))
    } 
   };
-
-  let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name))); 
+  let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name))); 
  const HandleCardClick = (data) => {
-    // setShowClientModal(true)
+    setShowClientModal(true)
   }
    //Function to handle closing modal
    const handleCloseModal = () => {
     setShowClientModal(false)
   }
+  
 
 const handleExcelIconClick = () =>{
   setCsvData(uniqueData)
 }
+
   return (
     <div className="table_view">
       <div className="sub_table_view">
@@ -74,7 +80,7 @@ const handleExcelIconClick = () =>{
                   <CheckBox
                     id="checkbox1"
                     checked={clientData && clientData.length > 0 && checkboxStates.every((isChecked) => isChecked)}
-                    handleCheckboxChange={handleCheckBoxAll}
+                    handleCheckboxChange={handleCheckBoxAll} 
                   />
                 </th>
                 <th>JON</th>
@@ -112,27 +118,30 @@ const handleExcelIconClick = () =>{
               {clientData &&
                 clientData.map((data, index) => (
                   <tr className="selected" key={index} 
-                  onClick={() => HandleCardClick(data)}
                   >
+                    
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
                         checked={checkboxStates[index] || false}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
+                    
                     </td>
-                    <td className="JON">{data.JobOrderNumber}</td>
-                    <td className="name">{data?.name}</td>
-                    <td className="checkbox">{data?.PhoneNumber}</td>
-                    <td className="address">{data?.Address}</td>
-                    <td className="callback">
+
+                    <td className="JON" onClick={() => HandleCardClick(data)}>{data.JobOrderNumber}</td>
+                    <td className="name" onClick={() => HandleCardClick(data)}>{data?.name}</td>
+                    <td className="checkbox" onClick={() => HandleCardClick(data)}>{data?.PhoneNumber}</td>
+                    <td className="address" onClick={() => HandleCardClick(data)}>{data?.Address}</td>
+                    <td className="callback" onClick={() => HandleCardClick(data)}>
                       {data?.callback ? data?.callback : 0}
                     </td>
-                    <td className="membership">
+                    <td className="membership" onClick={() => HandleCardClick(data)}>
                       {data?.MembershipType ? data?.MembershipType : "NONE"}
                     </td>
-                    <td className="address">{data.ModelType}</td>
-                    <td className="address">{data.DateOfHandover}</td>
+                    <td className="address" onClick={() => HandleCardClick(data)}>{data.ModelType}</td>
+                    <td className="address" onClick={() => HandleCardClick(data)}>{data.DateOfHandover}</td>
+                  
                   </tr>
                 ))}
             </tbody>

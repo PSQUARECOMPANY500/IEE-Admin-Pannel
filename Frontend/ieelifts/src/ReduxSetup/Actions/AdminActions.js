@@ -1639,3 +1639,12 @@ export const deletedTodo=(flag) => {
       }
   }
     }
+  
+    export const getAllClient = async () => {
+      try {
+       const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
+        return response.data;
+      }catch(err){
+        console.log("error while fetching all clients", err);
+      }
+    }

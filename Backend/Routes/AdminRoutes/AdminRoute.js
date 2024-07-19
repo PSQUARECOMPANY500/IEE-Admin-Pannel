@@ -324,7 +324,7 @@ router.delete('/todo/removeTodo/:id',adminContoller.deleteTask);
 router.get('/todo/getTodoById/:id',adminContoller.getTodoById);
 router.put('/todo/updateTodoById/:id',adminContoller.updateTaskById);
 //--------- Todo all route ----------Rahul Kumar--------------------
-
+router.get('/getAllClients',adminContoller.getAllClients);
 // router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
 
 
