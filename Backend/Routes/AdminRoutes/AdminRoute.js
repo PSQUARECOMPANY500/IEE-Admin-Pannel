@@ -330,7 +330,7 @@ router.get('/getAllClients',adminContoller.getAllClients);
 
 
 
-router.get('/getEnggSparePartRevenueData/:EnggId',adminContoller.getEnggSparePartRevenueData);
+router.get('/getEnggSparePartRevenueData/:EnggId', adminContoller.getEnggSparePartRevenueData);
 
 
 router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSparePartProfitSummaryGraphData);
@@ -348,6 +348,9 @@ router.post('/upgradClientMembership',storageMembershipUpgradeBill.fields([
 ,adminContoller.upgradClientMembership);
 
 
+
+// api for putting data
+router.post("/putEngineerAttendence", adminContoller.putEngineerAttendence);
 
 
 module.exports = router;

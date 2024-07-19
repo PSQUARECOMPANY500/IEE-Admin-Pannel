@@ -1555,10 +1555,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1898,7 +1898,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2639,7 +2639,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -3127,8 +3127,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-          ? EnggDataChecker.EnggPhoto
-          : "",
+            ? EnggDataChecker.EnggPhoto
+            : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3147,28 +3147,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-          ? EnggDataChecker.AddharPhoto
-          : "",
+            ? EnggDataChecker.AddharPhoto
+            : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-          ? EnggDataChecker.DrivingLicensePhoto
-          : "",
+            ? EnggDataChecker.DrivingLicensePhoto
+            : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-          ? EnggDataChecker.PancardPhoto
-          : "",
+            ? EnggDataChecker.PancardPhoto
+            : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-          ? EnggDataChecker.QualificationPhoto
-          : "",
+            ? EnggDataChecker.QualificationPhoto
+            : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-          ? EnggDataChecker.AdditionalCoursePhoto
-          : "",
+            ? EnggDataChecker.AdditionalCoursePhoto
+            : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3285,7 +3285,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3297,7 +3297,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3357,7 +3357,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3369,7 +3369,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3611,7 +3611,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3623,7 +3623,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3803,6 +3803,53 @@ module.exports.getAllClients = async (req,res) => {
   }
 }
 //-
+
+
+module.exports.putEngineerAttendence = async (req, res) => {
+  try {
+    const engineerData = await ServiceEnggData.find();
+
+    await Promise.all(
+      engineerData.map(async (engineer) => {
+        for (let i = 60; i > 0; i--) {
+          let today = new Date();
+          today.setDate(today.getDate() - 4);
+          today.setDate(today.getDate() - i);
+
+          let date = String(today.getDate()).padStart(2, '0');
+          let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+          let year = today.getFullYear();
+
+          let formattedDate = `${date}/${month}/${year}`;
+          let checkInTime = getRandomTime(8, 9, 30, 59); // Random time between 08:30 and 09:30
+          let checkOutTime = getRandomTime(17, 18, 0, 59); // Random time between 17:00 and 18:00
+
+          const checkInData = {
+            IsAttendance: true,
+            ServiceEnggId: engineer.EnggId,
+            Check_In: {
+              engPhoto: "emptyProfile.webp",
+              time: checkInTime
+            },
+            Check_Out: {
+              engPhoto: "emptyProfile.webp",
+              time: checkOutTime
+            },
+            Date: formattedDate
+          };
+
+          await EnggAttendanceServiceRecord.create(checkInData);
+          console.log(checkInData);
+        }
+      })
+    );
+
+    res.status(200).json({ success: true, message: "All OK" });
+  } catch (error) {
+    console.error("Error in putEngineerAttendence:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
+  }
+};
 
 
 
