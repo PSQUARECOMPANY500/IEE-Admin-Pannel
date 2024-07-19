@@ -16,6 +16,8 @@ body {
   user-select: none;
   /* Standard syntax */
   z-index: 0;
+
+
 }
 
 code {
@@ -542,7 +544,7 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 57rem;
+  height: 50rem;
   transition: border 1s ease;
 }
 

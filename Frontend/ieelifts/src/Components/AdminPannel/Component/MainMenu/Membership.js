@@ -156,7 +156,6 @@ const Membership = () => {
         {cards &&
           cards.map((items, index) => {
             if (index === cards.length - 1) return null;
-
             return (
               <MembershipCard
                 key={index}
@@ -170,6 +169,8 @@ const Membership = () => {
                   click(true);
                 }}
               />
+              
+           
             );
           })}
         {setClick && cards[4] && (
@@ -184,6 +185,7 @@ const Membership = () => {
               click(true);
             }}
           />
+       
         )}
       </div>
     </div>

@@ -851,11 +851,18 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
 
 //function to handle GetAllClients infromation
 module.exports.getAllClientsData = async (req, res) => {
+
   try {
     const clients = await clientDetailSchema.find();
+    const {page,limit}=req.query;
+    const skip = page*limit;
+    const paginatedClients = clients.slice(0, skip)
+   const totalPage=Math.ceil(clients.length /limit);
     res.status(200).json({
       message: "all  Clients fetched Succesfully",
-      Clients: clients,
+      Clients:paginatedClients,
+      totalPage,
+      
     });
   } catch (error) {
     console.log(error);

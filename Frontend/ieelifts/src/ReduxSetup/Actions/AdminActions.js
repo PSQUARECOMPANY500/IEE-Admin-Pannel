@@ -33,6 +33,7 @@ export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
 
 export const CHANGE_CLIENT_LAYOUT = "CHANGE_CLIENT_LAYOUT";
 export const CHANGE_MEMBERSHIP_LAYOUT = "CHANGE_MEMBERSHIP_LAYOUT";
+export const ENGINEER_SEARCH_HANDLER_STATE="ENGINEER_SEARCH_HANDLER_STATE";
 
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
@@ -780,15 +781,20 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-export const getClients = () => {
+export const getClients = (page) => {
+
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/AllClients`);
+      const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
+     
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) {
+
+    }
+    
   };
 };
 
@@ -1579,6 +1585,13 @@ export const getEnggCheckinOrNotOnToadaysDate = async (EnggId) => {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const engSearchHandler =  (Engkey)=>{
+    return {
+      type: ENGINEER_SEARCH_HANDLER_STATE,
+      payload: { Engkey }, 
+    };
+  }
 
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {

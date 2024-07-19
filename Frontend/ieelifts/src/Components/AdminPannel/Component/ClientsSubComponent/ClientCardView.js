@@ -4,8 +4,10 @@ import { GoPerson } from "react-icons/go";
 import { GrHomeRounded } from "react-icons/gr";
 import { IoCallOutline } from "react-icons/io5";
 import ClientModal from "./ClientModal";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-const ClientCardView = ({ clientData }) => {
+const ClientCardView = ({ clientData ,isLoading}) => {
   const [showClientModal, setShowClientModal] = useState(false);
 
   const [selectedClient, setSelectedClient] = useState(null)
@@ -43,7 +45,7 @@ const ClientCardView = ({ clientData }) => {
     <div className="ClientCatainer">
       {clientData &&
         clientData.map((client, index) => (
-          <div
+       <div
             key={index}
             className={`clientCard ${setBoxShadow(client.MembershipType)}`}
             onClick={() => HandleCardClick(client)}
@@ -119,6 +121,11 @@ const ClientCardView = ({ clientData }) => {
 
       {/* --------------------------------Raj--------------------- */}
 
+      {
+       isLoading?Array.from(Array(6)).map(()=>{
+         return <Skeleton count={1}  height={200} borderRadius={'20px'}/>
+        }):null
+      }
       <ClientModal
         showClientModal={showClientModal}
         handleCloseModal={handleCloseModal}
