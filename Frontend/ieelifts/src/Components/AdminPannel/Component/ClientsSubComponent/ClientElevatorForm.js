@@ -5,15 +5,15 @@ import ElevatorInput from "./ClientsReusableComponent/ElevatorInput";
 const ClientElevatorForm = ({ clientModalInformation }) => {
   const [clientFormData, setClientFormData] = useState({
     pitdepth: clientModalInformation?.dimensions?.pitPoint?.pitDepth,
-    shaftWidth: clientModalInformation.dimensions.pitPoint.shaftWidth,
-    shaftDepth: clientModalInformation.dimensions.pitPoint.shaftDepth,
-    fl: clientModalInformation.dimensions.pitPoint.fl,
-    fr: clientModalInformation.dimensions.pitPoint.fr,
-    pitPoint: clientModalInformation.dimensions.pitPoint.pitDepth,
-    doorHeight: clientModalInformation.dimensions.pitPoint.doorHeight,
-    doorWidth: clientModalInformation.dimensions.pitPoint.doorWidth,
+    shaftWidth: clientModalInformation.dimensions?.pitPoint?.shaftWidth,
+    shaftDepth: clientModalInformation.dimensions?.pitPoint?.shaftDepth,
+    fl: clientModalInformation.dimensions?.pitPoint?.fl,
+    fr: clientModalInformation.dimensions?.pitPoint.fr,
+    pitPoint: clientModalInformation.dimensions?.pitPoint?.pitDepth,
+    doorHeight: clientModalInformation.dimensions?.pitPoint?.doorHeight,
+    doorWidth: clientModalInformation.dimensions?.pitPoint?.doorWidth,
     floorToFloorHeight:
-      clientModalInformation.dimensions.pitPoint.floorToFloorHeight,
+      clientModalInformation.dimensions?.pitPoint?.floorToFloorHeight,
     toppointdoorHeight: clientModalInformation.dimensions.topPoint.doorHeight,
     toppointdoorWidth: clientModalInformation.dimensions.topPoint.doorWidth,
     toppointshaftDepth: clientModalInformation.dimensions.topPoint.shaftDepth,

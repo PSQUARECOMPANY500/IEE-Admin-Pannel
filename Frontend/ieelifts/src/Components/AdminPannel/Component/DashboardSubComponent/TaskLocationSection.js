@@ -215,10 +215,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
   // -------------------------filter dropdown end--------------------------
 
   const extractStartTime = (slots) => {
-    return slots[0].split("-")[0];
+    return slots[0]?.split("-")[0];
   };
   const extractEndTime = (slots) => {
-    return slots[slots.length - 1].split("-")[1];
+    return slots[slots.length - 1]?.split("-")[1];
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData) {
@@ -461,7 +461,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
           <div className="Report-section">
             <div className="task-top-section" style={{ cursor: "pointer" }}>
               <p>Report</p>
-            </div>
+            </div>  
 
             <div className="report-description-section">
               <div className="more-descriptive-report">

@@ -163,7 +163,7 @@ const Request = () => {
                             <div className="service-assign">
                               <div className="date-time">
                                 <span>TIME</span>
-                                <p>{time.split("-")[0]}</p>
+                                <p>{time?.split("-")[0]}</p>
                               </div>
 
                               <div className="name-3dots">
@@ -235,7 +235,7 @@ const Request = () => {
                                 <span>TIME</span>
                                 <p>
                                   {typeof slottime === "string"
-                                    ? slottime.split("-")[0]
+                                    ? slottime?.split("-")[0]
                                     : slottime}
                                 </p>
                               </div>

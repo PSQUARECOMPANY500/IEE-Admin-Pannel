@@ -59,9 +59,13 @@ router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
 router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);     
+// router.post(
+//   "/createEnggLocationOnAttendance",checkClientDeviceLogins,
+//   serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
+// );  
 router.post(
-  "/createEnggLocationOnAttendance",checkClientDeviceLogins,
-  serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
+  "/createEnggLocationOnAttendance",
+  serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware for testing purpose only
 );  
 
 //------------------------------------- All Get Requests -----------------------------------------

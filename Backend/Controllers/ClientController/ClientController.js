@@ -272,9 +272,8 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
 
 module.exports.RequestCallbacks = async (req, res) => {
   try {
-
-    console.log("preet")
-    console.log("######################", req.body)
+    console.log("preet");
+    console.log("######################", req.body);
     const {
       JobOrderNumber,
       callbackId,
@@ -299,7 +298,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       RepresentativeNumber,
     });
 
-    console.log("888888888888",newCallback)
+    console.log("888888888888", newCallback);
 
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -897,7 +896,7 @@ module.exports.clientPayment = async (req, res) => {
   try {
     const { amount, currency, JON, MembershipType, Discount } = req.body;
 
-    console.log("MembershipType", MembershipType);
+    console.log("MembershipType", req.body);
 
     if (!amount || !currency) {
       return res
@@ -998,13 +997,19 @@ const caluclateMembershipPriceAndTime = async (
 
   return appliedMembershipPriceDaysToBeAdded;
 };
+
 module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
+    // console.log("*******************",req.params);
+
     const MembershipData = await memberShipDetails.find({ JobOrderNumber });
 
+    // console.log("222222222222222222222222222",MembershipData);
+
     const Details = MembershipData[MembershipData.length - 1];
+    // console.log("8888888888888888888888",Details);
 
     if (Details.IsPaid === true) {
       const data = {
@@ -1034,13 +1039,19 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         updateMembership
       );
 
-      const newDate = new Date();
+      console.log("|||||||||||||||||||||||||||", DaysToBeAdded);
+
+      let newDate = new Date();
       newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+
+      console.log(".......................", newDate);
 
       const finalPurchase = await memberShipDetails.findOneAndUpdate(
         { OrderId: Details.OrderId },
         { EndDate: newDate }
       );
+
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!", finalPurchase);
 
       const data = {
         MembershipType: finalPurchase.MembershipType,
@@ -1086,13 +1097,17 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         { MembershipInvoice: fileName }
       );
 
+      console.log("+++++++++++++++++++++++++++++++++++++++++++++++", data);
+
       return res.status(200).json({
         status: "success",
         Details: data,
       });
     } else {
       await memberShipDetails.findOneAndDelete({ OrderId: Details.OrderId });
+
       const Detail = MembershipData[MembershipData.length - 1];
+      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%",Detail);
 
       const data = {
         MembershipType: Detail.MembershipType,
@@ -1169,7 +1184,7 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
     const splitedData = userId.split("@")[0];
     const splitedData1 = userId.split("@")[1];
 
-    console.log("--------------->",splitedData,splitedData1);
+    console.log("--------------->", splitedData, splitedData1);
 
     let clientToken;
     let enggToken;
@@ -1186,11 +1201,62 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
       );
     }
 
-    res.status(200).json({message:"Token added successfully", status: "success"});
+    res
+      .status(200)
+      .json({ message: "Token added successfully", status: "success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       error: "Error while savinf firebase notification token",
     });
+  }
+};
+
+module.exports.updateClientProfile = async (req, res) => {
+  try {
+    const { JobOrderNumber, name, email, phone, password, profilePic } =
+      req.body;
+    const profile = req.file;
+
+    if (!JobOrderNumber && !name && !email && !phone) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Profile updation failed due to missing fields",
+        });
+    }
+
+    if (
+      (!profilePic && profile && profile.fieldname === undefined) === undefined
+    ) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Profile updation failed due to missing fields for picture",
+        });
+    }
+    await RegisterClientDetails.findOneAndUpdate(
+      {
+        JobOrderNumber,
+      },
+      {
+        name,
+        PhoneNumber: phone,
+        ProfileImage: profile ? profile.filename : profilePic,
+        Password: password,
+        email,
+      }
+    );
+
+    let profilePicture = profilePic || profile;
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

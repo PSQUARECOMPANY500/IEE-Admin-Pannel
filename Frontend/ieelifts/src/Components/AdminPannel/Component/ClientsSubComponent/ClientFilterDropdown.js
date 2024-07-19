@@ -79,7 +79,7 @@ const ClientFilterDropdown = () => {
     {
       type: "elevatorType",
       label: "By Elevator type",
-      options: ["Hydraulic", "Gearless", "Geared"],
+      options: ["Hydrolic", "Gearless", "Geared"],
     },
     {
       type: "location",
@@ -159,18 +159,17 @@ const ClientFilterDropdown = () => {
                               : option
                           )
                         }
-                        className={`${
-                          filterSelections.some(
-                            (selection) =>
-                              selection.type === filter.type &&
-                              selection.condition ===
-                                (filter.type === "location"
-                                  ? option.location
-                                  : option)
-                          )
-                            ? "selected-filter"
-                            : ""
-                        }`}
+                        className={`${filterSelections.some(
+                          (selection) =>
+                            selection.type === filter.type &&
+                            selection.condition ===
+                            (filter.type === "location"
+                              ? option.location
+                              : option)
+                        )
+                          ? "selected-filter"
+                          : ""
+                          }`}
                       >
                         {filter.type === "location" ? option.location : option}
                       </li>

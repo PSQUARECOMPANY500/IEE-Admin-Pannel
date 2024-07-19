@@ -94,7 +94,6 @@ const ClientForm = () => {
   const handleNextPage = () => {
     changeInData(false);
     setToggle(false);
-
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
       allFormData;
 
@@ -128,6 +127,8 @@ const ClientForm = () => {
     } else {
       dispatch(RegisterClientDataAction(formData));
     }
+    closeModal();
+    dispatch(closeClientModalAction());
   };
   //-----------------------------------------------------
   const handlePreviousPage = () => {
@@ -220,80 +221,80 @@ const ClientForm = () => {
     triggerFunction++;
   };
   //----------------------------------------------------------------
-  function validateClientForm(allFormData) {
-    const {
-      clientFormDetails,
-      clientSalesManDetails,
-      clientMembershipDocument,
-    } = allFormData;
-    const { signedQuotation, paymentForm, salesOrder } =
-      clientMembershipDocument;
-    const {
-      jon,
-      userName,
-      phoneNumber,
-      alternativeNumber,
-      email,
-      referenceName,
-      sourceOfLead,
-      dateOfHandover,
-      address,
-      pincode,
-      state,
-      district,
-      city,
-    } = clientFormDetails;
-    const {
-      finalPrice,
-      quotatedPrice,
-      discountInRupees,
-      discountInPercentage,
-      discountAmount,
-      finalAmount,
-    } = clientSalesManDetails;
-    if (
-      !jon ||
-      !userName ||
-      !phoneNumber ||
-      !alternativeNumber ||
-      !email ||
-      !dateOfHandover ||
-      !address ||
-      !pincode ||
-      !state ||
-      !district ||
-      !city
-    ) {
-      return false;
-    }
-    if (sourceOfLead === "Reference") {
-      if (!referenceName) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    if (!signedQuotation || !paymentForm || !salesOrder) {
-      return false;
-    }
-    if (
-      !finalPrice ||
-      !quotatedPrice ||
-      !discountInRupees ||
-      !discountInPercentage ||
-      !discountAmount ||
-      !finalAmount
-    ) {
-      return false;
-    }
-    return true;
-  }
+  // function validateClientForm(allFormData) {
+  //   const {
+  //     clientFormDetails,
+  //     clientSalesManDetails,
+  //     clientMembershipDocument,
+  //   } = allFormData;
+  //   const { signedQuotation, paymentForm, salesOrder } =
+  //     clientMembershipDocument;
+  //   const {
+  //     jon,
+  //     userName,
+  //     phoneNumber,
+  //     alternativeNumber,
+  //     email,
+  //     referenceName,
+  //     sourceOfLead,
+  //     dateOfHandover,
+  //     address,
+  //     pincode,
+  //     state,
+  //     district,
+  //     city,
+  //   } = clientFormDetails;
+  //   const {
+  //     finalPrice,
+  //     quotatedPrice,
+  //     discountInRupees,
+  //     discountInPercentage,
+  //     discountAmount,
+  //     finalAmount,
+  //   } = clientSalesManDetails;
+  // if (
+  //   !jon ||
+  //   !userName ||
+  //   !phoneNumber ||
+  //   !alternativeNumber ||
+  //   !email ||
+  //   !dateOfHandover ||
+  //   !address ||
+  //   !pincode ||
+  //   !state ||
+  //   !district ||
+  //   !city
+  // ) {
+  //   return false;
+  // }
+  // if (sourceOfLead === "Reference") {
+  //   if (!referenceName) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+  // if (!signedQuotation || !paymentForm || !salesOrder) {
+  //   return false;
+  // }
+  //   if (
+  //     !finalPrice ||
+  //     !quotatedPrice ||
+  //     !discountInRupees ||
+  //     !discountInPercentage ||
+  //     !discountAmount ||
+  //     !finalAmount
+  //   ) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   //-------------------------------------------------------------------------
-  useEffect(() => {
-    const val = validateClientForm(allFormData);
-    setValidateNextBtn(val);
-  }, [allFormData]);
+  // useEffect(() => {
+  // const val = validateClientForm(allFormData);
+  // setValidateNextBtn(val);
+  // }, [allFormData]);
   //-------------------------------------------------------------------------
 
   const fetchData = async (jon) => {
@@ -407,10 +408,11 @@ const ClientForm = () => {
                       handleAction={handleReset}
                     />
 
-                    <div className={`${validateNextBtn ? "" : "disabled"}`}>
+                    {/* <div className={`${validateNextBtn ? "" : "disabled"}`}>  todo - infuture */}
+                    <div>
                       <Clientbutton
                         value={"Next"}
-                        className={"client-form-button-yellow"}
+                        className={"client-form-button-yellow"} // next button in future we will just change the functionality to close the modal on next button click
                         handleAction={handleNextPage}
                       />
                     </div>

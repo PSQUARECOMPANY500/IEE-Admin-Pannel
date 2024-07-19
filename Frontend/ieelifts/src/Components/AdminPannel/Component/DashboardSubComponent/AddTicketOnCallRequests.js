@@ -62,6 +62,9 @@ import config from "../../../../config";
      repersentativeName:"",
      repersentativeNumber:"" 
    });
+
+   console.log("length",engDetails.enggName.length);
+
  
    const [ClickListOnSelect, setClickListOnSelect] = useState(null);
    const [selectedSlot, setSelectedSlot] = useState(null);
@@ -70,10 +73,7 @@ import config from "../../../../config";
    const [reName , setreName] = useState("")
    const [reNumber , setreNumber] = useState("")
 
-  //  console.log("reName",reName)
-  //  console.log("reNumber",reNumber)
- 
- 
+
  
    const timeSlots = [
      {
@@ -129,6 +129,7 @@ import config from "../../../../config";
        return;
      }
    });
+
  
    //using use selector to select the checklist in check list state
    const checkList = useSelector((state) => {
@@ -155,13 +156,14 @@ import config from "../../../../config";
      }
      return;
    });
- 
- 
- 
+
+
    const clientDetails = useSelector((state) => {
      return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails?.client
    })
  
+
+  //  console.log("}}}}}}}",clientDetails)
  
  
    useEffect(() => {
@@ -183,6 +185,13 @@ import config from "../../../../config";
        const seconds = currentDate.getSeconds();
        const formattedTime = `${hours}:${minutes}:${seconds}`;
        setTime(formattedTime)
+     }else{
+       setname("")
+       setnumber("")
+       setaddress("")
+       setModelType("")
+       setDate("")
+       setTime("")
      }
  
    }, [clientDetails])
@@ -196,7 +205,7 @@ import config from "../../../../config";
        if (jon) {
          dispatch(requestClientDetailsByJon(jon));
        }
-     }, 1300);
+     }, 1000);
  
      setTimer(newTimer);
  
@@ -221,6 +230,7 @@ import config from "../../../../config";
    useEffect(() => {
      //no problem
      if (getEnggState) {
+      console.log("Engg state is True");
        setEngDetails({
          enggJon: getEnggState.EnggId,
          enggName: getEnggState.EnggName,
@@ -244,8 +254,14 @@ import config from "../../../../config";
  
    const handleEnggSelectionChange = (selectedOptions) => {
      setSelectedEnggId(selectedOptions)// selected Engg id 
-     dispatch(fetchEnggDetailAction(selectedOptions));
+     dispatch(fetchEnggDetailAction(selectedOptions)); 
+     
+     if(selectedOptions.length === 0){
+      dispatch(fetchEnggDetailAction());
+     }
+
    };
+
  
    const handleEnggSelectionChange1 = (value) => {
      setSelectedSlot(value);
@@ -306,7 +322,6 @@ import config from "../../../../config";
            );
          } else {
            toast.error("Please fill all the fields")
-           console.log("not valid input");
          }
        })
      }
@@ -314,8 +329,7 @@ import config from "../../../../config";
      if (setTicketUpdate) {
        setTicketUpdate((prev) => !prev);
      }
-     closeModal();
-   }
+}
  
  
    return (
@@ -697,23 +711,35 @@ import config from "../../../../config";
                          Details={serviceEnggDetail}
                          handleEnggSelectionChange={handleEnggSelectionChange}
  
-                       />) : (<MultiSelectDropdown
-                         placeholder="Please Select Date First"
-                       />)}
+                       />) : (
+                       
+                        <div className="col75">
+                        <input  placeholder={"Select Engineer"} disabled={true} style={{width:"109%",boxShadow:"none"}}/>
+                      </div>
+                       )}
  
                      </div>
                    </div>
                    <div className="sm-box sm-box--2">
                      <div className="col75">
- 
                        {engDetails.enggName ? (<MultiSelectDropdown
                          placeholder={"Select Slot"}
                          slots={filteredSlots}
                          handleEnggSelectionChange={handleEnggSelectionChange1}
  
-                       />) : ((<MultiSelectDropdown
-                         placeholder="Please Select Engg First"
-                       />))}
+                       />) : (
+                        
+                        (
+                       
+                   <div className="col75">
+                   <input  placeholder={"Select Slot"} disabled={true} style={{width:"109%", boxShadow:"none"}}/>
+                 </div>
+                      )
+                      
+                      
+                      )
+                       
+                       }
                      </div>
                    </div>
  

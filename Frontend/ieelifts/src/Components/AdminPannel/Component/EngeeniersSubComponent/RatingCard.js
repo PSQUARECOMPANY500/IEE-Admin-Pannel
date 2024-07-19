@@ -44,8 +44,8 @@ const RatingCard = (props) => {
                 <div className="rating-sub-card-row-left two-line-text"><h5>{clientAddress}</h5></div>
               </div>
               <div className="rating-sub-card-row footer-rating">
-                <h5>{finalSlots[0].split("-")[0]}</h5>
-                <h5>{finalSlots[0].split("-")[1]}</h5>
+                <h5>{finalSlots[0]?.split("-")[0]}</h5>
+                <h5>{finalSlots[0]?.split("-")[1]}</h5>
                 <h5> <span>{ClientRating}</span> <FaRegStar className='rating_star rating_gap'/></h5>
               </div>
             </div>

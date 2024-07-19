@@ -15,7 +15,10 @@ import ClientElevatorDetails from "./ClientElevatorDetails";
 // --------------------Raj -------------------------------------------
 
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
-  const modalRef = useRef();
+
+  console.log("selected client pagedddddddddddddddddddd",selectedClient?.MembershipType);
+
+    const modalRef = useRef();
   // const cardRef = useRef();
 
   // Close modal when clicking outside of it
@@ -114,6 +117,17 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     );
   };
 
+   // Update dropdowns when selectedClient changes
+   useEffect(() => {
+    if (selectedClient) {
+      setDropdowns((prevDropdowns) =>
+        prevDropdowns.map((dropdown) =>
+          dropdown.id === 1 ? { ...dropdown, selectedOption: selectedClient.MembershipType || defaultOptions[1] } : dropdown)
+      );
+    }
+  }, [selectedClient]);
+
+
   const renderComponent = () => {
     switch (dropdowns[2].selectedOption) {
       case "Elevator details":
@@ -130,6 +144,9 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
         return <ClientElevatorDetails selectedClient={selectedClient.JobOrderNumber} />;
     }
   };
+
+
+  
 
   return (
     <>

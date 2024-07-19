@@ -44,6 +44,8 @@ const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFo
 
 const MembershipTable = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
+const clientMembership = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -230,6 +232,8 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       Date: currentDate,
     });
 
+    console.log("******************", currentDetailServiceRequest);
+
     if (currentDetailServiceRequest.length === 0) {
       return res.status(400).json({
         message: "no Service Request for today's",
@@ -262,9 +266,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ? ServiceRequestdetail.Description
           : null;
         const RepresentativeName =
-          ServiceRequestdetail.RepresentativeName || null;
+          ServiceRequestdetail?.RepresentativeName || null;
         const RepresentativeNumber =
-          ServiceRequestdetail.RepresentativeNumber || null;
+          ServiceRequestdetail?.RepresentativeNumber || null;
         return {
           ...item._doc,
           enggName,
@@ -283,6 +287,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       serviceRequestDetail,
     });
   } catch (error) {
+    console.log("get assign service request", error);
     return res.status(500).json({
       error: "Internal server error",
     });
@@ -534,8 +539,7 @@ module.exports.getAllChecklist = async (req, res) => {
 //function to handle   (assign callbacks to Engg)
 module.exports.assignCallbacks = async (req, res) => {
   try {
-
-      // console.log("9999999999999999",req.body);
+    // console.log("9999999999999999",req.body);
 
     const {
       ServiceEnggId,
@@ -550,15 +554,12 @@ module.exports.assignCallbacks = async (req, res) => {
 
     let callback;
 
-
-    
-
     // Check if the callbackId already exists
     const existingCallback = await ServiceAssigntoEngg.findOne({
       callbackId,
     });
 
-    console.log("]]]]]",existingCallback)
+    console.log("]]]]]", existingCallback);
 
     if (existingCallback) {
       // Update existing data
@@ -592,7 +593,7 @@ module.exports.assignCallbacks = async (req, res) => {
         ServiceProcess,
       });
     }
-// console.log("***",callback._id)
+    // console.log("***",callback._id)
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
@@ -1455,6 +1456,7 @@ module.exports.filterClient = async (req, res) => {
             client.MembershipType &&
             client.MembershipType.toLowerCase() === condition.toLowerCase()
         );
+        console.log(membership);
         if (membershipData && membershipData.length) {
           membershipData = [...membershipData, ...membership];
         } else {
@@ -1557,9 +1559,9 @@ module.exports.filterClient = async (req, res) => {
     switch (sortType) {
       case "date":
         if (
-          membershipFilter.length ||
-          elevatorTypeFilter.length ||
-          locationFilter.filter
+          membershipFilter.length > 0 ||
+          elevatorTypeFilter.length > 0 ||
+          locationFilter.length > 0
         ) {
           if (sortcondition === "newest") {
             commonData.sort(
@@ -1575,6 +1577,12 @@ module.exports.filterClient = async (req, res) => {
               message: "Invalid date condition",
             });
           }
+          console.log(
+            "I am here",
+            membershipFilter.length,
+            elevatorTypeFilter.length,
+            locationFilter.filter
+          );
         } else {
           if (sortcondition === "newest") {
             clientData.sort(
@@ -1596,9 +1604,9 @@ module.exports.filterClient = async (req, res) => {
         break;
       case "name":
         if (
-          membershipFilter.length ||
-          elevatorTypeFilter.length ||
-          locationFilter.filter
+          membershipFilter.length > 0 ||
+          elevatorTypeFilter.length > 0 ||
+          locationFilter.length > 0
         ) {
           if (sortcondition === "a-z") {
             commonData.sort((a, b) => a.name.localeCompare(b.name));
@@ -2225,7 +2233,9 @@ module.exports.updatePassword = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.status(200).json({ success:'true', message: "Password updated successfully" });
+    return res
+      .status(200)
+      .json({ success: "true", message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
     return res
@@ -2708,19 +2718,27 @@ module.exports.postElevatorForm = async (req, res) => {
       signedQuotation:
         req?.files?.signedQuotation && req.files.signedQuotation.length > 0
           ? req.files.signedQuotation[0].filename
-          : existingForm.clientMembershipDocument.signedQuotation,
+            ? req.files.signedQuotation[0].filename
+            : existingForm.clientMembershipDocument.signedQuotation
+          : "NA",
       paymentForm:
         req?.files?.paymentForm && req.files.paymentForm.length > 0
           ? req.files.paymentForm[0].filename
-          : existingForm.clientMembershipDocument.paymentForm,
+            ? req.files.paymentForm[0].filename
+            : existingForm.clientMembershipDocument.paymentForm
+          : "NA",
       chequeForm:
         req?.files?.chequeForm && req.files.chequeForm.length > 0
           ? req.files.chequeForm[0].filename
-          : existingForm.clientMembershipDocument.chequeForm,
+            ? req.files.chequeForm[0].filename
+            : existingForm.clientMembershipDocument.chequeForm
+          : "NA",
       salesOrder:
         req?.files?.salesOrder && req.files.salesOrder.length > 0
           ? req.files.salesOrder[0].filename
-          : existingForm.clientMembershipDocument.salesOrder,
+            ? req.files.salesOrder[0].filename
+            : existingForm.clientMembershipDocument.salesOrder
+          : "NA",
     };
 
     if (existingForm) {
@@ -2742,13 +2760,31 @@ module.exports.postElevatorForm = async (req, res) => {
     });
 
     await elevatorFormSchema.save();
+    console.log({
+      JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
+      name: clientFormDetails.userName,
+      PhoneNumber: clientFormDetails.phoneNumber,
+      Address: clientFormDetails.address,
+    });
+
+    await clientDetailSchema.create({
+      JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
+      name: elevatorFormSchema.clientFormDetails.userName,
+      PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
+      Address: elevatorFormSchema.clientFormDetails.address,
+      DateOfHandover: elevatorFormSchema.clientFormDetails.dateOfHandover
+        ? elevatorFormSchema.clientFormDetails.dateOfHandover
+        : "NA",
+      ModelType: elevatorFormSchema.elevatorDetails.type
+        ? elevatorFormSchema.elevatorDetails.type
+        : "NA",
+    });
 
     res.status(200).json({ msg: "data submit successfully" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error",
-      message: err.message,
     });
   }
 };
@@ -3443,7 +3479,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
     const { EnggId } = req.params;
 
     const sparePartData = await ReportTable.find({ EnggId, isVerify: true });
-    
+
     if (sparePartData.length === 0) {
       return res.status(200).json({ message: "no Spare part data Present" });
     }
@@ -3482,7 +3518,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
         return {
           ClientName,
           Date: item.Date,
-          paymentMode:item.paymentMode,
+          paymentMode: item.paymentMode,
           SparePartsChanged,
         };
       })
@@ -3501,18 +3537,17 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
 
 //api to handle get sparePart profitSummary graph Data in Engineers section
 
-module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
+module.exports.GetSparePartProfitSummaryGraphData = async (req, res) => {
   try {
     const { EnggId } = req.params;
-      
 
     //get current week data with the help pf current Date----------------------------
     const getWeekDays = (date) => {
       const dayNames = ["Sunday", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const daysOfWeek = [];
-    
+
       // Get the current day of the week (0 is Sunday, 1 is Monday, ..., 6 is Saturday)
-      const currentDay = date.getDay();    
+      const currentDay = date.getDay();
       // Calculate the date for the start of the week (Sunday)
       const startOfWeek = new Date(date);
       startOfWeek.setDate(date.getDate() - currentDay);
@@ -3521,70 +3556,118 @@ module.exports.GetSparePartProfitSummaryGraphData = async (req,res) => {
         const weekDay = new Date(startOfWeek);
         weekDay.setDate(startOfWeek.getDate() + i);
         daysOfWeek.push({
-          date: weekDay.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }),
-          dayName: dayNames[weekDay.getDay()]
+          date: weekDay.toLocaleDateString("en-IN", {
+            timeZone: "Asia/Kolkata",
+          }),
+          dayName: dayNames[weekDay.getDay()],
         });
       }
-    
+
       return daysOfWeek;
     };
-    
+
     const today = new Date();
     const weekDays = getWeekDays(today);
-  
-//-------------------------------------------------------------------------------
 
-   const WeeklyData =await Promise.all(weekDays.map(async(day) => {
-      return await ReportTable.find({ EnggId, isVerify: true, Date:day.date})
-     })) 
-     
-     const result = WeeklyData.map((dayData, index) => {
-      const totalAmount = dayData.reduce((sum, report) => sum + report.TotalAmount, 0);
+    //-------------------------------------------------------------------------------
+
+    const WeeklyData = await Promise.all(
+      weekDays.map(async (day) => {
+        return await ReportTable.find({
+          EnggId,
+          isVerify: true,
+          Date: day.date,
+        });
+      })
+    );
+
+    const result = WeeklyData.map((dayData, index) => {
+      const totalAmount = dayData.reduce(
+        (sum, report) => sum + report.TotalAmount,
+        0
+      );
       return {
         dayName: weekDays[index].dayName,
-        totalAmount: totalAmount
+        totalAmount: totalAmount,
       };
-     })
+    });
 
-     res.status(200).json({ result });
-
+    res.status(200).json({ result });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error getSpare Graph Data",
     });
   }
-}
+};
 
 //-------------------------------------------------------------------------------------------------------------------
 
-
-
 //api to get check engg checkIn or Not on Current date
 
-module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req,res) => {
+module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
   try {
     const { ServiceEnggId } = req.params;
 
     const selectedDate = new Date();
     const today = new Date(selectedDate);
-    const formattedDate = today.toLocaleDateString('en-GB'); // 'en-GB' locale gives you DD/MM/YYYY format
+    const formattedDate = today.toLocaleDateString("en-GB"); // 'en-GB' locale gives you DD/MM/YYYY format
 
-    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({ServiceEnggId,Date:formattedDate});
+    const isEnggCheckIn = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId,
+      Date: formattedDate,
+    });
 
-    if(!isEnggCheckIn) {
+    if (!isEnggCheckIn) {
       return res.status(200).json({ isCheckIn: false });
     }
 
     return res.status(200).json({ isCheckIn: true });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error while getting engg CheckIn Data",
     });
   }
+};
+
+//----------------------------------------------------------------------------------------------------------------------
+
+
+//api to upgrade client Membership from the admin Pannel
+
+module.exports.upgradClientMembership = async (req,res) => {
+  try {
+    const {JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
+    const clientExist = await clientDetailSchema.findOne({JobOrderNumber:JobOrderNumber});
+
+    if(!clientExist){
+      return res.status(400).json({ message: "Client not found" });
+    }
+
+    const newMembership = await clientMembership.create({
+      JobOrderNumber,
+      MembershipType,
+      PricePaid,
+      Duration,
+      StartDate,
+      MembershipInvoice: req.files.MembershipInvoice[0].filename,
+      IsPaid:false,
+      OrderId:1,
+    });
+
+    res.status(200).json({ message: "Client Membership upgraded successfully",newMembership });
+
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while upgrading client Membership",
+    });
+  }
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
+
+
+

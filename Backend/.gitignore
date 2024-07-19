@@ -5,11 +5,11 @@
 /.pnp
 .pnp.js
 
+/.git
+/.github
+.env
 # testing
-/coverage
-
-# production
-/build                                                           
+/coverage                                                   
 
 # misc
 .DS_Store
@@ -21,3 +21,6 @@
 npm-debug.log*
 yarn-debug.log*                                            
 yarn-error.log*
+
+
+/public

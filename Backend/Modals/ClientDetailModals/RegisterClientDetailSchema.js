@@ -14,7 +14,6 @@ const clientRegister = new Schema(
     },
     Password: {
       type: String,
-      required: true,
     },
     PhoneNumber: {
       type: String,
@@ -26,29 +25,28 @@ const clientRegister = new Schema(
     },
     DateOfHandover: {
       type: String,
-      required: true,
     },
     ProfileImage: {
       type: String,
-      required: true,
     },
     ModelType: {
       type: String,
-      required: true,
     },
-    MembershipTpye: {
+    MembershipType: {
       type: String,
+      enum: ["Inwarrenty", "Gold", "Platinum", "Silver"],
+      default: "silver",
     },
     CallbackCount: {
       type: String,
     },
-    Razorpay_customer_ID:{
+    Razorpay_customer_ID: {
       type: String,
     },
-    MembershipDiscount:{
+    MembershipDiscount: {
       type: String
     },
-    firebaseToken:{
+    firebaseToken: {
       type: String
     }
 
@@ -58,9 +56,17 @@ const clientRegister = new Schema(
   }
 );
 
+clientRegister.pre("save", function (next) {
+  if (!this.Password) {
+    // this.EnggId = Math.floor(100000 + Math.random() * 900000).toString();
+    this.Password = Math.floor(100000 + Math.random() * 900000).toString();
+  }
+  next();
+});
 const clientRegistration = mongoose.model(
   "RegisterClientJONDetails",
   clientRegister
 );
+
 
 module.exports = clientRegistration;

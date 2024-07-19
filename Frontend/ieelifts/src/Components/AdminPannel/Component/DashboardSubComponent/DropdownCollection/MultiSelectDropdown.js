@@ -95,11 +95,7 @@ const MultiSelectDropdown = ({
     }),
     valueContainer: (provided) => ({
       ...provided,
-      height:'auto',
-  
-   
-      
-
+      height:'auto', 
     }),
   };
   
