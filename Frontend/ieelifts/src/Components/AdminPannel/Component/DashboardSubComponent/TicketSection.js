@@ -318,10 +318,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   }, [filterConditions]);
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
-<<<<<<< HEAD
-=======
     // console.log("re-rendering ho rahi hai");
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);

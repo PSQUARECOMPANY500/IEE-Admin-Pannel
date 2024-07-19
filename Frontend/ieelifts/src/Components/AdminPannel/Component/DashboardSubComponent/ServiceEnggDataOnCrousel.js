@@ -6,7 +6,6 @@ import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 import config from "../../../../config";
 
-<<<<<<< HEAD
 const ServiceEnggDataOnCrousel = ({
   item,
   index,
@@ -21,10 +20,6 @@ const ServiceEnggDataOnCrousel = ({
 
   // console.log("traj", item)
 
-=======
-const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHover }) => {
-  const smallLaptopSizes  = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState([false]);
@@ -34,10 +29,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
   const handleMessageBoxClose = () => {
     setShowMessage(false);
   };
-<<<<<<< HEAD
-
-=======
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
   const assignArray = (item) => {
     if (item.filteredServiceAssignmentsWithClientName) {
       item.filteredServiceAssignmentsWithClientName.forEach((itemData) => {
@@ -50,10 +41,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
     }
   };
   assignArray(item);
-<<<<<<< HEAD
-
-=======
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
   const useClickOutside = (ref, handler) => {
     useEffect(() => {
       const handleClickOutside = (event) => {
@@ -143,10 +130,6 @@ const ServiceEnggDataOnCrousel = ({ item, index, len, setClick, setOnClick ,isHo
           )}
         </div>
       </div>
-<<<<<<< HEAD
-
-=======
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
       <div className="main-head-div">
         {renderArray.length == 0 ? (
           <div className="skill-box">

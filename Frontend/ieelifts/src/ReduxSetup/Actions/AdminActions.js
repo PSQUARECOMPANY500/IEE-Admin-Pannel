@@ -97,14 +97,10 @@ export const UPDATE_CLIENT_FORM_USING_PAGINATION =
   "UPDATE_CLIENT_FORM_USING_PAGINATION";
 export const GET_CLIENT_FORM_DATA = "GET_CLIENT_FORM_DATA";
 export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
-<<<<<<< HEAD
-=======
 export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
 export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
-export const DELETE_TODO = "DELETE_TODO";
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
-
+export const DELETE_TODO = "DELETE_TODO"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1514,11 +1510,8 @@ export const getClientCallbackHistory = async (jonId) => {
     console.log("Error while fetching data", error);
   }
 };
-<<<<<<< HEAD
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-=======
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
 
 export const getClientServiceHistory = async (jonId) => {
   try {
@@ -1530,11 +1523,8 @@ export const getClientServiceHistory = async (jonId) => {
     console.log("Error while fetching data", error);
   }
 };
-<<<<<<< HEAD
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-=======
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
 
 export const getCheckInCheckOuts = async (serviceId, date) => {
   try {
@@ -1547,7 +1537,6 @@ export const getCheckInCheckOuts = async (serviceId, date) => {
   }
 };
 
-<<<<<<< HEAD
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 //Action to handle get Revenue Data sin revenu page table in spare part Section
 export const getRevenueTablerDataAction = async (EnggId) => {
@@ -1590,7 +1579,7 @@ export const getEnggCheckinOrNotOnToadaysDate = async (EnggId) => {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
-=======
+
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {
   try {
@@ -1634,8 +1623,60 @@ export const updateStatus = async (id) => {
     console.log("error while updating status", error);
   }
 };
-// ----------------------action of Offer discount by service id---------------------------
 
+export const updateTodoData = (id, flag) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPDATE_TODO_DATA,
+        payload: {
+          id,
+          flag,
+        },
+      });
+    } catch (error) {
+      console.log("error while dispaching action", error);
+    }
+  };
+};
+
+export const deletedTodo=(flag) => {
+  // console.log(flag)
+    return async (dispatch) => {
+      try{
+        dispatch({
+          type:DELETE_TODO,
+          payload:{
+            flag:flag
+          }
+        })
+      }catch(err){
+        console.log("error while updating delete flag", err);
+      }
+  }
+    }
+ 
+    
+    export const getTodoById = async (id) =>{
+      try{
+          const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
+          return response.data;
+      }catch(err){
+        console.log("error while getting the TodoById", err);
+      }
+    }
+    
+    export const updateTodoDataById = async (id, todo) => {
+      try{
+        const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`,{todo})
+        return response;
+      }catch(err){
+        console.log("error while updating the TodoById", err);
+      }
+    }
+
+
+    
 export const offerDiscountByServiceId = async (
   JobOrderNumber,
   Discount,
@@ -1659,64 +1700,12 @@ export const offerDiscountByServiceId = async (
 };
 
 
-
-export const updateTodoData = (id, flag) => {
-  return async (dispatch) => {
-    try {
-      dispatch({
-        type: UPDATE_TODO_DATA,
-        payload: {
-          id,
-          flag,
-        },
-      });
-    } catch (error) {
-      console.log("error while dispaching action", error);
-    }
-  };
-};
-
-
-export const getTodoById = async (id) =>{
-  try{
-      const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
-      return response.data;
+export const getAllClient = async () => {
+  try {
+   const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
+    return response.data;
   }catch(err){
-    console.log("error while getting the TodoById", err);
+    console.log("error while fetching all clients", err);
   }
 }
-
-export const updateTodoDataById = async (id, todo) => {
-  try{
-    const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`,{todo})
-    return response;
-  }catch(err){
-    console.log("error while updating the TodoById", err);
-  }
-}
-
-export const deletedTodo=(flag) => {
-  // console.log(flag)
-    return async (dispatch) => {
-      try{
-        dispatch({
-          type:DELETE_TODO,
-          payload:{
-            flag:flag
-          }
-        })
-      }catch(err){
-        console.log("error while updating delete flag", err);
-      }
-  }
-    }
-  
-    export const getAllClient = async () => {
-      try {
-       const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
-        return response.data;
-      }catch(err){
-        console.log("error while fetching all clients", err);
-      }
-    }
->>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
+// ----------------------action of Offer discount by service id---------------------------

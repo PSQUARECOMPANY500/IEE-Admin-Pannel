@@ -3776,6 +3776,26 @@ module.exports.upgradClientMembership = async (req,res) => {
 }
 
 
+/**
+ * ---------------------------------------Rahul Kumar 18/07/2024---------------------------
+ * api to get all client data
+ */
+
+module.exports.getAllClients = async (req,res) => {
+  try{
+     const clients = await clientDetailSchema.find({})
+     res.status(200).json({
+       message: "Success",
+       data: clients
+     })
+  }catch(err){
+   console.log(err);
+   return res.status(500).json({
+     error: "Internal server error while fetching clients data"
+   })
+  }
+}
+//-
 
 
 
