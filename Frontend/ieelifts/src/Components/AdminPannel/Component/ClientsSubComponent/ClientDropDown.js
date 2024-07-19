@@ -8,26 +8,18 @@ import MembershipPopup from "./MembershipPopup";
 {
   /* -------------------------------------code by Raj----------------------------------------- */
 }
-const ClientDropDown = ({
-  options,
-  selectedOption,
-  showOptions,
-  defaultName,
-  toggleOptions,
-  handleOptionClick,
-  w,
-  id,
-}) => {
+const ClientDropDown = ({options,selectedOption,showOptions,defaultName,toggleOptions,handleOptionClick,w,id,}) => {
   const hasSpecialOption =
     selectedOption.includes("Warranty") ||
-    selectedOption.includes("Gold") ||
+    selectedOption.includes("Gold") ||            
     selectedOption.includes("Platinum") ||
     selectedOption.includes("Silver");
 
-  console.log("selectedOption", selectedOption);
+  console.log("selectedOption////////////////////////////////", selectedOption);
 
   const [selectedIcon, setSelectedIcon] = useState([]);
   const [openPopUp, setOpenPopUp] = useState(false);
+
 
   const [warrentyColor, setWarrentyColor] = useState();
 

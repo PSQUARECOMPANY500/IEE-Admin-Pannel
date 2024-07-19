@@ -461,7 +461,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
           <div className="Report-section">
             <div className="task-top-section" style={{ cursor: "pointer" }}>
               <p>Report</p>
-            </div>
+            </div>  
 
             <div className="report-description-section">
               <div className="more-descriptive-report">

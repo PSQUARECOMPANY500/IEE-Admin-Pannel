@@ -44,6 +44,8 @@ const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFo
 
 const MembershipTable = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
+const clientMembership = require("../../Modals/MemebershipModal/MembershipsSchema")
+
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const mongoose = require("mongoose");
@@ -3630,3 +3632,42 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 };
 
 //----------------------------------------------------------------------------------------------------------------------
+
+
+//api to upgrade client Membership from the admin Pannel
+
+module.exports.upgradClientMembership = async (req,res) => {
+  try {
+    const {JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
+    const clientExist = await clientDetailSchema.findOne({JobOrderNumber:JobOrderNumber});
+
+    if(!clientExist){
+      return res.status(400).json({ message: "Client not found" });
+    }
+
+    const newMembership = await clientMembership.create({
+      JobOrderNumber,
+      MembershipType,
+      PricePaid,
+      Duration,
+      StartDate,
+      MembershipInvoice: req.files.MembershipInvoice[0].filename,
+      IsPaid:false,
+      OrderId:1,
+    });
+
+    res.status(200).json({ message: "Client Membership upgraded successfully",newMembership });
+
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while upgrading client Membership",
+    });
+  }
+}
+
+
+
+
+

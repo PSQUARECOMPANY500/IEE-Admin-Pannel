@@ -6,7 +6,7 @@ const checkClientDeviceLogins = async (req, res, next) => {
 
   let Token = req.header("Authorization");
 
-  console.log("\\\\\\\\\\\\\\\\",Token)
+  // console.log("\\\\\\\\\\\\\\\\",Token)
 
   const token = Token && Token?.split(" ")[1];
 
