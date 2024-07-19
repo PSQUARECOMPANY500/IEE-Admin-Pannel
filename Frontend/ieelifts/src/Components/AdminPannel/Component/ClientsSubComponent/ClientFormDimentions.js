@@ -261,7 +261,7 @@ const ClientFormDimentions = ({
           }  `}
           onClick={handleOnClick}
         >
-          Generate dimensions{" "}
+          Generate Dimensions{" "}
           <img src="generateicon.png" alt="icon" className="generateIcon" />
         </div>
       )}

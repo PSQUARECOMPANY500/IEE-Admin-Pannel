@@ -27,7 +27,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
       return null;
     }
   });
-  console.log("clientModalInformation***********************************************************",clientModalInformation)
+  // console.log("clientModalInformation***********************************************************",clientModalInformation)
   // console.log("Rajjjjjjjjjj",clientModalInformation.elevatorDetails.levelOpening)
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                 <div className="client-form-elevator-details">
                   <LeftElevatorDetails
                     degree={{}}
-                    capacityUnit={"Pr"}
+                    capacityUnit={ clientModalInformation?.elevatorDetails?.capacityUnit}
                     // basementSelection={{ b1: true, b2: false }}
                     basementSelection={
                       clientModalInformation?.elevatorDetails?.stops?.Basement
@@ -130,7 +130,7 @@ const ClientElevatorDetails = ({ selectedClient }) => {
                 </div>
                 <div className="client-form-next-floor">
                 
-                  <ClientElevatorForm/>
+                  <ClientElevatorForm  clientModalInformation={clientModalInformation}/>
 
                 </div>
               </div>

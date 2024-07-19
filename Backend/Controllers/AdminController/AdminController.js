@@ -52,6 +52,8 @@ const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
+const { response } = require("express");
+const TodoSchema = require('../../Modals/TodoModel/TodoSchema');
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -3469,6 +3471,112 @@ module.exports.DepositeEnggCash = async (req, res) => {
     });
   }
 };
+
+/**
+ * ---------------------------------------Rahul Kumar 24/06/2024---------------------------
+ */
+// api to add todo task
+module.exports.AddTodo = async (req, res)=>{
+  try{
+    const {todo} = req.body;
+      await TodoSchema.create(todo);     
+      res.status(200).json({
+        message: "Task added successfully"
+      })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while adding the task"
+    })
+  }
+} 
+module.exports.getAllTodos = async (req,res) =>{
+  const adminId = req.params.adminId;
+  try{
+    const todos = await TodoSchema.find({adminId:adminId});
+    res.status(200).json({
+      message: "Success",
+      data: todos
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while fetching the task"
+    })
+  }
+}
+
+module.exports.updateTask = async (req,res) => {
+  const id = req.params.id;
+  const status = 'Completed'
+  try{
+    await TodoSchema.findByIdAndUpdate(id, {status: status});
+    res.status(200).json({
+      message: "Task status updated successfully"
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while updating the task status"
+    })
+  }
+}
+
+module.exports.deleteTask = async (req,res) => {
+  const id = req.params.id;
+  try{
+    await TodoSchema.findByIdAndDelete(id);
+    res.status(200).json({
+      message: "Task deleted successfully"
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while deleting the task"
+    })
+  }
+}
+
+module.exports.updateTaskById = async (req, res) => {
+  const id = req.params.id;
+  const { todo } = req.body;
+  const {taskName,memberId,taskDate,taskTime,status,priority,} = todo;
+
+  try {
+    const result = await TodoSchema.findByIdAndUpdate(id, {taskName:taskName,memberId:memberId,taskDate:taskDate,taskTime:taskTime,status:status,priority:priority }, { new: true });
+    if (!result) {
+      return res.status(404).json({
+        message: "Task not found",
+      });
+    }
+    res.status(200).json({
+      message: "Task updated successfully",
+      task: result,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while updating the task",
+    });
+  }
+}
+
+
+module.exports.getTodoById = async (req,res) => {
+  const id = req.params.id;
+  try{
+     const todo = await TodoSchema.findById(id);
+     res.status(200).json({
+      message: "Success",
+      data: todo
+    })
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while fetching the task"
+    })
+  }
+}
 
 //-------------------------------------------------------------------------------------------------------
 

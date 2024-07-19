@@ -1,7 +1,6 @@
 //................................{preet}....................................
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "../DashboardSubComponent/DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/MultiSelectDropdown";
@@ -28,9 +27,7 @@ const ServiceRequestModal = ({
   isAssigned,
 }) => {
   const dispatch = useDispatch();
-
   const [selectedEnggId, setSelectedEnggId] = useState([]);
-
   //  manage use states for the input fields
   const [jon, setJon] = useState("");
   const [name, setName] = useState("");
@@ -51,14 +48,13 @@ const ServiceRequestModal = ({
     enggRating: "",
     enggPhoto: "",
   });
-
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
   const [fetchedDate, setfetchedDate] = useState("");
 
   //slots logic here ends-------------------------------------------------
-  // use use selector select to select the service engg state
+  // use selector select to select the service engg state
   const serviceEnggDetail = useSelector((state) => {
     if (
       state.AdminRootReducer &&

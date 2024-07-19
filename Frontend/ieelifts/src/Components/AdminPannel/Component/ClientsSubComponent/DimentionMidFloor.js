@@ -33,6 +33,7 @@ export const DimentionMidFloor = ({
                 id={`shaftWidth-${index}`}
                 click={click[`shaftWidth-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
             <div>
@@ -45,6 +46,7 @@ export const DimentionMidFloor = ({
                 onChange={(i,event) => handleInputChange(i,event)}
                 click={click[`shaftDepth-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
             <div>
@@ -57,6 +59,7 @@ export const DimentionMidFloor = ({
                 id={`doorWidth-${index}`}
                 click={click[`doorWidth-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
             <div>
@@ -69,6 +72,7 @@ export const DimentionMidFloor = ({
                 id={`doorHeight-${index}`}
                 click={click[`doorHeight-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
             <div>
@@ -81,6 +85,7 @@ export const DimentionMidFloor = ({
                 id={`floorToFloorHeight-${index}`}
                 click={click[`floorToFloorHeight-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
             <div className="floor-fl-fr-container">
@@ -93,6 +98,7 @@ export const DimentionMidFloor = ({
                 id={`fl-${index}`}
                 click={click[`fl-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
               <TextInput
                 label={"FR"}
@@ -103,6 +109,7 @@ export const DimentionMidFloor = ({
                 id={`fr-${index}`}
                 click={click[`fr-${index}`] || false}
                 onBlur={handleClickFalse}
+                type={"number"}
               />
             </div>
           </div>
@@ -115,11 +122,12 @@ export const DimentionMidFloor = ({
                 }`}
               >
                 <span>Floor Front</span>
-                <img src="./uploadIcon.png" className="upload-icon" />
+                <img src="./uploadIcon.png" className="upload-icon" alt='uploadIcon'/>
                 <input
                   className="hidden-input"
                   type="file"
                   onChange={(e) => handleFileChangeInLevel(e)}
+                   accept=".jpeg,.jpg,.pdf"
                 />
               </label>
               {fileNames[index] && (

@@ -11,7 +11,6 @@ const ServiceScheduledTable = () => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [totalCheckboxes, setTotalCheckboxes] = useState(0);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState(0);
-  
 
   const handleCheckBoxAll = () => {
     const updatedStates = {};
@@ -22,20 +21,17 @@ const ServiceScheduledTable = () => {
     setCheckboxStates(updatedStates);
     setCheckedAll(newValue);
   };
-
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => ({
       ...prevStates,
       [index]: !prevStates[index],
     }));
   };
-
   const openModal = (modalNumber) => {
     if (modalNumber === 5) {
       setShowTicketModal5(true);
     }
   };
-
   const data = [
     {
       JON: 563553,

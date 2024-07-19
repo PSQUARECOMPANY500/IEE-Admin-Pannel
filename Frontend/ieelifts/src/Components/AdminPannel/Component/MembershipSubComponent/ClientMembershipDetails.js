@@ -78,7 +78,7 @@ const ClientMembershipDetails = ({ isExpired, dataType }) => {
             )}
             {clientDetail && clientDetail.responseData && (
               <>
-                <OfferButton isExpired={isExpired} dataType={dataType} />
+                <OfferButton isExpired={isExpired} dataType={dataType} clientDetail={clientDetail} />
               </>
             )}
           </div>

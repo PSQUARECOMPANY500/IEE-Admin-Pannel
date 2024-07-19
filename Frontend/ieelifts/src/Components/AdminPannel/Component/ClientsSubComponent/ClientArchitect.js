@@ -18,8 +18,22 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
     });
   }, [reset]);
   const [click, setClick] = useState({});
+
   const hadleInputChnage = (e) => {
     const { name, value } = e.target;
+    if(name==='architectName' || name==='contractorName' ){
+      const hasNumbers = /\d/.test(value)
+      if(hasNumbers){
+        return 
+      }
+     }
+     if(name==="contractorNumber" && value.length>10){
+      return;
+     }
+     if(name==="architectNumber" && value.length>10){
+      return;
+     }
+    
     setClientFormData({ ...clientFormData, [name]: value });
   };
 
@@ -57,13 +71,14 @@ useMemo(()=>{
         </div>
         <div>
           <TextInput
-            label={"Number"}
+            label={"Phone Number"}
             name={"architectNumber"}
             onFocus={handleClick}
             value={clientFormData.architectNumber}
             onChange={hadleInputChnage}
             click={click.architectNumber}
             onBlur={handleClickFalse}
+            type={"number"} 
           />
         </div>
         <div>
@@ -75,17 +90,19 @@ useMemo(()=>{
             onChange={hadleInputChnage}
             click={click.contractorName}
             onBlur={handleClickFalse}
+            
           />
         </div>
         <div>
           <TextInput
-            label={"Number"}
+            label={"Phone Number"}
             name={"contractorNumber"}
             onFocus={handleClick}
             value={clientFormData.contractorNumber}
             onChange={hadleInputChnage}
             click={click.contractorNumber}
             onBlur={handleClickFalse}
+            type={"number"} 
           />
         </div>
       </div>

@@ -296,6 +296,10 @@ const TopBar = (props) => {
 
                 <i className="search-btn ">
                   <RiSearchLine className="iconColor" />
+<<<<<<< HEAD
+=======
+                  {/* <RiSearchLine className="iconColor" /> */}
+>>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
                 </i>
               </div>
             </span>

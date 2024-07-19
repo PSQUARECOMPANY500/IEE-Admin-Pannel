@@ -16,7 +16,7 @@ import AddTicketModals from "./AddTicketModals";
 import { RiSearchLine } from "react-icons/ri";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
-
+import { CSVLink, CSVDownload } from "react-csv";
 import {
   getFilterLocation,
   getEngineerNames,
@@ -35,9 +35,17 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [showTicketModal2, setShowTicketModal2] = useState(false);
   const [showTicketModal3, setShowTicketModal3] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
+  
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [csvData,setCsvData] = useState([]);
+  const [selectedClientArray,setSelectedClientArray]= useState([]);
+  const [clientData,setClientData] = useState([]);
 
   // const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState([]);
+  // console.log("checkboxStates",checkboxStates)
+
+
 
   const fetchCallbacks = useSelector((state) => {
     if (
@@ -308,14 +316,17 @@ const TicketSection = ({ setTicketUpdate }) => {
       setGetFilterConditions(true);
     }
   }, [filterConditions]);
-
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
+<<<<<<< HEAD
+=======
+    // console.log("re-rendering ho rahi hai");
+>>>>>>> b3c7b4d5f463b13993f8c2e59b297f359b6af562
     setFilteredCD(fetchCallbacks);
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);
   }, [fetchCallbacks]);
-
+   
   useEffect(() => {
     if (timer) {
       clearTimeout(timer);
@@ -323,6 +334,7 @@ const TicketSection = ({ setTicketUpdate }) => {
 
     const newTimer = setTimeout(() => {
       if (searchText) {
+
         const data = filtersearch(searchText, allCD);
         setFilteredCD(data);
       } else {
@@ -391,11 +403,18 @@ const TicketSection = ({ setTicketUpdate }) => {
     if (fetchCallbacks && !getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(fetchCallbacks?.length).fill(!allChecked));
+      if(!allChecked){
+        setSelectedClientArray(filteredCD);
+       }else{
+        setSelectedClientArray([]);
+       }
+      
     }
     if (getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(filterData.length).fill(!allChecked));
     }
+
   };
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
@@ -403,6 +422,19 @@ const TicketSection = ({ setTicketUpdate }) => {
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
+
+  let ans = selectedClientArray.includes(filteredCD[index]);
+  console.log(index)
+   if(ans){
+    const removeIndex = selectedClientArray.findIndex( item => item === filteredCD[index] );
+     selectedClientArray.splice(removeIndex,1);
+   }else{
+    setSelectedClientArray((prev)=>(
+      [ ...prev,
+        filteredCD[index]
+     ]
+    ))
+   }
   };
 
   //aayush code for filter start from here--------------------------------------------------------------------------
@@ -448,6 +480,14 @@ const TicketSection = ({ setTicketUpdate }) => {
       setShowTicketModal(true);
     }
   };
+  //------------------------------------Rahul Kumar---------------------------------------
+  // let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name)));
+
+  const handleExcelIconClick = () =>{
+    setCsvData(selectedClientArray)
+  }
+  
+  //--------------------------------------------------------------------------------------
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -472,7 +512,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                     }}
                     value={searchText}
                   />
-
                   <i
                     className="search-btn "
                     onClick={() => {
@@ -485,7 +524,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 </div>
               </span>
             ) : (
-              <img src={pdfIcon} />
+              <img src={pdfIcon}/>
             )}
 
             {/* ............................................................ax13-search...................................................... */}
@@ -495,10 +534,10 @@ const TicketSection = ({ setTicketUpdate }) => {
                 className="sub-components-ticket-filter"
                 ref={dropdownClickRef}
               >
-                <p
-                  className="filter-icon"
-                  onClick={handleFilter}
-                  style={{ cursor: "pointer" }}
+              <p
+                 className="filter-icon"
+                onClick={handleFilter}
+                style={{ cursor: "pointer" }}
                 >
                   <LuSettings2 className="iconColor" />
                   {""}
@@ -514,10 +553,11 @@ const TicketSection = ({ setTicketUpdate }) => {
                 )}
               </div>
             ) : (
-              <img
+              <CSVLink data={csvData}><img className="excelIcon"
                 src={execelIcon}
-                style={{ boxShadow: "0px 3px 6px #00000029" }}
-              />
+                style={{ boxShadow: "0px 3px 6px #00000029" }} onClick={handleExcelIconClick}
+              /></CSVLink>
+              
             )}
 
             {/* add  ticket +icon */}

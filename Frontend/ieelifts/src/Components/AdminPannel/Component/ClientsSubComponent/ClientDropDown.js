@@ -15,7 +15,8 @@ const ClientDropDown = ({options,selectedOption,showOptions,defaultName,toggleOp
     selectedOption.includes("Platinum") ||
     selectedOption.includes("Silver");
 
-  console.log("selectedOption////////////////////////////////", selectedOption);
+  // console.log("selectedOption", selectedOption);
+  
 
   const [selectedIcon, setSelectedIcon] = useState([]);
   const [openPopUp, setOpenPopUp] = useState(false);

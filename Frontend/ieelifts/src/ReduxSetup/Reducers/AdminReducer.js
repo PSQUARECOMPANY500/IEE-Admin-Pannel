@@ -1,4 +1,4 @@
-import { GET_ALL_CALLBACK } from "../Actions/AdminActions";
+import { GET_ALL_CALLBACK, GET_TODO } from "../Actions/AdminActions";
 import { GET_CALLBACK_BY_ID } from "../Actions/AdminActions";
 import { GET_ALL_CLIENT_DETAIL } from "../Actions/AdminActions";
 import { GET_ALL_CHECKLIST } from "../Actions/AdminActions";
@@ -55,6 +55,9 @@ import { GET_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 
 import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
+import { UPDATE_TODO_DATA } from "../Actions/AdminActions";
+import { DELETE_TODO } from "../Actions/AdminActions";
+import { BiArch } from "react-icons/bi";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -332,7 +335,6 @@ export const assignServiceRequestDetailByRequestIdAction = (
   state = intialState8,
   action
 ) => {
-  // console.log("3");
 
   switch (action.type) {
     case GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID:
@@ -842,7 +844,7 @@ export const ReportCrouserHandlerReducer = (
   }
 };
 
-// --------------------- Reducer of getClientModalData -------------------------
+// ------------------------------------------ Reducer of getClientModalData ------------------------------------------------------------------------------------------------------
 
 const ClientModalData = {
   ClientModalInformation: null,
@@ -923,7 +925,6 @@ export const ClientFormDataFromApiReducer = (
   state = ClientFormData,
   action
 ) => {
-  // console.log(action.payload);
   switch (action.type) {
     case GET_CLIENT_FORM_DATA:
       return {
@@ -947,3 +948,72 @@ export const ClearClientFormData = (state = initialState, action) => {
       return state;
   }
 };
+
+// const addTodo = {
+//   todo: null,
+// };
+
+// export const addTodoReducer = (
+//   state = addTodo,
+//   action
+// ) => {
+//   switch (action.type) {
+//     case ADD_TODO:
+//       return {
+//         ...state,
+//         addTodo: action.payload,
+//       };
+//     default:
+//       return state;
+//   }
+// }; 
+
+const allTodos ={
+  todos:null,
+}
+
+export const getTodosReducer = (state=allTodos,action) =>{
+  switch(action.type){
+    case GET_TODO:
+      return {
+        ...state,
+        todos:action.payload,
+      }
+      default:
+        return state;
+  }
+}
+
+const todoData = {
+  id:"",
+  flag:false,
+}
+
+export const updateTodoDataReducer = (state=todoData,action) =>{
+  switch(action.type){
+    case UPDATE_TODO_DATA:
+      return {
+       ...state,
+        id:action.payload.id,
+        flag:action.payload.flag,
+    
+      }
+        default:
+          return state;
+  }
+
+}
+const deleteTodoFlag = {
+  flag: false
+}
+export const deleteTodoReducer = (state=deleteTodoFlag,action) => {
+  switch(action.type){
+    case DELETE_TODO:
+      return {
+       ...state,
+        flag:action.payload.flag,
+      }
+      default:
+        return state;
+  }
+}

@@ -22,9 +22,6 @@ import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSe
 import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-
-
-
 const ServiceRequestModals = ({
   closeModal,
   showTicketModal,

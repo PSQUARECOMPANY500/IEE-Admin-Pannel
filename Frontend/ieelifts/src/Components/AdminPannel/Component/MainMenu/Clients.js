@@ -8,8 +8,8 @@ import ClientForm from "../ClientsSubComponent/ClientForm";
 
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
+  const [isFiltered,setIsFiltered] = useState(false);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getClients());
   },[dispatch]);
@@ -26,7 +26,6 @@ const Clients = () => {
       state?.AdminRootReducer?.ChangeLayoutReducer?.initialLayout?.clientLayout
         ?.layout
   );
-
   const searchClient = useSelector(
     (state) => state?.AdminRootReducer?.searchClientReducer?.clients?.clients
   );
@@ -37,9 +36,17 @@ const Clients = () => {
     }
   }, [clientLayout]);
 
+  useEffect(()=>{
+    if(filteredData || searchClient){
+      setIsFiltered(true);
+    }else{
+      setIsFiltered(false);
+    }
+  },[filteredData,searchClient,clients])
+
   const renderClientView = () => {
     let dataToRender;
-    if (searchClient) {
+    if (searchClient) { 
       dataToRender = searchClient;
     } else if (filteredData) {
       dataToRender = filteredData;
@@ -48,19 +55,15 @@ const Clients = () => {
     }
     
     if (layout === "grid") {
-      console.log("Grid view");
-      return <ClientCardView clientData={dataToRender} />;
+      return <ClientCardView clientData={dataToRender}/>;
     } else {
-      
-      return <ClientTableView clientData={dataToRender} />;
+      return <ClientTableView clientData={dataToRender} isFiltered={isFiltered} />;
     }
   };
-
   return <div className="main-container">
       <ClientForm/>
     {renderClientView()}
-
   </div>;
 };
 
-export default Clients;
+export default Clients; 

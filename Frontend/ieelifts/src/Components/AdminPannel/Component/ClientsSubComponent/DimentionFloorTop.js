@@ -18,6 +18,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                 click={click.shaftWidth}
                 onBlur={handleClickFalse}
                 id={`shaftWidth`}
+                type={"number"}
               />
             </div>
             <div>
@@ -30,6 +31,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                 click={click.shaftDepth}
                 onBlur={handleClickFalse}
                 id={`shaftDepth`}
+                type={"number"}
               />
             </div>
             <div>
@@ -42,6 +44,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                 click={click.doorWidth}
                 onBlur={handleClickFalse}
                 id={`doorWidth`}
+                type={"number"}
               />
             </div>
             <div>
@@ -54,6 +57,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                 click={click.doorHeight}
                 onBlur={handleClickFalse}
                 id={`doorHeight`}
+                type={"number"}
               />
             </div>
           </div>
@@ -68,6 +72,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
               click={click.overhead}
               onBlur={handleClickFalse}
               id={`overhead`}
+              type={"number"}
             />
           </div>
           <div className="site-photos">Site Photos</div>
@@ -80,13 +85,15 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                   }`}
               >
                 <span>Floor Front</span>
-                <img src="./uploadIcon.png " className="upload-icon" />
+                <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                 <input
                   className="hidden-input"
                   type="file"
                   onChange={(e) =>
                     handleFileChangeInFloorFront(e, "topFloorFront")
+                    
                   }
+                   accept=".jpeg,.jpg,.pdf"
                 />
               </label>
               {fileNames["topFloorFront"] && (
@@ -104,13 +111,14 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                     }`}
                 >
                   <span>Top to Bottom</span>
-                  <img src="./uploadIcon.png " className="upload-icon" />
+                  <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon'/>
                   <input
                     className="hidden-input"
                     type="file"
                     onChange={(e) =>
                       handleFileChangeInFloorFront(e, "bottomToTopImages")
                     }
+                     accept=".jpeg,.jpg,.pdf"
                   />
                 </label>
 
@@ -130,13 +138,14 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                     }`}
                 >
                   <span>Overhead</span>
-                  <img src="./uploadIcon.png " className="upload-icon" />
+                  <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                   <input
                     className="hidden-input"
                     type="file"
                     onChange={(e) =>
                       handleFileChangeInFloorFront(e, "Overhead")
                     }
+                     accept=".jpeg,.jpg,.pdf"
                   />
                 </label>
                 {fileNames["Overhead"] && (

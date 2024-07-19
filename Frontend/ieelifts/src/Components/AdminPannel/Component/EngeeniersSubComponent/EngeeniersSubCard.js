@@ -22,9 +22,6 @@ const EngeeniersSubCard = (props) => {
   }, [])
 
 
-  
-
-
 
 
   const handleSingleClick = (index) => {

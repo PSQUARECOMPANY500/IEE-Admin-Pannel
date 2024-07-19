@@ -18,6 +18,7 @@ import { useMediaQuery } from '@react-hook/media-query';
 
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
+import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
 
 const Sidebar = ({ children }) => {
   const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
@@ -30,7 +31,7 @@ const Sidebar = ({ children }) => {
   const [menuIcon2, setMenueIcon2] = useState(true);
 
 
-
+   
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
@@ -90,7 +91,7 @@ const Sidebar = ({ children }) => {
       },
 
     ];
-  } else if (role === "ServiceAdmin") {
+  } else if (role==="ServiceAdmin") {
     menueItems = [
       {
         Path: "/Dashboard",
@@ -122,6 +123,7 @@ const Sidebar = ({ children }) => {
         name: "sos",
         icon: <MdEngineering />,
       },
+      
     ];
   } else if (role === "ErectionAdmin") {
     menueItems = [
@@ -165,6 +167,13 @@ const Sidebar = ({ children }) => {
       case "/ErectionEngeeniers":
         setTopBarHeading("Engineers");
         break;
+      case "/todo":
+        setTopBarHeading("Todo");
+        break;
+      // Add more cases for other pages
+      case "/todo":
+        setTopBarHeading("ToDo");
+        break;
       // Add more cases for other pages
       default:
         setTopBarHeading("Default Heading");
@@ -200,6 +209,9 @@ const Sidebar = ({ children }) => {
     Navigate("/");
   };
 
+  const handleToggleClose = () => {
+    settoogleClose(!toogleOpen);
+  }
   return (
     <div className="container">
       <TopBar isOpen={isOpen} heading={topBarHeading} />
@@ -301,7 +313,7 @@ const Sidebar = ({ children }) => {
             >
               <div className="sub-menu">
                 <hr></hr>
-                <Link to="/" className="sub-menue-link">
+                <Link to="/todo" className="sub-menue-link" onClick={handleToggleClose}>
                   <p>Todo</p>
                 </Link>
                 <Link to="/" className="sub-menue-link">

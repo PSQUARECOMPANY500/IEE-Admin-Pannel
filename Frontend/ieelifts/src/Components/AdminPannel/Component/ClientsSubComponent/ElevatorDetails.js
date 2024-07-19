@@ -54,6 +54,7 @@ const ElevatorDetails = ({
             onChange={hadleInputChnage}
             click={click.pitDepth}
             onBlur={handleClickFalse}
+            type={"number"}
           />
           {/* <span className="mmBtn mm-btn-possition">mm</span> */}
         </div>
@@ -128,7 +129,7 @@ const ElevatorDetails = ({
           <div>
             <div className="btn-container">
               <span 
-                className={`b2-btn ${basementSelection.B2 ? "btn-active" : ""} ${stops == "2" || stops=="1" ? "disabled" : ""}`}
+                className={`b2-btn ${basementSelection.B2 ? "btn-active" : ""} ${stops === "2" || stops==="1" ? "disabled" : ""}`}
                 onClick={() =>
                   handleElevatorDetailsChange("basementSelection", {
                     B1: !basementSelection.B2,
@@ -139,7 +140,7 @@ const ElevatorDetails = ({
                 B2
               </span>
               <span
-                className={`b1-btn ${basementSelection.B1 ? "btn-active" : ""} ${stops=="1"?"disabled":""}`}
+                className={`b1-btn ${basementSelection.B1 ? "btn-active" : ""} ${stops==="1"?"disabled":""}`}
                 onClick={() =>
                   handleElevatorDetailsChange("basementSelection", {
                     B1: !basementSelection.B1,

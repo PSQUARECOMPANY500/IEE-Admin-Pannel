@@ -22,10 +22,10 @@ const ClientFormElevatorDetails = ({
   //dropdown options
   const [elevatorOpenings, setElevatorOpenings] = useState([]);
   const numberOfOpenings = [1, 2, 3];
-  const purpose = ["Hospital", "Automobil", "Passenger"];
-  const typeOptions = ["gearless", "geared"];
+  const purpose = ["Hospital", "Automobile", "Passenger"];
+  const typeOptions = ["Gearless", "Geared"];
   const doorType = [
-    "center opening",
+    "Center Opening",
     "Swing",
     "Manual",
     "Telescopic(LHS)",
@@ -439,11 +439,19 @@ const ClientFormElevatorDetails = ({
         )}
 
         <div
-          className={`dimention-btn ${!visible ? "hide" : ""} ${degree.nintyDegreeLeft!==""|| degree.nintyDegreeRight!==""|| degree.oneEightyDegree!==""?"":"disabled"}`}
+          className={`dimention-btn ${!visible ? "hide" : ""} ${
+            elevatorDetails.numberOfOpenings === 3 || elevatorDetails.numberOfOpenings === "3"&&
+            Object.values(degree).filter((val) => val !== "").length === 2
+              ? ""
+              : elevatorDetails.numberOfOpenings === 2 || elevatorDetails.numberOfOpenings === "2" &&
+                Object.values(degree).filter((val) => val !== "").length >= 1
+              ? ""
+              : "disabled"
+          }`}
           onClick={handleOnClick}
         >
-          Select openings{" "}
-          <img src="generateicon.png" alt="icon" className="generateIcon" />
+          Select Openings{" "}
+          <img src="generateicon.png" alt="icon" className="generateIcon"/>
         </div>
         <div className="text-area-container">
           <textarea

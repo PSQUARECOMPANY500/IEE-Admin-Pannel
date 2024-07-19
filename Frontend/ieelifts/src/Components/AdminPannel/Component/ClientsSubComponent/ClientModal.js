@@ -11,6 +11,7 @@ import ClientServiceHistory from "./ClientServiceHistory";
 import ClientDocuments from "./ClientDocuments";
 import ClientSOSCall from "./ClientSOSCall";
 import ClientElevatorDetails from "./ClientElevatorDetails";
+import ServiceHistory from "./ServiceHistory";
 
 // --------------------Raj -------------------------------------------
 
@@ -99,15 +100,13 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     setDropdowns((prevDropdowns) =>
       prevDropdowns.map((dropdown) =>
         dropdown.id === id
-          ? { ...dropdown, showOptions: !dropdown.showOptions }
+          ? { ...dropdown, showOptions: !dropdown.showOptions}
           : dropdown
       )
     );
   };
 
   const handleOptionClick = (id, option) => {
-
-
     setDropdowns((prevDropdowns) =>
       prevDropdowns.map((dropdown) =>
         dropdown.id === id
@@ -131,17 +130,17 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const renderComponent = () => {
     switch (dropdowns[2].selectedOption) {
       case "Elevator details":
-        return <ClientElevatorDetails selectedClient={selectedClient.JobOrderNumber} />;
-      case "Service History":
-        return <ClientServiceHistory />;
+        return <ClientElevatorDetails selectedClient={selectedClient?.JobOrderNumber} />;
       case "Call Back History":
         return <ClientCallBackHis />;
       case "Document":
         return <ClientDocuments />;
       case "SOS Calls":
         return <ClientSOSCall />;
+      case "Service History":
+        return <ServiceHistory/>;
       default:
-        return <ClientElevatorDetails selectedClient={selectedClient.JobOrderNumber} />;
+        return <ClientElevatorDetails selectedClient={selectedClient?.JobOrderNumber} />;
     }
   };
 

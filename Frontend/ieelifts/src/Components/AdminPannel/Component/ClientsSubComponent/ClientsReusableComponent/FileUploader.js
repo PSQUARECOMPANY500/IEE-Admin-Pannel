@@ -14,7 +14,6 @@ const FileUploader = ({ label, onFileSelect, apiDataName }) => {
       setFileName(label);
     }
   };
-  // Generate a unique ID for each instance
   const inputId = `fileInput-${label.replace(/\s+/g, "-")}`;
   useEffect(() => {
     if (apiDataName) {
@@ -36,6 +35,7 @@ const FileUploader = ({ label, onFileSelect, apiDataName }) => {
         type="file"
         className="fileInput"
         onChange={handleFileChange}
+        accept=".jpeg,.jpg,.pdf"
       />
       <label htmlFor={inputId} className="filename">
         <span>{fileName}</span>

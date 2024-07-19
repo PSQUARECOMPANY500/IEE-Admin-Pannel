@@ -3,8 +3,6 @@ import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
-import ServiceRequestModal from "./ServiceRequestModal";
-
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllServiceRequestsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -14,6 +12,8 @@ const ServiceRequestTable = ({
   setRenderTicket2,
   searchText,
   filterConditions,
+  getCondition,
+  getData
 }) => {
   const dropdownRef = useRef(null);
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ServiceRequestTable = ({
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
   const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
-
+  const [selectedClientArray,setSelectedClientArray]= useState([]);
   useEffect(() => {
     if (filterConditions && filterConditions.length === 0) {
       setGetFilterConditions(false);
@@ -72,7 +72,7 @@ const ServiceRequestTable = ({
           }
         });
       }
-
+ 
       if (locationFilter) {
         let lData = [];
         locationFilter.forEach((location) => {
@@ -109,9 +109,7 @@ const ServiceRequestTable = ({
       setFilterData(responseData);
       setGetFilterConditions(true);
     }
-    console.log("filterData", filterData);
   }, [filterConditions]);
-
   useEffect(() => {
     setTimeout(() => {
       setRenderTicket2((prev) => !prev);
@@ -153,9 +151,7 @@ const ServiceRequestTable = ({
         setShowTicketFilter(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -180,7 +176,6 @@ const ServiceRequestTable = ({
     if (timer) {
       clearTimeout(timer);
     }
-
     const newTimer = setTimeout(() => {
       if (searchText) {
         const data = filtersearch(searchText, allCD);
@@ -231,19 +226,44 @@ const ServiceRequestTable = ({
     if (filteredCD) {
       const allChecked =
         filteredCD && reqCheckboxStates?.every((isChecked) => isChecked);
-
       setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
+      getCondition((prev)=>(
+        !prev
+      ))
+      if(!allChecked){
+        setSelectedClientArray(allCD);
+       }else{
+        setSelectedClientArray([]);
+       }
     }
+   
   };
-
   const handleCheckBoxSingle = (index) => {
     setReqCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
       newCheckboxStates[index] = !prevStates[index];
+      newCheckboxStates.includes(true)?getCondition(false):getCondition(true);
       return newCheckboxStates;
     });
-  };
-
+   
+    let ans = selectedClientArray.includes(allCD[index]);
+     if(ans){
+      const removeIndex = selectedClientArray.findIndex( item => item === allCD[index] );
+       selectedClientArray.splice(removeIndex,1);
+     }else{
+      setSelectedClientArray((prev)=>(
+        [ ...prev,
+          allCD[index]
+       ]
+      ))
+     } 
+  }
+  useEffect(()=>{
+    getData(selectedClientArray)
+  },[selectedClientArray])
+  // useEffect(()=>{
+  //   getData(allCD)
+  // },[allCD])
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -341,7 +361,6 @@ const ServiceRequestTable = ({
                 reqCheckboxStates[index] = true;
                 return null;
               }
-
               return (
                 <tbody key={value._id}>
                   <tr className="selected">

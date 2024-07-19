@@ -14,10 +14,10 @@ useEffect(()=>{
           htmlFor="clientDateInput"
           className={`inputLabel ${inputValue ? 'hidden' : ''}`}
         >
-          Date of handover
+          Date Of Handover
         </label>
       </span>
-      <span className="iconContainer" >
+      <span className="iconContainer">
         <img
           src="calendarIcon.png"
           alt="calendarIcon"
@@ -31,6 +31,7 @@ useEffect(()=>{
         className="clientDateInput"
         value={inputValue}
         onChange={handleInputChange}
+        readOnly
       />
     </div>
   );
