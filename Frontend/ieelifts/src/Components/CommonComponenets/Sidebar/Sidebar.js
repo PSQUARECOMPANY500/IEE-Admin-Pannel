@@ -379,71 +379,73 @@ const Sidebar = ({ children }) => {
             {/* MAIN MENUE items goes here ends */}
 
             {/* OFFICE MENUE items goes here start */}
+
             {
-              pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) :
-                (<> <div className="main-menue" onClick={menuUpDown2}>
-                  <div className="seprate-line"></div>
-                  <label htmlFor="touch2" className="main-menu-style">
-                    <span
-                      className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
-                    >
-                      OFFICE
-                    </span>
-                    {/* <span
-                  style={{ fontSize: isOpen ? "16px" : "0px" }}
-                  className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
-                >
-                  {menuIcon2 ? (
-                    <FiChevronUp style={{ fontSize: "20px" }} />
-                  ) : (
-                    <FaAngleDown />
-                  )}
-                </span> */}
+              // pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) :
+              //   (<> <div className="main-menue" onClick={menuUpDown2}>
+              //     <div className="seprate-line"></div>
+              //     <label htmlFor="touch2" className="main-menu-style">
+              //       <span
+              //         className={isOpen ? "main-menu-adjust" : "main-menu-adjust-2"}
+              //       >
+              //         OFFICE
+              //       </span>
+              //       {/* <span
+              //     style={{ fontSize: isOpen ? "16px" : "0px" }}
+              //     className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
+              //   >
+              //     {menuIcon2 ? (
+              //       <FiChevronUp style={{ fontSize: "20px" }} />
+              //     ) : (
+              //       <FaAngleDown />
+              //     )}
+              //   </span> */}
 
-                    <span
-                      style={{ fontSize: isOpen ? "16px" : "0px" }}
-                      className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
-                    >
-                      <FiChevronUp style={{ fontSize: "20px" }} />
-                    </span>
-                  </label>
-                </div>
+              //       <span
+              //         style={{ fontSize: isOpen ? "16px" : "0px" }}
+              //         className={`menu-icon ${officeMenuOpen ? "rotate" : ""}`}
+              //       >
+              //         <FiChevronUp style={{ fontSize: "20px" }} />
+              //       </span>
+              //     </label>
+              //   </div>
 
-                  {/* <input type="checkbox" id="touch2" /> */}
+              //     {/* <input type="checkbox" id="touch2" /> */}
 
-                  <ul
-                    className="slide"
-                    style={{ height: officeMenuOpen ? "190px" : "" }}
-                  >
-                    <li>
-                      {officeItems.map((item, index) => (
-                        <NavLink
-                          to={item.Path}
-                          key={index}
-                          className="link"
-                          style={{ justifyContent: isOpen ? "" : "center" }}
-                          activeclassname="active"
-                        >
-                          <div className="icon">{item.icon}</div>
-                          <div
-                            style={{ display: isOpen ? "block" : "none" }}
-                            className="link_text"
-                          >
-                            {item.name}
-                          </div>
-                        </NavLink>
-                      ))}
-                    </li>
-                  </ul>
-                </>
-                )
+              //     <ul
+              //       className="slide"
+              //       style={{ height: officeMenuOpen ? "190px" : "" }}
+              //     >
+              //       <li>
+              //         {officeItems.map((item, index) => (
+              //           <NavLink
+              //             to={item.Path}
+              //             key={index}
+              //             className="link"
+              //             style={{ justifyContent: isOpen ? "" : "center" }}
+              //             activeclassname="active"
+              //           >
+              //             <div className="icon">{item.icon}</div>
+              //             <div
+              //               style={{ display: isOpen ? "block" : "none" }}
+              //               className="link_text"
+              //             >
+              //               {item.name}
+              //             </div>
+              //           </NavLink>
+              //         ))}
+              //       </li>
+              //     </ul>
+              //   </>
+              //   )
             }
 
             {/* OFFICE MENUE items goes here ends */}
           </nav>
         </div>
         {
-          pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) : (<> <div className="circle">SOS</div></>)}
+          pathname === "/ErectionEngeeniers" || pathname === "/ErectionDashboard" ? (<></>) : (<> <div className="circle">SOS</div></>)
+        }
 
       </div >
 

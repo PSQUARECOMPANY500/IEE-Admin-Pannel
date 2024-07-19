@@ -118,10 +118,10 @@ const ClientCardView = ({ clientData }) => {
 
       {/* --------------------------------Raj--------------------- */}
 
-      <ClientModal
+      {showClientModal && <ClientModal
         showClientModal={showClientModal}
         handleCloseModal={handleCloseModal}
-        selectedClient={selectedClient} />
+        selectedClient={selectedClient} />}
 
     </div>
   );

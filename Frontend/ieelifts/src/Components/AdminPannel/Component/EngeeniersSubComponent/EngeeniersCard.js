@@ -30,10 +30,10 @@ const EngeeniersCard = () => {
 
 
   const [currentengCash, setCurrentEngCash] = useState(null);
-  
 
 
-  
+
+
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
     if (formRef.current && !formRef.current.contains(event.target)) {
@@ -203,10 +203,10 @@ const EngeeniersCard = () => {
                   {/* <img src={currentengImg} alt="eng persnol image" /> */}
                   <img src={
                     currentengImg?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
-                    `${config.documentUrl}/EnggAttachments/${currentengImg}`} alt="eng persnol image" 
-                    
-                    
-                    />
+                      `${config.documentUrl}/EnggAttachments/${currentengImg}`} alt="eng persnol image"
+
+
+                  />
                 </div>
                 <h1>
                   Name:<span>{currentEngName}</span>
@@ -362,7 +362,7 @@ const EngeeniersCard = () => {
       {openModal && (
         <div className="engineer-modal-wrapper">
           <div className="engineer-modal-container" ref={formRef}>
-            <EditEngineerDetails engID={engID}  onClose={handleCloseModal} />
+            <EditEngineerDetails engID={engID} onClose={handleCloseModal} />
           </div>
         </div>
       )}

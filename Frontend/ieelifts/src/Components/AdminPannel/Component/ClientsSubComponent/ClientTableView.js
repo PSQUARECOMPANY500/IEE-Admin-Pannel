@@ -41,8 +41,8 @@ const ClientTableView = ({ clientData }) => {
   }
 
 
-   //Function to handle closing modal
-   const handleCloseModal = () => {
+  //Function to handle closing modal
+  const handleCloseModal = () => {
     setShowClientModal(false)
   }
 
@@ -52,9 +52,9 @@ const ClientTableView = ({ clientData }) => {
     <div className="table_view">
       <div className="sub_table_view">
         <div className="client_table-container">
-          <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
+          <div className="table-shadow" style={{ height: '4rem', width: '96.4%', marginLeft: '-0.3rem' }}></div>
           <table>
-            <thead style={{zIndex:'1'}}> 
+            <thead style={{ zIndex: '1' }}>
               <tr>
                 <th className="checkbox">
                   <CheckBox
@@ -86,18 +86,18 @@ const ClientTableView = ({ clientData }) => {
               </tr>
             </thead>
 
-            {checkboxStates.includes(true)&& <div className="doc-container">
-            <img src={pdfIcon}/>
-            <img src={execelIcon}/>
-              </div>}
+            {checkboxStates.includes(true) && <div className="doc-container">
+              <img src={pdfIcon} />
+              <img src={execelIcon} />
+            </div>}
 
             {/* TABLE BODY STARTS */}
 
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index} 
-                  onClick={() => HandleCardClick(data)}
+                  <tr className="selected" key={index}
+                    onClick={() => HandleCardClick(data)}
                   >
                     <td className="checkbox">
                       <CheckBox
@@ -125,9 +125,9 @@ const ClientTableView = ({ clientData }) => {
         </div>
       </div>
 
-      <ClientModal  showClientModal={showClientModal}
+      {showClientModal && <ClientModal showClientModal={showClientModal}
         handleCloseModal={handleCloseModal}
-        selectedClient={selectedClient}/>
+        selectedClient={selectedClient} />}
     </div>
   );
 };

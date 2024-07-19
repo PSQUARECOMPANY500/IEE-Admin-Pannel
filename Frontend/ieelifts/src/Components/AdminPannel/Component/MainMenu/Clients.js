@@ -9,10 +9,13 @@ import ClientForm from "../ClientsSubComponent/ClientForm";
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
   const dispatch = useDispatch();
+  const clientModalOperation = useSelector(
+    (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
+  );
 
   useEffect(() => {
     dispatch(getClients());
-  },[dispatch]);
+  }, [dispatch]);
 
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients
@@ -46,18 +49,18 @@ const Clients = () => {
     } else {
       dataToRender = clients;
     }
-    
+
     if (layout === "grid") {
       console.log("Grid view");
       return <ClientCardView clientData={dataToRender} />;
     } else {
-      
       return <ClientTableView clientData={dataToRender} />;
+
     }
   };
 
   return <div className="main-container">
-      <ClientForm/>
+    {clientModalOperation && <div className="add-client-wrapper"> <ClientForm /></div>}
     {renderClientView()}
 
   </div>;

@@ -43,7 +43,6 @@ const ServiceRequestTable = ({
         return;
       }
       let data = filteredCD;
-      console.log(data);
       const membershipFilter = filterConditions.filter(
         (filter) => filter.type === "membership"
       );
@@ -109,7 +108,6 @@ const ServiceRequestTable = ({
       setFilterData(responseData);
       setGetFilterConditions(true);
     }
-    console.log("filterData", filterData);
   }, [filterConditions]);
 
   useEffect(() => {
@@ -172,8 +170,13 @@ const ServiceRequestTable = ({
   };
 
   useEffect(() => {
-    setFilteredCD(getRequestDetail);
-    setallCD(getRequestDetail);
+    if (getRequestDetail >= 0) {
+      let data = getRequestDetail?.filter((detail) => detail.isAssigned === false
+      )
+      console.log("data=>>>", data)
+      setFilteredCD(data);
+      setallCD(getRequestDetail);
+    }
   }, [getRequestDetail]);
 
   useEffect(() => {
@@ -182,6 +185,7 @@ const ServiceRequestTable = ({
     }
 
     const newTimer = setTimeout(() => {
+      console.log(searchText)
       if (searchText) {
         const data = filtersearch(searchText, allCD);
         setFilteredCD(data);
@@ -222,8 +226,8 @@ const ServiceRequestTable = ({
     return filteredResults;
   }
   useEffect(() => {
-    if (filteredCD) {
-      setReqCheckboxStates(Array(filteredCD.length).fill(false));
+    if (filteredCD >= 0) {
+      setReqCheckboxStates(Array(filteredCD?.length).fill(false));
     }
   }, [filteredCD]);
 
@@ -253,10 +257,21 @@ const ServiceRequestTable = ({
             <th>
               <CheckBox
                 id="checkbox1"
-                checked={
-                  filteredCD &&
-                  reqCheckboxStates.every((isChecked) => isChecked)
-                }
+                checked={(() => {
+                  return (
+                    filteredCD &&
+                    (filteredCD.length > 0 || getFilterConditions.length > 0) &&
+                    reqCheckboxStates.every((isChecked) => {
+                      if (isChecked) {
+                        return true
+                      }
+                      else {
+                        return false
+                      }
+                    })
+                  );
+                })()}
+
                 handleCheckboxChange={handleCheckBoxAll}
               />
             </th>

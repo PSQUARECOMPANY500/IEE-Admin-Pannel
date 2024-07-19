@@ -209,6 +209,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
             </div>
           </div>
         </div>
+
       )}
     </>
   );

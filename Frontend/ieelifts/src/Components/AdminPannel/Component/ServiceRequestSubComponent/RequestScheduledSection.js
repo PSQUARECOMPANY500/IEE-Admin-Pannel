@@ -28,7 +28,6 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
 
-  console.log(reqCheckboxStates)
   const [filterConditions, setfilterConditions] = useState();
 
 
@@ -150,7 +149,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                     <RiSearchLine className="iconColor" />
                   </i>
                 </div>
-              </span>) : (<img src={pdfIcon}/>)) : (<span className="top-icon">
+              </span>) : (<img src={pdfIcon} />)) : (<span className="top-icon">
                 <div className="search-box">
                   <input
                     type="text"
