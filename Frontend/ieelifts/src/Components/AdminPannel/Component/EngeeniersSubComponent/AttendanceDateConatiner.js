@@ -10,7 +10,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
 
-  console.log("dates",dates);
+  console.log("dates", dates);
 
 
   const [openCard, setOpenCard] = useState(false);
@@ -45,7 +45,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       const len = 5;
       const today = new Date(selectedDate);
 
-      console.log("today----------->>",today);
+      console.log("today----------->>", today);
 
       const dates = Array.from(
         {
@@ -80,8 +80,8 @@ const AttendanceDateConatiner = ({ date, engID }) => {
 
   const getDayOfWeek = (dateStr) => {
 
-    if(dateStr === "Invalid Date") return;
-    console.log("getDayOfWeek",dateStr)
+    if (dateStr === "Invalid Date") return;
+    console.log("getDayOfWeek", dateStr)
 
     const [day, month, year] = dateStr?.split("/");
     const dateObj = new Date(year, month - 1, day);

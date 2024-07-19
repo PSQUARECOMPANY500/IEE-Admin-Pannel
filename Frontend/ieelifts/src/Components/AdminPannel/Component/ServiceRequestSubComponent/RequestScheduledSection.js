@@ -26,6 +26,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
+
   const [filterConditions, setfilterConditions] = useState();
   const [icon, setIcon] = useState(true); 
   const [data, setData]= useState([]);

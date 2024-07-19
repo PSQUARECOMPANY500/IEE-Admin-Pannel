@@ -298,7 +298,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       RepresentativeNumber,
     });
 
-    console.log("888888888888", newCallback);
+    console.log("888888888888", newCallback)
 
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -770,17 +770,17 @@ module.exports.getCurrentScheduleService = async (req, res) => {
         message:
           currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat(
-                data[0][0].Slot[0].split("-")[0]
-              )}`
+              data[0][0].Slot[0].split("-")[0]
+            )}`
             : currentDate > data[0][0].Date
-            ? "Service Expired"
-            : "Service Booked",
+              ? "Service Expired"
+              : "Service Booked",
         time:
           currentDate > data[0][0].Date
             ? "(Awaiting Cancelation)"
             : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
-              "-" +
-              convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
+            "-" +
+            convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.ServiceId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
@@ -789,7 +789,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     } else if (
       ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
         service[0]?.isDead === false,
-      !rating && data[0][0].ServiceProcess === "completed")
+        !rating && data[0][0].ServiceProcess === "completed")
     ) {
       //case 3
       res.status(200).json({
@@ -1201,9 +1201,7 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
       );
     }
 
-    res
-      .status(200)
-      .json({ message: "Token added successfully", status: "success" });
+    res.status(200).json({ message: "Token added successfully", status: "success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({

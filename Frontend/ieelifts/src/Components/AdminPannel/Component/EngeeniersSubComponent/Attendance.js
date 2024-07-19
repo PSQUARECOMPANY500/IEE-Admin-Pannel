@@ -1,6 +1,4 @@
-
-import React, { useEffect, useRef, useState } from "react";
-import { SlLink } from "react-icons/sl";
+import React, { useState } from "react";
 import AttendanceCalendar from "./AttendanceCalendar";
 import AttendanceDateConatiner from "./AttendanceDateConatiner";
 import LeaveHistory from "./LeaveHistory";
@@ -10,7 +8,7 @@ const Attendance = (props) => {
   const { engID } = props;
 
   const [date, setTodayDate] = useState();
-  console.log("date&&&&&&&&&&&&",date)
+  console.log("date&&&&&&&&&&&&", date)
 
   const [leaveRequested, setleaveRequested] = useState(null);
   return (

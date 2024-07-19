@@ -1688,6 +1688,10 @@ module.exports.searchClients = async (req, res) => {
         },
       ],
     });
+    console.log(clients)
+    console.log("\n")
+    console.log("\n")
+    console.log(regex)
     res.status(200).json({
       success: true,
       clients,
