@@ -72,7 +72,7 @@ const memberRef = useRef();
         newIcon = { type: "SMS", icon: <FaSms /> };
         break;
       case "WhatsApp":
-        newIcon = { type: "WhatsApp", icon: <IoLogoWhatsapp /> };
+        newIcon = { type: "WhatsApp", icon: <IoLogoWhatsapp /> }; 
         break;
       default:
         newIcon = null;

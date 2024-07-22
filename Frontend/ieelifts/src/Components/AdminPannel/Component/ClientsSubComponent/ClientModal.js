@@ -11,7 +11,7 @@ import ClientServiceHistory from "./ClientServiceHistory";
 import ClientDocuments from "./ClientDocuments";
 import ClientSOSCall from "./ClientSOSCall";
 import ClientElevatorDetails from "./ClientElevatorDetails";
-import ServiceHistory from "./ServiceHistory";
+import ClientDetails from "./ClientDetails";
 
 // --------------------Raj -------------------------------------------
 
@@ -84,11 +84,12 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     {
       id: 2,
       options: [
+        "Client Details",
         "Elevator details",
-        "Service History",
+        "Service Histroy",
         "Call Back History",
         "Document",
-        "SOS Calls",
+        "SOS Calls"
       ],
       pic: MailIcon,
       selectedOption: defaultOptions[2],
@@ -137,15 +138,14 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
         return <ClientDocuments />;
       case "SOS Calls":
         return <ClientSOSCall />;
-      case "Service History":
-        return <ServiceHistory/>;
+      case "Client Details":
+        return <ClientDetails/>;
+      case "Service Histroy":
+       return <ClientServiceHistory/>;
       default:
         return <ClientElevatorDetails selectedClient={selectedClient?.JobOrderNumber} />;
     }
   };
-
-
-  
 
   return (
     <>
