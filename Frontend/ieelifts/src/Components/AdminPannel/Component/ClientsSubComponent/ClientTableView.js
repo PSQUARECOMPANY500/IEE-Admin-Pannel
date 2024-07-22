@@ -8,8 +8,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
-import {jspdf} from 'jspdf';
-import 'jspdf-autotable';
+import generatePdf from '../../../../utils/generatePdf'
 const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
