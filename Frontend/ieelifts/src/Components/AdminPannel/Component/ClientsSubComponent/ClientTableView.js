@@ -59,6 +59,8 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
   let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name))); 
  const HandleCardClick = (data) => {
     setShowClientModal(true)
+    // console.log("client all data", data)
+    setSelectedClient(data)
   }
    //Function to handle closing modal
    const handleCloseModal = () => {
@@ -121,7 +123,6 @@ const handleExcelIconClick = () =>{
                 clientData.map((data, index) => (
                   <tr className="selected" key={index} 
                   >
-                    
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}

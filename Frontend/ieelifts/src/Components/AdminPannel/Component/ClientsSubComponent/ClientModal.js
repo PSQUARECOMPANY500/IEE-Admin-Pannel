@@ -17,7 +17,7 @@ import ServiceHistory from "./ServiceHistory";
 
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
 
-  console.log("selected client pagedddddddddddddddddddd",selectedClient?.MembershipType);
+  console.log("selected client pagedddddddddddddddddddd",selectedClient);
 
     const modalRef = useRef();
   // const cardRef = useRef();
