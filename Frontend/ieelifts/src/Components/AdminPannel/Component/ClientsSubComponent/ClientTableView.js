@@ -8,7 +8,8 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
-
+import {jspdf} from 'jspdf';
+import 'jspdf-autotable';
 const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -34,7 +35,6 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
     }
     if(!isFiltered){
       const {data} = await getAllClient()
-      console.log(data)
       setSelectedClientArray(data);
     }
   };
@@ -66,12 +66,10 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
    const handleCloseModal = () => {
     setShowClientModal(false)
   }
-  
 
 const handleExcelIconClick = () =>{
   setCsvData(uniqueData)
 }
-
   return (
     <div className="table_view">
       <div className="sub_table_view">
@@ -111,7 +109,7 @@ const handleExcelIconClick = () =>{
             </thead>
 
             {checkboxStates.includes(true)&& <div className="doc-container">
-            <img src={pdfIcon}/>
+            <img src={pdfIcon} />
             <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
             {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
               </div>}
