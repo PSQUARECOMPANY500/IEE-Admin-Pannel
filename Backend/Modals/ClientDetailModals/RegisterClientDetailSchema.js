@@ -34,7 +34,7 @@ const clientRegister = new Schema(
     },
     MembershipType: {
       type: String,
-      enum: ["Inwarrenty", "Gold", "Platinum", "Silver"],
+      enum: ["warrenty", "gold", "platinum", "silver"],
       default: "silver",
     },
     CallbackCount: {

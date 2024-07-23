@@ -119,7 +119,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
           {loader ? (
             <>
               <div className="loder_Container">
-                <Loader />z
+                <Loader />
               </div>
             </>
           ) : (

@@ -130,10 +130,10 @@ const ClientCardView = ({ clientData ,isLoading,page}) => {
          return <Skeleton count={1}  height={200} borderRadius={'20px'}/>
         }):null
       }
-      <ClientModal
+      {showClientModal  && <ClientModal
         showClientModal={showClientModal}
         handleCloseModal={handleCloseModal}
-        selectedClient={selectedClient} />
+        selectedClient={selectedClient} />}
 
     </div>
   );

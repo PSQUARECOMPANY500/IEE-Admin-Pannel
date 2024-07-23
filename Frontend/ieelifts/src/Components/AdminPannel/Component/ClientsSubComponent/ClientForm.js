@@ -43,9 +43,7 @@ const ClientForm = () => {
   const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
   const [prevData, setPrevData] = useState(false);
-  const clientModalOperation = useSelector(
-    (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
-  );
+ 
   const { jon } = allFormData.clientFormDetails;
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -367,7 +365,7 @@ const ClientForm = () => {
   };
   return (
     <>
-      {clientModalOperation && (
+      { (
         <div className="add-client-wrapper" onClick={handleOverlayClick}>
           <div className="add-client-modal">
             <div className="cross-icon" style={{ cursor: "pointer" }}>
