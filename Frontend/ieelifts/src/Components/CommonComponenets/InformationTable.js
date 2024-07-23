@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -25,7 +24,7 @@ const InformationTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  
   const recordsPerPage = 10;
   const observer = useRef();
 

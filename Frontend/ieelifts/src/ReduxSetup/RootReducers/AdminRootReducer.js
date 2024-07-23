@@ -51,6 +51,7 @@ import { ReportCrouserHandlerReducer} from "../Reducers/AdminReducer";
 import {ClientFormDataFromApiReducer} from "../Reducers/AdminReducer";
 import { addTodoReducer,getTodosReducer } from "../Reducers/AdminReducer";
 import { updateTodoDataReducer } from "../Reducers/AdminReducer";
+import { upgradeClientMembershipByAdminPannelReducer } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -108,7 +109,8 @@ const AdminRootReducer = combineReducers({
   EngineerSearchHandler:EngineerSearchHandler,
   getTodosReducer:getTodosReducer,
   updateTodoDataReducer:updateTodoDataReducer,
-  deleteTodoReducer:deleteTodoReducer
+  deleteTodoReducer:deleteTodoReducer,
+  upgradeClientMembershipByAdminPannelReducer:upgradeClientMembershipByAdminPannelReducer
 
 });
 

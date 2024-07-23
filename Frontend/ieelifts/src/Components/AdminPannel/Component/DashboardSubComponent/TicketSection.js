@@ -745,7 +745,29 @@ const TicketSection = ({ setTicketUpdate }) => {
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                       >
-                        {data.Description}
+                         <div className="dropdown-address">
+                          <span
+                            className={
+                              !isAssigned && isTimeoutData ? "timeout-data" : ""
+                            }
+                          >
+                             {data?.Description}
+                          </span>
+
+                          <div className="dropdown-adddress-menu">
+                            <div className="drop-address">
+                              <p
+                                className={
+                                  !isAssigned && isTimeoutData
+                                    ? "timeout-data"
+                                    : ""
+                                }
+                              >
+                                {data?.Description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </td>
                       <td
                         className={
@@ -870,19 +892,53 @@ const TicketSection = ({ setTicketUpdate }) => {
                           </div>
                         </div>
                       </td>
-                      <td
+                      {/* <td
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                       >
                         {data.Description}
+                        
+                      </td> */}
+                       <td
+                        className={
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        }
+                      >
+                        <div className="dropdown-address">
+                          <span
+                            className={
+                              !isAssigned && isTimeoutData ? "timeout-data" : ""
+                            }
+                          >
+                        
+                            {data.Description }
+                          </span>
+
+                          <div className="dropdown-adddress-menu">
+                            <div className="drop-address">
+                              <p
+                                className={
+                                  !isAssigned && isTimeoutData
+                                    ? "timeout-data"
+                                    : ""
+                                }
+                              >
+                                {data?.Description}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </td>
+
+                       
                       <td
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                       >
                         {data.TypeOfIssue}
+                        
                       </td>
                       <td
                         className={

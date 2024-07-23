@@ -862,7 +862,8 @@ module.exports.getAllClientsData = async (req, res) => {
       message: "all  Clients fetched Succesfully",
       Clients: paginatedClients,
       totalPage,
-
+      len:clients.length
+      
     });
   } catch (error) {
     console.log(error);
@@ -3780,6 +3781,12 @@ module.exports.upgradClientMembership = async (req, res) => {
       IsPaid: false,
       OrderId: 1,
     });
+
+    await clientDetailSchema.findOneAndUpdate(
+      {JobOrderNumber:JobOrderNumber},
+      {MembershipType:MembershipType}
+    )
+    
 
     res.status(200).json({ message: "Client Membership upgraded successfully", newMembership });
 

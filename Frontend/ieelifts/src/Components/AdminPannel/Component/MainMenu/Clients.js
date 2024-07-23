@@ -61,12 +61,14 @@ const Clients = () => {
       setIsFiltered(true);
     } else {
       setIsFiltered(false);
+
     }
   }, [filteredData, searchClient, clients])
 
   const hadnleInfiniteScroll = (e, isTableScroll = false) => {
     const { scrollHeight, clientHeight, scrollTop } = isTableScroll ? e.target : document.documentElement
     if (scrollTop + clientHeight === scrollHeight) {
+      console.log('hui hui hui hui hui hui hui hui hui hui')
       setPage((prev) => prev + 1);
     }
     setIsLoading(true)
@@ -91,10 +93,10 @@ const Clients = () => {
     }
 
     if (layout === "grid") {
-      return <ClientCardView clientData={dataToRender} isLoading={isLoading} />;
+      return <ClientCardView clientData={dataToRender} isLoading={isLoading} page={page} />;
     } else {
 
-      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} />;
+      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} isFiltered={isFiltered} page={page}/>;
     }
   };
 

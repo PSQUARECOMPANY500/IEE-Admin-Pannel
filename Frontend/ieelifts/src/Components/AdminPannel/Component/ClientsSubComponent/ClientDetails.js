@@ -7,7 +7,7 @@ import { IoCallOutline } from "react-icons/io5";
 import { IoIosMan } from "react-icons/io";
 import { BiSolidBookmarkAlt } from "react-icons/bi";
 
-const ServiceHistory = () => {
+const ClientDetails = () => {
   return (
     <div className='service-history-wrapper'>
      <div className='service-history-client-details'>
@@ -18,7 +18,7 @@ const ServiceHistory = () => {
         <div className='service-history-client-details-child-wrappper'>
             <div>
                 <div><BiSolidBookmarkAlt className='service-icon-color'/></div>
-                <div className='service-history-client-heading'>Date of Handover</div>
+                <div className='service-history-client-heading'>Date of Handover</div> 
                 <div className='service-history-client-child-color'>2022</div>
             </div>
             <div>
@@ -106,4 +106,4 @@ const ServiceHistory = () => {
   )
 }
 
-export default ServiceHistory;
+export default ClientDetails;
