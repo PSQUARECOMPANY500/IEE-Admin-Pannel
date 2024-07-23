@@ -3777,6 +3777,12 @@ module.exports.upgradClientMembership = async (req,res) => {
       OrderId:1,
     });
 
+    await clientDetailSchema.findOneAndUpdate(
+      {JobOrderNumber:JobOrderNumber},
+      {MembershipType:MembershipType}
+    )
+    
+
     res.status(200).json({ message: "Client Membership upgraded successfully",newMembership });
 
     

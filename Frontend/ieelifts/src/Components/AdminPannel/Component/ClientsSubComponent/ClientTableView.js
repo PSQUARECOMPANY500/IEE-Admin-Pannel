@@ -9,7 +9,7 @@ import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useSelector } from "react-redux";
-
+// import generatePdf from '../../../../utils/generatePdf'
 const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered ,page}) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -38,7 +38,6 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
     }
     if(!isFiltered){
       const {data} = await getAllClient()
-      console.log(data)
       setSelectedClientArray(data);
     }
   };
@@ -63,17 +62,17 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
   let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name))); 
  const HandleCardClick = (data) => {
     setShowClientModal(true)
+    // console.log("client all data", data)
+    setSelectedClient(data)
   }
    //Function to handle closing modal
    const handleCloseModal = () => {
     setShowClientModal(false)
   }
-  
 
 const handleExcelIconClick = () =>{
   setCsvData(uniqueData)
 }
-
   return (
     <div className="table_view client_table_view">
       <div className="sub_table_view client_sub_table_view">
@@ -113,7 +112,7 @@ const handleExcelIconClick = () =>{
             </thead>
 
             {checkboxStates.includes(true)&& <div className="doc-container">
-            <img src={pdfIcon}/>
+            <img src={pdfIcon} />
             <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
             {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
               </div>}
@@ -125,7 +124,6 @@ const handleExcelIconClick = () =>{
                 clientData.map((data, index) => (
                   <tr className="selected" key={index} 
                   >
-                    
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}

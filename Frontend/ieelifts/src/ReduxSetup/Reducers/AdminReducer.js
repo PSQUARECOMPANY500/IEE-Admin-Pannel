@@ -59,6 +59,8 @@ import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
 import { UPDATE_TODO_DATA } from "../Actions/AdminActions";
 import { DELETE_TODO } from "../Actions/AdminActions";
 import { BiArch } from "react-icons/bi";
+
+import { UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1037,3 +1039,21 @@ export const deleteTodoReducer = (state=deleteTodoFlag,action) => {
         return state;
   }
 }
+
+
+//-------------- Reducer to handle upgradeMembership by the admin -----------------------------
+const upgradeClientMembership ={
+  upgradeClientMembership:null
+}
+ export const upgradeClientMembershipByAdminPannelReducer = (state=upgradeClientMembership, action) => {
+  switch(action.type){
+    case  UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE:
+      return {
+       ...state,
+        upgradeClientMembership: action.payload,
+      }
+    default:
+      return state;
+  }
+ }                    
+ //------------------------------------------------------------------------------------------------

@@ -57,6 +57,7 @@ const Clients = () => {
       setIsFiltered(true);
     }else{
       setIsFiltered(false);
+
     }
   },[filteredData,searchClient,clients])
 
@@ -91,7 +92,7 @@ const Clients = () => {
       return <ClientCardView clientData={dataToRender} isLoading={isLoading} page={page} />;
     } else {
 
-      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} page={page} />;
+      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} isFiltered={isFiltered} page={page}/>;
     }
   };
 
