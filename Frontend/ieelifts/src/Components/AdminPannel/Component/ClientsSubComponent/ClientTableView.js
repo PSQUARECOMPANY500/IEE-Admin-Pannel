@@ -9,7 +9,7 @@ import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useSelector } from "react-redux";
-// import generatePdf from '../../../../utils/generatePdf'
+import generatePdf from '../../../../utils/generatePdf'
 const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered ,page}) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -25,10 +25,10 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
       setCheckboxStates(Array(clientData.length).fill(false));
     }
   }, [clientData]);
-
   const handleCheckBoxAll = async () => {
+    const allChecked = checkboxStates.every((isChecked) => isChecked);
     if (clientData) {
-      const allChecked = checkboxStates.every((isChecked) => isChecked);
+    
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
        if(!allChecked){
         setSelectedClientArray(clientData);
@@ -36,7 +36,8 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
         setSelectedClientArray([]);
        }
     }
-    if(!isFiltered){
+    
+    if(!isFiltered && !allChecked){
       const {data} = await getAllClient()
       setSelectedClientArray(data);
     }
@@ -112,9 +113,9 @@ const handleExcelIconClick = () =>{
             </thead>
 
             {checkboxStates.includes(true)&& <div className="doc-container">
-            <img src={pdfIcon} />
+            
+            <img src={pdfIcon} onClick={()=>{generatePdf(selectedClientArray)}} className="pdfIcon"/>
             <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
-            {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
               </div>}
 
             {/* TABLE BODY STARTS */}

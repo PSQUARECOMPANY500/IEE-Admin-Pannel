@@ -23,7 +23,7 @@ import ErectionDashboard from "./Components/ErectionPannel/MainMenu/ErectionDash
 import ErectionEngineers from "./Components/ErectionPannel/MainMenu/ErectionEngineers";
 import { useState } from "react";
 import Todo  from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
-
+import Sosrequest from './Components/AdminPannel/Component/MainMenu/Sosrequest';
 function App() {
   const [departmentName,setDepartmentName]=useState('')
   const isLoggedIn = useSelector(
@@ -168,6 +168,18 @@ setDepartmentName(e)
           }
         />
         <Route
+          path="/SOS"
+          element={
+            isLoggedIn && role === "ServiceAdmin" ? (
+              <Sidebar>
+                <Sosrequest />
+              </Sidebar>
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        <Route
           path="/ErectionDashboard"
           element={
             isLoggedIn && role === "ErectionAdmin" ? (
@@ -239,7 +251,7 @@ setDepartmentName(e)
             )
           }
         />
-
+    
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
