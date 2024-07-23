@@ -25,7 +25,7 @@ yarn-error.log*
 /.github
 
 /public
-/src
+# /src
 /package.json
 /package-lock.json
 
