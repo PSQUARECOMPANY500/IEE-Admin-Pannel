@@ -15,7 +15,7 @@ import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronUp } from "react-icons/fi";
 import { useMediaQuery } from '@react-hook/media-query';
-
+import { MdOutlineSos } from "react-icons/md";
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
@@ -121,7 +121,8 @@ const Sidebar = ({ children }) => {
       {
         Path: "/SOS",
         name: "sos",
-        icon: <MdEngineering />,
+        icon: <MdOutlineSos />,
+        // icon: <img src="phone.png" alt="SosIcon" className="sosIcon"/>,
       },
       
     ];
@@ -158,7 +159,7 @@ const Sidebar = ({ children }) => {
       case "/Clients":
         setTopBarHeading("Clients");
         break;
-      case "/Sosrequest":
+      case "/SOS":
         setTopBarHeading("SOS");
         break;
       case "/ErectionDashboard":

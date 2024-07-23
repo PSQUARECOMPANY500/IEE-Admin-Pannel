@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InformationTable from "../../../CommonComponenets/InformationTable";
 import data from '../../Component/ClientsSubComponent/DatasClientServiceHis.json';
+import SosInfoTable from "../../../CommonComponenets/SosInfoTable";
 
 const Sosrequest = () => {
   const [selectedRecords, setSelectedRecords] = useState({});
@@ -42,7 +43,7 @@ const Sosrequest = () => {
     <div className="main-container_sos">
       <div className="sosrequest_table_view">
         <div className="sosrequest_table_view_inside">
-          <InformationTable fieldsToShow={fieldsToShow}
+          <SosInfoTable fieldsToShow={fieldsToShow}
            maxHeight="70vh"
            showCheckboxes={true}
            selectedRecords={selectedRecords}
@@ -50,6 +51,7 @@ const Sosrequest = () => {
            selectAll={selectAll}
            setSelectAll={setSelectAll}
            handleSelectAllChange={handleSelectAllChange}
+           serviceData={data}
             />
         </div>
       </div>

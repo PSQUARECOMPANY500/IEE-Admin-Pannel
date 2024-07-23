@@ -22,7 +22,7 @@ const SendPasswordVerificationCode = () => {
         <div className="passwordAssistanceHeading">
           <p>Password assistance</p>
           <p>
-            Enter the email address or mobile phone number associated with your
+            Enter the email address or mobile  number associated with your
             account.
           </p>
         </div>
@@ -30,7 +30,7 @@ const SendPasswordVerificationCode = () => {
         <div className="loginInpuitField">
           <input
             type="text"
-            placeholder="Email or Phone no"
+            placeholder="Email or Mobile No"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></input>

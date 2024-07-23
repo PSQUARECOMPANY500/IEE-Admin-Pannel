@@ -218,6 +218,7 @@ console.log("userCallBackDetail",userCallBackDetail)
     const formattedDate = selectedOption.toLocaleDateString('en-GB');
     setengDate(formattedDate);
     // console.log(formattedDate)
+   
     dispatch(getBookedSlotsforEnggsAction(formattedDate));
   }
 
@@ -651,7 +652,6 @@ console.log("userCallBackDetail",userCallBackDetail)
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       <div className="data-pic">
-
                         <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange} />
                       </div>
 

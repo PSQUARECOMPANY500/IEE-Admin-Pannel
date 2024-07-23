@@ -967,7 +967,7 @@ const caluclateMembershipPriceAndTime = async (
   updateMembership
 ) => {
   const LastSecondCount = MembershipData[MembershipData.length - 2];
-  // console.log("=============================",LastSecondCount.EndDate);
+  console.log("=============================",LastSecondCount.EndDate);
   if (new Date(LastSecondCount.EndDate) < Date.now()) {
     const dataExpires = await memberShipDetails.findOneAndUpdate(
       { OrderId: LastSecondCount.OrderId },
@@ -995,14 +995,14 @@ const caluclateMembershipPriceAndTime = async (
   const appliedMembershipPriceDaysToBeAdded =
     PriviousMembershipPrice / (appliedMembership.MembershipPrice / 365);
 
+    console.log("this is applied membership",appliedMembershipPriceDaysToBeAdded);
+
   return appliedMembershipPriceDaysToBeAdded;
 };
 
 module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
-
-    // console.log("*******************",req.params);
 
     const MembershipData = await memberShipDetails.find({ JobOrderNumber });
 
@@ -1020,6 +1020,40 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
       };
       return res.status(200).json({ status: "success", Details: data });
     }
+
+    // when order id "1" evaluate the conditions
+    if (Details.OrderId === "1") {
+       const updateMembershipData = await memberShipDetails.findOneAndUpdate({
+          _id:Details._id
+        },{
+          IsPaid: true
+        })
+
+        const DaysToBeAdded = await caluclateMembershipPriceAndTime(
+          MembershipData,
+          updateMembershipData
+        );
+
+        console.log("my days",DaysToBeAdded);
+
+        let newDate = new Date();
+        newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+
+        const finalPurchase = await memberShipDetails.findOneAndUpdate(
+          {  _id:Details._id },
+          { EndDate: newDate }
+        );
+
+        const data = {
+          MembershipType: Details.MembershipType,
+          EndDate: Details.EndDate,
+          PricePaid: Details.PricePaid,
+          MembershipInvoice: Details.MembershipInvoice,
+        }
+
+        return res.status(200).json({ status: "success", Details: data }); 
+    }
+   
 
     const instance = new Razorpay({
       key_id: process.env.key_id,
@@ -1039,19 +1073,19 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         updateMembership
       );
 
-      console.log("|||||||||||||||||||||||||||", DaysToBeAdded);
+      // console.log("|||||||||||||||||||||||||||", DaysToBeAdded);
 
       let newDate = new Date();
       newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
 
-      console.log(".......................", newDate);
+      // console.log(".......................", newDate);
 
       const finalPurchase = await memberShipDetails.findOneAndUpdate(
         { OrderId: Details.OrderId },
         { EndDate: newDate }
       );
 
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!", finalPurchase);
+      // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!", finalPurchase);
 
       const data = {
         MembershipType: finalPurchase.MembershipType,
@@ -1097,7 +1131,7 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         { MembershipInvoice: fileName }
       );
 
-      console.log("+++++++++++++++++++++++++++++++++++++++++++++++", data);
+      // console.log("+++++++++++++++++++++++++++++++++++++++++++++++", data);
 
       return res.status(200).json({
         status: "success",
@@ -1108,7 +1142,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
 
       const Detail = MembershipData[MembershipData.length - 1];
       // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%",Detail);
-
       const data = {
         MembershipType: Detail.MembershipType,
         EndDate: Detail.EndDate,

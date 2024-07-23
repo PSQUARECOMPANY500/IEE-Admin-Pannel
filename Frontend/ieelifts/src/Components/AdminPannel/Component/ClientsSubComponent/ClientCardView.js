@@ -6,11 +6,15 @@ import { IoCallOutline } from "react-icons/io5";
 import ClientModal from "./ClientModal";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useSelector } from "react-redux";
 
-const ClientCardView = ({ clientData ,isLoading}) => {
+const ClientCardView = ({ clientData ,isLoading,page}) => {
   const [showClientModal, setShowClientModal] = useState(false);
 
   const [selectedClient, setSelectedClient] = useState(null)
+  const totalPage = useSelector(
+    (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.totalPage
+  );
 
   function setBoxShadow(type) {
     return type === "warrenty"
@@ -122,7 +126,7 @@ const ClientCardView = ({ clientData ,isLoading}) => {
       {/* --------------------------------Raj--------------------- */}
 
       {
-       isLoading?Array.from(Array(6)).map(()=>{
+       isLoading&&page<totalPage?Array.from(Array(6)).map(()=>{
          return <Skeleton count={1}  height={200} borderRadius={'20px'}/>
         }):null
       }

@@ -118,9 +118,10 @@ body {
 .EngeeniersChatF {
   border-radius: 1.2rem;
   position: relative;
-  height: 790px;
+  height: 95%;
   margin-bottom: 1.2rem;
   display: none;
+
 }
 
 
@@ -157,11 +158,12 @@ body {
   background-color: #FFFFFF;
   border-radius: 8px;
   box-shadow: 2px 4px 10px 1px #00000029;
-  min-height: 25vh;
+  min-height: 20vh;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  gap: 2.2rem;
   flex-direction: column;
   padding: .4rem;
 }
