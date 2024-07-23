@@ -854,15 +854,15 @@ module.exports.getAllClientsData = async (req, res) => {
 
   try {
     const clients = await clientDetailSchema.find();
-    const {page,limit}=req.query;
-    const skip = page*limit;
+    const { page, limit } = req.query;
+    const skip = page * limit;
     const paginatedClients = clients.slice(0, skip)
-   const totalPage=Math.ceil(clients.length /limit);
+    const totalPage = Math.ceil(clients.length / limit);
     res.status(200).json({
       message: "all  Clients fetched Succesfully",
-      Clients:paginatedClients,
+      Clients: paginatedClients,
       totalPage,
-      
+
     });
   } catch (error) {
     console.log(error);
@@ -2014,7 +2014,7 @@ module.exports.getClientMembership = async (req, res) => {
 const sentClientData = async (data) => {
   const clientDetailPromises = data.map(async (item) => {
     const clientData = await clientDetailSchema.findOne({
-      JobOrderNumber: item.JobOrderNumber,
+      JobOrderNumber: item?.JobOrderNumber,
     });
     return {
       JobOrderNumber: clientData.JobOrderNumber,
@@ -2026,19 +2026,25 @@ const sentClientData = async (data) => {
   return Promise.all(clientDetailPromises);
 };
 const calculateExpiring = async (filteredData) => {
-  const expiringData = await Promise.all(
-    filteredData.map(async (data) => {
-      const timeDifference = data.EndDate - Date.now();
-      const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-      if (daysLeft > 0 && daysLeft <= 30) {
-        return data;
-      }
-    })
-  );
-  return expiringData.filter(Boolean);
+  const filteredResults = await Promise.all(filteredData.map(async (data) => {
+    const timeDifference = data.EndDate - Date.now();
+    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    console.log(data.EndDate);
+    console.log(Date.now());
+
+    if (daysLeft > 0 && daysLeft <= 30 && (!data?.isDisable || !data?.isRenewed)) {
+      return data;
+    }
+    return null; // Return null for items that don't match the criteria
+  }));
+
+  // Filter out the null values
+  const finalFilteredResults = filteredResults.filter(data => data !== null);
+  console.log(finalFilteredResults)
+  return finalFilteredResults
 };
 const calculateExpired = (filteredData) => {
-  const expiredData = filteredData.filter((data) => data.EndDate < Date.now());
+  const expiredData = filteredData.filter((data) => data.EndDate < Date.now() && (!data?.isDisable || !data?.isRenewed));
   // console.log(expiredData);
   return expiredData;
 };
@@ -3487,29 +3493,29 @@ module.exports.DepositeEnggCash = async (req, res) => {
  * ---------------------------------------Rahul Kumar 24/06/2024---------------------------
  */
 // api to add todo task
-module.exports.AddTodo = async (req, res)=>{
-  try{
-    const {todo} = req.body;
-      await TodoSchema.create(todo);     
-      res.status(200).json({
-        message: "Task added successfully"
-      })
-  }catch(err){
+module.exports.AddTodo = async (req, res) => {
+  try {
+    const { todo } = req.body;
+    await TodoSchema.create(todo);
+    res.status(200).json({
+      message: "Task added successfully"
+    })
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error while adding the task"
     })
   }
-} 
-module.exports.getAllTodos = async (req,res) =>{
+}
+module.exports.getAllTodos = async (req, res) => {
   const adminId = req.params.adminId;
-  try{
-    const todos = await TodoSchema.find({adminId:adminId});
+  try {
+    const todos = await TodoSchema.find({ adminId: adminId });
     res.status(200).json({
       message: "Success",
       data: todos
     })
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error while fetching the task"
@@ -3517,15 +3523,15 @@ module.exports.getAllTodos = async (req,res) =>{
   }
 }
 
-module.exports.updateTask = async (req,res) => {
+module.exports.updateTask = async (req, res) => {
   const id = req.params.id;
   const status = 'Completed'
-  try{
-    await TodoSchema.findByIdAndUpdate(id, {status: status});
+  try {
+    await TodoSchema.findByIdAndUpdate(id, { status: status });
     res.status(200).json({
       message: "Task status updated successfully"
     })
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error while updating the task status"
@@ -3533,14 +3539,14 @@ module.exports.updateTask = async (req,res) => {
   }
 }
 
-module.exports.deleteTask = async (req,res) => {
+module.exports.deleteTask = async (req, res) => {
   const id = req.params.id;
-  try{
+  try {
     await TodoSchema.findByIdAndDelete(id);
     res.status(200).json({
       message: "Task deleted successfully"
     })
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error while deleting the task"
@@ -3551,10 +3557,10 @@ module.exports.deleteTask = async (req,res) => {
 module.exports.updateTaskById = async (req, res) => {
   const id = req.params.id;
   const { todo } = req.body;
-  const {taskName,memberId,taskDate,taskTime,status,priority,} = todo;
+  const { taskName, memberId, taskDate, taskTime, status, priority, } = todo;
 
   try {
-    const result = await TodoSchema.findByIdAndUpdate(id, {taskName:taskName,memberId:memberId,taskDate:taskDate,taskTime:taskTime,status:status,priority:priority }, { new: true });
+    const result = await TodoSchema.findByIdAndUpdate(id, { taskName: taskName, memberId: memberId, taskDate: taskDate, taskTime: taskTime, status: status, priority: priority }, { new: true });
     if (!result) {
       return res.status(404).json({
         message: "Task not found",
@@ -3573,15 +3579,15 @@ module.exports.updateTaskById = async (req, res) => {
 }
 
 
-module.exports.getTodoById = async (req,res) => {
+module.exports.getTodoById = async (req, res) => {
   const id = req.params.id;
-  try{
-     const todo = await TodoSchema.findById(id);
-     res.status(200).json({
+  try {
+    const todo = await TodoSchema.findById(id);
+    res.status(200).json({
       message: "Success",
       data: todo
     })
-  }catch(err){
+  } catch (err) {
     console.log(err);
     return res.status(500).json({
       error: "Internal server error while fetching the task"
@@ -3755,12 +3761,12 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 
 //api to upgrade client Membership from the admin Pannel
 
-module.exports.upgradClientMembership = async (req,res) => {
+module.exports.upgradClientMembership = async (req, res) => {
   try {
-    const {JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
-    const clientExist = await clientDetailSchema.findOne({JobOrderNumber:JobOrderNumber});
+    const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
+    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber: JobOrderNumber });
 
-    if(!clientExist){
+    if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
     }
 
@@ -3771,13 +3777,13 @@ module.exports.upgradClientMembership = async (req,res) => {
       Duration,
       StartDate,
       MembershipInvoice: req.files.MembershipInvoice[0].filename,
-      IsPaid:false,
-      OrderId:1,
+      IsPaid: false,
+      OrderId: 1,
     });
 
-    res.status(200).json({ message: "Client Membership upgraded successfully",newMembership });
+    res.status(200).json({ message: "Client Membership upgraded successfully", newMembership });
 
-    
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -3792,18 +3798,18 @@ module.exports.upgradClientMembership = async (req,res) => {
  * api to get all client data
  */
 
-module.exports.getAllClients = async (req,res) => {
-  try{
-     const clients = await clientDetailSchema.find({})
-     res.status(200).json({
-       message: "Success",
-       data: clients
-     })
-  }catch(err){
-   console.log(err);
-   return res.status(500).json({
-     error: "Internal server error while fetching clients data"
-   })
+module.exports.getAllClients = async (req, res) => {
+  try {
+    const clients = await clientDetailSchema.find({})
+    res.status(200).json({
+      message: "Success",
+      data: clients
+    })
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      error: "Internal server error while fetching clients data"
+    })
   }
 }
 //-

@@ -8,16 +8,16 @@ import ClientForm from "../ClientsSubComponent/ClientForm";
 
 const Clients = () => {
   const [layout, setLayout] = useState("Card");
-  const [isFiltered,setIsFiltered] = useState(false);
+  const [isFiltered, setIsFiltered] = useState(false);
   const [page, setPage] = useState(1); //make this is in redux for global purposes
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  
+
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients
   );
-  
+
   const totalPage = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.totalPage
   );
@@ -33,11 +33,15 @@ const Clients = () => {
   const searchClient = useSelector(
     (state) => state?.AdminRootReducer?.searchClientReducer?.clients?.clients
   );
-  
+
+  const clientModalOperation = useSelector(
+    (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
+  );
+
   useEffect(() => {
-   
+
     const getClient = async () => {
-      if(page>=totalPage){
+      if (page >= totalPage) {
         return setIsLoading(false);
       }
       await dispatch(getClients(page));
@@ -52,13 +56,13 @@ const Clients = () => {
     }
   }, [clientLayout]);
 
-  useEffect(()=>{
-    if(filteredData || searchClient){
+  useEffect(() => {
+    if (filteredData || searchClient) {
       setIsFiltered(true);
-    }else{
+    } else {
       setIsFiltered(false);
     }
-  },[filteredData,searchClient,clients])
+  }, [filteredData, searchClient, clients])
 
   const hadnleInfiniteScroll = (e, isTableScroll = false) => {
     const { scrollHeight, clientHeight, scrollTop } = isTableScroll ? e.target : document.documentElement
@@ -78,7 +82,7 @@ const Clients = () => {
 
   const renderClientView = () => {
     let dataToRender;
-    if (searchClient) { 
+    if (searchClient) {
       dataToRender = searchClient;
     } else if (filteredData) {
       dataToRender = filteredData;
@@ -96,7 +100,7 @@ const Clients = () => {
 
 
   return <div className="main-container" >
-    <ClientForm />
+    {clientModalOperation && <ClientForm />}
     {renderClientView()}
   </div>;
 };

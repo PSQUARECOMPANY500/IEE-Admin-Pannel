@@ -410,7 +410,7 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
- console.log("location latitude and langitude",latitude, longitude);
+    console.log("location latitude and langitude", latitude, longitude);
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -430,19 +430,19 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
 
       //console.log(response)
       // if (!response) {
-        // await EnggLocationModel.create({
-          // ServiceEnggId,
-          //mark Attandance Logic here
-          // currentLocation: {
-            // type: "Point",
-            // coordinates: [latitude, longitude],
-          // },
+      // await EnggLocationModel.create({
+      // ServiceEnggId,
+      //mark Attandance Logic here
+      // currentLocation: {
+      // type: "Point",
+      // coordinates: [latitude, longitude],
+      // },
       //   });
       // // }
 
       const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
 
-      console.log("++++++----------",response.currentLocation.coordinates);
+      console.log("++++++----------", response.currentLocation.coordinates);
 
       if (response) {
         let coordinate;
@@ -450,14 +450,15 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
           origin: `${latitude}, ${longitude}`,
           destination: `${latitude}, ${longitude}`
         }
-       response.currentLocation.coordinates.push(coordinate)
-       await response.save();
-      }else{
-        await EnggLocationModel.create({ServiceEnggId,currentLocation: {
+        response.currentLocation.coordinates.push(coordinate)
+        await response.save();
+      } else {
+        await EnggLocationModel.create({
+          ServiceEnggId, currentLocation: {
             type: "Point",
             coordinates: {
               origin: `${latitude}, ${longitude}`,
-               destination: `${latitude}, ${longitude}`
+              destination: `${latitude}, ${longitude}`
             },
           },
         })
@@ -1591,13 +1592,13 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+          "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
     );
 
-    console.log("}}}}}}}}}}}",filteredData);
+    console.log("}}}}}}}}}}}", filteredData);
 
     const IssuesResolved = [];
     const IssuesNotResolved = [];
@@ -1809,9 +1810,24 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
+      let jon = updateTaskStatusCallback.JobOrderNumber;
+      console.log(jon)
+      let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+      if (activeMembership) {
+        activeMembership.callbacksCount = activeMembership.callbacksCount > 0 ? activeMembership.callbacksCount + 1 : 1;
+        activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        await activeMembership.save()
+      }
       await updateTaskStatusCallback.save();
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
+      let jon = updateTaskStatusCallback.JobOrderNumber;
+      let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+      if (activeMembership) {
+        activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;
+        activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        await activeMembership.save()
+      }
       await updateTaskStatusServiceRequest.save();
     }
 

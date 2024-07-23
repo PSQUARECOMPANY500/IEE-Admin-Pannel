@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useState, useLayoutEffect,useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
@@ -9,13 +9,13 @@ import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered }) => {
+const ClientTableView = ({ clientData, hadnleInfiniteScroll, isLoading, isFiltered }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
-  const [csvData,setCsvData] = useState([]);
-  const [selectedClientArray,setSelectedClientArray]= useState([]);
-   console.log(isFiltered);
+  const [csvData, setCsvData] = useState([]);
+  const [selectedClientArray, setSelectedClientArray] = useState([]);
+  console.log(isFiltered);
   useLayoutEffect(() => {
     if (clientData) {
       setCheckboxStates(Array(clientData.length).fill(false));
@@ -26,14 +26,14 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
     if (clientData) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
-       if(!allChecked){
+      if (!allChecked) {
         setSelectedClientArray(clientData);
-       }else{
+      } else {
         setSelectedClientArray([]);
-       }
+      }
     }
-    if(!isFiltered){
-      const {data} = await getAllClient()
+    if (!isFiltered) {
+      const { data } = await getAllClient()
       console.log(data)
       setSelectedClientArray(data);
     }
@@ -44,45 +44,45 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
       newCheckboxStates[index] = !prevStates[index];
       return newCheckboxStates;
     });
-   let ans = selectedClientArray.includes(clientData[index]);
-   if(ans){
-    const removeIndex = selectedClientArray.findIndex( item => item === clientData[index]);
-     selectedClientArray.splice(removeIndex,1);
-   }else{
-    setSelectedClientArray((prev)=>(
-      [ ...prev,
+    let ans = selectedClientArray.includes(clientData[index]);
+    if (ans) {
+      const removeIndex = selectedClientArray.findIndex(item => item === clientData[index]);
+      selectedClientArray.splice(removeIndex, 1);
+    } else {
+      setSelectedClientArray((prev) => (
+        [...prev,
         clientData[index]
-     ]
-    ))
-   } 
+        ]
+      ))
+    }
   };
-  let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name))); 
- const HandleCardClick = (data) => {
+  let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name)));
+  const HandleCardClick = (data) => {
     setShowClientModal(true)
   }
-   //Function to handle closing modal
-   const handleCloseModal = () => {
+  //Function to handle closing modal
+  const handleCloseModal = () => {
     setShowClientModal(false)
   }
-  
 
-const handleExcelIconClick = () =>{
-  setCsvData(uniqueData)
-}
+
+  const handleExcelIconClick = () => {
+    setCsvData(uniqueData)
+  }
 
   return (
     <div className="table_view">
       <div className="sub_table_view">
-        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)} style={{overflowX:'hidden'}}>
-          <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
+        <div className="client_table-container" onScroll={(e) => hadnleInfiniteScroll(e, true)} style={{ overflowX: 'hidden' }}>
+          <div className="table-shadow" style={{ height: '4rem', width: '96.4%', marginLeft: '-0.3rem' }}></div>
           <table>
-            <thead style={{zIndex:'1'}}> 
+            <thead style={{ zIndex: '1' }}>
               <tr>
                 <th className="checkbox">
                   <CheckBox
                     id="checkbox1"
                     checked={clientData && clientData.length > 0 && checkboxStates.every((isChecked) => isChecked)}
-                    handleCheckboxChange={handleCheckBoxAll} 
+                    handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>
                 <th>JON</th>
@@ -108,27 +108,27 @@ const handleExcelIconClick = () =>{
               </tr>
             </thead>
 
-            {checkboxStates.includes(true)&& <div className="doc-container">
-            <img src={pdfIcon}/>
-            <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
-            {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
-              </div>}
+            {checkboxStates.includes(true) && <div className="doc-container">
+              <img src={pdfIcon} />
+              <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
+              {/* <img src={execelIcon} onClick={handleExcelIconClick} /> */}
+            </div>}
 
             {/* TABLE BODY STARTS */}
 
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index} 
+                  <tr className="selected" key={index}
                   >
-                    
+
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
                         checked={checkboxStates[index] || false}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
-                    
+
                     </td>
 
                     <td className="JON" onClick={() => HandleCardClick(data)}>{data.JobOrderNumber}</td>
@@ -143,50 +143,50 @@ const handleExcelIconClick = () =>{
                     </td>
                     <td className="address" onClick={() => HandleCardClick(data)}>{data.ModelType}</td>
                     <td className="address" onClick={() => HandleCardClick(data)}>{data.DateOfHandover}</td>
-                  
+
                   </tr>
-                ))}    
-{isLoading? <>        <tr style={{ overflowX: "hidden" }}>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        width={"80vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        width={"80vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        width={"80vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>          
-</>:''}
-    
-                
+                ))}
+              {isLoading ? <>        <tr style={{ overflowX: "hidden" }}>
+                <td colSpan="10">
+                  <SkeltonLoader
+                    width={"80vw"}
+                    height={"38px"}
+                    marginTop={"8px"}
+                    marginBottom={"0px"}
+                  />
+                </td>
+              </tr>
+                <tr>
+                  <td colSpan="10">
+                    <SkeltonLoader
+                      width={"80vw"}
+                      height={"38px"}
+                      marginTop={"8px"}
+                      marginBottom={"0px"}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="10">
+                    <SkeltonLoader
+                      width={"80vw"}
+                      height={"38px"}
+                      marginTop={"8px"}
+                      marginBottom={"0px"}
+                    />
+                  </td>
+                </tr>
+              </> : ''}
+
+
             </tbody>
           </table>
         </div>
       </div>
 
-      <ClientModal  showClientModal={showClientModal}
+      {showClientModal && <ClientModal showClientModal={showClientModal}
         handleCloseModal={handleCloseModal}
-        selectedClient={selectedClient}/>
+        selectedClient={selectedClient} />}
     </div>
   );
 };

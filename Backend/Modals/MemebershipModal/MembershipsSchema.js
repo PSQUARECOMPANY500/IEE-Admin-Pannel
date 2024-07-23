@@ -26,7 +26,7 @@ const memebership = new Schema(
     },
     Discount: {
       type: String,
-      default:"0"
+      default: "0"
     },
     PricePaid: {
       type: String,
