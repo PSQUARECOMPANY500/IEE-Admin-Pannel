@@ -8,19 +8,27 @@ import MembershipPopup from "./MembershipPopup";
 {
   /* -------------------------------------code by Raj----------------------------------------- */
 }
-const ClientDropDown = ({options,selectedOption,showOptions,defaultName,toggleOptions,handleOptionClick,w,id,}) => {
+const ClientDropDown = ({
+  options,
+  selectedOption,
+  showOptions,
+  defaultName,
+  toggleOptions,
+  handleOptionClick,
+  w,
+  id,
+  JobOrderNumber,
+}) => {
   const hasSpecialOption =
     selectedOption.includes("Warranty") ||
-    selectedOption.includes("Gold") ||            
-    selectedOption.includes("Platinum") ||
-    selectedOption.includes("Silver");
+    selectedOption.includes("gold") ||
+    selectedOption.includes("platinum") ||
+    selectedOption.includes("silver");
 
   // console.log("selectedOption", selectedOption);
-  
 
   const [selectedIcon, setSelectedIcon] = useState([]);
   const [openPopUp, setOpenPopUp] = useState(false);
-
 
   const [warrentyColor, setWarrentyColor] = useState();
 
@@ -40,14 +48,13 @@ const ClientDropDown = ({options,selectedOption,showOptions,defaultName,toggleOp
   //   }, [cardRef, toggleOptions]);
 
   // -------------------this ref for MembershipPopup components---------------------------------------
-const memberRef = useRef();
+  const memberRef = useRef();
 
   const handleClickOutsideModal = (event) => {
     if (memberRef.current && !memberRef.current.contains(event.target)) {
       handleCloseMember();
     }
   };
-
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutsideModal);
@@ -56,8 +63,6 @@ const memberRef = useRef();
       document.removeEventListener("mousedown", handleClickOutsideModal);
     };
   }, []);
-
-
 
   const setSelectedIconByOption = (option) => {
     let newIcon;
@@ -72,7 +77,7 @@ const memberRef = useRef();
         newIcon = { type: "SMS", icon: <FaSms /> };
         break;
       case "WhatsApp":
-        newIcon = { type: "WhatsApp", icon: <IoLogoWhatsapp /> }; 
+        newIcon = { type: "WhatsApp", icon: <IoLogoWhatsapp /> };
         break;
       default:
         newIcon = null;
@@ -99,8 +104,8 @@ const memberRef = useRef();
   };
 
   const handleCloseMember = () => {
-    setOpenPopUp(false)
-  }
+    setOpenPopUp(false);
+  };
 
   //condition for second dropdown and third dropdown for CSS
   const dropdownClass =
@@ -115,18 +120,17 @@ const memberRef = useRef();
         setTextColor("Warranty #0F351D");
         setBackgroundColor("#D6F8BF");
         setWarrentyColor("#FF0000");
-
         break;
       case "Gold":
-        setTextColor("Gold #F8AC1D");
+        setTextColor("gold #F8AC1D");
         setBackgroundColor("#FEE2AE");
         break;
       case "Platinum":
-        setTextColor("Platinum #FF7F00");
+        setTextColor("platinum #FF7F00");
         setBackgroundColor("#F3DCC6");
         break;
       case "Silver":
-        setTextColor("Silver ");
+        setTextColor("silver ");
         setBackgroundColor("#E5E5E5");
         break;
       case "Service History":
@@ -165,126 +169,129 @@ const memberRef = useRef();
 
     if (selectedOption === "Warranty") {
       setWarrentyColor("#0F351D");
-    } else if (selectedOption === "Platinum") {
+    } else if (selectedOption === "platinum") {
       setWarrentyColor("#FF7F00");
-    } else if (selectedOption === "Gold") {
+    } else if (selectedOption === "gold") {
       setWarrentyColor("#F8AC1D");
-    } else if (selectedOption === "Silver") {
+    } else if (selectedOption === "silver") {
       setWarrentyColor("#8E8E8E");
     }
   }, [id, selectedOption]);
 
   return (
-
     <>
-    <div
-      className={`client-modal-dropdown ${dropdownClass}`}
-      onClick={toggleOptions}
-      style={{ width: w }}
-    >
-      <div className="dropdown-icon-container">
-        <div className="dropdown-icon-container-img">
-          {selectedIcon.map((data) => {
-            return data.icon;
-          })}
-        </div>
-        <h6>{defaultName}</h6>
-        <p
-          style={{
-            color: textColor.split(" ").slice(-1)[0],
-          }}
-        >
-          {hasSpecialOption ? (
-            <span
-              className="green-padding"
-              style={{
-                backgroundColor: getBackgroundColor(selectedOption),
-                marginLeft: "5px",
-              }}
-            >
-              {id === 0
-                ? selectedIcon.forEach((data) => {
-                    return data.type;
-                  })
-                : selectedOption}
-            </span>
-          ) : selectedIcon.length >= 2 ? (
-            ""
-          ) : id === 0 ? (
-            selectedIcon.length > 0 ? (
-              selectedIcon.map((data) => data.type)
-            ) : (
-              "Message"
-            )
-          ) : (
-            selectedOption
-          )}
-        </p>
-        {dropdownClass === "second-dropdown" ? (
-          <RiArrowDropDownLine
-            style={{ color: "#8E8E8E", left: "87%" }}
-            className="icon-size"
-          />
-        ) : (
-          <RiArrowDropDownLine
-            style={{ color: "#8E8E8E", left: "74%" }}
-            className="icon-size"
-          />
-        )}{" "}
-      </div>
-      {showOptions && (
-        <div className="client-modal-drodown-options">
-          {options.map((option, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => {
-                  handleOptionClick(option);
-                  handleTextColor(option);
-                  handleOptionClickAndIcon(option);
-
-                  if (id === 1) setOpenPopUp(true);
-                }}
-                className={`client-modal-dropdown-option `}
+      <div
+        className={`client-modal-dropdown ${dropdownClass}`}
+        onClick={toggleOptions}
+        style={{ width: w }}
+      >
+        <div className="dropdown-icon-container">
+          <div className="dropdown-icon-container-img">
+            {selectedIcon.map((data) => {
+              return data.icon;
+            })}
+          </div>
+          <h6>{defaultName}</h6>
+          <p
+            style={{
+              color: textColor.split(" ").slice(-1)[0],
+            }}
+          >
+            {hasSpecialOption ? (
+              <span
+                className="green-padding"
                 style={{
-                  backgroundColor:
-                    selectedOption === option ? getBackgroundColor(option) : "",
+                  backgroundColor: getBackgroundColor(selectedOption),
+                  marginLeft: "5px",
                 }}
               >
-                {id === 0 && <></>}
-                <p
+                {id === 0
+                  ? selectedIcon.forEach((data) => {
+                      return data.type;
+                    })
+                  : selectedOption}
+              </span>
+            ) : selectedIcon.length >= 2 ? (
+              ""
+            ) : id === 0 ? (
+              selectedIcon.length > 0 ? (
+                selectedIcon.map((data) => data.type)
+              ) : (
+                "Message"
+              )
+            ) : (
+              selectedOption
+            )}
+          </p>
+          {dropdownClass === "second-dropdown" ? (
+            <RiArrowDropDownLine
+              style={{ color: "#8E8E8E", left: "87%" }}
+              className="icon-size"
+            />
+          ) : (
+            <RiArrowDropDownLine
+              style={{ color: "#8E8E8E", left: "74%" }}
+              className="icon-size"
+            />
+          )}{" "}
+        </div>
+        {showOptions && (
+          <div className="client-modal-drodown-options">
+            {options.map((option, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    handleOptionClick(option);
+                    handleTextColor(option);
+                    handleOptionClickAndIcon(option);
+
+                    if (id === 1) setOpenPopUp(true);
+                  }}
+                  className={`client-modal-dropdown-option `}
                   style={{
-                    color:
-                      selectedIcon.some((icon) =>
-                        String(icon.type)
-                          .toLowerCase()
-                          .includes(option.toLowerCase())
-                      ) || textColor.split(" ")[0] === option.split(" ")[0]
-                        ? id === 1
-                          ? warrentyColor
-                          : "#F8AC1DAD" //change color inside thsi
-                        : "inherit",
+                    backgroundColor:
+                      selectedOption === option
+                        ? getBackgroundColor(option)
+                        : "",
                   }}
                 >
-                  {option}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      
+                  {id === 0 && <></>}
+                  <p
+                    style={{
+                      color:
+                        selectedIcon.some((icon) =>
+                          String(icon.type)
+                            .toLowerCase()
+                            .includes(option.toLowerCase())
+                        ) || textColor.split(" ")[0] === option.split(" ")[0]
+                          ? id === 1
+                            ? warrentyColor
+                            : "#F8AC1DAD" //change color inside thsi
+                          : "inherit",
+                    }}
+                  >
+                    {option}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {openPopUp && id === 1 && (
         <div className="membershippopup-modal-wrapper">
           <div className="membershippopup-modal-container" ref={memberRef}>
-            <MembershipPopup onClose={handleCloseMember} />
+            <MembershipPopup
+              onClose={handleCloseMember}
+              selectedOption={selectedOption}
+              JobOrderNumber={JobOrderNumber}
+            />
           </div>
         </div>
       )}
-      </>
+    </>
   );
 };
 
@@ -292,11 +299,11 @@ const getBackgroundColor = (selectedOption) => {
   switch (selectedOption) {
     case "Warranty":
       return "#D6F8BF";
-    case "Gold":
+    case "gold":
       return "#FEE2AE";
-    case "Platinum":
+    case "platinum":
       return "#F3DCC6";
-    case "Silver":
+    case "silver":
       return "#E5E5E5";
 
     default:

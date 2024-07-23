@@ -102,6 +102,9 @@ export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
 export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
 export const DELETE_TODO = "DELETE_TODO"
+
+
+export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE'
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1722,3 +1725,34 @@ export const getAllClient = async () => {
   }
 }
 // ----------------------action of Offer discount by service id---------------------------
+
+
+
+//-------------- action to handle upgradeMembership by the admin ----------------------
+
+export const upgradeClientMembershipByAdminPannelAction = (formData) => {
+  return async (dispatch) => {
+    try {
+      const reponse = await axios.post(`${config.apiUrl}/admin/upgradClientMembership`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+      }
+      )
+    dispatch({
+      type: UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE,
+      payload: reponse.data,
+    })
+
+    console.log("upgrade membership by client",reponse)
+    if(reponse.status === 200){
+      toast.success(reponse.data.message);
+    }
+
+    } catch (error) {
+      console.log('error while fetching upgrade client memebershiop buy admin pannel', error);
+    }
+  }
+}

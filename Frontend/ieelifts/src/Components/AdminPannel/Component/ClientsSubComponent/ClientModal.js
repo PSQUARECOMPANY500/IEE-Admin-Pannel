@@ -16,10 +16,12 @@ import ClientDetails from "./ClientDetails";
 // --------------------Raj -------------------------------------------
 
 const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
+  console.log(
+    "selected client pagedddddddddddddddddddd",
+    selectedClient?.JobOrderNumber
+  );
 
-  console.log("selected client pagedddddddddddddddddddd",selectedClient);
-
-    const modalRef = useRef();
+  const modalRef = useRef();
   // const cardRef = useRef();
 
   // Close modal when clicking outside of it
@@ -62,7 +64,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
   const defaultOptions = {
     0: "Select",
     1: "Warranty",
-    2: "Elevator details",
+    2: "Client Details",
   };
 
   const [dropdowns, setDropdowns] = useState([
@@ -75,7 +77,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     },
     {
       id: 1,
-      options: ["Warranty", "Platinum", "Gold", "Silver"],
+      options: ["Warranty", "platinum", "gold", "silver"],
       defaultName: "Membership :",
       pic: MailIcon,
       selectedOption: defaultOptions[1],
@@ -89,7 +91,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
         "Service Histroy",
         "Call Back History",
         "Document",
-        "SOS Calls"
+        "SOS Calls",
       ],
       pic: MailIcon,
       selectedOption: defaultOptions[2],
@@ -101,7 +103,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     setDropdowns((prevDropdowns) =>
       prevDropdowns.map((dropdown) =>
         dropdown.id === id
-          ? { ...dropdown, showOptions: !dropdown.showOptions}
+          ? { ...dropdown, showOptions: !dropdown.showOptions }
           : dropdown
       )
     );
@@ -117,21 +119,27 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     );
   };
 
-   // Update dropdowns when selectedClient changes
-   useEffect(() => {
+  // Update dropdowns when selectedClient changes
+  useEffect(() => {
     if (selectedClient) {
       setDropdowns((prevDropdowns) =>
         prevDropdowns.map((dropdown) =>
-          dropdown.id === 1 ? { ...dropdown, selectedOption: selectedClient.MembershipType || defaultOptions[1] } : dropdown)
+          dropdown.id === 1
+            ? { ...dropdown, selectedOption: selectedClient.MembershipType }
+            : dropdown
+        )
       );
     }
-  }, [selectedClient]);
-
+  }, [selectedClient, showClientModal]);
 
   const renderComponent = () => {
     switch (dropdowns[2].selectedOption) {
       case "Elevator details":
-        return <ClientElevatorDetails selectedClient={selectedClient?.JobOrderNumber} />;
+        return (
+          <ClientElevatorDetails
+            selectedClient={selectedClient?.JobOrderNumber}
+          />
+        );
       case "Call Back History":
         return <ClientCallBackHis />;
       case "Document":
@@ -139,11 +147,11 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       case "SOS Calls":
         return <ClientSOSCall />;
       case "Client Details":
-        return <ClientDetails/>;
+        return <ClientDetails />;
       case "Service Histroy":
-       return <ClientServiceHistory/>;
+        return <ClientServiceHistory />;
       default:
-        return <ClientElevatorDetails selectedClient={selectedClient?.JobOrderNumber} />;
+        return <ClientDetails />;
     }
   };
 
@@ -182,6 +190,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                     }
                     id={dropdowns[0].id}
                     w={"9rem"}
+                    JobOrderNumber={selectedClient?.JobOrderNumber}
                   />
                   <ClientDropDown
                     key={dropdowns[1].id}
@@ -195,6 +204,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                     }
                     id={dropdowns[1].id}
                     w={"16rem"}
+                    JobOrderNumber={selectedClient?.JobOrderNumber}
                   />
 
                   <div className="client-modal-profile-pdficon">
@@ -216,6 +226,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                     id={dropdowns[2].id}
                     w={"24%"}
                     color={"#F8AC1DAD"}
+                    JobOrderNumber={selectedClient?.JobOrderNumber}
                   />
                 </div>
               </div>
@@ -225,13 +236,9 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
             </div>
           </div>
         </div>
-
       )}
     </>
   );
 };
 
 export default ClientModal;
-
-
-
