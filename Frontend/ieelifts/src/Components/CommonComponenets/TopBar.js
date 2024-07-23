@@ -260,7 +260,7 @@ const TopBar = (props) => {
       </div>
 
       <div className="right-side-icons">
-        <div>
+        {/* <div>
           <button
             style={{ height: "70px", opacity: "0" }}
             onClick={() => {
@@ -279,7 +279,7 @@ const TopBar = (props) => {
           >
             Click Here
           </button>
-        </div>
+        </div> */}
         {location.pathname === "/Clients" ? (
           <span className="top-icon">
             <div className="search-box">

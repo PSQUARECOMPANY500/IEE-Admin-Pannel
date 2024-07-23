@@ -1543,6 +1543,12 @@ code {
   width: 100%;
   border-radius: 1rem;
   box-shadow: 2px 4px 10px #00000029;
+  cursor: pointer;
+}
+
+.clientCard:hover{
+  scale: 1.05;
+  transition: 0.2s ease;
 }
 
 .clientCardShadowWarrenty {
@@ -1564,6 +1570,7 @@ code {
 .noMembershipP {
   background: #e5e5e5 0% 0% no-repeat padding-box;
   box-shadow: 2px 4px 10px #00000029;
+  
 }
 
 .clientInfo {
@@ -1635,6 +1642,9 @@ code {
   margin-top: 5%;
   padding-bottom: 0.5rem;
 }
+.client_table_view{
+  height: 92%;
+}
 
 .spare-part-table_view {
   padding: 0;
@@ -1655,6 +1665,8 @@ code {
   padding: 1rem 2rem;
 }
 
+
+
 .spare-part-sub-table-view {
   box-shadow: none;
   padding: 0rem 0rem;
@@ -1662,9 +1674,14 @@ code {
 
 .client_table-container,
 .spare-part-table-container {
-  max-height: 77vh;
+  max-height: 80vh;
   overflow-y: auto;
   width: 100%;
+
+}
+
+.client_table-container{
+  max-height: 82vh;
 }
 
 .spare-part-table-container {
@@ -3202,6 +3219,9 @@ text-align: center;
   width: 100%;
 }
 
+
+
+
 /* --------------------------------Animated Input CSS---------------------------------- */
 input:-webkit-autofill {
   background-color: transparent !important;
@@ -3306,6 +3326,9 @@ input:-webkit-autofill {
 
   .sub_table_view {
     height: 85vh;
+  }
+  .client_sub_table_view{
+    height: 90vh;
   }
 
   .JON {

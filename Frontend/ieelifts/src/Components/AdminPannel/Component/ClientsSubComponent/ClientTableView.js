@@ -8,14 +8,18 @@ import { CSVLink, CSVDownload } from "react-csv";
 import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import { useSelector } from "react-redux";
 
-const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered }) => {
+const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered ,page}) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [csvData,setCsvData] = useState([]);
+
   const [selectedClientArray,setSelectedClientArray]= useState([]);
-   console.log(isFiltered);
+  const totalPage = useSelector(
+    (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.totalPage
+  );
   useLayoutEffect(() => {
     if (clientData) {
       setCheckboxStates(Array(clientData.length).fill(false));
@@ -71,8 +75,8 @@ const handleExcelIconClick = () =>{
 }
 
   return (
-    <div className="table_view">
-      <div className="sub_table_view">
+    <div className="table_view client_table_view">
+      <div className="sub_table_view client_sub_table_view">
         <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)} style={{overflowX:'hidden'}}>
           <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
           <table>
@@ -134,7 +138,29 @@ const handleExcelIconClick = () =>{
                     <td className="JON" onClick={() => HandleCardClick(data)}>{data.JobOrderNumber}</td>
                     <td className="name" onClick={() => HandleCardClick(data)}>{data?.name}</td>
                     <td className="checkbox" onClick={() => HandleCardClick(data)}>{data?.PhoneNumber}</td>
-                    <td className="address" onClick={() => HandleCardClick(data)}>{data?.Address}</td>
+                    <td className="address" onClick={() => HandleCardClick(data)}>
+                      
+                      {/* {data?.Address} */}
+                      <div className="dropdown-address">
+                          <span
+                            
+                          >
+                         {data?.Address}
+                          </span>
+
+                          <div className="dropdown-adddress-menu">
+                            <div className="drop-address">
+                              <p
+                                
+                              >
+                               {data?.Address}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      
+                      
+                      </td>
                     <td className="callback" onClick={() => HandleCardClick(data)}>
                       {data?.callback ? data?.callback : 0}
                     </td>
@@ -146,7 +172,7 @@ const handleExcelIconClick = () =>{
                   
                   </tr>
                 ))}    
-{isLoading? <>        <tr style={{ overflowX: "hidden" }}>
+{isLoading&&page<totalPage? <>        <tr style={{ overflowX: "hidden" }}>
                     <td colSpan="10">
                       <SkeltonLoader
                         width={"80vw"}

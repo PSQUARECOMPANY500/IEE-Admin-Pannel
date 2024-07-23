@@ -6,7 +6,7 @@ import enggIcon from "../../../Assets/Images/admin@2x.png";
 import tick from "../../../Assets/Images/tick.svg";
 import crm from "../../../Assets/Images/customer-relationship-management@2x.png";
 
-const SelectDepartment = () => {
+const SelectDepartment = ({getName}) => {
   const [departmentValue, setDepartmentValue] = useState("");
   const [isSelection, setIsSelection] = useState(false);
   const naviagate = useNavigate();
@@ -16,18 +16,21 @@ const SelectDepartment = () => {
       name: "Service Admin",
       value: "ServiceAdmin",
       image: enggIcon,
+      heading: "Service Administrator",
     },
     {
       id: 2,
       name: "CRM Admin",
       value: "CRM",
       image: crm,
+       heading: "CRM Administrator"
     },
     {
       id: 3,
       name: "Erection Admin",
       value: "ErectionAdmin",
       image: crm,
+       heading: "Erection Administrator"
     },
   ];
 
@@ -36,9 +39,10 @@ const SelectDepartment = () => {
       state: { value: departmentValue },
     })
   };
-  const handleToGetName = (value, index) => {
+  const handleToGetName = (value,heading, index) => {
     setDepartmentValue(value);
     setIsSelection(index);
+    getName(heading);
   };
 
   return (
@@ -49,7 +53,7 @@ const SelectDepartment = () => {
             <div
               className={`department-name-div ${isSelection === index ? "selected-border" : ""
                 }`}
-              onClick={() => handleToGetName(department.value, index)}
+              onClick={() => handleToGetName(department.value,department.heading, index)}
             >
               <div className="department-icon">
                 <img

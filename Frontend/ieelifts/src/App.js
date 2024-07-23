@@ -25,11 +25,16 @@ import { useState } from "react";
 import Todo  from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
 
 function App() {
+  const [departmentName,setDepartmentName]=useState('')
   const isLoggedIn = useSelector(
     (state) => state?.AdminRootReducer?.loginAdminReducer.isLoggedIn
   );
 
   const role = localStorage.getItem("Role");
+
+  const getName=(e)=>{
+setDepartmentName(e)
+  }
 
   return (
     <>
@@ -39,8 +44,8 @@ function App() {
           path="/"
           element={
             !isLoggedIn ? (
-              <LoginPage name="select departments">
-                <SelectDepartment />
+              <LoginPage name="Module selection">
+                <SelectDepartment getName={getName} />
               </LoginPage>
             ) : (
               <Navigate
@@ -59,7 +64,7 @@ function App() {
           path="/login"
           element={
             !isLoggedIn ? (
-              <LoginPage>
+              <LoginPage name={departmentName}>
                 <LoginPageInput />
               </LoginPage>
             ) : (
@@ -79,7 +84,7 @@ function App() {
           path="/forgetpassword"
           element={
             !isLoggedIn ? (
-              <LoginPage>
+              <LoginPage name={getName}>
                 <SendPasswordVerificationCode />
               </LoginPage>
             ) : (
@@ -99,7 +104,7 @@ function App() {
           path="/enterOTP"
           element={
             !isLoggedIn ? (
-              <LoginPage>
+              <LoginPage name={getName}>
                 <ForgetPasswordOTP />
               </LoginPage>
             ) : (
@@ -119,7 +124,7 @@ function App() {
           path="/setnewpassword"
           element={
             !isLoggedIn ? (
-              <LoginPage>
+              <LoginPage name={getName}>
                 <EnterNewPassword />
               </LoginPage>
             ) : (
