@@ -3,12 +3,15 @@ import AttendanceCalendar from "./AttendanceCalendar";
 import AttendanceDateConatiner from "./AttendanceDateConatiner";
 import LeaveHistory from "./LeaveHistory";
 import LeaveHistoryBottom from "./LeaveHistoryBottom";
+import { useSelector } from "react-redux";
 
 const Attendance = (props) => {
   const { engID } = props;
 
   const [date, setTodayDate] = useState();
   console.log("date&&&&&&&&&&&&", date)
+
+  const leaves = useSelector((state) => state?.AdminRootReducer?.engineerRequestedLeaveReducer?.requestedLeave?.leaves);
 
   const [leaveRequested, setleaveRequested] = useState(null);
   return (
@@ -20,8 +23,8 @@ const Attendance = (props) => {
       <div className="LeaveHistory">
         <div className="SubLeaveHistory">
           <LeaveHistory engID={engID} leaveRequested={leaveRequested} />
-          <div className="VerticalLinelarge "></div>
-          <LeaveHistoryBottom engID={engID} setleaveRequested={setleaveRequested} />
+          {leaves && <div className="VerticalLinelarge "></div>}
+          {leaves && <LeaveHistoryBottom engID={engID} setleaveRequested={setleaveRequested} leaves={leaves} />}
         </div>
       </div>
     </div>

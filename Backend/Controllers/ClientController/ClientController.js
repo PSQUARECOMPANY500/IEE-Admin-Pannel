@@ -21,6 +21,8 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema")
+
 const Razorpay = require("razorpay");
 
 const puppeteer = require("puppeteer");
@@ -967,7 +969,7 @@ const caluclateMembershipPriceAndTime = async (
   updateMembership
 ) => {
   const LastSecondCount = MembershipData[MembershipData.length - 2];
-  console.log("=============================",LastSecondCount.EndDate);
+  console.log("=============================", LastSecondCount.EndDate);
   if (new Date(LastSecondCount.EndDate) < Date.now()) {
     const dataExpires = await memberShipDetails.findOneAndUpdate(
       { OrderId: LastSecondCount.OrderId },
@@ -995,7 +997,7 @@ const caluclateMembershipPriceAndTime = async (
   const appliedMembershipPriceDaysToBeAdded =
     PriviousMembershipPrice / (appliedMembership.MembershipPrice / 365);
 
-    console.log("this is applied membership",appliedMembershipPriceDaysToBeAdded);
+  console.log("this is applied membership", appliedMembershipPriceDaysToBeAdded);
 
   return appliedMembershipPriceDaysToBeAdded;
 };
@@ -1023,37 +1025,37 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
 
     // when order id "1" evaluate the conditions
     if (Details.OrderId === "1") {
-       const updateMembershipData = await memberShipDetails.findOneAndUpdate({
-          _id:Details._id
-        },{
-          IsPaid: true
-        })
+      const updateMembershipData = await memberShipDetails.findOneAndUpdate({
+        _id: Details._id
+      }, {
+        IsPaid: true
+      })
 
-        const DaysToBeAdded = await caluclateMembershipPriceAndTime(
-          MembershipData,
-          updateMembershipData
-        );
+      const DaysToBeAdded = await caluclateMembershipPriceAndTime(
+        MembershipData,
+        updateMembershipData
+      );
 
-        console.log("my days",DaysToBeAdded);
+      console.log("my days", DaysToBeAdded);
 
-        let newDate = new Date();
-        newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+      let newDate = new Date();
+      newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
 
-        const finalPurchase = await memberShipDetails.findOneAndUpdate(
-          {  _id:Details._id },
-          { EndDate: newDate }
-        );
+      const finalPurchase = await memberShipDetails.findOneAndUpdate(
+        { _id: Details._id },
+        { EndDate: newDate }
+      );
 
-        const data = {
-          MembershipType: Details.MembershipType,
-          EndDate: Details.EndDate,
-          PricePaid: Details.PricePaid,
-          MembershipInvoice: Details.MembershipInvoice,
-        }
+      const data = {
+        MembershipType: Details.MembershipType,
+        EndDate: Details.EndDate,
+        PricePaid: Details.PricePaid,
+        MembershipInvoice: Details.MembershipInvoice,
+      }
 
-        return res.status(200).json({ status: "success", Details: data }); 
+      return res.status(200).json({ status: "success", Details: data });
     }
-   
+
 
     const instance = new Razorpay({
       key_id: process.env.key_id,
@@ -1245,7 +1247,7 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, email, phone, password, profilePic } =
+    const { JobOrderNumber, name, email, phone, password } =
       req.body;
     const profile = req.file;
 
@@ -1258,30 +1260,43 @@ module.exports.updateClientProfile = async (req, res) => {
         });
     }
 
-    if (
-      (!profilePic && profile && profile.fieldname === undefined) === undefined
-    ) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Profile updation failed due to missing fields for picture",
-        });
-    }
-    await RegisterClientDetails.findOneAndUpdate(
-      {
-        JobOrderNumber,
-      },
-      {
-        name,
-        PhoneNumber: phone,
-        ProfileImage: profile ? profile.filename : profilePic,
-        Password: password,
-        email,
-      }
-    );
+    if
+      (profile && profile.fieldname) {
 
-    let profilePicture = profilePic || profile;
+      await RegisterClientDetails.findOneAndUpdate(
+        {
+          JobOrderNumber,
+        },
+        {
+          name,
+          PhoneNumber: phone,
+          ProfileImage: profile && profile.filename,
+          Password: password,
+          email,
+        }
+      );
+    }
+    else {
+      await RegisterClientDetails.findOneAndUpdate(
+        {
+          JobOrderNumber,
+        },
+        {
+          name,
+          PhoneNumber: phone,
+          Password: password,
+          email,
+        }
+      );
+    }
+
+    await RegisteredElevatorForm.findOneAndUpdate({
+      "clientFormDetails.jon": JobOrderNumber
+    }, {
+      "clientFormDetails.userName": name,
+      "clientFormDetails.phoneNumber": phone,
+      "clientFormDetails.email": email,
+    })
 
     return res.status(200).json({
       success: true,

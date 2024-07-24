@@ -898,9 +898,6 @@ tr>td:nth-child(2) {
   min-height: 20%;
   background-color: #FFFBF4;
   overflow-x: auto;
-
-
-
 }
 
 .Attendance {
@@ -1802,7 +1799,7 @@ tr>td:nth-child(2) {
 
 
 
-.rating-quetions-container-may{
+.rating-quetions-container-may {
   box-shadow: inset 1px 2px 3px #00000029, 1px 2px 5px #00000029;
   border: 1px solid #00000008;
   background-color: #FFFFFF;
@@ -1969,7 +1966,7 @@ tr>td:nth-child(2) {
   right: 50%;
   transform: translate(50%, -50%);
 }
- 
+
 /* center the warning */
 
 
@@ -2287,23 +2284,40 @@ tr>td:nth-child(2) {
 @media only screen and (min-width: 1201px) {} */
 
 
-@media only screen and (min-width: 769px) and (max-width: 1550) {
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
 
   tr>td:nth-child(2) {
     font-size: 0.6rem;
   }
 
-  .AllCards {display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-row-gap: 1rem;
-  grid-column-gap: 1rem;
-  padding: 2rem 4rem;
+  .AllCards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 1rem;
+    grid-column-gap: 1rem;
+    padding: 2rem 4rem;
   }
 
+  .OldLeaveCard {
+    /* font-size: 0.7rem; */
+    /* background-color: red; */
+    /* gap: -10rem; */
+
+  }
+   
+  .responsiveAttendancecalendar{
+    height: 60%;    
+  }
+  .leave_dates {
+    font-size: small;
+  }
+
+  .leave_Details {
+    padding-left: 1rem;
+  }
 
 }
 
 /* @media only screen and (min-width: 1201px) {
-
-}  */
+  }  */
 /*------------------------------------------------------ Rating code ending point--------------------------------------------------------- */

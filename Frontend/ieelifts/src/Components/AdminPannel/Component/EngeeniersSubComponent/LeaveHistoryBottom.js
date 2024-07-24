@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { SlLink } from 'react-icons/sl'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { approveLeaveByAdmin, getRequstedLeaves } from '../../../../ReduxSetup/Actions/AdminActions';
 
-const LeaveHistoryBottom = ({ engID, setleaveRequested }) => {
+const LeaveHistoryBottom = ({ engID, setleaveRequested,leaves }) => {
   const [currentLeaveIndex, setCurrentLeaveIndex] = useState(0);
   const dispatch = useDispatch();
 
@@ -13,7 +13,7 @@ const LeaveHistoryBottom = ({ engID, setleaveRequested }) => {
     }
   }, [engID, dispatch]);
 
-  const leaves = useSelector((state) => state?.AdminRootReducer?.engineerRequestedLeaveReducer?.requestedLeave?.leaves);
+  
   const [leave, setLeave] = useState(null);
 
   useEffect(() => {
