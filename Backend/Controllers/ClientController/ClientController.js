@@ -39,6 +39,8 @@ const { jsPDF } = require("jspdf");
 
 const pdfFormat = require("../../public/MembershipInvoice/membershipInvoiceTemplate");
 
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema")
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
 
@@ -1243,7 +1245,7 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, email, phone, password, profilePic } =
+    const { JobOrderNumber, name, email, phone, password } =
       req.body;
     const profile = req.file;
 
@@ -1256,30 +1258,43 @@ module.exports.updateClientProfile = async (req, res) => {
         });
     }
 
-    if (
-      (!profilePic && profile && profile.fieldname === undefined) === undefined
-    ) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Profile updation failed due to missing fields for picture",
-        });
-    }
-    await RegisterClientDetails.findOneAndUpdate(
-      {
-        JobOrderNumber,
-      },
-      {
-        name,
-        PhoneNumber: phone,
-        ProfileImage: profile ? profile.filename : profilePic,
-        Password: password,
-        email,
-      }
-    );
+    if
+      (profile && profile.fieldname) {
 
-    let profilePicture = profilePic || profile;
+      await RegisterClientDetails.findOneAndUpdate(
+        {
+          JobOrderNumber,
+        },
+        {
+          name,
+          PhoneNumber: phone,
+          ProfileImage: profile && profile.filename,
+          Password: password,
+          email,
+        }
+      );
+    }
+    else {
+      await RegisterClientDetails.findOneAndUpdate(
+        {
+          JobOrderNumber,
+        },
+        {
+          name,
+          PhoneNumber: phone,
+          Password: password,
+          email,
+        }
+      );
+    }
+
+    await RegisteredElevatorForm.findOneAndUpdate({
+      "clientFormDetails.jon": JobOrderNumber
+    }, {
+      "clientFormDetails.userName": name,
+      "clientFormDetails.phoneNumber": phone,
+      "clientFormDetails.email": email,
+    })
 
     return res.status(200).json({
       success: true,

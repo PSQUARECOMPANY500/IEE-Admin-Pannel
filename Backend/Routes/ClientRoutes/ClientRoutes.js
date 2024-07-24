@@ -77,5 +77,26 @@ router.get("/checkpaymentstatusandmakeinvoice/:JobOrderNumber", clientController
 router.post('/registerFirebaseToken', clientController.firebaseTokenForPushNotificationPurpose);
 
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/ClientProfiles/");
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    const fileName = file.originalname.split(".")[0];
+    cb(null, `${fileName}-${Date.now()}.${parts}`);
+  },
+});
+const upload = multer({ storage: storage });
+router.put(
+  "/updateClientProfile",
+  upload.single("profile"),
+  clientController.updateClientProfile
+);
+
+
+
+
+
 
 module.exports = router;
