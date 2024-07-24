@@ -23,7 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 /.github
+
 /public
+# /src
 /package.json
 /package-lock.json
 

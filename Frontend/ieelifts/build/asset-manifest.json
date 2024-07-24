@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3fb37f78.css",
+    "main.js": "/static/js/main.1013b9fc.js",
+    "static/js/498.51b07e69.chunk.js": "/static/js/498.51b07e69.chunk.js",
+    "static/js/703.50888461.chunk.js": "/static/js/703.50888461.chunk.js",
+    "static/js/198.d10a3412.chunk.js": "/static/js/198.d10a3412.chunk.js",
+    "static/js/787.377c0067.chunk.js": "/static/js/787.377c0067.chunk.js",
+    "static/media/backgroudImageLoginPage.jpg": "/static/media/backgroudImageLoginPage.88159fcebfec98b6775d.jpg",
+    "static/media/logo.png": "/static/media/logo.04b7af2160b1d875f3d6.png",
+    "static/media/ieelogo.png": "/static/media/ieelogo.e294b4944cfed38e35cb.png",
+    "static/media/drivers.svg": "/static/media/drivers.3d9173ed04014d6602c0289b8801da2e.svg",
+    "index.html": "/index.html",
+    "static/media/details.svg": "/static/media/details.e2483e18cda7e93595a10fd225af08ee.svg",
+    "static/media/expand.svg": "/static/media/expand.e8668b30a68176d16a3dd97bc2d59710.svg",
+    "static/media/tick.svg": "/static/media/tick.68880d8627f086c445bdec1de6d7880e.svg",
+    "static/media/card.svg": "/static/media/card.cd9953e8b0ae7b7ad15c74a1ec37fcd6.svg",
+    "static/media/uploadicon.svg": "/static/media/uploadicon.e4222e1ecdba5e8905024aad3158646b.svg",
+    "static/media/mailIon.svg": "/static/media/mailIon.2d11fd1f064edd838bf3806cf88a6861.svg",
+    "main.3fb37f78.css.map": "/static/css/main.3fb37f78.css.map",
+    "main.1013b9fc.js.map": "/static/js/main.1013b9fc.js.map",
+    "498.51b07e69.chunk.js.map": "/static/js/498.51b07e69.chunk.js.map",
+    "703.50888461.chunk.js.map": "/static/js/703.50888461.chunk.js.map",
+    "198.d10a3412.chunk.js.map": "/static/js/198.d10a3412.chunk.js.map",
+    "787.377c0067.chunk.js.map": "/static/js/787.377c0067.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3fb37f78.css",
+    "static/js/main.1013b9fc.js"
+  ]
+}

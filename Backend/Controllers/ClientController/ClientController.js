@@ -49,9 +49,7 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
     const clientReferal = await ReferalSchema.find({ jobOrderNumber });
 
     if (!clientReferal || clientReferal.length === 0) {
-      return res
-        .status(204)
-        .json({status:"error", message: "No referal found on this JobOrderNumber" });
+      return res.status(202).json({message: "No referal found on this JobOrderNumber", status:"error"});
     }
 
     return res.status(200).json({ message: "Referal Found", clientReferal });
