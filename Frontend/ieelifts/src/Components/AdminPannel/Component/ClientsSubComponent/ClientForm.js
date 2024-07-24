@@ -45,12 +45,12 @@ const ClientForm = () => {
   const [prevData, setPrevData] = useState(false);
  
   const { jon } = allFormData.clientFormDetails;
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
   //  const [triggerFunction, setTriggerFunction]=useState(false);
   let triggerFunction = 0;
   //handler

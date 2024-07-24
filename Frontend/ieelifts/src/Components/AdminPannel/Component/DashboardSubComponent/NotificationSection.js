@@ -21,6 +21,8 @@ const NotificationSection = () => {
   const [combineNotifications, setConbineNotifications] = useState();
   const [Enggnotificationdata, setEnggNotificationData] = useState();
   const [Clientnotificationdata, setClientNotificationData] = useState();
+  const [moveLeft,setMoveLeft] = useState(5);
+  const [moveWidth,setMoveWidth] = useState(15)
 
   const length =
     combineNotifications?.length +
@@ -92,12 +94,18 @@ const NotificationSection = () => {
     if (category === "All") {
       setNotifications(combineNotifications);
       setSelectedCategory(category);
+      setMoveLeft(5)
+      setMoveWidth(15)
     } else if (category === "Enginner") {
       setNotifications(Enggnotificationdata);
       setSelectedCategory(category);
+      setMoveLeft(35)
+      setMoveWidth(23)
     } else if (category === "Client") {
       setNotifications(Clientnotificationdata);
       setSelectedCategory(category);
+      setMoveLeft(76)
+      setMoveWidth(18)
     }
   };
   
@@ -120,7 +128,7 @@ const NotificationSection = () => {
           <div className="notification-navigators">
             <div
               className={`notification-buttons ${
-                selectedCategory === "All" ? "activeNotification" : ""
+                selectedCategory === "All"  ? "activeNotification" : ""
               }`}
               onClick={() => handleNotificationData("All")}
             >
@@ -146,6 +154,7 @@ const NotificationSection = () => {
               <p>{(lengthCount.Client && lengthCount.Client) || 0}</p>
             </div>
           </div>
+          <div className="notification-bg-line" style={{left:moveLeft+'%',width:moveWidth+'%'}}></div>
         </div>
 
         <div className="notification-archives">
