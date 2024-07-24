@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer")
 const jwt = require('jsonwebtoken');
 
 const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
