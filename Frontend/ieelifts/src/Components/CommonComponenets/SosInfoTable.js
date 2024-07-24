@@ -41,8 +41,6 @@ import React, {
       setLoading(false);
     }, [currentPage]);
   
-    console.log("push", serviceData);
-  
     useEffect(() => {
       if (loading) return;
       if (observer.current) observer.current.disconnect();

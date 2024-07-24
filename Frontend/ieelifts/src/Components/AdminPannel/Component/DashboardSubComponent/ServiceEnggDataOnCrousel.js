@@ -73,7 +73,7 @@ const ServiceEnggDataOnCrousel = ({
 
   return (
     <div
-      className="main-crouser"
+      className="main-crouser"  
       style={{
         boxShadow: isHover ? "none" : "2px 4px 10px #99886b66",
         borderColor: isHover ? "#F8AC1D80" : "transparent",
@@ -215,7 +215,7 @@ const ServiceEnggDataOnCrousel = ({
                     </div>
                   </div>
                 </div>
-              ) : null}
+              ) : null} 
             </div>
           </div>
         )}

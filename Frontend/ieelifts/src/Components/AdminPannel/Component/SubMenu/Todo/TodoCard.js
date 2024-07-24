@@ -19,7 +19,7 @@ const TodoCard = ({ taskAdded, taskUpdated }) => {
             if (decoded && decoded.user && decoded.user.AdminId) {
                 try {
                     const data = await getTodo(decoded.user.AdminId);
-                    setTodoData(data.data);
+                    setTodoData(data?.data);
                 } catch (error) {
                     console.error("Fetching todo data failed:", error);
                 }

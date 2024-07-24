@@ -1919,28 +1919,26 @@ code {
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 12rem;
   margin-top: 1rem;
-
 }
 
-@media screen and (min-width: 900px) and (max-width: 1600px) {
+/* @media screen and (min-width: 900px) and (max-width: 1600px) {
   .client-form-container {
     grid-column-gap: 7rem;
   }
-}
+} */
 
 .client-form-left-container {
   display: grid;
   grid-template-rows: 1fr 1fr;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .client-form-right-container {
-  width: 100%;
+  /* width: 100%; */
 }
 
 .client-form-details {
   padding: 3rem 2rem 0 2rem;
-
 }
 
 .client-salesman-details {
@@ -2161,11 +2159,8 @@ text-align: center;
   margin-top: 2rem;
 }
 
-.client-document-child-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-}
+
+
 
 .client-salesman-wrapper {
   display: grid;
@@ -2242,7 +2237,7 @@ text-align: center;
   width: 100%;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .client-form-next-container {
     grid-column-gap: 2rem;
   }
@@ -2252,7 +2247,7 @@ text-align: center;
   .client-form-next-container {
     grid-column-gap: 5rem;
   }
-}
+} */
 
 .client-form-elevator-details {
   padding: 4rem 2rem;
@@ -2611,7 +2606,7 @@ text-align: center;
   font-size: 0.88rem;
   font-family: poppins;
   padding-bottom: 5px;
-  width: 18rem !important;
+  width: 18rem;
 }
 
 .file-upload>input {
@@ -2674,7 +2669,7 @@ text-align: center;
   opacity: 0.5;
   padding-bottom: 0.4rem;
   width: 100%;
-  font-family: Poppins;
+  font-family: "Poppins";
   cursor: pointer;
   position: relative;
 }
@@ -2682,7 +2677,7 @@ text-align: center;
 .dropdown-input::placeholder {
   margin-bottom: 1rem;
   color: #1d1d1d;
-  font-family: Poppins;
+  font-family: "Poppins";
   font-size: 0.9;
 }
 
@@ -2704,7 +2699,7 @@ text-align: center;
   padding: 0.6rem;
   opacity: 1;
   margin-top: 0.4rem;
-  font-family: Poppins;
+  font-family: "Poppins";
   background-color: #fff;
   z-index: 10;
 }

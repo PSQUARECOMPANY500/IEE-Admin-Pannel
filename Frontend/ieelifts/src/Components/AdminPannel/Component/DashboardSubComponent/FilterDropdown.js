@@ -67,9 +67,11 @@ const FilterDropdown = ({
             <div key={index}>
               <div className="filter-dropdowns">
                 <div
+
                   className="filter-icons"
                   onClick={() => handleFilter(dropdown.name)}
                 >
+               
                   {
                     dropdown.name !== "clear" ? (
                       <>
@@ -98,8 +100,10 @@ const FilterDropdown = ({
                     opacity: openFilter === dropdown.name ? 1 : 0,
                   }}
                 >
-                  <ul className="filter-lists">
+                   {console.log("dropdown",dropdown.name)}
+                  <ul className={`filter-lists filter-list-${dropdown.name}`}>
                     {dropdown.options.map((option, index) => (
+                     
                       <li
                         key={index}
                         onClick={() => {
@@ -122,6 +126,7 @@ const FilterDropdown = ({
                           : ""
                           }`}
                       >
+            
                         {dropdown.name === "location"
                           ? option.location
                           : option}
@@ -137,7 +142,8 @@ const FilterDropdown = ({
               }
 
               <>
-                {openFilter !== dropdown.name && (
+               {console.log("====>",openFilter)}
+                {openFilter !== dropdown.name  && openFilter==="clear" && (
                   <div className="client-filter-option-container">
                     {filterSelections.map((selection) => {
                       if (selection.type === dropdown.name) {

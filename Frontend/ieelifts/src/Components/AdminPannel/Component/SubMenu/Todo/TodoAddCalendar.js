@@ -1,4 +1,4 @@
-//------------------------------------Rahul Kumar-------------------------------
+//------------------------------------Rahul Kumar------------------------------------
 import { useEffect, useRef, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 

@@ -41,7 +41,7 @@ const Todo = () => {
   };
   const handleTaskUpdate = async () => {
     const data = await getTodo(decoded.user.AdminId);
-    setTodo(data.data);
+    setTodo(data?.data);
     setTaskUpdated(!taskUpdated);
   };
   useEffect(() => {
