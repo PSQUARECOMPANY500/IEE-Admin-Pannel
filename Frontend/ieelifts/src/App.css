@@ -9608,7 +9608,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 2rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9634,7 +9634,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 1.5rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9660,7 +9660,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 1.4rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9677,7 +9677,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 1.2rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9695,7 +9695,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 1rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9714,7 +9714,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 0.4rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9731,7 +9731,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: 0;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9748,7 +9748,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: -0.4rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9765,7 +9765,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: -0.8rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9782,7 +9782,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: -1.1rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
@@ -9799,7 +9799,7 @@ a[href^="http://maps.google.com/maps"] {
     visibility: visible;
     top: 75%;
     margin-left: -1.4rem;
-    background-color: red !important;
+    /* background-color: red !important; */
     /* transition: all 0.5s, background 2s 0.5s linear; */
     border-radius: 10px;
     width: 220px;
