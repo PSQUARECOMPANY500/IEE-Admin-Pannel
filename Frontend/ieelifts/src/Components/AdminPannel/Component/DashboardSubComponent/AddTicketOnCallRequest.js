@@ -465,7 +465,7 @@ const AddTicketOnCallRequest = ({
 
                 <div className="row">
                   <div className="col25">
-                    <label>MEMBERSHIP:</label>
+                    <label>MEMBERSHI:</label>
                   </div>
 
                   <div className="col75">

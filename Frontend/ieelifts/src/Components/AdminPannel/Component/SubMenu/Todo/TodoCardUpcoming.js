@@ -60,8 +60,8 @@ const TodoCardUpcoming = ({taskAdded})=>{
     
     
     const getData = async() =>{
-        const data = await getTodo(decoded.user.AdminId);
-        setTodoData(data.data);
+        const data = await getTodo(decoded?.user?.AdminId);
+        setTodoData(data?.data);
      }
      useEffect(()=>{
          getData();

@@ -181,7 +181,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             type={"number"}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Name"}
             name={"userName"}
@@ -192,7 +192,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onBlur={handleClickFalse}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Phone Number"}
             name={"phoneNumber"}
@@ -204,7 +204,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             type={"number"} 
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Alternative Number"}
             name={"alternativeNumber"}
@@ -217,7 +217,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             isNumber={true}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Email"}
             name={"email"}
@@ -230,7 +230,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             emailError={emailError}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <ClientDateInput
             onCalendarToggle={handleCalendarToggle}
             dateOfHandover={clientFormData.dateOfHandover}
@@ -242,7 +242,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
           </div>
         </div>
 
-        <div className="address-container">
+        <div className="address-container ">
           <TextInputs
             label={"Address"}
             name={"address"}
@@ -253,7 +253,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onBlur={handleClickFalse}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Pincode"}
             name={"pincode"}
