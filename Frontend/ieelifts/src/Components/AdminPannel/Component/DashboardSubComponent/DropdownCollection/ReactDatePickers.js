@@ -10,8 +10,8 @@ const ReactDatePickers = ({
   editchange,
 }) => {
   const daysContainerRef = useRef(null);
-  const prevBtnRef = useRef(null);
-  const nextBtnRef = useRef(null);
+  // const prevBtnRef = useRef(null);
+  // const nextBtnRef = useRef(null);
   const monthYearRef = useRef(null);
   const dateInputRef = useRef(null);
   const calendarRef = useRef(null);
@@ -23,14 +23,24 @@ const ReactDatePickers = ({
       currentDate.getFullYear(),
       currentDate.getMonth(),
       day
-    );
+    )
+
+ 
     setSelectedDate(newSelectedDate);
     OnDateChange(newSelectedDate);
-    dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-US");
+    dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-GB");
     calendarRef.current.style.display = "none";
     renderCalendar();
   };
 
+
+
+  function isPastDate(date) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);  
+    return date < today;
+   }
   const createDayElement = (day) => {
     const date = new Date(
       currentDate.getFullYear(),
@@ -51,6 +61,9 @@ const ReactDatePickers = ({
     dayElement.addEventListener("click", () => {
       handleDayClick(day);
     });
+    if (isPastDate(date)) {
+      dayElement.classList.add("disabled");
+  }
     daysContainerRef.current.appendChild(dayElement);
   };
 
@@ -81,8 +94,27 @@ const ReactDatePickers = ({
     for (let day = 1; day <= lastDay.getDate(); day++) {
       createDayElement(day);
     }
-  };
+    // const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  
+    // const daysHeader = document.createElement("div");
+    // daysHeader.classList.add("date-picker-days-header");
+  
+    // daysOfWeek.forEach((dayOfWeek) => {
+    //   const dayHeader = document.createElement("div");
+    //   dayHeader.textContent = dayOfWeek;
+    //   daysHeader.appendChild(dayHeader);
+    // });
+  
+    // calendarRef.current.appendChild(daysHeader);
+    
 
+
+
+  };
+  
+
+
+ 
   const handlePrevClick = () => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -121,8 +153,10 @@ const ReactDatePickers = ({
     calendarRef.current.style.left = inputRect.left + "px";
   };
 
+  
   useEffect(() => {
     renderCalendar();
+
   }, [currentDate, selectedDate]);
 
   useEffect(() => {
@@ -156,7 +190,7 @@ const ReactDatePickers = ({
               <FaChevronRight />
             </button>
           </div>
-          <div className="days" id="daysContainer" ref={daysContainerRef}></div>
+          <div className="days" id="daysContainer" ref={daysContainerRef} style={{marginTop:'1rem'}}></div>
         </div>
       }
     </div>

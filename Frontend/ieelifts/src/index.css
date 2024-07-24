@@ -1443,6 +1443,8 @@ code {
   position: relative;
 }
 
+
+
 .adaysMembership {
   margin-top: 2%;
 }
@@ -1486,6 +1488,20 @@ code {
   font-size: 0.7rem;
   font-weight: 500;
   top: -2%;
+}
+
+.date-picker-days-header { font-weight: bold;
+width: 100%;
+padding-left: 0.9rem;
+position: absolute;
+display: grid;
+grid-template-columns: repeat(7, 11%);
+grid-column-gap: 0.7rem;
+font-size: 0.8rem;
+font-weight: 300;
+top: 14%;
+color:#f8ac1d ;
+
 }
 
 /* .aayush{
@@ -1828,6 +1844,7 @@ code {
   line-height: 6rem;
   border-radius: 50%;
   font-size: 1.3rem;
+  display: none;
 
   &:hover {
     cursor: pointer;
