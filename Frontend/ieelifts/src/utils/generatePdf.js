@@ -25,7 +25,6 @@ const generatePdf = (data) => {
     } else {
       doc.text('No data available', 10, 10);
     }
-
     doc.save(`client-data-${new Date().getTime()}.pdf`);
   };
   export default generatePdf;

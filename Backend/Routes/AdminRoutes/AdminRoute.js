@@ -340,7 +340,7 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
-
+router.get('/getAllClients',adminContoller.getAllClients)
 
 
 

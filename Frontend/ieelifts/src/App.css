@@ -3159,6 +3159,8 @@ footer a:hover {
   justify-content: center;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: white;
+  
+  /* background-color: red; */
 }
 
 .dropdown-adddress-menu li:first-child {
@@ -3172,15 +3174,19 @@ footer a:hover {
   text-decoration: none;
   -webkit-transition: all 1s;
   transition: all 1s;
-
 }
 
+/* .dropdown-address .text:hover + .dropdown-adddress-menu{
+  opacity: 1;
+  transition: all 0.5s, background 2s 0.5s linear;
+  top: -10px;
+  left: -20px;
+} */
 .dropdown-address:hover .dropdown-adddress-menu {
   opacity: 1;
   transition: all 0.5s, background 2s 0.5s linear;
   top: -10px;
   left: -20px;
-
 }
 
 .dropdown-adddress-menu .drop-address {
@@ -3257,7 +3263,7 @@ footer a:hover {
   width: 166px;
   height: auto;
   overflow: hidden;
-  background-color: green;
+  /* background-color: green; */
 }
 
 .dropdown2:hover .dropdown-menu {
@@ -4451,8 +4457,6 @@ footer a:hover {
   padding: 10px;
   position: relative;
   max-height: 300px;
-  /* background-color: red; */
-
 }
 
 .child-filter-dropdown {
@@ -4519,7 +4523,7 @@ footer a:hover {
   cursor: pointer;
   margin-top: 6px;
   overflow-y: scroll;
-  height: 9.5rem;
+  /* height: 9.5rem; */
 }
 
 .filter-lists::-webkit-scrollbar{
@@ -4528,8 +4532,7 @@ footer a:hover {
 .filter-lists::-webkit-scrollbar-thumb{
   background-color: #F8AC1D;
 }
-.listing-filter{
-}
+
 .filter-icons span {
   padding: 0;
   margin: 0;
@@ -4549,7 +4552,10 @@ footer a:hover {
   height: auto;
 }
 .filter-list-engineers{
-
+  height: 9.5rem;
+}
+.filter-list-location{
+  height: 9.5rem;
 }
 .listing-filter2 {
   overflow: hidden;

@@ -141,17 +141,13 @@ const handleExcelIconClick = () =>{
                       
                       {/* {data?.Address} */}
                       <div className="dropdown-address">
-                          <span
-                            
-                          >
+                          <span className="text">
                          {data?.Address}
                           </span>
 
                           <div className="dropdown-adddress-menu">
                             <div className="drop-address">
-                              <p
-                                
-                              >
+                              <p>
                                {data?.Address}
                               </p>
                             </div>
@@ -171,7 +167,7 @@ const handleExcelIconClick = () =>{
 
                   </tr>
                 ))}    
-{isLoading&&page<totalPage? <>        <tr style={{ overflowX: "hidden" }}>
+                  {isLoading&&page<totalPage? <><tr style={{ overflowX: "hidden" }}>
                     <td colSpan="10">
                       <SkeltonLoader
                         width={"75vw"}
@@ -202,7 +198,6 @@ const handleExcelIconClick = () =>{
                     </td>
                   </tr>          
 </>:''}
-    
                 
             </tbody>
           </table>
