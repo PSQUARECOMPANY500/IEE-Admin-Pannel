@@ -2592,9 +2592,9 @@ text-align: center;
   margin-top: 0.2rem;
 }
 
-.client-table-name{
+/* .client-table-name{
   width: 13%;
-}
+} */
 .hidden-input {
   display: none;
 }

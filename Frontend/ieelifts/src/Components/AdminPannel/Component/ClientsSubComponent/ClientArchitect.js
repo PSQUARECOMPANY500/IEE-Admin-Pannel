@@ -27,10 +27,10 @@ const ClientArchitect = ({ onDataChange,initialValues,reset }) => {
         return 
       }
      }
-     if(name==="contractorNumber" && value.length>10){
+     if(name==="contractorNumber" && value?.length>10){
       return;
      }
-     if(name==="architectNumber" && value.length>10){
+     if(name==="architectNumber" && value?.length>10){
       return;
      }
     
@@ -63,7 +63,7 @@ useMemo(()=>{
             label={"Architect Name"}
             name={"architectName"}
             onFocus={handleClick}
-            value={clientFormData.architectName}
+            value={clientFormData?.architectName}
             onChange={hadleInputChnage}
             click={click.architectName}
             onBlur={handleClickFalse}
@@ -74,7 +74,7 @@ useMemo(()=>{
             label={"Phone Number"}
             name={"architectNumber"}
             onFocus={handleClick}
-            value={clientFormData.architectNumber}
+            value={clientFormData?.architectNumber}
             onChange={hadleInputChnage}
             click={click.architectNumber}
             onBlur={handleClickFalse}
@@ -86,7 +86,7 @@ useMemo(()=>{
             label={"Contractor Name"}
             name={"contractorName"}
             onFocus={handleClick}
-            value={clientFormData.contractorName}
+            value={clientFormData?.contractorName}
             onChange={hadleInputChnage}
             click={click.contractorName}
             onBlur={handleClickFalse}
@@ -98,7 +98,7 @@ useMemo(()=>{
             label={"Phone Number"}
             name={"contractorNumber"}
             onFocus={handleClick}
-            value={clientFormData.contractorNumber}
+            value={clientFormData?.contractorNumber}
             onChange={hadleInputChnage}
             click={click.contractorNumber}
             onBlur={handleClickFalse}

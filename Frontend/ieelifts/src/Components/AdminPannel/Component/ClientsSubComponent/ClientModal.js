@@ -56,10 +56,10 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     };
   }, []);
 
-  // Changes scroll behavior when showclientmodal changes
-  useEffect(() => {
-    document.body.style.overflow = showClientModal ? "hidden" : "scroll";
-  }, [showClientModal]);
+  // // Changes scroll behavior when showclientmodal changes
+  // useEffect(() => {
+  //   document.body.style.overflow = showClientModal ? "hidden" : "scroll";
+  // }, [showClientModal]);
 
   const defaultOptions = {
     0: "Select",

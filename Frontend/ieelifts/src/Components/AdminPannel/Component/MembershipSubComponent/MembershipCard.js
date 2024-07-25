@@ -162,7 +162,7 @@ const MembershipCard = ({
           >
             <div className="total_revenue">
               <p className="total_revenue_heading">Total Revenue</p>
-              <p className="total_revenue_amount">&#8377; 15000000</p>
+              <p className="total_revenue_amount">&#8377; 150000</p>
             </div>
           </div>
         )}

@@ -365,7 +365,7 @@ const AddEnggModal = () => {
 
   return (
     <>
-      <div className="add-engg-wrapper" onClick={closeModal}>
+      <div className="add-engg-wrapper" onClick={closeModal} style={{zIndex:'99999999'}}>
         <div
           className="add-engg-modal"
           ref={mainDivRef}

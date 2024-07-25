@@ -161,9 +161,9 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             label={"Salesman ID"}
             name={"salesmanId"}
             onFocus={handleClick}
-            value={clientFormData.salesmanId}
+            value={clientFormData?.salesmanId}
             onChange={handleInputChange}
-            click={click.salesmanId}
+            click={click?.salesmanId}
             onBlur={handleClickFalse}
           />
         </div>
@@ -172,9 +172,9 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             label={"Name"}
             name={"salesmanName"}
             onFocus={handleClick}
-            value={clientFormData.salesmanName}
+            value={clientFormData?.salesmanName}
             onChange={handleInputChange}
-            click={click.salesmanName}
+            click={click?.salesmanName}
             onBlur={handleClickFalse}
           />
         </div>
@@ -186,9 +186,9 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             label={"Quoted  Price"}
             name={"quotatedPrice"}
             onFocus={handleClick}
-            value={clientFormData.quotatedPrice}
+            value={clientFormData?.quotatedPrice}
             onChange={handleInputChange}
-            click={click.quotatedPrice}
+            click={click?.quotatedPrice}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
@@ -196,14 +196,14 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             type={"number"} 
           />
         </div>
-        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
+        <div className={`${clientFormData?.quotatedPrice===""?"disabled":""}`}>
           <TextInput
             label={"Final Price"}
             name={"finalPrice"}
             onFocus={handleClick}
-            value={clientFormData.finalPrice}
+            value={clientFormData?.finalPrice}
             onChange={handleInputChange}
-            click={click.finalPrice}
+            click={click?.finalPrice}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
@@ -211,14 +211,14 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             type={"number"} 
           />
         </div>
-        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`} >
+        <div className={`${clientFormData?.quotatedPrice===""?"disabled":""}`} >
           <TextInput
             label={"Discount(Rupees)"}
             name={"discountInRupees"}
             onFocus={handleClick}
-            value={clientFormData.discountInRupees}
+            value={clientFormData?.discountInRupees}
             onChange={handleInputChange}
-            click={click.discountInRupees}
+            click={click?.discountInRupees}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
@@ -226,18 +226,18 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             type={"number"} 
           />
         </div>
-        <div className={`${clientFormData.quotatedPrice===""?"disabled":""}`}>
+        <div className={`${clientFormData?.quotatedPrice===""?"disabled":""}`}>
           <TextInput
             label={"Discount(%)"}
             name={"discountInPercentage"}
             onFocus={handleClick}
             value={
-              clientFormData.discountInPercentage < 0
+              clientFormData?.discountInPercentage < 0
                 ? 0
-                : clientFormData.discountInPercentage
+                : clientFormData?.discountInPercentage
             }
             onChange={handleInputChange}
-            click={click.discountInPercentage}
+            click={click?.discountInPercentage}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);                               
@@ -262,9 +262,9 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             label={"Discount Amount"}
             name={"discountAmount"}
             onFocus={handleClick}
-            value={clientFormData.discountAmount}
+            value={clientFormData?.discountAmount}
             onChange={handleInputChange}
-            click={click.discountAmount}
+            click={click?.discountAmount}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
@@ -272,14 +272,14 @@ const ClientSalesManDetails = ({ onDataChange,initialValues,reset }) => {
             type={"number"} 
           />
         </div>
-        <div className={`${clientFormData.finalAmount===""?"disabled":""}`}>
+        <div className={`${clientFormData?.finalAmount===""?"disabled":""}`}>
           <TextInput
             label={"Final Amount"}
             name={"finalAmount"}
             onFocus={handleClick}
-            value={clientFormData.finalAmount}
+            value={clientFormData?.finalAmount}
             onChange={handleInputChange}
-            click={click.finalAmount}
+            click={click?.finalAmount}
             onBlur={(e) => {
               handleClickFalse(e);
               calculateValues(e);
