@@ -57,7 +57,7 @@ const TopBar = (props) => {
   const [clientIsGrid, setClientIsGrid] = useState(true);
   const [searchValue, setSearchValue] = useState("");
   const [openForm, setOpenForm] = useState(false);
-  const [engSearchValue, setEngSearchValue] = useState()
+  const [engSearchValue, setEngSearchValue] = useState("")
 
   const [showTicketFilter, setShowTicketFilter] = useState(false);
   const dropdownRef = useRef(null);
@@ -305,7 +305,9 @@ const TopBar = (props) => {
                 <input
                   type="text"
                   placeholder="Search anything"
-                  className="search-input"
+                  className={`search-input ${
+                    engSearchValue.length > 0 && "inputSearchWritten"
+                  }`}
                   value={engSearchValue || ""}
                   onChange={(e)=>setEngSearchValue(e.target.value)}
                 />
