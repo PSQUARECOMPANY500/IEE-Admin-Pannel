@@ -74,8 +74,15 @@ const Clients = () => {
 
   }
 
+  const hasScrollListenerAttached = () => {
+    return window.eventListeners && window.eventListeners.length > 0; 
+  };
+
   useEffect(() => {
-    window.addEventListener('scroll', hadnleInfiniteScroll)
+    if(!hasScrollListenerAttached()){
+
+      window.addEventListener('scroll', hadnleInfiniteScroll)
+    }
     return () => {
       window.removeEventListener('scroll', hadnleInfiniteScroll)
     }
