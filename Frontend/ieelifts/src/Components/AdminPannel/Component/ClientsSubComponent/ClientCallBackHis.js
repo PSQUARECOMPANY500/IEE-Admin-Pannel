@@ -31,7 +31,7 @@ console.log("tata",serviceData)
     "ServiceType",
     "PartReplaced",
     "ServiceCost",
-    "PaymentMode",
+    "PaymentMode"
   ];
   return (
     <div>
