@@ -176,13 +176,13 @@ console.log("userCallBackDetail",userCallBackDetail)
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
-  useEffect(() => {
-    //no problem
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   //no problem
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   useEffect(() => {
 
