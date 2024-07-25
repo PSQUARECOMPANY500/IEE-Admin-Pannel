@@ -1686,8 +1686,6 @@ color:#f8ac1d ;
   padding: 1rem 2rem;
 }
 
-
-
 .spare-part-sub-table-view {
   box-shadow: none;
   padding: 0rem 0rem;
@@ -1698,7 +1696,6 @@ color:#f8ac1d ;
   max-height: 80vh;
   overflow-y: auto;
   width: 100%;
-
 }
 
 .client_table-container{
@@ -2595,6 +2592,9 @@ text-align: center;
   margin-top: 0.2rem;
 }
 
+.client-table-name{
+  width: 13%;
+}
 .hidden-input {
   display: none;
 }
@@ -3451,7 +3451,6 @@ input:-webkit-autofill {
     font-size: 0.8rem;
     width: 130px;
   }
-
   .headingCenter {
     font-size: 1rem;
   }

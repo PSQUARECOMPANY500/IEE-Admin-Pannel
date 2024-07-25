@@ -23,7 +23,7 @@ const EnggLocation = () => {
   });
 
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
-  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates);
+  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
 
 
 

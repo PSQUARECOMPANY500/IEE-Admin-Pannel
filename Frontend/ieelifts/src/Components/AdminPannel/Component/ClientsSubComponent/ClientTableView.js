@@ -135,8 +135,8 @@ const handleExcelIconClick = () =>{
                     </td>
 
                     <td className="JON" onClick={() => HandleCardClick(data)}>{data.JobOrderNumber}</td>
-                    <td className="name" onClick={() => HandleCardClick(data)}>{data?.name}</td>
-                    <td className="checkbox" onClick={() => HandleCardClick(data)}>{data?.PhoneNumber}</td>
+                    <td className="client-table-name" onClick={() => HandleCardClick(data)}>{data?.name}</td>
+                    <td className="client-table-number" onClick={() => HandleCardClick(data)}>{data?.PhoneNumber}</td>
                     <td className="address" onClick={() => HandleCardClick(data)}>
                       
                       {/* {data?.Address} */}
@@ -174,7 +174,7 @@ const handleExcelIconClick = () =>{
 {isLoading&&page<totalPage? <>        <tr style={{ overflowX: "hidden" }}>
                     <td colSpan="10">
                       <SkeltonLoader
-                        width={"80vw"}
+                        width={"75vw"}
                         height={"38px"}
                         marginTop={"8px"}
                         marginBottom={"0px"}
@@ -184,7 +184,7 @@ const handleExcelIconClick = () =>{
                   <tr>
                     <td colSpan="10">
                       <SkeltonLoader
-                        width={"80vw"}
+                        width={"75vw"}
                         height={"38px"}
                         marginTop={"8px"}
                         marginBottom={"0px"}
@@ -194,7 +194,7 @@ const handleExcelIconClick = () =>{
                   <tr>
                     <td colSpan="10">
                       <SkeltonLoader
-                        width={"80vw"}
+                        width={"75vw"}
                         height={"38px"}
                         marginTop={"8px"}
                         marginBottom={"0px"}
