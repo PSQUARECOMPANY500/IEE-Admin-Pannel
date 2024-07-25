@@ -981,7 +981,7 @@ const caluclateMembershipPriceAndTime = async (
   const MembershipPriceData = await createMemberShipOnTables.findOne({
     MembershipName:
       LastSecondCount.MembershipType === "warrenty"
-        ? "Platinum"
+        ? "platinum"
         : LastSecondCount.MembershipType,
   });
 

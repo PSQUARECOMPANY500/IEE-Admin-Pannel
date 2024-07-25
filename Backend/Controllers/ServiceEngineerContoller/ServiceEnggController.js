@@ -1633,11 +1633,11 @@ module.exports.getFinalReportDetails = async (req, res) => {
     });
 
     const caluclatePriceAsPerMemeberShip = (memeberShip, partprice) => {
-      if (memeberShip === "Platinum" && partprice < 20000) {
+      if (memeberShip === "platinum" && partprice < 20000) {
         return 0;
-      } else if (memeberShip === "Gold" && partprice < 8000) {
+      } else if (memeberShip === "gold" && partprice < 8000) {
         return 0;
-      } else if (memeberShip === "Silver" && partprice < 1000) {
+      } else if (memeberShip === "silver" && partprice < 1000) {
         return 0;
       } else {
         return partprice;
