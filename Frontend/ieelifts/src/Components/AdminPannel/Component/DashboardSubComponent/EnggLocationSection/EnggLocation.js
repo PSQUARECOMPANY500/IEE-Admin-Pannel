@@ -23,7 +23,7 @@ const EnggLocation = () => {
   });
 
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
-  console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates);
+  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
 
 
 
@@ -69,7 +69,7 @@ console.log("getactive engg crouser Id",enggServiceID);
   ];
 
 
-  const locationss = enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates.map(item => ({
+  const locationss = enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates?.map(item => ({
     origin: item.origin,
     destination: item.destination
   }));
@@ -164,8 +164,8 @@ console.log("getactive engg crouser Id",enggServiceID);
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
         if (data.ServiceEnggId === enggServiceID) {
-          const lat = parseFloat(data.currentLocation.coordinates[0].origin.split(",")[0]);
-          const lng = parseFloat(data.currentLocation.coordinates[0].origin.split(",")[1]);
+          const lat = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[0]);
+          const lng = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[1]);
           setCenter({ lat, lng });
         }
       });
@@ -364,12 +364,12 @@ console.log("getactive engg crouser Id",enggServiceID);
       {enggLocationDetails &&
         enggLocationDetails.map((data, index) => {
 
-          const lastLatitude = parseFloat(data.currentLocation.coordinates?.length - 1);
+          const lastLatitude = parseFloat(data?.currentLocation?.coordinates?.length - 1);
           console.log(lastLatitude)
 
-          const latitude = parseFloat(data.currentLocation.coordinates?.[lastLatitude]?.origin?.split(",")[0]);
+          const latitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[0]);
           console.log(latitude)
-          const longitude = parseFloat(data.currentLocation.coordinates?.[lastLatitude]?.origin?.split(",")[1]);
+          const longitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[1]);
           console.log(longitude)
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
