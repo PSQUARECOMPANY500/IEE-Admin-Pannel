@@ -4,9 +4,9 @@ const { jwtDecode } = require("jwt-decode");
 const checkClientDeviceLogins = async (req, res, next) => {
   const DeviceId = req.headers["device-id"];
 
-  let Token = req.header("Authorization");
+  const Token = req.header("Authorization");
 
-  // console.log("\\\\\\\\\\\\\\\\",Token)
+  console.log("\\\\\\\\\\\\\\\\",Token)
 
   const token = Token && Token?.split(" ")[1];
 
@@ -20,7 +20,7 @@ const checkClientDeviceLogins = async (req, res, next) => {
 
   // console.log("---",EnggData);
 
-  if (EnggData[0].ActiveDevice !== DeviceId) {
+  if (EnggData[0]?.ActiveDevice !== DeviceId) {
     return res.status(200).json({
       status: "deviceerror",
       message: "You have Logged in with Another device",

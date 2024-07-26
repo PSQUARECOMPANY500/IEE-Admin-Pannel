@@ -1644,8 +1644,9 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     };
 
-    const membership = getMemberShipDetails?.MembershipType || 'silver';  //todo - chnage is future--------------------
-    // console.log("membership -----",membership)
+    // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
+    const membership = 'silver';
+    console.log("membership -----",membership)
 
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {

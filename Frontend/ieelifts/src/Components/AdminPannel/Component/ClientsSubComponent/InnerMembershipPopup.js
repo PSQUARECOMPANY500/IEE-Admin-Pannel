@@ -11,18 +11,21 @@ const InnerMembershipPopup = ({ onClose, selectedOption, JobOrderNumber }) => {
     document.getElementById("fileInput").click();
   };
 
+  
   const [amount, setAmount] = useState("");
   const [duration, setDuration] = useState("");
   const [date, setDate] = useState("");
   const [membershipInvoice, setMembershipInvoice] = useState("");
-
+  
   const handleFormData = () => {
     if (!amount || !duration || !date || !membershipInvoice) {
       toast.error("Please fill all the required fields");
       return;
     } else {
       const formData = new FormData();
-
+      
+      console.log(`InnerMembershipPopup`,JobOrderNumber)
+      
       formData.append("JobOrderNumber", JobOrderNumber);
       formData.append("PricePaid", amount);
       formData.append("Duration", duration);

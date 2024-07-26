@@ -11,7 +11,7 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 
 const uploadClientData = require("../../Multer/ClientDocumentUpload");
 
-const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
+const { uploadEdit,storageMembershipUpgradeBill } = require("../../Multer/EnggAttachmentUpload");
 
 const { token } = require("../../Controllers/AdminController/AdminController")
 
@@ -341,7 +341,13 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
 
+router.post('/upgradClientMembership',storageMembershipUpgradeBill.fields([
+  {
+    name: "MembershipInvoice",
+  }
+]), adminContoller.upgradClientMembership);
 
 
+router.get('/getAllClients',adminContoller.getAllClients);
 
 module.exports = router;

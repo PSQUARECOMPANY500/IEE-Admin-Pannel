@@ -3765,7 +3765,14 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 module.exports.upgradClientMembership = async (req, res) => {
   try {
     const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
-    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber: JobOrderNumber });
+
+    // console.log("this is request dot body ",req);
+    console.log("this is",req.files);
+
+    const clientExist = await clientDetailSchema.findOne({JobOrderNumber});
+
+    console.log("clientExist",clientExist)
+    console.log("clientExist",JobOrderNumber)
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
