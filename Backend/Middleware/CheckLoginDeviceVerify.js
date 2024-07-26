@@ -4,13 +4,14 @@ const { jwtDecode } = require("jwt-decode");
 const checkClientDeviceLogins = async (req, res, next) => {
   const DeviceId = req.headers["device-id"];
 
-  const Token = req.header("Authorization");
+
+  const Token =  req.header("Authorization");
 
   console.log("\\\\\\\\\\\\\\\\",Token)
 
   const token = Token && Token?.split(" ")[1];
 
-  const user = jwtDecode(token);
+  const user = token && jwtDecode(token);
 
   // console.log("===",user)
 
