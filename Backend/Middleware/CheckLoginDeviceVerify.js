@@ -11,15 +11,18 @@ const checkClientDeviceLogins = async (req, res, next) => {
 
   const token = Token && Token?.split(" ")[1];
 
-  const user = token && jwtDecode(token);
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized - No token provided" });
+  }
 
-  // console.log("===",user)
 
-  // console.log("++++",user.user.EnggId);
+  const user = jwtDecode(token);
+
+
 
   const EnggData = await serviceEnggSchema.find({ EnggId: user.user.EnggId });
 
-  // console.log("---",EnggData);
+
 
   if (EnggData[0]?.ActiveDevice !== DeviceId) {
     return res.status(200).json({
