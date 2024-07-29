@@ -13,7 +13,7 @@ import { FaTasks } from "react-icons/fa";
 import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
-import { FiChevronUp } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { useMediaQuery } from '@react-hook/media-query';
 import { MdOutlineSos } from "react-icons/md";
 import { LuChevronsUpDown } from "react-icons/lu";
@@ -31,7 +31,7 @@ const Sidebar = ({ children }) => {
   const [menuIcon2, setMenueIcon2] = useState(true);
 
 
-   
+
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
@@ -91,7 +91,7 @@ const Sidebar = ({ children }) => {
       },
 
     ];
-  } else if (role==="ServiceAdmin") {
+  } else if (role === "ServiceAdmin") {
     menueItems = [
       {
         Path: "/Dashboard",
@@ -124,7 +124,7 @@ const Sidebar = ({ children }) => {
         icon: <MdOutlineSos />,
         // icon: <img src="phone.png" alt="SosIcon" className="sosIcon"/>,
       },
-      
+
     ];
   } else if (role === "ErectionAdmin") {
     menueItems = [
@@ -217,7 +217,7 @@ const Sidebar = ({ children }) => {
     <div className="container">
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
-      <div style={{ width: isOpen ? "309px" : "125px" }} className="sidebar">
+      <div style={{ width: isOpen ? "18.75rem" : "125px" }} className="sidebar">
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
           {!toogleOpen && !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
 
@@ -350,7 +350,7 @@ const Sidebar = ({ children }) => {
                   style={{ fontSize: isOpen ? "16px" : "20px" }}
                   className={`menu-icon ${mainMenuOpen ? "rotate" : ""}`}
                 >
-                  <FiChevronUp style={{ fontSize: "20px" }} />
+                  <FiChevronDown style={{ fontSize: "20px" }} />
                 </span>
               </label>
             </div>

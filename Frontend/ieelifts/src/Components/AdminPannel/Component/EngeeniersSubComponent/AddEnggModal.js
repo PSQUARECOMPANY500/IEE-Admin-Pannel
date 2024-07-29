@@ -79,12 +79,12 @@ const AddEnggModal = () => {
   const [managerNumberShow, SetManagerNumberShow] = useState(false);
   // work experience input border changes states ends
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   const closeModal = (e) => {
     e.stopPropagation();
@@ -365,7 +365,7 @@ const AddEnggModal = () => {
 
   return (
     <>
-      <div className="add-engg-wrapper" onClick={closeModal}>
+      <div className="add-engg-wrapper" onClick={closeModal} style={{zIndex:'99999999'}}>
         <div
           className="add-engg-modal"
           ref={mainDivRef}

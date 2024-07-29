@@ -23,7 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 /.github
-/public
-/package.json
-/package-lock.json
+
+# /public                               
+# /src                                                      // disable when push it on render but enable when push it on AWS ....
+# /package.json
+# /package-lock.json
 

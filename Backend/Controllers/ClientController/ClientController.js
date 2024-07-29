@@ -21,8 +21,6 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
-const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema")
-
 const Razorpay = require("razorpay");
 
 const puppeteer = require("puppeteer");
@@ -41,6 +39,8 @@ const { jsPDF } = require("jspdf");
 
 const pdfFormat = require("../../public/MembershipInvoice/membershipInvoiceTemplate");
 
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema")
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
 
@@ -51,9 +51,7 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
     const clientReferal = await ReferalSchema.find({ jobOrderNumber });
 
     if (!clientReferal || clientReferal.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "No referal found on this JobOrderNumber" });
+      return res.status(202).json({ message: "No referal found on this JobOrderNumber", status: "error" });
     }
 
     return res.status(200).json({ message: "Referal Found", clientReferal });
@@ -376,6 +374,8 @@ module.exports.imediateServiceRequest = async (req, res) => {
       TypeOfIssue,
       // Description,
     } = req.body;
+
+    console.log("---------------------------------------------899999999999999999999", req.body);
 
     const newRequest = await serviceRequest.create({
       JobOrderNumber,
@@ -1247,9 +1247,10 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, email, phone, password } =
+    const { JobOrderNumber, name, emailAddress, phone, password } =
       req.body;
     const profile = req.file;
+    console.log(profile)
 
     if (!JobOrderNumber && !name && !email && !phone) {
       return res
@@ -1272,7 +1273,7 @@ module.exports.updateClientProfile = async (req, res) => {
           PhoneNumber: phone,
           ProfileImage: profile && profile.filename,
           Password: password,
-          email,
+          emailAddress,
         }
       );
     }
@@ -1285,7 +1286,7 @@ module.exports.updateClientProfile = async (req, res) => {
           name,
           PhoneNumber: phone,
           Password: password,
-          email,
+          emailAddress,
         }
       );
     }
@@ -1295,7 +1296,7 @@ module.exports.updateClientProfile = async (req, res) => {
     }, {
       "clientFormDetails.userName": name,
       "clientFormDetails.phoneNumber": phone,
-      "clientFormDetails.email": email,
+      "clientFormDetails.email": emailAddress,
     })
 
     return res.status(200).json({

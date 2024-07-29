@@ -60,7 +60,7 @@ const ClientCardView = ({ clientData ,isLoading,page}) => {
                   <p>
                     <GoPerson />
                   </p>
-                  {client.name.length > 12
+                  {client.name?.length > 12
                     ? `${client.name.slice(0, 11)}...`
                     : client.name}
                 </div>
@@ -97,7 +97,7 @@ const ClientCardView = ({ clientData ,isLoading,page}) => {
                     <GrHomeRounded />
                   </p>
                   <p>
-                    {client.Address.length > 25
+                    {client.Address?.length > 25
                       ? `${client.Address.slice(0, 22)}...`
                       : client.Address}
                   </p>

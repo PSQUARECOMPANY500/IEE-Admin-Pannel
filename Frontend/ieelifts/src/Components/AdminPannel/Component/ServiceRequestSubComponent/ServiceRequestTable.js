@@ -22,6 +22,7 @@ const ServiceRequestTable = ({
   const [isAssigned, setIsAssigned] = useState();
   const [renderTicket, setRenderTicket] = useState(true);
   const [filteredCD, setFilteredCD] = useState([]);
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^",filteredCD)
   const [allCD, setallCD] = useState([]);
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -37,7 +38,7 @@ const ServiceRequestTable = ({
       setFilterData([]);
     }
     if (filterConditions && filterConditions.length > 0) {
-      if (filteredCD.length === 0) {
+      if (filteredCD?.length === 0) {
         setGetFilterConditions(false);
         setFilterData([]);
         return;
@@ -130,6 +131,8 @@ const ServiceRequestTable = ({
     }
   });
 
+  console.log("9999999999999999999999999999",getRequestDetail);
+
   //use effect for dispatching ations
   useEffect(() => {
     dispatch(fetchAllServiceRequestsAction());
@@ -167,10 +170,10 @@ const ServiceRequestTable = ({
   };
 
   useEffect(() => {
-    if (getRequestDetail >= 0) {
+    if (getRequestDetail?.length > 0) {
       let data = getRequestDetail?.filter((detail) => detail.isAssigned === false
       )
-      console.log("data=>>>", data)
+      console.log("data=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", data)
       setFilteredCD(data);
       setallCD(getRequestDetail);
     }
@@ -222,7 +225,7 @@ const ServiceRequestTable = ({
     return filteredResults;
   }
   useEffect(() => {
-    if (filteredCD >= 0) {
+    if (filteredCD?.length >= 0) {
       setReqCheckboxStates(Array(filteredCD?.length).fill(false));
     }
   }, [filteredCD]);
@@ -281,7 +284,7 @@ const ServiceRequestTable = ({
                 checked={(() => {
                   return (
                     filteredCD &&
-                    (filteredCD.length > 0 || getFilterConditions.length > 0) &&
+                    (filteredCD?.length > 0 || getFilterConditions?.length > 0) &&
                     reqCheckboxStates.every((isChecked) => {
                       if (isChecked) {
                         return true

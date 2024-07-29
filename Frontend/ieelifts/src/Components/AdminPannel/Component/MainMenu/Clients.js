@@ -13,7 +13,6 @@ const Clients = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients
   );
@@ -38,18 +37,23 @@ const Clients = () => {
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
 
-  useEffect(() => {
+  const RefetchClientDataWhenMembershipUpgraded = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.upgradeClientMembershipByAdminPannelReducer
+        ?.upgradeClientMembership
+  );
 
+  useEffect(() => {
     const getClient = async () => {
       if (page >= totalPage) {
         return setIsLoading(false);
       }
       await dispatch(getClients(page));
-      setIsLoading(false)
-    }
+      setIsLoading(false);
+    };
 
     getClient();
-  }, [page, dispatch]);
+  }, [page, dispatch, RefetchClientDataWhenMembershipUpgraded]);
   useEffect(() => {
     if (clientLayout !== undefined) {
       setLayout(clientLayout === "grid" ? "grid" : "list");
@@ -61,26 +65,25 @@ const Clients = () => {
       setIsFiltered(true);
     } else {
       setIsFiltered(false);
-
     }
-  }, [filteredData, searchClient, clients])
+  }, [filteredData, searchClient, clients]);
 
   const hadnleInfiniteScroll = (e, isTableScroll = false) => {
-    const { scrollHeight, clientHeight, scrollTop } = isTableScroll ? e.target : document.documentElement
+    const { scrollHeight, clientHeight, scrollTop } = isTableScroll
+      ? e.target
+      : document.documentElement;
     if (scrollTop + clientHeight === scrollHeight) {
-      console.log('hui hui hui hui hui hui hui hui hui hui')
       setPage((prev) => prev + 1);
     }
-    setIsLoading(true)
-
-  }
+    setIsLoading(true);
+  };
 
   useEffect(() => {
-    window.addEventListener('scroll', hadnleInfiniteScroll)
+    window.addEventListener("scroll", hadnleInfiniteScroll);
     return () => {
-      window.removeEventListener('scroll', hadnleInfiniteScroll)
-    }
-  }, [])
+      window.removeEventListener("scroll", hadnleInfiniteScroll);
+    };
+  }, []);
 
   const renderClientView = () => {
     let dataToRender;
@@ -93,18 +96,32 @@ const Clients = () => {
     }
 
     if (layout === "grid") {
-      return <ClientCardView clientData={dataToRender} isLoading={isLoading} page={page} />;
+      return (
+        <ClientCardView
+          clientData={dataToRender}
+          isLoading={isLoading}
+          page={page}
+        />
+      );
     } else {
-
-      return <ClientTableView clientData={dataToRender} hadnleInfiniteScroll={hadnleInfiniteScroll} isLoading={isLoading} isFiltered={isFiltered} page={page}/>;
+      return (
+        <ClientTableView
+          clientData={dataToRender}
+          hadnleInfiniteScroll={hadnleInfiniteScroll}
+          isLoading={isLoading}
+          isFiltered={isFiltered}
+          page={page}
+        />
+      );
     }
   };
 
-
-  return <div className="main-container" >
-    {clientModalOperation && <ClientForm />}
-    {renderClientView()}
-  </div>;
+  return (
+    <div className="main-container">
+      {clientModalOperation && <ClientForm />}
+      {renderClientView()}
+    </div>
+  );
 };
 
-export default Clients; 
+export default Clients;

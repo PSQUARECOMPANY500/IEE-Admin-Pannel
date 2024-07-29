@@ -10,21 +10,30 @@ import {
   InfoWindow,
   useJsApiLoader,
   DirectionsRenderer,
-  Polyline 
+  Polyline,
 } from "@react-google-maps/api";
 import { onClickEnggCart } from "../../../../../ReduxSetup/Actions/AdminActions";
 
 const EnggLocation = () => {
   const dispatch = useDispatch();
+
   const enggLocationDetails = useSelector((state) => {
     return state.AdminRootReducer?.EnggLocationDetailsFetchReducer
       ?.enggLocatioDetails;
   });
+
+  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
+  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
+
+
+
   const enggServiceID = useSelector(
     (state) =>
       state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
   );
-  console.log("-----------------------", enggServiceID);
+
+console.log("getactive engg crouser Id",enggServiceID);
+
 
   const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 };
   const [center, setCenter] = useState({
@@ -40,9 +49,8 @@ const EnggLocation = () => {
   const [directionsResponses, setDirectionsResponses] = useState([]);
   const [distances, setDistances] = useState([]);
   const [durations, setDurations] = useState([]);
-  console.log("$$$$$$$$$$$$$$$$$$$$$$$$", distances);
-  console.log("!!!!!!!!!!!!!!!!!!", durations);
-
+  // console.log("$$$$$$$$$$$$$$$$$$$$$$$$", distances);
+  // console.log("!!!!!!!!!!!!!!!!!!", durations);
 
   const locations = [
     {
@@ -60,6 +68,15 @@ const EnggLocation = () => {
     // Add more locations as needed
   ];
 
+
+  const locationss = enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates?.map(item => ({
+    origin: item.origin,
+    destination: item.destination
+  }));
+  
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!11111111111111",locationss);
+
+
   //--------------------------------------------------------------------------------------------------------------------
   useEffect(() => {
     const calculateRoutes = async () => {
@@ -76,9 +93,6 @@ const EnggLocation = () => {
           destination,
           travelMode: window.google.maps.TravelMode.DRIVING,
         });
-
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", results);
-
         newDirectionsResponses.push(results);
         newDistances.push(results.routes[0].legs[0].distance.text);
         newDurations.push(results.routes[0].legs[0].duration.text);
@@ -91,8 +105,6 @@ const EnggLocation = () => {
 
     calculateRoutes();
   }, []);
-
-
 
   //------------------------------------------------------------------------------------------------------------------------
 
@@ -140,8 +152,6 @@ const EnggLocation = () => {
       dispatch(onClickPinCart(enggId));
     } else {
       if (enggServiceID) {
-        // console.log("============enggServiceID", enggServiceID);
-        // console.log("============enggId", enggId);
         dispatch(onClickEnggCart(""));
         // setPinIndex(-1);
         // setEnggId(null);
@@ -154,8 +164,8 @@ const EnggLocation = () => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
         if (data.ServiceEnggId === enggServiceID) {
-          const lat = parseFloat(data.currentLocation.coordinates[0]);
-          const lng = parseFloat(data.currentLocation.coordinates[1]);
+          const lat = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[0]);
+          const lng = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[1]);
           setCenter({ lat, lng });
         }
       });
@@ -353,8 +363,14 @@ const EnggLocation = () => {
       )}
       {enggLocationDetails &&
         enggLocationDetails.map((data, index) => {
-          const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
-          const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
+
+          const lastLatitude = parseFloat(data?.currentLocation?.coordinates?.length - 1);
+          console.log(lastLatitude)
+
+          const latitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[0]);
+          console.log(latitude)
+          const longitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[1]);
+          console.log(longitude)
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
           const isActive =
@@ -363,7 +379,6 @@ const EnggLocation = () => {
             ? inactiveMarkerSymbol
             : enggMarkerSymbol;
           const isMarkerActive = pinIndex === index;
-          // console.log(pinIndex);
           return (
             <Marker
               key={index}
@@ -372,11 +387,9 @@ const EnggLocation = () => {
               onClick={() => {
                 if (isMarkerActive && pinIndex >= 0) {
                   setPinIndex(-1);
-                  // console.log("Marker is inactive");
                   setEnggId(null);
                   setState(state + 1);
                 } else {
-                  // console.log("Marker is active");
                   dispatch(onClickEnggCart(""));
                   setEnggId(engId);
                   setPinIndex(index);
@@ -388,19 +401,20 @@ const EnggLocation = () => {
         })}
 
       {directionsResponses.map((response, index) => (
-        <DirectionsRenderer key={index} directions={response} 
-        options={{
-          polylineOptions: {
-            strokeColor: "#FF5C5C", // Customize the color of the route
-            strokeWeight: 3,
-          },
-          markerOptions: {
-            visible: false, // Hide default route markers
-          },
-        }}  
+        <DirectionsRenderer
+          key={index}
+          directions={response}
+          options={{
+            polylineOptions: {
+              strokeColor: "#FF5C5C", // Customize the color of the route
+              strokeWeight: 3,
+            },
+            markerOptions: {
+              visible: false, // Hide default route markers
+            },
+          }}
         />
       ))}
-
     </GoogleMap>
   );
 };

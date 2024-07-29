@@ -154,12 +154,12 @@ const AddTicketModal = ({
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (getAssignedCallbackDetails?.callbackdetails) {

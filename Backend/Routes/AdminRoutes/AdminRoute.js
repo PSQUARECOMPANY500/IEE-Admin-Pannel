@@ -309,28 +309,30 @@ router.put(
       maxCount: 1,
     },
   ]),
-  adminContoller.editEnggDetailsForm            
+  adminContoller.editEnggDetailsForm            //
 );
 
 
+
+
+
+
 router.post("/registerNewMembershipData", adminContoller.postMembershipData)
+
+
+
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
 
-//--------- Todo all route ----------Rahul Kumar------------------
-router.post('/todo/addTodo', adminContoller.AddTodo);
-router.get('/todo/getTodo/:adminId',adminContoller.getAllTodos);
-router.get('/todo/updateStatus/:id',adminContoller.updateTask);
-router.delete('/todo/removeTodo/:id',adminContoller.deleteTask);
-router.get('/todo/getTodoById/:id',adminContoller.getTodoById);
-router.put('/todo/updateTodoById/:id',adminContoller.updateTaskById);
-//--------- Todo all route ----------Rahul Kumar--------------------
-router.get('/getAllClients',adminContoller.getAllClients);
+
+
+
+
 // router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
 
 
 
 
-router.get('/getEnggSparePartRevenueData/:EnggId', adminContoller.getEnggSparePartRevenueData);
+router.get('/getEnggSparePartRevenueData/:EnggId',adminContoller.getEnggSparePartRevenueData);
 
 
 router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSparePartProfitSummaryGraphData);
@@ -342,15 +344,10 @@ router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.ch
 router.post('/upgradClientMembership',storageMembershipUpgradeBill.fields([
   {
     name: "MembershipInvoice",
-    maxCount: 1,
   }
-])
-,adminContoller.upgradClientMembership);
+]), adminContoller.upgradClientMembership);
 
 
-
-// api for putting data
-router.post("/putEngineerAttendence", adminContoller.putEngineerAttendence);
-
+router.get('/getAllClients',adminContoller.getAllClients);
 
 module.exports = router;

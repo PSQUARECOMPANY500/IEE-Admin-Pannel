@@ -25,6 +25,7 @@ const Animated = ({
   };
 
   const [inputValue, setInputValue] = useState('');
+  
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;

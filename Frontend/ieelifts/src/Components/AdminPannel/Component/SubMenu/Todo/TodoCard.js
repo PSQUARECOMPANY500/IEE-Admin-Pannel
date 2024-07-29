@@ -19,7 +19,7 @@ const TodoCard = ({ taskAdded, taskUpdated }) => {
             if (decoded && decoded.user && decoded.user.AdminId) {
                 try {
                     const data = await getTodo(decoded.user.AdminId);
-                    setTodoData(data.data);
+                    setTodoData(data?.data);
                 } catch (error) {
                     console.error("Fetching todo data failed:", error);
                 }
@@ -34,11 +34,11 @@ const TodoCard = ({ taskAdded, taskUpdated }) => {
         yesterday.setDate(today.getDate() - 1);
         const formattedYesterday = formatDate(yesterday);
         const formattedToday = formatDate(today);
-        const completedTasks = todoData.filter(task => 
+        const completedTasks = todoData?.filter(task => 
             task.status === "Completed" && 
             (task.taskDate === formattedYesterday || task.taskDate === formattedToday)
         );
-        completedTasks.sort((a, b) => new Date(a.taskDate) - new Date(b.taskDate));
+        completedTasks?.sort((a, b) => new Date(a.taskDate) - new Date(b.taskDate));
         setCompletedTodo(completedTasks);
     };
     useEffect(() => {
@@ -58,7 +58,7 @@ const TodoCard = ({ taskAdded, taskUpdated }) => {
             <div className="todo-card-header">
                 <div className="todo-card-header-child-one">Complete</div>
                 <div className="todo-number-of-task">
-                    {completedTodo.length}
+                    {completedTodo?.length}
                 </div>
             </div>
             <div className="todo-card-body">

@@ -2061,8 +2061,8 @@ module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
 
-    
-    
+
+
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -3770,7 +3770,14 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 module.exports.upgradClientMembership = async (req, res) => {
   try {
     const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
-    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber: JobOrderNumber });
+
+    // console.log("this is request dot body ",req);
+    console.log("this is", req.files);
+
+    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber });
+
+    console.log("clientExist", clientExist)
+    console.log("clientExist", JobOrderNumber)
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
@@ -3881,7 +3888,7 @@ module.exports.putEngineerAttendence = async (req, res) => {
 
 
 
-module.exports.clientMembership = async ()=>{
+module.exports.clientMembership = async () => {
   try {
     const array = ["1901017", "1901018", "1901019", "1901020", "1901021", "1901022", "1901023",
       "1902024", "1902025", "1902026", "1902027", "1902028", "1902029", "1902030",
@@ -3897,12 +3904,12 @@ module.exports.clientMembership = async ()=>{
       "1911094", "1911095", "1911096", "1911097", "1912098", "1912099", "1912100",
       "1912101", "1912102", "1912103", "1912104", "1912105", "1912106", "1912107",
       "1912108"
-]
+    ]
 
-   array.forEach(async(job)=>{
-    
-   })
+    array.forEach(async (job) => {
+
+    })
   } catch (error) {
-    
+
   }
 }

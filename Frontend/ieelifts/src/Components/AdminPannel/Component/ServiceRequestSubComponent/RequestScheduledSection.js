@@ -23,7 +23,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   // modal manage states
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
+  const [reqCheckboxStates, setReqCheckboxStates] = useState();
   const [handleRequestScheduledTable, setHandleRequestScheduledTable] =
     useState(true);
 
@@ -41,7 +41,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
       state?.AdminRootReducer?.filteringLocationsReducer?.locations?.locations
   );
   const filterDropdowns = [
-    { name: "membership", options: ["Warrenty", "Platinum", "Gold", "Silver"] },
+    { name: "membership", options: ["warrenty", "platinum", "gold", "silver"] },
     { name: "location", options: locations },
     { name: "clear", options: [] }
   ];
@@ -129,7 +129,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             icon?(<div className="icon-align-div">
             <div className="right-side-icons">
 
-              {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<span className="top-icon">
+              {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<span className="top-icon">
                 <div className="search-box">
                   <input
                     type="text"
@@ -170,7 +170,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
               </span>)}
 
             </div>
-            {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+            {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
               <p className="filter-icon"
                 onClick={handleFilter}
               >
@@ -201,7 +201,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                 </div>
               )}
             </div>)}
-            {handleRequestScheduledTable ? (!reqCheckboxStates.slice(1).includes(true) ? ((<div
+            {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? ((<div
               className="sub-components-ticket-filter"
               onClick={() => openModal(0)}
             >

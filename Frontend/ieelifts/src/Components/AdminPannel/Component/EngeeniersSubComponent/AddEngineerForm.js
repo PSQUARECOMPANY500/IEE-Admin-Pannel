@@ -95,12 +95,12 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
   // work experience input border changes states ends
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   // console.log("idddd =>", engID);
 

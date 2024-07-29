@@ -174,42 +174,42 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             label={"JON"}
             name={"jon"}
             onFocus={handleClick}
-            value={clientFormData.jon}
+            value={clientFormData?.jon}
             onChange={hadleInputChnage}
             click={click.jon}
             onBlur={handleClickFalse}
             type={"number"}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Name"}
             name={"userName"}
             onFocus={handleClick}
-            value={clientFormData.userName}
+            value={clientFormData?.userName}
             onChange={hadleInputChnage}
             click={click.userName}
             onBlur={handleClickFalse}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Phone Number"}
             name={"phoneNumber"}
             onFocus={handleClick}
-            value={clientFormData.phoneNumber}
+            value={clientFormData?.phoneNumber}
             onChange={hadleInputChnage}
             click={click.phoneNumber}
             onBlur={handleClickFalse}  //Phone Number
             type={"number"} 
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Alternative Number"}
             name={"alternativeNumber"}
             onFocus={handleClick}
-            value={clientFormData.alternativeNumber}
+            value={clientFormData?.alternativeNumber}
             onChange={hadleInputChnage}
             click={click.alternativeNumber}
             onBlur={handleClickFalse}  //Alternative Number
@@ -217,12 +217,12 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             isNumber={true}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Email"}
             name={"email"}
             onFocus={handleClick}
-            value={clientFormData.email}
+            value={clientFormData?.email}
             onChange={hadleInputChnage}
             click={click.email}
             onBlur={handleClickFalse}
@@ -230,10 +230,10 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             emailError={emailError}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <ClientDateInput
             onCalendarToggle={handleCalendarToggle}
-            dateOfHandover={clientFormData.dateOfHandover}
+            dateOfHandover={clientFormData?.dateOfHandover}
           />
           <div className="calendarContainer" ref={calendarRef}>
             {showCalendar && (
@@ -242,23 +242,23 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
           </div>
         </div>
 
-        <div className="address-container">
+        <div className="address-container ">
           <TextInputs
             label={"Address"}
             name={"address"}
             onFocus={handleClick}
-            value={clientFormData.address}
+            value={clientFormData?.address}
             onChange={hadleInputChnage}
             click={click.address}
             onBlur={handleClickFalse}
           />
         </div>
-        <div>
+        <div className="client-form-input-wrapper-child">
           <TextInputs
             label={"Pincode"}
             name={"pincode"}
             onFocus={handleClick}
-            value={clientFormData.pincode}
+            value={clientFormData?.pincode}
             onChange={hadleInputChnage}
             click={click.pincode}
             onBlur={handleClickFalse}
@@ -270,7 +270,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             label={"State"}
             name={"state"}
             onFocus={handleClick}
-            value={clientFormData.state}
+            value={clientFormData?.state}
             onChange={hadleInputChnage}
             click={click.state}
             onBlur={handleClickFalse}
@@ -282,7 +282,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             name={"district"}
             onFocus={handleClick}
             onChange={hadleInputChnage}
-            value={clientFormData.district}
+            value={clientFormData?.district}
             click={click.district}
             onBlur={handleClickFalse}
           />
@@ -292,7 +292,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             label={"City"}
             name={"city"}
             onFocus={handleClick}
-            value={clientFormData.city}
+            value={clientFormData?.city}
             onChange={hadleInputChnage}
             click={click.city}
             onBlur={handleClickFalse}
@@ -305,19 +305,19 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             options={sourceOfLead}
             onValueChange={handleDropdown}
             name={"sourceOfLead"}
-            value={clientFormData.sourceOfLead}
+            value={clientFormData?.sourceOfLead}
           />
         </div>
         <div
           className={`${
-            clientFormData.sourceOfLead === "Reference" ? "" : "disabled"
+            clientFormData?.sourceOfLead === "Reference" ? "" : "disabled"
           }`}
         >
           <TextInputs
             label={"Refernce Name"}
             name={"referenceName"}
             onFocus={handleClick}
-            value={clientFormData.referenceName}
+            value={clientFormData?.referenceName}
             onChange={hadleInputChnage}
             click={click.referenceName}
             onBlur={handleClickFalse}

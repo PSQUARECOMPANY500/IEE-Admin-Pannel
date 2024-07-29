@@ -24,6 +24,8 @@ const InformationTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  console.log("++++++++++++",loading);
   
   const recordsPerPage = 10;
   const observer = useRef();
@@ -152,10 +154,10 @@ const InformationTable = ({
               ) : (
                 <div className="informationTable-loader">
                   <div className="skelton-in-message">
-                    <div className="loader">
-                      <div className="box"></div>
-                      {/* <p>No Message Yet</p> */}
-                    </div>
+                    {/* <div className="loader"> */}
+                      {/* <div className="box"></div> */}
+                      <p>No Data Yet</p>
+                    {/* </div> */}
                   </div>
                 </div>
               )}
@@ -170,7 +172,7 @@ const InformationTable = ({
                   </td>
                 </tr>
               )}
-              {!loading && records.length === 0 && (
+              {records.length === 0 && (
                 <tr>
                   <td
                     colSpan={fieldsToShow.length}

@@ -204,13 +204,13 @@ const AddTicketOnCallRequest = ({
     }
   }, [getEnggState]);
 
-  useEffect(() => {
-    //no problem
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   //no problem
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   const handleEnggSelectionChange = (selectedOptions) => {
     setSelectedEnggId(selectedOptions); // selected Engg id
@@ -465,7 +465,7 @@ const AddTicketOnCallRequest = ({
 
                 <div className="row">
                   <div className="col25">
-                    <label>MEMBERSHIP:</label>
+                    <label>MEMBERSHI:</label>
                   </div>
 
                   <div className="col75">

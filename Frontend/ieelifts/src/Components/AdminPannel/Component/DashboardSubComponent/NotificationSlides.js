@@ -31,7 +31,7 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
   };
 
   const generateMessage = (notification) => {
-    console.log("generateMessage", notification);
+    // console.log("generateMessage", notification);
     if (notification?.data?.callbackId && notification?.data?.Slot) {
       return null;
     }
@@ -110,7 +110,7 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
 
   const filteredNotifications = notifications?.map((notification) => generateMessage(notification))?.filter((data) => data !== null);
 
-  console.log("iiiiiiiiiiiiiiiiiiiii",filteredNotifications)
+  // console.log("iiiiiiiiiiiiiiiiiiiii",filteredNotifications)
 
   notificationcount(filteredNotifications?.length)
 
@@ -119,7 +119,7 @@ const NotificationSlides = ({ notifications, notificationcount }) => {
       {" "}
       {filteredNotifications?.map((data,index) => (
 
-        console.log("[[[[[[[[[[[[[[[[", data),
+        // console.log("[[[[[[[[[[[[[[[[", data),
         
           <div
             key={index}

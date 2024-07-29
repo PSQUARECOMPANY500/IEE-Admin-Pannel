@@ -268,19 +268,19 @@ const EngeeniersCard = () => {
                   Task History
                 </h5>
                 <h5
-                  onClick={() => handleCurrentComponent("c2", 17)}
+                  onClick={() => handleCurrentComponent("c2", 25.5)}
                   style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
                 >
                   Attendence
                 </h5>
                 <h5
-                  onClick={() => handleCurrentComponent("c3", 32)}
+                  onClick={() => handleCurrentComponent("c3", 50)}
                   style={{ color: borderMergin === 32 && "#F8AC1DAD" }}
                 >
                   Rating
                 </h5>
                 <h5
-                  onClick={() => handleCurrentComponent("c4", 49)}
+                  onClick={() => handleCurrentComponent("c4", 75)}
                   style={{ color: borderMergin === 49 && "#F8AC1DAD" }}
                 >
                   Spare parts
@@ -289,7 +289,7 @@ const EngeeniersCard = () => {
               <div className="vertical-line">
                 <div
                   className="overlay-vertical-line"
-                  style={{ marginLeft: borderMergin + "rem" }}
+                  style={{ marginLeft: borderMergin + "%" }}
                 ></div>
               </div>
               <div className="ODetails">{renderSelectedComponent()}</div>
@@ -377,7 +377,7 @@ const EngeeniersCard = () => {
                       <MdOutlineAttachFile />
                     </div>
                   </div>
-                  ``
+                  
                   <p
                     className="send-messsage-eng-card "
                     onClick={handleSendMessage}

@@ -45,12 +45,12 @@ const ClientForm = () => {
   const [prevData, setPrevData] = useState(false);
  
   const { jon } = allFormData.clientFormDetails;
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
   //  const [triggerFunction, setTriggerFunction]=useState(false);
   let triggerFunction = 0;
   //handler
@@ -98,19 +98,19 @@ const ClientForm = () => {
     const formData = new FormData();
     formData.append(
       "signedQuotation",
-      allFormData.clientMembershipDocument.signedQuotation
+      allFormData.clientMembershipDocument?.signedQuotation
     );
     formData.append(
       "paymentForm",
-      allFormData.clientMembershipDocument.paymentForm
+      allFormData.clientMembershipDocument?.paymentForm
     );
     formData.append(
       "salesOrder",
-      allFormData.clientMembershipDocument.salesOrder
+      allFormData.clientMembershipDocument?.salesOrder
     );
     formData.append(
       "chequeForm",
-      allFormData.clientMembershipDocument.chequeForm
+      allFormData.clientMembershipDocument?.chequeForm
     );
 
     formData.append("clientFormDetails", JSON.stringify(clientFormDetails));

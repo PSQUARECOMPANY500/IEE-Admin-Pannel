@@ -2353,6 +2353,8 @@ input:-webkit-autofill {
   width: 100%;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
+  padding: 0;
+
 }
 
 .ineer-menue {
@@ -2371,6 +2373,7 @@ input:-webkit-autofill {
   padding-right: 0;
   padding-left: 0;
   width: 100%;
+  position: relative;
 }
 
 /* topbar css starts */
@@ -2860,6 +2863,7 @@ footer a:hover {
 .main-crouser:hover {
   box-shadow: 1px 2px 5px #f8ac1d80 !important;
   border-color: solid #f8ac1d80 !important;
+
 }
 
 .slick-slider .slick-track {
@@ -3065,6 +3069,7 @@ footer a:hover {
   width: 100%;
   margin-top: 10px;
   letter-spacing: 0px;
+
 }
 
 .hover-icon-service span {
@@ -3220,7 +3225,6 @@ footer a:hover {
   visibility: hidden;
   z-index: -99999;
   box-shadow: 0px 0px 20px #c1c1c1;
-
   border-radius: 10px;
   opacity: 1;
 }
@@ -3244,12 +3248,13 @@ footer a:hover {
   opacity: 1;
   visibility: visible;
   top: 2%;
-  margin-left: -0.2rem;
+  /* margin-left: -0.2rem; */
   border-radius: 10px;
   z-index: 99999;
   width: 166px;
   height: auto;
   overflow: hidden;
+  background-color: green;
 }
 
 .dropdown2:hover .dropdown-menu {
@@ -3299,11 +3304,15 @@ footer a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-
+  /* background-color: red; */
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
-
   border-radius: 10px;
+
 }
+
+
+
+
 
 .lower-sec {
   justify-content: flex-start;
@@ -4311,12 +4320,10 @@ footer a:hover {
 /* tasks section css end */
 
 /* filter dropdown css starts */
-.filter-dropdowns {
-  margin-top: 10px;
-}
 
 .child-filter-dropdown {
   padding: 10px;
+  /* background-color: red; */
 }
 
 .dropdown-content {
@@ -4431,6 +4438,10 @@ footer a:hover {
   border-radius: 5px;
 }
 
+.horizontal-row-filter:hover {
+  background-color: white !important;
+}
+
 .filter-dropdowns {
   margin-top: 10px;
 }
@@ -4439,11 +4450,14 @@ footer a:hover {
   padding: 10px;
   position: relative;
   max-height: 300px;
+  /* background-color: red; */
+
 }
 
 .child-filter-dropdown {
   padding: 10px;
   position: relative;
+  /* background-color: red; */
 }
 
 .dropdown-content {
@@ -4498,12 +4512,24 @@ footer a:hover {
   flex-direction: column;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
   font-size: 12px;
   list-style-type: none;
   cursor: pointer;
   margin-top: 6px;
+  overflow-y: scroll;
+  height: 9.5rem;
 }
+
+.filter-lists::-webkit-scrollbar {
+  width: 2px;
+}
+
+.filter-lists::-webkit-scrollbar-thumb {
+  background-color: #F8AC1D;
+}
+
+.listing-filter {}
 
 .filter-icons span {
   padding: 0;
@@ -4516,6 +4542,16 @@ footer a:hover {
   background: white;
   color: black;
 }
+
+.filter-list-status {
+  height: auto;
+}
+
+.filter-list-clear {
+  height: auto;
+}
+
+.filter-list-engineers {}
 
 .listing-filter2 {
   overflow: hidden;
@@ -5860,6 +5896,7 @@ footer a:hover {
 
 .calender-section {
   width: 60%;
+  height: 37.5rem;
 }
 
 .dynamic-background {
@@ -5876,6 +5913,9 @@ footer a:hover {
   width: 100% !important;
   box-shadow: 0px 0px 3px #00000029 !important;
   border-radius: 7px !important;
+  /* height: 37rem; */
+  padding-bottom: 2rem;
+  height: 100%;
 }
 
 .react-calendar__month-view__weekNumbers {
@@ -5897,7 +5937,7 @@ element.style {
 }
 
 .react-calendar__tile {
-  padding: 20px 0px !important;
+  padding: 17px 0px !important;
   text-align: center !important;
   /* line-height: 5px!important; */
   font: inherit !important;
@@ -5952,6 +5992,7 @@ element.style {
   width: 50px !important;
   height: 50px !important;
 }
+
 
 .react-calendar__year-view__months__month abbr:hover {
   padding: 20px;
@@ -6514,9 +6555,18 @@ element.style {
 }
 
 .activeNotification {
-  border-bottom: 2px solid;
-  padding-bottom: 5px;
   color: #f8ac1d;
+
+}
+
+.notification-bg-line {
+  height: 2px;
+  /* width: 20%; */
+  background-color: #f8ac1d;
+  position: absolute;
+  transition: 0.5s ease;
+  z-index: 9999;
+
 }
 
 .child-notification-div {
@@ -9180,7 +9230,38 @@ element.style {
 
 } */
 
+@media only screen and (min-width: 1550px) and (max-width: 1885px) {
+  .dropdown-content {
+    position: absolute;
+    z-index: 1;
+    margin-left: -7rem;
+    width: 160px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 4px;
+    background-color: #fff;
+    top: 11%;
+  }
+}
+
+
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
+
+  .dropdown-content {
+    position: absolute;
+    z-index: 1;
+    margin-left: -7rem;
+    width: 160px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 4px;
+    background-color: #fff;
+    top: 10%;
+  }
 
   /* if create problem then use 1280px  */
   .wrapper {
@@ -9420,41 +9501,29 @@ element.style {
     top: 10%;
   }
 
-
-  .sidebar {
-    /* background-color: red; */
-    width: 17% !important;
+  /* -------------------------------------------------------------------------------------add eng modal responsive here----------------------------------------------------------- */
+  .add-engg-modal {
+    height: 95%;
+    width: 85%;
   }
 
-  .user-info {
-    width: 80% !important;
-    font-size: 1rem;
-    /* gap: 1rem; */
+  .outerMainMoodule {
+    gap: 1.5rem;
+    padding: 0.8rem 0.4rem;
   }
 
-  .user-info img {
-    width: 20% !important;
-    height: 20% !important;
+  .EnggAddressSection {
+    gap: 0.5rem;
+    width: 45%;
+    height: 90vh;
   }
 
-  .fixed-content-navbar .overlay {
-    width: 88% !important;
+  .addform-modal-container {
+    height: 95vh;
   }
 
-  .main-profile-item {
-    width: 50%;
-  }
-
-  .main-profile-item h2 {
-    font-size: 0.85rem;
-  }
-
-  .main-profile-item p {
-    font-size: 0.75rem;
-  }
-
-  .sidebar nav {
-    width: 80% !important;
+  .cross-icon {
+    right: 4px;
   }
 
 }
@@ -9749,5 +9818,379 @@ a[href^="http://maps.google.com/maps"] {
   color: #F40F02;
   cursor: pointer;
 }
+
+
+/* media query for dashboard engineer carousel card by rahul */
+@media only screen and (min-width: 1880px) and (max-width: 1900px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 2rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+  .tasks-heading {
+    position: relative;
+    top: 11px;
+    left: 50px;
+    font-size: 20px !important;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width: 1830px) and (max-width: 1880px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 1.5rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+  .tasks-heading {
+    position: relative;
+    top: 11px;
+    left: 50px;
+    font-size: 20px !important;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+}
+
+@media only screen and (min-width: 1815px) and (max-width: 1879px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 1.4rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1797px) and (max-width: 1814px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 1.2rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1761px) and (max-width: 1796px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 1rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+
+@media only screen and (min-width: 1718px) and (max-width: 1760px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 0.4rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1680px) and (max-width: 1717px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: 0;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1640px) and (max-width: 1679px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: -0.4rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1595px) and (max-width: 1640px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: -0.8rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1565px) and (max-width: 1594px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: -1.1rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 1520px) and (max-width: 1564px) {
+
+  .dropdown3:hover .dropdown-menu {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: white;
+    opacity: 1;
+    visibility: visible;
+    top: 75%;
+    margin-left: -1.4rem;
+    /* background-color: red !important; */
+    /* transition: all 0.5s, background 2s 0.5s linear; */
+    border-radius: 10px;
+    width: 220px;
+    height: auto;
+  }
+
+}
+
+/* --------------------------end--------------------------------- */
+
+
+/* client form responsive brekpoint min width 769 or max width 1550px  */
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+  .client-form-details-heading {
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  .client-form-input-wrapper {
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 46.5% 46.5%;
+    grid-column-gap: 1.1rem;
+    grid-row-gap: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .input-field {
+    font-size: 13px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #44444462;
+    opacity: 1;
+    padding: 3px 0;
+    background-color: transparent;
+    outline: none;
+    font-family: "Poppins";
+    color: #1d1d1d;
+    cursor: default;
+    font-weight: 400;
+    margin-top: -1.2rem !important;
+  }
+
+  .input-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    letter-spacing: 0.91px;
+    color: #1d1d1d;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 0.85rem !important;
+    margin-top: 0.09rem;
+  }
+
+  /* --------------------------------------------------- */
+
+  .client-form-left-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 38% !important;
+  }
+
+  .client-form-right-container {
+    width: 100% !important;
+
+  }
+
+  .client-form-container {
+    display: flex !important;
+    flex-direction: row !important;
+    column-gap: 10rem !important;
+  }
+
+  .quotation {
+    color: #444444;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .inputLabel {
+    position: absolute;
+    font-family: "Poppins";
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.3s;
+    opacity: 0.5;
+    font-size: 0.8rem;
+  }
+
+  .filename {
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: "Poppins";
+  }
+
+  .calendarIcon {
+    width: 1.2rem;
+    height: auto;
+  }
+
+  .calendarContainer {
+    position: absolute;
+    z-index: 5;
+    width: 17.5rem;
+  }
+
+  .clientDateInput {
+    outline: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid #44444473;
+    cursor: text;
+    width: 100%;
+    padding-bottom: 0.5rem;
+    padding-top: 0.55rem;
+    font-size: 0.8rem;
+    color: #444444;
+  }
+
+  .clientDateContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-family: "Poppins";
+    margin-top: -0.35rem;
+  }
+
+  .dropdown-input {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #1d1d1d;
+    opacity: 0.5;
+    padding-bottom: 0.4rem;
+    width: 100%;
+    font-family: "Poppins";
+    cursor: pointer;
+    position: relative;
+    font-size: 0.8rem;
+  }
+
+  .add-client-modal {
+    height: 90%;
+    width: 85%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    background: white;
+    z-index: 6;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    padding: 0 1rem;
+    overflow: hidden;
+  }
+}
+
+
+
+
+
 
 /* --------------------------end--------------------------------- */

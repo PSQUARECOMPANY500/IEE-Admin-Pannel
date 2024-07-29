@@ -105,33 +105,33 @@ const ClientMembershipDocument = ({ onDataChange, initialValues,reset }) => {
       </div> */}
       <h5 className="client-form-details-heading client-document">Document</h5>
       <hr className="client-form-hr" />
-      <div className="client-document-child-wrapper client-form-document-input-wrapper">
+      <div className="client-form-document-input-wrapper">
         <div className="file-uploader">
           <FileUploader
             label={"Signed Quotation"}
             onFileSelect={handleFileSelect}
-            apiDataName={initialValues.signedQuotation}
+            apiDataName={initialValues?.signedQuotation}
           />
         </div>
         <div className="file-uploader">
           <FileUploader
             label={"Payment Form"}
             onFileSelect={handleFileSelect}
-            apiDataName={initialValues.paymentForm}
+            apiDataName={initialValues?.paymentForm}
           />
         </div>
         <div className="file-uploader">
           <FileUploader
             label={"Cheque Form"}
             onFileSelect={handleFileSelect}
-            apiDataName={initialValues.chequeForm}
+            apiDataName={initialValues?.chequeForm}
           />
         </div>
         <div className="file-uploader">
           <FileUploader
             label={"Sales Order"}
             onFileSelect={handleFileSelect}
-            apiDataName={initialValues.salesOrder}
+            apiDataName={initialValues?.salesOrder}
           />
         </div>
       </div>

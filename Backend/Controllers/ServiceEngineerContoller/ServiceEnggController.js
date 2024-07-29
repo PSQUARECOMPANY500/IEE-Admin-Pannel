@@ -501,7 +501,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    // console.log(serviceEnggId);
+    console.log("location logic ",serviceEnggId);
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
@@ -1644,7 +1644,10 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     };
 
-    const membership = getMemberShipDetails.MembershipType;
+    // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
+    const membership = 'silver';
+    console.log("membership -----",membership)
+
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
       const sparePartPrice = item.questionResponse.sparePartDetail.partsprice;
