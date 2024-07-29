@@ -12,6 +12,7 @@ const memebership = new Schema(
       type: String,
       enum: ["warrenty", "gold", "platinum", "silver"],
       required: true,
+      default: "silver"
     },
     StartDate: {
       type: Date,
