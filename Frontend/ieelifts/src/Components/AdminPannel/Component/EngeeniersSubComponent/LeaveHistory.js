@@ -6,6 +6,7 @@ import { getEngineerLeaveHistory } from "../../../../ReduxSetup/Actions/AdminAct
 const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
   const [engineerLeaveDays, setEngineerLeaveDays] = useState([]);
   const [leave, setLeave] = useState(null);
+  console.log("{{{{{{{{{{{{{{{{",leave);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,6 +19,13 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
     (state) =>
       state?.AdminRootReducer?.engineerLeaveHistoryReducer?.leaveHistory
   );
+
+  const openIt = () => {
+    const url = `${config.documentUrl}/EnggAttachments/${engAddharPhoto}`;
+
+    window.open(url);
+  };
+
 
   useEffect(() => {
     if (EngineerLeaveHistory) {
@@ -86,7 +94,8 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
                 </div>
 
                 <div className="OldCardData">
-                  <SlLink />
+                  <SlLink  
+                  onClick={item.Document ? () => openIt() : null} />
                 </div>
               </div>
             ))}
