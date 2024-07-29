@@ -123,7 +123,7 @@ const DayCalender = ({ tasks, handleTaskUpdate, handleOpenAddClick }) => {
         <span> {getCurrentFormattedDate()}</span>
       </div>
       <div className="time-slots">
-        {generateTimeSlots().map((timeSlot, index) => (
+        {generateTimeSlots()?.map((timeSlot, index) => (
           <React.Fragment key={index}>
             <div className="time-row">
               <div className="time-row-time">{timeSlot}</div>
@@ -131,8 +131,8 @@ const DayCalender = ({ tasks, handleTaskUpdate, handleOpenAddClick }) => {
             </div>
             <div className="badge-container" id="badge-container" style={divStyle}>
               {tasks
-                .filter((task) => isTaskInTimeSlot(task, timeSlot))
-                .map((task, taskIndex) => (
+                ?.filter((task) => isTaskInTimeSlot(task, timeSlot))
+                ?.map((task, taskIndex) => (
                   <TodoTaskBadge key={taskIndex} task={task} handleTaskUpdate={handleTaskUpdate} isMonth={false} handleOpenAddClick={handleOpenAddClick}/>
                 ))}
             </div>

@@ -109,7 +109,7 @@ const WeekCalender = ({ setTodayDate,data,handleTaskUpdate,handleOpenAddClick })
          <span onClick={() => changeWeek(-1)}><FaChevronLeft className="font-size"/></span> <span>{startDate}-{endDate}</span> <span onClick={() => changeWeek(2)}>< FaChevronRight className="font-size"/></span>
        </div>
        {
-        currentWeek.map((day,index)=>{
+         currentWeek && currentWeek?.map((day,index)=>{
           const { day: dayName, month, dayOfMonth,year } = extractDayDateMonth(day);
           return(
             <WeekCalendarTask day={dayName} month={month} date={dayOfMonth} isToday={isToday(day)} key={index} year={year} data={data} handleTaskUpdate={handleTaskUpdate} handleOpenAddClick={handleOpenAddClick}/>

@@ -936,7 +936,7 @@ width: 144px;
   font-family: "Poppins";
   width: 450px;
   position: absolute;
-  top: 23.6%;
+  top: 20%;
   left: 73.8%;
   z-index: 2;
   height: 626px;
@@ -1509,7 +1509,7 @@ input:-webkit-autofill {
   padding: 0rem 3rem;
 }
 
-.addTask-main {
+/* .addTask-main {
   width: 450px;
   position: absolute;
   top: 23.6%;
@@ -1521,7 +1521,7 @@ input:-webkit-autofill {
   align-items: center;
   justify-content: center;
   border: 1px solid #70707033;
-}
+} */
 
 .task-content-inner p {
   font-size: 0.9rem;
@@ -4557,6 +4557,10 @@ footer a:hover {
 .filter-list-location{
   height: 9.5rem;
 }
+.filter-list-type{
+  height: 9.5rem;
+  padding: 2rem 0;
+}
 .listing-filter2 {
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
@@ -6043,7 +6047,7 @@ element.style {
 }
 
 .react-calendar__navigation__label__labelText {
-  font-size: 1.3rem !important;
+  font-size: 1.3rem;
   color: #343434 !important;
 }
 
@@ -7787,6 +7791,10 @@ element.style {
   height: 80%;
   width: 100%;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .RatingStar {
@@ -10172,6 +10180,7 @@ a[href^="http://maps.google.com/maps"] {
     overflow: hidden;
   }
 }
+
 
 
 

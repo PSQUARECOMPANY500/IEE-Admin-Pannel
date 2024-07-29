@@ -1635,7 +1635,6 @@ color:#f8ac1d ;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 1rem 0rem 0rem 0rem;
 }
 
@@ -3428,7 +3427,7 @@ input:-webkit-autofill {
 
   .client_table-container table td,
   .client_table-container table th {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
 
   .sub_table_view {
@@ -3469,7 +3468,7 @@ input:-webkit-autofill {
   }
 
   .clientsContaine p {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 
   .non_expand_gap .membership_card {
@@ -3490,7 +3489,236 @@ input:-webkit-autofill {
     margin: 0rem;
     margin-top: 0;
   }
+ 
+.client-table-name{
+  width: 12rem;
 }
+.clientCard {
+  background-color: #ffffff;
+  font-size: 0.64rem;
+  padding: 1.36rem;
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 2px 4px 10px #00000029;
+  cursor: pointer;
+}
+.clientCardShadowSilver {
+  box-shadow: inset 0px 0px 15px #b7b7b7, 2px 4px 10px #00000029;
+}
+.clientCardShadowGold {
+  box-shadow: inset 0px 0px 15px #f8ac1d80, 2px 4px 10px #00000029;
+}
+.clientCardShadowWarrenty {
+  box-shadow: inset 0px 0px 15px #0f351d, 2px 4px 10px #00000029;
+}
+
+.clientCardShadowPlatinum {
+  box-shadow: inset 0px 0px 15px #ff7f0080, 2px 4px 10px #00000029;
+}
+.clientInfo2 {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0rem 0rem 0rem;
+}
+.Info {
+  font-size: 0.8rem;
+}
+.service-history-client-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 3.2rem !important;
+}
+.service-history-client-heading {
+  color: #8E8E8E;
+  font-size: 0.8rem !important;
+}
+.service-history-wrapper {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  flex-direction: column;
+  margin-top: 0.8rem !important;
+  text-transform: capitalize;
+}
+
+.service-history-heading>h6 {
+  display: flex;
+  align-items: center;
+  font-size: 0.88rem !important;
+  color: #1D1D1D;
+  font-weight: 500;
+}
+.service-history-heading {
+  display: flex;
+  align-items: center;
+}
+.service-history-client-child-color {
+  color: #444444;
+  font-size: 0.8rem !important;
+}
+.hr-salesman-width {
+  width: 85% !important;
+}
+.hr-client-width {
+  width: 88% !important;
+}
+
+.hr-architect-width {
+  width: 85% !important ;
+}
+.client-modal-profile-container {
+  height: 15%;
+  width: 100%;
+  position: relative;
+  padding: 0 0.8rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.client-modal-profile-container-left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  cursor: pointer;
+  gap: 0.4rem !important;
+  align-items: center;
+  justify-content: flex-start;
+}
+.client-modal-profile-container-right {
+  width: 62% !important;
+  height: 100%;
+  display: flex;
+  margin-right: 0.8rem !important;
+  align-items: center;
+  justify-content: space-around;
+}
+.client-modal-dropdown {
+  height: 2.8rem;
+  width: 6rem;
+  border: 1px solid #8e8e8e;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+.left-side-heading {
+  font-size: 0.96rem !important;
+}
+.react-calendar {
+  max-width: 100% !important;
+  background: white;
+  border: none !important;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.76em !important;
+  width: 100% !important;
+  box-shadow: 0px 0px 3px #00000029 !important;
+  border-radius: 7px !important;
+  /* height: 37rem; */
+  padding-bottom: 1.6rem !important;
+  height: auto !important;
+}
+.react-calendar__navigation {
+  height: 2.2rem !important;
+  margin-bottom: 0em !important;
+  margin-top: 0.8rem !important;
+  border-bottom: 1px solid #00000029 !important;
+  align-items: center !important;
+}
+.react-calendar__month-view__weekdays{
+  font-size: 0.6em !important;
+}
+.react-calendar__navigation__label__labelText {
+  font-size: 1rem !important;
+  color: #343434 !important;
+}
+.date-swap-icon {
+  background: #ffffff;
+  padding: 0.9rem 0px !important;
+  border-radius: 8px;
+  box-shadow: 0px 0px 3px #00000029;
+}
+.swap-icons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 0.9rem !important;
+  color: #343434;
+  cursor: pointer;
+}
+.calender-events-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6rem !important;
+}
+.service-assign {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.3rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.date-time span {
+  font-size: 0.65rem !important;
+  font-weight: 500;
+  color: #f8ac1d;
+}
+
+.date-time p {
+  font-size: 0.7rem !important;
+  font-weight: 600;
+  color: #343434;
+}
+
+.date-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #c1c1c1;
+  padding: 0px 0.7rem !important;
+  margin-right: 0px;
+}
+
+.name-jon {
+  padding: 0px 0px;
+  margin-left: -1.25rem !important;
+}
+
+.name-jon p {
+  font-size: 0.8rem !important;
+  font-weight: 500;
+  color: #343434;
+}
+
+.jon-type p {
+  font-size: 0.6rem !important;
+  font-weight: 400;
+  color: #343434;
+}
+.react-calendar__tile {
+  padding: 0.85rem 0px !important;
+  text-align: center !important;
+  /* line-height: 5px!important; */
+  font: inherit !important;
+  font-size: 0.6664rem !important ;
+  margin-top: 20px;
+}
+
+.service-request-section-button {
+  padding: 0.5rem 1.5rem !important;
+  border: none;
+  border-radius: 4px;
+  background: #ffffff;
+  font-size: 0.96rem !important;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 4px;
+}
+}
+
 
 /* sidebar SOS button css ends */
 

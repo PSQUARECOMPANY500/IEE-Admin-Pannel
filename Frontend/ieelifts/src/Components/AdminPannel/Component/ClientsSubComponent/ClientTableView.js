@@ -77,10 +77,10 @@ const handleExcelIconClick = () =>{
   return (
     <div className="table_view client_table_view">
       <div className="sub_table_view client_sub_table_view">
-        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)} style={{overflowX:'hidden'}}>
-          <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
+        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)}>
+          <div className="table-shadow table-header" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
           <table>
-            <thead style={{ zIndex: '1' }}>
+            <thead style={{ zIndex: '1' }} >
               <tr>
                 <th className="checkbox">
                   <CheckBox
@@ -123,7 +123,7 @@ const handleExcelIconClick = () =>{
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index}
+                  <tr className="selected single" key={index}
                   >
                     <td className="checkbox">
                       <CheckBox
