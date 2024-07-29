@@ -1810,10 +1810,14 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
       RequestId: serviceId,
     });
+    
+    console.log("FinalFilteredData=======================", updateTaskStatusServiceRequest);
 
+
+    
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
-      let jon = updateTaskStatusCallback.JobOrderNumber;
+      let jon = updateTaskStatusCallback?.JobOrderNumber;
       console.log(jon)
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
       if (activeMembership) {
@@ -1824,7 +1828,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       await updateTaskStatusCallback.save();
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
-      let jon = updateTaskStatusCallback.JobOrderNumber;
+      let jon = updateTaskStatusCallback?.JobOrderNumber;
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;
