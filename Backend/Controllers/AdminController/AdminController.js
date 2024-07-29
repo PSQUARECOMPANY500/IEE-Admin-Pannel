@@ -2299,6 +2299,9 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
     });
 
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+
+    console.log("sent leave in backend ",  sentLeaves)
+
     res.status(200).json({
       success: true,
       leaves: sentLeaves,

@@ -954,13 +954,14 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } = req.body;
 
-    // console.log("preert", req.files);
+    // console.log("preert000000000000--------------", req.files.document[0].filename);
     // return ;
     // return;
 
+
     let document = null;
     if (req.files) {
-      document = req.files[0];
+      document = req.files.document[0].filename;
     }
     const response = await EnggLeaveServiceRecord.create({
       ServiceEnggId,
@@ -980,6 +981,8 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       .json({ error: "Internal server error in enggLeaveServiceRequest" });
   }
 };
+
+
 // changes by armaan
 //----- for testing api ----------------------------------------------------------------------------------------------------------
 module.exports.testingApi = async (req, res) => {
