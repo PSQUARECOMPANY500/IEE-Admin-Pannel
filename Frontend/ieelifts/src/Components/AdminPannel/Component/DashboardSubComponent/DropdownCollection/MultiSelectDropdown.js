@@ -12,6 +12,7 @@ const MultiSelectDropdown = ({
   isAssigned,
   EnggName,
   editchange,
+  flag
 }) => {
   const [selectedValue, setSelectedValue] = useState([]);
 
@@ -30,7 +31,7 @@ const MultiSelectDropdown = ({
       boxShadow: state.isFocused ? "none" : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
       borderRadius: "5px",
-      fontSize: "0.8rem",
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
       height: 'auto',
       padding: '0',
       display: "flex",
@@ -42,7 +43,7 @@ const MultiSelectDropdown = ({
     }),
     placeholder: (provided) => ({
       ...provided,
-      fontSize: "0.8rem",
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
       fontFamily: 'Poppins',
       opacity: '0.6',
     }),
@@ -50,7 +51,7 @@ const MultiSelectDropdown = ({
       ...provided,
       backgroundColor: "#ffffff",
       padding: "0",
-      fontSize: '0.8rem',
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
       maxHeight: '200px',
       overflowY: 'auto',
       marginTop: '0.5rem',
@@ -80,8 +81,10 @@ const MultiSelectDropdown = ({
       backgroundColor: state.isSelected ? "#F8AC1D" : "#FFFFFF",
       color: state.isSelected ? "white" : "black",
       marginTop: '4px',
-      fontSize: "0.8rem",
-      padding: '8px 10px',
+      // fontSize: "0.8rem",
+      fontSize: `${flag?"0.64rem":"0.8rem"}`,
+      // padding: '8px 10px',
+      padding: `${flag?"0.4rem 0.5rem":"8px 10px"}`,
       ":hover": {
         backgroundColor: "#FEF3DE",
         color: "#F8AC1D",

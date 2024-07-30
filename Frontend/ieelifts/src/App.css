@@ -5185,7 +5185,7 @@ footer a:hover {
   z-index: 1;
   display: none;
   top: 22% !important;
-  left: 12% !important;
+  left: 11.7% !important;
   height: 70%;
 }
 
@@ -10050,7 +10050,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-  .client-form-input-wrapper {
+  .client-form-input-wrapper{
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
