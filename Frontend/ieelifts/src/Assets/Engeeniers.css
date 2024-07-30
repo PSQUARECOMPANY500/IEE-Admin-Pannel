@@ -555,6 +555,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   padding: 0.2rem;
+  cursor: pointer;
 }
 
 /* 

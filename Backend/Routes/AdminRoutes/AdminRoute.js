@@ -135,7 +135,7 @@ router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
 //   "/getEngineerRequestedLeave",
 //   adminContoller.getEngineerRequestedLeave
 // );
-router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+// router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 // --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
 
 // --by amit 29/03/2024 ------------

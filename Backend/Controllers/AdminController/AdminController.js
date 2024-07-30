@@ -2454,23 +2454,27 @@ module.exports.assignedEnggDetails = async (req, res) => {
       const assignCallbacksWithRating = await Promise.all(
         assignCallbacksDetails.map(async (assignment) => {
           const Rating = await EnggRating.find({
-            ServiceEnggId: assignment.ServiceId,
+            ServiceId: assignment.ServiceId,
           });
-          // console.log("rating", Rating);
+          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
           return {
             ...assignment,
-            rating: Rating.Rating,
+            rating: Rating[0]?.Rating,
+            reportLink:reportTable?.paymentDetils
           };
         })
       );
       const assignServiceRequestsWithRating = await Promise.all(
         assignServiceRequestsDetails.map(async (assignment) => {
           const Rating = await EnggRating.find({
-            ServiceEnggId: assignment.ServiceId,
+            ServiceId: assignment.ServiceId,
           });
+          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
+
           return {
             ...assignment,
-            rating: Rating.Rating,
+            rating: Rating[0]?.Rating,
+            reportLink:reportTable?.paymentDetils
           };
         })
       );

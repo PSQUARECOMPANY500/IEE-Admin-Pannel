@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { assignedEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+import config from "../../../../config";
 
 const TaskHistory = (props) => {
   const { engID } = props;
@@ -44,6 +45,18 @@ const TaskHistory = (props) => {
   const allDates = Object.keys(serviceDataByDate).concat(Object.keys(callBackDataByDate));
   const uniqueSortedDates = Array.from(new Set(allDates)).sort((a, b) => new Date(b) - new Date(a));
 
+
+
+
+  const openIt = (reportLink) => {
+    const url = `${config.documentUrl}/ReportPdf/${reportLink}`;
+
+    window.open(url);
+  };
+
+
+
+
   return (
     isLoadData && (
       <div className="TaskHistory">
@@ -61,7 +74,7 @@ const TaskHistory = (props) => {
                 <div className="AllServices">
                   {(serviceDataByDate[date] || []).map((service, index) => (
                     
-                    <div key={`${date}-service-${index}`} className="ServiceCards">
+                    <div key={`${date}-service-${index}`} className="ServiceCards" onClick={service.reportLink ? () => openIt(service.reportLink) : null }> 
                       <table>
                         <tbody>
                           <tr>
@@ -78,8 +91,8 @@ const TaskHistory = (props) => {
                         <h5>{service.Slot[0]?.split("-")[0]}</h5>
                         <h5>{service.Slot[service.Slot.length -1 ]?.split("-")[1]}</h5>
                         <div className="star">
-                          <h5>{service.rating}</h5>
-                          <FaStar className="Icon_Color small-Icon" />
+                        {service.rating ? (<><h5>{service.rating}</h5>
+                          <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{fontSize:'12px'}}>NA</p>)}
                         </div>
                       </div>
                     </div>
@@ -98,7 +111,7 @@ const TaskHistory = (props) => {
 
                 <div className="AllCallback">
                   {(callBackDataByDate[date] || []).map((service, index) => (
-                    <div key={`${date}-callback-${index}`} className="CallBackCards">
+                    <div key={`${date}-callback-${index}`} className="CallBackCards" onClick={service.reportLink ? () => openIt(service.reportLink) : null }>
                       <table>
                         <tbody>
                           <tr>
@@ -115,8 +128,8 @@ const TaskHistory = (props) => {
                         <h5>{service.Slot[0]?.split("-")[0]}</h5>
                         <h5>{service.Slot[service.Slot.length -1 ]?.split("-")[1]}</h5>
                         <div className="star">
-                          <h5>{service.rating}</h5>
-                          <FaStar className="Icon_Color small-Icon" />
+                         {service.rating ? (<><h5>{service.rating}</h5>
+                          <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{fontSize:'12px'}}>NA</p>)}
                         </div>
                       </div>
                     </div>

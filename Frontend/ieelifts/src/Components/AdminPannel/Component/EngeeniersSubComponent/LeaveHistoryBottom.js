@@ -19,6 +19,7 @@ const LeaveHistoryBottom = ({ setleaveRequested, leaves, engID }) => {
 
   const handleApprove = async () => {
     if (leave && engID) {
+      console.log("8888888888888888888888",leave._id);
       dispatch(approveLeaveByAdmin(leave._id, "Approved"));
       setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
       setleaveRequested(leave);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SlLink } from "react-icons/sl";
 import { useDispatch, useSelector } from "react-redux";
 import { getEngineerLeaveHistory } from "../../../../ReduxSetup/Actions/AdminActions";
+import config from "../../../../config";
 
 const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
   const [engineerLeaveDays, setEngineerLeaveDays] = useState([]);
@@ -20,8 +21,9 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
       state?.AdminRootReducer?.engineerLeaveHistoryReducer?.leaveHistory
   );
 
-  const openIt = () => {
-    const url = `${config.documentUrl}/EnggAttachments/${engAddharPhoto}`;
+
+  const openIt = (leavePhoto) => {
+    const url = `${config.documentUrl}/leaveAttachment/${leavePhoto}`;
 
     window.open(url);
   };
@@ -94,8 +96,8 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
                 </div>
 
                 <div className="OldCardData">
-                  <SlLink  
-                  onClick={item.Document ? () => openIt() : null} />
+                  <SlLink style={{color: item.Document ? '#f8ac1d' : '000'}}
+                  onClick={item.Document ? () => openIt(item.Document) : null} />
                 </div>
               </div>
             ))}
