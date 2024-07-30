@@ -501,7 +501,7 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    console.log("location logic ",serviceEnggId);
+    console.log("location logic ", serviceEnggId);
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
@@ -949,7 +949,6 @@ module.exports.EnggOnLunchBreak = async (req, res) => {
 };
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // changes by armaan
-
 module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } = req.body;
@@ -959,18 +958,28 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
     // return;
 
 
-    let document = null;
-    if (req.files) {
+    let document, response = null;
+    if (req.files && req.files.length > 0) {
+      console.log(ServiceEnggId, TypeOfLeave, From, To, Leave_Reason)
       document = req.files.document[0].filename;
+      response = await EnggLeaveServiceRecord.create({
+        ServiceEnggId,
+        TypeOfLeave,
+        Duration: { From: From, To: To },
+        Leave_Reason,
+        Document: document,
+      });
     }
-    const response = await EnggLeaveServiceRecord.create({
-      ServiceEnggId,
-      TypeOfLeave,
-      Duration: { From: From, To: To },
-      Leave_Reason,
-      Document: document,
-    });
-    // console.log("document", document);
+    else {
+      response = await EnggLeaveServiceRecord.create({
+        ServiceEnggId,
+        TypeOfLeave,
+        Duration: { From: From, To: To },
+        Leave_Reason,
+      });
+
+    }
+    console.log("document", document);
     res
       .status(200)
       .json({ success: true, message: "Leave Created successfully", response });
@@ -981,7 +990,6 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       .json({ error: "Internal server error in enggLeaveServiceRequest" });
   }
 };
-
 
 // changes by armaan
 //----- for testing api ----------------------------------------------------------------------------------------------------------
@@ -1649,7 +1657,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
     const membership = 'silver';
-    console.log("membership -----",membership)
+    console.log("membership -----", membership)
 
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
@@ -1813,11 +1821,11 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
       RequestId: serviceId,
     });
-    
+
     console.log("FinalFilteredData=======================", updateTaskStatusServiceRequest);
 
 
-    
+
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;

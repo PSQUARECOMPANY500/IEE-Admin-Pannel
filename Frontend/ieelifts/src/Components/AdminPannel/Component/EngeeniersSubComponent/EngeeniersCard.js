@@ -188,9 +188,9 @@ const EngeeniersCard = () => {
 
   const navigateOneStepBack = () => {
     // <EngeeniersSubCard />
-   setIsSecond(false)
+    setIsSecond(false)
     console.log("true engg design")
-    console.log("{{{{{",onBackPress);
+    console.log("{{{{{", onBackPress);
   };
 
   useEffect(()=>{
@@ -384,7 +384,8 @@ if(window.innerWidth<=1550){
                       onChange={handleFileChange}
                       ref={fileInputField}
                       style={{ display: "none" }}
-                    ></input>
+                      autoComplete="off"
+                    />
                     <div
                       onClick={() => fileInputField.current.click()}
                       style={{ marginTop: "3px" }}
@@ -392,7 +393,7 @@ if(window.innerWidth<=1550){
                       <MdOutlineAttachFile />
                     </div>
                   </div>
-                  
+
                   <p
                     className="send-messsage-eng-card "
                     onClick={handleSendMessage}

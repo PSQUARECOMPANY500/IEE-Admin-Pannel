@@ -591,6 +591,7 @@ import config from "../../../../config";
                                  <input
                                    type="text"
                                    name="name"
+                                   autoComplete="off"
                                    value={engDetails.enggJon}
                                  />
                                </div>
@@ -605,6 +606,7 @@ import config from "../../../../config";
                                  <input
                                    type="text"
                                    name="name"
+                                   autoComplete="off"
                                    value={engDetails.enggName}
                                  />
                                </div>
@@ -619,6 +621,7 @@ import config from "../../../../config";
                                  <input
                                    type="text"
                                    name="name"
+                                   autoComplete="off"
                                    value={engDetails.enggPhone}
                                  />
                                </div>
@@ -633,6 +636,7 @@ import config from "../../../../config";
                                  <input
                                    type="text"
                                    name="name"
+                                   autoComplete="off"
                                    value={engDetails.enggAddress}
                                  />
                                </div>
@@ -658,6 +662,7 @@ import config from "../../../../config";
                              <div className="col-elevator75">
                                <input
                                  type="text"
+                                 autoComplete="off"
                                  name="name"
                                  value={engDetails.enggLocation}
                                />
@@ -679,6 +684,7 @@ import config from "../../../../config";
                                <input
                                  type="text"
                                  name="name"
+                                 autoComplete="off"
                                  value={engDetails.enggRating}
                                />
                              </div>
@@ -712,7 +718,7 @@ import config from "../../../../config";
                        />) : (
                        
                         <div className="col75">
-                        <input  placeholder={"Select Engineer"} disabled={true} style={{width:"109%",boxShadow:"none"}}/>
+                             <input placeholder={"Select Engineer"} disabled={true} style={{ width: "109%", boxShadow: "none" }} autoComplete="off" />
                       </div>
                        )}
  
@@ -730,7 +736,7 @@ import config from "../../../../config";
                         (
                        
                    <div className="col75">
-                   <input  placeholder={"Select Slot"} disabled={true} style={{width:"109%", boxShadow:"none"}}/>
+                               <input placeholder={"Select Slot"} disabled={true} style={{ width: "109%", boxShadow: "none" }} autoComplete="off" />
                  </div>
                       )
                       
@@ -759,12 +765,12 @@ import config from "../../../../config";
                  <div className="grid-form-container2">
  
                    <div className="col75">
-                     <input  placeholder={reName ||"Enter Representative Name (Optional)"} onChange={(e)=> setreName(e.target.value)} />
+                     <input placeholder={reName || "Enter Representative Name (Optional)"} onChange={(e) => setreName(e.target.value)} autoComplete="off" />
                    </div>
  
  
                    <div className="col75">
-                     <input placeholder={reNumber||"Enter Representative Number (Optional)"} onChange={(e)=> setreNumber(e.target.value)}/>
+                     <input placeholder={reNumber || "Enter Representative Number (Optional)"} onChange={(e) => setreNumber(e.target.value)} autoComplete="off" />
                    </div>
  
                    <div className="col75">

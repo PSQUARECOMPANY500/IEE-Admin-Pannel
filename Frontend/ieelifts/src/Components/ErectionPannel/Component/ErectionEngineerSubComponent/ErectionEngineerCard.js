@@ -255,8 +255,9 @@ const EngeeniersCard = () => {
                     name="file"
                     onChange={handleFileChange}
                     ref={fileInputField}
+                    autoComplete="off"
                     style={{ display: "none" }}
-                  ></input>
+                  />
                   <div
                     onClick={() => fileInputField.current.click()}
                     style={{ marginTop: "3px" }}

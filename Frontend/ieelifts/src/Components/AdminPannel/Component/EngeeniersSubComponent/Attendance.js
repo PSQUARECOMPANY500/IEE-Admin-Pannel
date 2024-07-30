@@ -21,11 +21,12 @@ const Attendance = (props) => {
   const [leaveRequested, setleaveRequested] = useState(null);
   useEffect(() => {
     if (engID) {
-      dispatch(getRequstedLeaves(engID));
+      setTimeout(() => {
+        dispatch(getRequstedLeaves(engID));
+      }, 500)
     }
-  }, [engID, dispatch,leaveRequested]);
+  }, [engID, dispatch, leaveRequested]);
 
-  console.log("leavess",leaves)
 
 
   return (

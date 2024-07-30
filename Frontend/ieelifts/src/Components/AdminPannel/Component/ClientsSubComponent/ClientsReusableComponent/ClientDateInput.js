@@ -32,6 +32,7 @@ useEffect(()=>{
         value={inputValue}
         onChange={handleInputChange}
         readOnly
+        autoComplete="off"
       />
     </div>
   );

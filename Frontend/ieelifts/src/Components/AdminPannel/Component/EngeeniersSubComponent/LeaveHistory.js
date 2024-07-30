@@ -12,7 +12,9 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
 
   useEffect(() => {
     if (engID) {
-      dispatch(getEngineerLeaveHistory(engID));
+      setTimeout(() => {
+        dispatch(getEngineerLeaveHistory(engID));
+      }, 500)
     }
   }, [engID, dispatch, leaveRequested]);
 
@@ -59,15 +61,15 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
               Available Leaves:{" "}
               {leave[leave.length - 1].TotalLeave -
                 leave[leave.length - 1].UsedLeave >
-              0
+                0
                 ? leave[leave.length - 1].TotalLeave -
-                  leave[leave.length - 1].UsedLeave
+                leave[leave.length - 1].UsedLeave
                 : 0}
             </h5>
           </>
         )}
       </div>
-      <div className="OldLeaveHistory Yello_Scrollbar" style={{height: leaves && leaves?.length>0 ? "25vh" : "65vh"}}>
+      <div className="OldLeaveHistory Yello_Scrollbar" style={{ height: leaves && leaves?.length > 0 ? "25vh" : "65vh" }}>
         <div className="SubOldLeaveHistory">
           {leave &&
             leave.map((item, index) => (
@@ -77,9 +79,8 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
                 key={index}
               >
                 <div
-                  className={`OldCardData ${
-                    item.IsApproved === "Rejected" && "RejecTedCard"
-                  }`}
+                  className={`OldCardData ${item.IsApproved === "Rejected" && "RejecTedCard"
+                    }`}
                 >
                   <h5>{engineerLeaveDays[index]}</h5>
                   <h5>{engineerLeaveDays[index] > 1 ? "Days" : "Day"}</h5>

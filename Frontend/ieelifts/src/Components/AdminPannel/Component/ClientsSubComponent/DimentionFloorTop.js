@@ -88,6 +88,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                 <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                 <input
                   className="hidden-input"
+                  autoComplete='off'
                   type="file"
                   onChange={(e) =>
                     handleFileChangeInFloorFront(e, "topFloorFront")
@@ -114,6 +115,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                   <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon'/>
                   <input
                     className="hidden-input"
+                    autoComplete="off"
                     type="file"
                     onChange={(e) =>
                       handleFileChangeInFloorFront(e, "bottomToTopImages")
@@ -141,6 +143,7 @@ const DimentionFloorTop = ({ floorFrontData, handleClick, handleInputChangeInPFl
                   <img src="./uploadIcon.png " className="upload-icon" alt='uploadIcon' />
                   <input
                     className="hidden-input"
+                    autoComplete="off"
                     type="file"
                     onChange={(e) =>
                       handleFileChangeInFloorFront(e, "Overhead")

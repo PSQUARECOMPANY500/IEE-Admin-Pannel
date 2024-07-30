@@ -33,16 +33,16 @@ const TextInput = ({
     if (name === "pincode") {
       const pincodeRegex = /^\d{6}$/;
       if (!pincodeRegex.test(value)) {
-          setPincodeError(true);
+        setPincodeError(true);
       } else {
-         setPincodeError(false); 
+        setPincodeError(false);
       }
     }
-    
-  }, [value,name]);
+
+  }, [value, name]);
   //condition to check phone number input field
 
-  
+
   let condition =
     name === "phoneNumber" ||
     name === "alternativeNumber" ||
@@ -55,7 +55,7 @@ const TextInput = ({
         type={type || "text"}
         name={name}
         id={id}
-        autoComplete={id}
+        autoComplete="off"
         onChange={onChange}
         readOnly={read}
         value={value}
@@ -72,8 +72,8 @@ const TextInput = ({
             type === "email" && emailError
               ? "red"
               : type === "number" && numberError && condition
-              ? "red"
-              : type==="number" && name==="pincode" && pincodeError?"red":"#1D1D1D",
+                ? "red"
+                : type === "number" && name === "pincode" && pincodeError ? "red" : "#1D1D1D",
         }}
       />
       <label

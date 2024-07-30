@@ -862,8 +862,8 @@ module.exports.getAllClientsData = async (req, res) => {
       message: "all  Clients fetched Succesfully",
       Clients: paginatedClients,
       totalPage,
-      len:clients.length
-      
+      len: clients.length
+
     });
   } catch (error) {
     console.log(error);
@@ -1807,6 +1807,7 @@ module.exports.createClientMemebership = async (req, res) => {
       isRenewed,
       isExpired,
       isDisable,
+      OrderId
     } = req.body;
 
     const startDate = new Date(StartDate);
@@ -1823,8 +1824,8 @@ module.exports.createClientMemebership = async (req, res) => {
     }
 
     // Update client membership type
-    clientData.MembershipType = MembershipType;
-    await clientData.save();
+    // clientData.MembershipType = MembershipType;
+    // await clientData.save();
 
     const MemberShipDetails = await AssignMemeberships.create({
       JobOrderNumber,
@@ -1837,6 +1838,7 @@ module.exports.createClientMemebership = async (req, res) => {
       isRenewed,
       isExpired,
       isDisable,
+      OrderId
     });
 
     res.status(201).json({
@@ -2058,6 +2060,9 @@ const filterMembershipByType = (data, type) => {
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
+
+
+
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
       return res
@@ -2300,7 +2305,7 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
 
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
 
-    console.log("sent leave in backend ",  sentLeaves)
+    console.log("sent leave in backend ", sentLeaves)
 
     res.status(200).json({
       success: true,
@@ -2326,6 +2331,8 @@ module.exports.takeActionOnLeave = async (req, res) => {
     if (!last) {
       return res.status(404).json({ error: "Leave not found" });
     }
+
+    console.log(last)
 
     // const approvedLeaves = leaves
     //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
@@ -2360,9 +2367,9 @@ module.exports.takeActionOnLeave = async (req, res) => {
 
       const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
       const toDate = new Date(toYear, toMonth - 1, toDay);
+      // console.log(fromDate.toS, toDate)
       const diffTime = Math.abs(toDate - fromDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
       if (approvedLeaves.length > 0) {
         last.UsedLeave =
           approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
@@ -3030,7 +3037,7 @@ module.exports.getClientModalInformation = async (req, res) => {
   try {
     const { jon } = req.params;
     const response = await ElevatorFormSchema.findOne({
-      "clientFormDetails.jon": jon,
+      "clientFormDetails.jon": `${jon}`,
     });
     if (!response) {
       return res.json({ success: false, message: "This JON is not found" });
@@ -3774,12 +3781,12 @@ module.exports.upgradClientMembership = async (req, res) => {
     const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
 
     // console.log("this is request dot body ",req);
-    console.log("this is",req.files);
+    console.log("this is", req.files);
 
-    const clientExist = await clientDetailSchema.findOne({JobOrderNumber});
+    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber });
 
-    console.log("clientExist",clientExist)
-    console.log("clientExist",JobOrderNumber)
+    console.log("clientExist", clientExist)
+    console.log("clientExist", JobOrderNumber)
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
@@ -3797,10 +3804,10 @@ module.exports.upgradClientMembership = async (req, res) => {
     });
 
     await clientDetailSchema.findOneAndUpdate(
-      {JobOrderNumber:JobOrderNumber},
-      {MembershipType:MembershipType}
+      { JobOrderNumber: JobOrderNumber },
+      { MembershipType: MembershipType }
     )
-    
+
 
     res.status(200).json({ message: "Client Membership upgraded successfully", newMembership });
 
@@ -3884,3 +3891,34 @@ module.exports.putEngineerAttendence = async (req, res) => {
 
 
 
+//----------------------------------------------------------------------------------------------
+
+// api for putting the memberships
+
+
+
+module.exports.clientMembership = async () => {
+  try {
+    const array = ["1901017", "1901018", "1901019", "1901020", "1901021", "1901022", "1901023",
+      "1902024", "1902025", "1902026", "1902027", "1902028", "1902029", "1902030",
+      "1902031", "1902032", "1902033", "1902034", "1902035", "1902036", "1902037",
+      "1902038", "1902039", "1902040", "1902041", "1903042", "1903043", "1903044",
+      "1903045", "1903046", "1903047", "1903048", "1903049", "1903050", "1903051",
+      "1904052", "1904053", "1904054", "1904055", "1904056", "1905057", "1905058",
+      "1905059", "1905060", "1905061", "1905062", "1906063", "1906064", "1907065",
+      "1907066", "1908067", "1908068", "1908069", "1908070", "1908071", "1908072",
+      "1908073", "1909074", "1909075", "1909076", "1909077", "1909078", "1909079",
+      "1910080", "1910081", "1910082", "1910083", "1911084", "1911085", "1911086",
+      "1911087", "1911088", "1911089", "1911090", "1911091", "1911092", "1911093",
+      "1911094", "1911095", "1911096", "1911097", "1912098", "1912099", "1912100",
+      "1912101", "1912102", "1912103", "1912104", "1912105", "1912106", "1912107",
+      "1912108"
+    ]
+
+    array.forEach(async (job) => {
+
+    })
+  } catch (error) {
+
+  }
+}

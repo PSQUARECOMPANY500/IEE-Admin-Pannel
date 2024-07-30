@@ -26,7 +26,7 @@ const ElevatorInput = ({
         type={type}
         name={name}
         id={name}
-        autoComplete={name}
+        autoComplete="off"
         onChange={onChange}
         readOnly={read}
         value={value}
@@ -41,7 +41,7 @@ const ElevatorInput = ({
         className={"input-label-elevator"}
         style={{
           top: click ? "-20px" : "0px",
-         
+
           fontWeight: click ? "500" : "300",
           fontSize: click ? "1rem" : "1rem",
           zIndex: "99999",
@@ -61,7 +61,7 @@ const ElevatorInput = ({
           left: click && "0%",
           right: !click && "0%",
           top: "0.6rem",
-          color:"#A7A7A7"
+          color: "#A7A7A7"
         }}
       >
         {value}

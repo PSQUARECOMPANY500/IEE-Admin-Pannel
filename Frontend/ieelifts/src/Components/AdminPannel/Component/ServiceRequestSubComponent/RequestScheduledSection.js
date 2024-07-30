@@ -28,8 +28,8 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
     useState(true);
 
   const [filterConditions, setfilterConditions] = useState();
-  const [icon, setIcon] = useState(true); 
-  const [data, setData]= useState([]);
+  const [icon, setIcon] = useState(true);
+  const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
@@ -92,13 +92,13 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
   //aayush code end for filter
-  const getCondition = (data) =>{
+  const getCondition = (data) => {
     setIcon(data)
   }
-  const getData = (data)=>{
+  const getData = (data) => {
     setData(data)
   }
-  console.log(data)
+
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -126,114 +126,116 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             </button>
           </div>
           {
-            icon?(<div className="icon-align-div">
-            <div className="right-side-icons">
+            icon ? (<div className="icon-align-div">
+              <div className="right-side-icons">
 
-              {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<span className="top-icon">
-                <div className="search-box">
-                  <input
-                    type="text"
-                    placeholder="Search anything"
-                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
-                      }`}
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                    }}
-                    value={searchText}
-                  />
-                  <i className="search-btn">
-                    <RiSearchLine className="iconColor" />
-                  </i>
-                </div>
-              </span>) : (<img src={pdfIcon}/>)):(<span className="top-icon">
-                <div className="search-box">
-                  <input
-                    type="text"
-                    placeholder="Search anything"
-                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
-                      }`}
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                    }}
-                    value={searchText}
-                  />
+                {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<span className="top-icon">
+                  <div className="search-box">
+                    <input
+                      type="text"
+                      placeholder="Search anything"
+                      className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                        }`}
+                      autoComplete="off"
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                      }}
+                      value={searchText}
+                    />
+                    <i className="search-btn">
+                      <RiSearchLine className="iconColor" />
+                    </i>
+                  </div>
+                </span>) : (<img src={pdfIcon} />)) : (<span className="top-icon">
+                  <div className="search-box">
+                    <input
+                      type="text"
+                      placeholder="Search anything"
+                      className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                        }`}
+                        autoComplete="off"
+                      onChange={(e) => {
+                        setSearchText(e.target.value);
+                      }}
+                      value={searchText}
+                    />
 
-                  <i className="search-btn "
-                  // onClick={() => {
-                  //   const data = filtersearch(searchText, allCD);
-                  //   setFilteredCD(data);
-                  // }}
-                  >
-                    <RiSearchLine className="iconColor" />
-                  </i>
-                </div>
-              </span>)}
+                    <i className="search-btn "
+                    // onClick={() => {
+                    //   const data = filtersearch(searchText, allCD);
+                    //   setFilteredCD(data);
+                    // }}
+                    >
+                      <RiSearchLine className="iconColor" />
+                    </i>
+                  </div>
+                </span>)}
 
-            </div>
-            {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
-              <p className="filter-icon"
-                onClick={handleFilter}
+              </div>
+              {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+                <p className="filter-icon"
+                  onClick={handleFilter}
+                >
+                  <LuSettings2 />
+                  {""}
+                </p>
+                {showTicketFilter && (
+                  <div className="dropdown-content-filter" ref={dropdownRef}>
+                    <FilterDropdown className="search-ticket-filter-icon"
+                      filterDropdowns={filterDropdowns}
+                      setfilterConditions={setfilterConditions}
+                    />
+                  </div>
+                )}
+              </div>) : (<img src={execelIcon} />)) : (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
+                <p className="filter-icon"
+                  onClick={handleFilter}
+                >
+                  <LuSettings2 />
+                  {""}
+                </p>
+                {showTicketFilter && (
+                  <div className="dropdown-content-filter" ref={dropdownRef}>
+                    <FilterDropdown className="search-ticket-filter-icon"
+                      filterDropdowns={filterDropdowns}
+                      setfilterConditions={setfilterConditions}
+                    />
+                  </div>
+                )}
+              </div>)}
+              {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? ((<div
+                className="sub-components-ticket-filter"
+                onClick={() => openModal(0)}
               >
-                <LuSettings2 />
-                {""}
-              </p>
-              {showTicketFilter && (
-                <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown className="search-ticket-filter-icon"
-                    filterDropdowns={filterDropdowns}
-                    setfilterConditions={setfilterConditions}
-                  />
-                </div>
-              )}
-            </div>) : (<img src={execelIcon} />)) : (<div className="sub-components-ticket-filter" ref={dropdownClickRef}>
-              <p className="filter-icon"
-                onClick={handleFilter}
+                <p className="plus-icon">
+                  <GoPlus />
+                  {""}
+                </p>
+              </div>)) : ('')) : (<div
+
+                className="sub-components-ticket-filter"
+                onClick={() => openModal(0)}
               >
-                <LuSettings2 />
-                {""}
-              </p>
-              {showTicketFilter && (
-                <div className="dropdown-content-filter" ref={dropdownRef}>
-                  <FilterDropdown className="search-ticket-filter-icon"
-                    filterDropdowns={filterDropdowns}
-                    setfilterConditions={setfilterConditions}
+                <p className="plus-icon">
+                  <GoPlus />
+                  {""}
+                </p>
+              </div>)}
+              {showTicketModal &&
+                (
+                  <AddTicketOnCallRequests
+                    closeModal={closeModal}
+                    showTicketModal={showTicketModal}
+                    setRenderTicket={setRenderTicket}
+                    requestSection={true}
                   />
-                </div>
-              )}
-            </div>)}
-            {handleRequestScheduledTable ? (!reqCheckboxStates?.slice(1).includes(true) ? ((<div
-              className="sub-components-ticket-filter"
-              onClick={() => openModal(0)}
-            >
-              <p className="plus-icon">
-                <GoPlus />
-                {""}
-              </p>
-            </div>)) : ('')) : (<div
+                )
 
-              className="sub-components-ticket-filter"
-              onClick={() => openModal(0)}
-            >
-              <p className="plus-icon">
-                <GoPlus />
-                {""}
-              </p>
-            </div>)}
-            {showTicketModal &&
-              (
-                <AddTicketOnCallRequests
-                  closeModal={closeModal}
-                  showTicketModal={showTicketModal}
-                  setRenderTicket={setRenderTicket}
-                  requestSection={true}
-                />
-              )
-
-            }
-          </div>):(<CSVLink data={data} ><img className="excelIcon"
-                src={execelIcon} 
-                style={{ boxShadow: "0px 3px 6px #00000029" }} 
-              /></CSVLink>)
+              }
+            </div>) : (<CSVLink data={data} ><img className="excelIcon"
+              src={execelIcon}
+              style={{ boxShadow: "0px 3px 6px #00000029" }}
+            /></CSVLink>)
           }
         </div>
 

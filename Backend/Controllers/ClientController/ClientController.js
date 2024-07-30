@@ -51,7 +51,7 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
     const clientReferal = await ReferalSchema.find({ jobOrderNumber });
 
     if (!clientReferal || clientReferal.length === 0) {
-      return res.status(202).json({message: "No referal found on this JobOrderNumber", status:"error"});
+      return res.status(202).json({ message: "No referal found on this JobOrderNumber", status: "error" });
     }
 
     return res.status(200).json({ message: "Referal Found", clientReferal });
@@ -375,7 +375,7 @@ module.exports.imediateServiceRequest = async (req, res) => {
       // Description,
     } = req.body;
 
-    console.log("---------------------------------------------899999999999999999999",req.body);
+    console.log("---------------------------------------------899999999999999999999", req.body);
 
     const newRequest = await serviceRequest.create({
       JobOrderNumber,
@@ -969,7 +969,7 @@ const caluclateMembershipPriceAndTime = async (
   updateMembership
 ) => {
   const LastSecondCount = MembershipData[MembershipData.length - 2];
-  console.log("=============================",LastSecondCount.EndDate);
+  console.log("=============================", LastSecondCount.EndDate);
   if (new Date(LastSecondCount.EndDate) < Date.now()) {
     const dataExpires = await memberShipDetails.findOneAndUpdate(
       { OrderId: LastSecondCount.OrderId },
@@ -997,7 +997,7 @@ const caluclateMembershipPriceAndTime = async (
   const appliedMembershipPriceDaysToBeAdded =
     PriviousMembershipPrice / (appliedMembership.MembershipPrice / 365);
 
-    console.log("this is applied membership",appliedMembershipPriceDaysToBeAdded);
+  console.log("this is applied membership", appliedMembershipPriceDaysToBeAdded);
 
   return appliedMembershipPriceDaysToBeAdded;
 };
@@ -1025,37 +1025,37 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
 
     // when order id "1" evaluate the conditions
     if (Details.OrderId === "1") {
-       const updateMembershipData = await memberShipDetails.findOneAndUpdate({
-          _id:Details._id
-        },{
-          IsPaid: true
-        })
+      const updateMembershipData = await memberShipDetails.findOneAndUpdate({
+        _id: Details._id
+      }, {
+        IsPaid: true
+      })
 
-        const DaysToBeAdded = await caluclateMembershipPriceAndTime(
-          MembershipData,
-          updateMembershipData
-        );
+      const DaysToBeAdded = await caluclateMembershipPriceAndTime(
+        MembershipData,
+        updateMembershipData
+      );
 
-        console.log("my days",DaysToBeAdded);
+      console.log("my days", DaysToBeAdded);
 
-        let newDate = new Date();
-        newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
+      let newDate = new Date();
+      newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
 
-        const finalPurchase = await memberShipDetails.findOneAndUpdate(
-          {  _id:Details._id },
-          { EndDate: newDate }
-        );
+      const finalPurchase = await memberShipDetails.findOneAndUpdate(
+        { _id: Details._id },
+        { EndDate: newDate }
+      );
 
-        const data = {
-          MembershipType: Details.MembershipType,
-          EndDate: Details.EndDate,
-          PricePaid: Details.PricePaid,
-          MembershipInvoice: Details.MembershipInvoice,
-        }
+      const data = {
+        MembershipType: Details.MembershipType,
+        EndDate: Details.EndDate,
+        PricePaid: Details.PricePaid,
+        MembershipInvoice: Details.MembershipInvoice,
+      }
 
-        return res.status(200).json({ status: "success", Details: data }); 
+      return res.status(200).json({ status: "success", Details: data });
     }
-   
+
 
     const instance = new Razorpay({
       key_id: process.env.key_id,
@@ -1247,9 +1247,10 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, phone, password ,emailAddress} =
+    const { JobOrderNumber, name, emailAddress, phone, password } =
       req.body;
     const profile = req.file;
+    console.log(profile)
 
     if (!JobOrderNumber && !name && !emailAddress && !phone) {
       return res

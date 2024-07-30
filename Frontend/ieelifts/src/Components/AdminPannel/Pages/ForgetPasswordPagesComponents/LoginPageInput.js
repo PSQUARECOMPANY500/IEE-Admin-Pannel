@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 
-import {useSelector, useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { loginServiceAdminAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
 
@@ -15,7 +15,7 @@ const LoginPageInput = () => {
 
   const location = useLocation();
 
-  console.log("this is the hell",location?.state?.value);
+  console.log("this is the hell", location?.state?.value);
 
   const [adminId, setAdminId] = useState();
   const [password, setPassword] = useState();
@@ -34,30 +34,31 @@ const LoginPageInput = () => {
 
 
   const handleLogin = () => {
-    dispatch(loginServiceAdminAction(adminId,password , location?.state?.value));  //todo by emit singhniya
+    dispatch(loginServiceAdminAction(adminId, password, location?.state?.value));  //todo by emit singhniya
   }
 
   // const EnggDetail = useSelector((state)=> state.AdminRootReducer.loginAdminReducer.data);
   // console.log("this is ==>>>",EnggDetail);
-  
 
-  const EnggDetail = useSelector((state)=> state.AdminRootReducer.loginAdminReducer);
+
+  const EnggDetail = useSelector((state) => state.AdminRootReducer.loginAdminReducer);
   //console.log("this is ==>>>",EnggDetail.isLoggedIn);
 
 
-  
+
   return (
     <>
       <div className="loginInpuitField">
-        <input type="text" placeholder="Enter your Employee id" value={adminId} onChange={(e) => setAdminId(e.target.value)}></input>
+        <input type="text" placeholder="Enter your Employee id" value={adminId} onChange={(e) => setAdminId(e.target.value)} autoComplete="off" />
         <div className="LoginPasswordInput">
           <div className="passwordInputIcon">
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
+              autoComplete="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            ></input>
+            />
             {showPassword ? (
               <FiEye
                 className="passwordEyeIcon"

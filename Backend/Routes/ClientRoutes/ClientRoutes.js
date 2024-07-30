@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer")
 const jwt = require('jsonwebtoken');
 
-const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
+const { verifyToken } = require('../../Middleware/ClientAuthMiddleware')
 const checkClientServiceExist = require("../../Middleware/CheckClientPreviousService")
 
 const clientController = require("../../Controllers/ClientController/ClientController");
@@ -12,18 +12,18 @@ const clientController = require("../../Controllers/ClientController/ClientContr
 //-------------------------------- all post requests ------------------------------------
 router.post("/RegisterClientsAsJON", clientController.RegisterClientsAsJobOrderNumber);
 router.post("/RegisterClientAsPhone", clientController.RegisterClientAsPhoneNumber)
-router.post("/loginWithPhone",clientController.loginClientwithPhoneNumber);
-router.post("/loginClientJON",clientController.loginClientWithJobOrderNumber)
+router.post("/loginWithPhone", clientController.loginClientwithPhoneNumber);
+router.post("/loginClientJON", clientController.loginClientWithJobOrderNumber)
 
 
 /* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
-router.post("/requestCallbacks",checkClientServiceExist, clientController.RequestCallbacks);
+router.post("/requestCallbacks", checkClientServiceExist, clientController.RequestCallbacks);
 // router.post("/requestCallbacks", clientController.RequestCallbacks);
 /* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 /* router.post("/imediateServiceRequest", verifyToken('client') , clientController.imediateServiceRequest);*/
-router.post("/imediateServiceRequest",checkClientServiceExist,clientController.imediateServiceRequest);
+router.post("/imediateServiceRequest", checkClientServiceExist, clientController.imediateServiceRequest);
 // router.post("/imediateServiceRequest",clientController.imediateServiceRequest); //await implement middlweware -----------------------------------!!!!!!!!!!!!!
 
 // router.post("/createReferal", clientController.referalUser);
@@ -32,16 +32,16 @@ router.post("/imediateServiceRequest",checkClientServiceExist,clientController.i
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 router.get("/getClientReferalByJobOrderNumber/:jobOrderNumber", verifyToken('client'), clientController.getAllReferalByJobOrderNumber);
 
-router.post("/engineerRating",clientController.Rating)
+router.post("/engineerRating", clientController.Rating)
 
 // ------------------------all get Requests ----------------------------------------
 router.get("/clientDetail/:JobOrderNumber", verifyToken('client'), clientController.getClientDetail);
 router.get('/clientCallbacks/:JobOrderNumber', verifyToken('client'), clientController.getAllClientCallbacks);
 router.get('/clientServices/:JobOrderNumber', verifyToken('client'), clientController.getAllClientServices);
 
-router.get('/clientAllJONs/:PhoneNumber',verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
+router.get('/clientAllJONs/:PhoneNumber', verifyToken('client'), clientController.GetAllJobOrderNumberByClientPhoneNumber);
 //-------------------------verify-----------------------------------------------------
-router.get("/verifyclient",clientController.verifyClient);
+router.get("/verifyclient", clientController.verifyClient);
 
 //-------------------------rating{amit}--------------------------------------------------
 
@@ -63,13 +63,13 @@ router.get("/gettrackerdetails/:trackerId", clientController.getStepsAndEnggDeta
 
 //---------------------------- embeded by preet 24/05/2024---------------------------------------------------------------
 router.post(
-      "/clientPayment",
-      clientController.clientPayment
-    );
-    
+  "/clientPayment",
+  clientController.clientPayment
+);
 
-router.get("/getMembershipData",clientController.getMembershipFeatuesDetails)
-router.get("/getMembershipDiscount/:JobOrderNumber",clientController.getMembershipDiscount)
+
+router.get("/getMembershipData", clientController.getMembershipFeatuesDetails)
+router.get("/getMembershipDiscount/:JobOrderNumber", clientController.getMembershipDiscount)
 
 
 router.get("/checkpaymentstatusandmakeinvoice/:JobOrderNumber", clientController.checkPaymentStatusAndMakeInvoice)
@@ -83,6 +83,7 @@ const storage = multer.diskStorage({
     cb(null, "./public/ClientProfiles/");
   },
   filename: (req, file, cb) => {
+    console.log("file", file)
     const parts = file.mimetype.split("/")[1];
     const fileName = file.originalname.split(".")[0];
     cb(null, `${fileName}-${Date.now()}.${parts}`);
@@ -91,7 +92,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 router.put(
   "/updateClientProfile",
-  upload.single("profile"),
+  upload.any(),
   clientController.updateClientProfile
 );
 

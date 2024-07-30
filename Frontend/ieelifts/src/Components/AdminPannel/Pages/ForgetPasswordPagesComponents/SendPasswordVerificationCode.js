@@ -32,8 +32,9 @@ const SendPasswordVerificationCode = () => {
             type="text"
             placeholder="Email or Mobile No"
             value={email}
+            autoComplete="off"
             onChange={(e) => setEmail(e.target.value)}
-          ></input>
+          />
         </div>
 
         {loading ? (

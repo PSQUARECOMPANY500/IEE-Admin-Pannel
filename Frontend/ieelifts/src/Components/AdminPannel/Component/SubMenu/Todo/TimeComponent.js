@@ -65,7 +65,7 @@ const TimeComponent = ({ onTimeChange,taskTime,errors }) => {
   return (
     <div ref={timeComponentRef}>
       <div className={`time-component-container ${errors ?"validateInput":""}`}>
-        <input type='text' className={`time-component-input`} placeholder="00:00" value={taskTime} readOnly onClick={handleClick} />
+        <input type='text' className={`time-component-input`} placeholder="00:00" value={taskTime} readOnly onClick={handleClick} autoComplete="off" />
         <label>
           <IoTimeOutline className='time-icon' onClick={handleClick}/>
         </label>
@@ -78,7 +78,7 @@ const TimeComponent = ({ onTimeChange,taskTime,errors }) => {
                 <FaChevronUp className='time-selector-icon' onClick={() => { handleHourUpDown("plus") }} />
               </div>
               <div>
-                <input type='number' className='time-input' onChange={handleHoursChange} value={hours} />
+                <input type='number' className='time-input' onChange={handleHoursChange} value={hours} autoComplete="off" />
               </div>
               <div>
                 <FaChevronDown className='time-selector-icon' onClick={() => { handleHourUpDown("minus") }} />
@@ -90,7 +90,7 @@ const TimeComponent = ({ onTimeChange,taskTime,errors }) => {
                 <FaChevronUp className='time-selector-icon' onClick={() => { handleMinutesUpDown("plus") }} />
               </div>
               <div>
-                <input type='number' className='time-input' onChange={handleMinutesChange} value={minutes} />
+                <input type='number' className='time-input' onChange={handleMinutesChange} value={minutes} autoComplete="off" />
               </div>
               <div>
                 <FaChevronDown className='time-selector-icon' onClick={() => { handleMinutesUpDown("minus") }} />

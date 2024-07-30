@@ -3253,7 +3253,7 @@ footer a:hover {
   justify-content: center;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: white;
-  
+
   /* background-color: red; */
 }
 
@@ -4676,16 +4676,20 @@ footer a:hover {
 .filter-list-clear {
   height: auto;
 }
-.filter-list-engineers{
+
+.filter-list-engineers {
   height: 9.5rem;
 }
-.filter-list-location{
+
+.filter-list-location {
   height: 9.5rem;
 }
-.filter-list-type{
+
+.filter-list-type {
   height: 9.5rem;
   padding: 2rem 0;
 }
+
 .listing-filter2 {
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
@@ -9952,7 +9956,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-  .client-form-input-wrapper{
+  .client-form-input-wrapper {
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
@@ -10376,9 +10380,3 @@ a[href^="http://maps.google.com/maps"] {
 
 
 /*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
-
-
-
-
-
-

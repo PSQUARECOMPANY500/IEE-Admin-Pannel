@@ -517,6 +517,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     id="profilePhoto"
                     type="file"
                     name="fields[]"
+                    autoComplete="off"
                     onChange={(e) => {
                       setProfilePhoto(e.target.files[0]);
                       if (e.target.value.trim() !== "") {
@@ -538,6 +539,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       disabled={!editchange}
                       id="firstNameInput"
                       type="text"
+                      autoComplete="off"
                       placeholder="First Name"
                       defaultValue={
                         engAllData?.EnggName && engAllData?.EnggName
@@ -549,6 +551,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       disabled={!editchange}
                       id="lastNameInput"
                       type="text"
+                      autoComplete="off"
                       placeholder="Last Name"
                       value={lastName}
                       onChange={(e) => {
@@ -563,6 +566,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   </div>
                   <div className="PersonalDetailInput">
                     <input
+                      autoComplete="off"
                       disabled={!editchange}
                       id="mobileNumberInput"
                       type="text"
@@ -581,6 +585,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     <input
                       disabled={!editchange}
                       id="dateOfBirthInput"
+                      autoComplete="off"
                       type="text"
                       placeholder="Date of Birth"
                       value={dateOfBirth}
@@ -600,6 +605,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     <input
                       disabled={!editchange}
                       id="EnggIdInput"
+                      autoComplete="off"
                       type="text"
                       placeholder="Engg Id"
                       value={EngggId}
@@ -617,6 +623,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       disabled={!editchange}
                       id="AlternativeMobileNumber"
                       type="text"
+                      autoComplete="off"
                       placeholder="Alternative Number"
                       value={alternativeNumber}
                       onChange={(e) => {
@@ -637,6 +644,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="emailInput"
                       type="text"
                       placeholder="Email"
+                      autoComplete="off"
                       value={email}
                       onChange={(e) => {
                         setEmail(e.target.value);
@@ -680,6 +688,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           disabled={!editchange}
                           type="file"
                           name="fields[]"
+                          autoComplete="off"
                           onChange={(e) => setRole(e.target.files[0])}
                           style={{ display: "none" }}
                           ref={fileInputRef3} // Attach fileInputRef to the input element
@@ -705,6 +714,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                     id="addressInput"
                     type="text"
                     placeholder="Address"
+                    autoComplete="off"
                     value={address}
                     onChange={(e) => {
                       setAddress(e.target.value);
@@ -723,6 +733,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="pinCodeInput"
                       type="number"
                       placeholder="Pincode"
+                      autoComplete="off"
                       value={pinCode}
                       onChange={(e) => {
                         setPinCode(e.target.value);
@@ -739,6 +750,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="cityInput"
                       type="text"
                       placeholder="City"
+                      autoComplete="off"
                       value={city}
                       onChange={(e) => {
                         setCity(e.target.value);
@@ -758,11 +770,13 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       placeholder="District"
                       readOnly
                       value={district}
+                      autoComplete="off"
                     />
                     <input
                       disabled={!editchange}
                       id="stateInput"
                       type="text"
+                      autoComplete="off"
                       placeholder="State"
                       readOnly
                       value={state}
@@ -792,6 +806,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           disabled={!editchange}
                           id="addharCardNumberInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="Aadhaar Card No"
                           style={{ outline: "none" }}
                           value={addharCardNumber}
@@ -812,6 +827,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           type="file"
                           onChange={(e) => SetAddharPhoto(e.target.files[0])}
                           style={{ display: "none" }}
+                          autoComplete="off"
                           ref={fileInputRef} // Attach fileInputRef to the input element
                         />
                         <SlLink
@@ -849,12 +865,14 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           name="fields[]"
                           onChange={(e) => SetPancardPhoto(e.target.files[0])}
                           style={{ display: "none" }}
+                          autoComplete="off"
                           ref={fileInputRef1} // Attach fileInputRef to the input element
                         />
                         <input
                           disabled={!editchange}
                           id="pancardsInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="Pancard No"
                           style={{ outline: "none" }}
                           value={pancards}
@@ -905,6 +923,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         <input
                           disabled={!editchange}
                           id="drivingLisienceInput"
+                          autoComplete="off"
                           type="text"
                           placeholder="Driving License No"
                           style={{ outline: "none" }}
@@ -925,6 +944,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         <input
                           disabled={!editchange}
                           type="file"
+                          autoComplete="off"
                           name="fields[]"
                           onChange={(e) =>
                             SetDrivingLicensePhoto(e.target.files[0])
@@ -989,6 +1009,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           disabled={!editchange}
                           type="file"
                           name="fields[]"
+                          autoComplete="off"
                           onChange={(e) =>
                             SetQualificationPhoto(e.target.files[0])
                           }
@@ -1023,6 +1044,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         <input
                           disabled={!editchange}
                           id="additionalCourseData"
+                          autoComplete="off"
                           type="text"
                           placeholder="Additional Course"
                           style={{ outline: "none" }}
@@ -1040,6 +1062,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                           }}
                         />
                         <input
+                          autoComplete="off"
                           disabled={!editchange}
                           type="file"
                           name="fields[]"
@@ -1079,6 +1102,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                   <div className="PersonalDetailInput">
                     <input
                       disabled={!editchange}
+                      autoComplete="off"
                       id="accountHolderNameInput"
                       type="text"
                       placeholder="Account Holder Name"
@@ -1098,6 +1122,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       type="text"
                       placeholder="Branch Name"
                       value={branchName}
+                      autoComplete="off"
                       onChange={(e) => {
                         setBranchName(e.target.value);
                         if (e.target.value.trim() !== "") {
@@ -1115,6 +1140,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       type="text"
                       placeholder="Account Number"
                       value={accountNumber}
+                      autoComplete="off"
                       onChange={(e) => {
                         setAccountNumber(e.target.value);
                         if (e.target.value.trim() !== "") {
@@ -1128,6 +1154,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       <input
                         disabled={!editchange}
                         id="IFSCcodeInput"
+                        autoComplete="off"
                         type="text"
                         placeholder="IFSC Code"
                         value={IFSCcode}
@@ -1165,6 +1192,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         type="text"
                         placeholder="Previos Work Experience"
                         style={{ border: "none", outline: "none" }}
+                        autoComplete="off"
                       />
                       <CheckBox
                         style={{ marginTop: "4px" }}
@@ -1178,6 +1206,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         id="jobDurationInput"
                         type="text"
+                        autoComplete="off"
                         placeholder="Duration of Job"
                         value={jobDuration}
                         onChange={(e) => {
@@ -1200,6 +1229,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         type="text"
                         placeholder="Company Name"
                         value={companyName}
+                        autoComplete="off"
                         onChange={(e) => {
                           setCompanyName(e.target.value);
                           if (companyNameShow) {
@@ -1217,6 +1247,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         type="text"
                         placeholder="Job title"
                         value={jobTitle}
+                        autoComplete="off"
                         onChange={(e) => {
                           setJobTitle(e.target.value);
                           if (jobTitleShow) {
@@ -1235,6 +1266,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerInputNameInput"
                         type="text"
                         placeholder="Manager Name"
+                        autoComplete="off"
                         value={managerName}
                         onChange={(e) => {
                           setManagerName(e.target.value);
@@ -1252,6 +1284,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="managerNumberInput"
                         type="text"
                         placeholder="Manager No"
+                        autoComplete="off"
                         value={managerNumber}
                         onChange={(e) => {
                           setManagerNumber(e.target.value);

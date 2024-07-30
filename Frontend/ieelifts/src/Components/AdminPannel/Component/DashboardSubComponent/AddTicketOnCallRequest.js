@@ -349,6 +349,7 @@
                         name="name"
                         value={name}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -372,6 +373,7 @@
                         name="name"
                         value={number}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -395,6 +397,7 @@
                         name="name"
                         value={address}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -459,7 +462,7 @@
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={0} />
+                    <input type="text" name="name" value={0} autoComplete="off" />
                   </div>
                 </div>
 
@@ -473,6 +476,7 @@
                       type="text"
                       name="name"
                       value={"GOLD"}
+                      autoComplete="off"
                       style={{ color: "#F8AC1D", fontWeight: "600" }}
                     />
                   </div>
@@ -483,7 +487,7 @@
                   </div>
                   {date ? (
                     <div className="col75">
-                      <input type="text" name="name" value={date} />
+                      <input type="text" name="name" value={date} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -501,7 +505,7 @@
                   </div>
                   {time ? (
                     <div className="col75">
-                      <input type="text" name="name" value={time} />
+                      <input type="text" name="name" value={time} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -529,7 +533,7 @@
                   </div>
                   {ModelType ? (
                     <div className="col-elevator75">
-                      <input type="text" name="name" value={ModelType} />
+                      <input type="text" name="name" value={ModelType} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -542,7 +546,7 @@
                     <label>FLOORS:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"G+2"} />
+                    <input type="text" name="name" value={"G+2"} autoComplete="off" />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -550,7 +554,7 @@
                     <label>DOH:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"10/03/2015"} />
+                    <input type="text" name="name" value={"10/03/2015"} autoComplete="off" />
                   </div>
                 </div>
               </div> */}
@@ -587,6 +591,7 @@
                               type="text"
                               name="name"
                               value={engDetails.enggJon}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -601,6 +606,7 @@
                               type="text"
                               name="name"
                               value={engDetails.enggName}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -614,6 +620,7 @@
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggPhone}
                             />
                           </div>
@@ -628,6 +635,7 @@
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggAddress}
                             />
                           </div>
@@ -654,6 +662,7 @@
                           <input
                             type="text"
                             name="name"
+                            autoComplete="off"
                             value={engDetails.enggLocation}
                           />
                         </div>
@@ -674,6 +683,7 @@
                           <input
                             type="text"
                             name="name"
+                            autoComplete="off"
                             value={engDetails.enggRating}
                           />
                         </div>

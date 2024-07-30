@@ -18,163 +18,163 @@ import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 
 
 const EngChat = (props) => {
-    const clickCount=props.clickCount;
-const setClickCount=props.setClickCount;
+    const clickCount = props.clickCount;
+    const setClickCount = props.setClickCount;
     const dispatch = useDispatch();
 
-const fileInputField = useRef(null);
-const textareaRef = useRef();
-const messageBodyRef = useRef(null);
+    const fileInputField = useRef(null);
+    const textareaRef = useRef();
+    const messageBodyRef = useRef(null);
 
 
-const [messageData, setMessageData] = useState();
-const [socketConnected, setSocketConnected] = useState(false);
-const [file, setFile] = useState(false);
-const [textareaHeight, setTextareaHeight] = useState();
-const [swapIcon, setSwapIcon] = useState(true);
-
-
-
-
-
-    
-  // const scroll = () => {
-  //   if (messageBodyRef.current) {
-  //     messageBodyRef.current.scrollTop = messageBodyRef.current.scrollHeight;
-  //   }
-  // };
-
-
-
-
-
-  // const handleFileChange = (e) => {
-  //   setFile(e.target.files[0].name);
-  // };
-
-
-  // useEffect(() => {
-  //   setHeight(textareaRef.current);
-
-  // }, []);
-
-
-  //socket implemantation starts ---------------------------------------------
-  // const socket = io('http://localhost:8000');
-
-  // useEffect(() => {
-  //  socket.emit("setup", '65d49276f60a227274baf8e1');
-  //  socket.on("connection", () => setSocketConnected(true))
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
+    const [messageData, setMessageData] = useState();
+    const [socketConnected, setSocketConnected] = useState(false);
+    const [file, setFile] = useState(false);
+    const [textareaHeight, setTextareaHeight] = useState();
+    const [swapIcon, setSwapIcon] = useState(true);
 
 
 
 
 
 
-
-  const chatCreated = useSelector((state) => {
-    if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
-      return state.ChatRootReducer.createChatReducer.createChat.FullChat
-    } else {
-      return null
-    }
-  });
-  // console.log("chat created", chatCreated?._id)
-
-
-  // const getMessages = useSelector((state) => {
-
-  //   scroll();
-  //   if (state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message) {
-
-  //     return state.ChatRootReducer.getSenderMessagesReducer.message.chats
-
-  //   } else {
-  //     return null
-  //   }
-  // })
-  // // console.log("all messages",getMessages)
-
-
-  // useEffect(() => {
-  //   dispatch(createChatActions(EnggId, '65d49276f60a227274baf8e1')); //todo - in future the id is dynamic as come from login user
-
-
-  //   setTimeout(() => {
-  //     if (chatCreated?._id) {
-  //       dispatch(getSenderMessagesAction(chatCreated._id));
-  //     }
-  //   }, 400)
-  //   // Cleanup function
-  //   return () => {
-  //     if (chatCreated?._id) {
-  //       dispatch(getSenderMessagesAction()); // Clear sender messages when unmounting
-  //       dispatch(createChatActions())
-  //     }
-  //   };
-  // }, [dispatch, chatCreated?._id]);
+    // const scroll = () => {
+    //   if (messageBodyRef.current) {
+    //     messageBodyRef.current.scrollTop = messageBodyRef.current.scrollHeight;
+    //   }
+    // };
 
 
 
 
-  // const setHeight = (elem) => {
-  //   const style = window.getComputedStyle(elem, null);
-  //   const verticalBorders = Math.round(
-  //     parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
-  //   );
-  //   const maxHeight = parseFloat(style.maxHeight) || 70;
 
-  //   elem.style.height = "20px";
-
-  //   const newHeight = elem.scrollHeight + verticalBorders;
-
-  //   elem.style.overflowY = newHeight > maxHeight ? "auto" : "hidden";
-  //   elem.style.height = Math.min(newHeight, maxHeight) + "px";
-
-  //   setTextareaHeight(Math.min(newHeight, maxHeight));
-  // };
-
-  // const handleInput = () => {
-
-  //   setHeight(textareaRef.current);
-  //   setSwapIcon(!textareaRef.current.value.trim());
-  // };
+    // const handleFileChange = (e) => {
+    //   setFile(e.target.files[0].name);
+    // };
 
 
+    // useEffect(() => {
+    //   setHeight(textareaRef.current);
 
-  // const handleSendMessage = () => {
-  //   dispatch(sendChatMessageAction('65d49276f60a227274baf8e1', messageData, chatCreated?._id)); //todo - in future the id is dynamic as come from login user
-  //   setMessageData('');
+    // }, []);
 
 
-  //   if (textareaRef.current) {
-  //     textareaRef.current.value = '';
-  //     handleInput();
+    //socket implemantation starts ---------------------------------------------
+    // const socket = io('http://localhost:8000');
 
-  //   }
+    // useEffect(() => {
+    //  socket.emit("setup", '65d49276f60a227274baf8e1');
+    //  socket.on("connection", () => setSocketConnected(true))
+
+    //   return () => {
+    //     socket.disconnect();
+    //   };
+    // }, []);
 
 
 
-  //   setTimeout(() => {
-  //     if (chatCreated?._id) {
-  //       dispatch(getSenderMessagesAction(chatCreated._id));
-  //     }
 
-  //   }, 400)
 
-  // }
 
-  // useLayoutEffect(() => {
-  //   scroll();
-  // }, [getMessages]);
+
+    const chatCreated = useSelector((state) => {
+        if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
+            return state.ChatRootReducer.createChatReducer.createChat.FullChat
+        } else {
+            return null
+        }
+    });
+    // console.log("chat created", chatCreated?._id)
+
+
+    // const getMessages = useSelector((state) => {
+
+    //   scroll();
+    //   if (state.ChatRootReducer && state.ChatRootReducer.getSenderMessagesReducer && state.ChatRootReducer.getSenderMessagesReducer.message) {
+
+    //     return state.ChatRootReducer.getSenderMessagesReducer.message.chats
+
+    //   } else {
+    //     return null
+    //   }
+    // })
+    // // console.log("all messages",getMessages)
+
+
+    // useEffect(() => {
+    //   dispatch(createChatActions(EnggId, '65d49276f60a227274baf8e1')); //todo - in future the id is dynamic as come from login user
+
+
+    //   setTimeout(() => {
+    //     if (chatCreated?._id) {
+    //       dispatch(getSenderMessagesAction(chatCreated._id));
+    //     }
+    //   }, 400)
+    //   // Cleanup function
+    //   return () => {
+    //     if (chatCreated?._id) {
+    //       dispatch(getSenderMessagesAction()); // Clear sender messages when unmounting
+    //       dispatch(createChatActions())
+    //     }
+    //   };
+    // }, [dispatch, chatCreated?._id]);
+
+
+
+
+    // const setHeight = (elem) => {
+    //   const style = window.getComputedStyle(elem, null);
+    //   const verticalBorders = Math.round(
+    //     parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
+    //   );
+    //   const maxHeight = parseFloat(style.maxHeight) || 70;
+
+    //   elem.style.height = "20px";
+
+    //   const newHeight = elem.scrollHeight + verticalBorders;
+
+    //   elem.style.overflowY = newHeight > maxHeight ? "auto" : "hidden";
+    //   elem.style.height = Math.min(newHeight, maxHeight) + "px";
+
+    //   setTextareaHeight(Math.min(newHeight, maxHeight));
+    // };
+
+    // const handleInput = () => {
+
+    //   setHeight(textareaRef.current);
+    //   setSwapIcon(!textareaRef.current.value.trim());
+    // };
+
+
+
+    // const handleSendMessage = () => {
+    //   dispatch(sendChatMessageAction('65d49276f60a227274baf8e1', messageData, chatCreated?._id)); //todo - in future the id is dynamic as come from login user
+    //   setMessageData('');
+
+
+    //   if (textareaRef.current) {
+    //     textareaRef.current.value = '';
+    //     handleInput();
+
+    //   }
+
+
+
+    //   setTimeout(() => {
+    //     if (chatCreated?._id) {
+    //       dispatch(getSenderMessagesAction(chatCreated._id));
+    //     }
+
+    //   }, 400)
+
+    // }
+
+    // useLayoutEffect(() => {
+    //   scroll();
+    // }, [getMessages]);
 
     return (
-        <div className='EngeeniersChat' style={{display:clickCount.clickC >0?'block':'none'}} >
+        <div className='EngeeniersChat' style={{ display: clickCount.clickC > 0 ? 'block' : 'none' }} >
             <EngChatNav />
             <div className='EngChatBox'>
                 <div className='EngChatBoxHead'>
@@ -336,7 +336,8 @@ const [swapIcon, setSwapIcon] = useState(true);
                                 // onChange={handleFileChange}
                                 // ref={fileInputField}
                                 style={{ display: "none" }}
-                            ></input>
+                                autoComplete="off"
+                            />
                             <div
                                 onClick={() => fileInputField.current.click()}
                                 style={{ marginTop: "3px" }}

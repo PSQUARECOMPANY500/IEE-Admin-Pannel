@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SlLink } from "react-icons/sl";
 import { useDispatch, useSelector } from "react-redux";
 import { approveLeaveByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+import toast from "react-hot-toast";
 
 const LeaveHistoryBottom = ({ setleaveRequested, leaves, engID }) => {
   const [currentLeaveIndex, setCurrentLeaveIndex] = useState(0);
@@ -19,18 +20,27 @@ const LeaveHistoryBottom = ({ setleaveRequested, leaves, engID }) => {
 
   const handleApprove = async () => {
     if (leave && engID) {
-      console.log("8888888888888888888888",leave._id);
-      dispatch(approveLeaveByAdmin(leave._id, "Approved"));
-      setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
-      setleaveRequested(leave);
+      try {
+        dispatch(approveLeaveByAdmin(leave._id, "Approved"));
+        setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
+        setleaveRequested(leave);
+        toast.success("Leave approved successfully")
+      } catch (error) {
+        toast.error("Internal Server Error")
+      }
     }
   };
 
   const handleReject = async () => {
     if (leave && engID) {
-      dispatch(approveLeaveByAdmin(leave._id, "Rejected"));
-      setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
-      setleaveRequested(leave);
+      try {
+        dispatch(approveLeaveByAdmin(leave._id, "Rejected"));
+        setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
+        setleaveRequested(leave);
+        toast.success("Leave rejected successfully")
+      } catch (error) {
+        toast.error("Internal Server Error")
+      }
     }
   };
 

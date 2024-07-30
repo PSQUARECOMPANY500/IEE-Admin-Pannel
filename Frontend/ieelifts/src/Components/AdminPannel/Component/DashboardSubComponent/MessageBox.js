@@ -266,7 +266,8 @@ const MessageBox = ({ onClose, EnggId }) => {
                 onChange={handleFileChange}
                 ref={fileInputField}
                 style={{ display: "none" }}
-              ></input>
+                autoComplete="off"
+              />
               <div
                 onClick={() => fileInputField.current.click()}
             

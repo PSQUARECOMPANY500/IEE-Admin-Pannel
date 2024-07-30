@@ -146,7 +146,7 @@ const AttendanceCalendar = ({ setTodayDate }) => {
   return (
     <div className="CalendarHistory">
       <div
-        className="Attendancecalendar"
+        className="Attendancecalendar responsiveAttendancecalendar"
         id="Attendancecalendar"
         ref={ACalendarRef}
       >

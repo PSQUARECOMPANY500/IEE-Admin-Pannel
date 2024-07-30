@@ -552,6 +552,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                               <div className="col-elevator75">
                                 <input
                                   type="text"
+                                  autoComplete="off"
                                   name="name"
                                   value={engDetails.enggJon}
                                 />
@@ -566,6 +567,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                               <div className="col-elevator75">
                                 <input
                                   type="text"
+                                  autoComplete="off"
                                   name="name"
                                   value={engDetails.enggName}
                                 />
@@ -579,6 +581,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                             <div className="elevator-detail-row">
                               <div className="col-elevator75">
                                 <input
+                                  autoComplete="off"
                                   type="text"
                                   name="name"
                                   value={engDetails.enggPhone}
@@ -594,6 +597,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                               <div className="col-elevator75">
                                 <input
                                   type="text"
+                                  autoComplete="off"
                                   name="name"
                                   value={engDetails.enggAddress}
                                 />
@@ -620,6 +624,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                             <div className="col-elevator75">
                               <input
                                 type="text"
+                                autoComplete="off"
                                 name="name"
                                 value={engDetails.enggLocation}
                               />
@@ -641,6 +646,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                               <input
                                 type="text"
                                 name="name"
+                                autoComplete="off"
                                 value={engDetails.enggRating}
                               />
                             </div>
@@ -713,12 +719,12 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                 <div className="grid-form-container2">
 
                   <div className="col75">
-                    <input placeholder={reName||"Enter Representative Name (Optional)"}  onChange={(e)=> setreName(e.target.value)} />
+                    <input placeholder={reName || "Enter Representative Name (Optional)"} onChange={(e) => setreName(e.target.value)} autoComplete="off" />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder={reNumber||"Enter Representative Number (Optional)"}  onChange={(e)=> setreNumber(e.target.value)} />
+                    <input placeholder={reNumber || "Enter Representative Number (Optional)"} onChange={(e) => setreNumber(e.target.value)} autoComplete="off" />
                   </div>
 
                   <div className="col75">

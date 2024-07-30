@@ -287,6 +287,7 @@ const TopBar = (props) => {
               <input
                 type="text"
                 placeholder="Search clients"
+                autoComplete="off"
                 className={`search-input ${
                   searchValue.length > 0 && "inputSearchWritten"
                 }`}
@@ -306,6 +307,7 @@ const TopBar = (props) => {
                 <input
                   type="text"
                   placeholder="Search anything"
+                    autoComplete="off"
                   className={`search-input ${
                     engSearchValue.length > 0 && "inputSearchWritten"
                   }`}

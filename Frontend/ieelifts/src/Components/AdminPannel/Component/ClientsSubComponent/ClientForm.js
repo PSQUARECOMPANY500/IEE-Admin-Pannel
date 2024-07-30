@@ -43,7 +43,7 @@ const ClientForm = () => {
   const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
   const [prevData, setPrevData] = useState(false);
- 
+
   const { jon } = allFormData.clientFormDetails;
   // useEffect(() => {
   //   document.body.style.overflow = "hidden";
@@ -297,9 +297,14 @@ const ClientForm = () => {
 
   const fetchData = async (jon) => {
     try {
+
       const data = await getDataBasedOnJon(jon);
       dispatch(putDataBasedOnJon(data));
+      console.log(data);
 
+      if (data.success === false) {
+        handleReset(jon)
+      }
       if (data?.response) {
         const clientFormDetails = data?.response.clientFormDetails;
 
@@ -333,39 +338,49 @@ const ClientForm = () => {
       });
     }
   };
-  useEffect(() => {
-    fetchData(jon);
-  }, [jon]);
+
   const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
   useEffect(() => {
     if (jon) {
       debouncedFetchData(jon);
     }
   }, [jon, debouncedFetchData]);
+
   //------------------------------------------------------------------------
-  const handleReset = () => {
-    setAllFormData({
-      clientFormDetails: {},
-      clientSalesManDetails: {},
-      clientMembershipDocument: {},
-      clientArchitect: {},
-    });
-    setClientElevatorDetails({});
-    setDimentionsData({});
-    dispatch(updateClientFormUsingPagination());
-    dispatch(putDataBasedOnJon());
-    dispatch(RegisterClientDataAction());
+  console.log(allFormData)
+  const handleReset = (value) => {
+    if (value !== undefined) {
+      setAllFormData({
+        clientFormDetails: { jon: value },
+        clientSalesManDetails: {},
+        clientMembershipDocument: {},
+        clientArchitect: {},
+      });
+    }
+    else {
+      setAllFormData({
+        clientFormDetails: {},
+        clientSalesManDetails: {},
+        clientMembershipDocument: {},
+        clientArchitect: {},
+      });
+      dispatch(updateClientFormUsingPagination());
+      dispatch(putDataBasedOnJon());
+      dispatch(RegisterClientDataAction());
+    };
     makeReset((prev) => {
       return prev + 1;
     });
-  };
+    setClientElevatorDetails({});
+    setDimentionsData({});
+  }
   //------------------------------------------------------------------------
   const changeInData = (state) => {
     setVisible(state);
   };
   return (
     <>
-      { (
+      {(
         <div className="add-client-wrapper" onClick={handleOverlayClick}>
           <div className="add-client-modal">
             <div className="cross-icon" style={{ cursor: "pointer" }}>
@@ -378,6 +393,7 @@ const ClientForm = () => {
                     <ClientFormDetails
                       onDataChange={handleClientFormDetails}
                       reset={reset}
+                      jon={jon}
                       initialValues={allFormData.clientFormDetails}
                     />
                     <ClientMembershipDocument

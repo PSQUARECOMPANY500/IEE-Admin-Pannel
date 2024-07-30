@@ -48,6 +48,7 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
           placeholder={
             whatsApp === "whatsapp" ? "Notification" : "Whatsapp Message"
           }
+          autoComplete="off"
           value={selectedOption}
           onChange={handleSelectChange}
         />

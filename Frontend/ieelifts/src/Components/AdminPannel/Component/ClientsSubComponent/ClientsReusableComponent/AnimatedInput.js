@@ -15,7 +15,7 @@ const Animated = ({
   onValueChange,
   title,
   pattern,
-  
+
 }) => {
   const handleCalendarToggle = () => {
 
@@ -25,7 +25,7 @@ const Animated = ({
   };
 
   const [inputValue, setInputValue] = useState('');
-  
+
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
@@ -36,7 +36,7 @@ const Animated = ({
   return (
     <div className="input-container">
       <input
-      style={{ width: `${w}`,}}
+        style={{ width: `${w}`, }}
         className="input-field"
         type={type}
         name={name}
@@ -46,6 +46,7 @@ const Animated = ({
         onChange={handleInputChange}
         readOnly={read}
         onClick={handleCalendarToggle}
+        autoComplete="off"
       />
       <label
         htmlFor={name}
@@ -56,7 +57,7 @@ const Animated = ({
           fontWeigh: email && "500",
           fontSize: email && "1rem",
           zIndex: '99999',
-         
+
         }}
       >
         <sub>{label}</sub>

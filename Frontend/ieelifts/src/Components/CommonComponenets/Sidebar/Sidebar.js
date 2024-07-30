@@ -31,7 +31,7 @@ const Sidebar = ({ children }) => {
   const [menuIcon2, setMenueIcon2] = useState(true);
 
 
-   
+
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes
@@ -91,7 +91,7 @@ setIsOpen(!isOpen);
       },
 
     ];
-  } else if (role==="ServiceAdmin") {
+  } else if (role === "ServiceAdmin") {
     menueItems = [
       {
         Path: "/Dashboard",
@@ -124,7 +124,7 @@ setIsOpen(!isOpen);
         icon: <MdOutlineSos />,
         // icon: <img src="phone.png" alt="SosIcon" className="sosIcon"/>,
       },
-      
+
     ];
   } else if (role === "ErectionAdmin") {
     menueItems = [
@@ -362,7 +362,7 @@ setIsOpen(!isOpen);
               </label>
             </div>
 
-            <input type="checkbox" id="touch" />
+            <input type="checkbox" id="touch" autoComplete="off" />
             <ul
               className="slide"
               style={{ height: mainMenuOpen ? "26rem" : "" }}

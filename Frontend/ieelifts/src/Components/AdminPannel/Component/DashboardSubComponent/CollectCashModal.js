@@ -37,12 +37,14 @@ const CollectCashModal = ({ onClose }) => {
             onChange={(e) => {
               setEnggId(e.target.value);
             }}
+            autoComplete="off"
           />
           <input
             type="text"
             placeholder="Amount Received"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
+            autoComplete="off"
           />
 
           <button type="submit" onClick={handleSubmitCash}>

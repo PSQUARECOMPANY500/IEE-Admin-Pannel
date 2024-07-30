@@ -39,6 +39,7 @@ const PercentageInput = ({handleMdPercentChange,mdDiscountInPercentage,onBlur}) 
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
+        autoComplete="off"
 
       />
      <span className={`percentage-label ${focused || value ? 'focused' : ''} ${value ? "percentage-label-with-value" : ""}`}>%</span>

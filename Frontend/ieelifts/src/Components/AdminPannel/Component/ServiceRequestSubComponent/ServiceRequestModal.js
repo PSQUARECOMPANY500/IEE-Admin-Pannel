@@ -268,209 +268,215 @@ const ServiceRequestModal = ({
   //-------------------------------------------OnClick Edit-------------------------------------------------
   const [editchange, setEditChange] = useState(false);
 
-  const handleEditSection=()=>{
+  const handleEditSection = () => {
     setEditChange(!editchange)
   }
-  
-    return (
-      <>
-        <div className={`modal-wrapper`} onClick={closeModal}></div>
-  
-        <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
-          <div className="cross-icon" onClick={closeModal}>
-            <RxCross2 />
-          </div>
-  
-          <div className="child-modal-container">
-            <div className="client-section">
-              <div className="upload-photo-secton">
-                <img
-                  style={{ width: "200px", height: "200px" }}
-                  src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
-                  alt="lift"
-                />
-              </div>
-  
-              <div className="client-information-section">
-                <form className="client-form">
-                  {/* one row strats */}
-                  <div className="row">
-                    <div className="col25">
-                      <label>JON</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input className={``} type="text" name="name" value={jon} />
-                    </div>
-                  </div>
-                  {/* one row ends */}
-  
-                  <div className="row">
-                    <div className="col25">
-                      <label>NAMhasdsddsfE:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={name}
-                        style={{ border: "none" }}
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col25">
-                      <label>NUMBER:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={number}
-                        style={{ border: "none" }}
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col25">
-                      <label>ADDRESS:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={address}
-                        style={{ border: "none" }}
-                      />
-                    </div>
-                  </div>
-  
-                  <div className="row">
-                    <div className="col25">
-                      <label>TYPE OF ISSUE:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={typeOfIssue}
-                        style={{ border: "none" }}
-                      />
-                    </div>
-                  </div>
-  
-                  <div className="row">
-                    <div className="col25">
-                      <label>DESCRIPTION:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={description}
-                        style={{ border: "none" }}
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
-  
-              {/* membership-information-section section starts */}
-              <div className="membership-information-section">
-                <form className="client-form2">
-                  <div className="row">
-                    <div className="col25">
-                      <label>NO. OF CALLBACKS:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input type="text" name="name" value={0} />
-                    </div>
-                  </div>
-  
-                  <div className="row">
-                    <div className="col25">
-                      <label>MEMBERSHIP:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input
-                        type="text"
-                        name="name"
-                        value={"GOLD"}
-                        style={{ color: "#F8AC1D", fontWeight: "600" }}
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col25">
-                      <label>DATE REPORTED:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input type="text" name="name" value={date} />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col25">
-                      <label>TIME REPORTED:</label>
-                    </div>
-  
-                    <div className="col75">
-                      <input type="text" name="name" value={date} />
-                    </div>
-                  </div>
-                </form>
-              </div>
+
+  return (
+    <>
+      <div className={`modal-wrapper`} onClick={closeModal}></div>
+
+      <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
+        <div className="cross-icon" onClick={closeModal}>
+          <RxCross2 />
+        </div>
+
+        <div className="child-modal-container">
+          <div className="client-section">
+            <div className="upload-photo-secton">
+              <img
+                style={{ width: "200px", height: "200px" }}
+                src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+                alt="lift"
+              />
             </div>
-            {/* membership-information-section section ends */}
-  
-            <div className="elevator-section">
-              <div className="elevator-engg-detail-section">
-                <div className="sub-engg-detail-section">
-                  <span>ELEVATOR DETAILS</span>
-  
-                  <div className="elevator-detail-row">
-                    <div className="col-elevator25">
-                      <label>TYPE:</label>
-                    </div>
-                    <div className="col-elevator75">
-                      <input type="text" name="name" value={modelType} />
-                    </div>
+
+            <div className="client-information-section">
+              <form className="client-form">
+                {/* one row strats */}
+                <div className="row">
+                  <div className="col25">
+                    <label>JON</label>
                   </div>
-                  <div className="elevator-detail-row">
-                    <div className="col-elevator25">
-                      <label>FLOORS:</label>
-                    </div>
-                    <div className="col-elevator75">
-                      <input type="text" name="name" value={"G+2"} />
-                    </div>
-                  </div>
-                  <div className="elevator-detail-row">
-                    <div className="col-elevator25">
-                      <label>DOH:</label>
-                    </div>
-                    <div className="col-elevator75">
-                      <input type="text" name="name" value={"10/03/2015"} />
-                    </div>
+
+                  <div className="col75">
+                    <input className={``} type="text" name="name" value={jon} autoComplete="off" />
                   </div>
                 </div>
-  
-                {/*engg detail div start here------------------------------------------------------------------------------  */}
-                <div className="sub-engg-detail-section">
-                  <div style={{ marginTop: "10px" }}>
-                    <p>ENGINEER DETAILS</p>
-  
-                    <div className="engg-photo-section">
-                      <div>
-                        {getEnggState  ? (
-                          <img
-                          style={{ width: "90px", height: "90px",objectFit:'cover', objectPosition:"center", borderRadius:'2px'}}
+                {/* one row ends */}
+
+                <div className="row">
+                  <div className="col25">
+                    <label>NAMhasdsddsfE:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      name="name"
+                      value={name}
+                      autoComplete="off"
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col25">
+                    <label>NUMBER:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      name="name"
+                      value={number}
+                      autoComplete="off"
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col25">
+                    <label>ADDRESS:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      name="name"
+                      value={address}
+                      autoComplete="off"
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col25">
+                    <label>TYPE OF ISSUE:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="off"
+                      value={typeOfIssue}
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col25">
+                    <label>DESCRIPTION:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      autoComplete="off"
+                      name="name"
+                      value={description}
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            {/* membership-information-section section starts */}
+            <div className="membership-information-section">
+              <form className="client-form2">
+                <div className="row">
+                  <div className="col25">
+                    <label>NO. OF CALLBACKS:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input type="text" name="name" value={0} autoComplete="off" />
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col25">
+                    <label>MEMBERSHIP:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="off"
+                      value={"GOLD"}
+                      style={{ color: "#F8AC1D", fontWeight: "600" }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col25">
+                    <label>DATE REPORTED:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input type="text" name="name" value={date} autoComplete="off" />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col25">
+                    <label>TIME REPORTED:</label>
+                  </div>
+
+                  <div className="col75">
+                    <input type="text" name="name" value={date} autoComplete="off" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          {/* membership-information-section section ends */}
+
+          <div className="elevator-section">
+            <div className="elevator-engg-detail-section">
+              <div className="sub-engg-detail-section">
+                <span>ELEVATOR DETAILS</span>
+
+                <div className="elevator-detail-row">
+                  <div className="col-elevator25">
+                    <label>TYPE:</label>
+                  </div>
+                  <div className="col-elevator75">
+                    <input type="text" name="name" value={modelType} autoComplete="off" />
+                  </div>
+                </div>
+                <div className="elevator-detail-row">
+                  <div className="col-elevator25">
+                    <label>FLOORS:</label>
+                  </div>
+                  <div className="col-elevator75">
+                    <input type="text" name="name" value={"G+2"} autoComplete="off" />
+                  </div>
+                </div>
+                <div className="elevator-detail-row">
+                  <div className="col-elevator25">
+                    <label>DOH:</label>
+                  </div>
+                  <div className="col-elevator75">
+                    <input type="text" name="name" value={"10/03/2015"} autoComplete="off" />
+                  </div>
+                </div>
+              </div>
+
+              {/*engg detail div start here------------------------------------------------------------------------------  */}
+              <div className="sub-engg-detail-section">
+                <div style={{ marginTop: "10px" }}>
+                  <p>ENGINEER DETAILS</p>
+
+                  <div className="engg-photo-section">
+                    <div>
+                      {getEnggState ? (
+                        <img
+                          style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
                           src={engDetails.enggPhoto}
                           alt="lift"
                         />
@@ -486,6 +492,7 @@ const ServiceRequestModal = ({
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggJon}
                             />
                           </div>
@@ -498,6 +505,7 @@ const ServiceRequestModal = ({
                         <div className="elevator-detail-row">
                           <div className="col-elevator75">
                             <input
+                              autoComplete="off"
                               type="text"
                               name="name"
                               value={engDetails.enggName}
@@ -513,6 +521,7 @@ const ServiceRequestModal = ({
                           <div className="col-elevator75">
                             <input
                               type="text"
+                              autoComplete="off"
                               name="name"
                               value={engDetails.enggPhone}
                             />
@@ -528,6 +537,7 @@ const ServiceRequestModal = ({
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggAddress}
                             />
                           </div>
@@ -553,6 +563,7 @@ const ServiceRequestModal = ({
                         <div className="col-elevator75">
                           <input
                             type="text"
+                            autoComplete="off"
                             name="name"
                             value={engDetails.enggLocation}
                           />
@@ -574,6 +585,7 @@ const ServiceRequestModal = ({
                           <input
                             type="text"
                             name="name"
+                            autoComplete="off"
                             value={engDetails.enggRating}
                           />
                         </div>

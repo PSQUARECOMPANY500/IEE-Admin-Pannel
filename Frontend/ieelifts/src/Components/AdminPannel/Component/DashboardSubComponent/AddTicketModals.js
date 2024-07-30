@@ -546,6 +546,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                   type="text"
                                   name="name"
                                   value={engDetails.enggJon}
+                                  autoComplete="off"
                                 />
                               </div>
                             </div>
@@ -560,6 +561,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                   type="text"
                                   name="name"
                                   value={engDetails.enggName}
+                                  autoComplete="off"
                                 />
                               </div>
                             </div>
@@ -574,6 +576,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                   type="text"
                                   name="name"
                                   value={engDetails.enggPhone}
+                                  autoComplete="off"
                                 />
                               </div>
                             </div>
@@ -588,6 +591,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                   type="text"
                                   name="name"
                                   value={engDetails.enggAddress}
+                                  autoComplete="off"
                                 />
                               </div>
                             </div>
@@ -614,6 +618,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                 type="text"
                                 name="name"
                                 value={engDetails.enggLocation}
+                                autoComplete="off"
                               />
                             </div>
                           </div>
@@ -634,6 +639,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                                 type="text"
                                 name="name"
                                 value={engDetails.enggRating}
+                                autoComplete="off"
                               />
                             </div>
                           </div>
@@ -706,12 +712,12 @@ console.log("userCallBackDetail",userCallBackDetail)
                 <div className="grid-form-container2">
                     {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input placeholder={`${rn}`} onChange={(e)=> setrn(e.target.value)} />
+                    <input placeholder={`${rn}`} onChange={(e) => setrn(e.target.value)} autoComplete="off" />
                   </div>
 
 
                   <div className="col75">
-                    <input placeholder={`${rnum}`} onChange={(e)=> setrum(e.target.value)}/>
+                    <input placeholder={`${rnum}`} onChange={(e) => setrum(e.target.value)} autoComplete="off" />
                   </div>
 
                   <div className="col75">
