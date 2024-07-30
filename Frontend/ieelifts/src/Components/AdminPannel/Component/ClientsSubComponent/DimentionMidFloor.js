@@ -125,6 +125,7 @@ export const DimentionMidFloor = ({
                 <img src="./uploadIcon.png" className="upload-icon" alt='uploadIcon'/>
                 <input
                   className="hidden-input"
+                  autoComplete="off"
                   type="file"
                   onChange={(e) => handleFileChangeInLevel(e)}
                    accept=".jpeg,.jpg,.pdf"

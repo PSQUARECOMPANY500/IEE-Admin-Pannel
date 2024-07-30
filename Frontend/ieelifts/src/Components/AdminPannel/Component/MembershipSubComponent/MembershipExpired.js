@@ -21,7 +21,7 @@ const selectMembershipDetail = createSelector(
   (requestLimitedClientDataReducer) =>
     requestLimitedClientDataReducer?.membershipDetail
 );
-const MembershipExpired = ({ DemoData, count }) => {
+const MembershipExpired = ({ DemoData, count, setClick }) => {
   const selectExpiredMembership = createSelector(
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expired?.[type]
@@ -91,15 +91,16 @@ const MembershipExpired = ({ DemoData, count }) => {
       );
     }
   }, [pageData]);
-
+  console.log(setClick)
   return (
     <>
       {ref && pageData && (
         <div
           className={
-            count
+            `${!setClick
               ? "membership_card_expiring"
               : "membership_card_expiring_expanded"
+            } `
           }
         >
           {count !== undefined && count !== null ? (

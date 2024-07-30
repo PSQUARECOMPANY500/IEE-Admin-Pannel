@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AttendanceCalendar from "./AttendanceCalendar";
 import AttendanceDateConatiner from "./AttendanceDateConatiner";
 import LeaveHistory from "./LeaveHistory";
 import LeaveHistoryBottom from "./LeaveHistoryBottom";
-import { useSelector } from "react-redux";
+import { getRequstedLeaves } from "../../../../ReduxSetup/Actions/AdminActions";
+import { useSelector, useDispatch } from "react-redux";
 
 const Attendance = (props) => {
   const { engID } = props;
+  const dispatch = useDispatch();
 
   const [date, setTodayDate] = useState();
-  console.log("date&&&&&&&&&&&&", date)
-
-  const leaves = useSelector((state) => state?.AdminRootReducer?.engineerRequestedLeaveReducer?.requestedLeave?.leaves);
+  const leaves = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.engineerRequestedLeaveReducer?.requestedLeave
+        ?.leaves
+  );
 
   const [leaveRequested, setleaveRequested] = useState(null);
+  useEffect(() => {
+    if (engID) {
+      setTimeout(() => {
+        dispatch(getRequstedLeaves(engID));
+      }, 500)
+    }
+  }, [engID, dispatch, leaveRequested]);
+
+
+
   return (
     <div className="Attendance">
       <div className="CalendarHistory">
@@ -22,9 +36,21 @@ const Attendance = (props) => {
       </div>
       <div className="LeaveHistory">
         <div className="SubLeaveHistory">
-          <LeaveHistory engID={engID} leaveRequested={leaveRequested} />
-          {leaves && <div className="VerticalLinelarge "></div>}
-          {leaves && <LeaveHistoryBottom engID={engID} setleaveRequested={setleaveRequested} leaves={leaves} />}
+          <LeaveHistory
+            engID={engID}
+            leaveRequested={leaveRequested}
+            leaves={leaves}
+          />
+          {leaves && leaves?.length > 0 && (
+            <>
+              <div className="VerticalLinelarge "></div>
+              <LeaveHistoryBottom
+                engID={engID}
+                setleaveRequested={setleaveRequested}
+                leaves={leaves}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

@@ -355,7 +355,7 @@ const Sidebar = ({ children }) => {
               </label>
             </div>
 
-            <input type="checkbox" id="touch" />
+            <input type="checkbox" id="touch" autoComplete="off" />
             <ul
               className="slide"
               style={{ height: mainMenuOpen ? "26rem" : "" }}

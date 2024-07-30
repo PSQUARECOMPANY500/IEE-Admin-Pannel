@@ -56,7 +56,8 @@ const ForgetPasswordOTP = () => {
             placeholder="Enter OTP"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
-          ></input>
+            autoComplete="off"
+          />
         </div>
 
         <div className="loginButton">

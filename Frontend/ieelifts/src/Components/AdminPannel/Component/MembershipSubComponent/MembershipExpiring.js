@@ -11,7 +11,7 @@ import {
   getClientCallsDetails,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const MembershipExpiring = ({ DemoData, count }) => {
+const MembershipExpiring = ({ DemoData, count, setClick }) => {
 
   const [page, setPage] = useState(1);
   const [pageData, setPageData] = useState([]);
@@ -103,7 +103,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
       {ref && (
         <div
           className={
-            count
+            setClick && count
               ? "membership_card_expiring"
               : "membership_card_expiring_expanded"
           }

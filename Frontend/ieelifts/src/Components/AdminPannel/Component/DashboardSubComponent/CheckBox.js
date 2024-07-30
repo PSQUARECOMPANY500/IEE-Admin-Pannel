@@ -11,6 +11,7 @@ const CheckBox = ({ id, checked, handleCheckboxChange }) => {
             checked={checked}
             onChange={handleCheckboxChange}
             style={{outline:'none'}}
+            autoComplete="off"
           />
           <div className="checkbox__checkmark"></div>
           <div className="checkbox__body"></div>

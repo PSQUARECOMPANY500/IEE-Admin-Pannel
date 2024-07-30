@@ -90,18 +90,18 @@ const FloorFormElevator = ({ Flevel }) => {
               <div className="dimension-btn-wrapper">
                 <label className="dimension-btn">
                   Pit
-                  <input className="hidden-input" type="file" />
+                  <input className="hidden-input" type="file" autoComplete="off" />
                 </label>
                 <div className="dimension-upload-btn">
                   <label className="dimension-btn">
                     <span>Bottom to Top</span>
-                    <input className="hidden-input" type="file" />
+                    <input className="hidden-input" type="file" autoComplete="off" />
                   </label>
                 </div>
                 <div className="dimension-upload-btn">
                   <label className="dimension-btn">
                     <span>Basement Front</span>
-                    <input className="hidden-input" type="file" />
+                    <input className="hidden-input" type="file" autoComplete="off" />
                   </label>
                 </div>
               </div>

@@ -257,7 +257,7 @@ router.get(
 // by armaan 29/03/2024
 
 router.post(
-  "/pankaj",
+  "/LeaveRequest",
   upload2.fields([
     {
       name: "document",

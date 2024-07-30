@@ -333,6 +333,7 @@ const AddTicketOnCallRequest = ({
                       name="name"
                       placeholder="Enter-Client-Id"
                       onChange={(e) => setJon(e.target.value)}
+                      autoComplete="off"
                     />
                   </div>
                 </div>
@@ -349,6 +350,7 @@ const AddTicketOnCallRequest = ({
                         name="name"
                         value={name}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -372,6 +374,7 @@ const AddTicketOnCallRequest = ({
                         name="name"
                         value={number}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -395,6 +398,7 @@ const AddTicketOnCallRequest = ({
                         name="name"
                         value={address}
                         style={{ border: "none" }}
+                        autoComplete="off"
                       />
                     </div>
                   ) : (
@@ -459,7 +463,7 @@ const AddTicketOnCallRequest = ({
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={0} />
+                    <input type="text" name="name" value={0} autoComplete="off" />
                   </div>
                 </div>
 
@@ -473,6 +477,7 @@ const AddTicketOnCallRequest = ({
                       type="text"
                       name="name"
                       value={"GOLD"}
+                      autoComplete="off"
                       style={{ color: "#F8AC1D", fontWeight: "600" }}
                     />
                   </div>
@@ -483,7 +488,7 @@ const AddTicketOnCallRequest = ({
                   </div>
                   {date ? (
                     <div className="col75">
-                      <input type="text" name="name" value={date} />
+                      <input type="text" name="name" value={date} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -501,7 +506,7 @@ const AddTicketOnCallRequest = ({
                   </div>
                   {time ? (
                     <div className="col75">
-                      <input type="text" name="name" value={time} />
+                      <input type="text" name="name" value={time} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -529,7 +534,7 @@ const AddTicketOnCallRequest = ({
                   </div>
                   {ModelType ? (
                     <div className="col-elevator75">
-                      <input type="text" name="name" value={ModelType} />
+                      <input type="text" name="name" value={ModelType} autoComplete="off" />
                     </div>
                   ) : (
                     <div className="col75">
@@ -542,7 +547,7 @@ const AddTicketOnCallRequest = ({
                     <label>FLOORS:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"G+2"} />
+                    <input type="text" name="name" value={"G+2"} autoComplete="off" />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -550,7 +555,7 @@ const AddTicketOnCallRequest = ({
                     <label>DOH:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"10/03/2015"} />
+                    <input type="text" name="name" value={"10/03/2015"} autoComplete="off" />
                   </div>
                 </div>
               </div>
@@ -587,6 +592,7 @@ const AddTicketOnCallRequest = ({
                               type="text"
                               name="name"
                               value={engDetails.enggJon}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -601,6 +607,7 @@ const AddTicketOnCallRequest = ({
                               type="text"
                               name="name"
                               value={engDetails.enggName}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -614,6 +621,7 @@ const AddTicketOnCallRequest = ({
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggPhone}
                             />
                           </div>
@@ -628,6 +636,7 @@ const AddTicketOnCallRequest = ({
                             <input
                               type="text"
                               name="name"
+                              autoComplete="off"
                               value={engDetails.enggAddress}
                             />
                           </div>
@@ -654,6 +663,7 @@ const AddTicketOnCallRequest = ({
                           <input
                             type="text"
                             name="name"
+                            autoComplete="off"
                             value={engDetails.enggLocation}
                           />
                         </div>
@@ -674,6 +684,7 @@ const AddTicketOnCallRequest = ({
                           <input
                             type="text"
                             name="name"
+                            autoComplete="off"
                             value={engDetails.enggRating}
                           />
                         </div>

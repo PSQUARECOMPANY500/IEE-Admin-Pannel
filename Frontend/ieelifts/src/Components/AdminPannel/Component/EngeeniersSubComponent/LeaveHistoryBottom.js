@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { SlLink } from 'react-icons/sl'
-import { useDispatch } from 'react-redux'
-import { approveLeaveByAdmin, getRequstedLeaves } from '../../../../ReduxSetup/Actions/AdminActions';
+import React, { useEffect, useState } from "react";
+import { SlLink } from "react-icons/sl";
+import { useDispatch, useSelector } from "react-redux";
+import { approveLeaveByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+import toast from "react-hot-toast";
 
-const LeaveHistoryBottom = ({ engID, setleaveRequested,leaves }) => {
+const LeaveHistoryBottom = ({ setleaveRequested, leaves, engID }) => {
   const [currentLeaveIndex, setCurrentLeaveIndex] = useState(0);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (engID) {
-      dispatch(getRequstedLeaves(engID));
-    }
-  }, [engID, dispatch]);
-
-  
   const [leave, setLeave] = useState(null);
 
   useEffect(() => {
@@ -25,18 +19,28 @@ const LeaveHistoryBottom = ({ engID, setleaveRequested,leaves }) => {
   }, [leaves, currentLeaveIndex]);
 
   const handleApprove = async () => {
-    if (leave) {
-      await dispatch(approveLeaveByAdmin(leave._id, 'Approved'));
-      setCurrentLeaveIndex(prevIndex => prevIndex + 1);
-      setleaveRequested(leave);
+    if (leave && engID) {
+      try {
+        dispatch(approveLeaveByAdmin(leave._id, "Approved"));
+        setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
+        setleaveRequested(leave);
+        toast.success("Leave approved successfully")
+      } catch (error) {
+        toast.error("Internal Server Error")
+      }
     }
   };
 
   const handleReject = async () => {
-    if (leave) {
-      await dispatch(approveLeaveByAdmin(leave._id, 'Rejected'));
-      setCurrentLeaveIndex(prevIndex => prevIndex + 1);
-      setleaveRequested(leave);
+    if (leave && engID) {
+      try {
+        dispatch(approveLeaveByAdmin(leave._id, "Rejected"));
+        setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
+        setleaveRequested(leave);
+        toast.success("Leave rejected successfully")
+      } catch (error) {
+        toast.error("Internal Server Error")
+      }
     }
   };
 

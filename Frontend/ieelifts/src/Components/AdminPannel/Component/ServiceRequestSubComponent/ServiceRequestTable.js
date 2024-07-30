@@ -22,7 +22,6 @@ const ServiceRequestTable = ({
   const [isAssigned, setIsAssigned] = useState();
   const [renderTicket, setRenderTicket] = useState(true);
   const [filteredCD, setFilteredCD] = useState([]);
-  console.log("^^^^^^^^^^^^^^^^^^^^^^^",filteredCD)
   const [allCD, setallCD] = useState([]);
   const [timer, setTimer] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -31,7 +30,7 @@ const ServiceRequestTable = ({
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
   const [reqCheckboxStates, setReqCheckboxStates] = useState([]);
-  const [selectedClientArray,setSelectedClientArray]= useState([]);
+  const [selectedClientArray, setSelectedClientArray] = useState([]);
   useEffect(() => {
     if (filterConditions && filterConditions.length === 0) {
       setGetFilterConditions(false);
@@ -72,7 +71,7 @@ const ServiceRequestTable = ({
           }
         });
       }
- 
+
       if (locationFilter) {
         let lData = [];
         locationFilter.forEach((location) => {
@@ -131,8 +130,6 @@ const ServiceRequestTable = ({
     }
   });
 
-  console.log("9999999999999999999999999999",getRequestDetail);
-
   //use effect for dispatching ations
   useEffect(() => {
     dispatch(fetchAllServiceRequestsAction());
@@ -170,7 +167,7 @@ const ServiceRequestTable = ({
   };
 
   useEffect(() => {
-    if (getRequestDetail?.length > 0) {
+    if (getRequestDetail && getRequestDetail.length > 0) {
       let data = getRequestDetail?.filter((detail) => detail.isAssigned === false
       )
       console.log("data=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", data)
@@ -180,22 +177,25 @@ const ServiceRequestTable = ({
   }, [getRequestDetail]);
 
   useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    const newTimer = setTimeout(() => {
-      console.log(searchText)
-      if (searchText) {
-        const data = filtersearch(searchText, allCD);
-        setFilteredCD(data);
-      } else {
-        setFilteredCD(allCD);
+    let newTimer;
+    if (searchText.length > 0) {
+      if (timer) {
+        clearTimeout(timer);
       }
-      setIsSearching(false); // Set isSearching to false after search completes
-    }, 700);
+      newTimer = setTimeout(() => {
+        console.log(searchText)
+        if (searchText) {
+          const data = filtersearch(searchText, allCD);
+          setFilteredCD(data);
+        } else {
+          setFilteredCD(allCD);
+        }
+        setIsSearching(false); // Set isSearching to false after search completes
+      }, 700);
 
-    setTimer(newTimer);
-    setIsSearching(true); // Set isSearching to true when search is initiated
+      setTimer(newTimer);
+      setIsSearching(true); // Set isSearching to true when search is initiated
+    }
 
     return () => {
       clearTimeout(newTimer);
@@ -235,43 +235,47 @@ const ServiceRequestTable = ({
       const allChecked =
         filteredCD && reqCheckboxStates?.every((isChecked) => isChecked);
       setReqCheckboxStates(Array(filteredCD.length).fill(!allChecked));
-      getCondition((prev)=>(
-        !prev
-      ))
-      if(!allChecked){
+      getCondition(
+        reqCheckboxStates.every((isChecked) => {
+          if (isChecked) {
+            return true
+          }
+          else {
+            return false
+          }
+        }))
+      if (!allChecked) {
         setSelectedClientArray(allCD);
-       }else{
+      } else {
         setSelectedClientArray([]);
-       }
+      }
     }
-   
+
   };
   const handleCheckBoxSingle = (index) => {
     setReqCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
       newCheckboxStates[index] = !prevStates[index];
-      newCheckboxStates.includes(true)?getCondition(false):getCondition(true);
+      newCheckboxStates.includes(true) ? getCondition(false) : getCondition(true);
       return newCheckboxStates;
     });
-   
+
     let ans = selectedClientArray.includes(allCD[index]);
-     if(ans){
-      const removeIndex = selectedClientArray.findIndex( item => item === allCD[index] );
-       selectedClientArray.splice(removeIndex,1);
-     }else{
-      setSelectedClientArray((prev)=>(
-        [ ...prev,
-          allCD[index]
-       ]
+    if (ans) {
+      const removeIndex = selectedClientArray.findIndex(item => item === allCD[index]);
+      selectedClientArray.splice(removeIndex, 1);
+    } else {
+      setSelectedClientArray((prev) => (
+        [...prev,
+        allCD[index]
+        ]
       ))
-     } 
+    }
   }
-  useEffect(()=>{
+  useEffect(() => {
     getData(selectedClientArray)
-  },[selectedClientArray])
-  // useEffect(()=>{
-  //   getData(allCD)
-  // },[allCD])
+  }, [selectedClientArray])
+
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -282,6 +286,7 @@ const ServiceRequestTable = ({
               <CheckBox
                 id="checkbox1"
                 checked={(() => {
+                  console.log("filteredCD=========", filteredCD)
                   return (
                     filteredCD &&
                     (filteredCD?.length > 0 || getFilterConditions?.length > 0) &&
@@ -376,10 +381,10 @@ const ServiceRequestTable = ({
               // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
 
               // Check if isAssigned is true, if not, don't render the row
-              if (isAssignedValue) {
-                reqCheckboxStates[index] = true;
-                return null;
-              }
+              // if (isAssignedValue) {
+              //   reqCheckboxStates[index] = true;
+              //   return null;
+              // }
               return (
                 <tbody key={value._id}>
                   <tr className="selected">
@@ -445,10 +450,10 @@ const ServiceRequestTable = ({
               // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
 
               // Check if isAssigned is true, if not, don't render the row
-              if (isAssignedValue) {
-                reqCheckboxStates[index] = true;
-                return null;
-              }
+              // if (isAssignedValue) {
+              //   reqCheckboxStates[index] = true;
+              //   return null;
+              // }
 
               return (
                 <tbody key={value._id}>

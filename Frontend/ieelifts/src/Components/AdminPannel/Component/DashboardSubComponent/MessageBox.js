@@ -263,7 +263,8 @@ useEffect(() => {
                 onChange={handleFileChange}
                 ref={fileInputField}
                 style={{ display: "none" }}
-              ></input>
+                autoComplete="off"
+              />
               <div
                 onClick={() => fileInputField.current.click()}
                 style={{ marginTop: "3px" }}

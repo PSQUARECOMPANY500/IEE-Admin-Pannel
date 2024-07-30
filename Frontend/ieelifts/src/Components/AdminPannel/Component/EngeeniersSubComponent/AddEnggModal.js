@@ -419,6 +419,7 @@ const AddEnggModal = () => {
                             .classList.remove("errorBorder");
                         }
                       }}
+                      autoComplete="off"
                       style={{ display: "none" }}
                       ref={fileInputRef5} // Attach fileInputRef to the input element
                     />
@@ -431,6 +432,7 @@ const AddEnggModal = () => {
                       <input
                         id="firstNameInput"
                         type="text"
+                        autoComplete="off"
                         placeholder="First Name"
                         value={firstName}
                         onChange={(e) => {
@@ -446,6 +448,7 @@ const AddEnggModal = () => {
                         id="lastNameInput"
                         type="text"
                         placeholder="Last Name"
+                        autoComplete="off"
                         value={lastName}
                         onChange={(e) => {
                           setLastName(e.target.value);
@@ -462,6 +465,7 @@ const AddEnggModal = () => {
                         id="mobileNumberInput"
                         type="text"
                         placeholder="Mobile no"
+                        autoComplete="off"
                         required
                         value={mobileNumber}
                         onChange={(e) => {
@@ -478,6 +482,7 @@ const AddEnggModal = () => {
                         id="dateOfBirthInput"
                         type="text"
                         placeholder="Date of Birth"
+                        autoComplete="off"
                         required
                         value={dateOfBirth}
                         onChange={(e) => {
@@ -498,6 +503,7 @@ const AddEnggModal = () => {
                         type="text"
                         placeholder="Engg Id"
                         required
+                        autoComplete="off"
                         value={EngggId}
                         onChange={(e) => {
                           setEnggId(e.target.value);
@@ -513,6 +519,7 @@ const AddEnggModal = () => {
                         id="AlternativeMobileNumber"
                         type="text"
                         placeholder="Alternative Number"
+                        autoComplete="off"
                         required
                         value={alternativeNumber}
                         onChange={(e) => {
@@ -532,6 +539,7 @@ const AddEnggModal = () => {
                         id="emailInput"
                         type="text"
                         placeholder="Email"
+                        autoComplete="off"
                         required
                         value={email}
                         onChange={(e) => {
@@ -564,6 +572,7 @@ const AddEnggModal = () => {
                             name="fields[]"
                             onChange={(e) => setRole(e.target.files[0])}
                             style={{ display: "none" }}
+                            autoComplete="off"
                             ref={fileInputRef3} // Attach fileInputRef to the input element
                           />
                         </div>
@@ -585,6 +594,7 @@ const AddEnggModal = () => {
                     <input
                       id="addressInput"
                       type="text"
+                      autoComplete="off"
                       placeholder="Address"
                       required
                       value={address}
@@ -605,6 +615,7 @@ const AddEnggModal = () => {
                         type="number"
                         placeholder="Pincode"
                         required
+                        autoComplete="off"
                         value={pinCode}
                         onChange={(e) => {
                           setPinCode(e.target.value);
@@ -619,6 +630,7 @@ const AddEnggModal = () => {
                       <input
                         id="cityInput"
                         type="text"
+                        autoComplete="off"
                         placeholder="City"
                         required
                         value={city}
@@ -640,6 +652,7 @@ const AddEnggModal = () => {
                         required
                         readOnly
                         value={district}
+                        autoComplete="off"
                       />
                       <input
                         id="stateInput"
@@ -648,6 +661,7 @@ const AddEnggModal = () => {
                         readOnly
                         required
                         value={state}
+                        autoComplete="off"
                       />
                     </div>
                   </div>
@@ -672,6 +686,7 @@ const AddEnggModal = () => {
                         >
                           <input
                             id="addharCardNumberInput"
+                            autoComplete="off"
                             type="text"
                             placeholder="Aadhaar Card No"
                             required
@@ -693,6 +708,7 @@ const AddEnggModal = () => {
                             type="file"
                             onChange={(e) => SetAddharPhoto(e.target.files[0])}
                             style={{ display: "none" }}
+                            autoComplete="off"
                             ref={fileInputRef} // Attach fileInputRef to the input element
                           />
                           <SlLink
@@ -719,6 +735,7 @@ const AddEnggModal = () => {
                             name="fields[]"
                             onChange={(e) => SetPancardPhoto(e.target.files[0])}
                             style={{ display: "none" }}
+                            autoComplete="off"
                             ref={fileInputRef1} // Attach fileInputRef to the input element
                           />
                           <input
@@ -728,6 +745,7 @@ const AddEnggModal = () => {
                             required
                             style={{ outline: "none" }}
                             value={pancards}
+                            autoComplete="off"
                             onChange={(e) => {
                               setPancard(e.target.value);
                               if (e.target.value.trim() !== "") {
@@ -767,6 +785,7 @@ const AddEnggModal = () => {
                             placeholder="Driving License No"
                             required
                             style={{ outline: "none" }}
+                            autoComplete="off"
                             value={drivingLisience}
                             onChange={(e) => {
                               setDrivingLisience(e.target.value);
@@ -784,6 +803,7 @@ const AddEnggModal = () => {
                           <input
                             type="file"
                             name="fields[]"
+                            autoComplete="off"
                             onChange={(e) =>
                               SetDrivingLicensePhoto(e.target.files[0])
                             }
@@ -829,6 +849,7 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
+                            autoComplete="off"
                             name="fields[]"
                             onChange={(e) =>
                               SetQualificationPhoto(e.target.files[0])
@@ -860,6 +881,7 @@ const AddEnggModal = () => {
                           <input
                             id="additionalCourseData"
                             type="text"
+                            autoComplete="off"
                             placeholder="Additional Course"
                             required
                             style={{ outline: "none" }}
@@ -878,6 +900,7 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
+                            autoComplete="off"
                             name="fields[]"
                             onChange={(e) =>
                               SetAdditionalCoursePhoto(e.target.files[0])
@@ -907,6 +930,7 @@ const AddEnggModal = () => {
                       <input
                         id="accountHolderNameInput"
                         type="text"
+                        autoComplete="off"
                         placeholder="Account Holder Name"
                         required
                         value={accountHolderName}
@@ -923,6 +947,7 @@ const AddEnggModal = () => {
                         id="branchNameInput"
                         type="text"
                         placeholder="Branch Name"
+                        autoComplete="off"
                         required
                         value={branchName}
                         onChange={(e) => {
@@ -937,6 +962,7 @@ const AddEnggModal = () => {
                     </div>
                     <div className="PersonalDetailInput">
                       <input
+                        autoComplete="off"
                         id="accountNumberInput"
                         type="text"
                         placeholder="Account Number"
@@ -955,6 +981,7 @@ const AddEnggModal = () => {
                         <input
                           id="IFSCcodeInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="IFSC Code"
                           required
                           value={IFSCcode}
@@ -988,6 +1015,7 @@ const AddEnggModal = () => {
                       >
                         <input
                           readOnly
+                          autoComplete="off"
                           type="text"
                           placeholder="Previos Work Experience"
                           required
@@ -1003,6 +1031,7 @@ const AddEnggModal = () => {
                         <input
                           id="jobDurationInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="Duration of Job"
                           required
                           value={jobDuration}
@@ -1023,6 +1052,7 @@ const AddEnggModal = () => {
                         <input
                           id="companyNameInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="Company Name"
                           required
                           value={companyName}
@@ -1043,6 +1073,7 @@ const AddEnggModal = () => {
                           placeholder="Job title"
                           required
                           value={jobTitle}
+                          autoComplete="off"
                           onChange={(e) => {
                             setJobTitle(e.target.value);
                             if (jobTitleShow) {
@@ -1061,6 +1092,7 @@ const AddEnggModal = () => {
                           type="text"
                           placeholder="Manager Name"
                           required
+                          autoComplete="off"
                           value={managerName}
                           onChange={(e) => {
                             setManagerName(e.target.value);
@@ -1076,6 +1108,7 @@ const AddEnggModal = () => {
                         <input
                           id="managerNumberInput"
                           type="text"
+                          autoComplete="off"
                           placeholder="Manager No"
                           required
                           value={managerNumber}

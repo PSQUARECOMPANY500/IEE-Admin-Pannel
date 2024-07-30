@@ -5,20 +5,13 @@ import EngeeniersAttendanceCard from "./EngeeniersAttendanceCard";
 
 const AttendanceDateConatiner = ({ date, engID }) => {
 
-  console.log("date#############", date);
 
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
 
-  console.log("dates", dates);
-
-
   const [openCard, setOpenCard] = useState(false);
 
   const [selectedDateIndex, setSelectedDateIndex] = useState(null);
-
-  // console.log("yyyyyyyyyyyyyyyyy", engID);
-
   const handleCloseCard = () => {
     setOpenCard(false);
     setSelectedDateIndex(null);
@@ -45,8 +38,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       const len = 5;
       const today = new Date(selectedDate);
 
-      console.log("today----------->>", today);
-
       const dates = Array.from(
         {
           length: len,
@@ -59,8 +50,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
       );
       setDates(dates);
     };
-
-    // console.log("i am here", engID);
     if (date && engID) {
       dispatch(getEngineerAttendance(engID, date));
       selectedDate = date;
@@ -81,7 +70,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   const getDayOfWeek = (dateStr) => {
 
     if (dateStr === "Invalid Date") return;
-    console.log("getDayOfWeek", dateStr)
 
     const [day, month, year] = dateStr?.split("/");
     const dateObj = new Date(year, month - 1, day);
@@ -105,7 +93,6 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {
       renderedDates.push(
-        // console.log("prretttttt", dates[i]),
         <>
           <div
             className="DatesCard"

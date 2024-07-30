@@ -1252,7 +1252,7 @@ module.exports.updateClientProfile = async (req, res) => {
     const profile = req.file;
     console.log(profile)
 
-    if (!JobOrderNumber && !name && !email && !phone) {
+    if (!JobOrderNumber && !name && !emailAddress && !phone) {
       return res
         .status(400)
         .json({
@@ -1296,7 +1296,7 @@ module.exports.updateClientProfile = async (req, res) => {
     }, {
       "clientFormDetails.userName": name,
       "clientFormDetails.phoneNumber": phone,
-      "clientFormDetails.email": emailAddress,
+      "clientFormDetails.email":  emailAddress, 
     })
 
     return res.status(200).json({

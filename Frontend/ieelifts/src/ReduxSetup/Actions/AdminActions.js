@@ -33,7 +33,7 @@ export const GET_CURRENT_DATE_ASSIGN_CALLBACK =
 
 export const CHANGE_CLIENT_LAYOUT = "CHANGE_CLIENT_LAYOUT";
 export const CHANGE_MEMBERSHIP_LAYOUT = "CHANGE_MEMBERSHIP_LAYOUT";
-export const ENGINEER_SEARCH_HANDLER_STATE="ENGINEER_SEARCH_HANDLER_STATE";
+export const ENGINEER_SEARCH_HANDLER_STATE = "ENGINEER_SEARCH_HANDLER_STATE";
 
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
 /* export const TICKET_COMPONENT_RENDERED = "TICKET_COMPONENT_RENDERED"; */
@@ -789,7 +789,7 @@ export const getClients = (page) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
-     
+
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,
@@ -797,7 +797,7 @@ export const getClients = (page) => {
     } catch (error) {
 
     }
-    
+
   };
 };
 
@@ -819,7 +819,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -842,7 +842,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -856,7 +856,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -870,7 +870,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -896,7 +896,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -907,7 +907,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 };
 
@@ -1094,7 +1094,7 @@ export const onClickPinCart = (ServiceEnggId) => {
     try {
       if (ServiceEnggId === undefined || !ServiceEnggId) {
         dispatch({
-          type:  UPDATE_ENGG_CART_LOCATION,
+          type: UPDATE_ENGG_CART_LOCATION,
           payload: ServiceEnggId,
         });
       }
@@ -1106,7 +1106,7 @@ export const onClickPinCart = (ServiceEnggId) => {
       console.log("error while UPDATE_ENGG_LOCATION", error);
     }
   };
-}; 
+};
 // {/armaan-dev}
 export const getEngineerLeaveHistory = (ServiceEnggId) => {
   return async (dispatch) => {
@@ -1166,6 +1166,7 @@ export const getRequstedLeaves = (ServiceEnggId) => {
           },
         }
       );
+      // console.log("in response =======================> ",response )
       dispatch({
         type: "GET_ENGINEER_REQUESTED_LEAVE",
         payload: response.data,
@@ -1589,12 +1590,12 @@ export const getEnggCheckinOrNotOnToadaysDate = async (EnggId) => {
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-export const engSearchHandler =  (Engkey)=>{
-    return {
-      type: ENGINEER_SEARCH_HANDLER_STATE,
-      payload: { Engkey }, 
-    };
-  }
+export const engSearchHandler = (Engkey) => {
+  return {
+    type: ENGINEER_SEARCH_HANDLER_STATE,
+    payload: { Engkey },
+  };
+}
 
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {
@@ -1656,43 +1657,43 @@ export const updateTodoData = (id, flag) => {
   };
 };
 
-export const deletedTodo=(flag) => {
+export const deletedTodo = (flag) => {
   // console.log(flag)
-    return async (dispatch) => {
-      try{
-        dispatch({
-          type:DELETE_TODO,
-          payload:{
-            flag:flag
-          }
-        })
-      }catch(err){
-        console.log("error while updating delete flag", err);
-      }
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: DELETE_TODO,
+        payload: {
+          flag: flag
+        }
+      })
+    } catch (err) {
+      console.log("error while updating delete flag", err);
+    }
   }
-    }
- 
-    
-    export const getTodoById = async (id) =>{
-      try{
-          const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
-          return response.data;
-      }catch(err){
-        console.log("error while getting the TodoById", err);
-      }
-    }
-    
-    export const updateTodoDataById = async (id, todo) => {
-      try{
-        const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`,{todo})
-        return response;
-      }catch(err){
-        console.log("error while updating the TodoById", err);
-      }
-    }
+}
 
 
-    
+export const getTodoById = async (id) => {
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
+    return response.data;
+  } catch (err) {
+    console.log("error while getting the TodoById", err);
+  }
+}
+
+export const updateTodoDataById = async (id, todo) => {
+  try {
+    const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`, { todo })
+    return response;
+  } catch (err) {
+    console.log("error while updating the TodoById", err);
+  }
+}
+
+
+
 export const offerDiscountByServiceId = async (
   JobOrderNumber,
   Discount,
@@ -1718,9 +1719,9 @@ export const offerDiscountByServiceId = async (
 
 export const getAllClient = async () => {
   try {
-   const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
+    const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
     return response.data;
-  }catch(err){
+  } catch (err) {
     console.log("error while fetching all clients", err);
   }
 }
@@ -1739,17 +1740,17 @@ export const upgradeClientMembershipByAdminPannelAction = (formData) => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-      }
+        }
       )
-    dispatch({
-      type: UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE,
-      payload: reponse.data,
-    })
+      dispatch({
+        type: UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE,
+        payload: reponse.data,
+      })
 
-    console.log("upgrade membership by client",reponse)
-    if(reponse.status === 200){
-      toast.success(reponse.data.message);
-    }
+      console.log("upgrade membership by client", reponse)
+      if (reponse.status === 200) {
+        toast.success(reponse.data.message);
+      }
 
     } catch (error) {
       console.log('error while fetching upgrade client memebershiop buy admin pannel', error);

@@ -25,7 +25,7 @@ const clientForm = new mongoose.Schema({
     alternativeNumber: {
       type: String,
     },
-    email: {
+    emailAddress: {
       type: String,
     },
     dateOfHandover: {

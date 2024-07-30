@@ -29,7 +29,7 @@ export const TodoDropdown = ({options,name,label, onValueChange,errors,value}) =
   
   return (
     <div className='todo-dropdown' ref={dropdownRef}>
-        <input placeholder={label} className={`todo-dropdown-input ${errors?"validateInput":""}`} name={name} value={value} readOnly  onClick={handleIconClick}/>
+      <input placeholder={label} className={`todo-dropdown-input ${errors ? "validateInput" : ""}`} name={name} value={value} readOnly onClick={handleIconClick} autoComplete="off" />
         <span className='todo-dropdown-icon-container'>
           <img src='./todo-dropdown-icon.png' alt='dropdown icon' className='todo-dropdown-icon'  onClick={handleIconClick}/>
         </span>

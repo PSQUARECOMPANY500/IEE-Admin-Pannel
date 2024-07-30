@@ -104,13 +104,13 @@ const BasementFormElevatorDetails = ({ valforDimention, Flevel }) => {
               <div className="dimension-btn-wrapper">
                 <label className="dimension-btn">
                   Pit
-                  <input className="hidden-input" type="file" />
+                  <input className="hidden-input" type="file" autoComplete="off" />
                 </label>
                 <div className="dimension-upload-btn">
                   <label className="dimension-btn">
                     <span>
                       Bottom to Top{" "}
-                      <input className="hidden-input" type="file" />
+                      <input className="hidden-input" type="file" autoComplete="off" />
                       {/* <img src="./uploadIcon.png " className="upload-icon" /> */}
                     </span>
                   </label>
@@ -120,7 +120,7 @@ const BasementFormElevatorDetails = ({ valforDimention, Flevel }) => {
                     <span>
                       {" "}
                       Basement Front{" "}
-                      <input className="hidden-input" type="file" />
+                      <input className="hidden-input" type="file" autoComplete="off" />
                       {/* <img src="./uploadIcon.png" className="upload-icon" /> */}
                     </span>
                   </label>

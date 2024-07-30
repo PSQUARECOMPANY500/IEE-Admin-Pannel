@@ -88,7 +88,8 @@ const EnterNewPassword = () => {
           placeholder="New password"
           value={firstPassword}
           onChange={(e) => handlePasswordChange(e.target.value)}
-        ></input>
+          autoComplete="off"
+        />
         {showPassword ? (
           <FiEye
             className="passwordEyeIcon"
@@ -107,7 +108,8 @@ const EnterNewPassword = () => {
           placeholder="New password"
           value={secondPassword}
           onChange={(e) => setSecondPassword(e.target.value)}
-        ></input>
+          autoComplete="off"
+        />
         {showPassword2 ? (
           <FiEye
             className="passwordEyeIcon"

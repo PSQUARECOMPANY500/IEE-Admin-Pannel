@@ -34,6 +34,7 @@ const FileUploader = ({ label, onFileSelect, apiDataName }) => {
         id={inputId}
         type="file"
         className="fileInput"
+        autoComplete="off"
         onChange={handleFileChange}
         accept=".jpeg,.jpg,.pdf"
       />

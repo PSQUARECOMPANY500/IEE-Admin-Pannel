@@ -25,7 +25,7 @@ const ReactDatePickers = ({
       day
     )
 
- 
+
     setSelectedDate(newSelectedDate);
     OnDateChange(newSelectedDate);
     dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-GB");
@@ -38,9 +38,9 @@ const ReactDatePickers = ({
   function isPastDate(date) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    date.setHours(0, 0, 0, 0);  
+    date.setHours(0, 0, 0, 0);
     return date < today;
-   }
+  }
   const createDayElement = (day) => {
     const date = new Date(
       currentDate.getFullYear(),
@@ -63,7 +63,7 @@ const ReactDatePickers = ({
     });
     if (isPastDate(date)) {
       dayElement.classList.add("disabled");
-  }
+    }
     daysContainerRef.current.appendChild(dayElement);
   };
 
@@ -95,26 +95,26 @@ const ReactDatePickers = ({
       createDayElement(day);
     }
     // const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  
+
     // const daysHeader = document.createElement("div");
     // daysHeader.classList.add("date-picker-days-header");
-  
+
     // daysOfWeek.forEach((dayOfWeek) => {
     //   const dayHeader = document.createElement("div");
     //   dayHeader.textContent = dayOfWeek;
     //   daysHeader.appendChild(dayHeader);
     // });
-  
+
     // calendarRef.current.appendChild(daysHeader);
-    
+
 
 
 
   };
-  
 
 
- 
+
+
   const handlePrevClick = () => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -153,7 +153,7 @@ const ReactDatePickers = ({
     calendarRef.current.style.left = inputRect.left + "px";
   };
 
-  
+
   useEffect(() => {
     renderCalendar();
 
@@ -171,11 +171,13 @@ const ReactDatePickers = ({
     <div className="calendar-box">
       <input
         type="text"
+        readOnly={true}
         id="dateInput"
         placeholder={isAssigned ? fetchedDate : "Select a date"}
         ref={dateInputRef}
         onClick={handleDateInputClick}
-        readOnly={isAssigned} // Disable input when isAssigned is true
+        autoComplete="off"
+        style={{cursor:"pointer"}}
       />
       {
         <div className="calendar" id="calendar" ref={calendarRef}>
@@ -190,7 +192,7 @@ const ReactDatePickers = ({
               <FaChevronRight />
             </button>
           </div>
-          <div className="days" id="daysContainer" ref={daysContainerRef} style={{marginTop:'1rem'}}></div>
+          <div className="days" id="daysContainer" ref={daysContainerRef} style={{ marginTop: '1rem' }}></div>
         </div>
       }
     </div>

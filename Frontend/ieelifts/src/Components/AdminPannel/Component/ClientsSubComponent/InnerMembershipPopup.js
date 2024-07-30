@@ -52,16 +52,19 @@ const InnerMembershipPopup = ({ onClose, selectedOption, JobOrderNumber }) => {
             type="Number"
             placeholder="Amount"
             value={amount}
+            autoComplete="off"
             onChange={(e) => setAmount(e.target.value)}
           />
           <input
             type="Number"
+            autoComplete="off"
             value={duration}
             placeholder="Duration in Months"
             onChange={(e) => setDuration(e.target.value)}
           />
           <input
             type="text"
+            autoComplete="off"
             placeholder="mm/dd/yyyy"
             value={date}
             onChange={(e) => setDate(e.target.value)}
@@ -73,6 +76,7 @@ const InnerMembershipPopup = ({ onClose, selectedOption, JobOrderNumber }) => {
           >
             <input
               type="file"
+              autoComplete="off"
               id="fileInput"
               className="fileInput"
               onChange={(e) => setMembershipInvoice(e.target.files[0])}

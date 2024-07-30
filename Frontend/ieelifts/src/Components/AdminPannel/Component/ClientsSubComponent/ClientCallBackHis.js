@@ -4,15 +4,15 @@ import { getClientCallbackHistory } from "../../../../ReduxSetup/Actions/AdminAc
 
 //---------------------------------Raj-------------------------------
 
-const ClientCallBackHis = () => {
-
+const ClientCallBackHis = ({JobOrderNumber}) => {
   const [serviceData, setServiceData] = useState();
 
+  // console.log("JobOrderNumber ==================> ",JobOrderNumber);
 
   useEffect(() => {
     const getData = async () => {
-      const getClientCallBackdata = await getClientCallbackHistory("2024021");
-      setServiceData(getClientCallBackdata.callbackHistory);
+      const getClientCallBackdata = await getClientCallbackHistory(JobOrderNumber);
+      setServiceData(getClientCallBackdata?.callbackHistory);
 
       // console.log("getClientCallBackdata", getClientCallBackdata.callbackHistory)
     };
@@ -20,8 +20,7 @@ const ClientCallBackHis = () => {
     getData();
   }, []);
 
-console.log("tata",serviceData)
-
+  console.log("tata", serviceData);
 
   const fieldsToShow = [
     "SrNo",
@@ -31,12 +30,15 @@ console.log("tata",serviceData)
     "ServiceType",
     "PartReplaced",
     "ServiceCost",
-    "PaymentMode"
+    "PaymentMode",
   ];
   return (
     <div>
-      <InformationTable serviceData={serviceData}
-       fieldsToShow={fieldsToShow} maxHeight="60vh" />
+      <InformationTable
+        serviceData={serviceData}
+        fieldsToShow={fieldsToShow}
+        maxHeight="60vh"
+      />
     </div>
   );
 };

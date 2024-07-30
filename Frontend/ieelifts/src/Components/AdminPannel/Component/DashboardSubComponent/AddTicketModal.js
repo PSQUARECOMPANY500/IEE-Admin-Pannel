@@ -298,7 +298,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div className="col75">
-                    <input className={``} type="text" name="name" value={jon} />
+                    <input className={``} type="text" name="name" value={jon} autoComplete="off" />
                   </div>
                 </div>
                 {/* one row ends */}
@@ -311,6 +311,7 @@ const AddTicketModal = ({
                   <div className="col75">
                     <input
                       type="text"
+                      autoComplete="off"
                       name="name"
                       value={name}
                       style={{ border: "none" }}
@@ -326,6 +327,7 @@ const AddTicketModal = ({
                     <input
                       type="text"
                       name="name"
+                      autoComplete="off"
                       value={number}
                       style={{ border: "none" }}
                     />
@@ -340,6 +342,7 @@ const AddTicketModal = ({
                     <input
                       type="text"
                       name="name"
+                      autoComplete="off"
                       value={address}
                       style={{ border: "none" }}
                     />
@@ -355,6 +358,7 @@ const AddTicketModal = ({
                     <input
                       type="text"
                       name="name"
+                      autoComplete="off"
                       value={typeOfIssue}
                       style={{ border: "none" }}
                     />
@@ -387,7 +391,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={0} />
+                    <input type="text" name="name" value={0} autoComplete="off" />
                   </div>
                 </div>
 
@@ -401,6 +405,7 @@ const AddTicketModal = ({
                       type="text"
                       name="name"
                       value={"GOLD"}
+                      autoComplete="off"
                       style={{ color: "#F8AC1D", fontWeight: "600" }}
                     />
                   </div>
@@ -411,7 +416,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={date} />
+                    <input type="text" name="name" value={date} autoComplete="off" />
                   </div>
                 </div>
                 <div className="row">
@@ -420,7 +425,7 @@ const AddTicketModal = ({
                   </div>
 
                   <div className="col75">
-                    <input type="text" name="name" value={time} />
+                    <input type="text" name="name" value={time} autoComplete="off" />
                   </div>
                 </div>
               </form>
@@ -438,7 +443,7 @@ const AddTicketModal = ({
                     <label>TYPE:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={modelType} />
+                    <input type="text" name="name" value={modelType} autoComplete="off" />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -446,7 +451,7 @@ const AddTicketModal = ({
                     <label>FLOORS:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"G+2"} />
+                    <input type="text" name="name" value={"G+2"} autoComplete="off" />
                   </div>
                 </div>
                 <div className="elevator-detail-row">
@@ -454,7 +459,7 @@ const AddTicketModal = ({
                     <label>DOH:</label>
                   </div>
                   <div className="col-elevator75">
-                    <input type="text" name="name" value={"10/03/2015"} />
+                    <input type="text" name="name" value={"10/03/2015"} autoComplete="off" />
                   </div>
                 </div>
               </div>
@@ -491,6 +496,7 @@ const AddTicketModal = ({
                               type="text"
                               name="name"
                               value={engDetails.enggJon}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -505,6 +511,7 @@ const AddTicketModal = ({
                               type="text"
                               name="name"
                               value={engDetails.enggName}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -519,6 +526,7 @@ const AddTicketModal = ({
                               type="text"
                               name="name"
                               value={engDetails.enggPhone}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -533,6 +541,7 @@ const AddTicketModal = ({
                               type="text"
                               name="name"
                               value={engDetails.enggAddress}
+                              autoComplete="off"
                             />
                           </div>
                         </div>
@@ -559,6 +568,7 @@ const AddTicketModal = ({
                             type="text"
                             name="name"
                             value={engDetails.enggLocation}
+                            autoComplete="off"
                           />
                         </div>
                       </div>
@@ -579,6 +589,7 @@ const AddTicketModal = ({
                             type="text"
                             name="name"
                             value={engDetails.enggRating}
+                            autoComplete="off"
                           />
                         </div>
                       </div>

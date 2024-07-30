@@ -23,6 +23,7 @@ useEffect(()=>{
     <div className="client-dropdown">
       <input
         className="dropdown-input"
+        autoComplete="off"
         placeholder={label}
         name={name}
         value={selectedData}

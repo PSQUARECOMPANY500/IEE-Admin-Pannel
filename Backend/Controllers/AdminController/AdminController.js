@@ -2304,6 +2304,9 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
     });
 
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+
+    console.log("sent leave in backend ", sentLeaves)
+
     res.status(200).json({
       success: true,
       leaves: sentLeaves,
@@ -2328,6 +2331,8 @@ module.exports.takeActionOnLeave = async (req, res) => {
     if (!last) {
       return res.status(404).json({ error: "Leave not found" });
     }
+
+    console.log(last)
 
     // const approvedLeaves = leaves
     //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
@@ -2362,9 +2367,9 @@ module.exports.takeActionOnLeave = async (req, res) => {
 
       const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
       const toDate = new Date(toYear, toMonth - 1, toDay);
+      // console.log(fromDate.toS, toDate)
       const diffTime = Math.abs(toDate - fromDate);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
       if (approvedLeaves.length > 0) {
         last.UsedLeave =
           approvedLeaves[approvedLeaves.length - 1].UsedLeave + diffDays + 1;
@@ -3028,7 +3033,7 @@ module.exports.getClientModalInformation = async (req, res) => {
   try {
     const { jon } = req.params;
     const response = await ElevatorFormSchema.findOne({
-      "clientFormDetails.jon": jon,
+      "clientFormDetails.jon": `${jon}`,
     });
     if (!response) {
       return res.json({ success: false, message: "This JON is not found" });

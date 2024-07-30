@@ -11,8 +11,10 @@ import TextInputs from "./ClientsReusableComponent/TextInput";
 import ClientDateInput from "./ClientsReusableComponent/ClientDateInput";
 import ClientFormCalendar from "./ClientsReusableComponent/ClientFormCalendar";
 
-const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
+const ClientFormDetails = ({ onDataChange, initialValues, reset, jon }) => {
   const calendarRef = useRef(null);
+  console.log(onDataChange, initialValues)
+
   const [clientFormData, setClientFormData] = useState({
     jon: "",
     userName: "",
@@ -31,7 +33,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   useLayoutEffect(() => {
     if (reset !== undefined) {
       setClientFormData({
-        jon: "",
+        jon: jon,
         userName: "",
         phoneNumber: "",
         alternativeNumber: "",
@@ -59,50 +61,50 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   //error states
   const [emailError, setEmailError] = useState(true);
 
-   //helper functions 
+  //helper functions 
 
   function formatDate(inputDate) {
-  const parts = inputDate.split('/');
-  const day = parts[1].padStart(2, '0');  
-  const month = parts[0].padStart(2, '0'); 
-  const year = parts[2];
-  return `${month}/${day}/${year}`;
-}       
+    const parts = inputDate.split('/');
+    const day = parts[1].padStart(2, '0');
+    const month = parts[0].padStart(2, '0');
+    const year = parts[2];
+    return `${month}/${day}/${year}`;
+  }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const hadleInputChnage = (e) => {
-    const { name, value,type} = e.target;
-     if(name==='userName' || name==='city' || name==='state' || name==='district' || name==='referenceName' ){
+    const { name, value, type } = e.target;
+    if (name === 'userName' || name === 'city' || name === 'state' || name === 'district' || name === 'referenceName') {
       const hasNumbers = /\d/.test(value)
-      if(hasNumbers){
+      if (hasNumbers) {
         return;
       }
       //checking the length of phone number should not be geater than 10
-     }
-     if(name==="phoneNumber" && value.length>10 ){
-        return;
-     }
-     if(name==="alternativeNumber" && value.length>10){
+    }
+    if (name === "phoneNumber" && value.length > 10) {
       return;
-     }
-     //checking the lenght of pincode should not be geater than 6 
-     if(name==="pincode" && value.length>6){
+    }
+    if (name === "alternativeNumber" && value.length > 10) {
       return;
-     }
+    }
+    //checking the lenght of pincode should not be geater than 6 
+    if (name === "pincode" && value.length > 6) {
+      return;
+    }
     setClientFormData({ ...clientFormData, [name]: value });
     if (name === "email") {
       if (!emailRegex.test(value)) {
         setEmailError(true);
-      }else if (type === "text") {
+      } else if (type === "text") {
         const textValue = value.replace(/[^a-zA-Z\s]/g, "");
         setClientFormData({ ...clientFormData, [name]: textValue });
-      }else {
+      } else {
         setEmailError(false);
-      } 
-    } 
+      }
+    }
   };
   const handleClick = (e) => {
     const { name } = e.target;
-    setClick({ ...click, [name]: true }); 
+    setClick({ ...click, [name]: true });
   };
 
   const handleClickFalse = (e) => {
@@ -113,7 +115,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   const handleDropdown = (name, data) => {
     setClientFormData({ ...clientFormData, [name]: data });
   };
-  
+
   useEffect(() => {
     onDataChange(clientFormData);
   }, [clientFormData]);
@@ -151,7 +153,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
   }, [showCalendar]);
   const [selectedDate, setSelectedDate] = useState();
   const handleDateChange = (date) => {
-      const modifiedDate =  formatDate(date)
+    const modifiedDate = formatDate(date)
     //chane the format of date
     setClientFormData((prev) => ({
       ...prev,
@@ -201,7 +203,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onChange={hadleInputChnage}
             click={click.phoneNumber}
             onBlur={handleClickFalse}  //Phone Number
-            type={"number"} 
+            type={"number"}
           />
         </div>
         <div className="client-form-input-wrapper-child">
@@ -213,7 +215,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onChange={hadleInputChnage}
             click={click.alternativeNumber}
             onBlur={handleClickFalse}  //Alternative Number
-            type={"number"} 
+            type={"number"}
             isNumber={true}
           />
         </div>
@@ -237,7 +239,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
           />
           <div className="calendarContainer" ref={calendarRef}>
             {showCalendar && (
-              <ClientFormCalendar setTodayDate={handleDateChange}/>
+              <ClientFormCalendar setTodayDate={handleDateChange} />
             )}
           </div>
         </div>
@@ -262,7 +264,7 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
             onChange={hadleInputChnage}
             click={click.pincode}
             onBlur={handleClickFalse}
-            type={"number"} 
+            type={"number"}
           />
         </div>
         <div>
@@ -309,9 +311,8 @@ const ClientFormDetails = ({ onDataChange, initialValues, reset }) => {
           />
         </div>
         <div
-          className={`${
-            clientFormData?.sourceOfLead === "Reference" ? "" : "disabled"
-          }`}
+          className={`${clientFormData?.sourceOfLead === "Reference" ? "" : "disabled"
+            }`}
         >
           <TextInputs
             label={"Refernce Name"}
