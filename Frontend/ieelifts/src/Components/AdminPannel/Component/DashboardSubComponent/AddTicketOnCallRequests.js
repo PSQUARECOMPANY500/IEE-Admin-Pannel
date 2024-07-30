@@ -295,7 +295,10 @@ import config from "../../../../config";
              reNumber
            ))
            closeModal();
-         }
+         } else {
+          toast.error("Please fill all the fields")
+        } 
+          
        })
      }
      else {

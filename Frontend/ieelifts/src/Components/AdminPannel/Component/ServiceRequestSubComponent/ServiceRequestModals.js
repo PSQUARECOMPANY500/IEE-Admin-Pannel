@@ -234,8 +234,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
       engDetails.enggJon &&
       ClickListOnSelect &&
       selectedSlot &&
-      date &&
-      message
+      date
     ) {
       if (engDate === "") {
         dateOnAssign = fetchedDate;
@@ -256,10 +255,9 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
           engDetails.enggJon,
           reName,
           reNumber
-        )
-      );
-      setRenderTicket((prev) => !prev);
+        ));
       closeModal();
+      setRenderTicket((prev) => !prev);
     } else {
       toast.error("Please fill all the fields")
     }
@@ -750,7 +748,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
                         className="assign-button"
                         onClick={handleAssignRequest}
                       >
-                        Assign testing
+                        Assign
                       </button>
                     </div>
                   </div>

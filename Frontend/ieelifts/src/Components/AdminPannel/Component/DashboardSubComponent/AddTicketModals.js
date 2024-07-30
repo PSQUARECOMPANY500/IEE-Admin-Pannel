@@ -261,8 +261,7 @@ console.log("userCallBackDetail",userCallBackDetail)
       engDetails.enggJon &&
       ClickListOnSelect &&
       selectedSlot &&
-      date &&
-      message
+      date
     ) {
       if (engDate === "") {
         dateOnAssign = fetchedDate;
@@ -283,10 +282,10 @@ console.log("userCallBackDetail",userCallBackDetail)
           engDetails.enggJon
         )
       );
+      closeModal();
 
       setRenderTicket((prev) => !prev);
       setTicketUpdate((prev) => !prev);
-      closeModal();
     } else {
       console.log("not valid input");
       toast.error("Please fill all the fields")

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GrGallery } from "react-icons/gr";
+import { BsFiletypePdf } from "react-icons/bs";
+
 
 import { fetchFinalReportData } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector } from "react-redux";
@@ -68,8 +70,10 @@ const Invoice = ({ serviceId }) => {
           </div>
         </div>
         <div className="InvoiceFooterR">
-          <GrGallery
+          <BsFiletypePdf
             style={{
+              fontWeight: '800',
+              fontSize: "24px",
               color:
                 AdminReportData.PaymentDetails.length > 0
                   ? "#f8ac1d"
@@ -79,7 +83,7 @@ const Invoice = ({ serviceId }) => {
             onClick={openIt}
           />
         </div>
-      </div>
+      </div>/
     </div>
   );
 };
