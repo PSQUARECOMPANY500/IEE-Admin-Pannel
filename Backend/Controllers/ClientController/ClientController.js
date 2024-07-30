@@ -1247,11 +1247,11 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, email, phone, password } =
+    const { JobOrderNumber, name, phone, password ,emailAddress} =
       req.body;
     const profile = req.file;
 
-    if (!JobOrderNumber && !name && !email && !phone) {
+    if (!JobOrderNumber && !name && !emailAddress && !phone) {
       return res
         .status(400)
         .json({
@@ -1272,7 +1272,7 @@ module.exports.updateClientProfile = async (req, res) => {
           PhoneNumber: phone,
           ProfileImage: profile && profile.filename,
           Password: password,
-          email,
+          emailAddress,
         }
       );
     }
@@ -1285,7 +1285,7 @@ module.exports.updateClientProfile = async (req, res) => {
           name,
           PhoneNumber: phone,
           Password: password,
-          email,
+          emailAddress,
         }
       );
     }
@@ -1295,7 +1295,7 @@ module.exports.updateClientProfile = async (req, res) => {
     }, {
       "clientFormDetails.userName": name,
       "clientFormDetails.phoneNumber": phone,
-      "clientFormDetails.email": email,
+      "clientFormDetails.email":  emailAddress, 
     })
 
     return res.status(200).json({

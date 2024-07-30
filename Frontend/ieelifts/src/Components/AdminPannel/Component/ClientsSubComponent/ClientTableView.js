@@ -6,29 +6,39 @@ import execelIcon from "../../../../Assets/Images/execel-icon.png";
 import ClientModal from "./ClientModal";
 import { CSVLink, CSVDownload } from "react-csv";
 import { getAllClient } from "../../../../ReduxSetup/Actions/AdminActions";
-import 'react-loading-skeleton/dist/skeleton.css'
+import "react-loading-skeleton/dist/skeleton.css";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useSelector } from "react-redux";
-import generatePdf from '../../../../utils/generatePdf'
-const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered ,page}) => {
+import generatePdf from "../../../../utils/generatePdf";
+// import { useSelector } from "react-redux";
+
+const ClientTableView = ({
+  clientData,
+  hadnleInfiniteScroll,
+  isLoading,
+  isFiltered,
+  page,
+}) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
-  const [csvData,setCsvData] = useState([]);
+  const [csvData, setCsvData] = useState([]);
+  const [allChecked, setAllChecked] = useState(false); // by Preet Edited
 
-  const [selectedClientArray,setSelectedClientArray]= useState([]);
+  const [selectedClientArray, setSelectedClientArray] = useState([]);
   const totalPage = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.totalPage
   );
+
   useLayoutEffect(() => {
     if (clientData) {
       setCheckboxStates(Array(clientData.length).fill(false));
     }
   }, [clientData]);
+
   const handleCheckBoxAll = async () => {
     const allChecked = checkboxStates.every((isChecked) => isChecked);
     if (clientData) {
-    
       setCheckboxStates(Array(clientData.length).fill(!allChecked));
       if (!allChecked) {
         setSelectedClientArray(clientData);
@@ -36,12 +46,12 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
         setSelectedClientArray([]);
       }
     }
-    
-    if(!isFiltered && !allChecked){
-      const {data} = await getAllClient()
+    if (!isFiltered && !allChecked) {
+      const { data } = await getAllClient();
       setSelectedClientArray(data);
     }
   };
+
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
       const newCheckboxStates = [...prevStates];
@@ -50,42 +60,48 @@ const ClientTableView = ({ clientData,hadnleInfiniteScroll,isLoading,isFiltered 
     });
     let ans = selectedClientArray.includes(clientData[index]);
     if (ans) {
-      const removeIndex = selectedClientArray.findIndex(item => item === clientData[index]);
+      const removeIndex = selectedClientArray.findIndex(
+        (item) => item === clientData[index]
+      );
       selectedClientArray.splice(removeIndex, 1);
     } else {
-      setSelectedClientArray((prev) => (
-        [...prev,
-        clientData[index]
-        ]
-      ))
+      setSelectedClientArray((prev) => [...prev, clientData[index]]);
     }
   };
-  let uniqueData = selectedClientArray?.filter((obj, index, self) => index === self?.findIndex((t) => (t?.id === obj?.id && t?.name === obj?.name)));
+  let uniqueData = selectedClientArray?.filter(
+    (obj, index, self) =>
+      index ===
+      self?.findIndex((t) => t?.id === obj?.id && t?.name === obj?.name)
+  );
   const HandleCardClick = (data) => {
-    setShowClientModal(true)
+    setShowClientModal(true);
     // console.log("client all data", data)
-    setSelectedClient(data)
-  }
+    setSelectedClient(data);
+  };
   //Function to handle closing modal
   const handleCloseModal = () => {
-    setShowClientModal(false)
-  }
+    setShowClientModal(false);
+  };
 
-const handleExcelIconClick = () =>{
-  setCsvData(uniqueData)
-}
+  const handleExcelIconClick = () => {
+    setCsvData(uniqueData);
+  };
   return (
     <div className="table_view client_table_view">
       <div className="sub_table_view client_sub_table_view">
-        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)} style={{overflowX:'hidden'}}>
-          <div className="table-shadow" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
+        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)}>
+          <div className="table-shadow table-header" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
           <table>
-            <thead style={{ zIndex: '1' }}>
+            <thead style={{ zIndex: '1' }} >
               <tr>
                 <th className="checkbox">
                   <CheckBox
                     id="checkbox1"
-                    checked={clientData && clientData.length > 0 && checkboxStates.every((isChecked) => isChecked)}
+                    checked={
+                      clientData &&
+                      clientData.length > 0 &&
+                      checkboxStates.every((isChecked) => isChecked)
+                    }
                     handleCheckboxChange={handleCheckBoxAll}
                   />
                 </th>
@@ -112,66 +128,97 @@ const handleExcelIconClick = () =>{
               </tr>
             </thead>
 
-            {checkboxStates.includes(true)&& <div className="doc-container">
-            
-            <img src={pdfIcon} onClick={()=>{generatePdf(selectedClientArray)}} className="pdfIcon"/>
-            <CSVLink data={csvData}><img src={execelIcon} onClick={handleExcelIconClick} /></CSVLink>
-              </div>}
+            {checkboxStates.includes(true) && (
+              <div className="doc-container">
+                <img
+                  src={pdfIcon}
+                  onClick={() => {
+                    generatePdf(selectedClientArray);
+                  }}
+                  className="pdfIcon"
+                />
+                <CSVLink data={csvData}>
+                  <img src={execelIcon} onClick={handleExcelIconClick} />
+                </CSVLink>
+              </div>
+            )}
 
             {/* TABLE BODY STARTS */}
 
             <tbody>
               {clientData &&
                 clientData.map((data, index) => (
-                  <tr className="selected" key={index}
-                  >
+
+                  <tr className="selected single" key={index}>
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
                         checked={checkboxStates[index] || false}
                         handleCheckboxChange={() => handleCheckBoxSingle(index)}
                       />
-
                     </td>
 
-                    <td className="JON" onClick={() => HandleCardClick(data)}>{data.JobOrderNumber}</td>
-                    <td className="client-table-name" onClick={() => HandleCardClick(data)}>{data?.name}</td>
-                    <td className="client-table-number" onClick={() => HandleCardClick(data)}>{data?.PhoneNumber}</td>
-                    <td className="address" onClick={() => HandleCardClick(data)}>
-                      
+                    <td className="JON" onClick={() => HandleCardClick(data)}>
+                      {data.JobOrderNumber}
+                    </td>
+                    <td
+                      className="client-table-name"
+                      onClick={() => HandleCardClick(data)}
+                    >
+                      {data?.name}
+                    </td>
+                    <td
+                      className="client-table-number"
+                      onClick={() => HandleCardClick(data)}
+                    >
+                      {data?.PhoneNumber}
+                    </td>
+                    <td
+                      className="address"
+                      onClick={() => HandleCardClick(data)}
+                    >
                       {/* {data?.Address} */}
                       <div className="dropdown-address">
-                          <span
-                            
-                          >
+                          <span className="text">
                          {data?.Address}
                           </span>
 
                           <div className="dropdown-adddress-menu">
                             <div className="drop-address">
-                              <p
-                                
-                              >
+                              <p>
                                {data?.Address}
                               </p>
                             </div>
                           </div>
                         </div>
-                      
-                      
-                      </td>
-                    <td className="callback" onClick={() => HandleCardClick(data)}>
+                    </td>
+                    <td
+                      className="callback"
+                      onClick={() => HandleCardClick(data)}
+                    >
                       {data?.callback ? data?.callback : 0}
                     </td>
-                    <td className="membership" onClick={() => HandleCardClick(data)}>
+                    <td
+                      className="membership"
+                      onClick={() => HandleCardClick(data)}
+                    >
                       {data?.MembershipType ? data?.MembershipType : "NONE"}
                     </td>
-                    <td className="address" onClick={() => HandleCardClick(data)}>{data.ModelType}</td>
-                    <td className="address" onClick={() => HandleCardClick(data)}>{data.DateOfHandover}</td>
-
+                    <td
+                      className="address"
+                      onClick={() => HandleCardClick(data)}
+                    >
+                      {data.ModelType}
+                    </td>
+                    <td
+                      className="address"
+                      onClick={() => HandleCardClick(data)}
+                    >
+                      {data.DateOfHandover}
+                    </td>
                   </tr>
                 ))}    
-{isLoading&&page<totalPage? <>        <tr style={{ overflowX: "hidden" }}>
+                  {isLoading&&page<totalPage? <><tr style={{ overflowX: "hidden" }}>
                     <td colSpan="10">
                       <SkeltonLoader
                         width={"75vw"}
@@ -202,16 +249,19 @@ const handleExcelIconClick = () =>{
                     </td>
                   </tr>          
 </>:''}
-    
                 
             </tbody>
           </table>
         </div>
       </div>
 
-      {showClientModal && <ClientModal showClientModal={showClientModal}
-        handleCloseModal={handleCloseModal}
-        selectedClient={selectedClient} />}
+      {showClientModal && (
+        <ClientModal
+          showClientModal={showClientModal}
+          handleCloseModal={handleCloseModal}
+          selectedClient={selectedClient}
+        />
+      )}
     </div>
   );
 };

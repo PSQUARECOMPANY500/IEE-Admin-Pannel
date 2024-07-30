@@ -82,7 +82,7 @@ const Rating = () => {
             <button className={!(adminRating?.Questions?.Question5)?'active-button':''}>No</button>
           </div>
         </div>
-      </div> </>:<p className="no-rating">No Rating Here.............</p>}
+      </div> </>:<p>No Rating Here.</p>}
     </div>
   );
 };

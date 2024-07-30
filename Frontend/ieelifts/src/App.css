@@ -985,7 +985,7 @@ width: 144px;
   font-family: "Poppins";
   width: 450px;
   position: absolute;
-  top: 23.6%;
+  top: 20%;
   left: 73.8%;
   z-index: 2;
   height: 626px;
@@ -1570,7 +1570,7 @@ input:-webkit-autofill {
   padding: 0rem 3rem;
 }
 
-.addTask-main {
+/* .addTask-main {
   width: 450px;
   position: absolute;
   top: 23.6%;
@@ -1582,7 +1582,7 @@ input:-webkit-autofill {
   align-items: center;
   justify-content: center;
   border: 1px solid #70707033;
-}
+} */
 
 .task-content-inner p {
   font-size: 0.9rem;
@@ -3253,6 +3253,8 @@ footer a:hover {
   justify-content: center;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: white;
+  
+  /* background-color: red; */
 }
 
 .dropdown-adddress-menu li:first-child {
@@ -3266,15 +3268,19 @@ footer a:hover {
   text-decoration: none;
   -webkit-transition: all 1s;
   transition: all 1s;
-
 }
 
+/* .dropdown-address .text:hover + .dropdown-adddress-menu{
+  opacity: 1;
+  transition: all 0.5s, background 2s 0.5s linear;
+  top: -10px;
+  left: -20px;
+} */
 .dropdown-address:hover .dropdown-adddress-menu {
   opacity: 1;
   transition: all 0.5s, background 2s 0.5s linear;
   top: -10px;
   left: -20px;
-
 }
 
 .dropdown-adddress-menu .drop-address {
@@ -4572,8 +4578,6 @@ footer a:hover {
   padding: 10px;
   position: relative;
   max-height: 300px;
-  /* background-color: red; */
-
 }
 
 .child-filter-dropdown {
@@ -4640,7 +4644,7 @@ footer a:hover {
   cursor: pointer;
   margin-top: 6px;
   overflow-y: scroll;
-  height: 9.5rem;
+  /* height: 9.5rem; */
 }
 
 .filter-lists::-webkit-scrollbar {
@@ -4672,9 +4676,16 @@ footer a:hover {
 .filter-list-clear {
   height: auto;
 }
-
-.filter-list-engineers {}
-
+.filter-list-engineers{
+  height: 9.5rem;
+}
+.filter-list-location{
+  height: 9.5rem;
+}
+.filter-list-type{
+  height: 9.5rem;
+  padding: 2rem 0;
+}
 .listing-filter2 {
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
@@ -5299,7 +5310,7 @@ footer a:hover {
   z-index: 1;
   display: none;
   top: 22% !important;
-  left: 12% !important;
+  left: 11.7% !important;
   height: 70%;
 }
 
@@ -6161,7 +6172,7 @@ element.style {
 }
 
 .react-calendar__navigation__label__labelText {
-  font-size: 1.3rem !important;
+  font-size: 1.3rem;
   color: #343434 !important;
 }
 
@@ -7910,6 +7921,10 @@ element.style {
   height: 80%;
   width: 100%;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 }
 
 .RatingStar {
@@ -9937,7 +9952,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-  .client-form-input-wrapper {
+  .client-form-input-wrapper{
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
@@ -10077,6 +10092,7 @@ a[href^="http://maps.google.com/maps"] {
     overflow: hidden;
   }
 }
+
 
 .logo-open-heading {
   margin-top: 14px;

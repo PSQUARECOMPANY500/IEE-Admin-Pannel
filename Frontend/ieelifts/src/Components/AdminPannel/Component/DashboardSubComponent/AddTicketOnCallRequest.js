@@ -1,208 +1,208 @@
 //................................{amit}....................................
-import React, { useEffect, useState } from "react";
-import { RxCross2 } from "react-icons/rx";
-import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
-import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { useEffect, useState } from "react";
+// import { RxCross2 } from "react-icons/rx";
+// import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
+// import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
+// import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/ClientActions";
-import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
-import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { requestClientDetailsByJon } from "../../../../ReduxSetup/Actions/ClientActions";
+// import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions"; //request-callbacks that show on the ticket table
+// import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
-import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
-import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
+// import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+// import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
 
-import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
-import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+// import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
+// import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const AddTicketOnCallRequest = ({
-  closeModal,
-  showTicketModal,
-  setRenderTicket,
-  requestSection,
-  setTicketUpdate,
-}) => {
-  const dispatch = useDispatch();
+// const AddTicketOnCallRequest = ({
+//   closeModal,
+//   showTicketModal,
+//   setRenderTicket,
+//   requestSection,
+//   setTicketUpdate,
+// }) => {
+//   const dispatch = useDispatch();
 
-  const [selectedEnggId, setSelectedEnggId] = useState([]);
+  // const [selectedEnggId, setSelectedEnggId] = useState([]);
 
   //  callback-request-state
-  const [jon, setJon] = useState(""); //call-api-using-jon
+  // const [jon, setJon] = useState(""); //call-api-using-jon
 
-  const [name, setname] = useState(""); //-api
-  const [number, setnumber] = useState(""); //-api
-  const [address, setaddress] = useState(""); //-api
-  const [ModelType, setModelType] = useState("");
-  const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
-  const [time, setTime] = useState(""); //-done
-  const [date, setDate] = useState(""); //-done
-  const [dtext, setdtext] = useState(""); //-done
+  // const [name, setname] = useState(""); //-api
+  // const [number, setnumber] = useState(""); //-api
+  // const [address, setaddress] = useState(""); //-api
+  // const [ModelType, setModelType] = useState("");
+  // const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
+  // const [time, setTime] = useState(""); //-done
+  // const [date, setDate] = useState(""); //-done
+  // const [dtext, setdtext] = useState(""); //-done
 
-  const [timer, setTimer] = useState(null);
-  const [engDate, setengDate] = useState("");
+  // const [timer, setTimer] = useState(null);
+  // const [engDate, setengDate] = useState("");
 
   //assign-callbacks-state
-  const [engDetails, setEngDetails] = useState({
-    enggJon: "",
-    enggName: "",
-    enggPhone: "",
-    enggAddress: "",
-    enggLocation: "",
-    enggRating: "",
-    enggPhoto: "",
-  });
+  // const [engDetails, setEngDetails] = useState({
+  //   enggJon: "",
+  //   enggName: "",
+  //   enggPhone: "",
+  //   enggAddress: "",
+  //   enggLocation: "",
+  //   enggRating: "",
+  //   enggPhoto: "",
+  // });
 
-  const [ClickListOnSelect, setClickListOnSelect] = useState(null);
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  const [message, setMessage] = useState("");
+  // const [ClickListOnSelect, setClickListOnSelect] = useState(null);
+  // const [selectedSlot, setSelectedSlot] = useState(null);
+  // const [message, setMessage] = useState("");
 
-  const timeSlots = [
-    {
-      slot: "9:00-11:00",
-    },
-    {
-      slot: "11:00-01:00",
-    },
-    {
-      slot: "01:30-03:30",
-    },
-    {
-      slot: "03:30-05:30",
-    },
-  ];
-  const bookedDateForEngg = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.getBookedSlotsforEnggsReducer &&
-      state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg
-    ) {
-      return state.AdminRootReducer.getBookedSlotsforEnggsReducer
-        .bookedDatesEngg.BookedSlots;
-    } else {
-      return null;
-    }
-  });
+  // const timeSlots = [
+  //   {
+  //     slot: "9:00-11:00",
+  //   },
+  //   {
+  //     slot: "11:00-01:00",
+  //   },
+  //   {
+  //     slot: "01:30-03:30",
+  //   },
+  //   {
+  //     slot: "03:30-05:30",
+  //   },
+  // ];
+  // const bookedDateForEngg = useSelector((state) => {
+  //   if (
+  //     state.AdminRootReducer &&
+  //     state.AdminRootReducer.getBookedSlotsforEnggsReducer &&
+  //     state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg
+  //   ) {
+  //     return state.AdminRootReducer.getBookedSlotsforEnggsReducer
+  //       .bookedDatesEngg.BookedSlots;
+  //   } else {
+  //     return null;
+  //   }
+  // });
 
-  const filteredSlots = timeSlots.filter((slot) => {
-    const engg = bookedDateForEngg?.find(
-      (engg) => engg.ServiceEnggId === selectedEnggId[0]
-    );
-    const bookedSlots = engg ? engg.slots : [];
-    return !bookedSlots.includes(slot.slot);
-  });
+  // const filteredSlots = timeSlots.filter((slot) => {
+  //   const engg = bookedDateForEngg?.find(
+  //     (engg) => engg.ServiceEnggId === selectedEnggId[0]
+  //   );
+  //   const bookedSlots = engg ? engg.slots : [];
+  //   return !bookedSlots.includes(slot.slot);
+  // });
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
-  const serviceEnggDetail = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.fetchAllClientDetailReducer &&
-      state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
-    ) {
-      return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
-        .ServiceEngg;
-    } else {
-      return;
-    }
-  });
+  // const serviceEnggDetail = useSelector((state) => {
+  //   if (
+  //     state.AdminRootReducer &&
+  //     state.AdminRootReducer.fetchAllClientDetailReducer &&
+  //     state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+  //   ) {
+  //     return state.AdminRootReducer.fetchAllClientDetailReducer.clientDetail
+  //       .ServiceEngg;
+  //   } else {
+  //     return;
+  //   }
+  // });
 
   //using use selector to select the checklist in check list state
-  const checkList = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.fetchChecklistReducer &&
-      state.AdminRootReducer.fetchChecklistReducer.checklists
-    ) {
-      return state.AdminRootReducer.fetchChecklistReducer.checklists.Checklists;
-    } else {
-      return;
-    }
-  });
+  // const checkList = useSelector((state) => {
+  //   if (
+  //     state.AdminRootReducer &&
+  //     state.AdminRootReducer.fetchChecklistReducer &&
+  //     state.AdminRootReducer.fetchChecklistReducer.checklists
+  //   ) {
+  //     return state.AdminRootReducer.fetchChecklistReducer.checklists.Checklists;
+  //   } else {
+  //     return;
+  //   }
+  // });
 
-  const getEnggState = useSelector((state) => {
-    if (
-      state.AdminRootReducer &&
-      state.AdminRootReducer.fetchEnggDetailReducer &&
-      state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
-    ) {
-      return state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
-        .enggDetail;
-    }
-    return;
-  });
+  // const getEnggState = useSelector((state) => {
+  //   if (
+  //     state.AdminRootReducer &&
+  //     state.AdminRootReducer.fetchEnggDetailReducer &&
+  //     state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+  //   ) {
+  //     return state.AdminRootReducer.fetchEnggDetailReducer.enggDetail
+  //       .enggDetail;
+  //   }
+  //   return;
+  // });
 
-  const clientDetails = useSelector((state) => {
-    return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
-      ?.client;
-  });
+  // const clientDetails = useSelector((state) => {
+  //   return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
+  //     ?.client;
+  // });
 
-  useEffect(() => {
-    if (clientDetails) {
-      setname(clientDetails.name);
-      setnumber(clientDetails.PhoneNumber);
-      setaddress(clientDetails.Address);
-      setModelType(clientDetails.ModelType);
+  // useEffect(() => {
+  //   if (clientDetails) {
+  //     setname(clientDetails.name);
+  //     setnumber(clientDetails.PhoneNumber);
+  //     setaddress(clientDetails.Address);
+  //     setModelType(clientDetails.ModelType);
 
-      const currentDate = new Date();
-      const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
-      const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
-      setDate(updatedFormatedDate);
+  //     const currentDate = new Date();
+  //     const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
+  //     const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
+  //     setDate(updatedFormatedDate);
 
-      const hours = currentDate.getHours();
-      const minutes = currentDate.getMinutes();
-      const seconds = currentDate.getSeconds();
-      const formattedTime = `${hours}:${minutes}:${seconds}`;
-      setTime(formattedTime);
-    }
-  }, [clientDetails]);
+  //     const hours = currentDate.getHours();
+  //     const minutes = currentDate.getMinutes();
+  //     const seconds = currentDate.getSeconds();
+  //     const formattedTime = `${hours}:${minutes}:${seconds}`;
+  //     setTime(formattedTime);
+  //   }
+  // }, [clientDetails]);
 
-  useEffect(() => {
-    if (timer) {
-      clearTimeout(timer);
-    }
+  // useEffect(() => {
+  //   if (timer) {
+  //     clearTimeout(timer);
+  //   }
 
-    const newTimer = setTimeout(() => {
-      if (jon) {
-        dispatch(requestClientDetailsByJon(jon));
-      }
-    }, 1300);
+  //   const newTimer = setTimeout(() => {
+  //     if (jon) {
+  //       dispatch(requestClientDetailsByJon(jon));
+  //     }
+  //   }, 1300);
 
-    setTimer(newTimer);
+  //   setTimer(newTimer);
 
-    return () => {
-      dispatch(requestClientDetailsByJon());
-      dispatch(requestCallBackByAdmin());
-      clearTimeout(newTimer);
-    };
-  }, [jon, dispatch]);
+  //   return () => {
+  //     dispatch(requestClientDetailsByJon());
+  //     dispatch(requestCallBackByAdmin());
+  //     clearTimeout(newTimer);
+  //   };
+  // }, [jon, dispatch]);
 
-  useEffect(() => {
-    dispatch(fetchAllClientDetailAction()); //allEng-Details
-    dispatch(fetchChecklistAction()); //allClickList-Details
+  // useEffect(() => {
+  //   dispatch(fetchAllClientDetailAction()); //allEng-Details
+  //   dispatch(fetchChecklistAction()); //allClickList-Details
 
-    return () => {
-      dispatch(fetchEnggDetailAction());
-    };
-  }, []);
+  //   return () => {
+  //     dispatch(fetchEnggDetailAction());
+  //   };
+  // }, []);
 
-  useEffect(() => {
-    //no problem
-    if (getEnggState) {
-      setEngDetails({
-        enggJon: getEnggState.EnggId,
-        enggName: getEnggState.EnggName,
-        enggPhone: getEnggState.PhoneNumber,
-        enggAddress: getEnggState.EnggAddress,
-        enggPhoto: getEnggState.EnggPhoto,
-      });
-    }
-  }, [getEnggState]);
+  // useEffect(() => {
+  //   //no problem
+  //   if (getEnggState) {
+  //     setEngDetails({
+  //       enggJon: getEnggState.EnggId,
+  //       enggName: getEnggState.EnggName,
+  //       enggPhone: getEnggState.PhoneNumber,
+  //       enggAddress: getEnggState.EnggAddress,
+  //       enggPhoto: getEnggState.EnggPhoto,
+  //     });
+  //   }
+  // }, [getEnggState]);
 
   // useEffect(() => {
   //   //no problem
@@ -212,134 +212,134 @@ const AddTicketOnCallRequest = ({
   //   };
   // }, []);
 
-  const handleEnggSelectionChange = (selectedOptions) => {
-    setSelectedEnggId(selectedOptions); // selected Engg id
-    dispatch(fetchEnggDetailAction(selectedOptions));
-  };
+  // const handleEnggSelectionChange = (selectedOptions) => {
+  //   setSelectedEnggId(selectedOptions); // selected Engg id
+  //   dispatch(fetchEnggDetailAction(selectedOptions));
+  // };
 
-  const handleEnggSelectionChange1 = (value) => {
-    setSelectedSlot(value);
-  };
+  // const handleEnggSelectionChange1 = (value) => {
+  //   setSelectedSlot(value);
+  // };
 
-  const handleSingleSetDropdown = (selectedOptions) => {
-    setClickListOnSelect(selectedOptions);
-  };
+  // const handleSingleSetDropdown = (selectedOptions) => {
+  //   setClickListOnSelect(selectedOptions);
+  // };
 
-  const handleTypeOfIssue = (selectedOption) => {
-    setTypeOfIssue(selectedOption);
-  };
+  // const handleTypeOfIssue = (selectedOption) => {
+  //   setTypeOfIssue(selectedOption);
+  // };
 
-  const handleAssignDateChange = (selectedOption) => {
-    const formattedDate = selectedOption.toLocaleDateString("en-GB");
-    setengDate(formattedDate);
+  // const handleAssignDateChange = (selectedOption) => {
+  //   const formattedDate = selectedOption.toLocaleDateString("en-GB");
+  //   setengDate(formattedDate);
 
-    dispatch(getBookedSlotsforEnggsAction(formattedDate));
-  };
+  //   dispatch(getBookedSlotsforEnggsAction(formattedDate));
+  // };
 
-  const handleElevatorSectionDetails = async () => {
-    if (requestSection) {
-      dispatch(
-        requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext)
-      ).then((RequestId) => {
-        if (
-          engDetails.enggJon &&
-          ClickListOnSelect &&
-          selectedSlot &&
-          date &&
-          message
-        ) {
-          dispatch(
-            assignserviceRequestByAdmin(
-              engDetails?.enggJon,
-              jon,
-              RequestId,
-              ClickListOnSelect.value,
-              selectedSlot,
-              engDate,
-              message,
-              engDetails?.enggName,
-              engDetails.enggJon
-            )
-          );
-        }
-      });
-    } else {
-      dispatch(
-        requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)
-      ).then((callbackId) => {
-        if (
-          engDetails.enggJon &&
-          ClickListOnSelect &&
-          selectedSlot &&
-          date &&
-          message
-        ) {
-          dispatch(
-            assignCallBackByAdminAction(
-              engDetails?.enggJon,
-              jon,
-              callbackId,
-              ClickListOnSelect.value,
-              selectedSlot,
-              engDate,
-              message,
-              engDetails?.enggName,
-              engDetails.enggJon
-            )
-          );
-        } else {
-          toast.error("Please fill all the fields");
-        }
-      });
-    }
-    setRenderTicket((prev) => !prev);
-    if (setTicketUpdate) {
-      setTicketUpdate((prev) => !prev);
-    }
-    closeModal();
-  };
+  // const handleElevatorSectionDetails = async () => {
+  //   if (requestSection) {
+  //     dispatch(
+  //       requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext)
+  //     ).then((RequestId) => {
+  //       if (
+  //         engDetails.enggJon &&
+  //         ClickListOnSelect &&
+  //         selectedSlot &&
+  //         date &&
+  //         message
+  //       ) {
+  //         dispatch(
+  //           assignserviceRequestByAdmin(
+  //             engDetails?.enggJon,
+  //             jon,
+  //             RequestId,
+  //             ClickListOnSelect.value,
+  //             selectedSlot,
+  //             engDate,
+  //             message,
+  //             engDetails?.enggName,
+  //             engDetails.enggJon
+  //           )
+  //         );
+  //       }
+  //     });
+  //   } else {
+  //     dispatch(
+  //       requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext)
+  //     ).then((callbackId) => {
+  //       if (
+  //         engDetails.enggJon &&
+  //         ClickListOnSelect &&
+  //         selectedSlot &&
+  //         date &&
+  //         message
+  //       ) {
+  //         dispatch(
+  //           assignCallBackByAdminAction(
+  //             engDetails?.enggJon,
+  //             jon,
+  //             callbackId,
+  //             ClickListOnSelect.value,
+  //             selectedSlot,
+  //             engDate,
+  //             message,
+  //             engDetails?.enggName,
+  //             engDetails.enggJon
+  //           )
+  //         );
+  //       } else {
+  //         toast.error("Please fill all the fields");
+  //       }
+  //     });
+  //   }
+  //   setRenderTicket((prev) => !prev);
+  //   if (setTicketUpdate) {
+  //     setTicketUpdate((prev) => !prev);
+  //   }
+  //   closeModal();
+  // };
 
-  return (
-    <>
-      <div className={`modal-wrapper`} onClick={closeModal}></div>
+  // return (
+  //   <>
+  //     <div className={`modal-wrapper`} onClick={closeModal}></div>
 
-      <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
-        <div className="cross-icon" onClick={closeModal}>
-          <RxCross2 />
-        </div>
+  //     <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
+  //       <div className="cross-icon" onClick={closeModal}>
+  //         <RxCross2 />
+  //       </div>
 
-        <div className="child-modal-container">
-          <div className="client-section">
-            <div className="upload-photo-secton">
-              <img
-                style={{ width: "200px", height: "200px" }}
-                src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
-                alt="lift"
-              />
-            </div>
+  //       <div className="child-modal-container">
+  //         <div className="client-section">
+  //           <div className="upload-photo-secton">
+  //             <img
+  //               style={{ width: "200px", height: "200px" }}
+  //               src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
+  //               alt="lift"
+  //             />
+  //           </div>
 
-            <div className="client-information-section">
-              <form className="client-form">
+  //           <div className="client-information-section">
+  //             <form className="client-form">
                 {/* one row strats */}
-                <div className="row">
-                  <div className="col25">
-                    <label>JON:</label>
-                  </div>
+                // <div className="row">
+                //   <div className="col25">
+                //     <label>JON:</label>
+                //   </div>
 
-                  <div className="col75">
-                    <input
-                      className={``}
-                      type="text"
-                      name="name"
-                      placeholder="Enter-Client-Id"
-                      onChange={(e) => setJon(e.target.value)}
-                    />
-                  </div>
-                </div>
+                //   <div className="col75">
+                //     <input
+                //       className={``}
+                //       type="text"
+                //       name="name"
+                //       placeholder="Enter-Client-Id"
+                //       onChange={(e) => setJon(e.target.value)}
+                //     />
+                //   </div>
+                // </div>
                 {/* one row ends */}
 
-                <div className="row">
-                  <div className="col25">
+                // <div className="row">
+                  {/* <div className="col25">
                     <label>NAME:</label>
                   </div>
                   {name ? (
@@ -448,10 +448,10 @@ const AddTicketOnCallRequest = ({
                   </div>
                 </div>
               </form>
-            </div>
+            </div> */}
 
             {/* membership-information-section section starts */}
-            <div className="membership-information-section">
+            {/* <div className="membership-information-section">
               <form className="client-form2">
                 <div className="row">
                   <div className="col25">
@@ -515,10 +515,10 @@ const AddTicketOnCallRequest = ({
                 </div>
               </form>
             </div>
-          </div>
+          </div> */}
           {/* membership-information-section section ends */}
 
-          <div className="elevator-section">
+          {/* <div className="elevator-section">
             <div className="elevator-engg-detail-section">
               <div className="sub-engg-detail-section">
                 <span>ELEVATOR DETAILS</span>
@@ -553,10 +553,10 @@ const AddTicketOnCallRequest = ({
                     <input type="text" name="name" value={"10/03/2015"} />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/*engg detail div start here------------------------------------------------------------------------------  */}
-              <div className="sub-engg-detail-section">
+              {/* <div className="sub-engg-detail-section">
                 <div style={{ marginTop: "10px" }}>
                   <p>ENGINEER DETAILS</p>
 
@@ -774,4 +774,4 @@ const AddTicketOnCallRequest = ({
   );
 };
 
-export default AddTicketOnCallRequest;
+export default AddTicketOnCallRequest; */}

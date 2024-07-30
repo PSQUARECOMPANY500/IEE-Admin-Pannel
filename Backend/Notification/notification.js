@@ -311,6 +311,8 @@ const saveNotification = async (owner, data) => {
 const FirebaseNotificationTestingPurpose = async (data) => {
   try {
     console.log("ooooooooooo", data);
+    if (!data) return;
+
     let { tokens, title, body } = data;
     if (!tokens) return;
 

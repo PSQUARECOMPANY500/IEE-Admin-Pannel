@@ -31,7 +31,7 @@ const AssignService = new Schema(
     },
     Message: {
       type: String,
-      required: true,
+      default:''
     },
     ServiceProcess: {
       type: String,

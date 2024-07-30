@@ -109,7 +109,7 @@ const storage = multer.diskStorage({
 //----------------------------------------------------------------------------------------------------------------------------------
 const storage2 = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/uplodes/leaveAttachment");
+    cb(null, "./public/leaveAttachment");
   },
   filename: (req, file, cb) => {
     const parts = file.mimetype.split("/")[1];
@@ -257,7 +257,7 @@ router.get(
 // by armaan 29/03/2024
 
 router.post(
-  "/pankaj",
+  "/LeaveRequest",
   upload2.fields([
     {
       name: "document",

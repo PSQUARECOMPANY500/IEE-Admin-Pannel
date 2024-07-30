@@ -954,13 +954,14 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } = req.body;
 
-    // console.log("preert", req.files);
+    // console.log("preert000000000000--------------", req.files.document[0].filename);
     // return ;
     // return;
 
+
     let document = null;
     if (req.files) {
-      document = req.files[0];
+      document = req.files.document[0].filename;
     }
     const response = await EnggLeaveServiceRecord.create({
       ServiceEnggId,
@@ -980,6 +981,8 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       .json({ error: "Internal server error in enggLeaveServiceRequest" });
   }
 };
+
+
 // changes by armaan
 //----- for testing api ----------------------------------------------------------------------------------------------------------
 module.exports.testingApi = async (req, res) => {
@@ -1644,8 +1647,9 @@ module.exports.getFinalReportDetails = async (req, res) => {
       }
     };
 
-    const membership = getMemberShipDetails?.MembershipType || 'silver';  //todo - chnage is future--------------------
-    // console.log("membership -----",membership)
+    // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
+    const membership = 'silver';
+    console.log("membership -----",membership)
 
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
@@ -1809,10 +1813,14 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
       RequestId: serviceId,
     });
+    
+    console.log("FinalFilteredData=======================", updateTaskStatusServiceRequest);
 
+
+    
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
-      let jon = updateTaskStatusCallback.JobOrderNumber;
+      let jon = updateTaskStatusCallback?.JobOrderNumber;
       console.log(jon)
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
       if (activeMembership) {
@@ -1823,7 +1831,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       await updateTaskStatusCallback.save();
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
-      let jon = updateTaskStatusCallback.JobOrderNumber;
+      let jon = updateTaskStatusCallback?.JobOrderNumber;
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;

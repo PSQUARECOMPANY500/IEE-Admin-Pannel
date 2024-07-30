@@ -132,7 +132,7 @@ const ClientFilterDropdown = () => {
             </div>
             {filter.type !== "clear" && (
               <div
-                className="listing-filter"
+                className={`listing-filter`}
                 style={{
                   maxHeight: openFilter === filter.type ? "200px" : "0",
                   opacity: openFilter === filter.type ? 1 : 0,
@@ -145,7 +145,7 @@ const ClientFilterDropdown = () => {
                     "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
                 }}
               >
-                <ul className="filter-lists">
+                <ul className={`filter-lists filter-list-${filter.type}`}>
                   {locations &&
                     locations?.locations?.locations &&
                     filter.options.map((option, index) => (

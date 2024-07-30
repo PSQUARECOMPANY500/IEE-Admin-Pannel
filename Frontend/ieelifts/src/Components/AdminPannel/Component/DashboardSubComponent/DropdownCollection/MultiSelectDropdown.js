@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
@@ -13,7 +12,7 @@ const MultiSelectDropdown = ({
   isAssigned,
   EnggName,
   editchange,
-  
+  flag
 }) => {
   const [selectedValue, setSelectedValue] = useState([]);
 
@@ -28,17 +27,15 @@ const MultiSelectDropdown = ({
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isFocused ? "white" : "white",
+      backgroundColor: "white",
       boxShadow: state.isFocused ? "none" : "rgba(99, 99, 99, 0.2) 0px 0 2px 1px",
       border: state.isFocused ? "1px solid #F8AC1D80" : "none",
       borderRadius: "5px",
-      fontSize: "0.8rem",
-      height:'auto',
-      padding:'0',
-      display: "flex", // Add display flex
-      alignItems: "center", // Add align-items center
-  
-
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
+      height: 'auto',
+      padding: '0',
+      display: "flex",
+      alignItems: "center",
       ":hover": {
         boxShadow: "0px 0px 5px #F8AC1D80",
         border: "none",
@@ -46,24 +43,48 @@ const MultiSelectDropdown = ({
     }),
     placeholder: (provided) => ({
       ...provided,
-      fontSize: "0.8rem",
-      fontFamily:'Poppins',
-      opacity:'0.6',
-  
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
+      fontFamily: 'Poppins',
+      opacity: '0.6',
     }),
     menu: (provided) => ({
       ...provided,
       backgroundColor: "#ffffff",
-      padding: "5px",
-      fontSize:'0.8rem',
-   
+      padding: "0",
+      fontSize: `${flag? "0.64rem":"0.8rem"}`,
+      maxHeight: '200px',
+      overflowY: 'auto',
+      marginTop: '0.5rem',
+      "::-webkit-scrollbar": {
+        width: '3px',
+      },
+      "::-webkit-scrollbar-thumb": {
+        backgroundColor: '#F8AC1D',
+      },
+      
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      padding: '0',
+      margin: '0',
+      maxHeight: '200px',
+      overflowY: 'auto',
+      "::-webkit-scrollbar": {
+        width: '3px',
+      },
+      "::-webkit-scrollbar-thumb": {
+        backgroundColor: '#F8AC1D',
+      },
     }),
     option: (provided, state) => ({
       ...provided,
-      backgroundColor: state.isSelected ? "#FFFFFF" : "#FFFFFF",
+      backgroundColor: state.isSelected ? "#F8AC1D" : "#FFFFFF",
       color: state.isSelected ? "white" : "black",
-      fontSize: "0.8rem",
- 
+      marginTop: '4px',
+      // fontSize: "0.8rem",
+      fontSize: `${flag?"0.64rem":"0.8rem"}`,
+      // padding: '8px 10px',
+      padding: `${flag?"0.4rem 0.5rem":"8px 10px"}`,
       ":hover": {
         backgroundColor: "#FEF3DE",
         color: "#F8AC1D",
@@ -75,34 +96,28 @@ const MultiSelectDropdown = ({
       backgroundColor: "#FEF3DE",
       borderRadius: "15px",
       fontSize: "0.8rem",
-   
     }),
     multiValueLabel: (provided) => ({
       ...provided,
       color: "#F8AC1D",
-
     }),
     multiValueRemove: (provided, state) => ({
       ...provided,
       color: state.isHovered ? "white" : "#F8AC1D",
       backgroundColor: state.isHovered ? "#F8AC1D" : "transparent",
-
       ":hover": {
-
         backgroundColor: "#FEF3DE",
         color: "#F8AC1D",
       },
     }),
     valueContainer: (provided) => ({
       ...provided,
-      height:'auto', 
+      height: 'auto',
     }),
   };
-  
-  
 
   const handleChange = (selectedOption) => {
-    console.log("dropdoen information : ", selectedOption);
+    console.log("dropdown information : ", selectedOption);
     const selectedValues = selectedOption.map((option) => option.value);
     setSelectedValue(selectedOption);
     handleEnggSelectionChange(selectedValues);
@@ -110,18 +125,17 @@ const MultiSelectDropdown = ({
 
   return (
     <Select
-    placeholder={placeholder}
-    closeMenuOnSelect={false}
-    components={animatedComponents}
-    isMulti
-    options={dynamicOptions}
-    styles={customStyles}
-    onChange={handleChange}
-    value={selectedValue}
-    isDisabled={editchange ? false : isAssigned}
-    isSearchable={false} 
-/>
-
+      placeholder={placeholder}
+      closeMenuOnSelect={false}
+      components={animatedComponents}
+      isMulti
+      options={dynamicOptions}
+      styles={customStyles}
+      onChange={handleChange}
+      value={selectedValue}
+      isDisabled={editchange ? false : isAssigned}
+      isSearchable={false}
+    />
   );
 };
 

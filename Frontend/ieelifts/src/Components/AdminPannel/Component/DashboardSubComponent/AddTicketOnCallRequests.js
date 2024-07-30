@@ -32,7 +32,7 @@ import config from "../../../../config";
    const dispatch = useDispatch();
  
    const [selectedEnggId, setSelectedEnggId] = useState([]);
- 
+  const [flag, setFlag] = useState(false);
  
    //  callback-request-state
    const [jon, setJon] = useState(""); //call-api-using-jon
@@ -280,7 +280,7 @@ import config from "../../../../config";
    const handleElevatorSectionDetails = async () => {
      if (requestSection) {
        dispatch(requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext,reName,reNumber)).then((RequestId) => {
-         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
+         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
            dispatch(assignserviceRequestByAdmin(
              engDetails?.enggJon,
              jon,
@@ -288,18 +288,22 @@ import config from "../../../../config";
              ClickListOnSelect.value,
              selectedSlot,
              engDate,
-             message,
+             message, 
              engDetails?.enggName,
              engDetails.enggJon,
              reName,
              reNumber
            ))
-         }
+           closeModal();
+         } else {
+          toast.error("Please fill all the fields")
+        } 
+          
        })
      }
      else {
        dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext ,reName,reNumber)).then(callbackId => {
-         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
+         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
            
            dispatch(
              assignCallBackByAdminAction(
@@ -312,8 +316,9 @@ import config from "../../../../config";
                message,
                engDetails?.enggName,
                engDetails.enggJon
-             )
-           );
+             ));
+             closeModal();
+
          } else {
            toast.error("Please fill all the fields")
          }
@@ -325,7 +330,12 @@ import config from "../../../../config";
      }
 }
  
- 
+   useEffect(()=>{
+      if(window.innerWidth <=1500){
+        setFlag(true)
+        console.log("hello")
+      }
+   },[window.innerWidth])
    return (
      <>
        <div className={`modal-wrapper`} onClick={closeModal}></div>
@@ -362,7 +372,7 @@ import config from "../../../../config";
                        <label>JON:</label>
                      </div>
  
-                     <div className="col75">
+                     <div className="col75 col75-jon">
                        {/* <input className={``} type="text" name="name" placeholder="Enter-Client-Id"  onChange={(e)=>setJon(e.target.value)} /> */}
                        <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter Jon Number" />
  
@@ -388,7 +398,7 @@ import config from "../../../../config";
                        </div>
                      ) : (
                        <div className="col75">
-                         <SkeltonLoader width="220px"  />
+                         <SkeltonLoader width="220px"/>
                        </div>
                      )}
  
@@ -399,12 +409,6 @@ import config from "../../../../config";
                      </div>
                      {number ? (
                        <div className="col75">
-                         {/* <input
-                             type="text"
-                             name="name"
-                             value={number}
-                             style={{ border: "none" }}
-                           /> */}
                          <p>{number}</p>
                        </div>
                      ) : (
@@ -437,12 +441,12 @@ import config from "../../../../config";
                        <label>TYPE OF ISSUE:</label>
                      </div>
  
-                     <div className="col75">
+                     <div className="col75 col75-typeOfIssue">
                        <SingleSetDropdown padding="8px" width="220px" className='dropdown-chnages' placeholder={"Type Of Issue"} 
                          Details={[{ _id: 1, checklistName: 'Door' }, { _id: 2, checklistName: 'Light' },
                          { _id: 3, checklistName: 'Fan' }, { _id: 4, checklistName: 'Buttons' },
                          { _id: 5, checklistName: 'Lift' }, { _id: 6, checklistName: 'Other' }]}
-                         onStateChange={handleTypeOfIssue} />
+                         onStateChange={handleTypeOfIssue} flag={flag}/>
                      </div>
                    </div>
  
@@ -704,7 +708,7 @@ import config from "../../../../config";
                          placeholder={"Select Enggineers"}
                          Details={serviceEnggDetail}
                          handleEnggSelectionChange={handleEnggSelectionChange}
- 
+                         flag={flag}
                        />) : (
                        
                         <div className="col75">
@@ -720,7 +724,7 @@ import config from "../../../../config";
                          placeholder={"Select Slot"}
                          slots={filteredSlots}
                          handleEnggSelectionChange={handleEnggSelectionChange1}
- 
+                         flag={flag}
                        />) : (
                         
                         (
@@ -747,6 +751,7 @@ import config from "../../../../config";
                          Details={checkList}
                          onStateChange={handleSingleSetDropdown}
                          isSearchable={false} 
+                         flag={flag}
                        />
                      </div>
                    </div>
@@ -768,7 +773,7 @@ import config from "../../../../config";
                        id="subject"
                        name="subject"
                        style={{
-                         height: "105px",
+                         height: "82px",
                          width: "93%",
                          resize: "none",
                        }}

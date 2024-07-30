@@ -31,19 +31,18 @@ const AssignRequest = new Schema(
     },
     Message: {
       type: String,
-      required: true,
     },
     ServiceProcess: {
       type: String,
       enum: ["onGoing", "completed", "InCompleted"],
       default: "InCompleted",
     },
-    RepresentativeName:{
+    RepresentativeName: {
       type: String,
     },
-    RepresentativeNumber:{
+    RepresentativeNumber: {
       type: String,
-    }
+    },
   },
   {
     timestamps: true,

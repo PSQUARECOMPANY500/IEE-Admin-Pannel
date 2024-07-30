@@ -24,15 +24,12 @@ const ReactDatePickers = ({
       currentDate.getMonth(),
       day
     )
-
- 
     setSelectedDate(newSelectedDate);
     OnDateChange(newSelectedDate);
     dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-GB");
     calendarRef.current.style.display = "none";
     renderCalendar();
   };
-
 
 
   function isPastDate(date) {

@@ -141,17 +141,17 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
           />
         );
       case "Call Back History":
-        return <ClientCallBackHis />;
+        return <ClientCallBackHis JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       case "Document":
-        return <ClientDocuments />;
+        return <ClientDocuments JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       case "SOS Calls":
-        return <ClientSOSCall />;
+        return <ClientSOSCall JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       case "Client Details":
-        return <ClientDetails />;
+        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       case "Service Histroy":
-        return <ClientServiceHistory />;
+        return <ClientServiceHistory JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       default:
-        return <ClientDetails />;
+        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber}/>;
     }
   };
 
