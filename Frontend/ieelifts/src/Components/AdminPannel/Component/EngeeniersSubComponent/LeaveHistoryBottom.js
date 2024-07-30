@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { SlLink } from 'react-icons/sl'
-import { useDispatch, useSelector } from 'react-redux'
-import { approveLeaveByAdmin, getRequstedLeaves } from '../../../../ReduxSetup/Actions/AdminActions';
+import React, { useEffect, useState } from "react";
+import { SlLink } from "react-icons/sl";
+import { useDispatch, useSelector } from "react-redux";
+import { approveLeaveByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const LeaveHistoryBottom = ({ engID, setleaveRequested }) => {
+const LeaveHistoryBottom = ({ setleaveRequested, leaves, engID }) => {
   const [currentLeaveIndex, setCurrentLeaveIndex] = useState(0);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (engID) {
-      dispatch(getRequstedLeaves(engID));
-    }
-  }, [engID, dispatch]);
-
-  const leaves = useSelector((state) => state?.AdminRootReducer?.engineerRequestedLeaveReducer?.requestedLeave?.leaves);
   const [leave, setLeave] = useState(null);
 
   useEffect(() => {
@@ -25,17 +18,18 @@ const LeaveHistoryBottom = ({ engID, setleaveRequested }) => {
   }, [leaves, currentLeaveIndex]);
 
   const handleApprove = async () => {
-    if (leave) {
-      await dispatch(approveLeaveByAdmin(leave._id, 'Approved'));
-      setCurrentLeaveIndex(prevIndex => prevIndex + 1);
+    if (leave && engID) {
+      console.log("8888888888888888888888",leave._id);
+      dispatch(approveLeaveByAdmin(leave._id, "Approved"));
+      setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
       setleaveRequested(leave);
     }
   };
 
   const handleReject = async () => {
-    if (leave) {
-      await dispatch(approveLeaveByAdmin(leave._id, 'Rejected'));
-      setCurrentLeaveIndex(prevIndex => prevIndex + 1);
+    if (leave && engID) {
+      dispatch(approveLeaveByAdmin(leave._id, "Rejected"));
+      setCurrentLeaveIndex((prevIndex) => prevIndex + 1);
       setleaveRequested(leave);
     }
   };

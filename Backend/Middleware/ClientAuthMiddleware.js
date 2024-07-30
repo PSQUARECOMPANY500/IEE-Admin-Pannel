@@ -9,7 +9,7 @@ const generateToken = (user) => {
 // Middleware to verify the user's JWT token
 const verifyToken = (userType) => (req, res, next) => {
   let token = req.header("Authorization");
-  // console.log("tttttttttttttttttttt",token);
+  console.log("tttttttttttttttttttt",token);
 
   if (!token) {
     return res

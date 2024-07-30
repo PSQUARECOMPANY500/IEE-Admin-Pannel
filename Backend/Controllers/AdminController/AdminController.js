@@ -2299,6 +2299,9 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
     });
 
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
+
+    console.log("sent leave in backend ",  sentLeaves)
+
     res.status(200).json({
       success: true,
       leaves: sentLeaves,
@@ -2451,23 +2454,27 @@ module.exports.assignedEnggDetails = async (req, res) => {
       const assignCallbacksWithRating = await Promise.all(
         assignCallbacksDetails.map(async (assignment) => {
           const Rating = await EnggRating.find({
-            ServiceEnggId: assignment.ServiceId,
+            ServiceId: assignment.ServiceId,
           });
-          // console.log("rating", Rating);
+          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
           return {
             ...assignment,
-            rating: Rating.Rating,
+            rating: Rating[0]?.Rating,
+            reportLink:reportTable?.paymentDetils
           };
         })
       );
       const assignServiceRequestsWithRating = await Promise.all(
         assignServiceRequestsDetails.map(async (assignment) => {
           const Rating = await EnggRating.find({
-            ServiceEnggId: assignment.ServiceId,
+            ServiceId: assignment.ServiceId,
           });
+          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
+
           return {
             ...assignment,
-            rating: Rating.Rating,
+            rating: Rating[0]?.Rating,
+            reportLink:reportTable?.paymentDetils
           };
         })
       );
@@ -3765,7 +3772,14 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 module.exports.upgradClientMembership = async (req, res) => {
   try {
     const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
-    const clientExist = await clientDetailSchema.findOne({ JobOrderNumber: JobOrderNumber });
+
+    // console.log("this is request dot body ",req);
+    console.log("this is",req.files);
+
+    const clientExist = await clientDetailSchema.findOne({JobOrderNumber});
+
+    console.log("clientExist",clientExist)
+    console.log("clientExist",JobOrderNumber)
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });

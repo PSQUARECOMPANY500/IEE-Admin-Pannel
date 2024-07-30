@@ -1,14 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import data from "../../Components/AdminPannel/Component/ClientsSubComponent/DatasClientServiceHis.json";
 import Loader from "../CommonComponenets/Loader";
 import CheckBox from "../../Components/AdminPannel/Component/DashboardSubComponent/CheckBox";
-
-
 
 const InformationTable = ({
   fieldsToShow,
@@ -25,8 +18,8 @@ const InformationTable = ({
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log("++++++++++++",loading);
-  
+  console.log("++++++++++++", loading);
+
   const recordsPerPage = 10;
   const observer = useRef();
 
@@ -113,15 +106,16 @@ const InformationTable = ({
               </tr>
             </thead>
             <tbody>
-              {serviceData && serviceData.length > 0 ? (
+              {serviceData &&
+                serviceData.length > 0 &&
                 serviceData?.map((row, rowIndex) => (
                   <tr key={rowIndex}>
-                    <td  key={rowIndex}>
+                    <td key={rowIndex}>
                       <div>{rowIndex + 1}</div>
                     </td>
 
                     <td>
-                      <div >{row.item.Date}</div>
+                      <div>{row.item.Date}</div>
                     </td>
 
                     <td>
@@ -135,12 +129,12 @@ const InformationTable = ({
                     </td>
                     <td>
                       <div>
-                        <div >
-                        {row.SparePartsChanged &&
-                          row.SparePartsChanged.map((item, index) => (
-                            <div key={index}>{item}</div>
-                          ))}
-                          </div>
+                        <div>
+                          {row.SparePartsChanged &&
+                            row.SparePartsChanged.map((item, index) => (
+                              <div key={index}>{item}</div>
+                            ))}
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -150,18 +144,7 @@ const InformationTable = ({
                       <div>{row.Payment_Mode}</div>
                     </td>
                   </tr>
-                ))
-              ) : (
-                <div className="informationTable-loader">
-                  <div className="skelton-in-message">
-                    {/* <div className="loader"> */}
-                      {/* <div className="box"></div> */}
-                      <p>No Data Yet</p>
-                    {/* </div> */}
-                  </div>
-                </div>
-              )}
-
+                ))}
               {loading && (
                 <tr>
                   <td
@@ -172,15 +155,13 @@ const InformationTable = ({
                   </td>
                 </tr>
               )}
-              {records.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={fieldsToShow.length}
-                    style={{ textAlign: "center" }}
-                  >
-                    No data available
-                  </td>
-                </tr>
+
+              {serviceData?.length === 0 && (
+                <div className="informationTable-loader">
+                  <div className="skelton-in-message">
+                    <p style={{textTransform:"capitalize"}}>No Data Yet</p>
+                  </div>
+                </div>
               )}
             </tbody>
           </table>

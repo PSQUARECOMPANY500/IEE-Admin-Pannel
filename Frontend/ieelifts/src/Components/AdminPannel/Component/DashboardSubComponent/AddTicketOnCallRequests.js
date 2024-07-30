@@ -280,7 +280,7 @@ import config from "../../../../config";
    const handleElevatorSectionDetails = async () => {
      if (requestSection) {
        dispatch(requestServiceRequestByAdmin(jon, date, time, typeOfIssue.label, dtext,reName,reNumber)).then((RequestId) => {
-         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
+         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
            dispatch(assignserviceRequestByAdmin(
              engDetails?.enggJon,
              jon,
@@ -288,18 +288,22 @@ import config from "../../../../config";
              ClickListOnSelect.value,
              selectedSlot,
              engDate,
-             message,
+             message, 
              engDetails?.enggName,
              engDetails.enggJon,
              reName,
              reNumber
            ))
-         }
+           closeModal();
+         } else {
+          toast.error("Please fill all the fields")
+        } 
+          
        })
      }
      else {
        dispatch(requestCallBackByAdmin(jon, date, time, typeOfIssue.label, dtext ,reName,reNumber)).then(callbackId => {
-         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && message) {
+         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
            
            dispatch(
              assignCallBackByAdminAction(
@@ -312,8 +316,9 @@ import config from "../../../../config";
                message,
                engDetails?.enggName,
                engDetails.enggJon
-             )
-           );
+             ));
+             closeModal();
+
          } else {
            toast.error("Please fill all the fields")
          }
@@ -404,12 +409,6 @@ import config from "../../../../config";
                      </div>
                      {number ? (
                        <div className="col75">
-                         {/* <input
-                             type="text"
-                             name="name"
-                             value={number}
-                             style={{ border: "none" }}
-                           /> */}
                          <p>{number}</p>
                        </div>
                      ) : (

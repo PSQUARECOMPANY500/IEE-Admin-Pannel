@@ -11,7 +11,7 @@ const ClientController = require("../../Controllers/ClientController/ClientContr
 
 const uploadClientData = require("../../Multer/ClientDocumentUpload");
 
-const { uploadEdit } = require("../../Multer/EnggAttachmentUpload");
+const { uploadEdit,storageMembershipUpgradeBill } = require("../../Multer/EnggAttachmentUpload");
 
 const { token } = require("../../Controllers/AdminController/AdminController")
 
@@ -131,11 +131,11 @@ router.post("/loginAdmin", adminContoller.loginServiceAdmin);
 
 // --------------- by Arrman date -> 29/03/2024   starts ---------------------------------------
 router.get("/getEngineerLeaveHistory", adminContoller.getEngineerLeaveHistory);
-router.get(
-  "/getEngineerRequestedLeave",
-  adminContoller.getEngineerRequestedLeave
-);
-router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
+// router.get(
+//   "/getEngineerRequestedLeave",
+//   adminContoller.getEngineerRequestedLeave
+// );
+// router.get("/takeActionOnLeave", adminContoller.takeActionOnLeave);
 // --------------- by Arrman date -> 29/03/2024   ends ---------------------------------------
 
 // --by amit 29/03/2024 ------------
@@ -341,7 +341,13 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
 router.get('/getAllClients',adminContoller.getAllClients)
+router.post('/upgradClientMembership',storageMembershipUpgradeBill.fields([
+  {
+    name: "MembershipInvoice",
+  }
+]), adminContoller.upgradClientMembership);
 
 
+router.get('/getAllClients',adminContoller.getAllClients);
 
 module.exports = router;

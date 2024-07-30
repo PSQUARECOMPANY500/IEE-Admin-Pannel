@@ -49,10 +49,9 @@ const clientRegister = new Schema(
     firebaseToken: {
       type: String
     },
-    email: {
+    emailAddress: {
       type: String
     }
-
   },
   {
     timestamp: true,
