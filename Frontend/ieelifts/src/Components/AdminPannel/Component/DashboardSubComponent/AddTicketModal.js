@@ -27,7 +27,6 @@ const AddTicketModal = ({
   setTicketUpdate,
 }) => {
   const dispatch = useDispatch();
-  //console.log("kon h wo chutiya")
   const [selectedEnggId, setSelectedEnggId] = useState([]);
 
   //  manage use states for the input fields
@@ -234,8 +233,7 @@ const AddTicketModal = ({
       engDetails.enggJon &&
       ClickListOnSelect &&
       selectedSlot &&
-      date &&
-      message
+      date
     ) {
       if (engDate === "") {
         dateOnAssign = fetchedDate;
@@ -258,7 +256,6 @@ const AddTicketModal = ({
 
       setRenderTicket((prev) => !prev);
       setTicketUpdate((prev) => !prev);
-      closeModal();
     } else {
       toast.error("Please fill all the fields");
     }
