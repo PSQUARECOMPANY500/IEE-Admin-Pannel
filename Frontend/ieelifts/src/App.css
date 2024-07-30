@@ -82,11 +82,28 @@ main {
   display: none;
 }
 
+.sidebarOpenWidth {
+  width: 18.75rem;
+}
+
+.sidebarCloseWidth {
+  width: 8.8rem;
+}
+
 .logo-image {
   justify-content: center;
   align-items: center;
-  width: 90px;
+  width: 100px;
   display: flex;
+}
+
+
+.logo-image-open {
+  width: 100px;
+}
+
+.logo-image-close {
+  width: 60px;
 }
 
 .top_section {
@@ -98,20 +115,38 @@ main {
 }
 
 .logo {
-  margin-top: 22px;
+  margin-top: 1.3rem;
 
-  /* margin-left: -45px !important; */
+
+}
+
+.logo-open {
+  margin-left: -2.5rem;
+}
+
+
+.logo-close {
+  margin-left: -1.3rem;
 }
 
 .bars {
   display: flex;
   font-size: 25px;
   cursor: pointer;
-  margin-bottom: 30px;
-  margin-left: 80px;
+  margin-bottom: 1.8rem;
+  margin-left: 5rem;
 }
 
-.Pimg img {
+
+.bars-open {
+  margin-left: 3.1rem;
+}
+
+.bars-close {
+  margin-left: -0.6rem;
+}
+
+.bars-close .Pimg img {
   object-fit: cover;
   object-position: top;
 }
@@ -252,7 +287,7 @@ main {
   transition: all 0.5s;
   border-radius: 10px;
   text-wrap: nowrap;
-  margin-top: 3px;
+  margin-top: 0.18rem;
 }
 
 .link:hover {
@@ -269,7 +304,7 @@ main {
 
 .icon,
 .link_text {
-  font-size: 16px;
+  font-size: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -289,7 +324,7 @@ li a {
 .fixed-content-navbar {
   position: fixed;
   top: 0;
-  padding: 0px 15px;
+  padding: 0px 0.85rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -301,6 +336,20 @@ nav {
   background: #ffffff;
   margin: 12px auto;
   transition: 0.5s ease;
+}
+
+.nav-open {
+  width: 14.3rem;
+  display: block;
+  flex-direction: column;
+  align-items: start;
+}
+
+.nav-close {
+  width: 100px;
+  display: block;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main-menu-adjust {
@@ -1253,7 +1302,7 @@ input::-webkit-inner-spin-button {
   padding: 0;
   margin: 0;
   color: #343434;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .user-info {
@@ -1272,7 +1321,19 @@ input::-webkit-inner-spin-button {
   transition: all 0.5s;
   animation-duration: 0.5s all;
   animation-timing-function: ease-in 0.5s all;
+
   /* animation: sliders; */
+}
+
+.user-info-open {
+  width: 14.5rem;
+  pointer-events: 'auto';
+  padding: 0;
+}
+
+.user-info-close {
+  width: 5rem;
+  pointer-events: none;
 }
 
 /* -----------------ToDO components-------- -------------------------- */
@@ -2369,6 +2430,11 @@ input:-webkit-autofill {
   gap: 10px;
 }
 
+.ineer-menue img {
+  height: 50px;
+  width: 50px;
+}
+
 /* side menu csss ends */
 
 /*------------------------------------------------------ dashboard css starts ------------------------------------------------------------------------*/
@@ -2428,6 +2494,15 @@ input:-webkit-autofill {
   transition: 0.5s ease;
   /* margin-left: 12%; */
 }
+
+.left-side-heading-open {
+  margin-left: 0;
+}
+
+.left-side-heading-close {
+  margin-left: -9.5rem;
+}
+
 
 .right-side-icons {
   color: #191919;
@@ -2728,7 +2803,7 @@ footer a:hover {
 
 .main-crouser {
   width: 100%;
-  height: 160px;
+  height: 10rem;
   background: #ffffff;
   padding-top: 0.1rem;
   padding-left: 0.5rem;
@@ -2885,7 +2960,17 @@ footer a:hover {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 13px;
+  gap: 0.8rem;
+}
+
+.basic-info-profile {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+
+
 }
 
 .message-icon {
@@ -2900,6 +2985,16 @@ footer a:hover {
   cursor: pointer;
   color: #343434;
   box-shadow: 1px 2px 5px #00000029;
+}
+
+.file-icon {
+  margin-top: 3px;
+}
+
+.mic-icon,
+.send-icon,
+.main-file-icon {
+  font-size: 1rem, ;
 }
 
 .message-dot {
@@ -3097,7 +3192,6 @@ footer a:hover {
 
 .dropdown,
 .dropdown2 {
-  background-color: white;
   color: black;
   cursor: pointer;
   position: relative;
@@ -3211,17 +3305,20 @@ footer a:hover {
   cursor: pointer;
   margin-top: -2rem;
   margin-right: 1rem;
+
+}
+
+.dropdown3-menu {
+  left: -12.7rem;
+  margin-top: -2.5rem;
+
 }
 
 .dropdown-menu {
-  width: 166px;
   overflow: hidden;
-  background-color: #fff;
   list-style-type: none;
-  margin: 0;
   padding: 0;
   position: absolute;
-  left: 0;
   opacity: 0;
   text-align: center;
   top: 0;
@@ -3247,45 +3344,64 @@ footer a:hover {
 
 .dropdown:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  background: white;
+  /* background: white; */
   opacity: 1;
   visibility: visible;
   top: 2%;
   /* margin-left: -0.2rem; */
   border-radius: 10px;
   z-index: 99999;
-  width: 166px;
+  /* width: 166px; */
   height: auto;
   overflow: hidden;
-  background-color: green;
+
+}
+
+.dropdown1-menu {
+  width: 166px;
+  background-color: white;
+
 }
 
 .dropdown2:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  background: white;
+
   opacity: 1;
   visibility: visible;
   top: 4%;
   border-radius: 10px;
   z-index: 99999;
-  width: 166px;
+
   height: auto;
   margin-left: -6.2rem;
 }
 
+.dropdown2-menu {
+  width: 166px;
+  background: white;
+
+}
+
+
+
 .dropdown3:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  background: white;
+  /* background: white; */
   opacity: 1;
   visibility: visible;
   top: 75%;
   margin-left: 2rem;
-
   /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
-  width: 225px;
+  /* width: 225px; */
 
   height: auto;
+}
+
+.dropdown3-menu {
+  width: 225px;
+  background-color: white;
+
 }
 
 .pie-chart-detail:hover .dropdown-menu {
@@ -3483,6 +3599,7 @@ footer a:hover {
 
 .tasks-section {
   width: 33%;
+
 }
 
 .tasks-section-on-kanban {
@@ -3541,10 +3658,12 @@ footer a:hover {
   grid-template-columns: repeat(2, calc(50% - 1rem));
   justify-content: center;
   gap: 1rem;
+  height: 200px;
   max-height: 300px;
   overflow-x: hidden;
   scroll-behavior: smooth;
   animation: changeText 0.7s linear forwards;
+
 }
 
 /* set scroll behaviour  */
@@ -3746,7 +3865,6 @@ footer a:hover {
   border-radius: 5px;
   align-items: center;
   justify-content: space-between;
-
   cursor: pointer;
   color: #f8ac1d;
   font-weight: 500;
@@ -4201,7 +4319,7 @@ footer a:hover {
 .ticket-section-heading span:nth-child(1) {
   color: #191919;
 
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 500;
 
   margin-left: -4px;
@@ -4357,6 +4475,7 @@ footer a:hover {
   top: 0;
   margin-left: -115px;
   z-index: 99999;
+
 }
 
 .search-icon-filter,
@@ -4440,9 +4559,11 @@ footer a:hover {
   border: 1px solid #c1c1c180;
   border-radius: 5px;
 }
-.horizontal-row-filter:hover{
+
+.horizontal-row-filter:hover {
   background-color: white !important;
 }
+
 .filter-dropdowns {
   margin-top: 10px;
 }
@@ -4522,14 +4643,16 @@ footer a:hover {
   height: 9.5rem;
 }
 
-.filter-lists::-webkit-scrollbar{
+.filter-lists::-webkit-scrollbar {
   width: 2px;
 }
-.filter-lists::-webkit-scrollbar-thumb{
+
+.filter-lists::-webkit-scrollbar-thumb {
   background-color: #F8AC1D;
 }
-.listing-filter{
-}
+
+.listing-filter {}
+
 .filter-icons span {
   padding: 0;
   margin: 0;
@@ -4542,15 +4665,16 @@ footer a:hover {
   color: black;
 }
 
-.filter-list-status{
+.filter-list-status {
   height: auto;
 }
-.filter-list-clear{
-  height: auto;
-}
-.filter-list-engineers{
 
+.filter-list-clear {
+  height: auto;
 }
+
+.filter-list-engineers {}
+
 .listing-filter2 {
   overflow: hidden;
   transition: max-height 0.3s ease-in-out;
@@ -6295,6 +6419,7 @@ element.style {
 /* --------------------------------------------------message box css starts--------------------------------------------------------------------------------------- */
 .engg-message {
   transition: all 0.5s, background 2s 0.5s linear;
+  margin-top: 0.3rem;
 }
 
 .message-parent-div {
@@ -6722,6 +6847,10 @@ element.style {
 
 .message-box-crouser {
   margin: -2px 0px;
+}
+
+.message-box-crouser {
+  font-size: 1.2rem;
 }
 
 .message-text {
@@ -8085,15 +8214,14 @@ element.style {
 }
 
 .EngChatBox-Dash {
-  width: 300px;
-  height: 480px;
+  width: 18rem;
+  height: 30rem;
   background-color: #fffbf4;
   border-radius: 5px;
   margin-top: 2px;
-  margin-left: -260px;
+  margin-left: -16.25rem;
   position: absolute;
   z-index: 99999;
-
   box-shadow: 10px 10px 25px #00000029;
 }
 
@@ -9228,7 +9356,7 @@ element.style {
 
 } */
 
-@media only screen and (min-width: 1550px) and (max-width: 1885px ){
+@media only screen and (min-width: 1550px) and (max-width: 1885px) {
   .dropdown-content {
     position: absolute;
     z-index: 1;
@@ -9247,32 +9375,8 @@ element.style {
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
 
-  .dropdown-content {
-    position: absolute;
-    z-index: 1;
-    margin-left: -7rem;
-    width: 160px;
-    overflow: hidden;
-    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    border-radius: 4px;
-    background-color: #fff;
-    top: 10%;
-  }
 
-  /* if create problem then use 1280px  */
-  .wrapper {
-    display: none;
-  }
 
-  .bars {
-    display: none;
-  }
-
-  .logo {
-    margin-right: -1.5rem;
-  }
 
   .tasks-section {
     width: 35%;
@@ -9314,8 +9418,8 @@ element.style {
     box-shadow: 1px 2px 5px #00000029;
     font-size: 25px;
     color: #343434;
-    height: 38px;
-    width: 38px;
+    height: 36px;
+    width: 36px;
     cursor: pointer;
   }
 
@@ -9369,7 +9473,7 @@ element.style {
 
   .ticket-sub-card-row-right h5,
   .ticket-sub-card-row-left h5 {
-    font-size: 0.6rem;
+    font-size: 0.5rem;
   }
 
   .task-top-section p {
@@ -9418,13 +9522,6 @@ element.style {
     margin-bottom: 1.4rem;
   }
 
-  .ticket-card {
-    height: 5.5rem;
-  }
-
-  .service-card {
-    height: 5.5rem;
-  }
 
   .CarouselButtons {
     width: 90%;
@@ -9492,11 +9589,24 @@ element.style {
   .service-request-table table th,
   .service-schedule-table table td,
   .service-schedule-table table th {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 
   .dropdown-content {
-    top: 10%;
+    top: 7.5%;
+    position: absolute;
+    z-index: 1;
+    margin-left: -7rem;
+    width: 160px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+      rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 4px;
+    background-color: #fff;
+
+
+
   }
 
   /* -------------------------------------------------------------------------------------add eng modal responsive here----------------------------------------------------------- */
@@ -9509,15 +9619,17 @@ element.style {
     gap: 1.5rem;
     padding: 0.8rem 0.4rem;
   }
+
   .EnggAddressSection {
     gap: 0.5rem;
     width: 45%;
     height: 90vh;
   }
 
-  .addform-modal-container{
+  .addform-modal-container {
     height: 95vh;
   }
+
   .cross-icon {
     right: 4px;
   }
@@ -9816,219 +9928,8 @@ a[href^="http://maps.google.com/maps"] {
 }
 
 
-  /* media query for dashboard engineer carousel card by rahul */
-@media only screen and (min-width: 1880px) and (max-width: 1900px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 2rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
 
-  .tasks-heading {
-    position: relative;
-    top: 11px;
-    left: 50px;
-    font-size: 20px !important;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-}
-
-@media only screen and (min-width: 1830px) and (max-width: 1880px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 1.5rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-  .tasks-heading {
-    position: relative;
-    top: 11px;
-    left: 50px;
-    font-size: 20px !important;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-}
-
-@media only screen and (min-width: 1815px) and (max-width: 1879px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 1.4rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1797px) and (max-width: 1814px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 1.2rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-
-@media only screen and (min-width: 1761px) and (max-width: 1796px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 1rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-
-
-@media only screen and (min-width: 1718px) and (max-width: 1760px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 0.4rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1680px) and (max-width: 1717px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: 0;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1640px) and (max-width: 1679px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: -0.4rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1595px) and (max-width: 1640px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: -0.8rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1565px) and (max-width: 1594px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: -1.1rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-@media only screen and (min-width: 1520px) and (max-width: 1564px) {
-  
-  .dropdown3:hover .dropdown-menu {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background: white;
-    opacity: 1;
-    visibility: visible;
-    top: 75%;
-    margin-left: -1.4rem;
-    /* background-color: red !important; */
-    /* transition: all 0.5s, background 2s 0.5s linear; */
-    border-radius: 10px;
-    width: 220px;
-    height: auto;
-  }
-
-}
-/* --------------------------end--------------------------------- */
-
-
-/* client form responsive brekpoint min width 769 or max width 1550px  */
+/* client form responsive brekpoint min width 769 or max width 1550px  by raj  */
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
   .client-form-details-heading {
@@ -10044,7 +9945,7 @@ a[href^="http://maps.google.com/maps"] {
     grid-row-gap: 1.2rem;
     margin-top: 1rem;
   }
-  
+
   .input-field {
     font-size: 13px;
     width: 100%;
@@ -10060,6 +9961,7 @@ a[href^="http://maps.google.com/maps"] {
     font-weight: 400;
     margin-top: -1.2rem !important;
   }
+
   .input-label {
     position: absolute;
     top: 0;
@@ -10071,6 +9973,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.85rem !important;
     margin-top: 0.09rem;
   }
+
   /* --------------------------------------------------- */
 
   .client-form-left-container {
@@ -10078,22 +9981,25 @@ a[href^="http://maps.google.com/maps"] {
     grid-template-rows: 1fr 1fr;
     width: 38% !important;
   }
+
   .client-form-right-container {
     width: 100% !important;
 
   }
 
-  .client-form-container{
-    display: flex !important ;
-    flex-direction: row !important ;
+  .client-form-container {
+    display: flex !important;
+    flex-direction: row !important;
     column-gap: 10rem !important;
   }
+
   .quotation {
     color: #444444;
     font-size: 0.8rem;
     font-weight: 500;
     margin-bottom: 1rem;
   }
+
   .inputLabel {
     position: absolute;
     font-family: "Poppins";
@@ -10103,11 +10009,13 @@ a[href^="http://maps.google.com/maps"] {
     opacity: 0.5;
     font-size: 0.8rem;
   }
+
   .filename {
     cursor: pointer;
     font-size: 0.8rem;
     font-family: "Poppins";
   }
+
   .calendarIcon {
     width: 1.2rem;
     height: auto;
@@ -10118,6 +10026,7 @@ a[href^="http://maps.google.com/maps"] {
     z-index: 5;
     width: 17.5rem;
   }
+
   .clientDateInput {
     outline: none;
     border-left: none;
@@ -10131,6 +10040,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
     color: #444444;
   }
+
   .clientDateContainer {
     position: relative;
     display: flex;
@@ -10138,6 +10048,7 @@ a[href^="http://maps.google.com/maps"] {
     font-family: "Poppins";
     margin-top: -0.35rem;
   }
+
   .dropdown-input {
     outline: none;
     border: none;
@@ -10167,9 +10078,291 @@ a[href^="http://maps.google.com/maps"] {
   }
 }
 
+.logo-open-heading {
+  margin-top: 14px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.logo-close-heading {
+  margin-top: 30px;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+
+.no-rating {
+  font-size: 1rem;
+}
+
+
+/* --------------------------client form responsive by raj end------------------------------------------------------------------------------- */
+
+
+/*----------------------------------------------------------------------------- media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+
+  .top-bar {
+    height: 60px;
+    padding-left: 15.5rem;
+  }
+
+  .sidebarOpenWidth {
+    width: 16.5rem;
+  }
+
+  .left-side-heading-close {
+    margin-left: -6.7rem;
+  }
+
+  .user-info-open {
+    width: 13rem;
+    pointer-events: 'auto';
+    padding: 0rem;
+  }
+
+  .user-info-close {
+    width: 4.5rem;
+  }
+
+  .nav-open {
+    width: 12.8rem;
+  }
+
+  .logo-open {
+    margin-left: -1.1rem;
+  }
+
+  .main-crouser {
+    height: 8.5rem;
+  }
+
+  .message-box-crouser {
+    font-size: 1.08rem;
+  }
+
+
+
+  .logo-image-open {
+    width: 90px;
+  }
+
+  .logo-image-close {
+    width: 54px;
+  }
+
+
+  .ineer-menue img {
+    height: 45px;
+    width: 45px;
+  }
+
+  .main-profile-item {
+    font-size: 9px;
+  }
+
+  .main-profile-item p {
+    font-size: 11px;
+  }
+
+  .main-menu-adjust {
+    font-size: 0.7rem;
+  }
+
+  .icon,
+  .link_text {
+    font-size: 0.8rem;
+  }
+
+  .link {
+    margin-top: 0.001rem;
+  }
+
+  .fixed-content-navbar {
+    padding: 0px 0.4rem;
+  }
+
+  .dropdown3-menu {
+    left: -10.5rem;
+    margin-top: -3.3rem;
+  }
+
+  .dropdown1-menu {
+
+    margin-top: 1.2rem;
+  }
+
+
+  /* .dropdown-menu {
+    width: 150px;
+  } */
+
+  .tasks-heading {
+    font-size: 17px;
+  }
+
+  .tasks-heading-on-no-task {
+    font-size: 1rem;
+  }
+
+  .taskmain-info {
+    font-size: 12px;
+  }
+
+  /* .skill-box {
+    width: 90%;
+  } */
+
+  .dropdown2,
+  .dropdown {
+    margin-top: -1rem;
+  }
+
+  .task-top-section p {
+    font-size: 0.9rem;
+  }
+
+  .switch-button p {
+    font-size: 14px;
+  }
+
+  .ticket-card {
+    height: 5rem;
+  }
+
+  .service-card {
+    height: 5rem;
+  }
+
+  .skill-box .skill-bar {
+    margin-top: -2px;
+
+  }
+
+  .logo-open-heading {
+    font-size: 1rem
+  }
+
+  .logo-close-heading {
+    font-size: 0.7rem;
+
+  }
+
+  .sub-menu {
+    font-size: 0.8rem;
+  }
+
+  .engg-profile {
+    font-size: 0.7rem;
+
+  }
+
+  .basic-info-profile {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  .EngChatBox-Dash {
+    width: 15rem;
+    height: 24rem;
+    margin-top: 3px;
+    margin-left: -12.7rem;
+  }
+
+  .text-area-message-eng-card-dash {
+    width: 85%;
+    top: -47px;
+    font-size: 0.6rem;
+    margin-bottom: 13px;
+  }
+
+  .engchatmsg-reciver-message-dash,
+  .engchatmsg-sender-message-dash {
+    font-size: 0.7rem;
+  }
+
+  .file-icon {
+    margin-top: -10px;
+  }
+
+  .send-messsage-eng-card-dash {
+    padding: 5px;
+    margin-top: -15px;
+  }
+
+  .no-rating {
+    font-size: 0.8rem;
+  }
+
+  task-top-section p {
+    color: #191919;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-left: 0.8rem;
+  }
+
+  .dropdown1-menu {
+    width: 130px;
+
+  }
+
+  .dropdown2-menu {
+    width: 130px;
+
+  }
+
+  .dropdown3-menu {
+    width: 180px;
+  }
+
+  .upper-sec p:first-child {
+    font-size: 11px;
+
+  }
+
+  .ticket-card-bottom h5,
+  .service-card-bottom h5 {
+    font-size: 0.6rem;
+  }
+
+
+  .task-description-section {
+    gap: 0.8rem;
+  }
+
+
+  .ticket-section-heading span:nth-child(1) {
+    color: #191919;
+    font-size: 1rem;
+
+  }
+
+  .dropdown-content-filter {
+    margin-top: 3.2rem;
+
+  }
+
+  .kanban-button-location {
+    font-size: 0.6rem;
+  }
+
+  .kanban-button-location {
+    padding: 0.5rem 1rem;
+    border: 1px solid #f8ac1d;
+  }
+
+
+}
+
+
+/*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
 
 
 
 
 
-/* --------------------------end--------------------------------- */
+

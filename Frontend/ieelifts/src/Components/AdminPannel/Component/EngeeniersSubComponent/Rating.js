@@ -18,7 +18,6 @@ const Rating = (engID) => {
     const getData = async () => {
       const getEnggRating = await fetchEnggRatingData(engID.engID);
       // console.log("getEnggRating", getEnggRating);
-
       setEnggRatingData(getEnggRating);
     };
     getData();

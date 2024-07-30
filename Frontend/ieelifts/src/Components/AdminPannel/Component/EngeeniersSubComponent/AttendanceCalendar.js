@@ -49,7 +49,7 @@ const AttendanceCalendar = ({ setTodayDate }) => {
       day
     );
     const dayElement = document.createElement("div");
-    dayElement.classList.add("aday");
+    dayElement.classList.add("aday-eng");
 
     if (date.toDateString() === new Date().toDateString()) {
       dayElement.classList.add("current");
@@ -162,7 +162,7 @@ const AttendanceCalendar = ({ setTodayDate }) => {
           </button>
         </div>
         <div
-          className="adays"
+          className="adays-eng"
           id="daysContainer"
           ref={ADayContainerRef}
         ></div>

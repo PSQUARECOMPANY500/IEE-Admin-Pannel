@@ -25,6 +25,7 @@ const MessageBox = ({ onClose, EnggId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
 
+
   const scroll = () => {
     if (messageBodyRef.current) {
       messageBodyRef.current.scrollTop = messageBodyRef.current.scrollHeight;
@@ -44,11 +45,11 @@ const MessageBox = ({ onClose, EnggId }) => {
       console.log("socket is connected successfully")
     });
     return () => {
-      socket.disconnect();  
-      };
+      socket.disconnect();
+    };
   }, []);
 
-  
+
 
 
 
@@ -123,8 +124,8 @@ const MessageBox = ({ onClose, EnggId }) => {
     const verticalBorders = Math.round(
       parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
     );
-    const maxHeight = parseFloat(style.maxHeight) || 70;
-    elem.style.height = "20px";
+    const maxHeight = parseFloat(style.maxHeight) ||40
+    elem.style.height = "20px"
     const newHeight = elem.scrollHeight + verticalBorders;
     elem.style.overflowY = newHeight > maxHeight ? "auto" : "hidden";
     elem.style.height = Math.min(newHeight, maxHeight) + "px";
@@ -168,19 +169,21 @@ const MessageBox = ({ onClose, EnggId }) => {
     scroll();
   }, [getMessages]);
 
-useEffect(() => {
-  socket.on("EnggNewMessage", (message) => {
-    setAllMessages((prevMessages) => [...prevMessages, message]);
-  });
-}, []);
+  useEffect(() => {
+    socket.on("EnggNewMessage", (message) => {
+      setAllMessages((prevMessages) => [...prevMessages, message]);
+    });
+  }, []);
 
 
 
   useEffect(() => {
-  
+
     scroll();
   }, [allMessages]);
-  
+
+
+
   return (
     <>
       <EngChatNav />
@@ -188,9 +191,9 @@ useEffect(() => {
         <div className="EngChatBoxHead-Dash">
           <h6>online</h6>
           <div className="EngChatBoxIcons-Dash">
-            <IoCallOutline className="cursor"/>
-            <CiVideoOn  className="cursor"/>
-            <RxCross2 onClick={onClose}  className="cursor"/>
+            <IoCallOutline className="cursor" />
+            <CiVideoOn className="cursor" />
+            <RxCross2 onClick={onClose} className="cursor" />
           </div>
         </div>
         <div className="EngChatMsg-Dash"  >
@@ -266,16 +269,17 @@ useEffect(() => {
               ></input>
               <div
                 onClick={() => fileInputField.current.click()}
-                style={{ marginTop: "3px" }}
+            
+                className="file-icon"
               >
-                <MdOutlineAttachFile />
+                <MdOutlineAttachFile  className="main-file-icon"/>
               </div>
             </div>
             <p
               className="send-messsage-eng-card-dash"
               onClick={handleSendMessage}
             >
-              {swapIcon ? <MdOutlineMic /> : <MdSend />}
+              {swapIcon ? <MdOutlineMic className="mic-icon"/> : <MdSend  className="send-icon"/>}
             </p>
           </div>
         </div>

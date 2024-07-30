@@ -51,7 +51,7 @@ const TaskHistory = (props) => {
           <h5>Services</h5>
           <h5>Callbacks</h5>
         </div>
-        <div className="AllTask Yello_Scrollbar">
+        <div className="AllTask Yello_Scrollbar" style={{overflow:'hidden'}}>
           <div className="ServicContainer">
             {uniqueSortedDates.map((date) => (
               <div key={date} className="Services">
@@ -63,10 +63,10 @@ const TaskHistory = (props) => {
                     
                     <div key={`${date}-service-${index}`} className="ServiceCards">
                       <table>
-                        <tbody>
+                        <tbody className="table-eng">
                           <tr>
                             <td className="service-table-item">NAME:</td>
-                            <td className="service-table-item">{service.name}</td>
+                            <td className="service-table-item"  >{service.name}</td>
                           </tr>
                           <tr className="odd-row">
                             <td className="service-table-item">ADD:</td>

@@ -91,13 +91,8 @@ const ServiceEnggDataOnCrousel = ({
           <img
             src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
             alt="img"
-            style={{
-              height: "50px",
-              width: "50px",
-              borderRadius: "100%",
-              objectFit: "cover",
-              objectPosition: "top",
-            }}
+            
+            className='basic-info-profile'
           />
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>
@@ -153,7 +148,7 @@ const ServiceEnggDataOnCrousel = ({
               <div className="dropdown">
                 <span>{renderArray[0].ClientName?.split(" ")[0]}</span>
                 <span>service E1</span>
-                <div className="dropdown-menu">
+                <div className="dropdown-menu dropdown1-menu">
                   <div className="drop-parent">
                     <div className="upper-sec">
                       <p>{renderArray[0].ClientName}</p>
@@ -187,7 +182,7 @@ const ServiceEnggDataOnCrousel = ({
                   <span>{renderArray[1].ClientName?.split(" ")[0]}</span>
                   <span>service E1</span>
 
-                  <div className="dropdown-menu">
+                  <div className="dropdown-menu dropdown2-menu">
                     <div className="drop-parent">
                       <div className="upper-sec">
                         <p>{renderArray[1].ClientName}</p>
@@ -226,17 +221,8 @@ const ServiceEnggDataOnCrousel = ({
             totalTasks={item.filteredServiceAssignmentsWithClientName.length}
           />
           <div
-            className="dropdown-menu"
-            style={{
-              left:
-                len - 1 === index
-                  ? "-165px"
-                  : smallLaptopSizes
-                  ? "-440%"
-                  : "-400%",
-              marginTop: "-40px",
-              boxShadow: "0px 10px 20px #00000049",
-            }}
+    
+              className="dropdown-menu dropdown3-menu"
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>

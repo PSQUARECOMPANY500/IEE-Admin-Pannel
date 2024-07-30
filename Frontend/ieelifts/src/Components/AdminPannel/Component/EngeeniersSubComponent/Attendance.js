@@ -3,6 +3,7 @@ import AttendanceCalendar from "./AttendanceCalendar";
 import AttendanceDateConatiner from "./AttendanceDateConatiner";
 import LeaveHistory from "./LeaveHistory";
 import LeaveHistoryBottom from "./LeaveHistoryBottom";
+import "../../../../Assets/Engeeniers.css";
 
 const Attendance = (props) => {
   const { engID } = props;

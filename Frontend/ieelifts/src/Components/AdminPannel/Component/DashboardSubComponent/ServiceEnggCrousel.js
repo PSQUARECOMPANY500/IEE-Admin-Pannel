@@ -90,7 +90,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 4,
           slidesToScroll: 4,
           infinite: true,
           dots: true,
@@ -99,8 +99,18 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          infinite: true,
+          dots: true,
+        },
+      },
+    
+      {
+        breakpoint: 1500, // Adjust breakpoint as needed
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
           infinite: true,
           dots: true,
         },
@@ -108,16 +118,16 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 4,
+          slidesToScroll: 4,
           initialSlide: 2,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 4,
+          slidesToScroll: 4,
         },
       },
     ],
@@ -163,7 +173,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   }, [dataOnPin]);
 
   return (
-    <div style={{ marginTop: "20px" }} className="parent-div">
+    <div  className="parent-div">
       <div className="carosel-Navigators-icon">
         {/* Left Arrow */}
 

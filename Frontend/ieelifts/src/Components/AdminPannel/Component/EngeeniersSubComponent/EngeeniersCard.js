@@ -19,6 +19,7 @@ import EditEngineerDetails from "./EditEngineerDetails";
 import config from "../../../../config";
 
 import { BsArrowLeft } from "react-icons/bs";
+import "../../../../Assets/Engeeniers.css";
 
 const EngeeniersCard = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const EngeeniersCard = () => {
   const [engID, setEngID] = useState(null);
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
+  const [screenSize, setScree] = useState(null);
 
   const [onBackPress, setOnbackPress] = useState(false);
 
@@ -191,6 +193,19 @@ const EngeeniersCard = () => {
     console.log("{{{{{",onBackPress);
   };
 
+  useEffect(()=>{
+  const checkScreenSie = ()=>{
+if(window.innerWidth<=1550){
+  
+}
+  }
+
+    window.addEventListener('resize',checkScreenSie);
+
+    return ()=>{
+      window.removeEventListener('resize',checkScreenSie);
+    }
+  })
   return (
     <>
       {onBackPress ? (

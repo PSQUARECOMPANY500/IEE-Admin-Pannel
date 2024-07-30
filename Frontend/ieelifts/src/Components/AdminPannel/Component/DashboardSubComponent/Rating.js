@@ -30,7 +30,7 @@ const Rating = () => {
 
 
   return (
-    <div className="Rating">
+    <div className="Rating"   style={{display:! adminRating&&'flex',justifyContent:!adminRating&&'center',alignItems:!adminRating&&'center'}}>
     { adminRating ? <><div className="RatingStar">
         {rating?.map((e,i) => (
             (i+1<=ratingValue?(<FaStar className="Yellow_Color" style={{fontSize:'1.7rem'}} key={i}/>):(<CiStar className="Yellow_Color" key={i} /> ))
@@ -82,7 +82,7 @@ const Rating = () => {
             <button className={!(adminRating?.Questions?.Question5)?'active-button':''}>No</button>
           </div>
         </div>
-      </div> </>:<p>No Rating Here.............</p>}
+      </div> </>:<p className="no-rating">No Rating Here.............</p>}
     </div>
   );
 };

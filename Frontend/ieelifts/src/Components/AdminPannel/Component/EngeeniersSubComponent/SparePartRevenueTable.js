@@ -21,7 +21,7 @@ const SparePartRevenueTable = ({ engID }) => {
       <div className="spare-part-sub-table-view">
         <div
           className="spare-part-table-container"
-          style={{ maxHeight: "35vh" }}
+     
         >
           <div className="eng-table-shadow"></div>
           <table>
@@ -39,7 +39,7 @@ const SparePartRevenueTable = ({ engID }) => {
             </thead>
             <tbody>
               {revenueData?.map((item) =>
-                item.SparePartsChanged?.map((part, index) => (
+                item?.SparePartsChanged?.map((part, index) => (
                   <tr>
                     <td>{item.Date}</td>
                     <td>{item.ClientName.JobOrderNumber}</td>

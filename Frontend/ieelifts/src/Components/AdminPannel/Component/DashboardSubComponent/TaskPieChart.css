@@ -36,7 +36,7 @@
   stroke: #f8ac1d;
   transition: stroke-dasharray 0.3s;
   box-shadow: inset 1px 2px 3px #00000029;
-  background-color: red;
+
 }
 
 .progress-text {
@@ -46,3 +46,14 @@
   transform: translate(-50%, -50%);
   font-size: 0.7rem;
 }
+
+/*----------------------------------------------------------------------------- media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+  .circular-progress-bar {
+    margin-bottom: 1rem;
+    margin-left: -0.5rem;
+  }
+}
+
+/*-----------------------------------------------------------------------------end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */

@@ -14,18 +14,18 @@ import { BiMessageDetail } from "react-icons/bi";
 import { AiOutlineExclamationCircle } from "react-icons/ai";
 import { TbSettings2 } from "react-icons/tb";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { useMediaQuery } from '@react-hook/media-query';
+// import { useMediaQuery } from '@react-hook/media-query';
 import { MdOutlineSos } from "react-icons/md";
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
 
 const Sidebar = ({ children }) => {
-  const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+  // const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
   const pathname = location.pathname;
-  const initialIsOpen = smallLaptopSizes ? false : true
-  const [isOpen, setIsOpen] = useState(initialIsOpen);
+  // const initialIsOpen = smallLaptopSizes ? false : true
+  const [isOpen, setIsOpen] = useState(true);
   const [toogleOpen, settoogleClose] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
@@ -43,18 +43,18 @@ const Sidebar = ({ children }) => {
 
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
-    !smallLaptopSizes && setIsOpen(!isOpen);
+     setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
     console.log("clicked");
     settoogleClose(!toogleOpen);
-    !smallLaptopSizes && setIsOpen(isOpen);
+ setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
     console.log("image clicked");
-    !smallLaptopSizes && setIsOpen(!isOpen);
+setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
@@ -217,35 +217,39 @@ const Sidebar = ({ children }) => {
     <div className="container">
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
-      <div style={{ width: isOpen ? "18.75rem" : "125px" }} className="sidebar">
+      <div 
+      className={isOpen?"sidebar sidebarOpenWidth" :"sidebar sidebarCloseWidth"}
+      >
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
-          {!toogleOpen && !smallLaptopSizes && <div className="overlay" onClick={toogleMenue}></div>}
+          {!toogleOpen && <div className="overlay" onClick={toogleMenue}></div>}
 
           <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
             <h1
-              className="logo"
-              style={{ marginLeft: isOpen ? "-41px" : "-20px" }}
+              // className="logo"
+              // style={{ marginLeft: isOpen ? "-41px" : "-20px" }}
+              className={isOpen?'logo logo-open':'logo logo-close'}
             >
               <img
-                className="logo-image"
-                style={{ width: smallLaptopSizes ? '80px' : isOpen ? "100px" : "60px" }}
+                // className="logo-image"
+                className={isOpen?'logo-image logo-image-open':'logo-image logo-image-close'}
+      
                 src={logo}
                 alt="logo"
               />
               <p
-                style={{
-                  marginTop: isOpen ? "14px" : "30px",
-                  fontSize: isOpen ? "18px" : "15px",
-                  fontWeight: isOpen ? "500" : "400",
-                }}
+               
+
+                className={isOpen?'logo-open-heading':'logo-close-heading'}
               >
                 Service
               </p>
             </h1>
 
             <div
-              style={{ marginLeft: isOpen ? "50px" : "-10px" }}
-              className="bars"
+              // style={{ marginLeft: isOpen ? "3.1rem" : "-0.6rem" }}
+              // className="bars"
+              className={isOpen?'bars bars-open':'bars bars-close'}
+            
             >
               {/* hamburger animationa and functionality */}
               <div
@@ -273,18 +277,19 @@ const Sidebar = ({ children }) => {
           </div>
 
           <div
-            className="user-info"
-            style={{
-              width: isOpen ? "230px" : "75px",
-              pointerEvents: isOpen ? "auto" : "none",
-            }}
+            // className="user-info"
+            // style={{
+            //   width: isOpen ? "230px" : "75px",
+            //   pointerEvents: isOpen ? "auto" : "none",
+            // }}
+
+            className={isOpen?'user-info user-info-open':'user-info user-info-close'}
           >
             <div className="ineer-menue" onClick={mainToogle}>
               <img
                 src="https://ieelifts.com/wp-content/uploads/2023/08/03-972x1024.jpg"
                 style={{
-                  height: "50px",
-                  width: "50px",
+    
                   pointerEvents: isOpen ? "none" : "auto",
                 }}
                 onClick={toogefinal}
@@ -308,7 +313,7 @@ const Sidebar = ({ children }) => {
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" : !smallLaptopSizes ? "sub-menu-wrap open-menu" : "sub-menu-wrap"
+                toogleOpen ? "sub-menu-wrap" :  "sub-menu-wrap open-menu" 
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
@@ -331,12 +336,14 @@ const Sidebar = ({ children }) => {
           </div>
 
           <nav
-            style={{
-              width: isOpen ? "230px" : "100px",
-              display: isOpen ? "block" : "flex",
-              flexDirection: isOpen ? "column" : "column",
-              alignItems: isOpen ? "start" : "center",
-            }}
+            // style={{
+            //   width: isOpen ? "230px" : "100px",
+            //   display: isOpen ? "block" : "flex",
+            //   flexDirection: isOpen ? "column" : "column",
+            //   alignItems: isOpen ? "start" : "center",
+            // }}
+
+            className={isOpen?'nav-open':'nav-close'}
           >
             {/* MAIN MENUE items goes here starts */}
             <div className="main-menue" onClick={menuUpDown}>

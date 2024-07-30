@@ -1703,7 +1703,7 @@ color:#f8ac1d ;
 }
 
 .spare-part-table-container {
-  max-height: 60vh;
+  max-height: 35vh;
   overflow-y: auto;
   width: 100%;
 }
@@ -3472,7 +3472,7 @@ input:-webkit-autofill {
   }
 
   .non_expand_gap .membership_card {
-    height: 18rem;
+    height: 19rem;
   }
 
   .membership_card_expand {
@@ -3489,6 +3489,18 @@ input:-webkit-autofill {
     margin: 0rem;
     margin-top: 0;
   }
+
+  /* ------------------------------------spare part table css here------------------------------ */
+  .spare-part-table-container table th,.spare-part-table-co          ntainer table td {
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  .spare-part-table-container {
+    max-height: 28vh;
+  
+  }
+  
+  
 }
 
 /* sidebar SOS button css ends */

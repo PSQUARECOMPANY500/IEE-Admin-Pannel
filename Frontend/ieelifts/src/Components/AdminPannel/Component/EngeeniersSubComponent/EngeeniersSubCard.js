@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
-
+import "../../../../Assets/Engeeniers.css";
 const EngeeniersSubCard = (props) => {
 
   const [singleClickTimeout, setSingleClickTimeout] = useState(null);

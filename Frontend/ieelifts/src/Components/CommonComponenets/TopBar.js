@@ -251,10 +251,11 @@ const TopBar = (props) => {
   return (
     <div className="top-bar">
       <div
-        className="left-side-heading"
-        style={{
-          marginLeft: props.isOpen ? "0%" : "-9.5rem",
-        }}
+        // className="left-side-heading"
+        className={props.isOpen?"left-side-heading left-side-heading-open":"left-side-heading left-side-heading-close"}
+        // style={{
+        //   marginLeft: props.isOpen ? "0%" : "-9.5rem",
+        // }}
       >
         <p>{props.heading}</p>
       </div>
