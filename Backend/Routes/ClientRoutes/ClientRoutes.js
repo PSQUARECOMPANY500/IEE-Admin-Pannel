@@ -98,6 +98,10 @@ router.put(
 
 
 
+router.delete(
+  "/removeClientFirebaseToken",
+  clientController.removeClientFirebaseToken
+);
 
 
 
