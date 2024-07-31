@@ -63,8 +63,8 @@ const ServiceRequestModals = ({
 
 
   // repersentative name and number logic
-  const [reName , setreName] = useState("")
-  const [reNumber , setreNumber] = useState("")
+  const [reName, setreName] = useState("")
+  const [reNumber, setreNumber] = useState("")
 
   console.log("reName  --> ", reName)
   console.log("reNumber ---> ", reNumber)
@@ -133,7 +133,7 @@ const ServiceRequestModals = ({
     console.log('testing', getAssignedCallbackDetails) */
 
   const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
-console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
+  console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
 
   useEffect(() => {
     if (isAssigned) {
@@ -179,13 +179,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
     setModelType(getUserRequestDetail?.clientDetail?.ModelType || "");
   }, [getUserRequestDetail]);
 
-  useEffect(() => {
-    //no problem
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+
 
   useEffect(() => {
 
@@ -201,10 +195,10 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
 
   }, [getAssignRequestdetail])
 
-  useEffect(()=>{
+  useEffect(() => {
     setreName()
     setreNumber()
-  },[])
+  }, [])
 
 
   const handleAssignDateChange = (selectedOption) => {
@@ -241,7 +235,7 @@ console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
       }
       else {
         dateOnAssign = engDate;
-      }    
+      }
       dispatch(
         assignserviceRequestByAdmin(
           engDetails?.enggJon,
