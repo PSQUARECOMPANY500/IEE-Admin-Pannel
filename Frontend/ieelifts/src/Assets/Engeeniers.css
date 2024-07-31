@@ -1698,13 +1698,13 @@ tr>td:nth-child(2) {
   position: relative;
 }
 
-.spare-part-progress{
-height: 1px;
-position:absolute;
-width: 200px;
-/* top: 7%; */
-background-color: #f8ac1d;
-transition: 0.5s ease;
+.spare-part-progress {
+  height: 1px;
+  position: absolute;
+  width: 200px;
+  /* top: 7%; */
+  background-color: #f8ac1d;
+  transition: 0.5s ease;
 }
 
 .sub-spare-part {
@@ -1712,7 +1712,7 @@ transition: 0.5s ease;
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 10% 1% 89%;
+  grid-template-rows: 10% 90%;
 }
 
 .spare-part-head {

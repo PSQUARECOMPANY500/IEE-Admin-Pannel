@@ -21,7 +21,7 @@ const SpareParts = (props) => {
     }
   };
 
-  const currentComponentHandler = (c,le) => {
+  const currentComponentHandler = (c, le) => {
     setCurrentComponent(c)
     setLeftSide(le)
   }
@@ -29,14 +29,14 @@ const SpareParts = (props) => {
   return <div className="spare-part">
     <div className="sub-spare-part">
       <div className="spare-part-head">
-        <h5 onClick={() => currentComponentHandler('c1',3)}>Allotted Spare Parts</h5>
-        <h5 onClick={() => currentComponentHandler('c2',44)}>Spare Part Requests</h5>
-        <h5 onClick={() => currentComponentHandler('c3',77)}>Revenue</h5>
+        <h5 onClick={() => currentComponentHandler('c1', 3)}>Allotted Spare Parts</h5>
+        <h5 onClick={() => currentComponentHandler('c2', 44)}>Spare Part Requests</h5>
+        <h5 onClick={() => currentComponentHandler('c3', 77)}>Revenue</h5>
       </div>
 
-      <div className="vertical-line" style={{width:'90%',left:'5%',}}>
+      <div className="vertical-line" style={{ width: '90%', left: '5%', display: 'none' }}>
 
-      <div className="spare-part-progress"   style={{ marginLeft: leftSide + "%" }}></div>
+        {/* <div className="spare-part-progress"   style={{ marginLeft: leftSide + "%" }}></div> */}
       </div>
       <div className="spare-part-content">
         {renderSelectedComponent()}
