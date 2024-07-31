@@ -10,13 +10,15 @@ import ReportData from "./ReportData";
 import FilterDropdown from "./FilterDropdown";
 import KanbanSection from "./KanbanSection";
 import EnggLocation from "./EnggLocationSection/EnggLocation";
-import { getCurrentDateAssignServiceRequestAction, getadminReportData } from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
+import {
+  getCurrentDateAssignServiceRequestAction,
+  getadminReportData,
+} from "../../../../ReduxSetup/Actions/AdminActions"; //(may be use in future TODO)
 import { getCurrentDateAssignCalbackAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import {
   getFilterLocation,
   getEngineerNames,
 } from "../../../../ReduxSetup/Actions/AdminActions";
-
 
 import { useDispatch, useSelector } from "react-redux";
 import { GoStarFill } from "react-icons/go";
@@ -38,12 +40,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const [filterData, setFilterData] = useState();
   const [RedportData, setReportData] = useState();
 
-
-
-
   useEffect(() => {
     const fetchData = () => {
-
       dispatch(getEngineerNames());
     };
     fetchData();
@@ -84,17 +82,18 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
-
     if (currentDateServiceRequest) {
       setHandleServiceSelection(
         Array(currentDateServiceRequest.length).fill(false)
       );
     }
-  }, [currentDateServiceRequest]);
+    if (filterData) {
+      Array(filterData.length).fill(false);
+    }
+  }, [currentDateServiceRequest, filterData]);
 
   //get current date callback
   const currentDateCallback = useSelector((state) => {
-
     if (
       state.AdminRootReducer &&
       state.AdminRootReducer.getCurrentDateAssignCalbackAction &&
@@ -109,12 +108,15 @@ const TaskLocationSection = forwardRef((props, ref) => {
   });
 
   useEffect(() => {
-
     if (currentDateCallback) {
       setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     }
-  }, [currentDateCallback]);
+    if (filterData) {
+      setHandleCallbackSelection(Array(filterData.length).fill(false));
+    }
+  }, [currentDateCallback, filterData]);
 
+  console.log(handleCallbackSelection);
   const handlekanban = () => {
     props.handleKanbanToggle();
   };
@@ -127,7 +129,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     setSrvice(true);
     setTicket(false);
   };
-
 
   useEffect(() => {
     if (!filterConditions?.length) {
@@ -155,23 +156,29 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return;
     }
 
-    const statusFilter = filterConditions.filter(type => type.type === "status");
-    const engineerFilter = filterConditions.filter(type => type.type === "engineers");
+    const statusFilter = filterConditions.filter(
+      (type) => type.type === "status"
+    );
+    const engineerFilter = filterConditions.filter(
+      (type) => type.type === "engineers"
+    );
 
-    const statusData = statusFilter.flatMap(status => {
+    const statusData = statusFilter.flatMap((status) => {
       const { condition } = status;
-      return data.filter(d => d.ServiceProcess.toLowerCase() === condition.toLowerCase());
+      return data.filter(
+        (d) => d.ServiceProcess.toLowerCase() === condition.toLowerCase()
+      );
     });
 
-    const engineerData = engineerFilter.flatMap(engineer => {
+    const engineerData = engineerFilter.flatMap((engineer) => {
       const { condition } = engineer;
-      return data.filter(d => d.enggName === condition);
+      return data.filter((d) => d.enggName === condition);
     });
 
     let filteredData;
     if (statusFilter.length && engineerFilter.length) {
-      filteredData = statusData.filter(status =>
-        engineerData.some(engineer => status._id === engineer._id)
+      filteredData = statusData.filter((status) =>
+        engineerData.some((engineer) => status._id === engineer._id)
       );
     } else {
       filteredData = statusData.length ? statusData : engineerData;
@@ -179,7 +186,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
     setFilterData(filteredData);
   }, [filterConditions, ticket]);
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -220,23 +226,33 @@ const TaskLocationSection = forwardRef((props, ref) => {
     return slots[slots.length - 1]?.split("-")[1];
   };
   /*.......................................................... apX13 code by emit ................................................................ */
-  function handleReportSectionData(reportData) {
-
+  function handleReportSectionData(reportData, index,type) {
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
-
       setHandleReportData(false);
       setReportData(reportData?.callbackId || reportData?.RequestId);
-
     } else {
       setHandleReportData(true);
       setReportData(reportData);
     }
+    if(type==="ticket"){
+      setHandleCallbackSelection((prevState) => {
+        const newState = prevState.map((item, i) => i === index);
+        return newState;
+      });
+    }
+    else{
+      setHandleServiceSelection((prevState) => {
+        const newState = prevState.map((item, i) => i === index);
+        return newState;
+      });
+    }
+
     //may be change logic in future make by aayush
-    dispatch(getadminReportData(reportData?.callbackId || reportData?.RequestId));
-
+    dispatch(
+      getadminReportData(reportData?.callbackId || reportData?.RequestId)
+    );
   }
-
 
   return (
     <div className={"parent-full-div"} ref={ref}>
@@ -302,85 +318,128 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                      let reportData = value;
-                      console.log("==========reportData", reportData.engRating)
-                      return (
-                        <div
-                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
-                          className={`ticket-card ${handleCallbackSelection[index] &&
-                            "service-card-selected"
+                        let reportData = value;
+                        console.log(
+                          "==========reportData",
+                          reportData.engRating
+                        );
+                        return (
+                          <div
+                            style={{
+                              backgroundColor: `${
+                                reportData?.ServiceProcess === "completed"
+                                  ? "#FFF9EF"
+                                  : "#ffffff"
+                              }`,
+                            }}
+                            className={`ticket-card ${
+                              handleCallbackSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportData)}
-                        >
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() =>
+                              handleReportSectionData(reportData, index,"ticket")
+                            }
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value?.clientName}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{value?.clientName}</h5>
+
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value?.enggName}</h5>
+                              </div>
+                            </div>
+
+                            <div className="ticket-card-bottom">
+                              <h5 className="ticket-card-bottom-starting-slot">
+                                {extractStartTime(value.Slot)}
+                              </h5>
+
+                              <h5 className="ticket-card-bottom-end-slot">
+                                {extractEndTime(value.Slot)}
+                              </h5>
+                              {reportData.engRating &&
+                                reportData?.ServiceProcess === "completed" && (
+                                  <h5 className="ratingByClient">
+                                    <p className="ratingByClient1st">
+                                      <GoStarFill />
+                                    </p>
+                                    <p className="ratingByClient2nd">
+                                      {reportData?.engRating}
+                                    </p>
+                                  </h5>
+                                )}
                             </div>
                           </div>
-
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
-                            </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{value?.enggName}</h5>
-                            </div>
-                          </div>
-
-                          <div className="ticket-card-bottom">
-                            <h5 className="ticket-card-bottom-starting-slot">{extractStartTime(value.Slot)}</h5>
-
-                            <h5 className="ticket-card-bottom-end-slot">{extractEndTime(value.Slot)}</h5>
-                            {reportData.engRating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
-                              <p className="ratingByClient1st"><GoStarFill /></p>
-                              <p className="ratingByClient2nd">{reportData?.engRating}</p>
-                            </h5>}
-                          </div>
-                        </div>
-                      );
-                    })
+                        );
+                      })
                     : filterData?.map((value, index) => {
-                      let reportData = value;
-                      return (
-                        <div
-                          className={`ticket-card ${handleCallbackSelection[index] &&
-                            "service-card-selected"
+                        let reportData = value;
+                        return (
+                          <div
+                            className={`ticket-card ${
+                              handleCallbackSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
-                          onClick={() => handleReportSectionData(reportData)}
-                        >
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            style={{
+                              backgroundColor: `${
+                                reportData?.ServiceProcess === "completed"
+                                  ? "#FFF9EF"
+                                  : "#ffffff"
+                              }`,
+                            }}
+                            onClick={() =>
+                              handleReportSectionData(reportData, index,"ticket")
+                            }
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{value.clientName.toUpperCase()}</h5>
-                            </div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{value.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{value.enggName.toUpperCase()}</h5>
-                            </div>
-                          </div>
-                          <div className="ticket-card-bottom">
-                            <h5 className="ticket-card-bottom-starting-slot">{extractStartTime(value.Slot)}</h5>
+                            <div className="ticket-card-bottom">
+                              <h5 className="ticket-card-bottom-starting-slot">
+                                {extractStartTime(value.Slot)}
+                              </h5>
 
-                            <h5 className="ticket-card-bottom-end-slot">{extractEndTime(value.Slot)}</h5>
-                            {reportData.engRating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
-                              <p className="ratingByClient1st"><GoStarFill /></p>
-                              <p className="ratingByClient2nd">{reportData?.engRating}</p>
-                            </h5>}
+                              <h5 className="ticket-card-bottom-end-slot">
+                                {extractEndTime(value.Slot)}
+                              </h5>
+                              {reportData.engRating &&
+                                reportData?.ServiceProcess === "completed" && (
+                                  <h5 className="ratingByClient">
+                                    <p className="ratingByClient1st">
+                                      <GoStarFill />
+                                    </p>
+                                    <p className="ratingByClient2nd">
+                                      {reportData?.engRating}
+                                    </p>
+                                  </h5>
+                                )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                 </>
               )}
 
@@ -388,85 +447,115 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                      let reportData = serviceData;
-                      return (
-                        <div
-                          className={`service-card ${handleServiceSelection[index] &&
-                            "service-card-selected"
+                        let reportData = serviceData;
+                        return (
+                          <div
+                            className={`service-card ${
+                              handleServiceSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() => handleReportSectionData(reportData)}
-                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
-                        >
-                          <div className="ticket-sub-card-row" >
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() => handleReportSectionData(reportData,index,"service")}
+                            style={{
+                              backgroundColor: `${
+                                reportData?.ServiceProcess === "completed"
+                                  ? "#FFF9EF"
+                                  : "#ffffff"
+                              }`,
+                            }}
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{serviceData.clientName.toUpperCase()}</h5>
-                            </div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{serviceData.enggName.toUpperCase()}</h5>
-                            </div>
-                          </div>
 
-                          <div className="service-card-bottom">
-                            <h5>{extractStartTime(serviceData.Slot)}</h5>
-                            <h5>{extractEndTime(serviceData.Slot)}</h5>
-                            {reportData.rating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
-                              <p className="ratingByClient1st"><GoStarFill /></p>
-                              <p className="ratingByClient2nd">{reportData?.rating}</p>
-                            </h5>}
+                            <div className="service-card-bottom">
+                              <h5>{extractStartTime(serviceData.Slot)}</h5>
+                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                              {reportData.rating &&
+                                reportData?.ServiceProcess === "completed" && (
+                                  <h5 className="ratingByClient">
+                                    <p className="ratingByClient1st">
+                                      <GoStarFill />
+                                    </p>
+                                    <p className="ratingByClient2nd">
+                                      {reportData?.rating}
+                                    </p>
+                                  </h5>
+                                )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })
+                        );
+                      })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                      const reportServiceData = serviceData
+                        const reportServiceData = serviceData;
 
-                      return (
-                        <div
-                          style={{ backgroundColor: `${reportServiceData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
-                          className={`service-card ${handleServiceSelection[index] &&
-                            "service-card-selected"
+                        return (
+                          <div
+                            style={{
+                              backgroundColor: `${
+                                reportServiceData?.ServiceProcess ===
+                                "completed"
+                                  ? "#FFF9EF"
+                                  : "#ffffff"
+                              }`,
+                            }}
+                            className={`service-card ${
+                              handleServiceSelection[index] &&
+                              "service-card-selected"
                             }`}
-                          onClick={() =>
-                            handleReportSectionData(reportServiceData)
-                          }
-                        >
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5>Name:</h5>
+                            onClick={() =>
+                              handleReportSectionData(reportServiceData,index,"service")
+                            }
+                          >
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5>Name:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{serviceData.clientName.toUpperCase()}</h5>
-                            </div>
-                          </div>
 
-                          <div className="ticket-sub-card-row">
-                            <div className="ticket-sub-card-row-right">
-                              <h5> ENGINEER:</h5>
+                            <div className="ticket-sub-card-row">
+                              <div className="ticket-sub-card-row-right">
+                                <h5> ENGINEER:</h5>
+                              </div>
+                              <div className="ticket-sub-card-row-left">
+                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                              </div>
                             </div>
-                            <div className="ticket-sub-card-row-left">
-                              <h5>{serviceData.enggName.toUpperCase()}</h5>
+                            <div className="service-card-bottom">
+                              <h5>{extractStartTime(serviceData.Slot)}</h5>
+                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                              {reportServiceData.rating &&
+                                reportServiceData?.ServiceProcess ===
+                                  "completed" && (
+                                  <h5 className="ratingByClient">
+                                    <p className="ratingByClient1st">
+                                      <GoStarFill />
+                                    </p>
+                                    <p className="ratingByClient2nd">
+                                      {reportServiceData?.rating}
+                                    </p>
+                                  </h5>
+                                )}
                             </div>
                           </div>
-                          <div className="service-card-bottom">
-                            <h5>{extractStartTime(serviceData.Slot)}</h5>
-                            <h5>{extractEndTime(serviceData.Slot)}</h5>
-                            {reportServiceData.rating && reportServiceData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
-                              <p className="ratingByClient1st"><GoStarFill /></p>
-                              <p className="ratingByClient2nd">{reportServiceData?.rating}</p>
-                            </h5>}
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                 </>
               )}
             </div>

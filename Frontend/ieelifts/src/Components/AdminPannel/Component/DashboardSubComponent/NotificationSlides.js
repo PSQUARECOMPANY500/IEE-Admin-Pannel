@@ -38,8 +38,8 @@ const NotificationSlides = ({ notifications }) => {
               <p>{data?.message}</p>
             </div>
             <div className="notification-buttons-operations">
-              <p>Review</p>
-              <p>{data?.time}</p>
+              {/* <p>Review</p> */}
+              {/* <p>{data?.time}</p> */}
             </div>
           </div>
         </div>

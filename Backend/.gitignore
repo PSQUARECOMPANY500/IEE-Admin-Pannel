@@ -23,4 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# /public   disbale fror renvder only plese enavle it push on AWS...
+/public  
+
+#  disbale fror renvder only plese enavle it push on AWS...

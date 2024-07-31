@@ -21,6 +21,8 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     selectedClient?.JobOrderNumber
   );
 
+  console.log("///////////////////////////////////////",selectedClient);
+
   const modalRef = useRef();
   // const cardRef = useRef();
 
@@ -147,11 +149,11 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
       case "SOS Calls":
         return <ClientSOSCall JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       case "Client Details":
-        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber}/>;
+        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber} selectedClient={selectedClient}/>;
       case "Service Histroy":
         return <ClientServiceHistory JobOrderNumber={selectedClient?.JobOrderNumber}/>;
       default:
-        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber}/>;
+        return <ClientDetails JobOrderNumber={selectedClient?.JobOrderNumber} selectedClient={selectedClient}/>;
     }
   };
 
@@ -168,7 +170,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
                 <div className="client-modal-profile-container-left">
                   <div className="client-modal-img-container">
                     <img
-                      src="https://images.unsplash.com/photo-1543965170-e3d16958f280?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      src="https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                       alt="client img"
                     />
                   </div>

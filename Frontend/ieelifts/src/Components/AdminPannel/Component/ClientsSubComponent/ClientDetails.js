@@ -7,7 +7,8 @@ import { IoCallOutline } from "react-icons/io5";
 import { IoIosMan } from "react-icons/io";
 import { BiSolidBookmarkAlt } from "react-icons/bi";
 
-const ClientDetails = () => {
+const ClientDetails = ({selectedClient}) => {
+    console.log("bacjkchood",selectedClient);
   return (
     <div className='service-history-wrapper'>
      <div className='service-history-client-details'>
@@ -19,25 +20,25 @@ const ClientDetails = () => {
             <div>
                 <div><BiSolidBookmarkAlt className='service-icon-color'/></div>
                 <div className='service-history-client-heading'>Date of Handover</div> 
-                <div className='service-history-client-child-color'>2022</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
             <div><TbArrowFork className='service-icon-color'/></div>
                 <div className='service-history-client-heading'>Call Backs</div>
-                <div className='service-history-client-child-color'>2</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
             <div><IoIosMan className='service-icon-color'/></div>
                 <div className='service-history-client-heading'>Refrence</div>
-                <div className='service-history-client-child-color'>Vivek singh</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div><div><GoHome className='service-icon-color'/></div>
-                <div className='service-history-client-heading'>Adress</div>
-                <div className='service-history-client-child-color'>#1235, Phase 5, Sec 73, Mohali</div></div>
+                <div className='service-history-client-heading'>Address</div>
+                <div className='service-history-client-child-color'>{selectedClient?.Address}</div></div>
             <div>
             <div><IoCallOutline className='service-icon-color'/></div>
                 <div className='service-history-client-heading'>Phone no</div>
-                <div className='service-history-client-child-color'>9999988889</div>
+                <div className='service-history-client-child-color'>{selectedClient?.PhoneNumber}</div>
             </div>
         </div>
      </div>
@@ -52,25 +53,25 @@ const ClientDetails = () => {
             <div>
                 
                 <div className='service-history-client-heading'>Name</div>
-                <div className='service-history-client-child-color'>Deep kumar</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
            
                 <div className='service-history-client-heading'>Number</div>
-                <div className='service-history-client-child-color'>+91 7445512545</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
            
                 <div className='service-history-client-heading'>Contractor</div>
-                <div className='service-history-client-child-color'>Yes</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
                 <div className='service-history-client-heading'>Name</div>
-                <div className='service-history-client-child-color'>Yuvraj</div></div>
+                <div className='service-history-client-child-color'>NA</div></div>
             <div>
            
                 <div className='service-history-client-heading'>Number</div>
-                <div className='service-history-client-child-color'>+91 7884512545</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
         </div>
      </div>
@@ -83,22 +84,22 @@ const ClientDetails = () => {
         <div className='service-history-client-details-child-wrappper'>
             <div>
                 <div className='service-history-client-heading'>Salesman ID</div>
-                <div className='service-history-client-child-color'>455788</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
                 <div className='service-history-client-heading'>Name</div>
-                <div className='service-history-client-child-color'>Jakes Smith</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
                 <div className='service-history-client-heading'>Quatated Price</div>
-                <div className='service-history-client-child-color'>7,50000</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
             <div>
                 <div className='service-history-client-heading'>Discount amount</div>
-                <div className='service-history-client-child-color'>10,0000</div></div>
+                <div className='service-history-client-child-color'>NA</div></div>
             <div>
                 <div className='service-history-client-heading'>Final amount</div>
-                <div className='service-history-client-child-color'>7,40000</div>
+                <div className='service-history-client-child-color'>NA</div>
             </div>
         </div>
      </div>

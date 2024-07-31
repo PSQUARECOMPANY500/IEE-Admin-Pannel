@@ -9930,6 +9930,7 @@ a[href^="http://maps.google.com/maps"] {
 .service-history-client-child-color {
   color: #444444;
   font-size: 1rem;
+  width: 80%;
 }
 
 .sosIcon {
