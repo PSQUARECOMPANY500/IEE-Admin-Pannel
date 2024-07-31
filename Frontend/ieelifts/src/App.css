@@ -8133,17 +8133,31 @@ element.style {
   font-weight: 400;
 }
 
-.ticket-card-bottom>h5:nth-child(1) {
-  color: #389300;
+.ticket-card-bottom-starting-slot {
+  color: #389300 !important;
 }
 
-.ticket-card-bottom>h5:nth-child(2) {
-  color: #c10000;
+.ratingByClient {
+  border: 2px solid #f8ac1d;
+  ;
+  padding: 0rem 0.6rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  color: #f8ac1d !important;
 }
 
-.ticket-card-bottom>h5:nth-child(3) {
+.ratingByClient1st {
+  margin-top: 0.1rem;
+}
+
+.ratingByClient2nd {
   color: #444444;
   font-weight: 600;
+}
+
+.ticket-card-bottom-end-slot {
+  color: #c10000 !important;
 }
 
 .yellow_color {
@@ -8760,18 +8774,18 @@ element.style {
   width: 100%;
 }
 
-  .addEnggButtons {
-    margin-left: 26%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 10px;
-    height: 5vh;
-    width: 30;
-    position: absolute;
-    bottom: 3%;
-    right: 5%;
-  }
+.addEnggButtons {
+  margin-left: 26%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px;
+  height: 5vh;
+  width: 30;
+  position: absolute;
+  bottom: 3%;
+  right: 5%;
+}
 
 /* CSS */
 .button-69,
@@ -9955,9 +9969,11 @@ a[href^="http://maps.google.com/maps"] {
     font-weight: 500;
     font-size: 0.8rem;
   }
+
   .client-form-details {
     padding: 2.4rem 2rem 0 2rem !important;
   }
+
   .client-salesman-details {
     padding: 2.4rem 2rem 0 2rem !important;
   }
@@ -9978,13 +9994,14 @@ a[href^="http://maps.google.com/maps"] {
     background-color: #fff;
     z-index: 10;
   }
-  
+
   .option-container>ul {
     list-style-type: none;
     opacity: 0.54;
     font-size: 0.8rem !important;
   }
-  .client-form-input-wrapper{
+
+  .client-form-input-wrapper {
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
@@ -10267,7 +10284,7 @@ a[href^="http://maps.google.com/maps"] {
     margin-top: -1rem;
   }
 
-  .dropdown1-menu{
+  .dropdown1-menu {
     margin-left: -0.7rem;
     margin-top: 0.2rem;
   }
@@ -10442,9 +10459,9 @@ a[href^="http://maps.google.com/maps"] {
 
   .hover-icon-service {
     font-size: 0.65rem;
-   
+
   }
-  
+
 }
 
 
