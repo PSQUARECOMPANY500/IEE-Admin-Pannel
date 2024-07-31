@@ -696,8 +696,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {
       JobOrderNumber,
     });
 
+
     let data = [];
 
+    
     if (service.length > 0) {
       data = await Promise.all(
         service.map(async (item) => {
@@ -742,11 +744,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     }
 
     const rating = await engineerRating.findOne({
-      ServiceId: data[0][0].ServiceId || data[0][0].callbackId,
+      ServiceId: data[0][0].RequestId || data[0][0].callbackId,
     });
-    console.log("rating for testing", rating);
-
-    console.log("preet saii ---> ", data);
     // first case 1:
     if (
       (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
@@ -770,31 +769,32 @@ module.exports.getCurrentScheduleService = async (req, res) => {
       res.status(200).json({
         status: "success",
         message:
-          currentDate === data[0][0].Date
+        currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat(
               data[0][0].Slot[0].split("-")[0]
             )}`
             : currentDate > data[0][0].Date
               ? "Service Expired"
               : "Service Booked",
-        time:
-          currentDate > data[0][0].Date
+              time:
+              currentDate > data[0][0].Date
             ? "(Awaiting Cancelation)"
             : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
             "-" +
             convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
-        date: data[0][0].Date,
-        trackingId: data[0][0]?.callbackId || data[0][0]?.ServiceId,
-        liveTracking: currentDate === data[0][0].Date ? true : false,
-        rating: false,
-      });
-    } else if (
-      ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
-        service[0]?.isDead === false,
-        !rating && data[0][0].ServiceProcess === "completed")
-    ) {
+            date: data[0][0].Date,
+            trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
+            liveTracking: currentDate === data[0][0].Date ? true : false,
+            rating: false,
+          });
+        } else if (
+          ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+          service[0]?.isDead === false,
+          !rating && data[0][0].ServiceProcess === "completed")
+        ) {
+          console.log("*********************",rating);
       //case 3
-      res.status(200).json({
+       res.status(200).json({
         status: "success",
         message: "Service Completed",
         time: data[0][0].Slot,
@@ -802,10 +802,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {
         liveTracking: false,
         rating: true, // add Enggid and ServiceId  ----------------------------------------------------------
         enggId: data[0][0]?.ServiceEnggId,
-        trackingId: data[0][0]?.ServiceId || data[0][0]?.callbackId,
+        trackingId: data[0][0]?.RequestId || data[0][0]?.callbackId,
       });
     } else {
-      res.status(200).json({
+      return res.status(200).json({
         status: "complete",
         message: "Schedule your service",
         time: null,

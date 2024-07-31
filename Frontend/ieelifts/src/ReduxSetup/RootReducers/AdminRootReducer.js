@@ -52,6 +52,7 @@ import {ClientFormDataFromApiReducer} from "../Reducers/AdminReducer";
 import { addTodoReducer,getTodosReducer } from "../Reducers/AdminReducer";
 import { updateTodoDataReducer } from "../Reducers/AdminReducer";
 import { upgradeClientMembershipByAdminPannelReducer } from "../Reducers/AdminReducer";
+import { getNotificationDataAction } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -110,7 +111,8 @@ const AdminRootReducer = combineReducers({
   getTodosReducer:getTodosReducer,
   updateTodoDataReducer:updateTodoDataReducer,
   deleteTodoReducer:deleteTodoReducer,
-  upgradeClientMembershipByAdminPannelReducer:upgradeClientMembershipByAdminPannelReducer
+  upgradeClientMembershipByAdminPannelReducer:upgradeClientMembershipByAdminPannelReducer,
+  getNotificationDataAction:getNotificationDataAction
 
 });
 

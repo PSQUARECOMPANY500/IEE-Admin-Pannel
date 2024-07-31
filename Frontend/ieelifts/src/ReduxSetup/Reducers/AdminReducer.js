@@ -61,6 +61,8 @@ import { DELETE_TODO } from "../Actions/AdminActions";
 import { BiArch } from "react-icons/bi";
 
 import { UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE } from "../Actions/AdminActions";
+
+import { GET_ALL_NOTIFICATIONS } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1057,3 +1059,23 @@ const upgradeClientMembership ={
   }
  }                    
  //------------------------------------------------------------------------------------------------
+
+//  get NotificationData reducer
+
+const Notifications = {
+  NotificationsData: null
+}
+
+export const getNotificationDataAction = (state=Notifications, action) => {
+  switch(action.type){
+    case GET_ALL_NOTIFICATIONS:
+      return {
+       ...state,
+       NotificationsData: action.payload,
+      }
+    default:
+      return state;
+  }
+}
+
+// ------------------------------------------------------------------------------------------------

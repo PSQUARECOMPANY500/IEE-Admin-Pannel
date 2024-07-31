@@ -2,50 +2,66 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import NotificationSlides from "./NotificationSlides";
 import { getNotificationDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-// const def = {
-//   "All":3,
-//   "Client":0,
-//   "Enginner":0
-// }
+import { useSelector, useDispatch } from "react-redux";
+
+import moment from "moment";
+
+import callbackicon from "../../../../../src/Assets/Images/NotificationIcons/callback.png";
+import sparePrtReqwuestIcon from "../../../../../src/Assets/Images/NotificationIcons/repair.png";
+import attendance from "../../../../../src/Assets/Images/NotificationIcons/attendance.png";
+import messageIcon from "../../../../../src/Assets/Images/NotificationIcons/messageIcon.png";
+
+import referalIcon from "../../../../../src/Assets/Images/NotificationIcons/refer.png";
+import leaveIcon from "../../../../../src/Assets/Images/NotificationIcons/leaveIcon.png";
+
+import rating from "../../../../../src/Assets/Images/NotificationIcons/rating.png";
+
+
 
 const NotificationSection = () => {
+  const dispatch = useDispatch();
   const [lengthCount, setLengthCount] = useState({
     All: 0,
     Client: 0,
     Enginner: 0,
   });
 
-  const [mypplength,setmypplength] = useState(0);
+  const [mypplength, setmypplength] = useState(0);
   const [allnotificationdata, setallNotificationData] = useState();
 
   const [combineNotifications, setConbineNotifications] = useState();
   const [Enggnotificationdata, setEnggNotificationData] = useState();
   const [Clientnotificationdata, setClientNotificationData] = useState();
-  const [moveLeft,setMoveLeft] = useState(5);
-  const [moveWidth,setMoveWidth] = useState(15)
+  const [moveLeft, setMoveLeft] = useState(5);
+  const [moveWidth, setMoveWidth] = useState(15);
 
   const length =
     combineNotifications?.length +
     Enggnotificationdata?.length +
     Clientnotificationdata?.length;
-  // console.log('65656565', length);
 
-  // console.log("All", allnotificationdata);
-  // console.log("Client", Clientnotificationdata);
-  // console.log("Engg", Enggnotificationdata);
+  useEffect(() => {
+    const getNotificationData = async () => {
+      dispatch(getNotificationDataAction());
+    };
 
-  const getNotificationData = async () => {
-    const data = await getNotificationDataAction();
-    
-    setallNotificationData(data);
-
-  };
-
-  useLayoutEffect(() => {
-    
-   
     getNotificationData();
-  }, []);
+  }, [dispatch]);
+
+  const getAllNotification = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.getNotificationDataAction?.NotificationsData
+  );
+  console.log(
+    "----------++++++++++++-----------++++++++++++------------",
+    getAllNotification
+  );
+
+  useEffect(() => {
+    if (getAllNotification) {
+      setallNotificationData(getAllNotification);
+    }
+  }, [getAllNotification]);
 
   useEffect(() => {
     if (allnotificationdata) {
@@ -74,48 +90,164 @@ const NotificationSection = () => {
         JSON.parse(data.Data)
       );
       setConbineNotifications(BothNotification);
-
-     
     }
   }, [allnotificationdata]);
 
-
-
-  useEffect(()=>{
-    handleNotificationData("All")
-  },[combineNotifications])
-
+  useEffect(() => {
+    handleNotificationData("All");
+  }, [combineNotifications]);
 
   const [notification, setNotifications] = useState([]);
-  // console.log("mahi mahi",notification)
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const caluclateNumberOfNotification = (notification) => {
+    return notification
+      ?.map((notification) => notification)
+      ?.filter((data) => data !== null);
+  };
 
   const handleNotificationData = (category) => {
     if (category === "All") {
       setNotifications(combineNotifications);
       setSelectedCategory(category);
-      setMoveLeft(5)
-      setMoveWidth(15)
+      setMoveLeft(5);
+      setMoveWidth(15);
     } else if (category === "Enginner") {
       setNotifications(Enggnotificationdata);
       setSelectedCategory(category);
-      setMoveLeft(35)
-      setMoveWidth(23)
+      setMoveLeft(35);
+      setMoveWidth(23);
     } else if (category === "Client") {
       setNotifications(Clientnotificationdata);
       setSelectedCategory(category);
-      setMoveLeft(76)
-      setMoveWidth(18)
+      setMoveLeft(76);
+      setMoveWidth(18);
     }
   };
-  
-  useEffect(() => {
-    setLengthCount((prev) => ({
-      ...prev,
-      [selectedCategory]: mypplength,
-    }))
-  },[selectedCategory,mypplength])
 
+  useEffect(() => {
+    setLengthCount({
+      All: caluclateNumberOfNotification(combineNotifications)?.length,
+      Enginner: caluclateNumberOfNotification(Enggnotificationdata)?.length,
+      Client: caluclateNumberOfNotification(Clientnotificationdata)?.length,
+    });
+  }, [combineNotifications,Enggnotificationdata,Clientnotificationdata]);
+
+
+ 
+  const timeCalucalte = (time) => {
+    console.log("***************************",time);
+    const sortedTime = time.slice(11, 19);
+    const specificTime = moment(sortedTime, "HH:mm:ss");
+    const currentTime = moment();
+    const difference = currentTime.diff(specificTime, "hours");
+
+    return difference + " hours ago";
+  };
+
+
+
+
+
+
+
+  const generateMessage = (notification) => {
+
+    console.log("Generating message ====>>>>>>>",notification)
+
+    if (notification?.data?.callbackId && notification?.data?.Slot) {
+      return null;
+    }
+    if (notification?.data?.RequestId && notification?.data?.Slot) {
+      return null;
+    }
+    if (notification?.data?.isVerify === false) {
+      return null;
+    }
+
+    if (notification?.data?.callbackId) {
+      return {
+        title: "New Callback Request",
+        message: `${notification?.data?.JobOrderNumber} has requested a callback regarding ${notification?.data?.Description}.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: callbackicon,
+      };
+    }
+
+    if (notification?.data?.RequestId) {
+      return {
+        title: "New Service Request",
+        message: `${notification?.data?.JobOrderNumber} has requested a service.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: callbackicon,
+      };
+    }
+
+    if (notification?.data?.Check_In) {
+      return {
+        title: "Engineer Attendence",
+        message: `${notification?.data?.ServiceEnggId} has just checked in.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: attendance,
+      };
+    }
+
+    if (notification?.data?.SubSparePartName) {
+      return {
+        title: "Spare Part Request",
+        message: `${notification?.data?.EnggId} has requested ${notification?.data?.quantity} ${notification?.data?.SubSparePartName} with ${notification?.data?.RequestType}.Please review the request`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: sparePrtReqwuestIcon,
+      };
+    }
+
+    if (notification?.data?.ChatId) {
+      return {
+        title: "Message",
+        message: `${notification?.data?.Content} from ${notification?.data?.ChatId}`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: messageIcon,
+      };
+    }
+
+    if (notification?.data?.Hot) {
+      return { 
+        title: "Referal",
+        message: `This ${notification?.data?.jobOrderNumber} has requested a referal for ${notification?.data?.Name} from ${notification?.data?.City}.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: referalIcon,
+      };
+    }
+
+    if (
+      notification?.data?.IsApproved === "false" &&
+      notification?.data?.Leave_Reason
+    ) {
+      return {
+        title: "Leave Request",
+        message: `This ${notification?.data?.ServiceEnggId} has requested a leave for ${notification?.data?.Leave_Reason} from ${notification?.data?.Duration?.From} to ${notification?.data?.Duration?.To}.`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: leaveIcon,
+      };
+    }
+
+    if(notification?.data?.Questions && notification?.data?.Rating && notification?.data?.Description){
+      return{
+        title: "Rating",
+        message: `${notification?.data?.JobOrderNumber} give ${notification?.data?.Rating} out of 5 to ${notification?.data?.ServiceEnggId} .`,
+        time: timeCalucalte(notification?.time),
+        imageIcon: rating,
+      }
+    }
+
+  };
+
+  const filteredNotifications = notification
+    ?.map((notification) => generateMessage(notification))
+    ?.filter((data) => data !== null);
+
+  const filteredNotificationslength = filteredNotifications?.length;
+  
   return (
     <div className="parent-Notification-div">
       <div className="child-notification-div">
@@ -128,12 +260,12 @@ const NotificationSection = () => {
           <div className="notification-navigators">
             <div
               className={`notification-buttons ${
-                selectedCategory === "All"  ? "activeNotification" : ""
+                selectedCategory === "All" ? "activeNotification" : ""
               }`}
               onClick={() => handleNotificationData("All")}
             >
               <p>All</p>
-              <p>{(lengthCount.All && lengthCount.All) || 0}</p>
+              <p>{(lengthCount && lengthCount.All) || 0}</p>
             </div>
             <div
               className={`notification-buttons ${
@@ -142,7 +274,7 @@ const NotificationSection = () => {
               onClick={() => handleNotificationData("Enginner")}
             >
               <p>Enginner</p>
-              <p>{(lengthCount.Enginner && lengthCount.Enginner) || 0}</p>
+              <p>{(lengthCount && lengthCount.Enginner) || 0}</p>
             </div>
             <div
               className={`notification-buttons ${
@@ -151,19 +283,18 @@ const NotificationSection = () => {
               onClick={() => handleNotificationData("Client")}
             >
               <p>Client</p>
-              <p>{(lengthCount.Client && lengthCount.Client) || 0}</p>
+              <p>{(lengthCount && lengthCount.Client) || 0}</p>
             </div>
           </div>
-          <div className="notification-bg-line" style={{left:moveLeft+'%',width:moveWidth+'%'}}></div>
+          <div
+            className="notification-bg-line"
+            style={{ left: moveLeft + "%", width: moveWidth + "%" }}
+          ></div>
         </div>
 
         <div className="notification-archives">
           <NotificationSlides
-            notifications={notification}
-            notificationcount={(e) =>{
-              setmypplength(e)
-              }
-            }
+            notifications={filteredNotifications}
           />
         </div>
       </div>

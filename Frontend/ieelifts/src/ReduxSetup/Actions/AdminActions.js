@@ -105,6 +105,8 @@ export const DELETE_TODO = "DELETE_TODO"
 
 
 export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE'
+
+export const GET_ALL_NOTIFICATIONS = 'GET_ALL_NOTIFICATIONS'
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1198,14 +1200,37 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 //-------------------------------------------------------------------------------------------------------
 //amit and preet get notification data from backend
 
-export const getNotificationDataAction = async () => {
-  try {
-    const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
-    return response.data;
-  } catch (error) {
-    console.log("error while fetching Notification data", error);
+// export const getNotificationDataAction = async () => {
+//   try {
+//     const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
+//     return response.data;
+//   } catch (error) {
+//     console.log("error while fetching Notification data", error);
+//   }
+// };
+
+
+export const getNotificationDataAction = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
+      dispatch({
+        type: GET_ALL_NOTIFICATIONS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.log("error while fetching Notification data", error);
+    }
   }
-};
+}
+
+
+
+
+
+
+
+
 
 //-------------------------------------------------------------------------------------------------------
 

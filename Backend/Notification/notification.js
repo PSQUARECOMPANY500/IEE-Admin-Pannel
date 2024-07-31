@@ -1,20 +1,21 @@
-const message = require("../Modals/ChatModel/MessageModal");
+const mongoose = require("mongoose");
+const Message = require("../Modals/ChatModel/MessageModal");
 const Referal = require("../Modals/ClientDetailModals/ClientReferalSchema");
 const Notification = require("../Modals/NotificationModal/notificationModal.js");
-const engineerRating = require("../Modals/Rating/Rating");
+const EngineerRating = require("../Modals/Rating/Rating");
 const ReportInfoModel = require("../Modals/ReportModal/ReportModal.js");
 const AssignEnggService = require("../Modals/ServiceEngineerModals/AssignCallbacks");
-const AssignSecheduleRequest = require("../Modals/ServiceEngineerModals/AssignServiceRequest");
+const AssignScheduleRequest = require("../Modals/ServiceEngineerModals/AssignServiceRequest");
 const EnggAttendanceServiceRecord = require("../Modals/ServiceEngineerModals/Attendance");
 const EnggLeaveServiceRecord = require("../Modals/ServiceEngineerModals/EnggLeaveSchema");
-const serviceRequest = require("../Modals/ServicesModal/ClientServicesRequest");
+const ServiceRequest = require("../Modals/ServicesModal/ClientServicesRequest");
 const CallbackRequests = require("../Modals/ServicesModal/ClinetCallback.js");
-const SpearPartsRequested = require("../Modals/SpearParts/SparePartRequestModel");
+const SparePartsRequested = require("../Modals/SpearParts/SparePartRequestModel");
+const ClientDetails = require("../Modals/ClientDetailModals/RegisterClientDetailSchema");
 
 const report = require("../Modals/ReportModal/ReportModal.js");
 
-const clientDetails = require("../Modals/ClientDetailModals/RegisterClientDetailSchema");
-const serviceEnggDetails = require("../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
+const ServiceEnggDetails = require("../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
 const admin = require("firebase-admin");
 serviceAccount = {
@@ -38,80 +39,88 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-//---------------------------------------------------------------------------------------------------------------------------------
-const tokenFindinginEnggDatabase = async (data) => {
+const tokenFindingInEnggDatabase = async (data) => {
   let datas;
 
   if (data.operationType === "update") {
     if (data.ns.coll === "enggleaverecords") {
-      const leaveInformation = await EnggLeaveServiceRecord.find({
-        _id: data.documentKey._id,
-      });
-      const enggDetails = await serviceEnggDetails
-        .findOne({ EnggId: leaveInformation[0].ServiceEnggId })
-        .select("firebaseToken");
+      const leaveInformation = await EnggLeaveServiceRecord.findById(
+        data.documentKey._id
+      );
+      const enggDetails = await ServiceEnggDetails.findOne({
+        EnggId: leaveInformation.ServiceEnggId,
+      }).select("firebaseToken");
       datas = {
         tokens: enggDetails.firebaseToken,
-        title: `Leave Status`,
+        title: "Leave Status",
         body:
-          leaveInformation[0].IsApproved === "true"
-            ? `Your Leave is Approved By Admin for ${leaveInformation[0].Duration.From} to ${leaveInformation[0].Duration.To}`
-            : `Your Leave is Not Approved By Admin for ${leaveInformation[0].Duration.From} to ${leaveInformation[0].Duration.To}`,
+          leaveInformation.IsApproved === "true"
+            ? `Your Leave is Approved By Admin for ${leaveInformation.Duration.From} to ${leaveInformation.Duration.To}`
+            : `Your Leave is Not Approved By Admin for ${leaveInformation.Duration.From} to ${leaveInformation.Duration.To}`,
       };
     }
   }
 
   if (data.operationType === "insert") {
-    const getFirebaseToken = await serviceEnggDetails
-      .find({ EnggId: data.fullDocument.ServiceEnggId })
-      .select("firebaseToken");
-    if (data?.ns?.coll === "assigncallbacks") {
+    const getFirebaseToken = await ServiceEnggDetails.find({
+      EnggId: data.fullDocument.ServiceEnggId,
+    }).select("firebaseToken");
+    if (data.ns.coll === "assigncallbacks") {
       datas = {
         tokens: getFirebaseToken[0].firebaseToken,
-        title: `New Callback Request`,
-        body: `A new Callabck has been assigned on ${data.fullDocument.Date}`,
+        title: "New Callback Request",
+        body: `A new Callback has been assigned on ${data.fullDocument.Date}`,
       };
     }
 
-    if (data?.ns?.coll === "assignservicerequests") {
+    if (data.ns.coll === "assignservicerequests") {
       datas = {
         tokens: getFirebaseToken[0].firebaseToken,
-        title: `New Service Request`,
+        title: "New Service Request",
         body: `A new service has been assigned on ${data.fullDocument.Date}`,
       };
     }
+
+    if (data.ns.coll === "enggleaverecords") {
+      datas = {
+        tokens: getFirebaseToken[0].firebaseToken,
+        title: "Leave Request",
+        body: `You have a new leave request for ${data.fullDocument.Duration.From} to ${data.fullDocument.Duration.To} from serviceEnggId ${data.fullDocument.ServiceEnggId}`,
+      };
+    }
   }
+
   return FirebaseNotificationTestingPurpose(datas);
 };
 
-const tokenFindinginClientDatabase = async (data) => {
+const tokenFindingInClientDatabase = async (data) => {
   let datas;
 
   if (data.operationType === "insert") {
-    const getFirebaseToken = await clientDetails
-      .find({ JobOrderNumber: data.fullDocument.JobOrderNumber })
-      .select("firebaseToken");
+    const getFirebaseToken = await ClientDetails.find({
+      JobOrderNumber: data.fullDocument.JobOrderNumber,
+    }).select("firebaseToken");
 
     if (data.ns.coll === "assigncallbacks") {
       datas = {
         tokens: getFirebaseToken[0].firebaseToken,
-        title: `Engineer Assigned`,
+        title: "Engineer Assigned",
         body: `An engineer has been assigned to your Callback request on ${data.fullDocument.Date}`,
       };
     }
 
-    if (data?.ns?.coll === "assignservicerequests") {
+    if (data.ns.coll === "assignservicerequests") {
       datas = {
         tokens: getFirebaseToken[0].firebaseToken,
-        title: `Engineer Assigned`,
+        title: "Engineer Assigned",
         body: `An engineer has been assigned to your Service request on ${data.fullDocument.Date}`,
       };
     }
 
-    if (data?.ns?.coll === "reports") {
+    if (data.ns.coll === "reports") {
       datas = {
         tokens: getFirebaseToken[0].firebaseToken,
-        title: `Service Accept`,
+        title: "Service Accept",
         body: `Your service request has been accepted by the engineer with ID ${data.fullDocument.EnggId}`,
       };
     }
@@ -119,205 +128,108 @@ const tokenFindinginClientDatabase = async (data) => {
 
   return FirebaseNotificationTestingPurpose(datas);
 };
-//-------------------------------------------------------------------------------------------------------------------------------
 
-module.exports.watchNotifications = async (io) => {
-  //-------------------------leave request --------------------------------
+module.exports.watchNotifications = () => {
+  const handleDatabaseChange = async (data, collectionName, owners) => {
+    if (data.fullDocument) {
+      const notificationData = JSON.stringify({
+        time: data.wallTime,
+        data: data.fullDocument,
+      });
+
+      saveNotification(owners, notificationData);
+    }
+
+    if (
+      collectionName === "enggleaverecords" &&
+      data.operationType === "update"
+    ) {
+      await tokenFindingInEnggDatabase(data);
+    }
+
+    if (
+      collectionName === "assigncallbacks" &&
+      data.operationType === "insert"
+    ) {
+      await tokenFindingInEnggDatabase(data);
+      await tokenFindingInClientDatabase(data);
+    }
+
+    if (
+      collectionName === "assignservicerequests" &&
+      data.operationType === "insert"
+    ) {
+      await tokenFindingInEnggDatabase(data);
+      await tokenFindingInClientDatabase(data);
+    }
+  };
+
   EnggLeaveServiceRecord.watch().on("change", (data) => {
-    console.log("EnggLeaveServiceRecord", data);
-
-    if (data.operationType === "update") {
-      tokenFindinginEnggDatabase(data);
-    }
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
+    handleDatabaseChange(data, "enggleaverecords", ["Engg"]);
   });
-
-  //-------------------------leave request --------------------------------
-
-  CallbackRequests.watch().on("change", (data) => {
-    console.log("CallbackRequests");
-
-    console.log("EnggLeaveServiceRecord--------->", data);
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-
-  EnggAttendanceServiceRecord.watch().on("change", (data) => {
-    console.log("EnggAttendanceServiceRecord");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-
-
-  //report Info Model --------------------------------------------------
-  ReportInfoModel.watch().on("change", (data) => {
-    console.log("Report");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-
-  //asssign engg to the client (notification in client app)-----------------------
-  AssignEnggService.watch().on("change", (data) => {
-    console.log("AssignEnggService2323232323", data);
-
-    if (data.operationType === "insert") {
-      tokenFindinginEnggDatabase(data);
-      tokenFindinginClientDatabase(data);
-    }
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg", "Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-
-  AssignSecheduleRequest.watch().on("change", (data) => {
-    console.log("AssignSecheduleRequest");
-
-    if (data.operationType === "insert") {
-      tokenFindinginEnggDatabase(data);
-      tokenFindinginClientDatabase(data);
-    }
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg", "Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data, io);
-    }
-  });
-  // ---------------------------------------------------------------------------------------------------
-
-  SpearPartsRequested.watch().on("change", (data) => {
-    console.log("SpearPartsRequested");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data, io);
-    }
-  });
-  serviceRequest.watch().on("change", (data) => {
-    console.log("serviceRequest");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-  message.watch().on("change", (data) => {
-    console.log("message");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Engg"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-
-  {
-    /* client Notification */
-  }
-  Referal.watch().on("change", (data) => {
-    console.log("Referal");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
-  engineerRating.watch().on("change", (data) => {
-    console.log("engineerRating");
-
-    const Data = JSON.stringify({
-      time: data.wallTime,
-      data: data.fullDocument,
-    });
-    const owner = ["Client"];
-    if (data.fullDocument) {
-      saveNotification(owner, Data);
-    }
-  });
+  CallbackRequests.watch().on("change", (data) =>
+    handleDatabaseChange(data, "assigncallbacks", ["Client"])
+  );
+  EnggAttendanceServiceRecord.watch().on("change", (data) =>
+    handleDatabaseChange(data, "enggattendancerecords", ["Engg"])
+  );
+  ReportInfoModel.watch().on("change", (data) =>
+    handleDatabaseChange(data, "reports", ["Engg"])
+  );
+  AssignEnggService.watch().on("change", (data) =>
+    handleDatabaseChange(data, "assignenggservice", ["Engg", "Client"])
+  );
+  AssignScheduleRequest.watch().on("change", (data) =>
+    handleDatabaseChange(data, "assignschedulerequests", ["Engg", "Client"])
+  );
+  SparePartsRequested.watch().on("change", (data) =>
+    handleDatabaseChange(data, "sparepartsrequested", ["Engg"])
+  );
+  ServiceRequest.watch().on("change", (data) =>
+    handleDatabaseChange(data, "servicerequests", ["Client"])
+  );
+  Message.watch().on("change", (data) =>
+    handleDatabaseChange(data, "messages", ["Engg"])
+  );
+  Referal.watch().on("change", (data) =>
+    handleDatabaseChange(data, "referrals", ["Client"])
+  );
+  EngineerRating.watch().on("change", (data) =>
+    handleDatabaseChange(data, "engineerratings", ["Client"])
+  );
 };
 
-report.watch().on("change", (data) => {
-  console.log(data);
-  tokenFindinginClientDatabase(data);
-});
-
-//save notification in DataBase
 const saveNotification = async (owner, data) => {
+  const now = new Date()
+    .toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+    .split(", ")[1];
+  console.log("Saving notification =============== >>>>>>", owner, data);
   try {
     if (owner && data) {
-      await Notification.create({
+      const existingNotification = await Notification.findOne({
         Owner: owner,
         Data: data,
+        Date: now,
       });
+      if (existingNotification) {
+        console.log("Notification already exists");
+        return;
+      }
+
+      await Notification.create({ Owner: owner, Data: data, Date: now });
     }
   } catch (err) {
-    console.log("error in notification", err);
+    console.log("Error in notification", err);
   }
 };
 
-//firebase send notification
 const FirebaseNotificationTestingPurpose = async (data) => {
   try {
-    console.log("ooooooooooo", data);
     if (!data) return;
 
     let { tokens, title, body } = data;
     if (!tokens) return;
 
-    console.log("===============================", tokens);
-    // Convert tokens to array if it's not already an array
     if (!Array.isArray(tokens)) {
       tokens = [tokens];
     }
@@ -334,3 +246,7 @@ const FirebaseNotificationTestingPurpose = async (data) => {
     console.log(err);
   }
 };
+
+report.watch().on("change", (data) => {
+  tokenFindingInClientDatabase(data);
+});
