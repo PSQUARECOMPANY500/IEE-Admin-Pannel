@@ -693,7 +693,6 @@ import config from "../../../../config";
                            <SkeltonLoader width="100px" height="10px" />
                          )}
                        </div>
- 
                      </div>
                    </div>
                  </div>
@@ -703,7 +702,7 @@ import config from "../../../../config";
                    <div className="sm-box sm-box--2">
                      <div className="col75">
                        <div className="data-pic">
-                         <ReactDatePickers className="date-picker-dropdown" OnDateChange={handleAssignDateChange} />
+                         <ReactDatePickers className="date-picker-dropdown" OnDateChange={handleAssignDateChange}/>
                        </div>
  
                      </div>

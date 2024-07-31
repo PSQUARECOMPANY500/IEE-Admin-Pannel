@@ -10,6 +10,8 @@ const AddEnggAttachment = ({
   isAssigned,
   value,
   editchange,
+  flag,
+  customClass
 }) => {
   const selectedValue = Details || [];
   
@@ -20,7 +22,6 @@ const AddEnggAttachment = ({
   }));
 
   const [selectedOption, setSelectedOption] = useState(null);
-
 
   // useEffect(() => {
   //   // Update selected option when value prop changes
@@ -70,7 +71,8 @@ const AddEnggAttachment = ({
       ...provided,
       backgroundColor: state.isSelected ? "#FEF3DE" : "#ffffff",
       color: state.isSelected ? "#F8AC1D" : "black",
-      fontSize: "14px",
+      // fontSize: "14px",
+      fontSize: `${flag?"0.7rem":"14px"}`,
       padding: padding,
       ":hover": {
         backgroundColor: "#FEF3DE",
@@ -79,7 +81,6 @@ const AddEnggAttachment = ({
       },
     }),
   };
-
   return (
     <Select
       placeholder={placeholder}
@@ -88,6 +89,7 @@ const AddEnggAttachment = ({
       value={selectedOption}
       onChange={handleChange}
       isDisabled={editchange ? false : isAssigned}
+      className={customClass}
     />
   );
 };

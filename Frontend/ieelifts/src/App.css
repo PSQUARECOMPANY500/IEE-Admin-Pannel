@@ -8760,18 +8760,18 @@ element.style {
   width: 100%;
 }
 
-.addEnggButtons {
-  margin-left: 26%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 10px;
-  height: 5vh;
-  width: 30;
-  position: absolute;
-  bottom: 3%;
-  right: 5%;
-}
+  .addEnggButtons {
+    margin-left: 26%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+    height: 5vh;
+    width: 30;
+    position: absolute;
+    bottom: 3%;
+    right: 5%;
+  }
 
 /* CSS */
 .button-69,
@@ -9955,8 +9955,36 @@ a[href^="http://maps.google.com/maps"] {
     font-weight: 500;
     font-size: 0.8rem;
   }
+  .client-form-details {
+    padding: 2.4rem 2rem 0 2rem !important;
+  }
+  .client-salesman-details {
+    padding: 2.4rem 2rem 0 2rem !important;
+  }
 
-  .client-form-input-wrapper {
+  .option-container {
+    position: absolute;
+    border: 1px solid #70707080;
+    border-radius: 10px;
+    color: #8e8e8e;
+    font-size: 1rem;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0.6rem;
+    opacity: 1;
+    margin-top: 0.4rem;
+    font-family: "Poppins";
+    background-color: #fff;
+    z-index: 10;
+  }
+  
+  .option-container>ul {
+    list-style-type: none;
+    opacity: 0.54;
+    font-size: 0.8rem !important;
+  }
+  .client-form-input-wrapper{
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
