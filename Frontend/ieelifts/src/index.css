@@ -3429,7 +3429,7 @@ input:-webkit-autofill {
 
   .client_table-container table td,
   .client_table-container table th {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 
   .sub_table_view {
@@ -3514,7 +3514,7 @@ input:-webkit-autofill {
 
   .clientCard {
     background-color: #ffffff;
-    font-size: 0.64rem;
+    font-size: 0.8rem;
     padding: 1.36rem;
     width: 100%;
     border-radius: 1rem;

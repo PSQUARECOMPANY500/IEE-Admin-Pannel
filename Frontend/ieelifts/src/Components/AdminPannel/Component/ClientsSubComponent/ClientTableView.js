@@ -86,6 +86,8 @@ const ClientTableView = ({
   const handleExcelIconClick = () => {
     setCsvData(uniqueData);
   };
+
+
   return (
     <div className="table_view client_table_view">
       <div className="sub_table_view client_sub_table_view">
@@ -218,10 +220,21 @@ const ClientTableView = ({
                     </td>
                   </tr>
                 ))}    
-                  {isLoading&&page<totalPage? <><tr style={{ overflowX: "hidden" }}>
+                  {isLoading&&page<=totalPage? <><tr style={{ overflowX: "hidden" }}>
                     <td colSpan="10">
                       <SkeltonLoader
-                        width={"75vw"}
+                        // width={"73vw"}
+                        height={"38px"}
+                        marginTop={"8px"}
+                        marginBottom={"0px"}
+                        className='table-skeleton'
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="10">
+                      <SkeltonLoader
+                        // width={"73vw"}
                         height={"38px"}
                         marginTop={"8px"}
                         marginBottom={"0px"}
@@ -231,17 +244,7 @@ const ClientTableView = ({
                   <tr>
                     <td colSpan="10">
                       <SkeltonLoader
-                        width={"75vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        width={"75vw"}
+                        // width={"73vw"}
                         height={"38px"}
                         marginTop={"8px"}
                         marginBottom={"0px"}

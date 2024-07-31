@@ -38,8 +38,9 @@ const Invoice = ({ serviceId }) => {
   };
 
   return (
+    <div className="McRoom">
     <div className="Invoice Yello_Scrollbar">
-      <h5>Spare Parts Changed</h5>
+     {sparePartData&& <h5>Spare Parts Changed</h5>}
       <div className="InvoiceTable">
         {sparePartData?.map((item) => (
           <div className="InvoiceTableRow">
@@ -58,7 +59,7 @@ const Invoice = ({ serviceId }) => {
           </div>
         ))}
       </div>
-      <div className="InvoiceFooter">
+      {sparePartData&& <div className="InvoiceFooter">
         <div className="InvoiceFooterL">
           <div className="InvoiceFooterRow">
             <h5>Payment Mode</h5>
@@ -83,7 +84,8 @@ const Invoice = ({ serviceId }) => {
             onClick={openIt}
           />
         </div>
-      </div>/
+      </div>}
+    </div>
     </div>
   );
 };

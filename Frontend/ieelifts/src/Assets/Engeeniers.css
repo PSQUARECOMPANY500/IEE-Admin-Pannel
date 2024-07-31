@@ -488,7 +488,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-  border-bottom: 2px solid #5353533b;
+  /* border-bottom: 2px solid #5353533b; */
 }
 
 .TaskHeading h5 {
@@ -670,10 +670,11 @@ tr>td:nth-child(2) {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #f8ac1d;
+  border: 1px solid #f8ac1d;
   border-radius: 4px;
   padding: 0.1rem;
   margin-bottom: 0.3rem;
+  gap: 0.1rem;
 }
 
 .star h5 {
@@ -1697,12 +1698,21 @@ tr>td:nth-child(2) {
   position: relative;
 }
 
+.spare-part-progress{
+height: 1px;
+position:absolute;
+width: 200px;
+/* top: 7%; */
+background-color: #f8ac1d;
+transition: 0.5s ease;
+}
+
 .sub-spare-part {
   position: relative;
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 10% 1% 89%;
 }
 
 .spare-part-head {
