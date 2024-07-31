@@ -1822,8 +1822,24 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       RequestId: serviceId,
     });
 
-    console.log("FinalFilteredData=======================", updateTaskStatusServiceRequest);
+    const SparePartsChanged = ReportData.questionsDetails.filter((question) => {
+      const { isResolved, isSparePartRequest, sparePartDetail, SparePartDescription } = question.questionResponse;
+      const hasSparePartDetails = sparePartDetail.sparePartsType !== "" && sparePartDetail.subsparePartspartid !== "";
 
+      if (
+        (isResolved && hasSparePartDetails) ||
+        (isResolved && SparePartDescription !== "") ||
+        !isResolved
+      ) {
+        if (!isSparePartRequest && hasSparePartDetails && isResolved) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    console.log(SparePartsChanged.length);
 
 
     if (updateTaskStatusCallback) {
@@ -1834,6 +1850,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.callbacksCount > 0 ? activeMembership.callbacksCount + 1 : 1;
         activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        activeMembership.sparePartsSoldCount = activeMembership.sparePartsSoldCount > 0 ? SparePartsChanged.length : activeMembership.sparePartsSoldCount + SparePartsChanged.length
         await activeMembership.save()
       }
       await updateTaskStatusCallback.save();
@@ -1844,6 +1861,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;
         activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        activeMembership.sparePartsSoldCount = activeMembership.sparePartsSoldCount > 0 ? SparePartsChanged.length : activeMembership.sparePartsSoldCount + SparePartsChanged.length
         await activeMembership.save()
       }
       await updateTaskStatusServiceRequest.save();

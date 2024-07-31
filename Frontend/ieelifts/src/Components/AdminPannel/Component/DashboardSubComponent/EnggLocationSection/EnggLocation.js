@@ -32,7 +32,6 @@ const EnggLocation = () => {
       state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
   );
 
-console.log("getactive engg crouser Id",enggServiceID);
 
 
   const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 };
@@ -73,8 +72,7 @@ console.log("getactive engg crouser Id",enggServiceID);
     origin: item.origin,
     destination: item.destination
   }));
-  
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!11111111111111",locationss);
+
 
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -365,12 +363,11 @@ console.log("getactive engg crouser Id",enggServiceID);
         enggLocationDetails.map((data, index) => {
 
           const lastLatitude = parseFloat(data?.currentLocation?.coordinates?.length - 1);
-          console.log(lastLatitude)
-
+         
           const latitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[0]);
-          console.log(latitude)
+        
           const longitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[1]);
-          console.log(longitude)
+        
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
           const isActive =

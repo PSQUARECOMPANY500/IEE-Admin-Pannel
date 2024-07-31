@@ -234,8 +234,6 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
       Date: currentDate,
     });
 
-    console.log("******************", currentDetailServiceRequest);
-
     if (currentDetailServiceRequest.length === 0) {
       return res.status(400).json({
         message: "no Service Request for today's",
@@ -253,6 +251,8 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const ServiceRequestdetail = await getAllServiceRequest.findOne({
           RequestId: item.RequestId,
         });
+
+        const engRating = await EnggRating.findOne({ ServiceId: item.RequestId })
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientDetail ? clientDetail.name : null;
@@ -271,6 +271,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ServiceRequestdetail?.RepresentativeName || null;
         const RepresentativeNumber =
           ServiceRequestdetail?.RepresentativeNumber || null;
+        const rating = engRating?.Rating;
         return {
           ...item._doc,
           enggName,
@@ -282,6 +283,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ClientDescription,
           RepresentativeName,
           RepresentativeNumber,
+          rating
         };
       })
     );
@@ -322,6 +324,9 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         const callbackdetail = await getAllCalbacks.findOne({
           callbackId: item.callbackId,
         });
+        const rating = await EnggRating.findOne({
+          ServiceId: item.callbackId
+        })
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientdetail ? clientdetail.name : null;
@@ -342,6 +347,8 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         const RepresentativeNumber = callbackdetail
           ? callbackdetail.RepresentativeNumber
           : null;
+        const engRating = rating?.Rating;
+        console.log("================engRating", engRating);
         return {
           ...item._doc,
           enggName,
@@ -353,6 +360,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
           ClientDescription,
           RepresentativeName,
           RepresentativeNumber,
+          engRating
         };
       })
     );
@@ -2463,11 +2471,11 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceId: assignment.ServiceId,
           });
-          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
+          const reportTable = await ReportTable.findOne({ serviceId: assignment.ServiceId }).select('paymentDetils');
           return {
             ...assignment,
             rating: Rating[0]?.Rating,
-            reportLink:reportTable?.paymentDetils
+            reportLink: reportTable?.paymentDetils
           };
         })
       );
@@ -2476,12 +2484,12 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceId: assignment.ServiceId,
           });
-          const reportTable = await ReportTable.findOne({serviceId:assignment.ServiceId}).select('paymentDetils');
+          const reportTable = await ReportTable.findOne({ serviceId: assignment.ServiceId }).select('paymentDetils');
 
           return {
             ...assignment,
             rating: Rating[0]?.Rating,
-            reportLink:reportTable?.paymentDetils
+            reportLink: reportTable?.paymentDetils
           };
         })
       );

@@ -17,8 +17,10 @@ import {
   getEngineerNames,
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
+
 import { useDispatch, useSelector } from "react-redux";
-import { FaRegStar } from "react-icons/fa";
+import { GoStarFill } from "react-icons/go";
+
 import RepotImage from "./RepotImage";
 
 const TaskLocationSection = forwardRef((props, ref) => {
@@ -166,9 +168,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
       return data.filter(d => d.enggName === condition);
     });
 
-    console.log("==================> enginerData", engineerData)
-    console.log("==================> statusData", statusData)
-
     let filteredData;
     if (statusFilter.length && engineerFilter.length) {
       filteredData = statusData.filter(status =>
@@ -228,7 +227,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
       setHandleReportData(false);
       setReportData(reportData?.callbackId || reportData?.RequestId);
-  
+
     } else {
       setHandleReportData(true);
       setReportData(reportData);
@@ -303,59 +302,64 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                        let reportData = value;
-                        return (
-                          <div
-                          style={{backgroundColor:`${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}`}}
-                             className={`ticket-card ${
-                              handleCallbackSelection[index] &&
-                              "service-card-selected"
-                            }` }
-                            onClick={() => handleReportSectionData(reportData)}
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.clientName}</h5>
-                              </div>
+                      let reportData = value;
+                      console.log("==========reportData", reportData.engRating)
+                      return (
+                        <div
+                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
+                          className={`ticket-card ${handleCallbackSelection[index] &&
+                            "service-card-selected"
+                            }`}
+                          onClick={() => handleReportSectionData(reportData)}
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.clientName}</h5>
+                            </div>
+                          </div>
 
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.enggName}</h5>
-                              </div>
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
                             </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.enggName}</h5>
+                            </div>
+                          </div>
 
                           <div className="ticket-card-bottom">
-                            <h5>{extractStartTime(value.Slot)}</h5>
-                            <h5>{extractEndTime(value.Slot)}</h5>
+                            <h5 className="ticket-card-bottom-starting-slot">{extractStartTime(value.Slot)}</h5>
+
+                            <h5 className="ticket-card-bottom-end-slot">{extractEndTime(value.Slot)}</h5>
+                            {reportData.engRating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
+                              <p className="ratingByClient1st"><GoStarFill /></p>
+                              <p className="ratingByClient2nd">{reportData?.engRating}</p>
+                            </h5>}
                           </div>
                         </div>
                       );
                     })
                     : filterData?.map((value, index) => {
-                        let reportData = value;
-                        return (
-                          <div
-                            className={`ticket-card ${
-                              handleCallbackSelection[index] &&
-                              "service-card-selected"
+                      let reportData = value;
+                      return (
+                        <div
+                          className={`ticket-card ${handleCallbackSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            onClick={() => handleReportSectionData(reportData)}
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value.clientName.toUpperCase()}</h5>
-                              </div>
+                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
+                          onClick={() => handleReportSectionData(reportData)}
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value.clientName.toUpperCase()}</h5>
+                            </div>
+                          </div>
 
                           <div className="ticket-sub-card-row">
                             <div className="ticket-sub-card-row-right">
@@ -366,8 +370,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             </div>
                           </div>
                           <div className="ticket-card-bottom">
-                            <h5>{extractStartTime(value.Slot)}</h5>
-                            <h5>{extractEndTime(value.Slot)}</h5>
+                            <h5 className="ticket-card-bottom-starting-slot">{extractStartTime(value.Slot)}</h5>
+
+                            <h5 className="ticket-card-bottom-end-slot">{extractEndTime(value.Slot)}</h5>
+                            {reportData.engRating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
+                              <p className="ratingByClient1st"><GoStarFill /></p>
+                              <p className="ratingByClient2nd">{reportData?.engRating}</p>
+                            </h5>}
                           </div>
                         </div>
                       );
@@ -379,15 +388,14 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                        let reportData = serviceData;
-                        return (
-                          <div
-                            className={`service-card ${
-                              handleServiceSelection[index] &&
-                              "service-card-selected"
+                      let reportData = serviceData;
+                      return (
+                        <div
+                          className={`service-card ${handleServiceSelection[index] &&
+                            "service-card-selected"
                             }`}
                           onClick={() => handleReportSectionData(reportData)}
-
+                          style={{ backgroundColor: `${reportData?.ServiceProcess === 'completed' ? "#FFF9EF" : "#ffffff"}` }}
                         >
                           <div className="ticket-sub-card-row" >
                             <div className="ticket-sub-card-row-right">
@@ -410,6 +418,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            {reportData.rating && reportData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
+                              <p className="ratingByClient1st"><GoStarFill /></p>
+                              <p className="ratingByClient2nd">{reportData?.rating}</p>
+                            </h5>}
                           </div>
                         </div>
                       );
@@ -447,6 +459,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            {reportServiceData.rating && reportServiceData?.ServiceProcess === 'completed' && <h5 className="ratingByClient">
+                              <p className="ratingByClient1st"><GoStarFill /></p>
+                              <p className="ratingByClient2nd">{reportServiceData?.rating}</p>
+                            </h5>}
                           </div>
                         </div>
                       );
@@ -461,7 +477,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
           <div className="Report-section">
             <div className="task-top-section" style={{ cursor: "pointer" }}>
               <p>Report</p>
-            </div>  
+            </div>
 
             <div className="report-description-section">
               <div className="more-descriptive-report">
