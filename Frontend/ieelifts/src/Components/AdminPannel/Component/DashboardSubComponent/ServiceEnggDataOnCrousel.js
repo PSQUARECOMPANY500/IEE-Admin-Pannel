@@ -179,7 +179,7 @@ const ServiceEnggDataOnCrousel = ({
 
               {renderArray.length > 1 ? (
                 <div className="dropdown2">
-                  <span>{renderArray[1].ClientName?.split(" ")[0]}</span>
+                  <span className="dropdown2-text">{renderArray[1].ClientName?.split(" ")[0]}</span>
                   <span>service E1</span>
 
                   <div className="dropdown-menu dropdown2-menu">

@@ -38,7 +38,7 @@ const Invoice = ({ serviceId }) => {
   };
 
   return (
-    <div className="Invoice">
+    <div className="Invoice Yello_Scrollbar">
       <h5>Spare Parts Changed</h5>
       <div className="InvoiceTable">
         {sparePartData?.map((item) => (
