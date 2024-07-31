@@ -1307,3 +1307,25 @@ module.exports.updateClientProfile = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+
+//-----------------------------------------------------------------------------------------------------------
+// delete firebase token of client on logout --- Abhishek
+module.exports.removeClientFirebaseToken = async (req, res) => {
+  try {
+    const { jobOrderNumber } = req.query;
+
+    await RegisterClientDetails.findOneAndUpdate(
+      { JobOrderNumber: jobOrderNumber },
+      { firebaseToken: "" }
+    );
+    console.log("success");
+    res.status(201).json({
+      success: true,
+      message: "Logout successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

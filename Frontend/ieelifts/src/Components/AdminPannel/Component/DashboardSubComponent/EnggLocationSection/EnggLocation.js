@@ -45,64 +45,65 @@ const EnggLocation = () => {
   const [enggId, setEnggId] = useState("");
   const [state, setState] = useState(0);
 
-  const [directionsResponses, setDirectionsResponses] = useState([]);
-  const [distances, setDistances] = useState([]);
-  const [durations, setDurations] = useState([]);
+  // const [directionsResponses, setDirectionsResponses] = useState([]);
+  // const [distances, setDistances] = useState([]);
+  // const [durations, setDurations] = useState([]);
   // console.log("$$$$$$$$$$$$$$$$$$$$$$$$", distances);
   // console.log("!!!!!!!!!!!!!!!!!!", durations);
 
-  const locations = [
-    {
-      origin: "30.714428633668856, 76.69627382349806",
-      destination: "30.786394881867572, 76.81068259533569",
-    },
-    {
-      origin: "30.786394881867572, 76.81068259533569",
-      destination: "30.699955351116518, 76.86418011009073",
-    },
-    {
-      origin: "30.699955351116518, 76.86418011009073",
-      destination: "30.673769256945302, 76.74035592749549",
-    },
-    // Add more locations as needed
-  ];
+  // const locations = [
+  //   {
+  //     origin: "30.714428633668856, 76.69627382349806",
+  //     destination: "30.786394881867572, 76.81068259533569",
+  //   },
+  //   {
+  //     origin: "30.786394881867572, 76.81068259533569",
+  //     destination: "30.699955351116518, 76.86418011009073",
+  //   },
+  //   {
+  //     origin: "30.699955351116518, 76.86418011009073",
+  //     destination: "30.673769256945302, 76.74035592749549",
+  //   },
+  //   // Add more locations as needed
+  // ];
 
 
-  const locationss = enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates?.map(item => ({
-    origin: item.origin,
-    destination: item.destination
-  }));
-
+  // const locationss = enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates?.map(item => ({
+  //   origin: item.origin,
+  //   destination: item.destination
+  // }));
+  
+  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!11111111111111",locationss);
 
 
   //--------------------------------------------------------------------------------------------------------------------
-  useEffect(() => {
-    const calculateRoutes = async () => {
-      const directionsService = new window.google.maps.DirectionsService();
+  // useEffect(() => {
+  //   const calculateRoutes = async () => {
+  //     const directionsService = new window.google.maps.DirectionsService();
 
-      const newDirectionsResponses = [];
-      const newDistances = [];
-      const newDurations = [];
+  //     const newDirectionsResponses = [];
+  //     const newDistances = [];
+  //     const newDurations = [];
 
-      for (const location of locations) {
-        const { origin, destination } = location;
-        const results = await directionsService.route({
-          origin,
-          destination,
-          travelMode: window.google.maps.TravelMode.DRIVING,
-        });
-        newDirectionsResponses.push(results);
-        newDistances.push(results.routes[0].legs[0].distance.text);
-        newDurations.push(results.routes[0].legs[0].duration.text);
-      }
+  //     for (const location of locations) {
+  //       const { origin, destination } = location;
+  //       const results = await directionsService.route({
+  //         origin,
+  //         destination,
+  //         travelMode: window.google.maps.TravelMode.DRIVING,
+  //       });
+  //       newDirectionsResponses.push(results);
+  //       newDistances.push(results.routes[0].legs[0].distance.text);
+  //       newDurations.push(results.routes[0].legs[0].duration.text);
+  //     }
 
-      setDirectionsResponses(newDirectionsResponses);
-      setDistances(newDistances);
-      setDurations(newDurations);
-    };
+  //     setDirectionsResponses(newDirectionsResponses);
+  //     setDistances(newDistances);
+  //     setDurations(newDurations);
+  //   };
 
-    calculateRoutes();
-  }, []);
+  //   calculateRoutes();
+  // }, []);
 
   //------------------------------------------------------------------------------------------------------------------------
 
@@ -162,8 +163,8 @@ const EnggLocation = () => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
         if (data.ServiceEnggId === enggServiceID) {
-          const lat = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[0]);
-          const lng = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[1]);
+          const lat = parseFloat(data.currentLocation.coordinates[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[1]);
           setCenter({ lat, lng });
         }
       });
@@ -363,11 +364,10 @@ const EnggLocation = () => {
         enggLocationDetails.map((data, index) => {
 
           const lastLatitude = parseFloat(data?.currentLocation?.coordinates?.length - 1);
-         
-          const latitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[0]);
-        
-          const longitude = parseFloat(data?.currentLocation?.coordinates?.[lastLatitude]?.origin?.split(",")[1]);
-        
+          console.log(lastLatitude)
+
+          const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
+          const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
           const isActive =
@@ -397,7 +397,7 @@ const EnggLocation = () => {
           );
         })}
 
-      {directionsResponses.map((response, index) => (
+      {/* {directionsResponses.map((response, index) => (
         <DirectionsRenderer
           key={index}
           directions={response}
@@ -411,7 +411,9 @@ const EnggLocation = () => {
             },
           }}
         />
-      ))}
+      )) } */}
+
+
     </GoogleMap>
   );
 };
