@@ -1269,7 +1269,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
             </div>
             {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
-            <div className="addEnggButtons">
+            <div className="addEnggButtons addEnggButtons-view">
               <button
                 onClick={handleEditSection}
                 style={{ background: editchange ? "#F8AC1D" : "#fff" }}

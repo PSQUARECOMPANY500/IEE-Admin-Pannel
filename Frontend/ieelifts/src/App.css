@@ -8627,18 +8627,18 @@ element.style {
   width: 100%;
 }
 
-.addEnggButtons {
-  margin-left: 26%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 10px;
-  height: 5vh;
-  width: 30;
-  position: absolute;
-  bottom: 3%;
-  right: 5%;
-}
+  .addEnggButtons {
+    margin-left: 26%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+    height: 5vh;
+    width: 30;
+    position: absolute;
+    bottom: 3%;
+    right: 5%;
+  }
 
 /* CSS */
 .button-69,
