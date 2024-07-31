@@ -4,14 +4,12 @@ const Schema = mongoose.Schema;
 const NotificationModel = new Schema({
     Date: {
         type: String,
-        default: () => {
-            const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
-            return now; // Extract date part
-        }
+        unique: true,
     },
     Owner: [String],
     Data: {
         type: String,
+        unique:true
     }
 })
 
