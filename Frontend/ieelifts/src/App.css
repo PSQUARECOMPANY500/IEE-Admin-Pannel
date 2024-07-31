@@ -3197,7 +3197,6 @@ footer a:hover {
   position: relative;
   text-align: center;
   text-decoration: none;
-  z-index: 0;
   transform: perspective(1000px);
   display: flex;
   flex-direction: column;
@@ -3254,6 +3253,7 @@ footer a:hover {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: white;
 
+
   /* background-color: red; */
 }
 
@@ -3297,7 +3297,7 @@ footer a:hover {
 .dropdown2 {
   justify-content: flex-start;
   align-items: flex-end;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .dropdown3 {
@@ -3348,7 +3348,7 @@ footer a:hover {
   transition: all 1s;
 }
 
-.dropdown:hover .dropdown-menu {
+.dropdown:hover .dropdown1-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   /* background: white; */
   opacity: 1;
@@ -3356,10 +3356,10 @@ footer a:hover {
   top: 2%;
   /* margin-left: -0.2rem; */
   border-radius: 10px;
-  z-index: 99999;
   /* width: 166px; */
   height: auto;
   overflow: hidden;
+  z-index: 99999;
 
 }
 
@@ -3371,22 +3371,20 @@ footer a:hover {
 
 .dropdown2:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-
   opacity: 1;
   visibility: visible;
   top: 4%;
   border-radius: 10px;
-  z-index: 99999;
-
   height: auto;
   margin-left: -6.2rem;
+  z-index: 9999;
 }
 
 .dropdown2-menu {
   width: 166px;
   background: white;
-
 }
+
 
 
 
@@ -3446,6 +3444,7 @@ footer a:hover {
   align-items: flex-start;
   width: 100%;
 }
+
 
 .upper-sec {
   position: relative;
@@ -7329,7 +7328,7 @@ element.style {
   position: relative;
   top: 11px;
   left: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 1.2rem;
   font-size: 1.1rem;
 }
 
@@ -7854,8 +7853,9 @@ element.style {
 
 .Invoice {
   width: 100%;
-  height: 80%;
+  /* height: 100%; */
   padding: 1rem 2rem;
+  background-color: red;
 }
 
 .Invoice h5 {
@@ -8760,18 +8760,18 @@ element.style {
   width: 100%;
 }
 
-.addEnggButtons {
-  margin-left: 26%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 10px;
-  height: 5vh;
-  width: 30;
-  position: absolute;
-  bottom: 3%;
-  right: 5%;
-}
+  .addEnggButtons {
+    margin-left: 26%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+    height: 5vh;
+    width: 30;
+    position: absolute;
+    bottom: 3%;
+    right: 5%;
+  }
 
 /* CSS */
 .button-69,
@@ -9955,8 +9955,36 @@ a[href^="http://maps.google.com/maps"] {
     font-weight: 500;
     font-size: 0.8rem;
   }
+  .client-form-details {
+    padding: 2.4rem 2rem 0 2rem !important;
+  }
+  .client-salesman-details {
+    padding: 2.4rem 2rem 0 2rem !important;
+  }
 
-  .client-form-input-wrapper {
+  .option-container {
+    position: absolute;
+    border: 1px solid #70707080;
+    border-radius: 10px;
+    color: #8e8e8e;
+    font-size: 1rem;
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 0.6rem;
+    opacity: 1;
+    margin-top: 0.4rem;
+    font-family: "Poppins";
+    background-color: #fff;
+    z-index: 10;
+  }
+  
+  .option-container>ul {
+    list-style-type: none;
+    opacity: 0.54;
+    font-size: 0.8rem !important;
+  }
+  .client-form-input-wrapper{
     padding-top: 1rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
@@ -10239,6 +10267,11 @@ a[href^="http://maps.google.com/maps"] {
     margin-top: -1rem;
   }
 
+  .dropdown1-menu{
+    margin-left: -0.7rem;
+    margin-top: 0.2rem;
+  }
+
   .task-top-section p {
     font-size: 0.9rem;
   }
@@ -10256,7 +10289,17 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .skill-box .skill-bar {
-    margin-top: -2px;
+    margin-top: -3rem;
+    position: absolute;
+    width: 87%;
+
+  }
+
+  .skill-box .skill-bar-ontask {
+
+    margin-top: -0.7rem;
+    position: absolute;
+    width: 90%;
 
   }
 
@@ -10318,7 +10361,7 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-  task-top-section p {
+  .aday:hover p {
     color: #191919;
     font-size: 1.2rem;
     font-weight: 500;
@@ -10367,7 +10410,7 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .kanban-button-location {
-    font-size: 0.6rem;
+    font-size: 0.5rem;
   }
 
   .kanban-button-location {
@@ -10375,7 +10418,33 @@ a[href^="http://maps.google.com/maps"] {
     border: 1px solid #f8ac1d;
   }
 
+  .dot-progress,
+  .dot-progress2 {
+    margin: -0.5rem -0.6rem;
+  }
 
+  .dot-progress2 {
+    margin: -0.5rem -0.5rem;
+  }
+
+  .dropdown2 {
+    margin-right: -0.8rem;
+  }
+
+  .dropdown {
+    margin-left: -0.8rem;
+  }
+
+  .tasks-heading-on-no-task {
+    font-size: 0.8rem;
+  }
+
+
+  .hover-icon-service {
+    font-size: 0.65rem;
+   
+  }
+  
 }
 
 
