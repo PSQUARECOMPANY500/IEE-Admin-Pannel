@@ -13,6 +13,8 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import store from "./ReduxSetup/Store";
 
+// this is commented out because
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 

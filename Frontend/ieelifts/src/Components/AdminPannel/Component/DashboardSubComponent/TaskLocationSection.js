@@ -360,11 +360,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
                             <div className="ticket-card-bottom">
                               <h5 className="ticket-card-bottom-starting-slot">
-                                {extractStartTime(value.Slot)}
+                                {extractStartTime(value?.Slot)}
                               </h5>
 
                               <h5 className="ticket-card-bottom-end-slot">
-                                {extractEndTime(value.Slot)}
+                                {extractEndTime(value?.Slot)}
                               </h5>
                               {reportData.engRating &&
                                 reportData?.ServiceProcess === "completed" && (
@@ -405,7 +405,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5>Name:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.clientName.toUpperCase()}</h5>
+                                <h5>{value?.clientName.toUpperCase()}</h5>
                               </div>
                             </div>
 
@@ -414,16 +414,16 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5> ENGINEER:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{value.enggName.toUpperCase()}</h5>
+                                <h5>{value?.enggName.toUpperCase()}</h5>
                               </div>
                             </div>
                             <div className="ticket-card-bottom">
                               <h5 className="ticket-card-bottom-starting-slot">
-                                {extractStartTime(value.Slot)}
+                                {extractStartTime(value?.Slot)}
                               </h5>
 
                               <h5 className="ticket-card-bottom-end-slot">
-                                {extractEndTime(value.Slot)}
+                                {extractEndTime(value?.Slot)}
                               </h5>
                               {reportData.engRating &&
                                 reportData?.ServiceProcess === "completed" && (
@@ -468,7 +468,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5>Name:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                                <h5>{serviceData?.clientName.toUpperCase()}</h5>
                               </div>
                             </div>
 
@@ -477,7 +477,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5> ENGINEER:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                                <h5>{serviceData?.enggName.toUpperCase()}</h5>
                               </div>
                             </div>
 
@@ -525,7 +525,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5>Name:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.clientName.toUpperCase()}</h5>
+                                <h5>{serviceData?.clientName.toUpperCase()}</h5>
                               </div>
                             </div>
 
@@ -534,12 +534,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                 <h5> ENGINEER:</h5>
                               </div>
                               <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData.enggName.toUpperCase()}</h5>
+                                <h5>{serviceData?.enggName.toUpperCase()}</h5>
                               </div>
                             </div>
                             <div className="service-card-bottom">
-                              <h5>{extractStartTime(serviceData.Slot)}</h5>
-                              <h5>{extractEndTime(serviceData.Slot)}</h5>
+                              <h5>{extractStartTime(serviceData?.Slot)}</h5>
+                              <h5>{extractEndTime(serviceData?.Slot)}</h5>
                               {reportServiceData.rating &&
                                 reportServiceData?.ServiceProcess ===
                                   "completed" && (
