@@ -374,7 +374,7 @@ import config from "../../../../config";
  
                      <div className="col75 col75-jon">
                        {/* <input className={``} type="text" name="name" placeholder="Enter-Client-Id"  onChange={(e)=>setJon(e.target.value)} /> */}
-                       <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter Jon Number" />
+                       <input onChange={(e) => setJon(e.target.value)} type="text" placeholder="Enter JON" />
  
                      </div>
                    </div>
@@ -710,7 +710,7 @@ import config from "../../../../config";
                    <div className="sm-box sm-box--2">
                      <div className="col75">
                        {engDate ? (<MultiSelectDropdown
-                         placeholder={"Select Enggineers"}
+                         placeholder={"Select Engineer"}       
                          Details={serviceEnggDetail}
                          handleEnggSelectionChange={handleEnggSelectionChange}
                          flag={flag}
@@ -764,12 +764,12 @@ import config from "../../../../config";
                  <div className="grid-form-container2">
  
                    <div className="col75">
-                     <input placeholder={reName || "Enter Representative Name (Optional)"} onChange={(e) => setreName(e.target.value)} autoComplete="off" />
+                     <input placeholder={reName || "Enter Representative Name (Optional)"} onChange={(e) => setreName(e.target.value)} autoComplete="off"  />
                    </div>
  
  
                    <div className="col75">
-                     <input placeholder={reNumber || "Enter Representative Number (Optional)"} onChange={(e) => setreNumber(e.target.value)} autoComplete="off" />
+                     <input placeholder={reNumber || "Enter Representative Number (Optional)"} onChange={(e) => setreNumber(e.target.value)} autoComplete="off" type="number" max="10"/>
                    </div>
  
                    <div className="col75">

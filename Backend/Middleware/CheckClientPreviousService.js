@@ -27,20 +27,25 @@ const checkClientServiceExist = async (req, res, next) => {
     });
   }
 
-  const AssignedFalse = data.filter((item) => !item.isAssigned);
-  const AssignedTrue = data.filter((item) => item.isAssigned);
+  console.log("222222222222222222222222222222222222222",data);
 
-  if(AssignedFalse.length >= 0){
+
+  const AssignedFalse = data.filter((item) => !item.isAssigned);
+  console.log("AssignedFalse " ,AssignedFalse)
+  const AssignedTrue = data.filter((item) => item.isAssigned);
+  console.log("AssignedTrue",AssignedTrue)
+
+  if(AssignedFalse.length > 0){
       return res.status(200).json({
         status:'error',
           message: "Wait until previous Service is Assigned and Completed"
       })
   }
 
-  if (AssignedTrue.length >= 0) {
+  if (AssignedTrue.length > 0) {
     const checkComplete = await Promise.all(
       AssignedTrue.map(async (item) => {
-        console.log(item.JobOrderNumber);
+        // console.log(item.JobOrderNumber);
         const assignServices = await AssignService.find({
           JobOrderNumber: item.JobOrderNumber,
           ServiceProcess: "InCompleted",
@@ -50,7 +55,7 @@ const checkClientServiceExist = async (req, res, next) => {
           ServiceProcess: "InCompleted",
         });
 
-        if (assignServices.length >= 0 || assignCallbacks.length >= 0) {
+        if (assignServices.length > 0 || assignCallbacks.length > 0) {
           return {
             JobOrderNumber: item.JobOrderNumber,
             assignServices,
