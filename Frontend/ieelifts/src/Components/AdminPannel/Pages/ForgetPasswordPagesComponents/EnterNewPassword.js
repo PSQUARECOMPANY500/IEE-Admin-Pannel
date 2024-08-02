@@ -105,7 +105,7 @@ const EnterNewPassword = () => {
       <div className="ReEnterPasswordInpuitField">
         <input
           type={showPassword2 ? "text" : "password"}
-          placeholder="New password"
+          placeholder="Forget password"
           value={secondPassword}
           onChange={(e) => setSecondPassword(e.target.value)}
           autoComplete="off"
