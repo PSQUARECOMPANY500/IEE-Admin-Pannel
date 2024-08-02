@@ -41,7 +41,7 @@ router.get(
   "/getClientCalbackDetailWithClientDetail/:callbackId",
   adminContoller.getCallbackDetailByCallbackId
 );
-router.get("/getCheckList", adminContoller.getAllChecklist);
+router.get("/getCheckList/:type", adminContoller.getAllChecklist);
 
 router.get("/getEnggDetailById/:EnggId", adminContoller.getEnggDetail);
 

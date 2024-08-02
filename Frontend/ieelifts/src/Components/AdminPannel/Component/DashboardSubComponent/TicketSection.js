@@ -10,7 +10,6 @@ import AddTicketModal from "./AddTicketModal";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
-import AddTicketOnCallRequest from "./AddTicketOnCallRequest";
 import AddTicketOnCallRequests from "./AddTicketOnCallRequests";
 import AddTicketModals from "./AddTicketModals";
 import { RiSearchLine } from "react-icons/ri";

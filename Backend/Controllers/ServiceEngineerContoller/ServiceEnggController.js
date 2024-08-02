@@ -549,7 +549,6 @@ module.exports.getEnggLocationDetail = async (req, res) => {
       })
     );
 
-    console.log("location logic ", serviceEnggId);
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
@@ -846,7 +845,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
         if (updatedRecord?.First_halfe_time) {
           return res.status(200).json({
             status: "stop",
-            message: "Your operation stopped successfull",
+            message: "Break Ended Successfully",
           });
         }
 
@@ -1827,7 +1826,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       );
     } // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
 
-    console.log("tttttttttttttttt", JSON.parse(paymentdata).Total_Amount);
+    // console.log("tttttttttttttttt", JSON.parse(paymentdata).Total_Amount);
 
     const paymentPDF = req.files.report[0].filename;
 

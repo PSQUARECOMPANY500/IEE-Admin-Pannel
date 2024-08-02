@@ -44,7 +44,7 @@ const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFo
 
 const MembershipTable = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
-const clientMembership = require("../../Modals/MemebershipModal/MembershipsSchema")
+const clientMembership = require("../../Modals/MemebershipModal/MembershipsSchema");
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
@@ -53,7 +53,7 @@ const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 const { response } = require("express");
-const TodoSchema = require('../../Modals/TodoModel/TodoSchema');
+const TodoSchema = require("../../Modals/TodoModel/TodoSchema");
 const moment = require("moment");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -229,7 +229,9 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 //function to handle get current date Assign Service Detail
 module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", {timeZone: 'Asia/Kolkata'})).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailServiceRequest = await AssignSecheduleRequest.find({
       Date: currentDate,
     });
@@ -252,7 +254,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           RequestId: item.RequestId,
         });
 
-        const engRating = await EnggRating.findOne({ ServiceId: item.RequestId })
+        const engRating = await EnggRating.findOne({
+          ServiceId: item.RequestId,
+        });
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientDetail ? clientDetail.name : null;
@@ -283,7 +287,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           ClientDescription,
           RepresentativeName,
           RepresentativeNumber,
-          rating
+          rating,
         };
       })
     );
@@ -302,13 +306,18 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", {timeZone: 'Asia/Kolkata'})).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
 
-    console.log("currentDate=====================",currentDate)
-    console.log("currentDetailCallback=====================",currentDetailCallback)
+    console.log("currentDate=====================", currentDate);
+    console.log(
+      "currentDetailCallback=====================",
+      currentDetailCallback
+    );
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
@@ -328,8 +337,8 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
           callbackId: item.callbackId,
         });
         const rating = await EnggRating.findOne({
-          ServiceId: item.callbackId
-        })
+          ServiceId: item.callbackId,
+        });
         // Extract only specific fields from enggDetail and clientDetail
         const enggName = enggDetail ? enggDetail.EnggName : null;
         const clientName = clientdetail ? clientdetail.name : null;
@@ -363,7 +372,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
           ClientDescription,
           RepresentativeName,
           RepresentativeNumber,
-          engRating
+          engRating,
         };
       })
     );
@@ -534,11 +543,17 @@ module.exports.createCheckList = async (req, res) => {
 //fucntion to get the checklist
 module.exports.getAllChecklist = async (req, res) => {
   try {
+    const { type } = req.params;
+
     const checklist = await ChecklistModal.find({});
 
+    const filterChecklist = checklist.filter((item) => {
+      return item.checklistName.toLowerCase().includes(type.toLowerCase());
+    });
+      
     res.status(200).json({
       message: "fetch checklist sucessfully",
-      Checklists: checklist,
+      Checklists: filterChecklist,
     });
   } catch (error) {
     console.error("Error while getting checklist:", error);
@@ -553,7 +568,6 @@ module.exports.getAllChecklist = async (req, res) => {
 module.exports.assignCallbacks = async (req, res) => {
   try {
     // console.log("9999999999999999",req.body);
-
     const {
       ServiceEnggId,
       JobOrderNumber,
@@ -862,19 +876,17 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
 
 //function to handle GetAllClients infromation
 module.exports.getAllClientsData = async (req, res) => {
-
   try {
     const clients = await clientDetailSchema.find();
     const { page, limit } = req.query;
     const skip = page * limit;
-    const paginatedClients = clients.slice(0, skip)
+    const paginatedClients = clients.slice(0, skip);
     const totalPage = Math.ceil(clients.length / limit);
     res.status(200).json({
       message: "all  Clients fetched Succesfully",
       Clients: paginatedClients,
       totalPage,
-      len: clients.length
-
+      len: clients.length,
     });
   } catch (error) {
     console.log(error);
@@ -1567,10 +1579,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1700,10 +1712,10 @@ module.exports.searchClients = async (req, res) => {
         },
       ],
     });
-    console.log(clients)
-    console.log("\n")
-    console.log("\n")
-    console.log(regex)
+    console.log(clients);
+    console.log("\n");
+    console.log("\n");
+    console.log(regex);
     res.status(200).json({
       success: true,
       clients,
@@ -1818,7 +1830,7 @@ module.exports.createClientMemebership = async (req, res) => {
       isRenewed,
       isExpired,
       isDisable,
-      OrderId
+      OrderId,
     } = req.body;
 
     const startDate = new Date(StartDate);
@@ -1849,7 +1861,7 @@ module.exports.createClientMemebership = async (req, res) => {
       isRenewed,
       isExpired,
       isDisable,
-      OrderId
+      OrderId,
     });
 
     res.status(201).json({
@@ -1916,7 +1928,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) { }
+  } catch (error) {}
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2040,25 +2052,34 @@ const sentClientData = async (data) => {
   return Promise.all(clientDetailPromises);
 };
 const calculateExpiring = async (filteredData) => {
-  const filteredResults = await Promise.all(filteredData.map(async (data) => {
-    const timeDifference = data.EndDate - Date.now();
-    const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-    console.log(data.EndDate);
-    console.log(Date.now());
+  const filteredResults = await Promise.all(
+    filteredData.map(async (data) => {
+      const timeDifference = data.EndDate - Date.now();
+      const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      console.log(data.EndDate);
+      console.log(Date.now());
 
-    if (daysLeft > 0 && daysLeft <= 30 && (!data?.isDisable || !data?.isRenewed)) {
-      return data;
-    }
-    return null; // Return null for items that don't match the criteria
-  }));
+      if (
+        daysLeft > 0 &&
+        daysLeft <= 30 &&
+        (!data?.isDisable || !data?.isRenewed)
+      ) {
+        return data;
+      }
+      return null; // Return null for items that don't match the criteria
+    })
+  );
 
   // Filter out the null values
-  const finalFilteredResults = filteredResults.filter(data => data !== null);
-  console.log(finalFilteredResults)
-  return finalFilteredResults
+  const finalFilteredResults = filteredResults.filter((data) => data !== null);
+  console.log(finalFilteredResults);
+  return finalFilteredResults;
 };
 const calculateExpired = (filteredData) => {
-  const expiredData = filteredData.filter((data) => data.EndDate < Date.now() && (!data?.isDisable || !data?.isRenewed));
+  const expiredData = filteredData.filter(
+    (data) =>
+      data.EndDate < Date.now() && (!data?.isDisable || !data?.isRenewed)
+  );
   // console.log(expiredData);
   return expiredData;
 };
@@ -2071,8 +2092,6 @@ const filterMembershipByType = (data, type) => {
 module.exports.createLocationForFilter = async (req, res) => {
   try {
     const { location } = req.body;
-
-
 
     const findLocation = await LocationSchema.find({ location });
     if (findLocation) {
@@ -2316,7 +2335,7 @@ module.exports.getEngineerRequestedLeave = async (req, res) => {
 
     const sentLeaves = leaves.filter((leave) => leave.IsApproved === "false");
 
-    console.log("sent leave in backend ", sentLeaves)
+    console.log("sent leave in backend ", sentLeaves);
 
     res.status(200).json({
       success: true,
@@ -2343,7 +2362,7 @@ module.exports.takeActionOnLeave = async (req, res) => {
       return res.status(404).json({ error: "Leave not found" });
     }
 
-    console.log(last)
+    console.log(last);
 
     // const approvedLeaves = leaves
     //   .filter(leave => leave.IsApproved === "Approved" && leave.ServiceEnggId === last.ServiceEnggId)
@@ -2474,11 +2493,13 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceId: assignment.ServiceId,
           });
-          const reportTable = await ReportTable.findOne({ serviceId: assignment.ServiceId }).select('paymentDetils');
+          const reportTable = await ReportTable.findOne({
+            serviceId: assignment.ServiceId,
+          }).select("paymentDetils");
           return {
             ...assignment,
             rating: Rating[0]?.Rating,
-            reportLink: reportTable?.paymentDetils
+            reportLink: reportTable?.paymentDetils,
           };
         })
       );
@@ -2487,12 +2508,14 @@ module.exports.assignedEnggDetails = async (req, res) => {
           const Rating = await EnggRating.find({
             ServiceId: assignment.ServiceId,
           });
-          const reportTable = await ReportTable.findOne({ serviceId: assignment.ServiceId }).select('paymentDetils');
+          const reportTable = await ReportTable.findOne({
+            serviceId: assignment.ServiceId,
+          }).select("paymentDetils");
 
           return {
             ...assignment,
             rating: Rating[0]?.Rating,
-            reportLink: reportTable?.paymentDetils
+            reportLink: reportTable?.paymentDetils,
           };
         })
       );
@@ -2675,7 +2698,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+              "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -3163,8 +3186,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-            ? EnggDataChecker.EnggPhoto
-            : "",
+          ? EnggDataChecker.EnggPhoto
+          : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3183,28 +3206,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-            ? EnggDataChecker.AddharPhoto
-            : "",
+          ? EnggDataChecker.AddharPhoto
+          : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-            ? EnggDataChecker.DrivingLicensePhoto
-            : "",
+          ? EnggDataChecker.DrivingLicensePhoto
+          : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-            ? EnggDataChecker.PancardPhoto
-            : "",
+          ? EnggDataChecker.PancardPhoto
+          : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-            ? EnggDataChecker.QualificationPhoto
-            : "",
+          ? EnggDataChecker.QualificationPhoto
+          : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-            ? EnggDataChecker.AdditionalCoursePhoto
-            : "",
+          ? EnggDataChecker.AdditionalCoursePhoto
+          : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3321,7 +3344,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3333,7 +3356,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3393,7 +3416,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3405,7 +3428,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3524,69 +3547,80 @@ module.exports.AddTodo = async (req, res) => {
     const { todo } = req.body;
     await TodoSchema.create(todo);
     res.status(200).json({
-      message: "Task added successfully"
-    })
+      message: "Task added successfully",
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while adding the task"
-    })
+      error: "Internal server error while adding the task",
+    });
   }
-}
+};
 module.exports.getAllTodos = async (req, res) => {
   const adminId = req.params.adminId;
   try {
     const todos = await TodoSchema.find({ adminId: adminId });
     res.status(200).json({
       message: "Success",
-      data: todos
-    })
+      data: todos,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while fetching the task"
-    })
+      error: "Internal server error while fetching the task",
+    });
   }
-}
+};
 
 module.exports.updateTask = async (req, res) => {
   const id = req.params.id;
-  const status = 'Completed'
+  const status = "Completed";
   try {
     await TodoSchema.findByIdAndUpdate(id, { status: status });
     res.status(200).json({
-      message: "Task status updated successfully"
-    })
+      message: "Task status updated successfully",
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while updating the task status"
-    })
+      error: "Internal server error while updating the task status",
+    });
   }
-}
+};
 
 module.exports.deleteTask = async (req, res) => {
   const id = req.params.id;
   try {
     await TodoSchema.findByIdAndDelete(id);
     res.status(200).json({
-      message: "Task deleted successfully"
-    })
+      message: "Task deleted successfully",
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while deleting the task"
-    })
+      error: "Internal server error while deleting the task",
+    });
   }
-}
+};
 
 module.exports.updateTaskById = async (req, res) => {
   const id = req.params.id;
   const { todo } = req.body;
-  const { taskName, memberId, taskDate, taskTime, status, priority, } = todo;
+  const { taskName, memberId, taskDate, taskTime, status, priority } = todo;
 
   try {
-    const result = await TodoSchema.findByIdAndUpdate(id, { taskName: taskName, memberId: memberId, taskDate: taskDate, taskTime: taskTime, status: status, priority: priority }, { new: true });
+    const result = await TodoSchema.findByIdAndUpdate(
+      id,
+      {
+        taskName: taskName,
+        memberId: memberId,
+        taskDate: taskDate,
+        taskTime: taskTime,
+        status: status,
+        priority: priority,
+      },
+      { new: true }
+    );
     if (!result) {
       return res.status(404).json({
         message: "Task not found",
@@ -3602,8 +3636,7 @@ module.exports.updateTaskById = async (req, res) => {
       error: "Internal server error while updating the task",
     });
   }
-}
-
+};
 
 module.exports.getTodoById = async (req, res) => {
   const id = req.params.id;
@@ -3611,15 +3644,15 @@ module.exports.getTodoById = async (req, res) => {
     const todo = await TodoSchema.findById(id);
     res.status(200).json({
       message: "Success",
-      data: todo
-    })
+      data: todo,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while fetching the task"
-    })
+      error: "Internal server error while fetching the task",
+    });
   }
-}
+};
 
 //-------------------------------------------------------------------------------------------------------
 
@@ -3647,7 +3680,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3659,7 +3692,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3784,20 +3817,20 @@ module.exports.checkEnggCheckInOrNotOnCurrentDate = async (req, res) => {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-
 //api to upgrade client Membership from the admin Pannel
 
 module.exports.upgradClientMembership = async (req, res) => {
   try {
-    const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } = req.body;
+    const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } =
+      req.body;
 
     // console.log("this is request dot body ",req);
     console.log("this is", req.files);
 
     const clientExist = await clientDetailSchema.findOne({ JobOrderNumber });
 
-    console.log("clientExist", clientExist)
-    console.log("clientExist", JobOrderNumber)
+    console.log("clientExist", clientExist);
+    console.log("clientExist", JobOrderNumber);
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
@@ -3817,20 +3850,21 @@ module.exports.upgradClientMembership = async (req, res) => {
     await clientDetailSchema.findOneAndUpdate(
       { JobOrderNumber: JobOrderNumber },
       { MembershipType: MembershipType }
-    )
+    );
 
-
-    res.status(200).json({ message: "Client Membership upgraded successfully", newMembership });
-
-
+    res
+      .status(200)
+      .json({
+        message: "Client Membership upgraded successfully",
+        newMembership,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error while upgrading client Membership",
     });
   }
-}
-
+};
 
 /**
  * ---------------------------------------Rahul Kumar 18/07/2024---------------------------
@@ -3839,20 +3873,19 @@ module.exports.upgradClientMembership = async (req, res) => {
 
 module.exports.getAllClients = async (req, res) => {
   try {
-    const clients = await clientDetailSchema.find({})
+    const clients = await clientDetailSchema.find({});
     res.status(200).json({
       message: "Success",
-      data: clients
-    })
+      data: clients,
+    });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
-      error: "Internal server error while fetching clients data"
-    })
+      error: "Internal server error while fetching clients data",
+    });
   }
-}
+};
 //-
-
 
 module.exports.putEngineerAttendence = async (req, res) => {
   try {
@@ -3865,8 +3898,8 @@ module.exports.putEngineerAttendence = async (req, res) => {
           today.setDate(today.getDate() - 4);
           today.setDate(today.getDate() - i);
 
-          let date = String(today.getDate()).padStart(2, '0');
-          let month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+          let date = String(today.getDate()).padStart(2, "0");
+          let month = String(today.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so add 1
           let year = today.getFullYear();
 
           let formattedDate = `${date}/${month}/${year}`;
@@ -3878,13 +3911,13 @@ module.exports.putEngineerAttendence = async (req, res) => {
             ServiceEnggId: engineer.EnggId,
             Check_In: {
               engPhoto: "emptyProfile.webp",
-              time: checkInTime
+              time: checkInTime,
             },
             Check_Out: {
               engPhoto: "emptyProfile.webp",
-              time: checkOutTime
+              time: checkOutTime,
             },
-            Date: formattedDate
+            Date: formattedDate,
           };
 
           await EnggAttendanceServiceRecord.create(checkInData);
@@ -3896,40 +3929,117 @@ module.exports.putEngineerAttendence = async (req, res) => {
     res.status(200).json({ success: true, message: "All OK" });
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error", error: error.message });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal Server Error",
+        error: error.message,
+      });
   }
 };
-
-
 
 //----------------------------------------------------------------------------------------------
 
 // api for putting the memberships
 
-
-
 module.exports.clientMembership = async () => {
   try {
-    const array = ["1901017", "1901018", "1901019", "1901020", "1901021", "1901022", "1901023",
-      "1902024", "1902025", "1902026", "1902027", "1902028", "1902029", "1902030",
-      "1902031", "1902032", "1902033", "1902034", "1902035", "1902036", "1902037",
-      "1902038", "1902039", "1902040", "1902041", "1903042", "1903043", "1903044",
-      "1903045", "1903046", "1903047", "1903048", "1903049", "1903050", "1903051",
-      "1904052", "1904053", "1904054", "1904055", "1904056", "1905057", "1905058",
-      "1905059", "1905060", "1905061", "1905062", "1906063", "1906064", "1907065",
-      "1907066", "1908067", "1908068", "1908069", "1908070", "1908071", "1908072",
-      "1908073", "1909074", "1909075", "1909076", "1909077", "1909078", "1909079",
-      "1910080", "1910081", "1910082", "1910083", "1911084", "1911085", "1911086",
-      "1911087", "1911088", "1911089", "1911090", "1911091", "1911092", "1911093",
-      "1911094", "1911095", "1911096", "1911097", "1912098", "1912099", "1912100",
-      "1912101", "1912102", "1912103", "1912104", "1912105", "1912106", "1912107",
-      "1912108"
-    ]
+    const array = [
+      "1901017",
+      "1901018",
+      "1901019",
+      "1901020",
+      "1901021",
+      "1901022",
+      "1901023",
+      "1902024",
+      "1902025",
+      "1902026",
+      "1902027",
+      "1902028",
+      "1902029",
+      "1902030",
+      "1902031",
+      "1902032",
+      "1902033",
+      "1902034",
+      "1902035",
+      "1902036",
+      "1902037",
+      "1902038",
+      "1902039",
+      "1902040",
+      "1902041",
+      "1903042",
+      "1903043",
+      "1903044",
+      "1903045",
+      "1903046",
+      "1903047",
+      "1903048",
+      "1903049",
+      "1903050",
+      "1903051",
+      "1904052",
+      "1904053",
+      "1904054",
+      "1904055",
+      "1904056",
+      "1905057",
+      "1905058",
+      "1905059",
+      "1905060",
+      "1905061",
+      "1905062",
+      "1906063",
+      "1906064",
+      "1907065",
+      "1907066",
+      "1908067",
+      "1908068",
+      "1908069",
+      "1908070",
+      "1908071",
+      "1908072",
+      "1908073",
+      "1909074",
+      "1909075",
+      "1909076",
+      "1909077",
+      "1909078",
+      "1909079",
+      "1910080",
+      "1910081",
+      "1910082",
+      "1910083",
+      "1911084",
+      "1911085",
+      "1911086",
+      "1911087",
+      "1911088",
+      "1911089",
+      "1911090",
+      "1911091",
+      "1911092",
+      "1911093",
+      "1911094",
+      "1911095",
+      "1911096",
+      "1911097",
+      "1912098",
+      "1912099",
+      "1912100",
+      "1912101",
+      "1912102",
+      "1912103",
+      "1912104",
+      "1912105",
+      "1912106",
+      "1912107",
+      "1912108",
+    ];
 
-    array.forEach(async (job) => {
-
-    })
-  } catch (error) {
-
-  }
-}
+    array.forEach(async (job) => {});
+  } catch (error) {}
+};

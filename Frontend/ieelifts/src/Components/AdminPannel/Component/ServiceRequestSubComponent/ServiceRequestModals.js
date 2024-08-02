@@ -146,7 +146,7 @@ const ServiceRequestModals = ({
     else {
       dispatch(getRequestDetailByRequestIdAction(RequestId));
       dispatch(fetchAllClientDetailAction());
-      dispatch(fetchChecklistAction());
+      dispatch(fetchChecklistAction('service'));
     }
 
     return () => {
