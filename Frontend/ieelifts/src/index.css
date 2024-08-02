@@ -111,7 +111,20 @@ code {
   box-shadow: 2px 4px 10px #99886b66;
   transition: box-shadow 0.3s ease;
   scale: 1;
+  /* height: 41vh; */
+  /* background-color: red; */
 }
+
+.non_expand_gap .membership_card{
+  height: 41vh;
+
+}
+
+.membership_card_expand_non {
+  height: 17vh;
+  margin: 1rem;
+}
+.membershipCards_expand
 
 .membership_card:hover .membership_card_counts {
   box-shadow: none;
@@ -187,7 +200,13 @@ code {
 .membership_card_title {
   text-transform: uppercase;
   font-weight: 600;
-  font-size: larger;
+  font-size: 1.5rem;
+}
+
+.membership_card_title_non_expand{
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 1.5rem;
 }
 
 .membership_card_title_warrenty {
@@ -255,11 +274,14 @@ code {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  align-content: center;
-  padding: 1.5% 1.5% 1.5% 0%;
+  /* align-content: center;
+  padding: 1.5% 1.5% 1.5% 0%; */
+  padding: 0.5rem;
   font-size: medium;
   font-weight: 500;
   color: #444444;
+  /* background-color: red; */
+  height: 32vh;
 }
 
 .membership_card_expiring {
@@ -268,7 +290,7 @@ code {
 }
 
 .membership_card_expiring_expanded {
-  width: 32%;
+  width: 47%;
   height: 17rem;
 }
 
@@ -493,9 +515,11 @@ code {
 }
 
 .membership_card_scrollable {
-  height: 19rem;
-  max-height: 18rem;
+  height: 15rem;
+  max-height: 15rem;
   overflow-y: auto;
+  /* background-color: red; */
+
 }
 
 /* <-------------------------------media query for membership card ---------------------------------------> */
@@ -504,14 +528,15 @@ code {
     height: 20rem;
   } */
 
-  .membership_card_scrollable_expanded {
-    height: 39rem;
-  }
+  /* .membership_card_scrollable_expanded {
+    height: 40rem !important;
+    background-color: green;
+  } */
 
-  .membership_card_data_display {
+  /* .membership_card_data_display {
     width: 100%;
     gap: 0.5rem;
-  }
+  } */
 }
 
 @media (max-width: 1710px) {
@@ -544,8 +569,9 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 50rem;
+  height: 85vh;
   transition: border 1s ease;
+
 }
 
 .animation {
@@ -609,12 +635,15 @@ code {
 
 .membership_card_topbar_non_expand {
   padding-bottom: 3%;
+
 }
 
 .membership_card_expand_non:hover {
   transform: translateX(-5%);
   transition: all 0.3s ease;
 }
+
+
 
 .membership_card_topbar_expand {
   border: none;
@@ -887,7 +916,8 @@ code {
   }
 
   .callsContainer {
-    height: 25rem;
+    height: 20rem;
+    max-height: 22rem;
     /* background-color: lightsalmon; */
     overflow-y: scroll;
     padding-right: 0.5rem;
@@ -3444,7 +3474,7 @@ input:-webkit-autofill {
     font-size: 0.7rem;
   }
 
-  .membership_card_title {
+  /* .membership_card_title {
     font-size: medium;
   }
 
@@ -3453,7 +3483,7 @@ input:-webkit-autofill {
   .expandCardName {
     font-size: 0.8rem;
     width: 130px;
-  }
+  } */
 
   .headingCenter {
     font-size: 1rem;
@@ -3475,7 +3505,7 @@ input:-webkit-autofill {
     font-size: 0.8rem;
   }
 
-  .non_expand_gap .membership_card {
+  /* .non_expand_gap .membership_card {
     height: 19rem;
   }
 
@@ -3492,7 +3522,7 @@ input:-webkit-autofill {
   .membershipCards_expand .membership_card {
     margin: 0rem;
     margin-top: 0;
-  }
+  } */
 
   /* ------------------------------------spare part table css here------------------------------ */
   .spare-part-table-container table th,
@@ -3777,7 +3807,7 @@ input:-webkit-autofill {
 
   .req-client-section {
     width: 100%;
-    height: 40% !important;
+    height: 32% !important;
     position: relative;
     display: flex;
     padding-top: 0.7rem !important;
@@ -3938,12 +3968,12 @@ input:-webkit-autofill {
     text-align: start;
   }
 
-  .req-elevator-details {
+  /* .req-elevator-details {
     width: 100%;
-    height: 30% !important;
+    height: 30%;
     position: relative;
     padding-left: 4.1rem;
-  }
+  } */
 
   .sub-req-elevator-details {
 
@@ -3980,7 +4010,7 @@ input:-webkit-autofill {
   text-align: left !important;
 }
 .modal-container {
-  height: 85% !important;
+  height: 95vh !important;
 }
 
 .req-elevator-section-right {
@@ -4114,7 +4144,91 @@ input:-webkit-autofill {
 .addEnggButtons-view {
   bottom: 10% !important;
 }
+
+/* ------------------------------------------------------------------------------------------------------------responsive by aayush membership card------------------------------------------------------------------------------ */
+
+.membership_card_scrollable {
+  height: 19rem;
+  max-height: 7.5rem;
+  overflow-y: auto;
 }
+
+.non_expand_gap .membership_card{
+  height: 37vh;
+}
+
+.membership_card_title {
+  font-size: 1.2rem;
+}
+
+.membership_card_revenue {
+  font-size: 0.8rem;
+}
+
+.expandCardName {
+font-size: 0.7rem;
+width: 120px;
+
+}
+
+
+.membership_card_expiring {
+  width: 45%;
+}
+
+.membership_card_expiring_expanded {
+  width: 45%;
+ 
+}
+
+.membership_card_expand_non {
+  height: 17vh;
+  margin: 0.5rem;
+}
+
+.membership_card_title_non_expand{
+
+  font-size: 0.9rem !important;
+}
+
+
+.after_expansion_labels {
+  font-size: 0.6rem;
+}
+
+.total_revenue_heading {
+  font-size:0.8rem;
+  padding-bottom: 2%;
+}
+
+.total_revenue_amount {
+  margin-top: 2%;
+  font-size: 1rem;
+}
+
+.expansion_labels {
+  margin-top: 0.2rem;
+}
+
+.membership_card_counts_expand {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+
+.membership_card_expand {
+  height: 80vh;
+}
+
+
+.membershipCards_expand {
+  margin-top: 5rem;
+}
+/* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
+
+
+}
+
 
 
 

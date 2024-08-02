@@ -13,7 +13,7 @@ const SparePartAllotTable = (props) => {
       const allotedSparePartData = await fetchAllotedSparePartToSpecificEngg(
         engID
       );
-      setAllotedSparePart(allotedSparePartData.FilterAllotedSparePart);
+      setAllotedSparePart(allotedSparePartData?.FilterAllotedSparePart);
     };
     alootedSparePart();
   }, []);
@@ -34,7 +34,7 @@ const SparePartAllotTable = (props) => {
             </thead>
             <tbody>
               {/*-------------------- map starts here ------------------ */}
-              {allotedSparePart.length > 0 ? (
+              {allotedSparePart&&allotedSparePart.length > 0 ? (
                 allotedSparePart?.map((data) => (
                   <tr>
                     <td>{data.sparePartId}</td>

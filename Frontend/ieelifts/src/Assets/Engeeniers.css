@@ -434,6 +434,9 @@ body {
   word-wrap: break-word;
 }
 
+.eng-icon{
+  font-size: 1rem;
+}
 .PDetails h1 {
   font-size: 0.8rem;
   color: #444444;
@@ -1712,13 +1715,13 @@ tr>td:nth-child(2) {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 7% 3% 90%;
 }
 
 .spare-part-head {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items:center;
   width: 100%;
   position: relative;
 }
@@ -2396,6 +2399,29 @@ tr>td:nth-child(2) {
     font-size: 0.8rem;
 
   }
+  .agdam-eng-card {
+  
+bottom: 2%;
+  }
+  
+  .send-messsage-eng-card {
+    padding: 5px;
+  
+  }
+
+  .eng-icon{
+    font-size: 0.8rem;
+  }
+
+  .DatesContainer {
+    height: 52%;
+  }
+
+  .SubLeaveHistoryBottom {
+    gap: 0.5rem;
+  }
+  
+
 
 
 }

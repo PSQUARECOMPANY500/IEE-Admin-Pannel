@@ -11,7 +11,7 @@ const SparePartRevenueTable = ({ engID }) => {
     const getData = async () => {
       const response = await getRevenueTablerDataAction(engID);
       //  console.log("response",response.sparePartRevenueData)
-      setRevenueData(response.sparePartRevenueData);
+      setRevenueData(response?.sparePartRevenueData);
     };
     getData();
   }, [engID]);

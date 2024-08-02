@@ -23,7 +23,7 @@ const MembershipCardTopBar = ({
       }`}
     >
       <div className="membership_card_topbar_left">
-        <p className={`membership_card_title ${titleClass}`}>
+        <p className={`membership_card_title ${setClick && order !== 1 ? 'membership_card_title_non_expand' : 'membership_card_title_expand'}`}>
           {DemoData?.dataType}
         </p>
         <p

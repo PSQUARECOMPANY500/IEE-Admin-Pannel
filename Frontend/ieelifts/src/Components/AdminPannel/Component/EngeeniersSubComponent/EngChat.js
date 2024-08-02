@@ -5,9 +5,9 @@ import { MdAddCall } from "react-icons/md";
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
-import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
-import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
+// import { createChatActions } from "../../../../ReduxSetup/Actions/ChatActions"
+// import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions"
+// import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions"
 import EngChatNav from './EngChatNav';
 import { CiVideoOn } from "react-icons/ci";
 import { IoCallOutline } from "react-icons/io5";
@@ -22,14 +22,14 @@ const EngChat = (props) => {
     const setClickCount = props.setClickCount;
     const dispatch = useDispatch();
 
-    const fileInputField = useRef(null);
-    const textareaRef = useRef();
-    const messageBodyRef = useRef(null);
+    // const fileInputField = useRef(null);
+    // const textareaRef = useRef();
+    // const messageBodyRef = useRef(null);
 
 
     const [messageData, setMessageData] = useState();
-    const [socketConnected, setSocketConnected] = useState(false);
-    const [file, setFile] = useState(false);
+    // const [socketConnected, setSocketConnected] = useState(false);
+    // const [file, setFile] = useState(false);
     const [textareaHeight, setTextareaHeight] = useState();
     const [swapIcon, setSwapIcon] = useState(true);
 
@@ -77,13 +77,13 @@ const EngChat = (props) => {
 
 
 
-    const chatCreated = useSelector((state) => {
-        if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
-            return state.ChatRootReducer.createChatReducer.createChat.FullChat
-        } else {
-            return null
-        }
-    });
+    // const chatCreated = useSelector((state) => {
+    //     if (state.ChatRootReducer && state.ChatRootReducer.createChatReducer && state.ChatRootReducer.createChatReducer.createChat) {
+    //         return state.ChatRootReducer.createChatReducer.createChat.FullChat
+    //     } else {
+    //         return null
+    //     }
+    // });
     // console.log("chat created", chatCreated?._id)
 
 
@@ -333,13 +333,13 @@ const EngChat = (props) => {
                                 id="file-upload"
                                 type="file"
                                 name="file"
-                                // onChange={handleFileChange}
-                                // ref={fileInputField}
+                
                                 style={{ display: "none" }}
                                 autoComplete="off"
+                                className='eng-icon'
                             />
                             <div
-                                onClick={() => fileInputField.current.click()}
+                                
                                 style={{ marginTop: "3px" }}
                             >
                                 <MdOutlineAttachFile />
@@ -347,8 +347,8 @@ const EngChat = (props) => {
                         </div>
 
                         <p className="send-messsage-eng-card ">
-                            {/* onClick={handleSendMessage} */}
-                            {swapIcon ? (<MdOutlineMic />) : (<MdSend />)}
+    
+                            {swapIcon ? (<MdOutlineMic  className='eng-icon'/>) : (<MdSend className='eng-icon'/>)}
                         </p>
                     </div>
                 </div>

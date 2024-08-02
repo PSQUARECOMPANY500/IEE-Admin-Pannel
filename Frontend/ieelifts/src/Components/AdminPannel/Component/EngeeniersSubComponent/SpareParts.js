@@ -7,7 +7,7 @@ const SpareParts = (props) => {
   const { engID } = props;
 
   const [currentComponent, setCurrentComponent] = useState(null)
-  const [leftSide, setLeftSide] = useState(0)
+  const [leftSide, setLeftSide] = useState(75)
   const renderSelectedComponent = () => {
     switch (currentComponent) {
       case "c1":
@@ -29,15 +29,17 @@ const SpareParts = (props) => {
   return <div className="spare-part">
     <div className="sub-spare-part">
       <div className="spare-part-head">
-        <h5 onClick={() => currentComponentHandler('c1', 3)}>Allotted Spare Parts</h5>
-        <h5 onClick={() => currentComponentHandler('c2', 44)}>Spare Part Requests</h5>
-        <h5 onClick={() => currentComponentHandler('c3', 77)}>Revenue</h5>
+        <h5 onClick={() => currentComponentHandler('c1', 0)}>Allotted Spare Parts</h5>
+        <h5 onClick={() => currentComponentHandler('c2', 42)}>Spare Part Requests</h5>
+        <h5 onClick={() => currentComponentHandler('c3', 75)}>Revenue</h5>
       </div>
 
-      <div className="vertical-line" style={{ width: '90%', left: '5%', display: 'none' }}>
-
-        {/* <div className="spare-part-progress"   style={{ marginLeft: leftSide + "%" }}></div> */}
-      </div>
+      <div className="vertical-line">
+                <div
+                  className="overlay-vertical-line"
+                  style={{ marginLeft: leftSide + "%" }}
+                ></div>
+              </div>
       <div className="spare-part-content">
         {renderSelectedComponent()}
       </div>
