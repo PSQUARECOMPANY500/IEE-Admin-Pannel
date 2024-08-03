@@ -3211,7 +3211,7 @@ text-align: center;
 
 
 .input-field {
-  font-size: 20px;
+  font-size: 1.1rem;
   width: 100%;
   border: none;
   padding: 5px 0;
@@ -3377,7 +3377,7 @@ input:-webkit-autofill {
 }
 
 .input-field {
-  font-size: 18px;
+  font-size: 1.1rem;
   width: 100%;
   border: none;
   border-bottom: 1px solid #44444462;
@@ -4029,10 +4029,7 @@ input:-webkit-autofill {
 }
 
 /* engineer form media query --Rahul Kumar */
-.add-engg-modal {
-  height: 90% !important;
-  width: 78% !important;  
-}
+
 .outerMainMoodule {
   gap: 1.2rem !important;
   padding: 2.2rem  0  0.32rem 0 !important;
@@ -4209,8 +4206,52 @@ width: 120px;
   margin-top: 5rem;
 }
 /* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------all form responive here for index.css ------------------------------------------------------------------------------------------------*/
+.client-form-details {
+  padding: 1rem 2rem 0 2rem;
+}
 
 
+.client-form-document-input-wrapper {
+  display: grid;
+  grid-template-columns: 46.5% 46.5%;
+  grid-column-gap: 1.3rem;
+  margin-top: 0.2rem;
+  grid-row-gap: 0.2rem;
+}
+
+.button-container {
+  padding: 1rem 2rem;
+}
+
+ .input-field {
+     font-size: 0.7rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #44444462;
+    opacity: 1;
+    padding: 3px 0;
+    background-color: transparent;
+    outline: none;
+    font-family: "Poppins";
+    color: #1d1d1d;
+    cursor: default;
+    font-weight: 400;
+    margin-top: -1.2rem !important;
+  } 
+  .client_table-container {
+    max-height: 77vh;
+  }
+
+
+
+
+  .sub_table_view {
+    height: 82vh;
+  }
+  
+  /* ------------------------------------------------------------------------------------------------------------end of all form responive here for index.css ------------------------------------------------------------------------------------------------*/
+  
 }
 
 
@@ -4227,3 +4268,32 @@ width: 120px;
 /* sidebar SOS button css ends */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
+
+
+@media only screen and (min-width: 1371px) and (max-width: 1550px) {
+  
+  .client-form-details {
+    padding: 2.4rem 2rem 0 2rem;
+  }
+  
+  .client_table-container {
+    max-height: 80vh;
+  }
+
+
+
+  .sub_table_view {
+    height: 85vh;
+  }
+
+  .non_expand_gap .membership_card{
+    height: 39vh;
+  }
+
+  .membership_card_scrollable {
+    height: 19rem;
+    max-height: 12rem;
+    overflow-y: auto;
+  }
+  
+}
