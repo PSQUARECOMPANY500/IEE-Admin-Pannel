@@ -3805,13 +3805,7 @@ input:-webkit-autofill {
     align-items: center;
   }
 
-  .req-client-section {
-    width: 100%;
-    height: 32% !important;
-    position: relative;
-    display: flex;
-    padding-top: 0.7rem !important;
-  }
+
 
   .req-photo-upload-section {
     width: 25%;
@@ -4009,22 +4003,12 @@ input:-webkit-autofill {
 .calendar-box {
   text-align: left !important;
 }
-.modal-container {
-  height: 95vh !important;
-}
 
-.req-elevator-section-right {
-  height: 70% !important;
-  padding-left: 6.56rem !important;
-}
+
 .grid-form-container {
   padding-top: 1.64rem !important;
 }
-.grid-form-container2 {
-  height: 80% !important;
-  padding-top: 1.64rem !important;
-  gap: 1rem !important;
-}
+
 .col75-jon{
   width: 51% !important;
 }

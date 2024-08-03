@@ -2421,10 +2421,17 @@ bottom: 2%;
     gap: 0.5rem;
   }
   
-
-
-
 }
+  
+
+  @media only screen and (min-width: 1371px) and (max-width: 1550px) {
+    .DatesContainer {
+      height: 52%;
+      background-color: green;
+    }
+
+
+  }
 
 /* @media only screen and (min-width: 1201px) {
 
