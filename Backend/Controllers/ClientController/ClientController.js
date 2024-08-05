@@ -272,8 +272,8 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
 
 module.exports.RequestCallbacks = async (req, res) => {
   try {
-    console.log("preet");
-    console.log("######################", req.body);
+    // console.log("preet");
+    // console.log("######################", req.body);
     const {
       JobOrderNumber,
       callbackId,
@@ -298,7 +298,7 @@ module.exports.RequestCallbacks = async (req, res) => {
       RepresentativeNumber,
     });
 
-    console.log("888888888888", newCallback)
+    // console.log("888888888888", newCallback)
 
     res.status(201).json({
       message: "Client raised ticket for a callback successfully",
@@ -695,9 +695,12 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     const callback = await clientRequestCallback.find({
       JobOrderNumber,
     });
+    
+    // console.log("pppppppppppppppppp",callback);
 
 
     let data = [];
+
 
     
     if (service.length > 0) {
@@ -706,7 +709,9 @@ module.exports.getCurrentScheduleService = async (req, res) => {
           const resp = await assignService.find({
             RequestId: item.RequestId,
           });
+       
           return resp;
+      
         })
       );
     } else if (callback.length > 0) {
@@ -716,7 +721,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {
             callbackId: item.callbackId,
           });
           return resp;
-        })
+
+      })
       );
     } else {
       return res.status(200).json({
@@ -728,6 +734,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
         rating: false,
       });
     }
+    // console.log("***************************************",data);
 
     if (
       data[0].length === 0 &&
@@ -792,7 +799,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
           service[0]?.isDead === false,
           !rating && data[0][0].ServiceProcess === "completed")
         ) {
-          console.log("*********************",rating);
+          // console.log("*********************",rating);
       //case 3
        res.status(200).json({
         status: "success",
@@ -807,7 +814,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service",
+        message: "Schedule your service Preet",
         time: null,
         date: null,
         liveTracking: false,
@@ -1214,12 +1221,12 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
   try {
     const { userId, firebaseToken } = req.body;
 
-    console.log("------------------->", userId, firebaseToken);
+    // console.log("------------------->", userId, firebaseToken);
 
     const splitedData = userId.split("@")[0];
     const splitedData1 = userId.split("@")[1];
 
-    console.log("--------------->", splitedData, splitedData1);
+    // console.log("--------------->", splitedData, splitedData1);
 
     let clientToken;
     let enggToken;

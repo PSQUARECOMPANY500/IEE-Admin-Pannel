@@ -12,7 +12,6 @@ import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminAction
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
-//import { ticketSectionRenderAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
@@ -137,7 +136,8 @@ console.log("userCallBackDetail",userCallBackDetail)
     else {
       dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
       dispatch(fetchAllClientDetailAction());
-      dispatch(fetchChecklistAction());
+
+      dispatch(fetchChecklistAction('callback'));
     }
 
     return () => {

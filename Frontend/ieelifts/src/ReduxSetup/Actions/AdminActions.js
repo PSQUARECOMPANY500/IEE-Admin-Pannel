@@ -499,10 +499,10 @@ export const fetchEnggDetailAction = (EnggId) => {
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //Action to handle fetchcheck list
-export const fetchChecklistAction = () => {
+export const fetchChecklistAction = (type) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getCheckList`);
+      const response = await axios.get(`${config.apiUrl}/admin/getCheckList/${type}`);
       dispatch({
         type: GET_ALL_CHECKLIST,
         payload: response.data,
