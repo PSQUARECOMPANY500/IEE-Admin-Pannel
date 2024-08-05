@@ -730,6 +730,7 @@ code {
   width: 70%;
   gap: 10%;
   margin-right: 3rem;
+}
 
   .clients {
     display: flex;
@@ -806,7 +807,7 @@ code {
   }
 
   .historyContainer {
-    height: 20rem;
+    /* height: 20rem; */
     overflow-y: scroll;
     padding-right: 0.5rem;
   }
@@ -1199,6 +1200,9 @@ code {
     width: 100%;
     padding: 1rem 0%;
     transition: all 0.6 ease;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 
   .offerMainExpired {
@@ -1281,7 +1285,7 @@ code {
     align-items: center;
     width: 100%;
   }
-}
+
 
 .notificationmembershipwrapper {
   /* background-color: saddlebrown; */
@@ -3494,7 +3498,7 @@ input:-webkit-autofill {
   }
 
   .clientName {
-    font-size: small;
+    font-size: 0.7rem;
   }
 
   .JOB {
@@ -4252,6 +4256,81 @@ width: 120px;
   
   /* ------------------------------------------------------------------------------------------------------------end of all form responive here for index.css ------------------------------------------------------------------------------------------------*/
   
+  .callsContainer {
+    height: 8rem;
+    max-height: 8rem;
+    overflow-y: scroll;
+    padding-right: 0.5rem;
+
+  }
+
+  .clients {
+    height: 25rem;
+    width: 50%;
+    margin-top: 0.2rem;
+  }
+
+  .clientDetailContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    width: 100%;
+    color: #444444;
+    margin-top: 1rem;
+  }
+
+
+  .clientsContainer {
+  
+    gap: 5%;
+    margin-right: 1rem;
+  }
+  
+
+  .clientDetailCalls {
+    font-size: 0.8rem;
+  }
+
+  .inputBox {
+    font-size: 0.8rem;
+ 
+  }
+
+  .sendButton {
+    padding: 0.727rem 2rem;
+  }
+  
+  
+  #offerDiscountBtn {
+    background-color: transparent;
+    /* color: #0f351d; */
+    height: 4vh;
+    margin-top: 0.1rem;
+  }
+
+  .offerButtonMain {
+    padding: 1rem 0%;
+
+  }
+  
+  .offer {
+    width: 100%;
+    padding: 0.2rem 0rem;
+    cursor: pointer;
+  }
+
+  .sendButton {
+    margin-top: 0.6rem;
+
+  }
+
+  .inputNotification {
+    margin-top: 0.6rem;
+  
+  }
+  
+
 }
 
 

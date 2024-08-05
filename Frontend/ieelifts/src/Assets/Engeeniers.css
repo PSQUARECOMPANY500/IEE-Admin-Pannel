@@ -2420,6 +2420,9 @@ bottom: 2%;
   .SubLeaveHistoryBottom {
     gap: 0.5rem;
   }
+
+
+
   
 }
   
@@ -2427,7 +2430,6 @@ bottom: 2%;
   @media only screen and (min-width: 1371px) and (max-width: 1550px) {
     .DatesContainer {
       height: 52%;
-      background-color: green;
     }
 
 
