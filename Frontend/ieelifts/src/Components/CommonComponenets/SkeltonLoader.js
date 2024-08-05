@@ -2,9 +2,9 @@ import React from "react";
 
 const SkeltonLoader = ({ width, height, marginTop, marginBottom }) => {
   return (
-    <div class="card">
+    <div className="card">
       <div
-        class="cover-image-skeleton"
+        className="cover-image-skeleton"
         style={{
           width: width,
           height: height,

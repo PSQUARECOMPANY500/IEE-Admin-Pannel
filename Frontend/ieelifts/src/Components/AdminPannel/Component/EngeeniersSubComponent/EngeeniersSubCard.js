@@ -98,13 +98,13 @@ const EngeeniersSubCard = (props) => {
 
               </div>
               <div className="EngCardDetailsR">
-                <div class="table-container">
-                  <div class="table-item">NAME</div>
-                  <div class="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
-                  <div class="table-item">ID</div>
-                  <div class="table-item">{e.EnggId}</div>
-                  <div class="table-item">LEAVES</div>
-                  <div class="table-item">0</div>
+                <div className="table-container">
+                  <div className="table-item">NAME</div>
+                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
+                  <div className="table-item">ID</div>
+                  <div className="table-item">{e.EnggId}</div>
+                  <div className="table-item">LEAVES</div>
+                  <div className="table-item">0</div>
                 </div>
               </div>
             </div>

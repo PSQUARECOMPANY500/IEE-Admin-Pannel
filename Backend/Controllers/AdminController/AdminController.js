@@ -54,7 +54,7 @@ const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 const { response } = require("express");
 const TodoSchema = require('../../Modals/TodoModel/TodoSchema');
-
+const moment = require("moment");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -91,13 +91,15 @@ module.exports.getEnggCrouserData = async (req, res) => {
 
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
-          .map((data) => ({
-            ServiceEnggId: data.ServiceEnggId,
-            JobOrderNumber: data.JobOrderNumber,
-            Slot: data.Slot,
-            Date: data.Date,
-            TaskStatus: data.ServiceProcess,
-          }));
+          .map((data) => (
+            {
+              ServiceEnggId: data.ServiceEnggId,
+              type: data.callbackId ? "Calback" : "Service",
+              JobOrderNumber: data.JobOrderNumber,
+              Slot: data.Slot,
+              Date: data.Date,
+              TaskStatus: data.ServiceProcess,
+            }));
 
         const filteredServiceAssignments = mainDetails.filter((item) => {
           return item.Date === currentDate.toLocaleDateString("en-GB");
@@ -229,7 +231,7 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 //function to handle get current date Assign Service Detail
 module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = new Date().toLocaleDateString("en-GB");
+    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
     const currentDetailServiceRequest = await AssignSecheduleRequest.find({
       Date: currentDate,
     });
@@ -302,10 +304,13 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = new Date().toLocaleDateString("en-GB");
+    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
+
+    console.log("currentDate=====================", currentDate)
+    console.log("currentDetailCallback=====================", currentDetailCallback)
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({

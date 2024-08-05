@@ -13,8 +13,8 @@ const NotFoundPage = () => {
           <img className="not-found-logo-image" src={logo} alt="logo" />
         </div>
 
-        <div class="jc-elevator">
-          <div id="doors" class="jc-doors">
+        <div className="jc-elevator">
+          <div id="doors" className="jc-doors">
             <div className="test">
               <div>404</div>
               <div>Page Not Found</div>
@@ -25,7 +25,7 @@ const NotFoundPage = () => {
                 </p>
               </div>
               <div className="not-found-redirect-button">
-               <Link to="/Dashboard"><button>Go to Dashboard</button></Link>
+                <Link to="/Dashboard"><button>Go to Dashboard</button></Link>
               </div>
             </div>
           </div>

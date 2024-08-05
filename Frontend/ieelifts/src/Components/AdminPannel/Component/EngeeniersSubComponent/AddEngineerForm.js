@@ -1306,13 +1306,13 @@ const AddEngineerForm = ({ engID, onClose }) => {
               <button
                 onClick={handleEditSection}
                 style={{ background: editchange ? "#F8AC1D" : "#fff" }}
-                class="button-69-cancel"
+                classname="button-69-cancel"
                 role="button"
               >
                 Edit
               </button>
               <button
-                class="button-69"
+                classname="button-69"
                 role="button"
                 onClick={(e) => handleSaveEnggProfileData(e)}
                 disabled={!editchange}

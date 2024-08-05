@@ -665,7 +665,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {engDate || isAssigned ? (<MultiSelectDropdown
-                        placeholder={isAssigned ? engDetails.enggName : "Select Enggineers"}
+                        placeholder={isAssigned ? engDetails.enggName : "Select Engineer"}
                         Details={serviceEnggDetail}
                         handleEnggSelectionChange={handleEnggSelectionChange}
                         isAssigned={isAssigned}

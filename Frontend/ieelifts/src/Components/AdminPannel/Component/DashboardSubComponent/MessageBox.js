@@ -124,7 +124,7 @@ const MessageBox = ({ onClose, EnggId }) => {
     const verticalBorders = Math.round(
       parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
     );
-    const maxHeight = parseFloat(style.maxHeight) ||40
+    const maxHeight = parseFloat(style.maxHeight) || 40
     elem.style.height = "20px"
     const newHeight = elem.scrollHeight + verticalBorders;
     elem.style.overflowY = newHeight > maxHeight ? "auto" : "hidden";
@@ -201,7 +201,7 @@ const MessageBox = ({ onClose, EnggId }) => {
             {isLoadingMessages ? (
               <div className="skelton-in-message">
                 <div className="loader">
-                  <div class="box"></div>
+                  <div classname="box"></div>
                   <p>Loading...</p>
                 </div>
               </div>
@@ -233,7 +233,7 @@ const MessageBox = ({ onClose, EnggId }) => {
             ) : (
               <div className="skelton-in-message">
                 <div className="loader">
-                  <div class="box"></div>
+                  <div classname="box"></div>
                   <p>No Message Yet</p>
                 </div>
               </div>
@@ -270,17 +270,17 @@ const MessageBox = ({ onClose, EnggId }) => {
               />
               <div
                 onClick={() => fileInputField.current.click()}
-            
+
                 className="file-icon"
               >
-                <MdOutlineAttachFile  className="main-file-icon"/>
+                <MdOutlineAttachFile className="main-file-icon" />
               </div>
             </div>
             <p
               className="send-messsage-eng-card-dash"
               onClick={handleSendMessage}
             >
-              {swapIcon ? <MdOutlineMic className="mic-icon"/> : <MdSend  className="send-icon"/>}
+              {swapIcon ? <MdOutlineMic className="mic-icon" /> : <MdSend className="send-icon" />}
             </p>
           </div>
         </div>

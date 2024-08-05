@@ -105,7 +105,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           dots: true,
         },
       },
-    
+
       {
         breakpoint: 1500, // Adjust breakpoint as needed
         settings: {
@@ -173,7 +173,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
   }, [dataOnPin]);
 
   return (
-    <div  className="parent-div">
+    <div className="parent-div">
       <div className="carosel-Navigators-icon">
         {/* Left Arrow */}
 

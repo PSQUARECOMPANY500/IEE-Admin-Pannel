@@ -91,8 +91,8 @@ const ClientTableView = ({
   return (
     <div className="table_view client_table_view">
       <div className="sub_table_view client_sub_table_view">
-        <div className="client_table-container" onScroll={(e)=>hadnleInfiniteScroll(e,true)}>
-          <div className="table-shadow table-header" style={{height:'4rem', width:'96.4%',marginLeft:'-0.3rem'}}></div>
+        <div className="client_table-container" onScroll={(e) => hadnleInfiniteScroll(e, true)}>
+          <div className="table-shadow table-header" style={{ height: '4rem', width: '96.4%', marginLeft: '-0.3rem' }}></div>
           <table>
             <thead style={{ zIndex: '1' }} >
               <tr>
@@ -151,7 +151,7 @@ const ClientTableView = ({
               {clientData &&
                 clientData.map((data, index) => (
 
-                  <tr className="selected single" key={index}>
+                  <tr className="selected single" key={index} >
                     <td className="checkbox">
                       <CheckBox
                         id={`checkbox-${index}`}
@@ -181,19 +181,18 @@ const ClientTableView = ({
                     >
                       {/* {data?.Address} */}
                       <div className="dropdown-address">
-                          <span className="text">
-                         {data?.Address}
-                          </span>
+                        <span>
+                          {data?.Address.length > 20 ? `${data?.Address.slice(0, 20)}...` : data?.Address}
+                        </span>
 
-                          <div className="dropdown-adddress-menu">
-                            <div className="drop-address">
-                              <p>
-                               {data?.Address}
-                              </p>
-                            </div>
-                          </div>
+                        <div className="dropdown-address-menu">
+                          <p>
+                            {data?.Address}
+                          </p>
                         </div>
+                      </div>
                     </td>
+
                     <td
                       className="callback"
                       onClick={() => HandleCardClick(data)}
@@ -219,40 +218,40 @@ const ClientTableView = ({
                       {data.DateOfHandover}
                     </td>
                   </tr>
-                ))}    
-                  {isLoading&&page<=totalPage? <><tr style={{ overflowX: "hidden" }}>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        // width={"73vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                        className='table-skeleton'
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        // width={"73vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="10">
-                      <SkeltonLoader
-                        // width={"73vw"}
-                        height={"38px"}
-                        marginTop={"8px"}
-                        marginBottom={"0px"}
-                      />
-                    </td>
-                  </tr>          
-</>:''}
-                
+                ))}
+              {isLoading && page <= totalPage ? <><tr style={{ overflowX: "hidden" }}>
+                <td colSpan="10">
+                  <SkeltonLoader
+                    // width={"73vw"}
+                    height={"38px"}
+                    marginTop={"8px"}
+                    marginBottom={"0px"}
+                    className='table-skeleton'
+                  />
+                </td>
+              </tr>
+                <tr>
+                  <td colSpan="10">
+                    <SkeltonLoader
+                      // width={"73vw"}
+                      height={"38px"}
+                      marginTop={"8px"}
+                      marginBottom={"0px"}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="10">
+                    <SkeltonLoader
+                      // width={"73vw"}
+                      height={"38px"}
+                      marginTop={"8px"}
+                      marginBottom={"0px"}
+                    />
+                  </td>
+                </tr>
+              </> : ''}
+
             </tbody>
           </table>
         </div>

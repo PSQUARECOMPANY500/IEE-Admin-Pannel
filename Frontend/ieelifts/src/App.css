@@ -3204,92 +3204,32 @@ footer a:hover {
 }
 
 /* inside the table address hovering dropdown starts */
-.dropdown-address {
-  /* background: white; */
-  z-index: -1;
-  cursor: pointer;
-  height: 25px;
+.address {
   position: relative;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  z-index: 0;
-  /* transform: perspective(1000px); */
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  justify-content: center;
+  transition: 1s all ease-in;
+  cursor: pointer;
 }
 
-.dropdown-address span {
-  height: 25px;
-  width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.dropdown-adddress-menu {
-  background-color: #fff;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  left: 0;
+.address:hover .dropdown-address span {
   opacity: 0;
-  text-align: center;
-  top: 0;
-  z-index: 999;
-  padding: 0.3rem;
-  border-radius: 10px;
-  z-index: 99999;
-  max-width: 300px;
-  min-height: 50px;
-  padding-top: 0.6rem;
-  word-break: break-all;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.address:hover .dropdown-address-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-address-menu {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: white;
-
-
-  /* background-color: red; */
-}
-
-.dropdown-adddress-menu li:first-child {
-  cursor: default;
-}
-
-.dropdown-adddress-menu a {
-  color: #000;
-  display: inline-block;
-  width: 100%;
-  text-decoration: none;
-  -webkit-transition: all 1s;
-  transition: all 1s;
-}
-
-/* .dropdown-address .text:hover + .dropdown-adddress-menu{
-  opacity: 1;
-  transition: all 0.5s, background 2s 0.5s linear;
-  top: -10px;
-  left: -20px;
-} */
-.dropdown-address:hover .dropdown-adddress-menu {
-  opacity: 1;
-  transition: all 0.5s, background 2s 0.5s linear;
-  top: -10px;
-  left: -20px;
-}
-
-.dropdown-adddress-menu .drop-address {
-  font-size: 0.8rem;
-  padding: 1px 0px;
-}
-
-.dropdown-adddress-menu .drop-address p {
-  z-index: 9999;
+  transition: opacity 0.3s ease-out;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  top: 20%;
+  left: 0%;
 }
 
 /* inside the table address hovering dropdown ends */
@@ -3910,6 +3850,7 @@ footer a:hover {
   height: 320px;
   width: 100%;
   border-radius: 10px;
+
 
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

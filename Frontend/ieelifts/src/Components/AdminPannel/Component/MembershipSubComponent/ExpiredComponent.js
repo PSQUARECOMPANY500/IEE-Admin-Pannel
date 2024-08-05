@@ -10,10 +10,8 @@ const ExpiredComponent = ({ DemoData, count }) => {
       <MembershipExpired DemoData={DemoData} />
     </div>
   ) : (
-    <div>
-     <span>hello ji</span>
+    <div className="no_expire_membership">No client memberships are expired</div>
 
-    </div>
   );
 };
 
