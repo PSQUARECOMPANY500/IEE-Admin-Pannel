@@ -18,6 +18,7 @@ const ClientTableView = ({
   isLoading,
   isFiltered,
   page,
+  ref
 }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
@@ -164,10 +165,20 @@ const ClientTableView = ({
                       {data.JobOrderNumber}
                     </td>
                     <td
-                      className="client-table-name"
+                      className="client-table-name address"
                       onClick={() => HandleCardClick(data)}
                     >
-                      {data?.name}
+                      <div className="dropdown-address">
+                        <span>
+                          {data?.name.length > 20 ? `${data?.name.slice(0, 20)}...` : data?.name}
+                        </span>
+
+                        <div className="dropdown-address-menu">
+                          <p>
+                            {data?.name}
+                          </p>
+                        </div>
+                      </div>
                     </td>
                     <td
                       className="client-table-number"

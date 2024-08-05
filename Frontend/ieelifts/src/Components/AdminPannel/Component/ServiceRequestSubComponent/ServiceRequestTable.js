@@ -399,16 +399,20 @@ const ServiceRequestTable = ({
                     <td>{value?.clientDetail?.name}</td>
                     <td>{value?.clientDetail?.PhoneNumber}</td>
 
-                    <td>
+
+                    <td
+                      className="address"
+                    >
+                      {/* {data?.Address} */}
                       <div className="dropdown-address">
                         <span>
-                          {limitAddress(value?.clientDetail?.Address, 15)}
+                          {value?.clientDetail?.Address.length > 20 ? `${value?.clientDetail?.Address.slice(0, 20)}...` : value?.clientDetail?.Address}
                         </span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                            <p>{value?.clientDetail?.Address}</p>
-                          </div>
+                        <div className="dropdown-address-menu">
+                          <p>
+                            {value?.clientDetail?.Address}
+                          </p>
                         </div>
                       </div>
                     </td>
@@ -469,16 +473,19 @@ const ServiceRequestTable = ({
                     <td>{value?.clientDetail?.name}</td>
                     <td>{value?.clientDetail?.PhoneNumber}</td>
 
-                    <td>
+                    <td
+                      className="address"
+                    >
+                      {/* {data?.Address} */}
                       <div className="dropdown-address">
                         <span>
-                          {limitAddress(value?.clientDetail?.Address, 15)}
+                          {value?.clientDetail?.Address.length > 20 ? `${value?.clientDetail?.Address.slice(0, 20)}...` : value?.clientDetail?.Address}
                         </span>
 
-                        <div className="dropdown-adddress-menu">
-                          <div className="drop-address">
-                            <p>{value?.clientDetail?.Address}</p>
-                          </div>
+                        <div className="dropdown-address-menu">
+                          <p>
+                            {value?.clientDetail?.Address}
+                          </p>
                         </div>
                       </div>
                     </td>

@@ -1,5 +1,5 @@
 // <-----------------------------  Author:- Armaan Singh ----------------------------------->
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getClients } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector, useDispatch } from "react-redux";
 import ClientCardView from "../ClientsSubComponent/ClientCardView";
@@ -11,7 +11,9 @@ const Clients = () => {
   const [isFiltered, setIsFiltered] = useState(false);
   const [page, setPage] = useState(1); //make this is in redux for global purposes
   const [isLoading, setIsLoading] = useState(false);
+  const [isScrollListenerAttached, setIsScrollListenerAttached] = useState(false);
   const dispatch = useDispatch();
+  const ref = useRef()
 
   const clients = useSelector(
     (state) => state?.AdminRootReducer?.getClientsReducer?.clients?.Clients
@@ -68,30 +70,46 @@ const Clients = () => {
     }
   }, [filteredData, searchClient, clients]);
 
-  const hadnleInfiniteScroll = (e, isTableScroll = false) => {
+  const handleInfiniteScroll = (e, isTableScroll = false) => {
+    console.log(isTableScroll);
+    if (isTableScroll) {
+      hasScrollListenerAttached();
+    }
     const { scrollHeight, clientHeight, scrollTop } = isTableScroll
       ? e.target
       : document.documentElement;
-    if (scrollTop + clientHeight === scrollHeight) {
-      setPage((prev) => prev + 1);
-    }
-    setIsLoading(true)
 
-  }
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      setPage((prevPage) => prevPage + 1);
+      setIsLoading(true);
+    }
+  };
 
   const hasScrollListenerAttached = () => {
-    return window.eventListeners && window.eventListeners.length > 0; 
+    if (isScrollListenerAttached) {
+      console.log('Scroll listener is already attached.');
+    } else {
+      console.log('Attaching scroll listener.');
+      setIsScrollListenerAttached(true);
+    }
   };
 
   useEffect(() => {
-    if(!hasScrollListenerAttached()){
-
-      window.addEventListener('scroll', hadnleInfiniteScroll)
+    const currentRef = ref.current;
+    if (currentRef) {
+      const tableScrollHandler = (e) => handleInfiniteScroll(e, true);
+      currentRef.addEventListener('scroll', tableScrollHandler);
+      return () => {
+        currentRef.removeEventListener('scroll', tableScrollHandler);
+      };
     }
+
+    const windowScrollHandler = (e) => handleInfiniteScroll(e, false);
+    window.addEventListener('scroll', windowScrollHandler);
     return () => {
-      window.removeEventListener("scroll", hadnleInfiniteScroll);
+      window.removeEventListener('scroll', windowScrollHandler);
     };
-  }, []);
+  }, [isScrollListenerAttached]);
 
   const renderClientView = () => {
     let dataToRender;
@@ -115,10 +133,11 @@ const Clients = () => {
       return (
         <ClientTableView
           clientData={dataToRender}
-          hadnleInfiniteScroll={hadnleInfiniteScroll}
+          hadnleInfiniteScroll={handleInfiniteScroll}
           isLoading={isLoading}
           isFiltered={isFiltered}
           page={page}
+          ref={ref}
         />
       );
     }

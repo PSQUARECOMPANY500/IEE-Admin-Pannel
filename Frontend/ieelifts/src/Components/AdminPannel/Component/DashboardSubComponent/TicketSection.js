@@ -35,11 +35,11 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [showTicketModal2, setShowTicketModal2] = useState(false);
   const [showTicketModal3, setShowTicketModal3] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-  
+
   const [selectedClient, setSelectedClient] = useState(null);
-  const [csvData,setCsvData] = useState([]);
-  const [selectedClientArray,setSelectedClientArray]= useState([]);
-  const [clientData,setClientData] = useState([]);
+  const [csvData, setCsvData] = useState([]);
+  const [selectedClientArray, setSelectedClientArray] = useState([]);
+  const [clientData, setClientData] = useState([]);
 
   // const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState([]);
@@ -323,7 +323,7 @@ const TicketSection = ({ setTicketUpdate }) => {
     setallCD(fetchCallbacks);
     setGetFilterConditions(false);
   }, [fetchCallbacks]);
-   
+
   useEffect(() => {
     if (timer) {
       clearTimeout(timer);
@@ -400,12 +400,12 @@ const TicketSection = ({ setTicketUpdate }) => {
     if (fetchCallbacks && !getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(fetchCallbacks?.length).fill(!allChecked));
-      if(!allChecked){
+      if (!allChecked) {
         setSelectedClientArray(filteredCD);
-       }else{
+      } else {
         setSelectedClientArray([]);
-       }
-      
+      }
+
     }
     if (getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
@@ -420,18 +420,18 @@ const TicketSection = ({ setTicketUpdate }) => {
       return newCheckboxStates;
     });
 
-  let ans = selectedClientArray.includes(filteredCD[index]);
-  console.log(index)
-   if(ans){
-    const removeIndex = selectedClientArray.findIndex( item => item === filteredCD[index] );
-     selectedClientArray.splice(removeIndex,1);
-   }else{
-    setSelectedClientArray((prev)=>(
-      [ ...prev,
+    let ans = selectedClientArray.includes(filteredCD[index]);
+    console.log(index)
+    if (ans) {
+      const removeIndex = selectedClientArray.findIndex(item => item === filteredCD[index]);
+      selectedClientArray.splice(removeIndex, 1);
+    } else {
+      setSelectedClientArray((prev) => (
+        [...prev,
         filteredCD[index]
-     ]
-    ))
-   }
+        ]
+      ))
+    }
   };
 
   //aayush code for filter start from here--------------------------------------------------------------------------
@@ -480,10 +480,10 @@ const TicketSection = ({ setTicketUpdate }) => {
   //------------------------------------Rahul Kumar---------------------------------------
   // let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name)));
 
-  const handleExcelIconClick = () =>{
+  const handleExcelIconClick = () => {
     setCsvData(selectedClientArray)
   }
-  
+
   //--------------------------------------------------------------------------------------
   return (
     <div className="parent-full-div">
@@ -501,9 +501,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className={`search-input ${
-                      searchText.length > 0 && "inputSearchWritten"
-                    }`}
+                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                      }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
@@ -521,7 +520,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 </div>
               </span>
             ) : (
-              <img src={pdfIcon}/>
+              <img src={pdfIcon} />
             )}
 
             {/* ............................................................ax13-search...................................................... */}
@@ -531,10 +530,10 @@ const TicketSection = ({ setTicketUpdate }) => {
                 className="sub-components-ticket-filter"
                 ref={dropdownClickRef}
               >
-              <p
-                 className="filter-icon"
-                onClick={handleFilter}
-                style={{ cursor: "pointer" }}
+                <p
+                  className="filter-icon"
+                  onClick={handleFilter}
+                  style={{ cursor: "pointer" }}
                 >
                   <LuSettings2 className="iconColor" />
                   {""}
@@ -554,7 +553,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 src={execelIcon}
                 style={{ boxShadow: "0px 3px 6px #00000029" }} onClick={handleExcelIconClick}
               /></CSVLink>
-              
+
             )}
 
             {/* add  ticket +icon */}
@@ -584,7 +583,7 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-        <div className="my_table-container Yello_Scrollbar"  style={{overflowX:'hidden'}} >
+        <div className="my_table-container Yello_Scrollbar" style={{ overflowX: 'hidden' }} >
           <div className="table-shadow"></div>
           <table>
             <thead>
@@ -713,7 +712,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                       <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
                       >
                         <div className="dropdown-address">
@@ -725,7 +724,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                             {limitAddress(data?.clientDetail?.Address, 15)}
                           </span>
 
-                          <div className="dropdown-adddress-menu">
+                          <div className="dropdown-address-menu">
                             <div className="drop-address">
                               <p
                                 className={
@@ -742,19 +741,19 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                       <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
                       >
-                         <div className="dropdown-address">
+                        <div className="dropdown-address">
                           <span
                             className={
                               !isAssigned && isTimeoutData ? "timeout-data" : ""
                             }
                           >
-                             {data?.Description}
+                            {limitAddress(data?.Description, 15)}
                           </span>
 
-                          <div className="dropdown-adddress-menu">
+                          <div className="dropdown-address-menu">
                             <div className="drop-address">
                               <p
                                 className={
@@ -865,7 +864,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                       <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
                       >
                         <div className="dropdown-address">
@@ -877,7 +876,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                             {limitAddress(data?.clientDetail?.Address, 15)}
                           </span>
 
-                          <div className="dropdown-adddress-menu">
+                          <div className="dropdown-address-menu">
                             <div className="drop-address">
                               <p
                                 className={
@@ -900,9 +899,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         {data.Description}
                         
                       </td> */}
-                       <td
+                      <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
                       >
                         <div className="dropdown-address">
@@ -911,11 +910,10 @@ const TicketSection = ({ setTicketUpdate }) => {
                               !isAssigned && isTimeoutData ? "timeout-data" : ""
                             }
                           >
-                        
-                            {data.Description }
+                            {limitAddress(data?.Description, 15)}
                           </span>
 
-                          <div className="dropdown-adddress-menu">
+                          <div className="dropdown-address-menu">
                             <div className="drop-address">
                               <p
                                 className={
@@ -931,14 +929,13 @@ const TicketSection = ({ setTicketUpdate }) => {
                         </div>
                       </td>
 
-                       
                       <td
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                       >
                         {data.TypeOfIssue}
-                        
+
                       </td>
                       <td
                         className={
