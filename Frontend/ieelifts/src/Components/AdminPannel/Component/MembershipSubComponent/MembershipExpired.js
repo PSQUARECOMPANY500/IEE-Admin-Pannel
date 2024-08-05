@@ -21,7 +21,7 @@ const selectMembershipDetail = createSelector(
   (requestLimitedClientDataReducer) =>
     requestLimitedClientDataReducer?.membershipDetail
 );
-const MembershipExpired = ({ DemoData, count, setClick }) => {
+const MembershipExpired = ({ DemoData, count }) => {
   const selectExpiredMembership = createSelector(
     selectMembershipDetail,
     (membershipDetail) => membershipDetail?.expired?.[type]
@@ -91,13 +91,13 @@ const MembershipExpired = ({ DemoData, count, setClick }) => {
       );
     }
   }, [pageData]);
-  console.log(setClick)
+  console.log(count !== undefined && count !== null)
   return (
     <>
       {ref && pageData && (
         <div
           className={
-            `${!setClick
+            `${count !== undefined && count !== null
               ? "membership_card_expiring"
               : "membership_card_expiring_expanded"
             } `
@@ -118,8 +118,8 @@ const MembershipExpired = ({ DemoData, count, setClick }) => {
             </div>
           ) : (
             <div
-              className={`${count !== undefined ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
-          ${!count && "membership_card_scrollable_expanded"}
+              className={`${count !== undefined && count !== null ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
+          ${count !== undefined && count !== null && "membership_card_scrollable_expanded"}
           `}
               ref={ref}
             >

@@ -56,18 +56,18 @@ const EngeeniersSubCard = (props) => {
                             <div className="erectionEngineerPicParent">
                                 <img className="erectionEngineerPic " src={e.EnggPhoto} />
                             </div>
-                            <div class="erectionEningeerDetailsContainer">
+                            <div className="erectionEningeerDetailsContainer">
                                 <div className="erectionEngDetail">
-                                    <span class="erectionEngLabel">NAME</span>
-                                    <span class="erectionEngValue" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</span>
+                                    <span className="erectionEngLabel">NAME</span>
+                                    <span className="erectionEngValue" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</span>
                                 </div>
-                                <div class="erectionEngDetail">
-                                    <span class="erectionEngLabel">ID</span>
-                                    <span class="erectionEngValue">{e.EnggId}</span>
+                                <div className="erectionEngDetail">
+                                    <span className="erectionEngLabel">ID</span>
+                                    <span className="erectionEngValue">{e.EnggId}</span>
                                 </div>
-                                <div class="erectionEngDetail">
-                                    <span class="erectionEngLabel">LEAVES</span>
-                                    <span class="erectionEngValue">0</span>
+                                <div className="erectionEngDetail">
+                                    <span className="erectionEngLabel">LEAVES</span>
+                                    <span className="erectionEngValue">0</span>
                                 </div>
                             </div>
                         </div>

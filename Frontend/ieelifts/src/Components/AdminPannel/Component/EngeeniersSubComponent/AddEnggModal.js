@@ -1136,11 +1136,11 @@ const AddEnggModal = () => {
               {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
               <div className="addEnggButtons">
-                <button class="button-69-cancel" role="button">
+                <button className="button-69-cancel" role="button">
                   Cancel
                 </button>
                 <button
-                  class="button-69"
+                  className="button-69"
                   role="button"
                   onClick={(e) => handleSaveEnggProfileData(e)}
                 >

@@ -115,7 +115,7 @@ code {
   /* background-color: red; */
 }
 
-.non_expand_gap .membership_card{
+.non_expand_gap .membership_card {
   height: 41vh;
 
 }
@@ -124,9 +124,8 @@ code {
   height: 17vh;
   margin: 1rem;
 }
-.membershipCards_expand
 
-.membership_card:hover .membership_card_counts {
+.membershipCards_expand .membership_card:hover .membership_card_counts {
   box-shadow: none;
 }
 
@@ -203,7 +202,7 @@ code {
   font-size: 1.5rem;
 }
 
-.membership_card_title_non_expand{
+.membership_card_title_non_expand {
   text-transform: uppercase;
   font-weight: 600;
   font-size: 1.5rem;
@@ -281,17 +280,24 @@ code {
   font-weight: 500;
   color: #444444;
   /* background-color: red; */
-  height: 32vh;
+  /* height: 32vh; */
 }
 
 .membership_card_expiring {
   width: 47%;
-  height: 20rem;
 }
 
 .membership_card_expiring_expanded {
-  width: 47%;
-  height: 17rem;
+  height: 41rem;
+  width: 40%;
+}
+
+.membership_card_scrollable_non_expand {
+  height: 16rem;
+}
+
+.membership_card_scrollable_height {
+  height: 40rem;
 }
 
 .membership_card_expiring-title {
@@ -515,8 +521,8 @@ code {
 }
 
 .membership_card_scrollable {
-  height: 15rem;
-  max-height: 15rem;
+  /* height: 15rem;
+  max-height: 15rem; */
   overflow-y: auto;
   /* background-color: red; */
 
@@ -3990,249 +3996,284 @@ input:-webkit-autofill {
     font-size: 0.64rem !important;
   }
 
-.col75 input::placeholder {
-  font-size: 0.64rem !important;
-}
-.sub-engg-detail-section {
-  font-size: 0.8rem !important;
-}
-.col-elevator75 input {
-  font-size: 0.7rem !important;
-}
-.col-elevator25 label {
-  font-size: 0.72rem !important;
-}
-.assign-button {
-  padding: 0.6rem 2.5rem !important;
-  font-size: 0.8rem !important;
-}
-.calendar-box {
-  text-align: left !important;
-}
-.modal-container {
-  height: 95vh !important;
-}
+  .col75 input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.req-elevator-section-right {
-  height: 70% !important;
-  padding-left: 6.56rem !important;
-}
-.grid-form-container {
-  padding-top: 1.64rem !important;
-}
-.grid-form-container2 {
-  height: 80% !important;
-  padding-top: 1.64rem !important;
-  gap: 1rem !important;
-}
-.col75-jon{
-  width: 51% !important;
-}
-.col75-typeOfIssue{
-  width: 52% !important;
-}
-.calendar {
-  top: 26% !important;
-  left: 12.7% !important;
-  height: auto !important;
-}
-.days {
-  gap: 0.6rem !important;
-}
+  .sub-engg-detail-section {
+    font-size: 0.8rem !important;
+  }
 
-.day {
-  font-size: 0.72rem !important;
-}
+  .col-elevator75 input {
+    font-size: 0.7rem !important;
+  }
 
-/* engineer form media query --Rahul Kumar */
-.add-engg-modal {
-  height: 90% !important;
-  width: 78% !important;  
-}
-.outerMainMoodule {
-  gap: 1.2rem !important;
-  padding: 2.2rem  0  0.32rem 0 !important;
-  /* height: 90% !important;
+  .col-elevator25 label {
+    font-size: 0.72rem !important;
+  }
+
+  .assign-button {
+    padding: 0.6rem 2.5rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  .calendar-box {
+    text-align: left !important;
+  }
+
+  .modal-container {
+    height: 95vh !important;
+  }
+
+  .req-elevator-section-right {
+    height: 70% !important;
+    padding-left: 6.56rem !important;
+  }
+
+  .grid-form-container {
+    padding-top: 1.64rem !important;
+  }
+
+  .grid-form-container2 {
+    height: 80% !important;
+    padding-top: 1.64rem !important;
+    gap: 1rem !important;
+  }
+
+  .col75-jon {
+    width: 51% !important;
+  }
+
+  .col75-typeOfIssue {
+    width: 52% !important;
+  }
+
+  .calendar {
+    top: 26% !important;
+    left: 12.7% !important;
+    height: auto !important;
+  }
+
+  .days {
+    gap: 0.6rem !important;
+  }
+
+  .day {
+    font-size: 0.72rem !important;
+  }
+
+  /* engineer form media query --Rahul Kumar */
+  .add-engg-modal {
+    height: 90% !important;
+    width: 78% !important;
+  }
+
+  .outerMainMoodule {
+    gap: 1.2rem !important;
+    padding: 2.2rem 0 0.32rem 0 !important;
+    /* height: 90% !important;
   width: 78% !important;   */
-}
-.EnggDetailHeading {
+  }
 
-  padding-bottom: 4px;
-  font-size: 0.8rem !important;
+  .EnggDetailHeading {
 
-}
-.PersonalDetailInput > input::placeholder{
-  font-size: 0.64rem !important;
-}
-.PersonalDetailInput > input {
-  font-size: 0.64rem !important;
-}
-.PersonalDetailInputEmail > input::placeholder{
-  font-size: 0.64rem !important;
-}
-.PersonalDetailInputEmail > input{
-  font-size: 0.64rem !important;
-}
+    padding-bottom: 4px;
+    font-size: 0.8rem !important;
 
-.EnggAddressInput > input::placeholder{
-  font-size: 0.64rem !important;
-}
-.EnggAddressInput >input {
-  font-size: 0.64rem !important;
-}
-.smallifcCodeSuggestion >input::placeholder {
-  font-size: 0.64rem !important;
-}
-.smallifcCodeSuggestion > input {
-  font-size: 0.64rem !important;
-}
-.workExperienceCheckbox > input::placeholder {
-  font-size: 0.64rem !important;
-}
-.workExperienceCheckbox > input {
-  font-size: 0.64rem !important;
-}
-.inputWithAttachment >input::placeholder {
-  font-size: 0.64rem !important;
-}
-.inputWithAttachment > input {
-  font-size: 0.64 !important;
-}
-.additionalCourseData > input::placeholder {
-  font-size: 0.64rem !important;
-}
+  }
 
-.additionalCourseData > input {
-  font-size: 0.64rem !important;
-}
+  .PersonalDetailInput>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.EnggDetailInputField .imageUploadDiv {
-  height: 55% !important;
-  width: 25% !important;
-}
-.button-69,
-.button-69-cancel {
-  font-size: 0.8rem !important;
-  padding: 0.64rem 2rem !important; 
-}
-.css-qbdosj-Input>input{
-  font-size: 0.64rem !important;
-}
-#additionalCourseData{
-  font-size: 0.64rem !important;
-}
-#addharCardNumberInput{
-  font-size: 0.64rem !important;
-}
-#pancardsInput{
-  font-size: 0.64rem !important;
-}
-#drivingLisienceInput{
-  font-size: 0.64rem !important;
-}
-.css-1dimb5e-singleValue{
-  font-size: 0.64rem !important;
-}
-.css-1jqq78o-placeholder{
-  font-size: 0.64rem !important;
-}
-.addform-modal-container{
-  height: 89vh !important;
-  width: 79vw !important;
-}
+  .PersonalDetailInput>input {
+    font-size: 0.64rem !important;
+  }
 
-.addEnggButtons-view {
-  bottom: 10% !important;
-}
+  .PersonalDetailInputEmail>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-/* ------------------------------------------------------------------------------------------------------------responsive by aayush membership card------------------------------------------------------------------------------ */
+  .PersonalDetailInputEmail>input {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_scrollable {
-  height: 19rem;
-  max-height: 7.5rem;
-  overflow-y: auto;
-}
+  .EnggAddressInput>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.non_expand_gap .membership_card{
-  height: 37vh;
-}
+  .EnggAddressInput>input {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_title {
-  font-size: 1.2rem;
-}
+  .smallifcCodeSuggestion>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_revenue {
-  font-size: 0.8rem;
-}
+  .smallifcCodeSuggestion>input {
+    font-size: 0.64rem !important;
+  }
 
-.expandCardName {
-font-size: 0.7rem;
-width: 120px;
+  .workExperienceCheckbox>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-}
+  .workExperienceCheckbox>input {
+    font-size: 0.64rem !important;
+  }
 
+  .inputWithAttachment>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_expiring {
-  width: 45%;
-}
+  .inputWithAttachment>input {
+    font-size: 0.64 !important;
+  }
 
-.membership_card_expiring_expanded {
-  width: 45%;
- 
-}
+  .additionalCourseData>input::placeholder {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_expand_non {
-  height: 17vh;
-  margin: 0.5rem;
-}
+  .additionalCourseData>input {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_title_non_expand{
+  .EnggDetailInputField .imageUploadDiv {
+    height: 55% !important;
+    width: 25% !important;
+  }
 
-  font-size: 0.9rem !important;
-}
+  .button-69,
+  .button-69-cancel {
+    font-size: 0.8rem !important;
+    padding: 0.64rem 2rem !important;
+  }
 
+  .css-qbdosj-Input>input {
+    font-size: 0.64rem !important;
+  }
 
-.after_expansion_labels {
-  font-size: 0.6rem;
-}
+  #additionalCourseData {
+    font-size: 0.64rem !important;
+  }
 
-.total_revenue_heading {
-  font-size:0.8rem;
-  padding-bottom: 2%;
-}
+  #addharCardNumberInput {
+    font-size: 0.64rem !important;
+  }
 
-.total_revenue_amount {
-  margin-top: 2%;
-  font-size: 1rem;
-}
+  #pancardsInput {
+    font-size: 0.64rem !important;
+  }
 
-.expansion_labels {
-  margin-top: 0.2rem;
-}
+  #drivingLisienceInput {
+    font-size: 0.64rem !important;
+  }
 
-.membership_card_counts_expand {
-  width: 1.4rem;
-  height: 1.4rem;
-}
+  .css-1dimb5e-singleValue {
+    font-size: 0.64rem !important;
+  }
+
+  .css-1jqq78o-placeholder {
+    font-size: 0.64rem !important;
+  }
+
+  .addform-modal-container {
+    height: 89vh !important;
+    width: 79vw !important;
+  }
+
+  .addEnggButtons-view {
+    bottom: 10% !important;
+  }
+
+  /* ------------------------------------------------------------------------------------------------------------responsive by aayush membership card------------------------------------------------------------------------------ */
+
+  .membership_card_scrollable {
+    height: 19rem;
+    max-height: 7.5rem;
+    overflow-y: auto;
+  }
+
+  .non_expand_gap .membership_card {
+    height: 37vh;
+  }
+
+  .membership_card_title {
+    font-size: 1.2rem;
+  }
+
+  .membership_card_revenue {
+    font-size: 0.8rem;
+  }
+
+  .expandCardName {
+    font-size: 0.7rem;
+    width: 120px;
+
+  }
 
 
-.membership_card_expand {
-  height: 80vh;
+  .membership_card_expiring {
+    width: 45%;
+  }
+
+  .membership_card_expiring_expanded {
+    width: 45%;
+  }
+
+  .membership_card_expand_non {
+    height: 17vh;
+    margin: 0.5rem;
+  }
+
+  .membership_card_title_non_expand {
+
+    font-size: 0.9rem !important;
+  }
+
+
+  .after_expansion_labels {
+    font-size: 0.6rem;
+  }
+
+  .total_revenue_heading {
+    font-size: 0.8rem;
+    padding-bottom: 2%;
+  }
+
+  .total_revenue_amount {
+    margin-top: 2%;
+    font-size: 1rem;
+  }
+
+  .expansion_labels {
+    margin-top: 0.2rem;
+  }
+
+  .membership_card_counts_expand {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+
+
+  .membership_card_expand {
+    height: 80vh;
+  }
+
+
+  .membershipCards_expand {
+    margin-top: 5rem;
+  }
+
+  /* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
+
+
 }
 
 
-.membershipCards_expand {
-  margin-top: 5rem;
-}
-/* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
 
 
-}
-
-
-
-
-.imageUploadDiv img{
+.imageUploadDiv img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;

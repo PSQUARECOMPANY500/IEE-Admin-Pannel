@@ -18,7 +18,7 @@ const ServiceEnggDataOnCrousel = ({
     "(min-width: 769px) and (max-width: 1280px)"
   );
 
-  // console.log("traj", item)
+
 
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -69,15 +69,13 @@ const ServiceEnggDataOnCrousel = ({
 
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
-  const [handleborder, setHandleBorder] = useState(true);
-
   return (
     <div
-      className="main-crouser"  
+      className="main-crouser"
       style={{
         boxShadow: isHover ? "none" : "2px 4px 10px #99886b66",
         borderColor: isHover ? "#F8AC1D80" : "transparent",
-        borderStyle: isHover ? "solid" : "none", 
+        borderStyle: isHover ? "solid" : "none",
         borderWidth: "1px",
       }}
       key={index}
@@ -91,7 +89,7 @@ const ServiceEnggDataOnCrousel = ({
           <img
             src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
             alt="img"
-            
+
             className='basic-info-profile'
           />
           <div className="engg-profile">
@@ -146,13 +144,13 @@ const ServiceEnggDataOnCrousel = ({
             </div>
             <div className="hover-icon-service">
               <div className="dropdown">
-                <span>{renderArray[0].ClientName?.split(" ")[0]}</span>
-                <span>service E1</span>
+                <span>{renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}</span>
+                <span>{renderArray[0]?.type}</span>
                 <div className="dropdown-menu dropdown1-menu">
                   <div className="drop-parent">
                     <div className="upper-sec">
-                      <p>{renderArray[0].ClientName}</p>
-                      <p>Service E1</p>
+                      <p>{renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}</p>
+                      <p>{renderArray[0]?.type}</p>
                       <div className="horizontal-row-container">
                         <span className="horizontal-row"></span>
                       </div>
@@ -164,7 +162,7 @@ const ServiceEnggDataOnCrousel = ({
                       </p>
                       <p style={{ display: "flex" }}>
                         <p>No :</p>
-                        <p>{renderArray[0].ClientNumber}</p>
+                        <p>{renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}</p>
                       </p>
                       <p style={{ display: "flex" }}>
                         <p style={{ width: "100%" }}>Add :</p>
@@ -180,13 +178,13 @@ const ServiceEnggDataOnCrousel = ({
               {renderArray.length > 1 ? (
                 <div className="dropdown2">
                   <span className="dropdown2-text">{renderArray[1].ClientName?.split(" ")[0]}</span>
-                  <span>service E1</span>
+                  <span>{renderArray[0]?.type}</span>
 
                   <div className="dropdown-menu dropdown2-menu">
                     <div className="drop-parent">
                       <div className="upper-sec">
-                        <p>{renderArray[1].ClientName}</p>
-                        <p>Service E1</p>
+                        <p>{renderArray[1]?.ClientName >= 10 ? renderArray[1]?.ClientName : `${renderArray[1]?.ClientName.slice(0, 10)}...`}</p>
+                        <p>{renderArray[0]?.type}</p>
                         <div className="horizontal-row-container">
                           <span className="horizontal-row"></span>
                         </div>
@@ -194,7 +192,7 @@ const ServiceEnggDataOnCrousel = ({
                       <div className="lower-sec">
                         <p style={{ display: "flex" }}>
                           <p>JON :</p>
-                          <p>{renderArray[1].JobOrderNumber}</p>
+                            <p>{renderArray[1]?.ClientName >= 10 ? renderArray[1]?.ClientName : `${renderArray[1]?.ClientName.slice(0, 10)}...`}</p>
                         </p>
                         <p style={{ display: "flex" }}>
                           <p>No :</p>
@@ -210,7 +208,7 @@ const ServiceEnggDataOnCrousel = ({
                     </div>
                   </div>
                 </div>
-              ) : null} 
+              ) : null}
             </div>
           </div>
         )}
@@ -221,8 +219,8 @@ const ServiceEnggDataOnCrousel = ({
             totalTasks={item.filteredServiceAssignmentsWithClientName.length}
           />
           <div
-    
-              className="dropdown-menu dropdown3-menu"
+
+            className="dropdown-menu dropdown3-menu"
           >
             <div className="drop-parent">
               <p className="tasks-heading">Tasks</p>
@@ -238,13 +236,13 @@ const ServiceEnggDataOnCrousel = ({
                             <div className="task-dot-on-complete"></div>
                           )}
                           <div className="taskmain-info">
-                            <p>{itemData.ClientName?.split(" ")[0]}</p>
+                            <p>{itemData?.ClientName >= 10 ? itemData?.ClientName : `${itemData?.ClientName.slice(0, 10)}...`}</p>
                             <p>{itemData.JobOrderNumber}</p>
                           </div>
                         </div>
                         <div className="taskmain-info">
-                          <p>Service</p>
-                          <p>E1</p>
+                          <p>{renderArray[0]?.type}</p>
+
                         </div>
                       </div>
                       <span className="horizontal-row2"></span>
@@ -258,7 +256,7 @@ const ServiceEnggDataOnCrousel = ({
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
