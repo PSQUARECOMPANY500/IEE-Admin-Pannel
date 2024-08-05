@@ -736,6 +736,7 @@ code {
   width: 70%;
   gap: 10%;
   margin-right: 3rem;
+}
 
   .clients {
     display: flex;
@@ -1205,6 +1206,9 @@ code {
     width: 100%;
     padding: 1rem 0%;
     transition: all 0.6 ease;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
 
   .offerMainExpired {
@@ -1287,7 +1291,7 @@ code {
     align-items: center;
     width: 100%;
   }
-}
+
 
 .notificationmembershipwrapper {
   /* background-color: saddlebrown; */
@@ -3217,7 +3221,7 @@ text-align: center;
 
 
 .input-field {
-  font-size: 20px;
+  font-size: 1.1rem;
   width: 100%;
   border: none;
   padding: 5px 0;
@@ -3383,7 +3387,7 @@ input:-webkit-autofill {
 }
 
 .input-field {
-  font-size: 18px;
+  font-size: 1.1rem;
   width: 100%;
   border: none;
   border-bottom: 1px solid #44444462;
@@ -3500,7 +3504,7 @@ input:-webkit-autofill {
   }
 
   .clientName {
-    font-size: small;
+    font-size: 0.7rem;
   }
 
   .JOB {
@@ -3811,13 +3815,7 @@ input:-webkit-autofill {
     align-items: center;
   }
 
-  .req-client-section {
-    width: 100%;
-    height: 32% !important;
-    position: relative;
-    display: flex;
-    padding-top: 0.7rem !important;
-  }
+
 
   .req-photo-upload-section {
     width: 25%;
@@ -3996,82 +3994,56 @@ input:-webkit-autofill {
     font-size: 0.64rem !important;
   }
 
-  .col75 input::placeholder {
-    font-size: 0.64rem !important;
-  }
+.col75 input::placeholder {
+  font-size: 0.64rem !important;
+}
+.sub-engg-detail-section {
+  font-size: 0.8rem !important;
+}
+.col-elevator75 input {
+  font-size: 0.7rem !important;
+}
+.col-elevator25 label {
+  font-size: 0.72rem !important;
+}
+.assign-button {
+  padding: 0.6rem 2.5rem !important;
+  font-size: 0.8rem !important;
+}
+.calendar-box {
+  text-align: left !important;
+}
 
-  .sub-engg-detail-section {
-    font-size: 0.8rem !important;
-  }
 
-  .col-elevator75 input {
-    font-size: 0.7rem !important;
-  }
+.grid-form-container {
+  padding-top: 1.64rem !important;
+}
 
-  .col-elevator25 label {
-    font-size: 0.72rem !important;
-  }
-
-  .assign-button {
-    padding: 0.6rem 2.5rem !important;
-    font-size: 0.8rem !important;
-  }
-
-  .calendar-box {
-    text-align: left !important;
-  }
-
-  .modal-container {
-    height: 95vh !important;
-  }
-
-  .req-elevator-section-right {
-    height: 70% !important;
-    padding-left: 6.56rem !important;
-  }
-
-  .grid-form-container {
-    padding-top: 1.64rem !important;
-  }
-
-  .grid-form-container2 {
-    height: 80% !important;
-    padding-top: 1.64rem !important;
-    gap: 1rem !important;
-  }
-
-  .col75-jon {
-    width: 51% !important;
-  }
-
-  .col75-typeOfIssue {
-    width: 52% !important;
-  }
-
-  .calendar {
-    top: 26% !important;
-    left: 12.7% !important;
-    height: auto !important;
-  }
-
-  .days {
-    gap: 0.6rem !important;
-  }
+.col75-jon{
+  width: 51% !important;
+}
+.col75-typeOfIssue{
+  width: 52% !important;
+}
+.calendar {
+  top: 26% !important;
+  left: 12.7% !important;
+  height: auto !important;
+}
+.days {
+  gap: 0.6rem !important;
+}
 
   .day {
     font-size: 0.72rem !important;
   }
 
-  /* engineer form media query --Rahul Kumar */
-  .add-engg-modal {
-    height: 90% !important;
-    width: 78% !important;
-  }
+/* engineer form media query --Rahul Kumar */
 
-  .outerMainMoodule {
-    gap: 1.2rem !important;
-    padding: 2.2rem 0 0.32rem 0 !important;
-    /* height: 90% !important;
+.outerMainMoodule {
+  gap: 1.2rem !important;
+  padding: 2.2rem  0  0.32rem 0 !important;
+  /* height: 90% !important;
   width: 78% !important;   */
   }
 
@@ -4189,8 +4161,8 @@ input:-webkit-autofill {
   /* ------------------------------------------------------------------------------------------------------------responsive by aayush membership card------------------------------------------------------------------------------ */
 
   .membership_card_scrollable {
-    height: 19rem;
-    max-height: 7.5rem;
+    height: 24rem;
+    max-height: 30rem;
     overflow-y: auto;
   }
 
@@ -4261,12 +4233,137 @@ input:-webkit-autofill {
   }
 
 
-  .membershipCards_expand {
-    margin-top: 5rem;
+.membershipCards_expand {
+  margin-top: 5rem;
+}
+/* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------all form responive here for index.css ------------------------------------------------------------------------------------------------*/
+.client-form-details {
+  padding: 1rem 2rem 0 2rem;
+}
+
+
+.client-form-document-input-wrapper {
+  display: grid;
+  grid-template-columns: 46.5% 46.5%;
+  grid-column-gap: 1.3rem;
+  margin-top: 0.2rem;
+  grid-row-gap: 0.2rem;
+}
+
+.button-container {
+  padding: 1rem 2rem;
+}
+
+ .input-field {
+     font-size: 0.7rem;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #44444462;
+    opacity: 1;
+    padding: 3px 0;
+    background-color: transparent;
+    outline: none;
+    font-family: "Poppins";
+    color: #1d1d1d;
+    cursor: default;
+    font-weight: 400;
+    margin-top: -1.2rem !important;
+  } 
+  .client_table-container {
+    max-height: 77vh;
   }
 
-  /* ------------------------------------------------------------------------------------------------------------end of responsive by aayush membership card------------------------------------------------------------------------------ */
 
+
+
+  .sub_table_view {
+    height: 82vh;
+  }
+  
+  /* ------------------------------------------------------------------------------------------------------------end of all form responive here for index.css ------------------------------------------------------------------------------------------------*/
+  
+  .callsContainer {
+    height: 8rem;
+    max-height: 8rem;
+    overflow-y: scroll;
+    padding-right: 0.5rem;
+
+  }
+
+  .clients {
+    height: 25rem;
+    width: 50%;
+    margin-top: 0.2rem;
+  }
+
+  .clientDetailContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    width: 100%;
+    color: #444444;
+    margin-top: 1rem;
+  }
+
+
+  .clientsContainer {
+  
+    gap: 5%;
+    margin-right: 1rem;
+  }
+  
+
+  .clientDetailCalls {
+    font-size: 0.8rem;
+  }
+
+  .inputBox {
+    font-size: 0.8rem;
+ 
+  }
+
+  .sendButton {
+    padding: 0.727rem 2rem;
+  }
+  
+  
+  #offerDiscountBtn {
+    background-color: transparent;
+    /* color: #0f351d; */
+    height: 4vh;
+    margin-top: 0.1rem;
+  }
+
+  .offerButtonMain {
+    padding: 1rem 0%;
+
+  }
+  
+  .offer {
+    width: 100%;
+    padding: 0.2rem 0rem;
+    cursor: pointer;
+  }
+
+  .sendButton {
+    margin-top: 0.6rem;
+
+  }
+
+  .inputNotification {
+    margin-top: 0.6rem;
+  
+  }
+
+  .historyContainer {
+    height: 12rem;
+    overflow-y: scroll;
+    padding-right: 0.5rem;
+  }
+
+  
 
 }
 
@@ -4284,3 +4381,32 @@ input:-webkit-autofill {
 /* sidebar SOS button css ends */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
+
+
+@media only screen and (min-width: 1371px) and (max-width: 1550px) {
+  
+  .client-form-details {
+    padding: 2.4rem 2rem 0 2rem;
+  }
+  
+  .client_table-container {
+    max-height: 80vh;
+  }
+
+
+
+  .sub_table_view {
+    height: 85vh;
+  }
+
+  .non_expand_gap .membership_card{
+    height: 39vh;
+  }
+
+  .membership_card_scrollable {
+    height: 19rem;
+    max-height: 12rem;
+    overflow-y: auto;
+  }
+  
+}

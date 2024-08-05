@@ -3851,6 +3851,7 @@ footer a:hover {
   width: 100%;
   border-radius: 10px;
 
+
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -5406,7 +5407,6 @@ footer a:hover {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   border-radius: 8px;
-  height: auto;
   box-shadow: rgba(99, 99, 99, 0.1) 1px 0px 3px 0px;
 }
 
@@ -5812,8 +5812,8 @@ footer a:hover {
   display: flex;
   justify-content: flex-end;
   gap: 16px;
-  margin-top: 1.5rem;
-  width: 91%;
+  margin-top: 5rem;
+  width: 100%;
 }
 
 /* assign ticket modal css ends */
@@ -5975,7 +5975,7 @@ footer a:hover {
 
 .calender-section {
   width: 60%;
-  height: 37.5rem;
+  /* height: 37.5rem; */
 }
 
 .dynamic-background {
@@ -5992,7 +5992,6 @@ footer a:hover {
   width: 100% !important;
   box-shadow: 0px 0px 3px #00000029 !important;
   border-radius: 7px !important;
-  /* height: 37rem; */
   padding-bottom: 2rem;
   height: 100%;
 }
@@ -6016,11 +6015,10 @@ element.style {
 }
 
 .react-calendar__tile {
-  padding: 17px 0px !important;
+  padding: 0.5rem 0px !important;
   text-align: center !important;
-  /* line-height: 5px!important; */
   font: inherit !important;
-  font-size: 0.833em !important;
+  font-size: 1rem !important;
   margin-top: 20px;
 }
 
@@ -6063,13 +6061,13 @@ element.style {
   width: 50px !important;
   height: 50px !important;
   text-align: center !important;
-  /* padding: 3px 0px !important; */
+ 
 }
 
 .react-calendar__month-view__days .react-calendar__tile abbr {
   display: inline-block !important;
-  width: 50px !important;
-  height: 50px !important;
+  width: 40px !important;
+  height: 40px !important;
 }
 
 
@@ -6242,7 +6240,7 @@ element.style {
 }
 
 .parent-div-task-request {
-  height: 33rem;
+  height: 30rem;
   overflow-x: hidden;
   scroll-behavior: smooth;
   margin-top: 10px;
@@ -9619,7 +9617,7 @@ element.style {
   .EnggAddressSection {
     gap: 0.5rem;
     width: 45%;
-    height: 90vh;
+    height: 85vh;
   }
 
   .addform-modal-container {
@@ -9934,12 +9932,9 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-  .client-form-details {
-    padding: 2.4rem 2rem 0 2rem !important;
-  }
-
+  
   .client-salesman-details {
-    padding: 2.4rem 2rem 0 2rem !important;
+    padding: 1rem 2rem 0 2rem !important;
   }
 
   .option-container {
@@ -9966,15 +9961,15 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .client-form-input-wrapper {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     display: grid;
     grid-template-columns: 46.5% 46.5%;
     grid-column-gap: 1.1rem;
-    grid-row-gap: 1.2rem;
-    margin-top: 1rem;
+    grid-row-gap: 0.8rem;
+    margin-top: 0.5rem;
   }
 
-  .input-field {
+  /* .input-field {
     font-size: 13px;
     width: 100%;
     border: none;
@@ -9988,7 +9983,7 @@ a[href^="http://maps.google.com/maps"] {
     cursor: default;
     font-weight: 400;
     margin-top: -1.2rem !important;
-  }
+  } */
 
   .input-label {
     position: absolute;
@@ -10008,11 +10003,12 @@ a[href^="http://maps.google.com/maps"] {
     display: grid;
     grid-template-rows: 1fr 1fr;
     width: 38% !important;
+   
   }
 
   .client-form-right-container {
     width: 100% !important;
-
+  
   }
 
   .client-form-container {
@@ -10035,17 +10031,17 @@ a[href^="http://maps.google.com/maps"] {
     transform: translateY(-50%);
     transition: opacity 0.3s;
     opacity: 0.5;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .filename {
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-family: "Poppins";
   }
 
   .calendarIcon {
-    width: 1.2rem;
+    width: 0.9rem;
     height: auto;
   }
 
@@ -10087,11 +10083,11 @@ a[href^="http://maps.google.com/maps"] {
     font-family: "Poppins";
     cursor: pointer;
     position: relative;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .add-client-modal {
-    height: 90%;
+    height: 93%;
     width: 85%;
     position: fixed;
     top: 50%;
@@ -10469,14 +10465,20 @@ a[href^="http://maps.google.com/maps"] {
     width: 72.5vw;
   }
 
+  .client-child-modal-container {
+    padding: 1rem; 
+  }
+  
   /* ------------------------------------------all forms respopnsive by aayush--------------------------------------------------------------------------------------------- */
   .req-elevator-section {
-    height: 68%;
+    height: 65%;
   }
 
-  .buttons {
-    margin-top: 1.6rem;
+  .req-client-section {
+    height: 35%;
+    padding-top: 0.7rem;
   }
+
 
   .req-elevator-details {
     height: 25%;
@@ -10484,12 +10486,109 @@ a[href^="http://maps.google.com/maps"] {
 
   }
 
+  .modal-container {
+    height: 96vh;
+  }
+
+  
+  .buttons {
+    margin-top: 2rem;
+  }
 
 
+   .req-elevator-section-right {
+    height: 70% ;
+    padding-left: 6.56rem;
+  } 
 
+  .grid-form-container2 {
+    height: 90%;
+    padding-top: 1.64rem;
+    gap: 1rem;
+  }
+
+
+  .add-engg-modal {
+    height: 95%;
+    width: 78%;  
+  }
   /* ------------------------------------------end all forms respopnsive by aayush--------------------------------------------------------------------------------------------- */
 
 }
 
+
+
+@media only screen and (min-width: 1371px) and (max-width: 1550px) {
+
+  .modal-container {
+    height: 85vh;
+  }
+
+
+  .req-client-section {
+    height: 40%;
+  }
+
+  .req-elevator-section {
+    height: 60%;
+  }
+
+
+  /* .buttons {
+    margin-top: 5rem;
+  } */
+
+  .buttons{
+    margin-bottom: 2.5rem;
+  }
+  
+  .req-elevator-section {
+    height: 55%;
+    
+  }
+
+  .req-client-section {
+    height: 45%;
+    padding-top: 0.7rem;
+ 
+  }
+
+  
+  .req-elevator-section-right {
+    height: 100% ;
+    padding-left: 6.56rem;
+  } 
+
+  .grid-form-container2 {
+    height: 100%;
+    gap: 2rem;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+
+  .add-client-modal {
+    height: 85%;
+  }
+
+  .client-form-input-wrapper {
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 46.5% 46.5%;
+    grid-column-gap: 1.1rem;
+    grid-row-gap: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .client-salesman-details {
+    padding: 2.4rem 2rem 0 2rem !important;
+  }
+
+  .add-engg-modal {
+    height: 90%;
+    width: 78%;  
+  }
+
+}
 
 /*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */

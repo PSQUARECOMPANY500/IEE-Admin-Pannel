@@ -2420,11 +2420,20 @@ bottom: 2%;
   .SubLeaveHistoryBottom {
     gap: 0.5rem;
   }
+
+
+
+  
+}
   
 
+  @media only screen and (min-width: 1371px) and (max-width: 1550px) {
+    .DatesContainer {
+      height: 52%;
+    }
 
 
-}
+  }
 
 /* @media only screen and (min-width: 1201px) {
 
