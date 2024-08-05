@@ -28,10 +28,6 @@ const Services = new Schema(
       required: true,
       default:"Service"
     },
-    // Description: {
-    //   type: String,
-    //   required: true,
-    // },
     Type: {
       type: String,
       default: "ImediateVisit",
