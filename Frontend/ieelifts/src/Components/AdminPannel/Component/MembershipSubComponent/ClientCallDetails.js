@@ -60,10 +60,10 @@ const ClientCallDetails = ({
     dataType === "Gold"
       ? "callsContainer_gold"
       : dataType === "Platinum"
-      ? "callsContainer_platinum"
-      : dataType === "Silver"
-      ? "callsContainer_silver"
-      : "";
+        ? "callsContainer_platinum"
+        : dataType === "Silver"
+          ? "callsContainer_silver"
+          : "";
 
   const AhandlePrevClick = () => {
     setACurrentDate((prevDate) => {
@@ -267,9 +267,8 @@ const ClientCallDetails = ({
         </div>
       </div>
       <div
-        className={`callsContainer ${scrollBar} ${
-          isExpired && "callScrollExpired"
-        }`}
+        className={`callsContainer ${scrollBar} ${isExpired && "callScrollExpired"
+          }`}
       >
         <div>
           {pageData.length !== 0 ? (
@@ -277,11 +276,10 @@ const ClientCallDetails = ({
               <div
                 key={index}
                 ref={(el) => (historyRefs.current[index] = el)}
-                className={`clientDetailCalls ${
-                  new Date(detail.callDate) < Date.now() &&
+                className={`clientDetailCalls ${new Date(detail.callDate) < Date.now() &&
                   !detail.description &&
                   "callMissed"
-                }`}
+                  }`}
                 onClick={() => toggleHistory(index)}
                 style={{ cursor: "pointer", marginBottom: "10px" }}
               >

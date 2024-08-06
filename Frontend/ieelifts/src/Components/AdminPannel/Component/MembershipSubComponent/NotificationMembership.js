@@ -34,13 +34,13 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
     dataType === "Gold"
       ? "sendButtonGold"
       : dataType === "Platinum"
-      ? "sendButtonPlatinum"
-      : dataType === "Silver"
-      ? "sendButtonSilver"
-      : "sendButtonWarrenty";
+        ? "sendButtonPlatinum"
+        : dataType === "Silver"
+          ? "sendButtonSilver"
+          : "sendButtonWarrenty";
 
   return (
-    
+
     <div className="NotificationContainer">
       <div ref={dropdownRef} className="inputNotification">
         <input
@@ -54,16 +54,15 @@ const NotificationMembership = ({ isExpired, dataType, whatsApp }) => {
         />
         <div onClick={toggleOptions}>
           <FaChevronDown
-            className={`chevronDownMembership ${sendIconColor} ${
-              isExpired && "sendButtonExpired"
-            }`}
+            className={`chevronDownMembership ${sendIconColor} ${isExpired && "sendButtonExpired"
+              }`}
           />
         </div>
       </div>
+      <hr style={{ color: "black", width: "1px", height: "100%"}} />
       <div
-        className={`sendButton ${sendIconColor} ${
-          isExpired && "sendButtonExpired"
-        }`}
+        className={`sendButton ${sendIconColor} ${isExpired && "sendButtonExpired"
+          }`}
       >
         <BiSolidSend />
       </div>

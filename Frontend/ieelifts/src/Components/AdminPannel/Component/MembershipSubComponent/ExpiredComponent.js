@@ -5,13 +5,12 @@ import ClientMembershipDetails from "./ClientMembershipDetails";
 
 const ExpiredComponent = ({ DemoData, count }) => {
   return count !== 0 ? (
-    <div className="expandedMembershipheading">
+    <div className="expandedMembershipheading" >
       <ClientMembershipDetails isExpired={true} />
       <MembershipExpired DemoData={DemoData} />
     </div>
   ) : (
     <div className="no_expire_membership">No client memberships are expired</div>
-
   );
 };
 
