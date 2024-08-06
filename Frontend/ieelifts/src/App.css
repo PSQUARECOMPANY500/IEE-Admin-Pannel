@@ -6066,8 +6066,8 @@ element.style {
 
 .react-calendar__month-view__days .react-calendar__tile abbr {
   display: inline-block !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 50px !important;
+  height: 50px !important;
 }
 
 
@@ -10471,11 +10471,11 @@ a[href^="http://maps.google.com/maps"] {
   
   /* ------------------------------------------all forms respopnsive by aayush--------------------------------------------------------------------------------------------- */
   .req-elevator-section {
-    height: 65%;
+    height: 78%;
   }
 
   .req-client-section {
-    height: 35%;
+    height: 32%;
     padding-top: 0.7rem;
   }
 
@@ -10487,13 +10487,11 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .modal-container {
-    height: 96vh;
+    height: 97vh;
   }
 
   
-  .buttons {
-    margin-top: 2rem;
-  }
+ 
 
 
    .req-elevator-section-right {
@@ -10520,9 +10518,7 @@ a[href^="http://maps.google.com/maps"] {
 
 @media only screen and (min-width: 1371px) and (max-width: 1550px) {
 
-  .modal-container {
-    height: 85vh;
-  }
+ 
 
 
   .req-client-section {
@@ -10539,7 +10535,7 @@ a[href^="http://maps.google.com/maps"] {
   } */
 
   .buttons{
-    margin-bottom: 2.5rem;
+    margin-bottom: 3.8rem;
   }
   
   .req-elevator-section {
@@ -10587,6 +10583,11 @@ a[href^="http://maps.google.com/maps"] {
   .add-engg-modal {
     height: 90%;
     width: 78%;  
+  }
+
+  .add-client-modal {
+    height: 95%;
+
   }
 
 }
