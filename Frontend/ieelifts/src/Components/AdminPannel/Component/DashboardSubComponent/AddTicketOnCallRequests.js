@@ -75,16 +75,25 @@ const AddTicketOnCallRequests = ({
 
   const timeSlots = [
     {
-      slot: "9:00-11:00",
+      slot: "9:00-10:00",
     },
     {
-      slot: "11:00-01:00",
+      slot: "10:00-11:00",
     },
     {
-      slot: "01:30-03:30",
+      slot: "11:00-12:00",
     },
     {
-      slot: "03:30-05:30",
+      slot: "12:00-01:00",
+    },
+    {
+      slot: "02:00-03:00",
+    },
+    {
+      slot: "03:00-04:00",
+    },
+    {
+      slot: "04:00-05:00",
     },
   ];
   const bookedDateForEngg = useSelector((state) => {
@@ -99,16 +108,56 @@ const AddTicketOnCallRequests = ({
       return null;
     }
   });
-  // console.log('bookedDateForEngg',bookedDateForEngg)
+  console.log('bookedDateForEngg',bookedDateForEngg)
+
 
   const filteredSlots = timeSlots.filter((slot) => {
-    const engg = bookedDateForEngg?.find(
-      (engg) => engg.ServiceEnggId === selectedEnggId[0]
-    );
-    const bookedSlots = engg ? engg.slots : [];
-    return !bookedSlots.includes(slot.slot);
+  const engg = bookedDateForEngg?.find((engg) => engg.ServiceEnggId === selectedEnggId[0]);
+  const bookedSlots = engg ? engg.slots : [];
+  function formatTo12Hour(hours) {
+    let period = "AM";
+    if (hours >= 12) {
+      period = "PM";
+      if (hours > 12) {
+        hours -= 12;
+      }
+    } else if (hours === 0) {
+      hours = 12;
+    }
+    return { hours, period };
+  }
+  
+  var currentTime = new Date();
+  
+  // Convert to IST
+  var ISTOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // IST offset UTC+5:30
+  var currentTimeIST = new Date(currentTime.getTime() + ISTOffset);
+  
+  // Get hours, minutes, and seconds in IST
+  var hoursIST = currentTimeIST.getUTCHours();
+  var minutesIST = currentTimeIST.getUTCMinutes();
+  
+  var formattedTime = formatTo12Hour(hoursIST);
+
+  console.log("||||||||||||||||||||||||||||||||||||||",formattedTime);
+
+  let formattedTimeString = formattedTime.hours+":"+minutesIST
+
+  const [slotStartTime, slotEndTime] = slot.slot.split('-');
+  const slotStartDateTime = formattedTimeString;
+ const  slotStartDateTimes = slotEndTime
+
+  
+ console.log("----------------------------",slotStartDateTimes)
+ console.log("++++++++++++++++++++++++++",formattedTimeString)
+ console.log("****************************",slotStartDateTimes < formattedTimeString)
+  return !bookedSlots.includes(slot.slot) && slotStartDateTimes < formattedTimeString
   });
-  // console.log("filteredSlots",filteredSlots)
+
+  console.log("Filtered Slots:", filteredSlots);
+
+
+
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
@@ -207,13 +256,12 @@ const AddTicketOnCallRequests = ({
 
   useEffect(() => {
     dispatch(fetchAllClientDetailAction());
-    
-    if(requestSection){
-      dispatch(fetchChecklistAction('service')); 
-    }else{
-      dispatch(fetchChecklistAction('callback')); 
-     }
 
+    if (requestSection) {
+      dispatch(fetchChecklistAction("service"));
+    } else {
+      dispatch(fetchChecklistAction("callback"));
+    }
 
     return () => {
       dispatch(fetchEnggDetailAction());
@@ -223,7 +271,7 @@ const AddTicketOnCallRequests = ({
   useEffect(() => {
     //no problem
     if (getEnggState) {
-      console.log("Engg state is True");
+      // console.log("Engg state is True");
       setEngDetails({
         enggJon: getEnggState.EnggId,
         enggName: getEnggState.EnggName,
@@ -250,7 +298,7 @@ const AddTicketOnCallRequests = ({
   };
 
   const handleSingleSetDropdown = (selectedOptions) => {
-      setClickListOnSelect(selectedOptions);
+    setClickListOnSelect(selectedOptions);
   };
 
   const handleTypeOfIssue = (selectedOption) => {
@@ -357,7 +405,7 @@ const AddTicketOnCallRequests = ({
       }
     }
 
-    if (e.target.name === 'text') {
+    if (e.target.name === "text") {
       const input = e.target.value;
       const nonNumericPattern = /^[A-Za-z\s]*$/;
       if (nonNumericPattern.test(input)) {
@@ -799,7 +847,7 @@ const AddTicketOnCallRequests = ({
                         <MultiSelectDropdown
                           placeholder={"Select Slot"}
                           slots={filteredSlots}
-                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                          handleEnggSelectionChange={handleEnggSelectionChange1} //FIXME:
                           flag={flag}
                         />
                       ) : (

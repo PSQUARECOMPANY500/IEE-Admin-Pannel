@@ -192,7 +192,7 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 
     const combinedData = [...assignCallbackDate, ...assignRequestDate];
 
-    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",combinedData);
 
     // Grouping slots by ServiceEnggId
     const slotsByEnggId = {};
