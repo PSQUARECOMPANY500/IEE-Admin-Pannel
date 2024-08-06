@@ -71,7 +71,7 @@ const AddTicketOnCallRequests = ({
   const [reName, setreName] = useState("");
   const [reNumber, setreNumber] = useState("");
 
-  console.log("5555555555555555555", reNumber);
+  // console.log("5555555555555555555", reNumber);
 
   const timeSlots = [
     {
@@ -108,55 +108,40 @@ const AddTicketOnCallRequests = ({
       return null;
     }
   });
-  console.log('bookedDateForEngg',bookedDateForEngg)
+  // console.log('bookedDateForEngg',bookedDateForEngg)
 
+  const filterTimeAsPerSchedule = () => {
+    const currentTime = new Date();
 
-  const filteredSlots = timeSlots.filter((slot) => {
-  const engg = bookedDateForEngg?.find((engg) => engg.ServiceEnggId === selectedEnggId[0]);
-  const bookedSlots = engg ? engg.slots : [];
-  function formatTo12Hour(hours) {
-    let period = "AM";
-    if (hours >= 12) {
-      period = "PM";
-      if (hours > 12) {
-        hours -= 12;
-      }
-    } else if (hours === 0) {
-      hours = 12;
+    // Convert to IST
+    const ISTOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // IST offset UTC+5:30
+    const currentTimeIST = new Date(currentTime.getTime() + ISTOffset);
+
+    const hoursIST = currentTimeIST.getUTCHours();
+
+    return hoursIST;
+  };
+  const timeSlotHours = [9, 10, 11, 12, 14, 15, 16];
+
+  const filterTime = timeSlotHours.filter((item) => {
+    if (engDate === new Date().toLocaleDateString("en-GB")) {
+      return item > filterTimeAsPerSchedule();
+    } else {
+      return item;
     }
-    return { hours, period };
-  }
-  
-  var currentTime = new Date();
-  
-  // Convert to IST
-  var ISTOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // IST offset UTC+5:30
-  var currentTimeIST = new Date(currentTime.getTime() + ISTOffset);
-  
-  // Get hours, minutes, and seconds in IST
-  var hoursIST = currentTimeIST.getUTCHours();
-  var minutesIST = currentTimeIST.getUTCMinutes();
-  
-  var formattedTime = formatTo12Hour(hoursIST);
-
-  console.log("||||||||||||||||||||||||||||||||||||||",formattedTime);
-
-  let formattedTimeString = formattedTime.hours+":"+minutesIST
-
-  const [slotStartTime, slotEndTime] = slot.slot.split('-');
-  const slotStartDateTime = formattedTimeString;
- const  slotStartDateTimes = slotEndTime
-
-  
- console.log("----------------------------",slotStartDateTimes)
- console.log("++++++++++++++++++++++++++",formattedTimeString)
- console.log("****************************",slotStartDateTimes < formattedTimeString)
-  return !bookedSlots.includes(slot.slot) && slotStartDateTimes < formattedTimeString
   });
 
-  console.log("Filtered Slots:", filteredSlots);
 
+  const filteredSlots = timeSlots
+    .slice(timeSlots.length - filterTime.length)
+    .filter((slot, i) => {
+      const engg = bookedDateForEngg?.find(
+        (engg) => engg.ServiceEnggId === selectedEnggId[0]
+      );
+      const bookedSlots = engg ? engg.slots : [];
 
+      return !bookedSlots.includes(slot.slot);
+    });
 
 
   //-------------------------------------------------

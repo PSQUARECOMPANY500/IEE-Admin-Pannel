@@ -260,21 +260,28 @@ const ServiceRequestModals = ({
 
   const timeSlots = [
     {
-      slot: "9:00-11:00",
+      slot: "9:00-10:00",
     },
     {
-      slot: "11:00-01:00",
+      slot: "10:00-11:00",
     },
     {
-      slot: "01:30-03:30",
+      slot: "11:00-12:00",
     },
     {
-      slot: "03:30-04:30",
+      slot: "12:00-01:00",
     },
     {
-      slot: "04:30-05:30",
+      slot: "02:00-03:00",
     },
-  ];
+    {
+      slot: "03:00-04:00",
+    },
+    {
+      slot: "04:00-05:00",
+    },
+  ]
+
   const bookedDateForEngg = useSelector((state) => {
     if (state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg) {
       return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
@@ -283,14 +290,40 @@ const ServiceRequestModals = ({
     }
   });
   // console.log('bookedDateForEngg',bookedDateForEngg)
+  const filterTimeAsPerSchedule = () => {
+    const currentTime = new Date();
 
-  const filteredSlots = timeSlots.filter(slot => {
-    const engg = bookedDateForEngg?.find(engg => engg.ServiceEnggId === selectedEnggId[0]);
-    // console.log("bookedengg",engg)
-    const bookedSlots = engg ? engg.slots : [];
-    return !bookedSlots.includes(slot.slot);
+    // Convert to IST
+    const ISTOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // IST offset UTC+5:30
+    const currentTimeIST = new Date(currentTime.getTime() + ISTOffset);
+
+    const hoursIST = currentTimeIST.getUTCHours();
+
+    return hoursIST;
+  };
+  const timeSlotHours = [9, 10, 11, 12, 14, 15, 16];
+
+  const filterTime = timeSlotHours.filter((item) => {
+    if (engDate === new Date().toLocaleDateString("en-GB")) {
+      return item > filterTimeAsPerSchedule();
+    } else {
+      return item;
+    }
   });
-  // console.log("filteredSlots",filteredSlots)  
+
+
+  const filteredSlots = timeSlots
+    .slice(timeSlots.length - filterTime.length)
+    .filter((slot, i) => {
+      const engg = bookedDateForEngg?.find(
+        (engg) => engg.ServiceEnggId === selectedEnggId[0]
+      );
+      const bookedSlots = engg ? engg.slots : [];
+
+      return !bookedSlots.includes(slot.slot);
+    });
+
+
 
 
 
