@@ -89,6 +89,7 @@ const EngeeniersCard = () => {
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
+  const [mediumScreen, setMediumScreen] = useState(false);
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -193,17 +194,19 @@ const EngeeniersCard = () => {
     console.log("{{{{{", onBackPress);
   };
 
-  useEffect(()=>{
-  const checkScreenSie = ()=>{
-if(window.innerWidth<=1550){
-  
-}
-  }
+  useEffect(() => {
+    const checkScreenSie = () => {
+      if (window.innerWidth <= 1550) {
+        setMediumScreen(true);
+      } else {
+        setMediumScreen(false);
+      }
+    }
 
-    window.addEventListener('resize',checkScreenSie);
+    window.addEventListener('resize', checkScreenSie);
 
-    return ()=>{
-      window.removeEventListener('resize',checkScreenSie);
+    return () => {
+      window.removeEventListener('resize', checkScreenSie);
     }
   })
   return (
@@ -220,7 +223,7 @@ if(window.innerWidth<=1550){
         <div
           className="EngeeniersCard"
           style={{
-            gridTemplateColumns: isFirst || isSecond ? "2fr 1fr" : "1fr",
+            gridTemplateColumns: isFirst || isSecond ?mediumScreen? "2fr 0.8fr":"2fr 1fr" : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
           }}
         >

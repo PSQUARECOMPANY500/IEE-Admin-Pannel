@@ -69,7 +69,10 @@ const LeaveHistory = ({ engID, leaveRequested, leaves }) => {
           </>
         )}
       </div>
-      <div className="OldLeaveHistory Yello_Scrollbar" style={{ height: leaves && leaves?.length > 0 ? "25vh" : "65vh" }}>
+      <div 
+      // className="OldLeaveHistory Yello_Scrollbar"
+      //  style={{ height: leaves && leaves?.length > 0 ? "25vh" : "65vh" }} 
+      className={leaves && leaves?.length > 0 ? "OldLeaveHistory Yello_Scrollbar OldLeaveHistoryLeave" : "OldLeaveHistory Yello_Scrollbar OldLeaveHistoryNoLeave" }>
         <div className="SubOldLeaveHistory">
           {leave &&
             leave.map((item, index) => (
