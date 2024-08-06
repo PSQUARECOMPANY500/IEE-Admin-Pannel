@@ -105,16 +105,19 @@ const ServiceScheduledTable = () => {
               <td>{value.JON}</td>
               <td>ram kumar</td>
               <td>9416484863</td>
-              <td>
+              <td
+                className="address"
+              >
+                {/* {data?.Address} */}
                 <div className="dropdown-address">
-                  <span>ADDRESS ADDRESS</span>
-                  <div className="dropdown-adddress-menu">
-                    <div className="drop-address">
-                      <p>
-                        Address: E 26, Phase 7, Industrial Area, Sector 73,
-                        Sahibzada Ajit Singh Nagar, Punjab 140308
-                      </p>
-                    </div>
+                  <span>
+                    A-42, Phase VIII-B, Focal Point..
+                  </span>
+
+                  <div className="dropdown-address-menu">
+                    <p>
+                      A-42, Phase VIII-B, Focal Point,Distt: SAS Nagar Mohali
+                    </p>
                   </div>
                 </div>
               </td>
