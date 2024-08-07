@@ -73,20 +73,29 @@ const AddTicketOnCallRequests = ({
   const [reName, setreName] = useState("");
   const [reNumber, setreNumber] = useState("");
 
-  console.log("5555555555555555555", reNumber);
+  // console.log("5555555555555555555", reNumber);
 
   const timeSlots = [
     {
-      slot: "9:00-11:00",
+      slot: "9:00-10:00",
     },
     {
-      slot: "11:00-01:00",
+      slot: "10:00-11:00",
     },
     {
-      slot: "01:30-03:30",
+      slot: "11:00-12:00",
     },
     {
-      slot: "03:30-05:30",
+      slot: "12:00-01:00",
+    },
+    {
+      slot: "02:00-03:00",
+    },
+    {
+      slot: "03:00-04:00",
+    },
+    {
+      slot: "04:00-05:00",
     },
   ];
   const bookedDateForEngg = useSelector((state) => {
@@ -103,14 +112,39 @@ const AddTicketOnCallRequests = ({
   });
   // console.log('bookedDateForEngg',bookedDateForEngg)
 
-  const filteredSlots = timeSlots.filter((slot) => {
-    const engg = bookedDateForEngg?.find(
-      (engg) => engg.ServiceEnggId === selectedEnggId[0]
-    );
-    const bookedSlots = engg ? engg.slots : [];
-    return !bookedSlots.includes(slot.slot);
+  const filterTimeAsPerSchedule = () => {
+    const currentTime = new Date();
+
+    // Convert to IST
+    const ISTOffset = 5 * 60 * 60 * 1000 + 30 * 60 * 1000; // IST offset UTC+5:30
+    const currentTimeIST = new Date(currentTime.getTime() + ISTOffset);
+
+    const hoursIST = currentTimeIST.getUTCHours();
+
+    return hoursIST;
+  };
+  const timeSlotHours = [9, 10, 11, 12, 14, 15, 16];
+
+  const filterTime = timeSlotHours.filter((item) => {
+    if (engDate === new Date().toLocaleDateString("en-GB")) {
+      return item > filterTimeAsPerSchedule();
+    } else {
+      return item;
+    }
   });
-  // console.log("filteredSlots",filteredSlots)
+
+
+  const filteredSlots = timeSlots
+    .slice(timeSlots.length - filterTime.length)
+    .filter((slot, i) => {
+      const engg = bookedDateForEngg?.find(
+        (engg) => engg.ServiceEnggId === selectedEnggId[0]
+      );
+      const bookedSlots = engg ? engg.slots : [];
+
+      return !bookedSlots.includes(slot.slot);
+    });
+
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
@@ -213,13 +247,12 @@ const AddTicketOnCallRequests = ({
 
   useEffect(() => {
     dispatch(fetchAllClientDetailAction());
-    
-    if(requestSection){
-      dispatch(fetchChecklistAction('service')); 
-    }else{
-      dispatch(fetchChecklistAction('callback')); 
-     }
 
+    if (requestSection) {
+      dispatch(fetchChecklistAction("service"));
+    } else {
+      dispatch(fetchChecklistAction("callback"));
+    }
 
     return () => {
       dispatch(fetchEnggDetailAction());
@@ -229,7 +262,7 @@ const AddTicketOnCallRequests = ({
   useEffect(() => {
     //no problem
     if (getEnggState) {
-      console.log("Engg state is True");
+      // console.log("Engg state is True");
       setEngDetails({
         enggJon: getEnggState.EnggId,
         enggName: getEnggState.EnggName,
@@ -256,7 +289,7 @@ const AddTicketOnCallRequests = ({
   };
 
   const handleSingleSetDropdown = (selectedOptions) => {
-      setClickListOnSelect(selectedOptions);
+    setClickListOnSelect(selectedOptions);
   };
 
   const handleTypeOfIssue = (selectedOption) => {
@@ -363,7 +396,7 @@ const AddTicketOnCallRequests = ({
       }
     }
 
-    if (e.target.name === 'text') {
+    if (e.target.name === "text") {
       const input = e.target.value;
       const nonNumericPattern = /^[A-Za-z\s]*$/;
       if (nonNumericPattern.test(input)) {
@@ -811,7 +844,7 @@ const AddTicketOnCallRequests = ({
                         <MultiSelectDropdown
                           placeholder={"Select Slot"}
                           slots={filteredSlots}
-                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                          handleEnggSelectionChange={handleEnggSelectionChange1} //FIXME:
                           flag={flag}
                         />
                       ) : (

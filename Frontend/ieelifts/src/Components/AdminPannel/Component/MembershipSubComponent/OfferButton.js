@@ -23,11 +23,11 @@ const OfferButton = ({ isExpired, dataType, clientDetail }) => {
     setShowHistory(true);
   };
   const handleOfferDiscount = async () => {
-    if(!discount){
+    if (!discount) {
       toast.error("Please select discount");
       return;
     }
-    await offerDiscountByServiceId(clientDetail?.responseData?.jobOrderNumber,discount,18);
+    await offerDiscountByServiceId(clientDetail?.responseData?.jobOrderNumber, discount, 18);
     setDiscount("");
   };
 
@@ -54,35 +54,32 @@ const OfferButton = ({ isExpired, dataType, clientDetail }) => {
     dataType === "Gold"
       ? "offerButtonMainGold"
       : dataType === "Platinum"
-      ? "offerButtonMainPlatinum"
-      : dataType === "Silver"
-      ? "offerButtonMainSilver"
-      : "";
+        ? "offerButtonMainPlatinum"
+        : dataType === "Silver"
+          ? "offerButtonMainSilver"
+          : "";
 
   const selectedButtonClass =
     dataType === "Gold"
       ? " offerButtonMainSelectedGold"
       : dataType === "Platinum"
-      ? "offerButtonMainSelectedPlatinum"
-      : dataType === "Silver"
-      ? "offerButtonMainSelectedSilver"
-      : "";
+        ? "offerButtonMainSelectedPlatinum"
+        : dataType === "Silver"
+          ? "offerButtonMainSelectedSilver"
+          : "";
 
   return (
     <div className="offerButtonContainer" ref={historyRef}>
       <div>
         <div
-          className={`offerButtons ${
-            showHistory ? "offerButtons-show" : "offerButtons-hide"
-          }`}
+          className={`offerButtons ${showHistory ? "offerButtons-show" : "offerButtons-hide"
+            }`}
         >
           {["15", "25", "35", "40"].map((text, index) => (
             <button
-              id="offerButtonWarppers"
               key={index}
-              className={`offerButton offer ${buttonClass} ${
-                isExpired && "offerButtonExpired"
-              }`}
+              className={`offerButton offer ${buttonClass} ${isExpired && "offerButtonExpired"
+                }`}
               style={
                 clickedButtonIndex === index
                   ? { backgroundColor: "#c10000", color: "white" }
@@ -96,17 +93,13 @@ const OfferButton = ({ isExpired, dataType, clientDetail }) => {
         </div>
         <div>
           <button
-            id="offerDiscountBtn"
-            className={`offerButton offerButtonMain ${buttonClass} ${
-              isExpired && "offerMainExpired offerButtonMainExpired"
-            } ${
-              showHistory &&
-              `${
-                isExpired
-                  ? "offerButtonMainSelectedExpired"
-                  : `offerButtonMainSelected ${selectedButtonClass}`
+            className={`offerButton offerButtonMain ${buttonClass} ${isExpired && "offerMainExpired offerButtonMainExpired"
+              } ${showHistory &&
+              `${isExpired
+                ? "offerButtonMainSelectedExpired"
+                : `offerButtonMainSelected ${selectedButtonClass}`
               }`
-            }`}
+              }`}
             style={
               clickedButtonIndex !== null
                 ? { backgroundColor: "#c10000", color: "white" }
