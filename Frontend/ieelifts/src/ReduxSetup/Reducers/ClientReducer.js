@@ -7,7 +7,8 @@ import { GET_Client_DETAILS } from "../Actions/ClientActions";
 //function to fetch ClientDetails
 
 const initialDetails = {
-    clientDetails:null
+    clientDetails:null,
+
 }
 export const fetchClientDetailsByJon = (state = initialDetails , action)=>{
     
@@ -16,6 +17,7 @@ export const fetchClientDetailsByJon = (state = initialDetails , action)=>{
             return{
                 ...state,
                 clientDetails:action.payload
+                
             }
             default:
                 return state;

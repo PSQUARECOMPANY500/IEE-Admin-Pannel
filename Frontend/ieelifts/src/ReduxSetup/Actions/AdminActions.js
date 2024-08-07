@@ -554,7 +554,7 @@ export const fetchCallbackDetailWithCallbackIdAction = (callbackId) => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientCalbackDetailWithClientDetail/${callbackId}`
       );
-      // console.log(response)
+ 
       dispatch({
         type: GET_CALLBACK_BY_ID,
         payload: response.data,

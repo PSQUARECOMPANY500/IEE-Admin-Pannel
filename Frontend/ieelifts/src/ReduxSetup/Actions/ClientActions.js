@@ -37,7 +37,7 @@ export const requestClientDetailsByJon = (JobOrderNumber)=>{
   try{
     if(JobOrderNumber){
       const response = await axios.get(`${config.apiUrl}/admin/clientDetail/${JobOrderNumber}`)
-      //console.log("fetchingClientDetails: ",response.data)
+      console.log("fetchingClientDetails:============================= ",response.data)
       dispatch({
         type: GET_Client_DETAILS,
         payload: response.data,

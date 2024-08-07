@@ -190,6 +190,11 @@ const AddTicketOnCallRequests = ({
     return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
       ?.client;
   });
+ 
+  const callBackDetails=useSelector((state)=>{
+    return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
+    ?.callbacks;
+  })
 
   //  console.log("}}}}}}}",clientDetails)
 
@@ -553,9 +558,12 @@ const AddTicketOnCallRequests = ({
                     <div className="membership-form-col1">
                       <p>NO. OF CALLBACKS: </p>
                     </div>
-                    <div className="membership-form-col2">
-                      <p>6</p>
+                    {callBackDetails?<div className="membership-form-col2">
+                      <p>{callBackDetails&&callBackDetails.length}</p>
                     </div>
+                    :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">

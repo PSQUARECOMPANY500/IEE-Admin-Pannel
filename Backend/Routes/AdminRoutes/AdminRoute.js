@@ -106,7 +106,7 @@ router.put("/approveLeaveByAdmin", adminContoller.approveLeaveByAdmin);
 
 router.post("/filterClient", adminContoller.filterClient);
 router.get("/serchingClient", adminContoller.searchClients);
-router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
+// router.get("/clientDetail/:JobOrderNumber", ClientController.getClientDetail);
 router.get("/getClientDataForMembership", adminContoller.getClientData);
 router.get("/getClientCalls", adminContoller.getClientCalls);
 router.get("/getMembershipHistory", adminContoller.getMembershipHistory);

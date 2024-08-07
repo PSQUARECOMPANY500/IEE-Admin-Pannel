@@ -48,6 +48,8 @@ const clientMembership = require("../../Modals/MemebershipModal/MembershipsSchem
 
 const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
+const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
+
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
@@ -804,6 +806,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       callbackId,
     });
 
+ 
     // console.log("HE",clientCallbacksDetails)
 
     if (!clientCallbacksDetails) {
@@ -816,15 +819,19 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
     // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    const allCallBacks=await assignCallback.find({JobOrderNumber: clientCallbacksDetails.JobOrderNumber, ServiceProcess: 'completed'})
+
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
       clientDetail: clientDetail,
     };
 
+
     res.status(200).json({
       message: "all detal fetched successfully",
       callback: callbackClientdetails,
+      allCallBacks
     });
   } catch (error) {
     console.log(error);
@@ -859,7 +866,8 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
       ...clientRequestDetails._doc,
       clientDetail: clientDetail,
     };
-
+console.log('===================================',RequestClientdetails
+)
     res.status(200).json({
       message: "all detal fetched successfully",
       request: RequestClientdetails,

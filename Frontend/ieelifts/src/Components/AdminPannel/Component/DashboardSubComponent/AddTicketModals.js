@@ -45,6 +45,9 @@ const AddTicketModals = ({
   const [time, setTime] = useState("")
   const [modelType, setModelType] = useState("");
   const [engDate, setengDate] = useState("")
+  const [membershipType,setMembershipType] = useState('')
+  const[doh,setDoh]=useState('')
+
 
   // console.log('engDate', engDate)
 
@@ -102,6 +105,12 @@ const AddTicketModals = ({
   const userCallBackDetail = useSelector((state) => {
     return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
       ?.callbackData?.callback;
+  });
+
+  
+  const allCallBack = useSelector((state) => {
+    return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
+      ?.callbackData?.allCallBacks;
   });
 console.log("userCallBackDetail",userCallBackDetail)
   //get eng state by use selector hook
@@ -174,6 +183,8 @@ console.log("userCallBackDetail",userCallBackDetail)
     setrn(userCallBackDetail?.RepresentativeName || "Enter Representative Name (Optional)");
     setrum(userCallBackDetail?.RepresentativeNumber || "Enter Representative Number (Optional)");
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
+    setMembershipType(userCallBackDetail?.clientDetail?.MembershipType || "")
+    setDoh(userCallBackDetail?.clientDetail?.DateOfHandover || "")
   }, [userCallBackDetail]);
 
   // useEffect(() => {
@@ -183,6 +194,8 @@ console.log("userCallBackDetail",userCallBackDetail)
   //     document.body.style.overflow = "scroll";
   //   };
   // }, []);
+
+  console.log(userCallBackDetail)
 
   useEffect(() => {
 
@@ -476,18 +489,23 @@ console.log("userCallBackDetail",userCallBackDetail)
                     <div className="membership-form-col1">
                       <p>NO. OF CALLBACKS: </p>
                     </div>
-                    <div className="membership-form-col2">
-                      <p>{0}</p>
-                    </div>
+                   {allCallBack? <div className="membership-form-col2">
+                      <p>{allCallBack&&allCallBack.length}</p>
+                    </div>: (<div className="membership-form-col22">
+                      <SkeltonLoader width="100px" />
+                    </div>)}
 
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP:</p>
                     </div>
-                    <div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}>{'GOLD'}</p>
+                    {membershipType?<div className="membership-form-col2">
+                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
                     </div>
+                    :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
 
                   </div>
                   <div className="membership-form-row">
@@ -554,9 +572,12 @@ console.log("userCallBackDetail",userCallBackDetail)
                         <p>DOH:</p>
 
                       </div>
-                      <div className="req-elevator-col2">
-                        <p>{"10/03/2015"} </p>
+                      {doh?<div className="req-elevator-col2">
+                        <p> {doh}</p>
                       </div>
+                      :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
                     </div>
                   </div>
 

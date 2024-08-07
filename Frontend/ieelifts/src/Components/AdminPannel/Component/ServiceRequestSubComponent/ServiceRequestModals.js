@@ -43,7 +43,9 @@ const ServiceRequestModals = ({
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [modelType, setModelType] = useState("");
-  const [engDate, setengDate] = useState("")
+  const [engDate, setengDate] = useState("");
+  const [membershipType,setMembershipType] = useState('')
+  const[doh,setDoh]=useState('')
 
 
   const [engDetails, setEngDetails] = useState({
@@ -108,7 +110,7 @@ const ServiceRequestModals = ({
     }
   });
 
-  // console.log("getUserRequestDetail =>",getUserRequestDetail)
+  console.log("getUserRequestDetail ========================>",getUserRequestDetail)
 
 
 
@@ -177,6 +179,8 @@ const ServiceRequestModals = ({
     setDescription(getUserRequestDetail?.Description || "");
     setDate(getUserRequestDetail?.createdAt || "");
     setModelType(getUserRequestDetail?.clientDetail?.ModelType || "");
+    setMembershipType(getUserRequestDetail?.clientDetail?.MembershipType || "")
+    setDoh(getUserRequestDetail?.clientDetail?.DateOfHandover || "")
   }, [getUserRequestDetail]);
 
 
@@ -473,9 +477,12 @@ const ServiceRequestModals = ({
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP:  </p>
                     </div>
-                    <div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}>{'GOLD'}</p>
+                    {membershipType?<div className="membership-form-col2">
+                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
                     </div>
+                    :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
 
                   </div>
                   <div className="membership-form-row">
@@ -543,9 +550,12 @@ const ServiceRequestModals = ({
                         <p>DOH:</p>
 
                       </div>
-                      <div className="req-elevator-col2">
-                        <p>{"10/03/2015"} </p>
+                      {doh?<div className="req-elevator-col2">
+                        <p> {doh}</p>
                       </div>
+                      :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
                     </div>
                   </div>
 

@@ -403,6 +403,8 @@ module.exports.getClientDetail = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
+   const callbacks=await assignCallback.find({JobOrderNumber:JobOrderNumber, ServiceProcess: 'completed'})
+
     const client = await RegisterClientDetails.findOne({ JobOrderNumber });
 
     if (!client) {
@@ -413,6 +415,7 @@ module.exports.getClientDetail = async (req, res) => {
     res.status(200).json({
       message: "Client found",
       client: client,
+      callbacks
     });
   } catch (error) {
     console.log(error);
