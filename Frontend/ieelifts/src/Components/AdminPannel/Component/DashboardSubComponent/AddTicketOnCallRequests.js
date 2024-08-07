@@ -45,6 +45,8 @@ const AddTicketOnCallRequests = ({
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
+  const [membershipType,setMembershipType] = useState('')
+  const[doh,setDoh]=useState('')
 
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
@@ -163,6 +165,8 @@ const AddTicketOnCallRequests = ({
       setnumber(clientDetails.PhoneNumber);
       setaddress(clientDetails.Address);
       setModelType(clientDetails.ModelType);
+      setMembershipType(clientDetails.MembershipType)
+      setDoh(clientDetails.DateOfHandover)
 
       const currentDate = new Date();
       const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
@@ -182,6 +186,8 @@ const AddTicketOnCallRequests = ({
       setModelType("");
       setDate("");
       setTime("");
+      setMembershipType('')
+      setDoh('')
     }
   }, [clientDetails]);
 
@@ -522,9 +528,12 @@ const AddTicketOnCallRequests = ({
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP: </p>
                     </div>
-                    <div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}> GOLD</p>
+                    {membershipType?<div className="membership-form-col2">
+                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
                     </div>
+                    :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
@@ -584,16 +593,19 @@ const AddTicketOnCallRequests = ({
                         <p>FLOORS:</p>
                       </div>
                       <div className="req-elevator-col2">
-                        <p>G+2</p>
+                        <p>NA</p>
                       </div>
                     </div>
                     <div className="req-elevator-row">
                       <div className="req-elevator-col1">
                         <p>DOH:</p>
                       </div>
-                      <div className="req-elevator-col2">
-                        <p> 10/03/2015</p>
+                      {doh?<div className="req-elevator-col2">
+                        <p> {doh}</p>
                       </div>
+                      :<div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>}
                     </div>
                   </div>
                 </div>
