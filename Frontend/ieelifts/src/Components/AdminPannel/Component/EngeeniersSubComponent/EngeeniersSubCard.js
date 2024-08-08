@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -12,6 +12,7 @@ const EngeeniersSubCard = (props) => {
   const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick } = props;
   const [allSearchEngrs, setAllSearchEngrs] = useState(null);
   const [allEngData, setAllEngData] = useState('');
+  const scrollRef=useRef();
 
   const dispatch = useDispatch();
   const engData = useSelector((state) => {
@@ -39,11 +40,18 @@ const EngeeniersSubCard = (props) => {
     setIsDoubleClick(false);
     const timeout = setTimeout(() => {
       setIsFirst(true);
+      scrollFun()
       setSingleClickTimeout(null);
     }, 200);
 
     setSingleClickTimeout(timeout);
     setIsActive(index);
+  }
+  const scrollFun=()=>{
+    if(!scrollRef.current){
+      return
+    }
+    scrollRef.current.scrollIntoView({ behavior:'smooth',block:'start',  inline: 'nearest' });
   }
 
   const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
@@ -86,7 +94,7 @@ const EngeeniersSubCard = (props) => {
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {allEngData && allEngData.map((e, index) => (
-
+        
           <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
@@ -94,7 +102,7 @@ const EngeeniersSubCard = (props) => {
                   e.EnggPhoto.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
                     `${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}
 
-                />
+                    />
 
               </div>
               <div className="EngCardDetailsR">
@@ -118,7 +126,9 @@ const EngeeniersSubCard = (props) => {
               </h5>
             </div>
             <div className="EngCardMessage"></div>
+            {isActive === index &&<div className="for-scroll" style={{position:'absolute',height:'10px',width:'10px',top:'100%'}} ref={scrollRef}></div>}
           </div>
+          
         ))}
       </div>
     </div>
