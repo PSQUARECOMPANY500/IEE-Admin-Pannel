@@ -107,6 +107,8 @@ export const DELETE_TODO = "DELETE_TODO"
 export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE'
 
 export const GET_ALL_NOTIFICATIONS = 'GET_ALL_NOTIFICATIONS'
+
+export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA = 'GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA'
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1782,3 +1784,28 @@ export const upgradeClientMembershipByAdminPannelAction = (formData) => {
     }
   }
 }
+
+
+
+//-------------------------------------------------------------------------------------------------------------------------------
+//action to handle get ALL client cancel service/callback data
+
+export const getClientCancelServiceCallbackDataAction = () => {  
+  //  TODO: start here
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/client/getCallbackOrServiceCancelledRequests`)
+
+      dispatch({
+        type: GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA,
+        payload: response.data,
+      })
+
+
+    } catch (error) {
+      console.error("error while fetching client cancel service")
+    }
+  }
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------

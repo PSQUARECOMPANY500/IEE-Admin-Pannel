@@ -319,10 +319,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
                         let reportData = value;
-                        console.log(
-                          "==========reportData",
-                          reportData.engRating
-                        );
+                        // console.log(
+                        //   "==========reportData",
+                        //   reportData.engRating
+                        // );
                         return (
                           <div
                             style={{

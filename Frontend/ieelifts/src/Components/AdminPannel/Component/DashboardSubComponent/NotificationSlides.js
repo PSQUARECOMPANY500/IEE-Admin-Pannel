@@ -1,6 +1,31 @@
 import React, { useState, useEffect } from "react";
-const NotificationSlides = ({ notifications }) => {
+import AddTicketModals from "./AddTicketModals";
+import { getClientCancelServiceCallbackDataAction } from "../../../../ReduxSetup/Actions/AdminActions"
+import { useDispatch, useSelector } from "react-redux";
+
+const NotificationSlides = ({ notifications,buttons,setTicketUpdate }) => {
+  const dispatch = useDispatch();
   const [key, setKey] = useState(0);
+  const [showTicketModal1, setShowTicketModal1] = useState(false);
+  const [renderTicket, setRenderTicket] = useState(true);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     dispatch(getClientCancelServiceCallbackDataAction());
+  //   }, 1000);
+  // }, [renderTicket, dispatch]);
+
+
+const openModal = () => {
+  setShowTicketModal1(true);
+  console.log("pretttttttt")
+  }
+
+
+  const cancelRequestByClient = useSelector((state) => state?.AdminRootReducer?.getClientCancelServiceCallbackDataReducer?.cancelRequestsData?.cancelledRequests);
+
+  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",cancelRequestByClient);
+
   useEffect(() => {
     // Increment the key to force re-render and trigger the animation
     setKey((prevKey) => prevKey + 1);
@@ -10,6 +35,8 @@ const NotificationSlides = ({ notifications }) => {
     <div key={key} className="notification-all">
       {" "}
       {notifications?.map((data, index) => (
+        console.log(")))))))))))))))))))))))))))",data),
+        <>
         <div
           key={index}
           className="notification-data"
@@ -38,11 +65,18 @@ const NotificationSlides = ({ notifications }) => {
               <p>{data?.message}</p>
             </div>
             <div className="notification-buttons-operations">
-              {/* <p>Review</p> */}
+            {buttons && <p onClick={() => openModal()}>Re Assign</p>}
               {/* <p>{data?.time}</p> */}
+          
             </div>
           </div>
         </div>
+            {showTicketModal1 && data.callbackId &&
+              <AddTicketModals closeModal={() => setShowTicketModal1(false)}  showTicketModal={showTicketModal1}  callbackId={data.callbackId}  setRenderTicket={setRenderTicket} 
+               setTicketUpdate={setTicketUpdate} enggId={data.EnggId} isAssigned={true} />}
+
+
+        </>
       ))}
     </div>
   );

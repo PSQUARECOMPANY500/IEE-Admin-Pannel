@@ -7,8 +7,6 @@ import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import RequestScheduledSection from "../ServiceRequestSubComponent/RequestScheduledSection";
-import ServiceRequestModal from "../ServiceRequestSubComponent/ServiceRequestModal";
-
 import { useSelector, useDispatch } from "react-redux";
 
 import { getAllAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";

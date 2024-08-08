@@ -1,14 +1,15 @@
 import React from "react";
+import config from "../../../../config";
 
 const ReportIssue = ({ RedportData }) => {
-  const src = RedportData?.ClientPhoto;
+  const src = RedportData?.ClientPhoto ? RedportData?.ClientPhoto : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg";
 
   return RedportData ? (
     <div className="IssuesDoor">
       <div className="IssueDoors IssuesDoor2" style={{ paddingLeft: "1rem" }}>
         <div className="IssuesDoor2L">
           <div className="ClientImg">
-            <img src={src} alt="Client" />
+            <img src={`${config.documentUrl}/ClientProfiles/${src}`} alt="Client" />
           </div>
           <div className="ClientName">
             <h5>

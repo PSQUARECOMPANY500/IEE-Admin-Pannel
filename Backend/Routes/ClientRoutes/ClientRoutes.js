@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer")
 const jwt = require('jsonwebtoken');
 
-const { verifyToken } = require('../../Middleware/ClientAuthMiddleware')
+const { verifyToken } = require('../../Middleware/ClientAuthMiddleware')    //TODO: apply token when admin login functionality is available
 const checkClientServiceExist = require("../../Middleware/CheckClientPreviousService")
 
 const clientController = require("../../Controllers/ClientController/ClientController");
@@ -16,16 +16,10 @@ router.post("/loginWithPhone", clientController.loginClientwithPhoneNumber);
 router.post("/loginClientJON", clientController.loginClientWithJobOrderNumber)
 
 
-/* router.post("/requestCallbacks",verifyToken('client'), clientController.RequestCallbacks); */
 router.post("/requestCallbacks", checkClientServiceExist, clientController.RequestCallbacks);
-// router.post("/requestCallbacks", clientController.RequestCallbacks);
-/* router.put("/updateCallbacks", verifyToken('client') , clientController.updateCallbacks); */
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
 router.post("/imediateServiceRequest", checkClientServiceExist, clientController.imediateServiceRequest);
-
-// router.post("/createReferal", clientController.referalUser);
-// router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 router.get("/getClientReferalByJobOrderNumber/:jobOrderNumber", verifyToken('client'), clientController.getAllReferalByJobOrderNumber);
@@ -49,9 +43,9 @@ router.get("/fetchClientServiceHistory/:JobOrderNumber", clientController.fetchC
 
 
 // ------------------------all Put Requests ----------------------------------------------------
-// router.put("/updateCallbacks", clientController.updateCallbacks);
+
 router.put("/updateServiceRequest", clientController.updateServiceRequest);
-// router.post("/engineerRating",verifyToken('client'),clientController.Rating)
+
 
 
 // ------------------------20/05/2024 by preet --------------------------------
@@ -100,6 +94,11 @@ router.delete(
   "/removeClientFirebaseToken",
   clientController.removeClientFirebaseToken
 );
+
+
+router.post('/EnginnerCancellPreviousServiceOrCallbackRequest', clientController.EnginnerCancellPreviousServiceOrCallbackRequest)
+
+router.get('/getCallbackOrServiceCancelledRequests', clientController.getCallbackOrServiceCancelledRequests)
 
 
 

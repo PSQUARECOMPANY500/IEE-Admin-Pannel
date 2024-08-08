@@ -1,6 +1,6 @@
 //................................{amit}....................................
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 import { RxCross2 } from "react-icons/rx";
 import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
@@ -28,7 +28,6 @@ const AddTicketModals = ({
   isAssigned,
   setTicketUpdate,
 }) => {
-
   const dispatch = useDispatch();
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
@@ -42,9 +41,9 @@ const AddTicketModals = ({
   const [typeOfIssue, setTypeOfIssue] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("")
+  const [time, setTime] = useState("");
   const [modelType, setModelType] = useState("");
-  const [engDate, setengDate] = useState("")
+  const [engDate, setengDate] = useState("");
 
   // console.log('engDate', engDate)
 
@@ -55,7 +54,7 @@ const AddTicketModals = ({
     enggAddress: "",
     enggLocation: "",
     enggRating: "",
-    enggPhoto: ""
+    enggPhoto: "",
   });
 
   // console.log("2-----",engDetails.enggName)
@@ -63,11 +62,7 @@ const AddTicketModals = ({
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
-  const [fetchedDate, setfetchedDate] = useState("")
-
-
-
-
+  const [fetchedDate, setfetchedDate] = useState("");
 
   //slots logic here ends-------------------------------------------------
   // use use selector select to select the service engg state
@@ -103,7 +98,7 @@ const AddTicketModals = ({
     return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
       ?.callbackData?.callback;
   });
-console.log("userCallBackDetail",userCallBackDetail)
+  console.log("userCallBackDetail", userCallBackDetail);
   //get eng state by use selector hook
 
   const getEnggState = useSelector((state) => {
@@ -119,32 +114,30 @@ console.log("userCallBackDetail",userCallBackDetail)
   });
 
   const getAssignedCallbackDetails = useSelector((state) => {
-    return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer?.assignDetails;
-  })
+    return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer
+      ?.assignDetails;
+  });
 
- // console.log("getAssignedCallbackDetails",getAssignedCallbackDetails)
- 
+  // console.log("getAssignedCallbackDetails",getAssignedCallbackDetails)
 
   useEffect(() => {
     if (isAssigned) {
       dispatch(fetchEnggDetailAction(enggId));
-      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId))
+      dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
       dispatch(fetchAllClientDetailAction());
       dispatch(fetchChecklistAction());
-      dispatch(requestAssignCallbackDetail(callbackId))
-    }
-    else {
+      dispatch(requestAssignCallbackDetail(callbackId));
+    } else {
       dispatch(fetchCallbackDetailWithCallbackIdAction(callbackId));
       dispatch(fetchAllClientDetailAction());
 
-      dispatch(fetchChecklistAction('callback'));
+      dispatch(fetchChecklistAction("callback"));
     }
 
     return () => {
       dispatch(fetchEnggDetailAction());
     };
   }, []);
-
 
   useEffect(() => {
     //no problem
@@ -154,13 +147,13 @@ console.log("userCallBackDetail",userCallBackDetail)
         enggName: getEnggState.EnggName,
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
-        enggPhoto: getEnggState.EnggPhoto
+        enggPhoto: getEnggState.EnggPhoto,
       });
     }
   }, [getEnggState]);
 
-  const [rn , setrn] = useState("Enter Representative Name (Optional)")
-  const [rnum , setrum] = useState("Enter Representative Number (Optional)");
+  const [rn, setrn] = useState("Enter Representative Name (Optional)");
+  const [rnum, setrum] = useState("Enter Representative Number (Optional)");
 
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
@@ -171,8 +164,14 @@ console.log("userCallBackDetail",userCallBackDetail)
     setDescription(userCallBackDetail?.Description || "");
     setDate(userCallBackDetail?.callbackDate || "");
     setTime(userCallBackDetail?.callbackTime || "");
-    setrn(userCallBackDetail?.RepresentativeName || "Enter Representative Name (Optional)");
-    setrum(userCallBackDetail?.RepresentativeNumber || "Enter Representative Number (Optional)");
+    setrn(
+      userCallBackDetail?.RepresentativeName ||
+        "Enter Representative Name (Optional)"
+    );
+    setrum(
+      userCallBackDetail?.RepresentativeNumber ||
+        "Enter Representative Number (Optional)"
+    );
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
   }, [userCallBackDetail]);
 
@@ -185,22 +184,22 @@ console.log("userCallBackDetail",userCallBackDetail)
   // }, []);
 
   useEffect(() => {
-
     if (getAssignedCallbackDetails?.callbackdetails) {
-      setClickListOnSelect(getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName);
+      setClickListOnSelect(
+        getAssignedCallbackDetails?.callbackdetails?.checkList?.checklistName
+      );
       setSelectedSlot(getAssignedCallbackDetails.callbackdetails.Slot);
       setMessage(getAssignedCallbackDetails.callbackdetails.Message);
-      const dateAsString = getAssignedCallbackDetails.callbackdetails.Date.toString();
-      setfetchedDate(dateAsString)
+      const dateAsString =
+        getAssignedCallbackDetails.callbackdetails.Date.toString();
+      setfetchedDate(dateAsString);
     }
-
-  }, [getAssignedCallbackDetails])
-
+  }, [getAssignedCallbackDetails]);
 
   const handleEnggSelectionChange = (selectedOptions) => {
     // console.log(selectedOptions[0])
     // console.log(selectedOptions);
-    setSelectedEnggId(selectedOptions)// selected Engg id console
+    setSelectedEnggId(selectedOptions); // selected Engg id console
     dispatch(fetchEnggDetailAction(selectedOptions));
   };
 
@@ -210,17 +209,16 @@ console.log("userCallBackDetail",userCallBackDetail)
 
   const handleSingleSetDropdown = (selectedOptions) => {
     setClickListOnSelect(selectedOptions);
-   // console.log(selectedOptions)
+    // console.log(selectedOptions)
   };
 
-
   const handleAssignDateChange = (selectedOption) => {
-    const formattedDate = selectedOption.toLocaleDateString('en-GB');
+    const formattedDate = selectedOption.toLocaleDateString("en-GB");
     setengDate(formattedDate);
     // console.log(formattedDate)
-   
+
     dispatch(getBookedSlotsforEnggsAction(formattedDate));
-  }
+  };
 
   const timeSlots = [
     {
@@ -246,12 +244,16 @@ console.log("userCallBackDetail",userCallBackDetail)
     },
   ];
 
-
   const bookedDateForEngg = useSelector((state) => {
-    if (state.AdminRootReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer && state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg) {
-      return state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg.BookedSlots
+    if (
+      state.AdminRootReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer &&
+      state.AdminRootReducer.getBookedSlotsforEnggsReducer.bookedDatesEngg
+    ) {
+      return state.AdminRootReducer.getBookedSlotsforEnggsReducer
+        .bookedDatesEngg.BookedSlots;
     } else {
-      return null
+      return null;
     }
   });
   // console.log('bookedDateForEngg',bookedDateForEngg)
@@ -277,7 +279,6 @@ console.log("userCallBackDetail",userCallBackDetail)
     }
   });
 
-
   const filteredSlots = timeSlots
     .slice(timeSlots.length - filterTime.length)
     .filter((slot, i) => {
@@ -289,32 +290,12 @@ console.log("userCallBackDetail",userCallBackDetail)
       return !bookedSlots.includes(slot.slot);
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const handleElevatorSectionDetails = () => {
     let dateOnAssign;
-    if (
-      engDetails.enggJon &&
-      ClickListOnSelect &&
-      selectedSlot &&
-      date
-    ) {
+    if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
       if (engDate === "") {
         dateOnAssign = fetchedDate;
-      }
-      else {
+      } else {
         dateOnAssign = engDate;
       }
       dispatch(
@@ -336,32 +317,26 @@ console.log("userCallBackDetail",userCallBackDetail)
       setTicketUpdate((prev) => !prev);
     } else {
       console.log("not valid input");
-      toast.error("Please fill all the fields")
+      toast.error("Please fill all the fields");
     }
   };
   //-------------------------------------------OnClick Edit-------------------------------------------------
   const [editchange, setEditChange] = useState(false);
 
   const handleEditSection = () => {
-    setEditChange(!editchange)
-  }
+    setEditChange(!editchange);
+  };
 
   return (
     <>
-
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
       <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
-
-
         <div className="child-modal-container">
-
           <div className="sub-child-modal-container">
-
-
             <div className="req-client-section">
-              <div className="cross-icon" onClick={closeModal} >
-                <RxCross2 style={{ cursor: 'pointer' }} />
+              <div className="cross-icon" onClick={closeModal}>
+                <RxCross2 style={{ cursor: "pointer" }} />
               </div>
               <div className="req-photo-upload-section">
                 <div className="req-photo-container">
@@ -369,11 +344,8 @@ console.log("userCallBackDetail",userCallBackDetail)
                     src="https://images.unsplash.com/photo-1592256410394-51c948ec13d5?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZWxldmF0b3J8ZW58MHx8MHx8fDA%3D"
                     alt="lift"
                   />
-
                 </div>
               </div>
-
-            
 
               <div className="req-client-information-section">
                 <form className="req-client-form">
@@ -384,9 +356,7 @@ console.log("userCallBackDetail",userCallBackDetail)
                     </div>
 
                     <div className="col75">
-
-                      {jon ? (<p>{jon}</p>) : <SkeltonLoader width="220px" />}
-
+                      {jon ? <p>{jon}</p> : <SkeltonLoader width="220px" />}
                     </div>
                   </div>
                   {/* one row ends */}
@@ -398,14 +368,12 @@ console.log("userCallBackDetail",userCallBackDetail)
                     {name ? (
                       <div className="col75">
                         <p>{name}</p>
-
                       </div>
                     ) : (
                       <div className="col75">
                         <SkeltonLoader width="220px" />
                       </div>
                     )}
-
                   </div>
                   <div className="row">
                     <div className="col25">
@@ -426,7 +394,6 @@ console.log("userCallBackDetail",userCallBackDetail)
                         <SkeltonLoader width="220px" />
                       </div>
                     )}
-
                   </div>
                   <div className="row">
                     <div className="col25">
@@ -443,7 +410,6 @@ console.log("userCallBackDetail",userCallBackDetail)
                         </div>
                       </div>
                     )}
-
                   </div>
 
                   <div className="row">
@@ -452,8 +418,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                     </div>
 
                     <div className="col75">
-
-                      {typeOfIssue ? (<p>{typeOfIssue}</p>) : <SkeltonLoader width="220px" />}
+                      {typeOfIssue ? (
+                        <p>{typeOfIssue}</p>
+                      ) : (
+                        <SkeltonLoader width="220px" />
+                      )}
                     </div>
                   </div>
 
@@ -462,9 +431,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                       <label>DESCRIPTION:</label>
                     </div>
                     <div className="col75">
-
-                      {description ? (<p>{description}</p>) : <SkeltonLoader width="220px" />}
-
+                      {description ? (
+                        <p>{description}</p>
+                      ) : (
+                        <SkeltonLoader width="220px" />
+                      )}
                     </div>
                   </div>
                 </form>
@@ -479,71 +450,69 @@ console.log("userCallBackDetail",userCallBackDetail)
                     <div className="membership-form-col2">
                       <p>{0}</p>
                     </div>
-
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP:</p>
                     </div>
                     <div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}>{'GOLD'}</p>
+                      <p style={{ color: "#F8AC1D" }}>{"GOLD"}</p>
                     </div>
-
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p>DATE REPORTED:</p>
                     </div>
 
-
-                    {date ? (<div className="membership-form-col2">
-                      <p>{date}</p>
-                    </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="100px" />
-                    </div>)}
-
-
+                    {date ? (
+                      <div className="membership-form-col2">
+                        <p>{date}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p>TIME REPORTED:</p>
                     </div>
-                    {time ? (<div className="membership-form-col2">
-                      <p>{time}</p>
-                    </div>) : (<div className="membership-form-col22">
-                      <SkeltonLoader width="100px" />
-                    </div>)}
-
+                    {time ? (
+                      <div className="membership-form-col2">
+                        <p>{time}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
-
-
 
             <div className="req-elevator-section">
               <div className="req-elevator-section-left">
                 <div className="req-elevator-details">
                   <h1>ELEVATOR DETAILS</h1>
                   <div className="sub-req-elevator-details">
-
                     <div className="req-elevator-row">
                       <div className="req-elevator-col1">
                         <p>TYPE:</p>
                       </div>
 
-
                       <div className="req-elevator-col2">
-
-                        {modelType ? (<p>{modelType}</p>) : <SkeltonLoader width="220px" />}
+                        {modelType ? (
+                          <p>{modelType}</p>
+                        ) : (
+                          <SkeltonLoader width="220px" />
+                        )}
                       </div>
-
-
                     </div>
                     <div className="req-elevator-row">
                       <div className="req-elevator-col1">
                         <p>FLOORS:</p>
-
                       </div>
                       <div className="req-elevator-col2">
                         <p>{"G+2"}</p>
@@ -552,39 +521,44 @@ console.log("userCallBackDetail",userCallBackDetail)
                     <div className="req-elevator-row">
                       <div className="req-elevator-col1">
                         <p>DOH:</p>
-
                       </div>
                       <div className="req-elevator-col2">
                         <p>{"10/03/2015"} </p>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 <div className="req-eng-details">
                   <div className="elevator-engg-detail-section">
-
-
                     {/*engg detail div start here------------------------------------------------------------------------------  */}
-                    
-                    <div className="sub-engg-detail-section">
 
+                    <div className="sub-engg-detail-section">
                       <h1>ENGINEER DETAILS</h1>
 
                       <div className="engg-photo-section">
                         <div>
                           {getEnggState ? (
                             <img
-                              style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
+                              style={{
+                                width: "90px",
+                                height: "90px",
+                                objectFit: "cover",
+                                objectPosition: "center",
+                                borderRadius: "2px",
+                              }}
                               src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               alt="lift"
                             />
                           ) : (
-                            <SkeltonLoader width="90px" height="90px" marginBottom='1.6rem' />
+                            <SkeltonLoader
+                              width="90px"
+                              height="90px"
+                              marginBottom="1.6rem"
+                            />
                           )}
                         </div>
-                       
+
                         {/* engDetails.enggPhoto */}
                         <div style={{ width: "50%" }}>
                           {getEnggState ? (
@@ -599,7 +573,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
+                            <SkeltonLoader
+                              width="200px"
+                              height="20px"
+                              marginBottom="10px"
+                            />
                           )}
 
                           {getEnggState ? (
@@ -614,7 +592,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
+                            <SkeltonLoader
+                              width="200px"
+                              height="20px"
+                              marginBottom="10px"
+                            />
                           )}
 
                           {getEnggState ? (
@@ -629,7 +611,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
+                            <SkeltonLoader
+                              width="200px"
+                              height="20px"
+                              marginBottom="10px"
+                            />
                           )}
 
                           {getEnggState ? (
@@ -644,7 +630,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                               </div>
                             </div>
                           ) : (
-                            <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
+                            <SkeltonLoader
+                              width="200px"
+                              height="20px"
+                              marginBottom="10px"
+                            />
                           )}
                         </div>
                       </div>
@@ -671,7 +661,11 @@ console.log("userCallBackDetail",userCallBackDetail)
                             </div>
                           </div>
                         ) : (
-                          <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
+                          <SkeltonLoader
+                            width="200px"
+                            height="20px"
+                            marginBottom="10px"
+                          />
                         )}
 
                         {getEnggState ? (
@@ -695,7 +689,6 @@ console.log("userCallBackDetail",userCallBackDetail)
                           <SkeltonLoader width="100px" height="10px" />
                         )}
                       </div>
-
                     </div>
                   </div>
                 </div>
@@ -705,40 +698,52 @@ console.log("userCallBackDetail",userCallBackDetail)
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       <div className="data-pic">
-                        <ReactDatePickers className="date-picker-dropdown" isAssigned={isAssigned} editchange={editchange} fetchedDate={fetchedDate} OnDateChange={handleAssignDateChange} />
+                        <ReactDatePickers
+                          className="date-picker-dropdown"
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          fetchedDate={fetchedDate}
+                          OnDateChange={handleAssignDateChange}
+                        />
                       </div>
-
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-                      {engDate || isAssigned ? (<MultiSelectDropdown
-                        placeholder={isAssigned ? engDetails.enggName : "Select Engineer"}
-                        Details={serviceEnggDetail}
-                        handleEnggSelectionChange={handleEnggSelectionChange}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Date First"
-                      />)}
-
+                      {engDate || isAssigned ? (
+                        <MultiSelectDropdown
+                          placeholder={
+                            isAssigned ? engDetails.enggName : "Select Engineer"
+                          }
+                          Details={serviceEnggDetail}
+                          handleEnggSelectionChange={handleEnggSelectionChange}
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          enggName={engDetails.enggName}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Date First" />
+                      )}
                     </div>
                   </div>
                   <div className="sm-box sm-box--2">
                     <div className="col75">
-
-                      {engDetails.enggName || isAssigned ? (<MultiSelectDropdown
-                        placeholder={isAssigned ? selectedSlot?.join(" | ") : "Select Slot"}
-                        slots={filteredSlots}
-                        handleEnggSelectionChange={handleEnggSelectionChange1}
-                        isAssigned={isAssigned}
-                        editchange={editchange}
-                        enggName={engDetails.enggName}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Engg First"
-                      />)}
-
+                      {engDetails.enggName || isAssigned ? (
+                        <MultiSelectDropdown
+                          placeholder={
+                            isAssigned
+                              ? selectedSlot?.join(" | ")
+                              : "Select Slot"
+                          }
+                          slots={filteredSlots}
+                          handleEnggSelectionChange={handleEnggSelectionChange1}
+                          isAssigned={isAssigned}
+                          editchange={editchange}
+                          enggName={engDetails.enggName}
+                        />
+                      ) : (
+                        <MultiSelectDropdown placeholder="Please Select Engg First" />
+                      )}
                     </div>
                   </div>
 
@@ -747,29 +752,36 @@ console.log("userCallBackDetail",userCallBackDetail)
                       <SingleSetDropdown
                         padding="6px"
                         width="100%"
-                        placeholder={isAssigned ? ClickListOnSelect : "Allot A Checklist"}
+                        placeholder={
+                          isAssigned ? ClickListOnSelect : "Allot A Checklist"
+                        }
                         Details={checkList}
                         isAssigned={isAssigned}
                         editchange={editchange}
                         onStateChange={handleSingleSetDropdown}
                       />
-
                     </div>
                   </div>
                 </div>
                 <div className="grid-form-container2">
-                    {/* ------------------------------------------------------------------------------------------------------------------------------- */}
+                  {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input placeholder={`${rn}`} onChange={(e) => setrn(e.target.value)} autoComplete="off" />
+                    <input
+                      placeholder={`${rn}`}
+                      onChange={(e) => setrn(e.target.value)}
+                      autoComplete="off"
+                    />
                   </div>
 
-
                   <div className="col75">
-                    <input placeholder={`${rnum}`} onChange={(e) => setrum(e.target.value)} autoComplete="off" />
+                    <input
+                      placeholder={`${rnum}`}
+                      onChange={(e) => setrum(e.target.value)}
+                      autoComplete="off"
+                    />
                   </div>
 
                   <div className="col75">
-
                     <textarea
                       id="subject"
                       name="subject"
@@ -778,20 +790,24 @@ console.log("userCallBackDetail",userCallBackDetail)
                         width: "93%",
                         resize: "none",
                       }}
-
                       readOnly={editchange ? false : isAssigned}
                       placeholder={isAssigned ? message : "message"}
                       onChange={(e) => {
                         setMessage(e.target.value);
                       }}
-
                     ></textarea>
-
                   </div>
 
-                  <div className="footer-section" style={{ width: '80%' }}>
+                  <div className="footer-section" style={{ width: "80%" }}>
                     <div className="buttons">
-                      <button className={`edit-button ${editchange && `edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
+                      <button
+                        className={`edit-button ${
+                          editchange && `edit-button-onClick`
+                        }`}
+                        onClick={handleEditSection}
+                      >
+                        Edit
+                      </button>
                       <button
                         className="assign-button"
                         onClick={handleElevatorSectionDetails}
@@ -800,17 +816,13 @@ console.log("userCallBackDetail",userCallBackDetail)
                       </button>
                     </div>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </>
-
   );
 };
 

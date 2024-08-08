@@ -8,10 +8,11 @@ import React, {
 import { HiOutlineBell } from "react-icons/hi2";
 import { RiSearchLine } from "react-icons/ri";
 import { CiGrid41 } from "react-icons/ci";
-import { TbListTree } from "react-icons/tb";
+import { TbListTree, TbRuler2 } from "react-icons/tb";
 import { useLocation } from "react-router-dom";
 import NotificationSection from "../AdminPannel/Component/DashboardSubComponent/NotificationSection";
 // import AddEnggModal from "../AdminPannel/Component/EngeeniersSubComponent/";
+import { ImNotification } from "react-icons/im";
 
 import { openAddEngggModalAction } from "../../ReduxSetup/Actions/AdminActions";
 import { LuSettings2 } from "react-icons/lu";
@@ -28,6 +29,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
+import CancelNotificationSection from "../AdminPannel/Component/DashboardSubComponent/CancelNotificationSection";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -48,10 +50,17 @@ const TopBar = (props) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const notificationRef = useRef(null);
+  const CancellednotificationRef = useRef(null);
   const collectCashRef = useRef(null);
   const collectCashClickRef = useRef();
   const notificationClickRef = useRef();
+  const CancelledRequestNotificationRef = useRef();
+
+
   const [showNotification, setShowNotification] = useState(false);
+  const [showCancelledNotification, setShowCancelledNotification] = useState(false);
+
+
   const [collectCash, setCollectCash] = useState(false)
   const [isGrid, setIsGrid] = useState(false);
   const [clientIsGrid, setClientIsGrid] = useState(true);
@@ -211,6 +220,10 @@ const TopBar = (props) => {
     setShowNotification((prevState) => !prevState);
   };
   
+  const handlecancelledNotfication = () => {
+    setShowCancelledNotification((prevState) => !prevState);
+  };
+  
   
   // collect cash
   const handleCollectCash = () => {
@@ -220,17 +233,20 @@ const TopBar = (props) => {
     setShowNotification(false);
   }, []);
 
+
+  const handleOutsideCancelledClicknotification = useCallback(() => {
+    setShowCancelledNotification(false);
+  }, []);
+  
+
   
   // collect cash
   // const handleClickOutsidecollectcash = useCallback(() => {
   //   setCollectCash(false);
   // }, []);
 
-  useClickOutsidenotification(
-    notificationClickRef,
-   
-    handleOutsideClicknotification
-  );
+  useClickOutsidenotification(notificationClickRef,handleOutsideClicknotification);
+  useClickOutsidenotification(CancelledRequestNotificationRef,handleOutsideCancelledClicknotification);
 
   // collect cash
   // useClickOutsidecollectcash(
@@ -353,7 +369,6 @@ const TopBar = (props) => {
 
 {/*----------------- created by Raj------------------------------- */}
         {location.pathname === "/Engeeniers" && (
-
         <div style={{ display: "flex" }} ref={collectCashClickRef}>
           <span
             className="top-icon-bell"
@@ -362,22 +377,35 @@ const TopBar = (props) => {
           >
             <img src={moneyIcon} />
           </span>
-
           {collectCash && <CollectCashModal onClose={handleCollectCash} />}
-
         </div>
         )}
 
 
 
-        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
+{/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
+
+    {/* {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (  
+      <div style={{ display: "flex" }} ref={CancelledRequestNotificationRef}>
+            <span className="top-icon-bell" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     //TODO:  uncommented
+              <ImNotification  className="iconColor" />{" "}
+            </span>
+           <div className="dot"></div>
+          
+
+          {showCancelledNotification && <CancelNotificationSection />}
+        </div>)} */}
+
+
+
+
+
+        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (                                       
           <div style={{ display: "flex" }} ref={notificationClickRef}>
-            <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+             <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
               <HiOutlineBell className="iconColor" />{" "}
             </span>
-
             <div className="dot"></div>
-
             {location.pathname === "/Engeeniers" && (
               <div className="add-Engg-button" onClick={openModalHandle}>
                 Add Engeenier
@@ -386,6 +414,18 @@ const TopBar = (props) => {
 
           {showNotification && <NotificationSection />}
         </div> )}
+
+
+
+{/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
+
+
+
+
+
+
+
+
 
         {location.pathname === "/Clients" && (
           <div className="add-client-button" onClick={openClientModalHandle}>

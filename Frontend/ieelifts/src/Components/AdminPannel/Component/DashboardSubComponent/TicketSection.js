@@ -6,7 +6,6 @@ import { LuSettings2 } from "react-icons/lu";
 import AssignDropdown from "./AssignDropdown";
 import FilterDropdown from "./FilterDropdown";
 import { GoPlus } from "react-icons/go";
-import AddTicketModal from "./AddTicketModal";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllCallbacksAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -43,8 +42,6 @@ const TicketSection = ({ setTicketUpdate }) => {
   // const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState([]);
   // console.log("checkboxStates",checkboxStates)
-
-
 
   const fetchCallbacks = useSelector((state) => {
     if (
@@ -330,7 +327,6 @@ const TicketSection = ({ setTicketUpdate }) => {
 
     const newTimer = setTimeout(() => {
       if (searchText) {
-
         const data = filtersearch(searchText, allCD);
         setFilteredCD(data);
       } else {
@@ -404,13 +400,11 @@ const TicketSection = ({ setTicketUpdate }) => {
       } else {
         setSelectedClientArray([]);
       }
-
     }
     if (getFilterConditions) {
       const allChecked = checkboxStates.every((isChecked) => isChecked);
       setCheckboxStates(Array(filterData.length).fill(!allChecked));
     }
-
   };
   const handleCheckBoxSingle = (index) => {
     setCheckboxStates((prevStates) => {
@@ -420,16 +414,14 @@ const TicketSection = ({ setTicketUpdate }) => {
     });
 
     let ans = selectedClientArray.includes(filteredCD[index]);
-    console.log(index)
+    console.log(index);
     if (ans) {
-      const removeIndex = selectedClientArray.findIndex(item => item === filteredCD[index]);
+      const removeIndex = selectedClientArray.findIndex(
+        (item) => item === filteredCD[index]
+      );
       selectedClientArray.splice(removeIndex, 1);
     } else {
-      setSelectedClientArray((prev) => (
-        [...prev,
-        filteredCD[index]
-        ]
-      ))
+      setSelectedClientArray((prev) => [...prev, filteredCD[index]]);
     }
   };
 
@@ -480,8 +472,8 @@ const TicketSection = ({ setTicketUpdate }) => {
   // let uniqueData = selectedClientArray.filter((obj, index, self) => index === self.findIndex((t) => (t.id === obj.id && t.name === obj.name)));
 
   const handleExcelIconClick = () => {
-    setCsvData(selectedClientArray)
-  }
+    setCsvData(selectedClientArray);
+  };
 
   //--------------------------------------------------------------------------------------
   return (
@@ -500,8 +492,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
-                      }`}
+                    className={`search-input ${
+                      searchText.length > 0 && "inputSearchWritten"
+                    }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
@@ -548,11 +541,14 @@ const TicketSection = ({ setTicketUpdate }) => {
                 )}
               </div>
             ) : (
-              <CSVLink data={csvData}><img className="excelIcon"
-                src={execelIcon}
-                style={{ boxShadow: "0px 3px 6px #00000029" }} onClick={handleExcelIconClick}
-              /></CSVLink>
-
+              <CSVLink data={csvData}>
+                <img
+                  className="excelIcon"
+                  src={execelIcon}
+                  style={{ boxShadow: "0px 3px 6px #00000029" }}
+                  onClick={handleExcelIconClick}
+                />
+              </CSVLink>
             )}
 
             {/* add  ticket +icon */}
@@ -582,7 +578,10 @@ const TicketSection = ({ setTicketUpdate }) => {
           </div>
         </div>
 
-        <div className="my_table-container Yello_Scrollbar" style={{ overflowX: 'hidden' }} >
+        <div
+          className="my_table-container Yello_Scrollbar"
+          style={{ overflowX: "hidden" }}
+        >
           <div className="table-shadow"></div>
           <table>
             <thead>
@@ -710,9 +709,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         {data?.clientDetail?.PhoneNumber}
                       </td>
                       <td
-                        className={
-                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
-                        }
+                        className={`${
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -739,9 +738,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         </div>
                       </td>
                       <td
-                        className={
-                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
-                        }
+                        className={`${
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -862,9 +861,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         {data?.clientDetail?.PhoneNumber}
                       </td>
                       <td
-                        className={
-                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
-                        }
+                        className={`${
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -899,9 +898,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         
                       </td> */}
                       <td
-                        className={
-                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
-                        }
+                        className={`${
+                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                        } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -934,7 +933,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                         }
                       >
                         {data.TypeOfIssue}
-
                       </td>
                       <td
                         className={

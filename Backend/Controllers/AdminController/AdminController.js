@@ -2847,6 +2847,7 @@ module.exports.postElevatorForm = async (req, res) => {
       ModelType: elevatorFormSchema.elevatorDetails.type
         ? elevatorFormSchema.elevatorDetails.type
         : "NA",
+      ProfileImage:"https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
     });
 
     res.status(200).json({ msg: "data submit successfully" });

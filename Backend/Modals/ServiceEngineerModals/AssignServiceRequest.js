@@ -34,13 +34,16 @@ const AssignRequest = new Schema(
     },
     ServiceProcess: {
       type: String,
-      enum: ["onGoing", "completed", "InCompleted"],
+      enum: ["onGoing", "completed", "InCompleted","cancelled",'dead'],
       default: "InCompleted",
     },
     RepresentativeName: {
       type: String,
     },
     RepresentativeNumber: {
+      type: String,
+    },
+    cancelDescription: {
       type: String,
     },
   },

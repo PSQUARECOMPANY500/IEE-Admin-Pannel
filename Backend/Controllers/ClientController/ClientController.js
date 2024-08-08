@@ -632,10 +632,8 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
         return {
           ...entry._doc,
           enggName: enggNameMap[entry.ServiceEnggId],
-          paymentDetails:
-            paymentDetails && paymentDetails.length > 0
-              ? paymentDetails[0].paymentDetils
-              : null,
+          paymentDetails:paymentDetails && paymentDetails.length > 0? paymentDetails[0].paymentDetils : null,
+          PaymentPrice: paymentDetails && paymentDetails.length > 0? paymentDetails[0].TotalAmount : null
         };
       })
     );
@@ -645,6 +643,7 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
     const latestDateEntry = enrichedHistory.filter(
       (entry) => entry.Date === currentDate
     );
+     
     const previousHistory = enrichedHistory.filter(
       (entry) => entry.Date !== currentDate
     );
@@ -661,6 +660,11 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
       .json({ error: "Error while fetching client service History" });
   }
 };
+
+
+
+
+
 
 //==================================================================
 //==================================================================
@@ -976,7 +980,6 @@ const caluclateMembershipPriceAndTime = async (
   updateMembership
 ) => {
   const LastSecondCount = MembershipData[MembershipData.length - 2];
-  console.log("=============================", LastSecondCount.EndDate);
   if (new Date(LastSecondCount.EndDate) < Date.now()) {
     const dataExpires = await memberShipDetails.findOneAndUpdate(
       { OrderId: LastSecondCount.OrderId },
@@ -1014,11 +1017,7 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
     const { JobOrderNumber } = req.params;
 
     const MembershipData = await memberShipDetails.find({ JobOrderNumber });
-
-    // console.log("222222222222222222222222222",MembershipData);
-
     const Details = MembershipData[MembershipData.length - 1];
-    // console.log("8888888888888888888888",Details);
 
     if (Details.IsPaid === true) {
       const data = {
@@ -1081,21 +1080,12 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         MembershipData,
         updateMembership
       );
-
-      // console.log("|||||||||||||||||||||||||||", DaysToBeAdded);
-
       let newDate = new Date();
       newDate.setDate(newDate.getDate() + 365 + DaysToBeAdded);
-
-      // console.log(".......................", newDate);
-
       const finalPurchase = await memberShipDetails.findOneAndUpdate(
         { OrderId: Details.OrderId },
         { EndDate: newDate }
       );
-
-      // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!", finalPurchase);
-
       const data = {
         MembershipType: finalPurchase.MembershipType,
         EndDate: finalPurchase.EndDate,
@@ -1140,8 +1130,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         { MembershipInvoice: fileName }
       );
 
-      // console.log("+++++++++++++++++++++++++++++++++++++++++++++++", data);
-
       return res.status(200).json({
         status: "success",
         Details: data,
@@ -1150,7 +1138,6 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
       await memberShipDetails.findOneAndDelete({ OrderId: Details.OrderId });
 
       const Detail = MembershipData[MembershipData.length - 1];
-      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%",Detail);
       const data = {
         MembershipType: Detail.MembershipType,
         EndDate: Detail.EndDate,
@@ -1256,8 +1243,8 @@ module.exports.updateClientProfile = async (req, res) => {
   try {
     const { JobOrderNumber, name, emailAddress, phone, password } =
       req.body;
-    const profile = req.file;
-    console.log(profile)
+    const profile = req.files;
+
 
     if (!JobOrderNumber && !name && !emailAddress && !phone) {
       return res
@@ -1268,8 +1255,7 @@ module.exports.updateClientProfile = async (req, res) => {
         });
     }
 
-    if
-      (profile && profile.fieldname) {
+    if(profile.length > 0) {
 
       await RegisterClientDetails.findOneAndUpdate(
         {
@@ -1278,7 +1264,7 @@ module.exports.updateClientProfile = async (req, res) => {
         {
           name,
           PhoneNumber: phone,
-          ProfileImage: profile && profile.filename,
+          ProfileImage:profile[0].filename,
           Password: password,
           emailAddress,
         }
@@ -1336,3 +1322,67 @@ module.exports.removeClientFirebaseToken = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+// Enggineer can cancelled Previous  service or callback request ---------------------------------------------------------------
+
+module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res) => {
+  try {
+    const { serviceId, description } = req.body;
+
+    if(!serviceId && !description){
+      return res.status(400).json({message:"serviceId and description are required"});
+    }
+
+    const cancelledServiceRequest = await assignService.findOne({RequestId: serviceId});
+    const cancelledCallbackRequest = await assignCallback.findOne({callbackId: serviceId});
+
+    if(cancelledServiceRequest) {
+      await assignService.findOneAndUpdate(
+        {RequestId: serviceId },
+        { ServiceProcess: "cancelled", cancelDescription: description }
+      );
+    }
+    else if(cancelledCallbackRequest) {
+      await assignCallback.findOneAndUpdate(
+        { callbackId: serviceId },
+        { ServiceProcess: "cancelled", cancelDescription: description }
+      );
+    }
+
+    res.status(200).json({message:"Request Cancelled successfully"});
+  
+
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error while cancelling the request" });
+  }
+}
+
+// -------------------------------------------------------------------------------------------------------------------------
+//api to get cancelled requests by the clients
+
+module.exports.getCallbackOrServiceCancelledRequests = async (req,res) => {
+  try {
+
+    const cancelledRequests = await assignService.find({ServiceProcess:"cancelled"})
+    const cancelledCallback = await assignCallback.find({ServiceProcess:"cancelled"})
+
+
+    if(cancelledRequests.length === 0 || cancelledCallback.length === 0){
+      return res.status(200).json({message:"No cancelled requests found"});
+    }
+
+    const combinedRequestData = [...cancelledRequests, ...cancelledCallback]
+
+    res.status(200).json({cancelledRequests: combinedRequestData});
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error while fething cancelling the request" });
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+

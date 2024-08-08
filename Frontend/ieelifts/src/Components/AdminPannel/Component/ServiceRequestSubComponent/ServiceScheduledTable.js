@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";
-import AddTicketModal from "../DashboardSubComponent/AddTicketModal";
 import AddTicketModals from "../DashboardSubComponent/AddTicketModals";
 
 const ServiceScheduledTable = () => {
