@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { HiChevronUpDown } from "react-icons/hi2";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 
 import AssignDropdown from "../DashboardSubComponent/AssignDropdown";

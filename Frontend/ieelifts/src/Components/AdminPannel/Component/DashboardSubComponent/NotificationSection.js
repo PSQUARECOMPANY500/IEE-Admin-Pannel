@@ -18,7 +18,7 @@ import rating from "../../../../../src/Assets/Images/NotificationIcons/rating.pn
 
 
 
-const NotificationSection = () => {
+const NotificationSection = ({cancelNotification}) => {
   const dispatch = useDispatch();
   const [lengthCount, setLengthCount] = useState({
     All: 0,
@@ -26,9 +26,7 @@ const NotificationSection = () => {
     Enginner: 0,
   });
 
-  const [mypplength, setmypplength] = useState(0);
   const [allnotificationdata, setallNotificationData] = useState();
-
   const [combineNotifications, setConbineNotifications] = useState();
   const [Enggnotificationdata, setEnggNotificationData] = useState();
   const [Clientnotificationdata, setClientNotificationData] = useState();
@@ -51,10 +49,6 @@ const NotificationSection = () => {
   const getAllNotification = useSelector(
     (state) =>
       state?.AdminRootReducer?.getNotificationDataAction?.NotificationsData
-  );
-  console.log(
-    "----------++++++++++++-----------++++++++++++------------",
-    getAllNotification
   );
 
   useEffect(() => {
@@ -136,7 +130,6 @@ const NotificationSection = () => {
 
  
   const timeCalucalte = (time) => {
-    console.log("***************************",time);
     const sortedTime = time.slice(11, 19);
     const specificTime = moment(sortedTime, "HH:mm:ss");
     const currentTime = moment();
@@ -146,15 +139,7 @@ const NotificationSection = () => {
   };
 
 
-
-
-
-
-
   const generateMessage = (notification) => {
-
-    console.log("Generating message ====>>>>>>>",notification)
-
     if (notification?.data?.callbackId && notification?.data?.Slot) {
       return null;
     }
@@ -246,7 +231,6 @@ const NotificationSection = () => {
     ?.map((notification) => generateMessage(notification))
     ?.filter((data) => data !== null);
 
-  const filteredNotificationslength = filteredNotifications?.length;
   
   return (
     <div className="parent-Notification-div">

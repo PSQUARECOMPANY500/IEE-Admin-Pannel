@@ -63,6 +63,8 @@ import { BiArch } from "react-icons/bi";
 import { UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE } from "../Actions/AdminActions";
 
 import { GET_ALL_NOTIFICATIONS } from "../Actions/AdminActions";
+
+import { GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1079,3 +1081,24 @@ export const getNotificationDataAction = (state=Notifications, action) => {
 }
 
 // ------------------------------------------------------------------------------------------------
+
+
+//Reducer to handle get ALL client cancel service/callback data
+const cancelRequests = {
+  cancelRequestsData: null
+} 
+
+export const getClientCancelServiceCallbackDataReducer = (state=cancelRequests, action) => {
+  switch(action.type){
+    case GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA:
+      return {
+       ...state,
+        cancelRequestsData: action.payload,
+      }
+    default:
+      return state;
+  }
+}
+
+
+//-----------------------------------------------------------------------------------------------------
