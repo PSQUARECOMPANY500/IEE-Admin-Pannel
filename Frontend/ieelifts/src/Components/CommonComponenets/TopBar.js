@@ -385,16 +385,16 @@ const TopBar = (props) => {
 
 {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
-    {/* {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (  
+    {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (  
       <div style={{ display: "flex" }} ref={CancelledRequestNotificationRef}>
-            <span className="top-icon-bell" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     //TODO:  uncommented
+            <span className="top-icon-bell" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     {/*TODO:  uncommented */}
               <ImNotification  className="iconColor" />{" "}
             </span>
            <div className="dot"></div>
           
 
           {showCancelledNotification && <CancelNotificationSection />}
-        </div>)} */}
+        </div>)}
 
 
 
