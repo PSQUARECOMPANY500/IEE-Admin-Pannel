@@ -18,14 +18,17 @@ useEffect(() => {
   dispatch(getClientCancelServiceCallbackDataAction())
 },[])
 
+
 const generateMessage = (notification) => {
+  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",notification.RequestId || notification.callbackId)
    return {
       title: "New Cancel Notification Request",
       message: `Service Engg ${notification.ServiceEnggId} have requested to cancel the service for JON ${notification.JobOrderNumber} for Date ${notification.Date} slot ${notification.Slot[0]}.`,
       time: "0m ago",
       imageIcon:cancelRequest,
-      callbackId: notification.CallbackId ? notification.CallbackId : notification.RequestId,
-      EnggId: notification.ServiceEnggId
+      callbackId: notification.RequestId || notification.callbackId,
+      EnggId: notification?.ServiceEnggId,
+      iscallback: notification.callbackId ? true : false
     };  
 }
 
@@ -33,9 +36,11 @@ const generateMessage = (notification) => {
 
 
 const cancelRequestByClient = useSelector((state) => state?.AdminRootReducer?.getClientCancelServiceCallbackDataReducer?.cancelRequestsData?.cancelledRequests);
-console.log("+++++++++++++++++++++++++++++++++++++++++",cancelRequestByClient)
+// console.log("+++++++++++++++++++++++++++++++++++++++++",cancelRequestByClient)
+const GenrateMessageNotification = cancelRequestByClient && cancelRequestByClient?.map((notification) => generateMessage(notification));
 
-const GenrateMessageNotification = cancelRequestByClient && cancelRequestByClient?.map((notification) => generateMessage(notification))
+console.log("____________________________________________",GenrateMessageNotification);
+
   
   return (
     <div className="parent-Notification-div">
