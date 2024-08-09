@@ -225,6 +225,8 @@ const EngeeniersCard = () => {
           style={{
             gridTemplateColumns: isFirst || isSecond ?mediumScreen? "2fr 0.8fr":"2fr 1fr" : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
+            gridGap:isFirst?'0.5rem':0 ,
+       
           }}
         >
           <EngeeniersSubCard
