@@ -40,6 +40,7 @@ const EngeeniersSubCard = (props) => {
     setIsDoubleClick(false);
     const timeout = setTimeout(() => {
       if (index === isActive) {
+        setIsActive(null);
         setIsFirst(false);
       } else {
         setIsFirst(true);
