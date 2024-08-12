@@ -108,7 +108,7 @@ const EnggLocation = () => {
   //------------------------------------------------------------------------------------------------------------------------
 
   const enggMarkerSymbol = {
-    path: window.google.maps.SymbolPath.CIRCLE,
+    path: window.google?.maps?.SymbolPath?.CIRCLE,
     scale: 10,
     fillColor: "#0F351D",
     fillOpacity: 1,
@@ -117,7 +117,7 @@ const EnggLocation = () => {
   };
 
   const inactiveMarkerSymbol = {
-    path: window.google.maps.SymbolPath.CIRCLE,
+    path: window.google?.maps?.SymbolPath?.CIRCLE,
     scale: 15,
     fillColor: "#F8AC1D",
     fillOpacity: 1,
@@ -126,7 +126,7 @@ const EnggLocation = () => {
   };
 
   const IEEmarkerSymbol = {
-    path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+    path: window.google?.maps?.SymbolPath?.BACKWARD_CLOSED_ARROW,
     scale: 10,
     fillColor: "#0F351D",
     fillOpacity: 1,

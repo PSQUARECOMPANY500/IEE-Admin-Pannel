@@ -57,6 +57,10 @@ const Services = new Schema(
     isDead:{
       type:Boolean,
       default:false
+    },
+    isCancelled:{
+      type:Boolean,
+      default:false
     }
   },
   {

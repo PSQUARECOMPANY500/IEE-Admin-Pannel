@@ -5391,6 +5391,11 @@ footer a:hover {
   background: white;
   z-index: 9999;
 }
+.notification-modal{
+  top: 10%;
+  left: 10%;
+  border-radius: 6px;
+}
 
 .cross-icon {
   right: 17px;
@@ -5904,6 +5909,12 @@ footer a:hover {
 .assignResolved {
   background: #ffffff;
   color: #343434;
+}
+
+
+.cancelRequest {
+  background: #F88379;
+  color: #CC0000;
 }
 
 /* ticket section status button propety changes dynamically ends*/

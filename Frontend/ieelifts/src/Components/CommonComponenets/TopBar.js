@@ -408,7 +408,7 @@ const TopBar = (props) => {
             <div className="dot"></div>
             {location.pathname === "/Engeeniers" && (
               <div className="add-Engg-button" onClick={openModalHandle}>
-                Add Engeenier
+                Add Engineer
               </div>
             )}
 

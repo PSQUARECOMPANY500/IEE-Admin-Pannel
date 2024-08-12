@@ -245,10 +245,7 @@ router.get(
   "/EnggReportQuestionFetch",
   serviceEnggContoller.EnggReportQuestionFetch
 );
-router.get(
-  "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
-  adminContoller.fetchEnggAttendance
-);
+router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate",adminContoller.fetchEnggAttendance);
 router.get(
   "/EnggCheckInCheckOutDetals/:ServiceEnggId",
   serviceEnggContoller.EnggCheckInCheckOutDetals

@@ -815,6 +815,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 filteredCD?.map((data, index) => {
                   const currentCallbackId = data.callbackId;
                   const IsDead = data.isDead;
+                  const isCancelled = data.isCancelled;
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
                   const isAssigned = data.isAssigned;
@@ -957,18 +958,26 @@ const TicketSection = ({ setTicketUpdate }) => {
                         }
                       >
                         {isAssigned ? (
-                          IsDead ? (
+                          isCancelled ? (
                             <AssignDropdown
-                              customAssign="assignResolved"
-                              name="RESOLVED"
+                              customAssign="cancelRequest"
+                              name="CANCEL"
                             />
                           ) : (
-                            <AssignDropdown
-                              customAssignName="assignNameColor"
-                              name={EngName}
-                              isAssigned={isAssigned}
-                            />
+                            IsDead ? (
+                              <AssignDropdown
+                                customAssign="assignResolved"
+                                name="RESOLVED"
+                              />
+                            ) : (
+                              <AssignDropdown
+                                customAssignName="assignNameColor"
+                                name={EngName}
+                                isAssigned={isAssigned}
+                              />
+                            )
                           )
+                          
                         ) : (
                           <AssignDropdown
                             customAssign="assignColor"

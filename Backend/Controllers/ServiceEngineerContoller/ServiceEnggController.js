@@ -2647,7 +2647,7 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           serviceId: item.RequestId ? item.RequestId : item.callbackId,
         });
 
-        if (report && report.Steps >= 2) {
+        if (report && report.Steps >= 2) {         //FIXME:
           return item;
         }
         return null;

@@ -54,6 +54,8 @@ import { updateTodoDataReducer } from "../Reducers/AdminReducer";
 import { upgradeClientMembershipByAdminPannelReducer } from "../Reducers/AdminReducer";
 import { getNotificationDataAction } from "../Reducers/AdminReducer";
 import { getClientCancelServiceCallbackDataReducer } from "../Reducers/AdminReducer";
+import { cancelEnggCallbackServiceRequestReducer } from "../Reducers/AdminReducer";
+import { updateStatusOfCancelServiceAndCallbackRequestReducer } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -114,7 +116,9 @@ const AdminRootReducer = combineReducers({
   deleteTodoReducer:deleteTodoReducer,
   upgradeClientMembershipByAdminPannelReducer:upgradeClientMembershipByAdminPannelReducer,
   getNotificationDataAction:getNotificationDataAction,
-  getClientCancelServiceCallbackDataReducer:getClientCancelServiceCallbackDataReducer
+  getClientCancelServiceCallbackDataReducer:getClientCancelServiceCallbackDataReducer,
+  cancelEnggCallbackServiceRequestReducer:cancelEnggCallbackServiceRequestReducer,
+  updateStatusOfCancelServiceAndCallbackRequestReducer:updateStatusOfCancelServiceAndCallbackRequestReducer
 
 });
 

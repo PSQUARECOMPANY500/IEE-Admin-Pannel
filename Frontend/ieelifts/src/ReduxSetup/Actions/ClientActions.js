@@ -8,7 +8,7 @@ export const requestCallBackByAdmin = (JobOrderNumber,callbackDate,callbackTime,
   return async()=>{
     //console.log("job",JobOrderNumber,"call",callbackDate,"backtime",callbackTime,"Type",TypeOfIssue,"Des",Description);
       try {
-        if(JobOrderNumber&&callbackDate&&callbackTime&&TypeOfIssue&&Description){
+        if(JobOrderNumber&&callbackDate&&callbackTime&&TypeOfIssue){
           const response = await axios.post(`${config.apiUrl}/client/requestCallbacks`,
           {
             JobOrderNumber,
