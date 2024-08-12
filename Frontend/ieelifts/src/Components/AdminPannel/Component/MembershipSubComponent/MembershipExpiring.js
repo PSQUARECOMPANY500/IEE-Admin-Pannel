@@ -8,56 +8,38 @@ import Loader from "../../../CommonComponenets/Loader";
 import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
-  getClientCallsDetails,
+  getClientCallsDetails, settingJOBORDER
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const MembershipExpiring = ({ DemoData, count }) => {
 
   const [page, setPage] = useState(1);
-  const [pageData, setPageData] = useState([]);
   const [loader, setLoader] = useState(false);
   const ref = useRef();
   const type = DemoData?.dataType?.toLowerCase();
   const dispatch = useDispatch();
-  const selectAdminRootReducer = (state) => state.AdminRootReducer;
-  const selectRequestLimitedClientDataReducer = createSelector(
-    selectAdminRootReducer,
-    (adminRootReducer) => adminRootReducer.requestLimitedClientDataReducer
-  );
-  const selectMembershipDetail = createSelector(
-    selectRequestLimitedClientDataReducer,
-    (requestLimitedClientDataReducer) =>
-      requestLimitedClientDataReducer?.membershipDetail
-  );
+  const [state, setState] = useState(0);
+
+
   const selectExpiredMembership = createSelector(
-    selectMembershipDetail,
-    (membershipDetail) => membershipDetail?.expiring?.[type]
+    (state) =>
+      state.AdminRootReducer?.requestLimitedClientDataExpiringReducer?.expiring?.[type],
+    (expiredMembership) => expiredMembership || null // Example transformation
   );
 
-  useEffect(() => {
-    setLoader(true);
-    requestLimitedClientDataAction(dispatch, type, "expiring", page, 10)
-      .then(() => setLoader(false))
-      .catch((error) => {
-        setLoader(false);
-      });
-  }, [page, type, dispatch]);
   const memberShipDetails = useSelector(selectExpiredMembership);
+
   useEffect(() => {
-    if (memberShipDetails && memberShipDetails.clientData) {
-      setPageData((prevData) => {
-        const newData = memberShipDetails.clientData.filter((data) => {
-          return (
-            !data.isExpired &&
-            !prevData.some(
-              (prev) => prev.JobOrderNumber === data.JobOrderNumber
-            )
-          );
+    if (memberShipDetails?.totalPages >= page || page === 1) {
+      setLoader(true);
+      requestLimitedClientDataAction(dispatch, type, "expiring", page, 10)
+        .then(() => setLoader(false))
+        .catch((error) => {
+          setLoader(false);
         });
-        return [...prevData, ...newData];
-      });
     }
-  }, [memberShipDetails]);
+  }, [page, type, dispatch]);
+
   const handleInfiniteScroll = async () => {
     try {
       const { scrollTop, scrollHeight, clientHeight } = ref.current;
@@ -77,15 +59,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
     }
   }, [handleInfiniteScroll]);
 
-  useEffect(() => {
-    if (pageData && !count) {
-      dispatch(getClientMembershipDetails(pageData[0]?.JobOrderNumber));
-      dispatch(getClientMembershipHistoryAction(pageData[0]?.JobOrderNumber));
-      dispatch(
-        getClientCallsDetails(pageData[0]?.JobOrderNumber, "membership")
-      );
-    }
-  }, [pageData]);
+
 
   const scrollbar =
     DemoData.dataType === "Warrenty"
@@ -97,6 +71,38 @@ const MembershipExpiring = ({ DemoData, count }) => {
           : DemoData.dataType === "Silver"
             ? "membership_card_scrollable_silver"
             : "total_revenue_outer_border";
+
+  const job = useSelector((state) =>
+    state.AdminRootReducer.settingJONforMembship?.Jon
+  )
+
+  useEffect(() => {
+    dispatch(getClientMembershipDetails(job));
+    dispatch(getClientMembershipHistoryAction(job));
+    dispatch(getClientCallsDetails(job, "membership"));
+    return () => {
+      dispatch(getClientCallsDetails());
+      dispatch(getClientMembershipDetails());
+      dispatch(getClientMembershipHistoryAction());
+    };
+  }, [state]);
+
+
+  useEffect(() => {
+    if (memberShipDetails?.clientData[0]?.JobOrderNumber) {
+      handleJob(memberShipDetails?.clientData[0]?.JobOrderNumber)
+    }
+  }, [memberShipDetails?.clientData[0]?.JobOrderNumber])
+
+
+
+  const handleJob = (jon) => {
+    if (job === jon) {
+      return;
+    }
+    dispatch(settingJOBORDER(jon))
+    setState(state + 1);
+  };
 
   return (
     <>
@@ -116,6 +122,25 @@ const MembershipExpiring = ({ DemoData, count }) => {
           ) : (
             <></>
           )}
+          <div
+            className={`${count !== undefined && count !== null ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable
+                } ${scrollbar}`}
+            ref={ref}
+          >
+            {memberShipDetails &&
+              memberShipDetails?.clientData.map((data, index) => {
+                return (
+                  <MembershipSubCard
+                    handleJob={handleJob}
+                    data={data}
+                    isToShowNumber={count ? true : false}
+                    isExpired={false}
+                    key={index}
+                    dataType={DemoData?.dataType}
+                  />
+                );
+              })}
+          </div>
           {loader ? (
             <>
               <div className="loder_Container">
@@ -123,25 +148,7 @@ const MembershipExpiring = ({ DemoData, count }) => {
               </div>
             </>
           ) : (
-            <div
-              className={`${count !== undefined && count !== null ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable
-                } ${scrollbar}`}
-              ref={ref}
-            >
-              {memberShipDetails &&
-                pageData &&
-                pageData.map((data, index) => {
-                  return (
-                    <MembershipSubCard
-                      data={data}
-                      isToShowNumber={count ? true : false}
-                      isExpired={false}
-                      key={index}
-                      dataType={DemoData?.dataType}
-                    />
-                  );
-                })}
-            </div>
+            <></>
           )}
         </div>
       )}

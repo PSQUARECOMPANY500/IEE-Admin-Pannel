@@ -25,7 +25,6 @@ import { createClientCallReducer } from "../Reducers/AdminReducer";
 import { getClientsReducer } from "../Reducers/AdminReducer";
 import { getFilterDataReducer } from "../Reducers/AdminReducer";
 import { requestGetMemberShipDataActionReducer } from "../Reducers/AdminReducer";
-import { requestLimitedClientDataReducer } from "../Reducers/AdminReducer";
 import { EnggLocationDetailsFetchReducer } from "../Reducers/AdminReducer";
 import { getBankDetils } from "../Actions/AdminActions";
 import { ChangeLayoutReducer } from "../Reducers/AdminReducer";
@@ -46,13 +45,16 @@ import { onClickEnggCartEnggLocationReducer } from "../Reducers/AdminReducer";
 import { onClickEnggPinEnggLocationReducer } from "../Reducers/AdminReducer";
 import { openAddClientModalReducer } from "../Reducers/AdminReducer";
 import { RegisterClientDataReducer } from "../Reducers/AdminReducer";
-import {getAdminReportDataReducer} from "../Reducers/AdminReducer";
-import { ReportCrouserHandlerReducer} from "../Reducers/AdminReducer";
-import {ClientFormDataFromApiReducer} from "../Reducers/AdminReducer";
-import { addTodoReducer,getTodosReducer } from "../Reducers/AdminReducer";
+import { getAdminReportDataReducer } from "../Reducers/AdminReducer";
+import { ReportCrouserHandlerReducer } from "../Reducers/AdminReducer";
+import { ClientFormDataFromApiReducer } from "../Reducers/AdminReducer";
+import { addTodoReducer, getTodosReducer } from "../Reducers/AdminReducer";
 import { updateTodoDataReducer } from "../Reducers/AdminReducer";
 import { upgradeClientMembershipByAdminPannelReducer } from "../Reducers/AdminReducer";
 import { getNotificationDataAction } from "../Reducers/AdminReducer";
+import { requestLimitedClientDataExpiringReducer } from "../Reducers/AdminReducer";
+import { requestLimitedClientDataExpiredReducer } from "../Reducers/AdminReducer";
+import { settingJONforMembship } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -78,7 +80,6 @@ const AdminRootReducer = combineReducers({
   getBookedSlotsforEnggsReducer: getBookedSlotsforEnggsReducer,
   getEnggBasicDataForCrouserReducer: getEnggBasicDataForCrouserReducer,
   requestGetMemberShipDataActionReducer: requestGetMemberShipDataActionReducer,
-  requestLimitedClientDataReducer: requestLimitedClientDataReducer,
   requestGetMemberShipHistoryReducer: requestGetMemberShipHistoryReducer,
   requestGetMemberShipCallReducer: requestGetMemberShipCallReducer,
   requestGetMemberShipClientReducer: requestGetMemberShipClientReducer,
@@ -101,19 +102,21 @@ const AdminRootReducer = combineReducers({
   fetchassignedEnggDetailsReducer: fetchassignedEnggDetailsReducer,
   onClickEnggCartEnggLocationReducer: onClickEnggCartEnggLocationReducer,
   onClickEnggPinEnggLocationReducer: onClickEnggPinEnggLocationReducer,
-  openAddClientModalReducer:openAddClientModalReducer,
-  RegisterClientDataReducer:RegisterClientDataReducer,
-  getAdminReportDataReducer:getAdminReportDataReducer,
-  ReportCrouserHandlerReducer:ReportCrouserHandlerReducer,
-  getClientModalDataReducer:getClientModalDataReducer,
-  ClientFormDataFromApiReducer:ClientFormDataFromApiReducer,
-  EngineerSearchHandler:EngineerSearchHandler,
-  getTodosReducer:getTodosReducer,
-  updateTodoDataReducer:updateTodoDataReducer,
-  deleteTodoReducer:deleteTodoReducer,
-  upgradeClientMembershipByAdminPannelReducer:upgradeClientMembershipByAdminPannelReducer,
-  getNotificationDataAction:getNotificationDataAction
-
+  openAddClientModalReducer: openAddClientModalReducer,
+  RegisterClientDataReducer: RegisterClientDataReducer,
+  getAdminReportDataReducer: getAdminReportDataReducer,
+  ReportCrouserHandlerReducer: ReportCrouserHandlerReducer,
+  getClientModalDataReducer: getClientModalDataReducer,
+  ClientFormDataFromApiReducer: ClientFormDataFromApiReducer,
+  EngineerSearchHandler: EngineerSearchHandler,
+  getTodosReducer: getTodosReducer,
+  updateTodoDataReducer: updateTodoDataReducer,
+  deleteTodoReducer: deleteTodoReducer,
+  upgradeClientMembershipByAdminPannelReducer: upgradeClientMembershipByAdminPannelReducer,
+  getNotificationDataAction: getNotificationDataAction,
+  requestLimitedClientDataExpiredReducer: requestLimitedClientDataExpiredReducer,
+  requestLimitedClientDataExpiringReducer: requestLimitedClientDataExpiringReducer,
+  settingJONforMembship: settingJONforMembship
 });
 
 export default AdminRootReducer;

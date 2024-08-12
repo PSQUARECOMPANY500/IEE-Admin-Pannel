@@ -16,7 +16,7 @@ const AddEnggModal = () => {
   const dispatch = useDispatch();
   const divRef = useRef([]);
   const mainDivRef = useRef(null);
-  const [flag,setFlag]= useState(false);
+  const [flag, setFlag] = useState(false);
   const fileInputRef = useRef(null); // Define fileInputRef
   const fileInputRef1 = useRef(null);
   const fileInputRef2 = useRef(null);
@@ -320,7 +320,7 @@ const AddEnggModal = () => {
     const response = await RegistrationEnggDetails(formData);
     console.log("response", response);
 
-    if(response.status === 200){
+    if (response.status === 200) {
       toast.error(response.data.message);
     }
 
@@ -362,14 +362,14 @@ const AddEnggModal = () => {
       toast.success("engineer register successfully");
     }
   };
-   useEffect(()=>{
-    if(window.innerWidth <= 1500){
+  useEffect(() => {
+    if (window.innerWidth <= 1500) {
       setFlag(true)
     }
-   },[window.innerWidth])
+  }, [window.innerWidth])
   return (
     <>
-      <div className="add-engg-wrapper" onClick={closeModal} style={{zIndex:'99999999'}}>
+      <div className="add-engg-wrapper" onClick={closeModal} style={{ zIndex: '99999999' }}>
         <div
           className="add-engg-modal"
           ref={mainDivRef}
@@ -851,8 +851,9 @@ const AddEnggModal = () => {
                             padding="4px"
                             value={qualification}
                             onStateChange={onStateChange}
-                            flag= {flag}
+                            flag={flag}
                             customClass={"engDropdown"}
+                            height={"2px"}
                           />
                           <input
                             type="file"

@@ -18,13 +18,11 @@ const ClientTableView = ({
   isLoading,
   isFiltered,
   page,
-  ref
 }) => {
   const [checkboxStates, setCheckboxStates] = useState([]);
   const [showClientModal, setShowClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [csvData, setCsvData] = useState([]);
-  const [allChecked, setAllChecked] = useState(false); // by Preet Edited
 
   const [selectedClientArray, setSelectedClientArray] = useState([]);
   const totalPage = useSelector(

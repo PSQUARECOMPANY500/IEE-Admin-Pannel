@@ -9,57 +9,38 @@ import {
   getClientMembershipDetails,
   getClientMembershipHistoryAction,
   getClientCallsDetails,
+  settingJOBORDER
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
-const selectAdminRootReducer = (state) => state.AdminRootReducer;
-const selectRequestLimitedClientDataReducer = createSelector(
-  selectAdminRootReducer,
-  (adminRootReducer) => adminRootReducer.requestLimitedClientDataReducer
-);
-const selectMembershipDetail = createSelector(
-  selectRequestLimitedClientDataReducer,
-  (requestLimitedClientDataReducer) =>
-    requestLimitedClientDataReducer?.membershipDetail
-);
+
 const MembershipExpired = ({ DemoData, count }) => {
-  const selectExpiredMembership = createSelector(
-    selectMembershipDetail,
-    (membershipDetail) => membershipDetail?.expired?.[type]
-  );
-
-  // Selectors using Reselect
-  const [page, setPage] = useState(1);
-  const [pageData, setPageData] = useState([]);
-  const [loader, setLoader] = useState(false);
-  const ref = useRef();
   const type = DemoData?.dataType?.toLowerCase();
-  const dispatch = useDispatch();
 
-  useLayoutEffect(() => {
-    setLoader(true);
-    requestLimitedClientDataAction(dispatch, type, "expired", page, 10)
-      .then(() => setLoader(false))
-      .catch((error) => {
-        setLoader(false);
-      });
-  }, [page, type, dispatch]);
+  const selectExpiredMembership = createSelector(
+    (state) =>
+      state.AdminRootReducer?.requestLimitedClientDataExpiredReducer?.expired?.[type],
+    (expiredMembership) => expiredMembership || null // Example transformation
+  );
 
   const memberShipDetails = useSelector(selectExpiredMembership);
 
-  useEffect(() => {
-    if (memberShipDetails && memberShipDetails.clientData) {
-      setPageData((prevData) => {
-        const newData = memberShipDetails.clientData.filter(
-          (data) =>
-            !data.isExpired &&
-            !prevData.some(
-              (prev) => prev.JobOrderNumber === data.JobOrderNumber
-            )
-        );
-        return [...prevData, ...newData];
-      });
+  // Selectors using Reselect
+  const [page, setPage] = useState(1);
+  const [loader, setLoader] = useState(false);
+  const ref = useRef();
+  const [state, setState] = useState(0);
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    if (memberShipDetails?.totalPages >= page || page === 1) {
+      setLoader(true);
+      requestLimitedClientDataAction(dispatch, type, "expired", page, 10)
+        .then(() => setLoader(false))
+        .catch((error) => {
+          setLoader(false);
+        });
     }
-  }, [memberShipDetails]);
+  }, [page, type, dispatch]);
 
   const handleInfiniteScroll = async () => {
     try {
@@ -82,19 +63,40 @@ const MembershipExpired = ({ DemoData, count }) => {
     }
   }, [handleInfiniteScroll]);
 
+  const job = useSelector((state) =>
+    state.AdminRootReducer.settingJONforMembship?.Jon
+  )
+
   useEffect(() => {
-    if (pageData && !count) {
-      dispatch(getClientMembershipDetails(pageData[0]?.JobOrderNumber));
-      dispatch(getClientMembershipHistoryAction(pageData[0]?.JobOrderNumber));
-      dispatch(
-        getClientCallsDetails(pageData[0]?.JobOrderNumber, "membership")
-      );
+    dispatch(getClientMembershipDetails(job));
+    dispatch(getClientMembershipHistoryAction(job));
+    dispatch(getClientCallsDetails(job, "membership"));
+    return () => {
+      dispatch(getClientCallsDetails());
+      dispatch(getClientMembershipDetails());
+      dispatch(getClientMembershipHistoryAction());
+    };
+  }, [state]);
+
+
+  useEffect(() => {
+    if (memberShipDetails?.clientData[0]?.JobOrderNumber) {
+      handleJob(memberShipDetails?.clientData[0]?.JobOrderNumber)
     }
-  }, [pageData]);
-  console.log(count !== undefined && count !== null)
+  }, [memberShipDetails?.clientData[0]?.JobOrderNumber])
+
+
+
+  const handleJob = (jon) => {
+    if (job === jon) {
+      return;
+    }
+    dispatch(settingJOBORDER(jon))
+    setState(state + 1);
+  };
   return (
     <>
-      {ref && pageData && (
+      {ref && memberShipDetails && memberShipDetails?.clientData && (
         <div
           className={
             `${count !== undefined && count !== null
@@ -111,30 +113,31 @@ const MembershipExpired = ({ DemoData, count }) => {
           ) : (
             <></>
           )}
-
+          <div
+            className={`${count !== undefined && count !== null ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
+          ${count !== undefined && count !== null && "membership_card_scrollable_expanded"}
+          `}
+            ref={ref}
+          >
+            {memberShipDetails && memberShipDetails?.clientData?.map((data, index) => {
+              return (
+                <MembershipSubCard
+                  handleJob={handleJob}
+                  data={data}
+                  isToShowNumber={count ? true : false}
+                  isExpired={true}
+                  key={index}
+                  dataType={DemoData?.dataType}
+                />
+              );
+            })}
+          </div>
           {loader ? (
             <div className="loder_Container">
               <Loader />
             </div>
           ) : (
-            <div
-              className={`${count !== undefined && count !== null ? "membership_card_scrollable_non_expand" : "membership_card_scrollable_height"} membership_card_scrollable membership_card_scrollable_expired 
-          ${count !== undefined && count !== null && "membership_card_scrollable_expanded"}
-          `}
-              ref={ref}
-            >
-              {pageData.map((data, index) => {
-                return (
-                  <MembershipSubCard
-                    data={data}
-                    isToShowNumber={count ? true : false}
-                    isExpired={true}
-                    key={index}
-                    dataType={DemoData?.dataType}
-                  />
-                );
-              })}
-            </div>
+            <></>
           )}
         </div>
       )}

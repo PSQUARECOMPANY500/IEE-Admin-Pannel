@@ -9,7 +9,7 @@ import { GET_ALL_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_ASSIGN_CALLBACK_DETAILS } from "../Actions/AdminActions";
 import { GET_REQUEST_DETAIL_BY_REQUEST_ID } from "../Actions/AdminActions";
 import { GET_SERVICE_REQUEST_DETAIL_BY_SERVICE_REQUEST_ID } from "../Actions/AdminActions";
-import {ENGINEER_SEARCH_HANDLER_STATE} from "../Actions/AdminActions";
+import { ENGINEER_SEARCH_HANDLER_STATE } from "../Actions/AdminActions";
 
 import { GET_ALL_ASSIGN_SERVICE_REQUEST } from "../Actions/AdminActions";
 import { GET_ALL_ASSIGN_CALLBACK } from "../Actions/AdminActions";
@@ -58,6 +58,7 @@ import { CLEAR_CLIENT_FORM_DATA } from "../Actions/AdminActions";
 import { GET_CLIENT_MODAL_INFORMATION } from "../Actions/AdminActions";
 import { UPDATE_TODO_DATA } from "../Actions/AdminActions";
 import { DELETE_TODO } from "../Actions/AdminActions";
+import { JON_MEMBERSHIP } from "../Actions/AdminActions";
 import { BiArch } from "react-icons/bi";
 
 import { UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE } from "../Actions/AdminActions";
@@ -172,37 +173,137 @@ export const requestGetMemberShipHistoryReducer = (
       return state;
   }
 };
-const initialState16 = {
-  membershipDetail: {
-    expiring: {},
-    expired: {},
-  },
+
+
+// const initialState16 = {
+//   membershipDetail: {
+//     expiring: {},
+//     expired: {},
+//   },
+// };
+// export const requestLimitedClientDataReducer = (
+//   state = initialState16,
+//   action
+// ) => {
+//   switch (action.type) {
+//     case GET_LIMITED_CLIENT_DATA:
+//       return {
+//         ...state,
+//         membershipDetail: {
+//           ...state.membershipDetail,
+//           expiring: { ...state.membershipDetail.expiring, ...action.payload },
+//         },
+//       };
+//     case GET_LIMITED_CLIENT_DATA_EXPIRED:
+//       return {
+//         ...state,
+//         membershipDetail: {
+//           ...state.membershipDetail,
+//           expired: { ...state.membershipDetail.expired, ...action.payload },
+//         },
+//       };
+//     default:
+//       return state;
+//   }
+// };
+
+const initialStateExpiring = {
+  expiring: {},
 };
-export const requestLimitedClientDataReducer = (
-  state = initialState16,
+
+
+export const requestLimitedClientDataExpiringReducer = (
+  state = initialStateExpiring,
   action
 ) => {
+  if (action?.payload) {
+    let type = Object.keys(action.payload)[0];
+    switch (action.type) {
+      case GET_LIMITED_CLIENT_DATA:
+        let existingClientDataExpiring = state.expiring[type]?.clientData || [];
+        let newClientDataExpiring = action.payload[type].clientData;
+
+        // Concatenate and remove duplicates based on JobOrderNumber
+        let combinedClientDataExpiring = [...existingClientDataExpiring, ...newClientDataExpiring];
+        let updatedClientDataExpiring = combinedClientDataExpiring.filter((item, index, self) =>
+          index === self.findIndex((t) => t.JobOrderNumber === item.JobOrderNumber)
+        );
+
+        // Update the type data with the new clientData and other values from the payload
+        let updatedTypeDataExpiring = {
+          clientData: updatedClientDataExpiring,
+          totalPages: action.payload[type].totalPages,
+        };
+
+        return {
+          expiring: {
+            ...state.expiring,
+            [type]: updatedTypeDataExpiring,
+          },
+        };
+      default:
+        return state;
+    }
+  } else {
+    return state;
+  }
+};
+
+
+const initialStateExpired = {
+  expired: {},
+};
+
+export const requestLimitedClientDataExpiredReducer = (
+  state = initialStateExpired,
+  action
+) => {
+
   switch (action.type) {
-    case GET_LIMITED_CLIENT_DATA:
-      return {
-        ...state,
-        membershipDetail: {
-          ...state.membershipDetail,
-          expiring: { ...state.membershipDetail.expiring, ...action.payload },
-        },
-      };
     case GET_LIMITED_CLIENT_DATA_EXPIRED:
+      let type = Object.keys(action.payload)[0];
+      let existingClientData = state.expired[type]?.clientData || [];
+      let newClientData = action.payload[type].clientData;
+
+      // Concatenate and remove duplicates based on JobOrderNumber
+      let combinedClientData = [...existingClientData, ...newClientData];
+      let updatedClientData = combinedClientData.filter((item, index, self) =>
+        index === self.findIndex((t) => t.JobOrderNumber === item.JobOrderNumber)
+      );
+
+
+      // Update the type data with the new clientData and other values from the payload
+      let updatedTypeData = {
+        clientData: updatedClientData,
+        totalPages: action.payload[type].totalPages,
+      };
+
       return {
-        ...state,
-        membershipDetail: {
-          ...state.membershipDetail,
-          expired: { ...state.membershipDetail.expired, ...action.payload },
+        expired: {
+          ...state.expired,
+          [type]: updatedTypeData,
         },
       };
     default:
       return state;
   }
 };
+
+const setingJON = {
+  Jon: null
+}
+
+
+export const settingJONforMembship = (state = setingJON,
+  action) => {
+  switch (action.type) {
+    case JON_MEMBERSHIP: {
+      return { Jon: action.payload }
+    }
+    default:
+      return state
+  }
+}
 
 const intialState15 = {
   membershipDetail: null,
@@ -955,22 +1056,22 @@ export const ClearClientFormData = (state = initialState, action) => {
 };
 
 
-const SearchEngineers={
-  SearchEngineers:'',
+const SearchEngineers = {
+  SearchEngineers: '',
 }
 
 //custom reducer for eng searching by aayush
 
 export const EngineerSearchHandler = (state = SearchEngineers, action) => {
- switch(action.type){
-case ENGINEER_SEARCH_HANDLER_STATE:
-  return{
-    ...state,
-    SearchEngineers:action.payload.Engkey,
+  switch (action.type) {
+    case ENGINEER_SEARCH_HANDLER_STATE:
+      return {
+        ...state,
+        SearchEngineers: action.payload.Engkey,
+      }
+    default:
+      return state;
   }
-   default:
-    return state;
- }
 }
 
 // const addTodo = {
@@ -992,73 +1093,73 @@ case ENGINEER_SEARCH_HANDLER_STATE:
 //   }
 // }; 
 
-const allTodos ={
-  todos:null,
+const allTodos = {
+  todos: null,
 }
 
-export const getTodosReducer = (state=allTodos,action) =>{
-  switch(action.type){
+export const getTodosReducer = (state = allTodos, action) => {
+  switch (action.type) {
     case GET_TODO:
       return {
         ...state,
-        todos:action.payload,
+        todos: action.payload,
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 }
 
 const todoData = {
-  id:"",
-  flag:false,
+  id: "",
+  flag: false,
 }
 
-export const updateTodoDataReducer = (state=todoData,action) =>{
-  switch(action.type){
+export const updateTodoDataReducer = (state = todoData, action) => {
+  switch (action.type) {
     case UPDATE_TODO_DATA:
       return {
-       ...state,
-        id:action.payload.id,
-        flag:action.payload.flag,
-    
+        ...state,
+        id: action.payload.id,
+        flag: action.payload.flag,
+
       }
-        default:
-          return state;
+    default:
+      return state;
   }
 
 }
 const deleteTodoFlag = {
   flag: false
 }
-export const deleteTodoReducer = (state=deleteTodoFlag,action) => {
-  switch(action.type){
+export const deleteTodoReducer = (state = deleteTodoFlag, action) => {
+  switch (action.type) {
     case DELETE_TODO:
       return {
-       ...state,
-        flag:action.payload.flag,
+        ...state,
+        flag: action.payload.flag,
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 }
 
 
 //-------------- Reducer to handle upgradeMembership by the admin -----------------------------
-const upgradeClientMembership ={
-  upgradeClientMembership:null
+const upgradeClientMembership = {
+  upgradeClientMembership: null
 }
- export const upgradeClientMembershipByAdminPannelReducer = (state=upgradeClientMembership, action) => {
-  switch(action.type){
-    case  UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE:
+export const upgradeClientMembershipByAdminPannelReducer = (state = upgradeClientMembership, action) => {
+  switch (action.type) {
+    case UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE:
       return {
-       ...state,
+        ...state,
         upgradeClientMembership: action.payload,
       }
     default:
       return state;
   }
- }                    
- //------------------------------------------------------------------------------------------------
+}
+//------------------------------------------------------------------------------------------------
 
 //  get NotificationData reducer
 
@@ -1066,12 +1167,12 @@ const Notifications = {
   NotificationsData: null
 }
 
-export const getNotificationDataAction = (state=Notifications, action) => {
-  switch(action.type){
+export const getNotificationDataAction = (state = Notifications, action) => {
+  switch (action.type) {
     case GET_ALL_NOTIFICATIONS:
       return {
-       ...state,
-       NotificationsData: action.payload,
+        ...state,
+        NotificationsData: action.payload,
       }
     default:
       return state;
