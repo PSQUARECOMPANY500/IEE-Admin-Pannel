@@ -21,7 +21,7 @@ import {
 } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import { useDispatch, useSelector } from "react-redux";
-import { GoStarFill } from "react-icons/go";
+import { FaStar } from "react-icons/fa";
 
 import RepotImage from "./RepotImage";
 
@@ -226,7 +226,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     return slots[slots.length - 1]?.split("-")[1];
   };
   /*.......................................................... apX13 code by emit ................................................................ */
-  function handleReportSectionData(reportData, index,type) {
+  function handleReportSectionData(reportData, index, type) {
     //setHandleReportData
     if (reportData.ServiceProcess === "completed") {
       setHandleReportData(false);
@@ -235,13 +235,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
       setHandleReportData(true);
       setReportData(reportData);
     }
-    if(type==="ticket"){
+    if (type === "ticket") {
       setHandleCallbackSelection((prevState) => {
         const newState = prevState.map((item, i) => i === index);
         return newState;
       });
     }
-    else{
+    else {
       setHandleServiceSelection((prevState) => {
         const newState = prevState.map((item, i) => i === index);
         return newState;
@@ -331,115 +331,104 @@ const TaskLocationSection = forwardRef((props, ref) => {
                                   ? "#FFF9EF"
                                   : "#ffffff"
                               }`,
-                            }}
-                            className={`ticket-card ${
-                              handleCallbackSelection[index] &&
-                              "service-card-selected"
+                          }}
+                          className={`ticket-card ${handleCallbackSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            onClick={() =>
-                              handleReportSectionData(reportData, index,"ticket")
-                            }
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.clientName}</h5>
-                              </div>
+                          onClick={() =>
+                            handleReportSectionData(reportData, index, "ticket")
+                          }
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.enggName}</h5>
-                              </div>
-                            </div>
-
-                            <div className="ticket-card-bottom">
-                              <h5 className="ticket-card-bottom-starting-slot">
-                                {extractStartTime(value?.Slot)}
-                              </h5>
-
-                              <h5 className="ticket-card-bottom-end-slot">
-                                {extractEndTime(value?.Slot)}
-                              </h5>
-                              {reportData.engRating &&
-                                reportData?.ServiceProcess === "completed" && (
-                                  <h5 className="ratingByClient">
-                                    <p className="ratingByClient1st">
-                                      <GoStarFill />
-                                    </p>
-                                    <p className="ratingByClient2nd">
-                                      {reportData?.engRating}
-                                    </p>
-                                  </h5>
-                                )}
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.clientName}</h5>
                             </div>
                           </div>
-                        );
-                      })
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.enggName}</h5>
+                            </div>
+                          </div>
+
+                          <div className="ticket-card-bottom">
+                            <h5 className="ticket-card-bottom-starting-slot">
+                              {extractStartTime(value?.Slot)}
+                            </h5>
+
+                            <h5 className="ticket-card-bottom-end-slot">
+                              {extractEndTime(value?.Slot)}
+                            </h5>
+                            {reportData.engRating &&
+                              reportData?.ServiceProcess === "completed" && (
+                                <div className="star">
+                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                    <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      );
+                    })
                     : filterData?.map((value, index) => {
-                        let reportData = value;
-                        return (
-                          <div
-                            className={`ticket-card ${
-                              handleCallbackSelection[index] &&
-                              "service-card-selected"
+                      let reportData = value;
+                      return (
+                        <div
+                          className={`ticket-card ${handleCallbackSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            style={{
-                              backgroundColor: `${
-                                reportData?.ServiceProcess === "completed"
-                                  ? "#FFF9EF"
-                                  : "#ffffff"
+                          style={{
+                            backgroundColor: `${reportData?.ServiceProcess === "completed"
+                              ? "#FFF9EF"
+                              : "#ffffff"
                               }`,
-                            }}
-                            onClick={() =>
-                              handleReportSectionData(reportData, index,"ticket")
-                            }
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.clientName.toUpperCase()}</h5>
-                              </div>
+                          }}
+                          onClick={() =>
+                            handleReportSectionData(reportData, index, "ticket")
+                          }
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{value?.enggName.toUpperCase()}</h5>
-                              </div>
-                            </div>
-                            <div className="ticket-card-bottom">
-                              <h5 className="ticket-card-bottom-starting-slot">
-                                {extractStartTime(value?.Slot)}
-                              </h5>
-
-                              <h5 className="ticket-card-bottom-end-slot">
-                                {extractEndTime(value?.Slot)}
-                              </h5>
-                              {reportData.engRating &&
-                                reportData?.ServiceProcess === "completed" && (
-                                  <h5 className="ratingByClient">
-                                    <p className="ratingByClient1st">
-                                      <GoStarFill />
-                                    </p>
-                                    <p className="ratingByClient2nd">
-                                      {reportData?.engRating}
-                                    </p>
-                                  </h5>
-                                )}
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.clientName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })}
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{value?.enggName.toUpperCase()}</h5>
+                            </div>
+                          </div>
+                          <div className="ticket-card-bottom">
+                            <h5 className="ticket-card-bottom-starting-slot">
+                              {extractStartTime(value?.Slot)}
+                            </h5>
+
+                            <h5 className="ticket-card-bottom-end-slot">
+                              {extractEndTime(value?.Slot)}
+                            </h5>
+                            {reportData.engRating &&
+                              reportData?.ServiceProcess === "completed" && (
+                                <div className="star">
+                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                    <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      );
+                    })}
                 </>
               )}
 
@@ -447,115 +436,103 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {filterData
                     ? filterData?.map((serviceData, index) => {
-                        let reportData = serviceData;
-                        return (
-                          <div
-                            className={`service-card ${
-                              handleServiceSelection[index] &&
-                              "service-card-selected"
+                      let reportData = serviceData;
+                      return (
+                        <div
+                          className={`service-card ${handleServiceSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            onClick={() => handleReportSectionData(reportData,index,"service")}
-                            style={{
-                              backgroundColor: `${
-                                reportData?.ServiceProcess === "completed"
-                                  ? "#FFF9EF"
-                                  : "#ffffff"
+                          onClick={() => handleReportSectionData(reportData, index, "service")}
+                          style={{
+                            backgroundColor: `${reportData?.ServiceProcess === "completed"
+                              ? "#FFF9EF"
+                              : "#ffffff"
                               }`,
-                            }}
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData?.clientName.toUpperCase()}</h5>
-                              </div>
+                          }}
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData?.enggName.toUpperCase()}</h5>
-                              </div>
-                            </div>
-
-                            <div className="service-card-bottom">
-                              <h5>{extractStartTime(serviceData.Slot)}</h5>
-                              <h5>{extractEndTime(serviceData.Slot)}</h5>
-                              {reportData.rating &&
-                                reportData?.ServiceProcess === "completed" && (
-                                  <h5 className="ratingByClient">
-                                    <p className="ratingByClient1st">
-                                      <GoStarFill />
-                                    </p>
-                                    <p className="ratingByClient2nd">
-                                      {reportData?.rating}
-                                    </p>
-                                  </h5>
-                                )}
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData?.clientName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData?.enggName.toUpperCase()}</h5>
+                            </div>
+                          </div>
+
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData.Slot)}</h5>
+                            {reportData.rating &&
+                              reportData?.ServiceProcess === "completed" && (
+                                <div className="star">
+                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                    <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      );
+                    })
                     : currentDateServiceRequest?.map((serviceData, index) => {
-                        const reportServiceData = serviceData;
+                      const reportServiceData = serviceData;
 
-                        return (
-                          <div
-                            style={{
-                              backgroundColor: `${
-                                reportServiceData?.ServiceProcess ===
-                                "completed"
-                                  ? "#FFF9EF"
-                                  : "#ffffff"
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: `${reportServiceData?.ServiceProcess ===
+                              "completed"
+                              ? "#FFF9EF"
+                              : "#ffffff"
                               }`,
-                            }}
-                            className={`service-card ${
-                              handleServiceSelection[index] &&
-                              "service-card-selected"
+                          }}
+                          className={`service-card ${handleServiceSelection[index] &&
+                            "service-card-selected"
                             }`}
-                            onClick={() =>
-                              handleReportSectionData(reportServiceData,index,"service")
-                            }
-                          >
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5>Name:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData?.clientName.toUpperCase()}</h5>
-                              </div>
+                          onClick={() =>
+                            handleReportSectionData(reportServiceData, index, "service")
+                          }
+                        >
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5>Name:</h5>
                             </div>
-
-                            <div className="ticket-sub-card-row">
-                              <div className="ticket-sub-card-row-right">
-                                <h5> ENGINEER:</h5>
-                              </div>
-                              <div className="ticket-sub-card-row-left">
-                                <h5>{serviceData?.enggName.toUpperCase()}</h5>
-                              </div>
-                            </div>
-                            <div className="service-card-bottom">
-                              <h5>{extractStartTime(serviceData?.Slot)}</h5>
-                              <h5>{extractEndTime(serviceData?.Slot)}</h5>
-                              {reportServiceData.rating &&
-                                reportServiceData?.ServiceProcess ===
-                                  "completed" && (
-                                  <h5 className="ratingByClient">
-                                    <p className="ratingByClient1st">
-                                      <GoStarFill />
-                                    </p>
-                                    <p className="ratingByClient2nd">
-                                      {reportServiceData?.rating}
-                                    </p>
-                                  </h5>
-                                )}
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData?.clientName.toUpperCase()}</h5>
                             </div>
                           </div>
-                        );
-                      })}
+
+                          <div className="ticket-sub-card-row">
+                            <div className="ticket-sub-card-row-right">
+                              <h5> ENGINEER:</h5>
+                            </div>
+                            <div className="ticket-sub-card-row-left">
+                              <h5>{serviceData?.enggName.toUpperCase()}</h5>
+                            </div>
+                          </div>
+                          <div className="service-card-bottom">
+                            <h5>{extractStartTime(serviceData?.Slot)}</h5>
+                            <h5>{extractEndTime(serviceData?.Slot)}</h5>
+                            {reportServiceData.rating &&
+                              reportServiceData?.ServiceProcess ===
+                              "completed" && (
+                                <div className="star">
+                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                    <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
+                                </div>
+                              )}
+                          </div>
+                        </div>
+                      );
+                    })}
                 </>
               )}
             </div>

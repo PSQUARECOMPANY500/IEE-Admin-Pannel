@@ -14,7 +14,7 @@ import AddTicketModals from "./AddTicketModals";
 import { RiSearchLine } from "react-icons/ri";
 import pdfIcon from "../../../../Assets/Images/pdf-icon.png";
 import execelIcon from "../../../../Assets/Images/execel-icon.png";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 import {
   getFilterLocation,
   getEngineerNames,
@@ -512,7 +512,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 </div>
               </span>
             ) : (
-              <img src={pdfIcon} />
+              <img src={pdfIcon} style={{ marginTop: "0.3rem" }} />
             )}
 
             {/* ............................................................ax13-search...................................................... */}

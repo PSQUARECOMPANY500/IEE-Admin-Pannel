@@ -22,7 +22,7 @@ const MembershipPopup = ({ onClose, selectedOption, JobOrderNumber }) => {
         <div className="membershippopup-center">
           <div className="membershippopup-inner">
             <h4>
-              Do you want to upgrade <br /> the membership?
+              Do you want to change <br /> the membership?
             </h4>
           </div>
           <div className="membershippopup-btn">

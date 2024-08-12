@@ -102,6 +102,7 @@ export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
 export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
 export const DELETE_TODO = "DELETE_TODO"
+export const JON_MEMBERSHIP = "JON_MEMBERSHIP"
 
 
 export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE'
@@ -518,7 +519,7 @@ export const fetchChecklistAction = (type) => {
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Admin actions to handle get All the clientcallbacks
 export const fetchAllCallbacksAction = () => {
-  return async (dispatch) => { 
+  return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/Allcallbacks`);
       dispatch({
@@ -643,6 +644,20 @@ export const requestGetMemberShipDataAction = () => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+export const settingJOBORDER = (jon) => {
+  return async (dispatch) => {
+    try {
+      await dispatch({
+        type: JON_MEMBERSHIP,
+        payload: jon,
+      });
+    } catch (error) {
+      console.log("error while fetching data", error);
+    }
+  }
+}
+
 
 export const requestLimitedClientDataAction = async (
   dispatch,

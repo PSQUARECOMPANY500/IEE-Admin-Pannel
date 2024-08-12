@@ -67,20 +67,30 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
 module.exports.referalUser = async (req, res) => {
   try {
     const { jobOrderNumber, Name, Number, City, Hot } = req.body;
-
-    const checkReferal = await RegisterClientDetails.findOne({
-      PhoneNumber: Number,
+    let result = Number.replace(/\s+/g, '');
+    const checkClient = await RegisterClientDetails.findOne({
+      PhoneNumber: result,
     });
-    if (checkReferal) {
+
+    const checkReferal = await ReferalSchema.findOne({
+      Number: result
+    });
+    if (checkClient) {
       return res
         .status(400)
         .json({ message: "Lift is already installed on this number" });
     }
 
+    if (checkReferal) {
+      return res
+        .status(400)
+        .json({ message: "Referal for this number already exists" });
+    }
+
     const Referal = await ReferalSchema.create({
       jobOrderNumber,
       Name,
-      Number,
+      Number: result,
       City,
       Hot,
     });
@@ -702,23 +712,23 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     const callback = await clientRequestCallback.find({
       JobOrderNumber,
     });
-    
+
     // console.log("pppppppppppppppppp",callback);
 
 
     let data = [];
 
 
-    
+
     if (service.length > 0) {
       data = await Promise.all(
         service.map(async (item) => {
           const resp = await assignService.find({
             RequestId: item.RequestId,
           });
-       
+
           return resp;
-      
+
         })
       );
     } else if (callback.length > 0) {
@@ -729,7 +739,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
           });
           return resp;
 
-      })
+        })
       );
     } else {
       return res.status(200).json({
@@ -783,32 +793,32 @@ module.exports.getCurrentScheduleService = async (req, res) => {
       res.status(200).json({
         status: "success",
         message:
-        currentDate === data[0][0].Date
+          currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat(
               data[0][0].Slot[0].split("-")[0]
             )}`
             : currentDate > data[0][0].Date
               ? "Service Expired"
               : "Service Booked",
-              time:
-              currentDate > data[0][0].Date
+        time:
+          currentDate > data[0][0].Date
             ? "(Awaiting Cancelation)"
             : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
             "-" +
             convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
-            date: data[0][0].Date,
-            trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
-            liveTracking: currentDate === data[0][0].Date ? true : false,
-            rating: false,
-          });
-        } else if (
-          ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
-          service[0]?.isDead === false,
-          !rating && data[0][0].ServiceProcess === "completed")
-        ) {
-          // console.log("*********************",rating);
+        date: data[0][0].Date,
+        trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
+        liveTracking: currentDate === data[0][0].Date ? true : false,
+        rating: false,
+      });
+    } else if (
+      ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
+        service[0]?.isDead === false,
+        !rating && data[0][0].ServiceProcess === "completed")
+    ) {
+      // console.log("*********************",rating);
       //case 3
-       res.status(200).json({
+      res.status(200).json({
         status: "success",
         message: "Service Completed",
         time: data[0][0].Slot,
@@ -1292,7 +1302,7 @@ module.exports.updateClientProfile = async (req, res) => {
     }, {
       "clientFormDetails.userName": name,
       "clientFormDetails.phoneNumber": phone,
-      "clientFormDetails.email":  emailAddress, 
+      "clientFormDetails.email": emailAddress,
     })
 
     return res.status(200).json({
