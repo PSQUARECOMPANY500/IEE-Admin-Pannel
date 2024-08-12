@@ -79,15 +79,14 @@ const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
 
               {data.iscallback
                 ? showTicketModal1 && (
-                    <AddTicketModals
-                      closeModal={() => setShowTicketModal1(false)}
-                      showTicketModal={showTicketModal1}
-                      callbackId={data.callbackId}
-                      setRenderTicket={setRenderTicket}
-                      setTicketUpdate={setTicketUpdate}
-                      enggId={data.EnggId}
-                      isAssigned={false}
-                    />
+                  <ServiceRequestModals
+                  closeModal={() => setShowTicketModal1(false)}
+                  showTicketModal={showTicketModal1}
+                  RequestId={data.callbackId}
+                  setRenderTicket={setRenderTicket}
+                  enggId={data.EnggId}
+                  isAssigned={false}
+                />
                   )
                 : showTicketModal1 && (
                     <ServiceRequestModals
