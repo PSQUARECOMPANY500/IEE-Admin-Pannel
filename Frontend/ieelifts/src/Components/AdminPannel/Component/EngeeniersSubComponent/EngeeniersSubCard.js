@@ -44,21 +44,22 @@ const EngeeniersSubCard = (props) => {
         setIsFirst(false);
       } else {
         setIsFirst(true);
-       (!isFirst&&scrollFun())
+        setIsActive(index);
+        (!isFirst && scrollFun())
       }
       setSingleClickTimeout(null);
     }, 200);
 
     setSingleClickTimeout(timeout);
-    setIsActive(index);
+    // setIsActive(index);
   }
   const scrollFun = () => {
     if (!scrollRef.current) {
       return
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-    },[100])
+    }, [100])
   }
 
   const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
@@ -97,7 +98,7 @@ const EngeeniersSubCard = (props) => {
 
 
   return (
-    <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none'}}>
+    <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {allEngData && allEngData.map((e, index) => (
 
@@ -132,7 +133,7 @@ const EngeeniersSubCard = (props) => {
               </h5>
             </div>
             <div className="EngCardMessage"></div>
-            {isActive === index &&<div className="for-scroll" style={{position:'absolute',height:'10px',width:'10px',top:'100%'}} ref={scrollRef}></div>}
+            {isActive === index && <div className="for-scroll" style={{ position: 'absolute', height: '10px', width: '10px', top: '100%' }} ref={scrollRef}></div>}
           </div>
 
         ))}
