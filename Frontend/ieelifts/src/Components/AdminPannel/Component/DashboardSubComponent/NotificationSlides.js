@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
-import AddTicketModals from "./AddTicketModals";
-import { getClientCancelServiceCallbackDataAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useDispatch, useSelector } from "react-redux";
-import ServiceRequestModals from "../ServiceRequestSubComponent/ServiceRequestModals";
+import { cancelEnggServiceRequestFormShiftingAction } from "../../../../ReduxSetup/Actions/AdminActions"
 
 const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
   const dispatch = useDispatch();
   const [key, setKey] = useState(0);
-  const [showTicketModal1, setShowTicketModal1] = useState(false);
-  const [renderTicket, setRenderTicket] = useState(true);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     dispatch(getClientCancelServiceCallbackDataAction());
-  //   }, 1000);
-  // }, [renderTicket, dispatch]);
+ 
+
+
 
   const openModal = (isCallback,callbackId,EnggId) => {
-    setShowTicketModal1(true);
-    console.log("pretttttttt");
+    dispatch(cancelEnggServiceRequestFormShiftingAction(isCallback,callbackId,EnggId))
   };
 
   const cancelRequestByClient = useSelector(
@@ -27,7 +20,6 @@ const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
         ?.cancelRequestsData?.cancelledRequests
   );
 
-  // console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}", cancelRequestByClient);
 
   useEffect(() => {
     // Increment the key to force re-render and trigger the animation
@@ -39,8 +31,6 @@ const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
       {" "}
       {notifications?.map(
         (data, index) => (
-          console.log(")))))))))))))))))))))))))))", data.callbackId),
-          console.log(")))))))))))))))))))))))))))", data.iscallback),
           (
             <>
               <div
@@ -76,28 +66,6 @@ const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
                   </div>
                 </div>
               </div>
-
-              {data.iscallback
-                ? showTicketModal1 && (
-                  <ServiceRequestModals
-                  closeModal={() => setShowTicketModal1(false)}
-                  showTicketModal={showTicketModal1}
-                  RequestId={data.callbackId}
-                  setRenderTicket={setRenderTicket}
-                  enggId={data.EnggId}
-                  isAssigned={false}
-                />
-                  )
-                : showTicketModal1 && (
-                    <ServiceRequestModals
-                      closeModal={() => setShowTicketModal1(false)}
-                      showTicketModal={showTicketModal1}
-                      RequestId={data.callbackId}
-                      setRenderTicket={setRenderTicket}
-                      enggId={data.EnggId}
-                      isAssigned={false}
-                    />
-                  )}
             </>
           )
         )

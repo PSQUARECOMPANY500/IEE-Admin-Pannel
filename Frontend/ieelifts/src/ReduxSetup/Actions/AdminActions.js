@@ -110,6 +110,11 @@ export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSH
 export const GET_ALL_NOTIFICATIONS = 'GET_ALL_NOTIFICATIONS'
 
 export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA = 'GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA'
+
+
+export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING'
+
+export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -373,9 +378,6 @@ export const assignserviceRequestByAdmin = (
 ) => {
   return async (dispatch) => {
     try {
-      console.log("RepresentativeName", RepresentativeName);
-      console.log("RepresentativeNumber", RepresentativeNumber);
-
       const response = await axios.post(
         `${config.apiUrl}/admin/assignRequest`,
         {
@@ -942,7 +944,7 @@ export const closeAddEngggModalAction = () => ({
   type: "CLOSE_MODAL",
 });
 
-//-------------------------x
+//-------------------------------------------x
 export const openAddClientModalAction = () => ({
   type: "OPEN_CLIENT_MODAL",
 });
@@ -1275,7 +1277,7 @@ export const getadminReportData = (callbackId) => {
   };
 };
 
-export const ReportCrouserHandler = (Index, IsOpen) => {
+export const ReportCrouserHandler = (Index, IsOpen) => {             // TODO:
   return async (dispatch) => {
     dispatch({
       type: REPORT_CROUSER_HANDLER,
@@ -1824,3 +1826,41 @@ export const getClientCancelServiceCallbackDataAction = () => {
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------
+
+//action to handle cancel Engg callback/serivce request
+
+export const cancelEnggServiceRequestFormShiftingAction = (isCallback,callbackId,EnggId) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING,
+        payload: {isCallback,callbackId,EnggId},
+      })
+    } catch (error) {
+      console.log("error while fetching cancel service request form shifting")
+    }
+  }
+}
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------
+// action to update Status Of Cancel Service And Callback Request
+
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =>{
+  return async (dispatch) => {
+    try {
+      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`,{
+        serviceId
+      })
+
+      dispatch({
+        type: UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST,
+        payload: response.data,
+      })
+
+    } catch (error) {
+      console.log("error to update Status Of Cancel Service And Callback Request",error)
+    }
+  }
+
+}

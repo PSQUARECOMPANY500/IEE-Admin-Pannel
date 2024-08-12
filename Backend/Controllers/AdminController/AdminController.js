@@ -570,7 +570,6 @@ module.exports.getAllChecklist = async (req, res) => {
 //function to handle   (assign callbacks to Engg)
 module.exports.assignCallbacks = async (req, res) => {
   try {
-    // console.log("9999999999999999",req.body);
     const {
       ServiceEnggId,
       JobOrderNumber,
@@ -643,27 +642,19 @@ module.exports.assignCallbacks = async (req, res) => {
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to assign requests from the client
-module.exports.AssignServiceRequests = async (req, res) => {
+module.exports.AssignServiceRequests = async (req, res) => {     TODO:  
   try {
-    const {
-      ServiceEnggId,
-      JobOrderNumber,
-      RequestId,
-      AllotAChecklist,
-      Slot,
-      Date,
-      Message,
-      ServiceProcess,
-      RepresentativeName,
-      RepresentativeNumber,
-    } = req.body;
+    const { ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,ServiceProcess,RepresentativeName,RepresentativeNumber} = req.body;
 
     let callback;
-    // console.log("RepresentativeName--",RepresentativeName)
-    // console.log("RepresentativeNumber--",RepresentativeNumber)
+  
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
+
+
+    
+
 
     if (existingCallback) {
       callback = await AssignSecheduleRequest.findOneAndUpdate(
@@ -700,7 +691,6 @@ module.exports.AssignServiceRequests = async (req, res) => {
         RepresentativeNumber,
       });
     }
-
     await getAllServiceRequest.findOneAndUpdate(
       {
         RequestId,
@@ -866,8 +856,8 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
       ...clientRequestDetails._doc,
       clientDetail: clientDetail,
     };
-console.log('===================================',RequestClientdetails
-)
+
+
     res.status(200).json({
       message: "all detal fetched successfully",
       request: RequestClientdetails,
@@ -3950,6 +3940,109 @@ module.exports.putEngineerAttendence = async (req, res) => {
 };
 
 //----------------------------------------------------------------------------------------------
+
+
+
+//api to update cancel status of serviceRequest and callback requests
+
+module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (req,res) =>{
+  try {
+    const { serviceId } = req.body;
+    
+  
+    const cancelCallbacks = await ServiceAssigntoEngg.findOne({callbackId:serviceId})
+    const cancelService = await AssignSecheduleRequest.findOne({RequestId:serviceId})
+ 
+
+    if(!cancelCallbacks && !cancelService){
+      return res.status(400).json({ message: "Service not found" });
+    }
+
+    if(cancelCallbacks){
+      await ServiceAssigntoEngg.findOneAndUpdate({callbackId:serviceId},{ServiceProcess:"dead"})
+      await getAllCalbacks.findOneAndUpdate({callbackId:serviceId},{isDead:true})
+    }else if(cancelService){
+      await AssignSecheduleRequest.findOneAndUpdate({RequestId:serviceId},{ServiceProcess:"dead"})
+      await getAllServiceRequest.findOneAndUpdate({RequestId:serviceId},{isDead:true})
+    }
+
+    res.status(200).json({message:"Request updated successfully"});
+
+  } catch (error) {
+    console.error("Error in putEngineerAttendence:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Internal Server Error while update the status of cancel service and callback requests",
+        error: error.message,
+      });
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // api for putting the memberships
 

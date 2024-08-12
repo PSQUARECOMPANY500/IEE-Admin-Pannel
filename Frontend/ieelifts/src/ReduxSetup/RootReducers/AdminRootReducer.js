@@ -56,6 +56,8 @@ import { getClientCancelServiceCallbackDataReducer } from "../Reducers/AdminRedu
 import { requestLimitedClientDataExpiringReducer } from "../Reducers/AdminReducer";
 import { requestLimitedClientDataExpiredReducer } from "../Reducers/AdminReducer";
 import { settingJONforMembship } from "../Reducers/AdminReducer";
+import { cancelEnggCallbackServiceRequestReducer } from "../Reducers/AdminReducer";
+import { updateStatusOfCancelServiceAndCallbackRequestReducer } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -115,10 +117,14 @@ const AdminRootReducer = combineReducers({
   deleteTodoReducer: deleteTodoReducer,
   upgradeClientMembershipByAdminPannelReducer: upgradeClientMembershipByAdminPannelReducer,
   getNotificationDataAction: getNotificationDataAction,
+  getClientCancelServiceCallbackDataReducer: getClientCancelServiceCallbackDataReducer,
+  cancelEnggCallbackServiceRequestReducer: cancelEnggCallbackServiceRequestReducer,
+  updateStatusOfCancelServiceAndCallbackRequestReducer: updateStatusOfCancelServiceAndCallbackRequestReducer,
   requestLimitedClientDataExpiredReducer: requestLimitedClientDataExpiredReducer,
   requestLimitedClientDataExpiringReducer: requestLimitedClientDataExpiringReducer,
   settingJONforMembship: settingJONforMembship,
   getClientCancelServiceCallbackDataReducer: getClientCancelServiceCallbackDataReducer
+
 });
 
 export default AdminRootReducer;

@@ -66,6 +66,8 @@ import { UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE } from "../Actions/AdminAction
 import { GET_ALL_NOTIFICATIONS } from "../Actions/AdminActions";
 
 import { GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA } from "../Actions/AdminActions";
+import { CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING } from "../Actions/AdminActions";
+import { UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1203,3 +1205,42 @@ export const getClientCancelServiceCallbackDataReducer = (state=cancelRequests, 
 
 
 //-----------------------------------------------------------------------------------------------------
+
+
+//reducer to handle cancel Engg callback/serivce request
+
+const cancelRequestObject = {
+  cancelRequestData: null
+}
+
+export const cancelEnggCallbackServiceRequestReducer = (state=cancelRequestObject, action) => {
+  switch (action.type){
+    case CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING:
+      return {
+        ...state,
+        cancelRequestData: action.payload,
+      }
+      default:
+        return state;
+  }
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------
+
+//recuer to update Status Of Cancel Service And CallbackRequest Action
+const updateCancelRequest = {
+  updateStatusData: null
+}
+
+export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state=updateCancelRequest, action) => {
+  switch(action.type){
+    case UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST:
+      return {
+       ...state,
+        updateStatusData: action.payload,
+      }
+    default:
+      return state;
+  }
+}

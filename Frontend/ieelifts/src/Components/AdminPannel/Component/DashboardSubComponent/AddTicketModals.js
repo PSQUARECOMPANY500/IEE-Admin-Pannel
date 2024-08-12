@@ -13,10 +13,12 @@ import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActio
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
 import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { updateStatusOfCancelServiceAndCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
+import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -27,6 +29,7 @@ const AddTicketModals = ({
   enggId,
   isAssigned,
   setTicketUpdate,
+  isNotification=false
 }) => {
   const dispatch = useDispatch();
 
@@ -127,7 +130,6 @@ console.log("userCallBackDetail",userCallBackDetail)
       ?.assignDetails;
   });
 
-  // console.log("getAssignedCallbackDetails",getAssignedCallbackDetails)
 
   useEffect(() => {
     if (isAssigned) {
@@ -161,8 +163,8 @@ console.log("userCallBackDetail",userCallBackDetail)
     }
   }, [getEnggState]);
 
-  const [rn, setrn] = useState("Enter Representative Name (Optional)");
-  const [rnum, setrum] = useState("Enter Representative Number (Optional)");
+  const [rn, setrn] = useState("");
+  const [rnum, setrum] = useState("");    //FIXME:
 
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
@@ -175,11 +177,11 @@ console.log("userCallBackDetail",userCallBackDetail)
     setTime(userCallBackDetail?.callbackTime || "");
     setrn(
       userCallBackDetail?.RepresentativeName ||
-        "Enter Representative Name (Optional)"
+        ""
     );
     setrum(
       userCallBackDetail?.RepresentativeNumber ||
-        "Enter Representative Number (Optional)"
+        ""
     );
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
     setMembershipType(userCallBackDetail?.clientDetail?.MembershipType || "")
@@ -194,7 +196,7 @@ console.log("userCallBackDetail",userCallBackDetail)
   //   };
   // }, []);
 
-  console.log(userCallBackDetail)
+  // console.log(userCallBackDetail)
 
   useEffect(() => {
     if (getAssignedCallbackDetails?.callbackdetails) {
@@ -210,8 +212,6 @@ console.log("userCallBackDetail",userCallBackDetail)
   }, [getAssignedCallbackDetails]);
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    // console.log(selectedOptions[0])
-    // console.log(selectedOptions);
     setSelectedEnggId(selectedOptions); // selected Engg id console
     dispatch(fetchEnggDetailAction(selectedOptions));
   };
@@ -303,7 +303,47 @@ console.log("userCallBackDetail",userCallBackDetail)
       return !bookedSlots.includes(slot.slot);
     });
 
+  //----------------------------------------------------------------------------------------------------
   const handleElevatorSectionDetails = () => {
+
+    if (isNotification) {
+       return dispatch(requestCallBackByAdmin(
+          jon,
+          date,
+          time,
+          typeOfIssue,
+          description,
+          rn,
+          rnum
+        )
+      ).then((callbackId) => {
+          let dateOnAssign;
+        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+          if (engDate === "") {
+            dateOnAssign = fetchedDate;
+          } else {
+            dateOnAssign = engDate;
+          }
+          dispatch(
+            assignCallBackByAdminAction(
+              engDetails?.enggJon,
+              jon,
+              callbackId,
+              ClickListOnSelect.value,
+              selectedSlot,
+              engDate,
+              message,
+              engDetails?.enggName,
+              engDetails.enggJon
+            )
+          );
+          dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(callbackId));
+          closeModal();
+        }
+      });
+    }
+
+
     let dateOnAssign;
     if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
       if (engDate === "") {
@@ -324,6 +364,7 @@ console.log("userCallBackDetail",userCallBackDetail)
           engDetails.enggJon
         )
       );
+      // TODO: implement api
       closeModal();
 
       setRenderTicket((prev) => !prev);
@@ -333,6 +374,9 @@ console.log("userCallBackDetail",userCallBackDetail)
       toast.error("Please fill all the fields");
     }
   };
+
+
+  
   //-------------------------------------------OnClick Edit-------------------------------------------------
   const [editchange, setEditChange] = useState(false);
 
@@ -344,7 +388,7 @@ console.log("userCallBackDetail",userCallBackDetail)
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
-      <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
+      <div className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? 'notification-modal' : ''}`}>
         <div className="child-modal-container">
           <div className="sub-child-modal-container">
             <div className="req-client-section">
@@ -789,16 +833,17 @@ console.log("userCallBackDetail",userCallBackDetail)
                 <div className="grid-form-container2">
                   {/* ------------------------------------------------------------------------------------------------------------------------------- */}
                   <div className="col75">
-                    <input
-                      placeholder={`${rn}`}
-                      onChange={(e) => setrn(e.target.value)}
-                      autoComplete="off"
-                    />
+                    <input placeholder={rn || "Enter Representative Name (Optional)"} value={rn}  onChange={(e) => setrn(e.target.value)}   autoComplete="off" 
+                    readOnly={editchange ? false : isAssigned}/>  
                   </div>
 
                   <div className="col75">
                     <input
-                      placeholder={`${rnum}`}
+                      placeholder={
+                        rnum || "Enter Representative Name (Optional)"
+                      }
+                      readOnly={editchange ? false : isAssigned}
+                      value={rnum}
                       onChange={(e) => setrum(e.target.value)}
                       autoComplete="off"
                     />

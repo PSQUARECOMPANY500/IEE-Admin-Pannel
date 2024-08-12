@@ -1,4 +1,4 @@
-//................................{amit}....................................
+//................................{PREET}....................................
 import React, { useEffect, useState, useRef } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
@@ -79,6 +79,10 @@ const AddEnggModal = () => {
   const [managerNumberShow, SetManagerNumberShow] = useState(false);
   // work experience input border changes states ends
 
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [error, setError] = useState("");
+
+
   // useEffect(() => {
   //   document.body.style.overflow = "hidden";
   //   return () => {
@@ -126,6 +130,8 @@ const AddEnggModal = () => {
       setDistrict(data[0]?.PostOffice[0]?.District);
       setState(data[0]?.PostOffice[0]?.State);
     } else {
+      setDistrict("");
+      setState("");
       console.log("PostOffice data not found");
     }
   };
@@ -192,8 +198,6 @@ const AddEnggModal = () => {
 
   const handleSaveEnggProfileData = async (e) => {
     e.preventDefault();
-
-
 
     if (!isAddharCardNumberEmpty && addharCardNumber.length <= 0) {
       setIsAddharCardNumberEmpty(true);
@@ -318,7 +322,6 @@ const AddEnggModal = () => {
     formData.append("AlternativeNumber", alternativeNumber);
 
     const response = await RegistrationEnggDetails(formData);
-    console.log("response", response);
 
     if (response.status === 200) {
       toast.error(response.data.message);
@@ -364,12 +367,106 @@ const AddEnggModal = () => {
   };
   useEffect(() => {
     if (window.innerWidth <= 1500) {
-      setFlag(true)
+      setFlag(true);
     }
-  }, [window.innerWidth])
+  }, [window.innerWidth]);
+
+  //handle input field validations --------------------------------
+  const handlleValidation = (e) => {
+    if (e.target.name === "firstName") {
+      const input = e.target.value;
+      const nonNumericPattern = /^[A-Za-z\s]*$/;
+      if (nonNumericPattern.test(input)) {
+        setFirstName(input);
+      }
+    } else if (e.target.name === "lastName") {
+      const input = e.target.value;
+      const nonNumericPattern = /^[A-Za-z\s]*$/;
+      if (nonNumericPattern.test(input)) {
+        setLastName(input);
+      }
+    } else if (e.target.name === "mobileNumber") {
+      const input = e.target.value;
+      const nonNumericPattern = /^\d{0,10}$/;
+      if (nonNumericPattern.test(input)) {
+        setMobileNumber(input);
+      }
+    } else if (e.target.name === "enggId") {
+      const input = e.target.value;
+      const nonNumericPattern = /^[a-zA-Z0-9]*$/;
+      if (nonNumericPattern.test(input)) {
+        setEnggId(input);
+      }
+    } else if (e.target.name === "AlternativeMobileNumber") {
+      const input = e.target.value;
+      const nonNumericPattern = /^\d{0,10}$/;
+      if (nonNumericPattern.test(input)) {
+        setAlternativeNumber(input);
+      }
+    } else if (e.target.name === "emailInput") {
+      const input = e.target.value;
+      const nonNumericPattern = /^\S+@\S+\.\S+$/;
+      setEmail(input);
+      setIsEmailValid(nonNumericPattern.test(input));
+    } else if (e.target.name === "addharCardNumberInput") {
+      const input = e.target.value;
+      const nonNumericPattern = /^\d{0,12}$/;
+      if (nonNumericPattern.test(input)) {
+        setAddharCardNumber(input);
+      }
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "application/pdf",
+      "application/msword", // for .doc
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // for .docx
+    ];
+    let stateSetter;
+    let errorMessage =
+      "Only PNG, JPEG, JPG, PDF, and Word files are supported.";
+    const fieldName = e.target.name;
+
+    if (file) {
+      if (e.target.name === "addharPhotoInput") {
+        stateSetter = SetAddharPhoto;
+      } else if (e.target.name === "pancardPhotoInput") {
+        stateSetter = SetPancardPhoto;
+      } else if (e.target.name === "drivingLiciencePhotUpload") {
+        stateSetter = SetDrivingLicensePhoto;
+      } else if (e.target.name === "qualificationPhotoUpload") {
+        stateSetter = SetQualificationPhoto;
+      } else if (e.target.name === "additionalCoursePhotoUpload") {
+        stateSetter = SetAdditionalCoursePhoto;
+      }
+
+      if (allowedTypes.includes(file.type)) {
+        stateSetter(file);
+        setError((preErrors) => ({ ...preErrors, [fieldName]: "" }));
+      } else {
+        setError((preErrors) => ({ ...preErrors, [fieldName]: errorMessage }));
+        e.target.value = null; // Reset input value
+      }
+    } else {
+      setError((prevErrors) => ({
+        ...prevErrors,
+        [fieldName]: "No file selected.",
+      }));
+    }
+  };
+
   return (
     <>
-      <div className="add-engg-wrapper" onClick={closeModal} style={{ zIndex: '99999999' }}>
+      <div
+        className="add-engg-wrapper"
+        onClick={closeModal}
+        style={{ zIndex: "99999999" }}
+      >
         <div
           className="add-engg-modal"
           ref={mainDivRef}
@@ -387,7 +484,7 @@ const AddEnggModal = () => {
           <div className="outerMainMoodule">
             <div className="EnggAddressSection">
               <div className="EnggDetailSection">
-                <div className="EnggDetailHeading">Engineer details</div>
+                <div className="EnggDetailHeading">Engineer Details</div>
                 <div className="EnggDetailInputField">
                   <div
                     className="imageUploadDiv"
@@ -438,9 +535,11 @@ const AddEnggModal = () => {
                         type="text"
                         autoComplete="off"
                         placeholder="First Name"
+                        name="firstName"
                         value={firstName}
                         onChange={(e) => {
-                          setFirstName(e.target.value);
+                          // setFirstName(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("firstNameInput")
@@ -454,8 +553,10 @@ const AddEnggModal = () => {
                         placeholder="Last Name"
                         autoComplete="off"
                         value={lastName}
+                        name="lastName"
                         onChange={(e) => {
-                          setLastName(e.target.value);
+                          // setLastName(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("lastNameInput")
@@ -472,8 +573,10 @@ const AddEnggModal = () => {
                         autoComplete="off"
                         required
                         value={mobileNumber}
+                        name="mobileNumber"
                         onChange={(e) => {
-                          setMobileNumber(e.target.value);
+                          // setMobileNumber(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("mobileNumberInput")
@@ -508,9 +611,11 @@ const AddEnggModal = () => {
                         placeholder="Engg Id"
                         required
                         autoComplete="off"
+                        name="enggId"
                         value={EngggId}
                         onChange={(e) => {
-                          setEnggId(e.target.value);
+                          // setEnggId(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("EnggIdInput")
@@ -525,9 +630,11 @@ const AddEnggModal = () => {
                         placeholder="Alternative Number"
                         autoComplete="off"
                         required
+                        name="AlternativeMobileNumber"
                         value={alternativeNumber}
                         onChange={(e) => {
-                          setAlternativeNumber(e.target.value);
+                          // setAlternativeNumber(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("AlternativeMobileNumber")
@@ -545,9 +652,12 @@ const AddEnggModal = () => {
                         placeholder="Email"
                         autoComplete="off"
                         required
+                        name="emailInput"
+                        style={{ color: isEmailValid ? "black" : "red" }}
                         value={email}
                         onChange={(e) => {
-                          setEmail(e.target.value);
+                          // setEmail(e.target.value);
+                          handlleValidation(e);
                           if (e.target.value.trim() !== "") {
                             document
                               .getElementById("emailInput")
@@ -593,7 +703,7 @@ const AddEnggModal = () => {
                 className="ExtraCiricularSection"
                 style={{ marginTop: "2.6rem" }}
               >
-                <div className="EnggDetailHeading">Address details</div>
+                <div className="EnggDetailHeading">Address Details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="EnggAddressInput">
                     <input
@@ -695,10 +805,12 @@ const AddEnggModal = () => {
                             type="text"
                             placeholder="Aadhaar Card No"
                             required
+                            name="addharCardNumberInput"
                             style={{ outline: "none" }}
                             value={addharCardNumber}
                             onChange={(e) => {
-                              setAddharCardNumber(e.target.value);
+                              // setAddharCardNumber(e.target.value);
+                              handlleValidation(e);
                               if (e.target.value.trim() !== "") {
                                 setIsAddharCardNumberEmpty(false);
                                 document
@@ -711,8 +823,10 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
-                            onChange={(e) => SetAddharPhoto(e.target.files[0])}
+                            // onChange={(e) => SetAddharPhoto(e.target.files[0])}
+                            onChange={handleFileChange}
                             style={{ display: "none" }}
+                            name="addharPhotoInput"
                             autoComplete="off"
                             ref={fileInputRef} // Attach fileInputRef to the input element
                           />
@@ -721,7 +835,11 @@ const AddEnggModal = () => {
                             onClick={() => handleUploadClick("aadhar")}
                           />
                         </div>
-                        <p>{addharPhoto.name}</p>
+                        <p>
+                          {error.addharPhotoInput
+                            ? error.addharPhotoInput
+                            : addharPhoto.name}
+                        </p>
                       </div>
 
                       <div className="addFileName">
@@ -737,8 +855,10 @@ const AddEnggModal = () => {
                         >
                           <input
                             type="file"
-                            name="fields[]"
-                            onChange={(e) => SetPancardPhoto(e.target.files[0])}
+                            // name="fields[]"
+                            // onChange={(e) => SetPancardPhoto(e.target.files[0])}
+                            onChange={handleFileChange}
+                            name="pancardPhotoInput"
                             style={{ display: "none" }}
                             autoComplete="off"
                             ref={fileInputRef1} // Attach fileInputRef to the input element
@@ -768,7 +888,11 @@ const AddEnggModal = () => {
                             onClick={() => handleUploadClick("panCard")}
                           />
                         </div>
-                        <p>{pancardPhoto.name}</p>
+                        <p>
+                          {error.pancardPhotoInput
+                            ? error.pancardPhotoInput
+                            : pancardPhoto.name}
+                        </p>
                       </div>
                     </div>
 
@@ -807,11 +931,12 @@ const AddEnggModal = () => {
 
                           <input
                             type="file"
-                            name="fields[]"
+                            name="drivingLiciencePhotUpload"
                             autoComplete="off"
-                            onChange={(e) =>
-                              SetDrivingLicensePhoto(e.target.files[0])
-                            }
+                            onChange={handleFileChange}
+                            // onChange={(e) =>
+                            //   SetDrivingLicensePhoto(e.target.files[0])
+                            // }
                             style={{ display: "none" }}
                             ref={fileInputRef2} // Attach fileInputRef to the input element
                           />
@@ -821,7 +946,11 @@ const AddEnggModal = () => {
                           />
                         </div>
                       </div>
-                      <p>{drivingLicensePhoto.name}</p>
+                      <p>
+                        {error.drivingLiciencePhotUpload
+                          ? error.drivingLiciencePhotUpload
+                          : drivingLicensePhoto.name}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -858,10 +987,11 @@ const AddEnggModal = () => {
                           <input
                             type="file"
                             autoComplete="off"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetQualificationPhoto(e.target.files[0])
-                            }
+                            name="qualificationPhotoUpload"
+                            // onChange={(e) =>
+                            //   SetQualificationPhoto(e.target.files[0])
+                            // }
+                            onChange={handleFileChange}
                             style={{ display: "none" }}
                             ref={fileInputRef3} // Attach fileInputRef to the input element
                           />
@@ -872,7 +1002,11 @@ const AddEnggModal = () => {
                             }
                           />
                         </div>
-                        <p>{qualificationPhoto.name}</p>
+                        <p>
+                          {error.qualificationPhotoUpload
+                            ? error.qualificationPhotoUpload
+                            : qualificationPhoto.name}
+                        </p>
                       </div>
 
                       <div className="addFileName">
@@ -909,10 +1043,11 @@ const AddEnggModal = () => {
                           <input
                             type="file"
                             autoComplete="off"
-                            name="fields[]"
-                            onChange={(e) =>
-                              SetAdditionalCoursePhoto(e.target.files[0])
-                            }
+                            name="additionalCoursePhotoUpload"
+                            // onChange={(e) =>
+                            //   SetAdditionalCoursePhoto(e.target.files[0])
+                            // }
+                            onChange={handleFileChange}
                             style={{ display: "none" }}
                             ref={fileInputRef4} // Attach fileInputRef to the input element\
                           />
@@ -923,7 +1058,11 @@ const AddEnggModal = () => {
                             }
                           />
                         </div>
-                        <p>{additionalCoursePhoto.name}</p>
+                        <p>
+                          {error.additionalCoursePhotoUpload
+                            ? error.additionalCoursePhotoUpload
+                            : additionalCoursePhoto.name}
+                        </p>
                       </div>
                     </div>
                   </div>

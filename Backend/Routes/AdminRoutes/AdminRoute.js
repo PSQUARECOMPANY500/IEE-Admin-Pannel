@@ -349,4 +349,7 @@ router.post('/upgradClientMembership', storageMembershipUpgradeBill.fields([
 
 router.get('/getAllClients', adminContoller.getAllClients);
 
+
+router.post('/updateStatusOfCancelServiceAndCallbackRequest', adminContoller.updateStatusOfCancelServiceAndCallbackRequest)
+
 module.exports = router;

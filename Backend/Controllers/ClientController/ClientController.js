@@ -23,9 +23,7 @@ const createMemberShipOnTables = require("../../Modals/MemebershipModal/Membersh
 
 const Razorpay = require("razorpay");
 
-const puppeteer = require("puppeteer");
 
-const moment = require("moment");
 
 const fs = require("fs");
 const path = require("path");
@@ -1350,16 +1348,26 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res)
     const cancelledServiceRequest = await assignService.findOne({RequestId: serviceId});
     const cancelledCallbackRequest = await assignCallback.findOne({callbackId: serviceId});
 
+
+
     if(cancelledServiceRequest) {
       await assignService.findOneAndUpdate(
         {RequestId: serviceId },
         { ServiceProcess: "cancelled", cancelDescription: description }
       );
+      await serviceRequest.findOneAndUpdate(
+        { RequestId: serviceId },
+        { isCancelled: true}
+      )
     }
     else if(cancelledCallbackRequest) {
       await assignCallback.findOneAndUpdate(
         { callbackId: serviceId },
         { ServiceProcess: "cancelled", cancelDescription: description }
+      );
+      await clientRequestCallback.findOneAndUpdate(
+        { callbackId: serviceId },
+        { isCancelled: true}
       );
     }
 
@@ -1383,7 +1391,7 @@ module.exports.getCallbackOrServiceCancelledRequests = async (req,res) => {
     const cancelledCallback = await assignCallback.find({ServiceProcess:"cancelled"})
 
 
-    if(cancelledRequests.length === 0 || cancelledCallback.length === 0){
+    if(cancelledRequests.length === 0 && cancelledCallback.length === 0){
       return res.status(200).json({message:"No cancelled requests found"});
     }
 

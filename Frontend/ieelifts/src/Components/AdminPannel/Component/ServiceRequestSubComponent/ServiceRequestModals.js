@@ -8,7 +8,7 @@ import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/Mul
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import { assignserviceRequestByAdmin } from "../../../../ReduxSetup/Actions/AdminActions";
+import { assignserviceRequestByAdmin, updateStatusOfCancelServiceAndCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import { getRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -21,6 +21,7 @@ import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSe
 
 import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
+import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
 
 const ServiceRequestModals = ({
   closeModal,
@@ -28,7 +29,9 @@ const ServiceRequestModals = ({
   RequestId,
   setRenderTicket,
   enggId,
-  isAssigned
+  isAssigned,
+  isNotification=false
+  
 }) => {
   const dispatch = useDispatch();
 
@@ -46,6 +49,8 @@ const ServiceRequestModals = ({
   const [engDate, setengDate] = useState("");
   const [membershipType,setMembershipType] = useState('')
   const[doh,setDoh]=useState('')
+
+  const[time,setTime]=useState('')
 
 
   const [engDetails, setEngDetails] = useState({
@@ -197,7 +202,23 @@ const ServiceRequestModals = ({
       setfetchedDate(dateAsString)
     }
 
+
+    const currentDate = new Date();
+    const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
+    const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
+    console.log(updatedFormatedDate);
+    setDate(updatedFormatedDate);
+
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    setTime(formattedTime);
+
   }, [getAssignRequestdetail])
+
+
+
 
   useEffect(() => {
     setreName()
@@ -227,6 +248,46 @@ const ServiceRequestModals = ({
   };
 
   const handleAssignRequest = () => {
+
+
+    if (isNotification) {
+      return dispatch(
+        requestServiceRequestByAdmin(
+          jon,
+          date,
+          time,
+          typeOfIssue.label,
+          description,
+          reName,
+          reNumber
+        )
+      ).then((RequestId) => {
+        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+          dispatch(
+            assignserviceRequestByAdmin(
+              engDetails?.enggJon,
+              jon,
+              RequestId,
+              ClickListOnSelect.value,
+              selectedSlot,
+              engDate,
+              message,
+              engDetails?.enggName,
+              engDetails.enggJon,
+              reName,
+              reNumber
+            )
+          );
+         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestId));
+         closeModal();
+       }
+     });
+   }
+
+
+
+
+
     let dateOnAssign;
     if (
       engDetails.enggJon &&
@@ -338,12 +399,13 @@ const ServiceRequestModals = ({
     setEditChange(!editchange)
   }
 
+  
   return (
 
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
-      <div className={`modal-container ${showTicketModal ? "active" : ""}`}>
+      <div className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification? 'notification-modal' : ''}`}>
 
 
         <div className="child-modal-container">

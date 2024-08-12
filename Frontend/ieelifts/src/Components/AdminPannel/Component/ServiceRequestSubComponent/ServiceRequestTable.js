@@ -373,6 +373,7 @@ const ServiceRequestTable = ({
           ) : getFilterConditions ? (
             filterData?.map((value, index) => {
               const isAssignedValue = value?.isAssigned;
+              const isCancelled = value?.isCancelled;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
 
@@ -426,7 +427,12 @@ const ServiceRequestTable = ({
                         openModal(4, value?.RequestId, isAssignedValue, enngID)
                       }
                     >
-                      {isAssignedValue ? (
+                      {isAssignedValue ? isCancelled ? (
+                         <AssignDropdown
+                         customAssign="cancelRequest"
+                         name="CANCEL"
+                       />
+                      ) : ( 
                         <AssignDropdown
                           customAssignName="assignNameColor"
                           name={name}
@@ -437,6 +443,8 @@ const ServiceRequestTable = ({
                           customAssign="assignColor"
                           name="Assign"
                         />
+                      ) (
+                        
                       )}
                     </td>
                   </tr>
