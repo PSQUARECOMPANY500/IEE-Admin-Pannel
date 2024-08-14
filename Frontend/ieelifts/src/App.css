@@ -4254,6 +4254,7 @@ footer a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 2.5rem
 }
 
 .icon-align-div {
