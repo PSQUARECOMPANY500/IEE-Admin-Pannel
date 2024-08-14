@@ -317,18 +317,10 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = moment(
-      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
-    ).format("DD/MM/YYYY");
+    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
-
-    console.log("currentDate=====================", currentDate);
-    console.log(
-      "currentDetailCallback=====================",
-      currentDetailCallback
-    );
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
@@ -392,8 +384,8 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         };
       })
     );
+    console.log(callbackWithDetails)
     const clearUndefined = callbackWithDetails.filter((item) => item !== undefined);
-
     return res.status(200).json({
       callbackWithDetails: clearUndefined,
     });
@@ -404,6 +396,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     });
   }
 };
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -687,7 +680,7 @@ module.exports.assignCallbacks = async (req, res) => {
 
 //function to assign requests from the client
 module.exports.AssignServiceRequests = async (req, res) => {
- try {
+  try {
     const {
       ServiceEnggId,
       JobOrderNumber,
@@ -4063,7 +4056,7 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
       ]);
       res
         .status(200)
-        .json({ status: "success",  message: "Service callback is cancelled" });
+        .json({ status: "success", message: "Service callback is cancelled" });
     }
 
     if (cancelService) {
@@ -4079,7 +4072,7 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
       ]);
       res
         .status(200)
-        .json({ status: "success",  message: "Scheduled service is cancelled"  });
+        .json({ status: "success", message: "Scheduled service is cancelled" });
     }
 
     return res.status(400).json({ message: "Service not found" });
