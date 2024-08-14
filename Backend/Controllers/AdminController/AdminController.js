@@ -317,7 +317,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
@@ -857,6 +859,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
     // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+
     const allCallBacks = await assignCallback.find({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
       ServiceProcess: "completed",
