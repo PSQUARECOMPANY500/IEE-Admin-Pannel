@@ -300,15 +300,20 @@ const TicketSection = ({ setTicketUpdate }) => {
       } else {
         responseData = statusData || engineerData || locationData || typeData;
       }
-      setFilterData(responseData);
+
+      setFilterData(responseData.filter
+        ((item) => !item.isCancelled)
+      );
       setGetFilterConditions(true);
     }
   }, [filterConditions]);
   // ----------------------------------------------{/armaan}-------------------------------------------------------------
   useEffect(() => {
     // console.log("re-rendering ho rahi hai");
-    setFilteredCD(fetchCallbacks);
-    setallCD(fetchCallbacks);
+    setFilteredCD(fetchCallbacks?.filter
+      ((item) => !item.isCancelled));
+    setallCD(fetchCallbacks?.filter
+      ((item) => !item.isCancelled));
     setGetFilterConditions(false);
   }, [fetchCallbacks]);
 
@@ -320,9 +325,11 @@ const TicketSection = ({ setTicketUpdate }) => {
     const newTimer = setTimeout(() => {
       if (searchText) {
         const data = filtersearch(searchText, allCD);
-        setFilteredCD(data);
+        setFilteredCD(data?.filter
+          ((item) => !item.isCancelled));
       } else {
-        setFilteredCD(allCD);
+        setFilteredCD(allCD?.filter
+          ((item) => !item.isCancelled));
       }
       setIsSearching(false); // Set isSearching to false after search completes
     }, 700);
@@ -474,7 +481,10 @@ const TicketSection = ({ setTicketUpdate }) => {
           {/* ............................................................ax13-search...................................................... */}
 
           <div className="icon-align-div">
-            {!checkboxStates.includes(true) ? (
+            {!((filteredCD &&
+              (filteredCD.length > 0 ||
+                getFilterConditions.length > 0)) &&
+              checkboxStates.every((isChecked) => isChecked)) ? (
               <span className="top-icon">
                 <div className="search-box">
                   <input
@@ -491,7 +501,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                     className="search-btn "
                     onClick={() => {
                       const data = filtersearch(searchText, allCD);
-                      setFilteredCD(data);
+                      setFilteredCD(data?.filter
+                        ((item) => !item.isCancelled));
                     }}
                   >
                     <RiSearchLine className="iconColor" />
@@ -504,7 +515,10 @@ const TicketSection = ({ setTicketUpdate }) => {
 
             {/* ............................................................ax13-search...................................................... */}
 
-            {!checkboxStates.includes(true) ? (
+            {!((filteredCD &&
+              (filteredCD.length > 0 ||
+                getFilterConditions.length > 0)) &&
+              checkboxStates.every((isChecked) => isChecked)) ? (
               <div
                 className="sub-components-ticket-filter"
                 ref={dropdownClickRef}
@@ -539,7 +553,10 @@ const TicketSection = ({ setTicketUpdate }) => {
 
             {/* add  ticket +icon */}
 
-            {!checkboxStates.includes(true) ? (
+            {!((filteredCD &&
+              (filteredCD.length > 0 ||
+                getFilterConditions.length > 0)) &&
+              checkboxStates.every((isChecked) => isChecked)) ? (
               <div
                 className="sub-components-ticket-filter"
                 onClick={() => openModal(0)}
@@ -648,9 +665,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                 </>
               ) : getFilterConditions ? (
                 filterData.map((data, index) => {
-                  if (data.isDead || data.isCancelled) {
-                    return
-                  }
                   const currentCallbackId = data.callbackId;
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
@@ -800,9 +814,6 @@ const TicketSection = ({ setTicketUpdate }) => {
                 })
               ) : (
                 filteredCD?.map((data, index) => {
-                  if (data.isDead || data.isCancelled) {
-                    return
-                  }
                   const currentCallbackId = data.callbackId;
                   const IsDead = data.isDead;
                   const isCancelled = data.isCancelled;
