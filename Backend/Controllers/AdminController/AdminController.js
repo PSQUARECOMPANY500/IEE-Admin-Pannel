@@ -93,15 +93,14 @@ module.exports.getEnggCrouserData = async (req, res) => {
 
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
-          .map((data) => (
-            {
-              ServiceEnggId: data.ServiceEnggId,
-              type: data.callbackId ? "Calback" : "Service",
-              JobOrderNumber: data.JobOrderNumber,
-              Slot: data.Slot,
-              Date: data.Date,
-              TaskStatus: data.ServiceProcess,
-            }));
+          .map((data) => ({
+            ServiceEnggId: data.ServiceEnggId,
+            type: data.callbackId ? "Calback" : "Service",
+            JobOrderNumber: data.JobOrderNumber,
+            Slot: data.Slot,
+            Date: data.Date,
+            TaskStatus: data.ServiceProcess,
+          }));
 
         const filteredServiceAssignments = mainDetails.filter((item) => {
           return item.Date === currentDate.toLocaleDateString("en-GB");
@@ -199,8 +198,6 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
     // Grouping slots by ServiceEnggId
     const slotsByEnggId = {};
 
-
-
     combinedData.forEach((entry) => {
       if (!slotsByEnggId[entry.ServiceEnggId]) {
         slotsByEnggId[entry.ServiceEnggId] = [];
@@ -223,7 +220,6 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
       })
     );
 
-
     res.status(200).json({
       BookedSlots: result,
     });
@@ -239,7 +235,9 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 //function to handle get current date Assign Service Detail
 module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailServiceRequest = await AssignSecheduleRequest.find({
       Date: currentDate,
     });
@@ -319,10 +317,18 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
+
+    console.log("currentDate=====================", currentDate);
+    console.log(
+      "currentDetailCallback=====================",
+      currentDetailCallback
+    );
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
@@ -681,9 +687,19 @@ module.exports.assignCallbacks = async (req, res) => {
 
 //function to assign requests from the client
 module.exports.AssignServiceRequests = async (req, res) => {
-  TODO:
-  try {
-    const { ServiceEnggId, JobOrderNumber, RequestId, AllotAChecklist, Slot, Date, Message, ServiceProcess, RepresentativeName, RepresentativeNumber } = req.body;
+ try {
+    const {
+      ServiceEnggId,
+      JobOrderNumber,
+      RequestId,
+      AllotAChecklist,
+      Slot,
+      Date,
+      Message,
+      ServiceProcess,
+      RepresentativeName,
+      RepresentativeNumber,
+    } = req.body;
 
     let callback;
 
@@ -848,19 +864,20 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
     // console.log("HE",clientCallbacksDetails.JobOrderNumber)
-    const allCallBacks = await assignCallback.find({ JobOrderNumber: clientCallbacksDetails.JobOrderNumber, ServiceProcess: 'completed' })
-
+    const allCallBacks = await assignCallback.find({
+      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
+      ServiceProcess: "completed",
+    });
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
       clientDetail: clientDetail,
     };
 
-
     res.status(200).json({
       message: "all detal fetched successfully",
       callback: callbackClientdetails,
-      allCallBacks
+      allCallBacks,
     });
   } catch (error) {
     console.log(error);
@@ -895,7 +912,6 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
       ...clientRequestDetails._doc,
       clientDetail: clientDetail,
     };
-
 
     res.status(200).json({
       message: "all detal fetched successfully",
@@ -2866,7 +2882,8 @@ module.exports.postElevatorForm = async (req, res) => {
       ModelType: elevatorFormSchema.elevatorDetails.type
         ? elevatorFormSchema.elevatorDetails.type
         : "NA",
-      ProfileImage: "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+      ProfileImage:
+        "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
     });
 
     res.status(200).json({ msg: "data submit successfully" });
@@ -3873,12 +3890,10 @@ module.exports.upgradClientMembership = async (req, res) => {
       { MembershipType: MembershipType }
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Client Membership upgraded successfully",
-        newMembership,
-      });
+    res.status(200).json({
+      message: "Client Membership upgraded successfully",
+      newMembership,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -3950,73 +3965,132 @@ module.exports.putEngineerAttendence = async (req, res) => {
     res.status(200).json({ success: true, message: "All OK" });
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal Server Error",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
 //----------------------------------------------------------------------------------------------
 
-
-
 //api to update cancel status of serviceRequest and callback requests
 
-module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (req, res) => {
+module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (
+  req,
+  res
+) => {
   try {
     const { serviceId } = req.body;
 
+    const cancelCallbacks = await ServiceAssigntoEngg.findOne({
+      callbackId: serviceId,
+    });
+    const cancelService = await AssignSecheduleRequest.findOne({
+      RequestId: serviceId,
+    });
 
-    const cancelCallbacks = await ServiceAssigntoEngg.findOne({ callbackId: serviceId })
-    const cancelService = await AssignSecheduleRequest.findOne({ RequestId: serviceId })
+    // console.log("////////////////////////////////////////",cancelCallbacks)
+    // console.log("----------------------------------------",cancelService)
 
-
-    if (!cancelCallbacks && !cancelService) {
-      return res.status(400).json({ message: "Service not found" });
-    }
+    // if(!cancelCallbacks && !cancelService){
+    //   return res.status(400).json({ message: "Service not found" });
+    // }
 
     if (cancelCallbacks) {
-      await ServiceAssigntoEngg.findOneAndUpdate({ callbackId: serviceId }, { ServiceProcess: "dead" })
-      await getAllCalbacks.findOneAndUpdate({ callbackId: serviceId }, { isDead: true })
+      await ServiceAssigntoEngg.findOneAndUpdate(
+        { callbackId: serviceId },
+        { ServiceProcess: "dead" }
+      );
+      await getAllCalbacks.findOneAndUpdate(
+        { callbackId: serviceId },
+        { isDead: true }
+      );
     } else if (cancelService) {
-      await AssignSecheduleRequest.findOneAndUpdate({ RequestId: serviceId }, { ServiceProcess: "dead" })
-      await getAllServiceRequest.findOneAndUpdate({ RequestId: serviceId }, { isDead: true })
+      await AssignSecheduleRequest.findOneAndUpdate(
+        { RequestId: serviceId },
+        { ServiceProcess: "dead" }
+      );
+      await getAllServiceRequest.findOneAndUpdate(
+        { RequestId: serviceId },
+        { isDead: true }
+      );
     }
 
     res.status(200).json({ message: "Request updated successfully" });
-
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal Server Error while update the status of cancel service and callback requests",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message:
+        "Internal Server Error while update the status of cancel service and callback requests",
+      error: error.message,
+    });
   }
-}
+};
+
+//-------------------------------------------------------------------------------------------------------------------
+//controller to handle cancel Request/callback requests
+
+module.exports.cancelServiceRequestOrCallback = async (req, res) => {
+  try {
+    const { serviceId } = req.body;
+
+    const serviceStarted = await ReportTable.findOne({ serviceId });
+
+    if (serviceStarted) {
+      return res
+        .status(200)
+        .json({ status: "error", message: "Service is Service is already started" });
+    }
+
+    const [cancelCallbacks, cancelService] = await Promise.all([
+      ServiceAssigntoEngg.findOne({ callbackId: serviceId }),
+      AssignSecheduleRequest.findOne({ RequestId: serviceId }),
+    ]);
+
+    if (cancelCallbacks) {
+      await Promise.all([
+        ServiceAssigntoEngg.findOneAndUpdate(
+          { callbackId: serviceId },
+          { ServiceProcess: "cancelled" }
+        ),
+        getAllCalbacks.findOneAndUpdate(
+          { callbackId: serviceId },
+          { isCancelled: true, isDead: true }
+        ),
+      ]);
+      res
+        .status(200)
+        .json({ status: "success",  message: "Service callback is cancelled" });
+    }
+
+    if (cancelService) {
+      await Promise.all([
+        AssignSecheduleRequest.findOneAndUpdate(
+          { RequestId: serviceId },
+          { ServiceProcess: "cancelled" }
+        ),
+        getAllServiceRequest.findOneAndUpdate(
+          { RequestId: serviceId },
+          { isCancelled: true, isDead: true }
+        ),
+      ]);
+      res
+        .status(200)
+        .json({ status: "success",  message: "Scheduled service is cancelled"  });
+    }
+
+    return res.status(400).json({ message: "Service not found" });
+
+  } catch (error) {
+    console.log("Error in cancelServiceRequestOrCallback:", error);
+  }
+};
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//--------------------------------------------------------------------------------------------------------------------------
 
 
 

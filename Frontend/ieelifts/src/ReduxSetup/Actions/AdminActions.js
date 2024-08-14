@@ -1846,7 +1846,8 @@ export const cancelEnggServiceRequestFormShiftingAction = (isCallback, callbackI
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // action to update Status Of Cancel Service And Callback Request
 
-export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) => {
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =>{
+  // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",serviceId)
   return async (dispatch) => {
     try {
       const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`, {
@@ -1858,9 +1859,36 @@ export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =
         payload: response.data,
       })
 
+      // console.log("update the status of service and callback currecnt console",response)
+
     } catch (error) {
       console.log("error to update Status Of Cancel Service And Callback Request", error)
     }
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//custom hook for cancel Service Request Or Callback
+
+export const cancelServiceRequestOrCallback = async (serviceId) => {
+  console.log("cancel service request",serviceId);
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`,{
+      serviceId
+    })
+    return response.data;
+  } catch (error) {
+    console.log("error to cancel Service Request or callback request",error)
+  }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------

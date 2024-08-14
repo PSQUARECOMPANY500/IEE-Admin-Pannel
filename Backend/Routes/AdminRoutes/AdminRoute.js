@@ -352,4 +352,6 @@ router.get('/getAllClients', adminContoller.getAllClients);
 
 router.post('/updateStatusOfCancelServiceAndCallbackRequest', adminContoller.updateStatusOfCancelServiceAndCallbackRequest)
 
+router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServiceRequestOrCallback)
+
 module.exports = router;

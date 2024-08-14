@@ -51,10 +51,10 @@ const Dashboard = () => {
       state?.AdminRootReducer?.cancelEnggCallbackServiceRequestReducer
         ?.cancelRequestData
   );
-  console.log(
-    "cancelRequestByEngg++++++++++-------------+++++++++++++++---------------++++++++++++++++++++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++++++++++++++++++-",
-    cancelRequestByEngg
-  );
+  // console.log(
+  //   "cancelRequestByEngg++++++++++-------------+++++++++++++++---------------++++++++++++++++++++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++++++++++++++++++-",
+  //   cancelRequestByEngg
+  // );
 
 
 
@@ -91,6 +91,7 @@ const Dashboard = () => {
           <AddTicketModals
             closeModal={() => dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))}
             callbackId={cancelRequestByEngg.callbackId}
+            callbackIdtoPassed={cancelRequestByEngg.callbackId}
             setRenderTicket={setRenderTicket}  
             setTicketUpdate={setTicketUpdate}
             enggId={cancelRequestByEngg.EnggId}
@@ -105,6 +106,7 @@ const Dashboard = () => {
             <ServiceRequestModals
               closeModal={() => dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))}
               RequestId={cancelRequestByEngg.callbackId}
+              RequestIdtoPassed={cancelRequestByEngg.callbackId}
               setRenderTicket={setRenderTicket}             
               enggId={cancelRequestByEngg.EnggId}
               setTicketUpdate={setTicketUpdate}

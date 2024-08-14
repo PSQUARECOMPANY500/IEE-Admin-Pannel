@@ -376,6 +376,7 @@ setIsOpen(!isOpen);
                 {menueItems.map((item, index) => (
                   <NavLink
                     to={item.Path}
+                    id={item.name}
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}

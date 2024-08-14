@@ -829,7 +829,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service Preet",
+        message: "Schedule your service",
         time: null,
         date: null,
         liveTracking: false,
@@ -1348,27 +1348,37 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res)
     const cancelledServiceRequest = await assignService.findOne({RequestId: serviceId});
     const cancelledCallbackRequest = await assignCallback.findOne({callbackId: serviceId});
 
+    if(!cancelledServiceRequest &&!cancelledCallbackRequest){
+      return res.status(404).json({ message: "Service or Callback Request not found" });
+    }
 
+    await ReportTable.findOneAndUpdate({serviceId:serviceId},{isVerify:true,isActive:false})
 
     if(cancelledServiceRequest) {
-      await assignService.findOneAndUpdate(
-        {RequestId: serviceId },
-        { ServiceProcess: "cancelled", cancelDescription: description }
-      );
-      await serviceRequest.findOneAndUpdate(
-        { RequestId: serviceId },
-        { isCancelled: true}
-      )
+      await Promise.all([
+        assignService.findOneAndUpdate(
+          { RequestId: serviceId },
+          { ServiceProcess: "cancelled", cancelDescription: description }
+        ),
+        serviceRequest.findOneAndUpdate(
+          { RequestId: serviceId },
+          { isCancelled: true }
+        )
+      ]);
     }
     else if(cancelledCallbackRequest) {
-      await assignCallback.findOneAndUpdate(
-        { callbackId: serviceId },
-        { ServiceProcess: "cancelled", cancelDescription: description }
-      );
-      await clientRequestCallback.findOneAndUpdate(
-        { callbackId: serviceId },
-        { isCancelled: true}
-      );
+      await Promise.all([
+        assignCallback.findOneAndUpdate(
+          { callbackId: serviceId },
+          { ServiceProcess: "cancelled", cancelDescription: description }
+        ),
+        clientRequestCallback.findOneAndUpdate(
+          { callbackId: serviceId },
+          { isCancelled: true }
+        )
+      ]);
+    }else {
+      return res.status(404).json({ message: "Service or Callback Request not found" });
     }
 
     res.status(200).json({message:"Request Cancelled successfully"});
@@ -1407,3 +1417,34 @@ module.exports.getCallbackOrServiceCancelledRequests = async (req,res) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 
+
+//resume previous service API by The Enggineer
+
+module.exports.resumePreviousService = async (req,res) => {
+  try {
+    const { serviceId } = req.body;
+     
+    const currentDate = new Date();
+    const todayDate = currentDate.toLocaleDateString("en-GB");
+    
+    const serviceRequests = await assignService.findOne({RequestId:serviceId})
+    const serviceCallback = await assignCallback.findOne({callbackId:serviceId})
+
+    if(serviceRequests){
+      await assignService.findOneAndUpdate({RequestId:serviceId},{Date:todayDate,ServiceProcess:"InCompleted"})
+    }else if(serviceCallback){
+      await assignCallback.findOneAndUpdate({callbackId:serviceId},{Date:todayDate,ServiceProcess:"InCompleted"})
+    }else{
+      return res.status(404).json({ message: "Service or Callback Request not found" });
+    }
+    
+    res.status(200).json({success:true, message:"service/callback updated successfully"})
+    
+  } catch (error) {
+    console.log("error while resuming engg service",error);
+  }
+}
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------
