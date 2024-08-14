@@ -2615,7 +2615,7 @@ module.exports.canclePaymentLink = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------
 
-//API TO GET PERVIOS PENDING SERVICES ------------------------
+//API TO GET PERVIOS PENDING SERVICES --------------------------------------
 
 module.exports.getAllClientPreviousService = async (req, res) => {
   try {
@@ -2623,7 +2623,6 @@ module.exports.getAllClientPreviousService = async (req, res) => {
 
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString("en-GB");
-
     const EnggCallback = await ServiceAssigntoEngg.find({ ServiceEnggId });
     const EnggService = await AssignSecheduleRequest.find({ ServiceEnggId });
 
@@ -2633,13 +2632,9 @@ module.exports.getAllClientPreviousService = async (req, res) => {
 
     const allServices = [...EnggCallback, ...EnggService];
 
-    console.log("allServices", allServices);
-
     const PreviousServices = allServices.filter((item) => {
       return item.Date < todayDate && item.ServiceProcess === "InCompleted";
     });
-
-    // console.log("PreviousServices", PreviousServices);
 
     const RemainingAccepctedServices = await Promise.all(
       PreviousServices.map(async (item) => {
@@ -2658,7 +2653,11 @@ module.exports.getAllClientPreviousService = async (req, res) => {
       (service) => service !== null
     );
 
-    // console.log("++++++++++", resultService);
+    const convertIntoMinutes = (timeRange) => {
+      const [start, end] = timeRange.split('-');
+      const [startHour, startMinute] = end.split(':').map(Number);
+      return startHour * 60 + startMinute;
+    }
 
     const EngScheduleData = await Promise.all(
       resultService.map(async (item) => {
@@ -2669,14 +2668,26 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           EnggId: item.ServiceEnggId,
         }).select("EnggName");
 
+        //make the engg time logic
+          const enggTimeInCallback = await ServiceAssigntoEngg.find({ServiceEnggId:item.ServiceEnggId,Date:todayDate}).select('Slot');
+          const enggTimeInService = await AssignSecheduleRequest.find({ServiceEnggId:item.ServiceEnggId,Date:todayDate}).select('Slot');
+
+
+          const enggTodaysFirstSlotAssign = [...enggTimeInCallback, ...enggTimeInService]          
+          const enggSortedSlot = enggTodaysFirstSlotAssign.sort((a,b) => {
+            const aStart = a.Slot && a.Slot[0] ? convertIntoMinutes(a.Slot[0]) : Infinity;
+            const bStart = b.Slot && b.Slot[0] ? convertIntoMinutes(b.Slot[0]) : Infinity;
+            return aStart - bStart;
+          });
+
         let Type;
 
         if (item.callbackId) {
           Type = await clientRequestImidiateVisit.findOne({
             callbackId: item.callbackId,
-          });
+          }).select('Type');
         } else {
-          Type = await serviceRequest.findOne({ RequestId: item.RequestId });
+          Type = await serviceRequest.findOne({ RequestId: item.RequestId }).select('Type');
         }
 
         return {
@@ -2684,6 +2695,7 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           clientDetails,
           EnggDetails,
           Type,
+          todayEnggFirstSlot:enggSortedSlot[0]
         };
       })
     );
@@ -2694,6 +2706,10 @@ module.exports.getAllClientPreviousService = async (req, res) => {
     res.status(204).json({ status: "error", message: error });
   }
 };
+
+
+
+
 
 //--------------------------------service Engg login with OTP ----------------------------------------
 // api to handle service Engg login with OTP

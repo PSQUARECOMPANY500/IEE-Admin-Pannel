@@ -27,6 +27,7 @@ const ServiceRequestModals = ({
   closeModal,
   showTicketModal,
   RequestId,
+  RequestIdtoPassed,
   setRenderTicket,
   enggId,
   isAssigned,
@@ -278,7 +279,7 @@ const ServiceRequestModals = ({
               reNumber
             )
           );
-         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestId));
+         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestIdtoPassed));
          closeModal();
        }
      });
@@ -848,6 +849,7 @@ const ServiceRequestModals = ({
 
                   <div className="footer-section" style={{ width: '80%' }}>
                     <div className="buttons">
+                      {/* <button className={`edit-button ${editchange && `edit-button-onClick`}`} onClick={handleEditSection} >Cancel</button> */}
                       <button className={`edit-button ${editchange && `edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
                       <button
                         className="assign-button"

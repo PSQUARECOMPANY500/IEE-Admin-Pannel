@@ -82,7 +82,6 @@ const AddEnggModal = () => {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [error, setError] = useState("");
 
-
   // useEffect(() => {
   //   document.body.style.overflow = "hidden";
   //   return () => {
@@ -487,6 +486,7 @@ const AddEnggModal = () => {
                 <div className="EnggDetailHeading">Engineer Details</div>
                 <div className="EnggDetailInputField">
                   <div
+                    name="EnggPhoto"
                     className="imageUploadDiv"
                     onClick={() => handleUploadClick("profilePhoto")}
                     style={{ cursor: "pointer" }}
@@ -511,7 +511,7 @@ const AddEnggModal = () => {
                     <input
                       id="profilePhoto"
                       type="file"
-                      name="fields[]"
+                      name="profilePhoto"
                       onChange={(e) => {
                         setProfilePhoto(e.target.files[0]);
                         if (e.target.value.trim() !== "") {
@@ -684,7 +684,7 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
-                            name="fields[]"
+                            name="Role"
                             onChange={(e) => setRole(e.target.files[0])}
                             style={{ display: "none" }}
                             autoComplete="off"
@@ -1166,6 +1166,7 @@ const AddEnggModal = () => {
                           type="text"
                           placeholder="Previos Work Experience"
                           required
+                          name="Previos Work"
                           style={{ border: "none", outline: "none" }}
                         />
                         <CheckBox

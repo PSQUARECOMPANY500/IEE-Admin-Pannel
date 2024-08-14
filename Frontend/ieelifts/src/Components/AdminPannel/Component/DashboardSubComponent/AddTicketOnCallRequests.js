@@ -45,8 +45,8 @@ const AddTicketOnCallRequests = ({
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
-  const [membershipType,setMembershipType] = useState('')
-  const[doh,setDoh]=useState('')
+  const [membershipType, setMembershipType] = useState("");
+  const [doh, setDoh] = useState("");
 
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
@@ -133,7 +133,6 @@ const AddTicketOnCallRequests = ({
     }
   });
 
-
   const filteredSlots = timeSlots
     .slice(timeSlots.length - filterTime.length)
     .filter((slot, i) => {
@@ -144,7 +143,6 @@ const AddTicketOnCallRequests = ({
 
       return !bookedSlots.includes(slot.slot);
     });
-
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
@@ -190,11 +188,11 @@ const AddTicketOnCallRequests = ({
     return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
       ?.client;
   });
- 
-  const callBackDetails=useSelector((state)=>{
+
+  const callBackDetails = useSelector((state) => {
     return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
-    ?.callbacks;
-  })
+      ?.callbacks;
+  });
 
   //  console.log("}}}}}}}",clientDetails)
 
@@ -204,8 +202,8 @@ const AddTicketOnCallRequests = ({
       setnumber(clientDetails.PhoneNumber);
       setaddress(clientDetails.Address);
       setModelType(clientDetails.ModelType);
-      setMembershipType(clientDetails.MembershipType)
-      setDoh(clientDetails.DateOfHandover)
+      setMembershipType(clientDetails.MembershipType);
+      setDoh(clientDetails.DateOfHandover);
 
       const currentDate = new Date();
       const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
@@ -225,8 +223,8 @@ const AddTicketOnCallRequests = ({
       setModelType("");
       setDate("");
       setTime("");
-      setMembershipType('')
-      setDoh('')
+      setMembershipType("");
+      setDoh("");
     }
   }, [clientDetails]);
 
@@ -322,6 +320,7 @@ const AddTicketOnCallRequests = ({
         )
       ).then((RequestId) => {
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+          console.log("details -------------->> ", date ,engDate);
           dispatch(
             assignserviceRequestByAdmin(
               engDetails?.enggJon,
@@ -362,7 +361,7 @@ const AddTicketOnCallRequests = ({
               callbackId,
               ClickListOnSelect.value,
               selectedSlot,
-              engDate,
+              date,
               message,
               engDetails?.enggName,
               engDetails.enggJon
@@ -379,14 +378,6 @@ const AddTicketOnCallRequests = ({
       setTicketUpdate((prev) => !prev);
     }
   };
-
-
-
-
-
-
-
-  
 
   const handlleValidation = (e) => {
     if (e.target.name === "phoneNumber") {
@@ -566,23 +557,29 @@ const AddTicketOnCallRequests = ({
                     <div className="membership-form-col1">
                       <p>NO. OF CALLBACKS: </p>
                     </div>
-                    {callBackDetails?<div className="membership-form-col2">
-                      <p>{callBackDetails&&callBackDetails.length}</p>
-                    </div>
-                    :<div className="membership-form-col22">
+                    {callBackDetails ? (
+                      <div className="membership-form-col2">
+                        <p>{callBackDetails && callBackDetails.length}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
-                      </div>}
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP: </p>
                     </div>
-                    {membershipType?<div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
-                    </div>
-                    :<div className="membership-form-col22">
+                    {membershipType ? (
+                      <div className="membership-form-col2">
+                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
-                      </div>}
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
@@ -649,12 +646,15 @@ const AddTicketOnCallRequests = ({
                       <div className="req-elevator-col1">
                         <p>DOH:</p>
                       </div>
-                      {doh?<div className="req-elevator-col2">
-                        <p> {doh}</p>
-                      </div>
-                      :<div className="membership-form-col22">
-                        <SkeltonLoader width="100px" />
-                      </div>}
+                      {doh ? (
+                        <div className="req-elevator-col2">
+                          <p> {doh}</p>
+                        </div>
+                      ) : (
+                        <div className="membership-form-col22">
+                          <SkeltonLoader width="100px" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
