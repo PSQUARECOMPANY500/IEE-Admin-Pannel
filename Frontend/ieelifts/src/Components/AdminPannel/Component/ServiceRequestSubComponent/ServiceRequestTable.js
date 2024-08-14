@@ -63,6 +63,7 @@ const ServiceRequestTable = ({
                 condition.toLowerCase()
             );
           }
+
           if (membershipData) {
             membershipData = [...membershipData, ...mData];
           } else {
@@ -169,7 +170,6 @@ const ServiceRequestTable = ({
     if (getRequestDetail && getRequestDetail.length > 0) {
       let data = getRequestDetail?.filter((detail) => detail.isAssigned === false
       )
-      console.log("data=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", data)
       setFilteredCD(data);
       setallCD(getRequestDetail);
     }
@@ -182,7 +182,6 @@ const ServiceRequestTable = ({
         clearTimeout(timer);
       }
       newTimer = setTimeout(() => {
-        console.log(searchText)
         if (searchText) {
           const data = filtersearch(searchText, allCD);
           setFilteredCD(data);
@@ -285,7 +284,6 @@ const ServiceRequestTable = ({
               <CheckBox
                 id="checkbox1"
                 checked={(() => {
-                  console.log("filteredCD=========", filteredCD)
                   return (
                     filteredCD &&
                     (filteredCD?.length > 0 || getFilterConditions?.length > 0) &&
@@ -377,6 +375,7 @@ const ServiceRequestTable = ({
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
 
+
               // Due to returning of null here there is an issue in indexing due to which the checkboxes are giving trouble
               // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
 
@@ -418,7 +417,9 @@ const ServiceRequestTable = ({
                     </td>
 
                     <td>{value?.TypeOfIssue}</td>
-                    <td>GOLD</td>
+                    <td style={{ textTransform: "capitalize" }}
+                    >{value?.clientDetail?.MembershipType}
+                    </td>
                     <td>{value?.RequestDate}</td>
                     <td>{value?.RequestTime}</td>
 
@@ -428,11 +429,11 @@ const ServiceRequestTable = ({
                       }
                     >
                       {isAssignedValue ? isCancelled ? (
-                         <AssignDropdown
-                         customAssign="cancelRequest"
-                         name="CANCEL"
-                       />
-                      ) : ( 
+                        <AssignDropdown
+                          customAssign="cancelRequest"
+                          name="CANCEL"
+                        />
+                      ) : (
                         <AssignDropdown
                           customAssignName="assignNameColor"
                           name={name}
@@ -443,8 +444,6 @@ const ServiceRequestTable = ({
                           customAssign="assignColor"
                           name="Assign"
                         />
-                      ) (
-                        
                       )}
                     </td>
                   </tr>
@@ -456,6 +455,7 @@ const ServiceRequestTable = ({
               const isAssignedValue = value?.isAssigned;
               const enngID = value?.AssignedEng?.id;
               const name = value?.AssignedEng?.name;
+              const isCancelled = value?.isCancelled;
 
               // Due to returning of null here there is an issue in indexing due to which the checkboxes are giving trouble
               // we need to remove the extra rows and remove this i.e. filter the data before rendering rather that removing from here
@@ -498,7 +498,9 @@ const ServiceRequestTable = ({
                     </td>
 
                     <td>{value?.TypeOfIssue}</td>
-                    <td>GOLD</td>
+                    <td style={{ textTransform: "capitalize" }}
+                    >{value?.clientDetail?.MembershipType}
+                    </td>
                     <td>{value?.RequestDate}</td>
                     <td>{value?.RequestTime}</td>
 
@@ -507,7 +509,12 @@ const ServiceRequestTable = ({
                         openModal(4, value?.RequestId, isAssignedValue, enngID)
                       }
                     >
-                      {isAssignedValue ? (
+                      {isAssignedValue ? isCancelled ? (
+                        <AssignDropdown
+                          customAssign="cancelRequest"
+                          name="CANCEL"
+                        />
+                      ) : (
                         <AssignDropdown
                           customAssignName="assignNameColor"
                           name={name}

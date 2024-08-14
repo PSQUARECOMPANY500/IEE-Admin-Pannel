@@ -116,7 +116,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
   }, [currentDateCallback, filterData]);
 
-  console.log(handleCallbackSelection);
   const handlekanban = () => {
     props.handleKanbanToggle();
   };
@@ -223,7 +222,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     return slots[0]?.split("-")[0];
   };
   const extractEndTime = (slots) => {
-    return slots[slots.length - 1]?.split("-")[1];
+    return slots[slots?.length - 1]?.split("-")[1];
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData, index, type) {
@@ -318,18 +317,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                        let reportData = value;
-                        // console.log(
-                        //   "==========reportData",
-                        //   reportData.engRating
-                        // );
-                        return (
-                          <div
-                            style={{
-                              backgroundColor: `${
-                                reportData?.ServiceProcess === "completed"
-                                  ? "#FFF9EF"
-                                  : "#ffffff"
+                      let reportData = value;
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: `${reportData?.ServiceProcess === "completed"
+                              ? "#FFF9EF"
+                              : "#ffffff"
                               }`,
                           }}
                           className={`ticket-card ${handleCallbackSelection[index] &&
@@ -474,7 +468,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             {reportData.rating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                  {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -525,7 +519,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                               reportServiceData?.ServiceProcess ===
                               "completed" && (
                                 <div className="star">
-                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                  {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}

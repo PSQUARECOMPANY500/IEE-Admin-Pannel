@@ -1680,7 +1680,7 @@ code {
   height: 85%;
   position: relative;
   padding: 1.5rem;
-  margin-top: 5%;
+  margin-top: 4%;
   padding-bottom: 0.5rem;
 }
 
@@ -3477,7 +3477,7 @@ input:-webkit-autofill {
 
   .spare-part-table-container {
     max-height: 23vh;
-  
+
 
   }
 

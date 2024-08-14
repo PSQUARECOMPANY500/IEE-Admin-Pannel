@@ -30,18 +30,10 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [isAssigned, setIsAssigned] = useState();
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTicketModal1, setShowTicketModal1] = useState(false);
-  const [showTicketModal2, setShowTicketModal2] = useState(false);
-  const [showTicketModal3, setShowTicketModal3] = useState(false);
   const [showTicketFilter, setShowTicketFilter] = useState(false);
-
-  const [selectedClient, setSelectedClient] = useState(null);
   const [csvData, setCsvData] = useState([]);
   const [selectedClientArray, setSelectedClientArray] = useState([]);
-  const [clientData, setClientData] = useState([]);
-
-  // const [checkedAll, setCheckedAll] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState([]);
-  // console.log("checkboxStates",checkboxStates)
 
   const fetchCallbacks = useSelector((state) => {
     if (
@@ -460,10 +452,6 @@ const TicketSection = ({ setTicketUpdate }) => {
       setEnggId(EngId);
       setIsAssigned(isAssigned);
       setShowTicketModal1(true);
-    } else if (modalNumber === 2) {
-      setShowTicketModal2(true);
-    } else if (modalNumber === 3) {
-      setShowTicketModal3(true);
     } else if (modalNumber === 0) {
       setShowTicketModal(true);
     }
@@ -492,9 +480,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                   <input
                     type="text"
                     placeholder="Search anything"
-                    className={`search-input ${
-                      searchText.length > 0 && "inputSearchWritten"
-                    }`}
+                    className={`search-input ${searchText.length > 0 && "inputSearchWritten"
+                      }`}
                     onChange={(e) => {
                       setSearchText(e.target.value);
                     }}
@@ -541,14 +528,13 @@ const TicketSection = ({ setTicketUpdate }) => {
                 )}
               </div>
             ) : (
-              <CSVLink data={csvData}>
-                <img
-                  className="excelIcon"
-                  src={execelIcon}
-                  style={{ boxShadow: "0px 3px 6px #00000029" }}
-                  onClick={handleExcelIconClick}
-                />
-              </CSVLink>
+              <div className="excelIconParent">
+                <CSVLink data={csvData}>
+                  <img className="excelIcon "
+                    src={execelIcon}
+                    style={{ boxShadow: "0px 3px 6px #00000029", }} onClick={handleExcelIconClick}
+                  /></CSVLink>
+              </div>
             )}
 
             {/* add  ticket +icon */}
@@ -662,6 +648,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                 </>
               ) : getFilterConditions ? (
                 filterData.map((data, index) => {
+                  if (data.isDead || data.isCancelled) {
+                    return
+                  }
                   const currentCallbackId = data.callbackId;
                   const EngName = data.AssignedEng?.name;
                   const EngId = data.AssignedEng?.id;
@@ -709,9 +698,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                         {data?.clientDetail?.PhoneNumber}
                       </td>
                       <td
-                        className={`${
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        } address`}
+                        className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""
+                          } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -738,9 +726,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                         </div>
                       </td>
                       <td
-                        className={`${
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        } address`}
+                        className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""
+                          } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -813,6 +800,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                 })
               ) : (
                 filteredCD?.map((data, index) => {
+                  if (data.isDead || data.isCancelled) {
+                    return
+                  }
                   const currentCallbackId = data.callbackId;
                   const IsDead = data.isDead;
                   const isCancelled = data.isCancelled;
@@ -862,9 +852,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                         {data?.clientDetail?.PhoneNumber}
                       </td>
                       <td
-                        className={`${
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        } address`}
+                        className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""
+                          } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -899,9 +888,8 @@ const TicketSection = ({ setTicketUpdate }) => {
                         
                       </td> */}
                       <td
-                        className={`${
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        } address`}
+                        className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""
+                          } address`}
                       >
                         <div className="dropdown-address">
                           <span
@@ -977,7 +965,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                               />
                             )
                           )
-                          
+
                         ) : (
                           <AssignDropdown
                             customAssign="assignColor"

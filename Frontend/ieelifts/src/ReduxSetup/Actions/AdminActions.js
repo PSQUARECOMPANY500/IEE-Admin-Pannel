@@ -289,7 +289,7 @@ export const getCurrentDateAssignCalbackAction = () => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getCurrentDateAssignCallback`
       );
-      //console.log("response",response);
+      console.log("response", response);
       dispatch({
         type: GET_CURRENT_DATE_ASSIGN_CALLBACK,
         payload: response.data,
@@ -559,7 +559,7 @@ export const fetchCallbackDetailWithCallbackIdAction = (callbackId) => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientCalbackDetailWithClientDetail/${callbackId}`
       );
- 
+
       dispatch({
         type: GET_CALLBACK_BY_ID,
         payload: response.data,
@@ -1807,7 +1807,7 @@ export const upgradeClientMembershipByAdminPannelAction = (formData) => {
 //-------------------------------------------------------------------------------------------------------------------------------
 //action to handle get ALL client cancel service/callback data
 
-export const getClientCancelServiceCallbackDataAction = () => {  
+export const getClientCancelServiceCallbackDataAction = () => {
   //  TODO: start here
   return async (dispatch) => {
     try {
@@ -1829,12 +1829,12 @@ export const getClientCancelServiceCallbackDataAction = () => {
 
 //action to handle cancel Engg callback/serivce request
 
-export const cancelEnggServiceRequestFormShiftingAction = (isCallback,callbackId,EnggId) => {
+export const cancelEnggServiceRequestFormShiftingAction = (isCallback, callbackId, EnggId) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING,
-        payload: {isCallback,callbackId,EnggId},
+        payload: { isCallback, callbackId, EnggId },
       })
     } catch (error) {
       console.log("error while fetching cancel service request form shifting")
@@ -1846,10 +1846,10 @@ export const cancelEnggServiceRequestFormShiftingAction = (isCallback,callbackId
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // action to update Status Of Cancel Service And Callback Request
 
-export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =>{
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`,{
+      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`, {
         serviceId
       })
 
@@ -1859,7 +1859,7 @@ export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =
       })
 
     } catch (error) {
-      console.log("error to update Status Of Cancel Service And Callback Request",error)
+      console.log("error to update Status Of Cancel Service And Callback Request", error)
     }
   }
 

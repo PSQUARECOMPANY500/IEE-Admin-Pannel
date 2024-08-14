@@ -2721,14 +2721,11 @@ display: none;
 }
 
 .excelIcon {
-  /* width: 80%;*/
-  margin-top: -0.5rem;
-  transform: scale(.5);
+  margin-top: 0.38rem;
 }
 
 .excelIconParent {
-  /* width: 80%; */
-  height: 2.8rem;
+  height: 2.74rem;
 }
 
 .search-box {
@@ -5400,7 +5397,8 @@ footer a:hover {
   background: white;
   z-index: 9999;
 }
-.notification-modal{
+
+.notification-modal {
   top: 10%;
   left: 10%;
   border-radius: 6px;

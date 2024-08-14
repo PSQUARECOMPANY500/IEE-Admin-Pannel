@@ -58,6 +58,8 @@ const clientRegister = new Schema(
   }
 );
 
+clientRegister.indexes({ JobOrderNumber: 1, name: 2, PhoneNumber: 3, Address: 4 });
+
 clientRegister.pre("save", function (next) {
   if (!this.Password) {
     // this.EnggId = Math.floor(100000 + Math.random() * 900000).toString();
@@ -69,6 +71,5 @@ const clientRegistration = mongoose.model(
   "RegisterClientJONDetails",
   clientRegister
 );
-
 
 module.exports = clientRegistration;

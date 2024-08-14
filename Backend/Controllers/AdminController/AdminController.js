@@ -199,7 +199,7 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
     // Grouping slots by ServiceEnggId
     const slotsByEnggId = {};
 
-    
+
 
     combinedData.forEach((entry) => {
       if (!slotsByEnggId[entry.ServiceEnggId]) {
@@ -252,15 +252,19 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 
     const serviceRequestDetail = await Promise.all(
       currentDetailServiceRequest.map(async (item) => {
+        const ServiceRequestdetail = await getAllServiceRequest.findOne({
+          RequestId: item.RequestId,
+        });
+        if (ServiceRequestdetail.isCancelled) {
+          return
+        }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
         });
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-        const ServiceRequestdetail = await getAllServiceRequest.findOne({
-          RequestId: item.RequestId,
-        });
+
 
         const engRating = await EnggRating.findOne({
           ServiceId: item.RequestId,
@@ -299,8 +303,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         };
       })
     );
+    const clearUndefined = serviceRequestDetail.filter((item) => item !== undefined);
     return res.status(200).json({
-      serviceRequestDetail,
+      serviceRequestDetail: clearUndefined
     });
   } catch (error) {
     console.log("get assign service request", error);
@@ -319,9 +324,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
       Date: currentDate,
     });
 
-    console.log("currentDate=====================", currentDate)
-    console.log("currentDetailCallback=====================", currentDetailCallback)
-
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
         message: "no callback for today's",
@@ -330,15 +332,20 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     // console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
+        const callbackdetail = await getAllCalbacks.findOne({
+          callbackId: item.callbackId,
+        });
+        if (callbackdetail?.isCancelled) {
+          return
+        }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
         });
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
+
         });
-        const callbackdetail = await getAllCalbacks.findOne({
-          callbackId: item.callbackId,
-        });
+
         const rating = await EnggRating.findOne({
           ServiceId: item.callbackId,
         });
@@ -379,8 +386,10 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         };
       })
     );
+    const clearUndefined = callbackWithDetails.filter((item) => item !== undefined);
+
     return res.status(200).json({
-      callbackWithDetails,
+      callbackWithDetails: clearUndefined,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -443,8 +452,11 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     const allotAChecklistIds = assignServicerequest.map(
       (request) => request.AllotAChecklist
     );
+    const allEngId = assignServicerequest.map((request) => request.ServiceEnggId)
+
     const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
     const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
+    const uniqueAllEngId = Array.from(new Set(allEngId));
 
     // Fetch client details for each unique JobOrderNumber
     const clientDetails = await clientDetailSchema.find({
@@ -460,6 +472,12 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
       },
     });
 
+    const EngineerDetails = await ServiceEnggData.find({
+      EnggId: {
+        $in: uniqueAllEngId
+      }
+    })
+
     // Create a map for quick access to client and checklist details
     const clientMap = {};
     clientDetails.forEach((client) => {
@@ -471,16 +489,36 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
       checklistMap[checklist._id] = checklist;
     });
 
+    const enggMap = {};
+    EngineerDetails.forEach((engg) => {
+      enggMap[engg.EnggId] = engg.EnggPhoto
+    })
+
     // Combine assign service requests with client and checklist details
-    const clientdetailsEmbeded = assignServicerequest.map((request) => ({
-      ...request._doc,
-      clientDetail: clientMap[request.JobOrderNumber] || null,
-      checklistDetail: checklistMap[request.AllotAChecklist] || null,
-    }));
+    const clientdetailsEmbeded = await Promise.all(
+      assignServicerequest.map(async (request) => {
+        let checkRequest = await getAllServiceRequest.findOne({
+          RequestId: request.RequestId
+        });
+        if (checkRequest.isCancelled) {
+          return
+        }
+        else {
+          return {
+            ...request._doc,
+            clientDetail: clientMap[request.JobOrderNumber] || null,
+            checklistDetail: checklistMap[request.AllotAChecklist] || null,
+            EnggPicture: enggMap[request.ServiceEnggId] || null
+          }
+        }
+      })
+    );
+
+    const clearUndefined = clientdetailsEmbeded.filter((item) => item !== undefined);
 
     res.status(200).json({
       message: "Fetch All Assign Service Request successfully",
-      clientdetailsEmbeded,
+      clientdetailsEmbeded: clearUndefined,
     });
   } catch (error) {
     console.error("Error creating engg detail:", error);
@@ -553,7 +591,7 @@ module.exports.getAllChecklist = async (req, res) => {
     const filterChecklist = checklist.filter((item) => {
       return item.checklistName.toLowerCase().includes(type.toLowerCase());
     });
-      
+
     res.status(200).json({
       message: "fetch checklist sucessfully",
       Checklists: filterChecklist,
@@ -642,18 +680,19 @@ module.exports.assignCallbacks = async (req, res) => {
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to assign requests from the client
-module.exports.AssignServiceRequests = async (req, res) => {     TODO:  
+module.exports.AssignServiceRequests = async (req, res) => {
+  TODO:
   try {
-    const { ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,ServiceProcess,RepresentativeName,RepresentativeNumber} = req.body;
+    const { ServiceEnggId, JobOrderNumber, RequestId, AllotAChecklist, Slot, Date, Message, ServiceProcess, RepresentativeName, RepresentativeNumber } = req.body;
 
     let callback;
-  
+
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
 
 
-    
+
 
 
     if (existingCallback) {
@@ -796,7 +835,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       callbackId,
     });
 
- 
+
     // console.log("HE",clientCallbacksDetails)
 
     if (!clientCallbacksDetails) {
@@ -809,7 +848,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
     // console.log("HE",clientCallbacksDetails.JobOrderNumber)
-    const allCallBacks=await assignCallback.find({JobOrderNumber: clientCallbacksDetails.JobOrderNumber, ServiceProcess: 'completed'})
+    const allCallBacks = await assignCallback.find({ JobOrderNumber: clientCallbacksDetails.JobOrderNumber, ServiceProcess: 'completed' })
 
 
     const callbackClientdetails = {
@@ -1578,10 +1617,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1684,37 +1723,18 @@ module.exports.filterClient = async (req, res) => {
 module.exports.searchClients = async (req, res) => {
   try {
     const { searchTerm } = req.query;
-    // Create a regular expression to match the search term case-insensitively
-    const regex = new RegExp(searchTerm, "i");
-    // Use $or operator to search across multiple fields
+    const trimmedSearchTerm = searchTerm.trimStart();
+    const regex = new RegExp(trimmedSearchTerm, "i");
+
     const clients = await clientDetailSchema.find({
       $or: [
-        {
-          JobOrderNumber: {
-            $regex: regex,
-          },
-        },
-        {
-          name: {
-            $regex: regex,
-          },
-        },
-        {
-          PhoneNumber: {
-            $regex: regex,
-          },
-        },
-        {
-          Address: {
-            $regex: regex,
-          },
-        },
+        { JobOrderNumber: { $regex: regex } },
+        { name: { $regex: regex } },
+        { PhoneNumber: { $regex: regex } },
+        { Address: { $regex: regex } },
       ],
     });
-    console.log(clients);
-    console.log("\n");
-    console.log("\n");
-    console.log(regex);
+
     res.status(200).json({
       success: true,
       clients,
@@ -1727,6 +1747,7 @@ module.exports.searchClients = async (req, res) => {
     });
   }
 };
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------
 // {armaan-dev}
@@ -1927,7 +1948,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2697,7 +2718,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2845,7 +2866,7 @@ module.exports.postElevatorForm = async (req, res) => {
       ModelType: elevatorFormSchema.elevatorDetails.type
         ? elevatorFormSchema.elevatorDetails.type
         : "NA",
-      ProfileImage:"https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+      ProfileImage: "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
     });
 
     res.status(200).json({ msg: "data submit successfully" });
@@ -3186,8 +3207,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-          ? EnggDataChecker.EnggPhoto
-          : "",
+            ? EnggDataChecker.EnggPhoto
+            : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3206,28 +3227,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-          ? EnggDataChecker.AddharPhoto
-          : "",
+            ? EnggDataChecker.AddharPhoto
+            : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-          ? EnggDataChecker.DrivingLicensePhoto
-          : "",
+            ? EnggDataChecker.DrivingLicensePhoto
+            : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-          ? EnggDataChecker.PancardPhoto
-          : "",
+            ? EnggDataChecker.PancardPhoto
+            : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-          ? EnggDataChecker.QualificationPhoto
-          : "",
+            ? EnggDataChecker.QualificationPhoto
+            : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-          ? EnggDataChecker.AdditionalCoursePhoto
-          : "",
+            ? EnggDataChecker.AdditionalCoursePhoto
+            : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3344,7 +3365,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3356,7 +3377,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3416,7 +3437,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3428,7 +3449,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3680,7 +3701,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3692,7 +3713,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3945,28 +3966,28 @@ module.exports.putEngineerAttendence = async (req, res) => {
 
 //api to update cancel status of serviceRequest and callback requests
 
-module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (req,res) =>{
+module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (req, res) => {
   try {
     const { serviceId } = req.body;
-    
-  
-    const cancelCallbacks = await ServiceAssigntoEngg.findOne({callbackId:serviceId})
-    const cancelService = await AssignSecheduleRequest.findOne({RequestId:serviceId})
- 
 
-    if(!cancelCallbacks && !cancelService){
+
+    const cancelCallbacks = await ServiceAssigntoEngg.findOne({ callbackId: serviceId })
+    const cancelService = await AssignSecheduleRequest.findOne({ RequestId: serviceId })
+
+
+    if (!cancelCallbacks && !cancelService) {
       return res.status(400).json({ message: "Service not found" });
     }
 
-    if(cancelCallbacks){
-      await ServiceAssigntoEngg.findOneAndUpdate({callbackId:serviceId},{ServiceProcess:"dead"})
-      await getAllCalbacks.findOneAndUpdate({callbackId:serviceId},{isDead:true})
-    }else if(cancelService){
-      await AssignSecheduleRequest.findOneAndUpdate({RequestId:serviceId},{ServiceProcess:"dead"})
-      await getAllServiceRequest.findOneAndUpdate({RequestId:serviceId},{isDead:true})
+    if (cancelCallbacks) {
+      await ServiceAssigntoEngg.findOneAndUpdate({ callbackId: serviceId }, { ServiceProcess: "dead" })
+      await getAllCalbacks.findOneAndUpdate({ callbackId: serviceId }, { isDead: true })
+    } else if (cancelService) {
+      await AssignSecheduleRequest.findOneAndUpdate({ RequestId: serviceId }, { ServiceProcess: "dead" })
+      await getAllServiceRequest.findOneAndUpdate({ RequestId: serviceId }, { isDead: true })
     }
 
-    res.status(200).json({message:"Request updated successfully"});
+    res.status(200).json({ message: "Request updated successfully" });
 
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
@@ -4143,6 +4164,6 @@ module.exports.clientMembership = async () => {
       "1912108",
     ];
 
-    array.forEach(async (job) => {});
-  } catch (error) {}
+    array.forEach(async (job) => { });
+  } catch (error) { }
 };
