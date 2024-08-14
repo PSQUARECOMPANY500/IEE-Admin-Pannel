@@ -205,15 +205,15 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const QualificationData = [
     {
       value: "10",
-      label: "10th MarkSheet",
+      label: "10th Marksheet",
     },
     {
       value: "12",
-      label: "12th MarkSheet",
+      label: "12th Marksheet",
     },
     {
       value: "Diploma",
-      label: "Diploma MarkSheet",
+      label: "Diploma Marksheet",
     },
   ];
 
@@ -570,7 +570,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       disabled={!editchange}
                       id="mobileNumberInput"
                       type="text"
-                      placeholder="Mobile no"
+                      placeholder="Mobile Number"
                       value={mobileNumber}
                       onChange={(e) => {
                         setMobileNumber(e.target.value);
@@ -607,7 +607,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="EnggIdInput"
                       autoComplete="off"
                       type="text"
-                      placeholder="Engg Id"
+                      placeholder="Engineer Id"
                       value={EngggId}
                       onChange={(e) => {
                         setEnggId(e.target.value);
@@ -977,7 +977,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
           <div className="BankWorkSection">
             <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Educational details</div>
+              <div className="EnggDetailHeading">Educational Details</div>
               <div className="ExtraCiricularSectionInputFields">
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
@@ -1096,7 +1096,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
             </div>
 
             <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Banking Details</div>
+              <div className="EnggDetailHeading">Bank Details</div>
               <div className="ExtraCiricularSectionInputFields">
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
@@ -1190,7 +1190,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         readOnly
                         type="text"
-                        placeholder="Previos Work Experience"
+                        placeholder="Previous Work Experience"
                         style={{ border: "none", outline: "none" }}
                         autoComplete="off"
                       />
@@ -1207,7 +1207,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobDurationInput"
                         type="text"
                         autoComplete="off"
-                        placeholder="Duration of Job"
+                        placeholder="Total Experience"
                         value={jobDuration}
                         onChange={(e) => {
                           setJobDuration(e.target.value);
@@ -1245,7 +1245,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         id="jobTitleInput"
                         type="text"
-                        placeholder="Job title"
+                        placeholder="Job Title"
                         value={jobTitle}
                         autoComplete="off"
                         onChange={(e) => {
@@ -1283,7 +1283,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         id="managerNumberInput"
                         type="text"
-                        placeholder="Manager No"
+                        placeholder="Manager Number"
                         autoComplete="off"
                         value={managerNumber}
                         onChange={(e) => {
