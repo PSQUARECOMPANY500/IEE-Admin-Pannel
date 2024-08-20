@@ -106,7 +106,7 @@ const MessageBox = ({ onClose, EnggId }) => {
   useEffect(() => {
     setAllMessages([]);
     setIsLoadingMessages(true);
-    dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //todo - in future the id is dynamic as come from login user
+    dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id) {
       dispatch(getSenderMessagesAction(chatCreated._id));
     }
@@ -141,7 +141,7 @@ const MessageBox = ({ onClose, EnggId }) => {
     e.preventDefault();
     if (chatCreated?._id) {
       const myNewMessage = await sendChatMessageAction(
-        "65e0103005fd2695f3aaf6d4",
+        "65e0103005fd2695f3aaf6d4",                                //TODO: - in future the id is dynamic as come from login user
         messageData,
         chatCreated?._id
       );
@@ -208,7 +208,7 @@ const MessageBox = ({ onClose, EnggId }) => {
             ) : allMessages?.length >= 0 ? (
               allMessages?.map((item, index) => {
                 const isCurrentUser =
-                  item.Sender === "65e0103005fd2695f3aaf6d4";
+                  item.Sender === "65e0103005fd2695f3aaf6d4";                   //TODO: - in future the id is dynamic as come from login user
                 return (
                   <div
                     className={
