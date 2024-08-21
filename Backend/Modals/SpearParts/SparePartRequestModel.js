@@ -44,6 +44,10 @@ const SparePartsRequestSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  isApplied: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const SpearPartsRequested = mongoose.model(

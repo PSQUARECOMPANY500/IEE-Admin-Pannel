@@ -32,6 +32,7 @@ const EngeeniersCard = () => {
   const [engID, setEngID] = useState(null);
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
+  const [sparePartsCount, setsparePartsCount] = useState(0);
   const [screenSize, setScree] = useState(null);
 
   const [onBackPress, setOnbackPress] = useState(false);
@@ -57,11 +58,12 @@ const EngeeniersCard = () => {
     };
   }, []);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash) => {
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, lastname, sparePartsCount) => {
     setEngID(engId);
-    setCurrentEngName(engName);
+    setCurrentEngName(engName + " " + lastname);
     setCurrentEngImg(engImg);
     setCurrentEngCash(engCash);
+    setsparePartsCount(sparePartsCount)
   };
   // Render the selected component
   const renderSelectedComponent = () => {
@@ -223,10 +225,10 @@ const EngeeniersCard = () => {
         <div
           className="EngeeniersCard"
           style={{
-            gridTemplateColumns: isFirst || isSecond ?mediumScreen? "2fr 0.8fr":"2fr 1fr" : "1fr",
+            gridTemplateColumns: isFirst || isSecond ? mediumScreen ? "2fr 0.8fr" : "2fr 1fr" : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
-            gridGap:isFirst?'0.5rem':0 ,
-       
+            gridGap: isFirst ? '0.5rem' : 0,
+
           }}
         >
           <EngeeniersSubCard
@@ -268,7 +270,7 @@ const EngeeniersCard = () => {
                   ID: <span>{engID}</span>
                 </h1>
                 <h1>
-                  Spare Parts: <span>25</span>
+                  Spare Parts: <span>{sparePartsCount}</span>
                 </h1>
                 <h1 className="ooo">
                   Cash In Hand: <span>{currentengCash}</span>

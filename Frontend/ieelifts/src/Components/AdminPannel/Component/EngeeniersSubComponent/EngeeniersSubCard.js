@@ -62,12 +62,12 @@ const EngeeniersSubCard = (props) => {
     }, [100])
   }
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash, lastname, spare) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash);
+    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash, lastname, spare);
   };
 
 
@@ -100,26 +100,26 @@ const EngeeniersSubCard = (props) => {
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
-        {allEngData && allEngData.map((e, index) => (
-
-          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+        {allEngData && allEngData?.length && allEngData.map((e, index) => (
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash, e.EnggLastName, e.Spare)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+            {console.log(e)}
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
                 <img src={
-                  e.EnggPhoto.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
+                  e.EnggPhoto?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
                     `${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}
-
                 />
 
               </div>
               <div className="EngCardDetailsR">
                 <div className="table-container">
                   <div className="table-item">NAME</div>
-                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
+                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName + " " + e.
+                    EnggLastName}</div>
                   <div className="table-item">ID</div>
                   <div className="table-item">{e.EnggId}</div>
                   <div className="table-item">LEAVES</div>
-                  <div className="table-item">0</div>
+                  <div className="table-item">{e.engLeaveRecord ? e.engLeaveRecord.UsedLeave : 0}</div>
                 </div>
               </div>
             </div>

@@ -485,8 +485,8 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    console.log("enngglocation serviceid ", ServiceEnggId , " latitude " , latitude, " longitute ", longitude)
-    
+    console.log("enngglocation serviceid ", ServiceEnggId, " latitude ", latitude, " longitute ", longitude)
+
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -1026,7 +1026,7 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
       });
 
     }
- 
+
     res
       .status(200)
       .json({ success: true, message: "Leave Created successfully", response });
@@ -1407,6 +1407,8 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
+    console.log(reqs)
+
     // console.log("20",req.body)
     // console.log("21",req.files)
 
@@ -1534,47 +1536,47 @@ module.exports.getEngineerLeveCount = async (req, res) => {
 
 //-----------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
-// @route name-getAllEngDetails
-// @route type-private
-// @route work-get eng details leave rating etc....
+// // @route name-getAllEngDetails
+// // @route type-private
+// // @route work-get eng details leave rating etc....
 
-module.exports.getAllEngDetails = async (req, res) => {
-  try {
-    const ServiceEnggId = req.params.ServiceEnggId;
-    const engDetails = await ServiceEnggBasicSchema.find().select(
-      "-EnggPassword"
-    );
-    const engRatings = await engineerRating
-      .find({})
-      .select("Rating ServiceEnggId");
+// module.exports.getAllEngDetails = async (req, res) => {
+//   try {
+//     const ServiceEnggId = req.params.ServiceEnggId;
+//     const engDetails = await ServiceEnggBasicSchema.find().select(
+//       "-EnggPassword"
+//     );
+//     const engRatings = await engineerRating
+//       .find({})
+//       .select("Rating ServiceEnggId");
 
-    // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
+//     // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
 
-    const combinedData = engDetails.map((eng) => {
-      const engineerRatings = engRatings.filter(
-        (rating) => rating.ServiceEnggId === eng.EnggId
-      );
-      let sum = 0;
-      engineerRatings.forEach((elem) => {
-        sum = sum + elem.Rating;
-      });
-      const averageRating =
-        engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
-      // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
-      return {
-        ...eng.toObject(),
-        averageRating,
-        // engleaveRecord
-      };
-    });
+//     const combinedData = engDetails.map((eng) => {
+//       const engineerRatings = engRatings.filter(
+//         (rating) => rating.ServiceEnggId === eng.EnggId
+//       );
+//       let sum = 0;
+//       engineerRatings.forEach((elem) => {
+//         sum = sum + elem.Rating;
+//       });
+//       const averageRating =
+//         engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
+//       // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
+//       return {
+//         ...eng.toObject(),
+//         averageRating,
+//         // engleaveRecord
+//       };
+//     });
 
-    res.status(200).json({ combinedData });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Internal server error in get service eng details",
-    });
-  }
-};
+//     res.status(200).json({ combinedData });
+//   } catch (error) {
+//     return res.status(500).json({
+//       error: "Internal server error in get service eng details",
+//     });
+//   }
+// };
 
 //-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1586,36 +1588,27 @@ module.exports.getAllEngDetails = async (req, res) => {
 
 module.exports.getAllEngDetails = async (req, res) => {
   try {
-    const ServiceEnggId = req.params.ServiceEnggId;
-    const engDetails = await ServiceEnggBasicSchema.find().select(
-      "-EnggPassword"
+    const engDetails = await ServiceEnggBasicSchema.find().select("-EnggPassword");
+
+    const combinedData = await Promise.all(
+      engDetails.map(async (eng) => {
+        const spareParts = await sparePartRequestTable.find({ EnggId: eng.EnggId, isApproved: true, isApplied: true });
+        const engLeaveRecord = await EnggLeaveServiceRecord.find({
+          ServiceEnggId: eng.EnggId,
+        });
+        const currentLeaveRecord = engLeaveRecord[engLeaveRecord.length - 1]
+
+        return {
+          ...eng.toObject(),
+          engLeaveRecord: currentLeaveRecord,
+          Spare: spareParts.length || 0
+        };
+      })
     );
-    const engRatings = await engineerRating
-      .find({})
-      .select("Rating ServiceEnggId");
-
-    // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
-
-    const combinedData = engDetails.map((eng) => {
-      const engineerRatings = engRatings.filter(
-        (rating) => rating.ServiceEnggId === eng.EnggId
-      );
-      let sum = 0;
-      engineerRatings.forEach((elem) => {
-        sum = sum + elem.Rating;
-      });
-      const averageRating =
-        engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
-      // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
-      return {
-        ...eng.toObject(),
-        averageRating,
-        // engleaveRecord
-      };
-    });
 
     res.status(200).json({ combinedData });
   } catch (error) {
+    console.error("Error in getAllEngDetails:", error);
     return res.status(500).json({
       error: "Internal server error in get service eng details",
     });
@@ -1633,13 +1626,13 @@ module.exports.getFinalReportDetails = async (req, res) => {
     const { serviceId } = req.params;
 
     const reportData = await ReportInfoModel.findOne({ serviceId });
-    console.log("tttttttttttttttttttt", reportData.JobOrderNumber);
+    // console.log("tttttttttttttttttttt", reportData.JobOrderNumber);
 
     const getMemberShipDetails = await memberShipTable.findOne({
       JobOrderNumber: reportData.JobOrderNumber,
       isDisable: false,
     });
-    console.log("***********", getMemberShipDetails);
+    // console.log("***********", getMemberShipDetails);
 
     if (!reportData) {
       return res.status(400).json({ message: "Report Not Found" });
@@ -1656,7 +1649,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         !question.questionResponse.isResolved
     );
 
-    console.log("}}}}}}}}}}}", filteredData);
+    // console.log("}}}}}}}}}}}", filteredData.questionResponse.sparePartDetail);
 
     const IssuesResolved = [];
     const IssuesNotResolved = [];
@@ -1704,7 +1697,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
 
     // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
     const membership = 'silver';
-    console.log("membership -----", membership)
+    // console.log("membership -----", membership)
 
     // price caluclate login insiode the spare part
     const caluclatePrice = SparePartsChanged.map((item) => {
@@ -1839,35 +1832,6 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
     await ReportData.save();
 
-    const FilteredData = ReportData.questionsDetails.filter(
-      (value) => value.questionResponse.isSparePartRequest === true
-    );
-
-    const FinalFilteredData = await Promise.all(
-      FilteredData.map(async (item) => {
-        const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
-        const newSparePartRequest = await sparePartRequestTable.create({
-          EnggId: ReportData.EnggId,
-          sparePartId: questionResponse.sparePartDetail.subsparePartspartid,
-          quantity: "default",
-          Type: questionResponse.sparePartDetail.sparePartsType,
-          Description: questionResponse.SparePartDescription,
-          RequestType: "On Site Request",
-          sparePartName: questionResponse.sparePartDetail.sparePartsname,
-          SubSparePartName: questionResponse.sparePartDetail.sparePartsname,
-          Date: sparePartRequestDate,
-        });
-        // return await newSparePartRequest.save();
-        // console.log("newSparePartRequest", newSparePartRequest);
-      })
-    );
-
-    const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
-      callbackId: serviceId,
-    });
-    const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
-      RequestId: serviceId,
-    });
 
     const SparePartsChanged = ReportData.questionsDetails.filter((question) => {
       const { isResolved, isSparePartRequest, sparePartDetail, SparePartDescription } = question.questionResponse;
@@ -1889,14 +1853,64 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     // console.log(SparePartsChanged.length);
 
 
+    SparePartsChanged.forEach(async (sparePart) => {
+      const sparePartId = sparePart.questionResponse.sparePartDetail.subsparePartspartid
+      const sparePartType = sparePart.questionResponse.sparePartDetail.sparePartsType
+      const sparePartRequestUpdate = await sparePartRequestTable.findOne({
+        EnggId: ReportData.EnggId, sparePartId, Type: sparePartType
+      })
+      if (sparePartRequestUpdate) {
+        sparePartRequestUpdate.isApplied = true;
+        sparePartRequestUpdate.save();
+      }
+    })
+
+
+    const FilteredData = ReportData.questionsDetails.filter(
+      (value) => value.questionResponse.isSparePartRequest === true
+    );
+
+    await Promise.all(
+      FilteredData.map(async (item) => {
+        const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
+        const newSparePartRequest = await sparePartRequestTable.create({
+          EnggId: ReportData.EnggId,
+          sparePartId: questionResponse.sparePartDetail.subsparePartspartid,
+          quantity: 1,
+          Type: questionResponse.sparePartDetail.sparePartsType,
+          Description: questionResponse.SparePartDescription,
+          RequestType: "On Site Request",
+          sparePartName: questionResponse.sparePartDetail.sparePartsname,
+          SubSparePartName: questionResponse.sparePartDetail.subsparePartspartname,
+          Date: sparePartRequestDate,
+        });
+        // return await newSparePartRequest.save();
+        // console.log("newSparePartRequest", newSparePartRequest);
+      })
+    );
+
+    const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
+      callbackId: serviceId,
+    });
+    const updateTaskStatusServiceRequest = await serviceAssigtoEngg.findOne({
+      RequestId: serviceId,
+    });
+
+
+
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+      console.log("activeMembership===============", activeMembership)
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.callbacksCount > 0 ? activeMembership.callbacksCount + 1 : 1;
         activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
-        // activeMembership.sparePartsSoldCount = activeMembership?.sparePartsSoldCount > 0 ? SparePartsChanged?.length : activeMembership?.sparePartsSoldCount + SparePartsChanged?.length
+        activeMembership.sparePartsSoldCount =
+          activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
+        if (SparePartsChanged && SparePartsChanged.length > 0) {
+          activeMembership.sparePartsSoldCount += SparePartsChanged.length;
+        }
         await activeMembership.save()
       }
       await updateTaskStatusCallback.save();
@@ -1904,10 +1918,16 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;
         activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
-        // activeMembership.sparePartsSoldCount = activeMembership?.sparePartsSoldCount > 0 ? SparePartsChanged.length : activeMembership.sparePartsSoldCount + SparePartsChanged.length
+        activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
+        activeMembership.sparePartsSoldCount =
+          activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
+        if (SparePartsChanged && SparePartsChanged.length > 0) {
+          activeMembership.sparePartsSoldCount += SparePartsChanged.length;
+        }
         await activeMembership.save()
       }
       await updateTaskStatusServiceRequest.save();
@@ -2669,16 +2689,16 @@ module.exports.getAllClientPreviousService = async (req, res) => {
         }).select("EnggName");
 
         //make the engg time logic
-          const enggTimeInCallback = await ServiceAssigntoEngg.find({ServiceEnggId:item.ServiceEnggId,Date:todayDate}).select('Slot');
-          const enggTimeInService = await AssignSecheduleRequest.find({ServiceEnggId:item.ServiceEnggId,Date:todayDate}).select('Slot');
+        const enggTimeInCallback = await ServiceAssigntoEngg.find({ ServiceEnggId: item.ServiceEnggId, Date: todayDate }).select('Slot');
+        const enggTimeInService = await AssignSecheduleRequest.find({ ServiceEnggId: item.ServiceEnggId, Date: todayDate }).select('Slot');
 
 
-          const enggTodaysFirstSlotAssign = [...enggTimeInCallback, ...enggTimeInService]          
-          const enggSortedSlot = enggTodaysFirstSlotAssign.sort((a,b) => {
-            const aStart = a.Slot && a.Slot[0] ? convertIntoMinutes(a.Slot[0]) : Infinity;
-            const bStart = b.Slot && b.Slot[0] ? convertIntoMinutes(b.Slot[0]) : Infinity;
-            return aStart - bStart;
-          });
+        const enggTodaysFirstSlotAssign = [...enggTimeInCallback, ...enggTimeInService]
+        const enggSortedSlot = enggTodaysFirstSlotAssign.sort((a, b) => {
+          const aStart = a.Slot && a.Slot[0] ? convertIntoMinutes(a.Slot[0]) : Infinity;
+          const bStart = b.Slot && b.Slot[0] ? convertIntoMinutes(b.Slot[0]) : Infinity;
+          return aStart - bStart;
+        });
 
         let Type;
 
@@ -2695,7 +2715,7 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           clientDetails,
           EnggDetails,
           Type,
-          todayEnggFirstSlot:enggSortedSlot[0]
+          todayEnggFirstSlot: enggSortedSlot[0]
         };
       })
     );
