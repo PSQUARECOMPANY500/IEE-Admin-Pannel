@@ -62,12 +62,12 @@ const EngeeniersSubCard = (props) => {
     }, [100])
   }
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash, lastname, spare) => {
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash, enggObjectId, lastname, spare) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash, lastname, spare);
+    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash, enggObjectId, lastname, spare);
   };
 
 
@@ -100,9 +100,9 @@ const EngeeniersSubCard = (props) => {
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
-        {allEngData && allEngData?.length && allEngData.map((e, index) => (
-          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash, e.EnggLastName, e.Spare)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
-            {console.log(e)}
+        {allEngData && allEngData.map((e, index) => (
+
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash, e._id, e.EnggLastName, e.Spare)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
                 <img src={

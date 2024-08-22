@@ -22,8 +22,8 @@ npm-debug.log*
 yarn-debug.log*                                            
 yarn-error.log*
 
-.env
 
-/public 
+.env
+# /public 
 
 #  disbale fror renvder only plese enavle it push on AWS...

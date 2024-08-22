@@ -8,7 +8,9 @@ router.post('/createChat', chatController.CreateChat);
 
 router.post('/sendMessage', chatController.sendMessage);
 
-router.get('/getChatMessages/:ChatId', chatController.fetchChatUsingChatId);
+router.get('/getChatMessages/:ChatId/:serviceId', chatController.fetchChatUsingChatId);
+
+router.get("/getEnggPersonalChatWithAdmin/:ServiceEnggId", chatController.fetchChatForParticularEngineeer)
 
 
 module.exports = router;
