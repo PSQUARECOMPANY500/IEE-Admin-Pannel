@@ -93,14 +93,20 @@ module.exports.getEnggCrouserData = async (req, res) => {
 
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
-          .map((data) => ({
+          .map((data) => (
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",data),
+            {
             ServiceEnggId: data.ServiceEnggId,
+            serviceId: data.callbackId ? data.callbackId : data.RequestId,
             type: data.callbackId ? "Calback" : "Service",
             JobOrderNumber: data.JobOrderNumber,
             Slot: data.Slot,
             Date: data.Date,
             TaskStatus: data.ServiceProcess,
           }));
+
+
+
 
         const filteredServiceAssignments = mainDetails.filter((item) => {
           return item.Date === currentDate.toLocaleDateString("en-GB");

@@ -4,6 +4,8 @@ import { SEND_MESSAGE_BY_SENDER } from "../Actions/ChatActions";
 
 import { FETCH_ALL_MESSAGES_BY_CHATID } from "../Actions/ChatActions";
 
+import { FETCH_ALL_MESSAGES_OF_ENGINNER_CHAT } from "../Actions/ChatActions";
+
 
 //-------------------------------------------------------------------------------------------------------------------
 //function to Handle Create Chat Reducer
@@ -57,6 +59,27 @@ export const getSenderMessagesReducer = (state=getMessages, action) => {
             return {
                 ...state,
                 message:action.payload
+            }
+            default:
+                return state;
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+
+
+//Reducer  to get messages OF particular engineer
+
+const getEnggerMessages = {
+    messages:null
+}
+
+export const getEnggPersonalMessagesReducer = (state=getEnggerMessages, action) => {
+    switch(action.type){
+        case FETCH_ALL_MESSAGES_OF_ENGINNER_CHAT :
+            return {
+                ...state,
+                messages:action.payload
             }
             default:
                 return state;

@@ -12,7 +12,7 @@ import io from "socket.io-client";
 import EngChatNav from "../EngeeniersSubComponent/EngChatNav";
 import { IoCallOutline } from "react-icons/io5";
 import { CiVideoOn } from "react-icons/ci";
-const MessageBox = ({ onClose, EnggId }) => {
+const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
   const dispatch = useDispatch();
   const fileInputField = useRef(null);
   const textareaRef = useRef();
@@ -25,6 +25,8 @@ const MessageBox = ({ onClose, EnggId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
 
+
+  // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",currentActiveService);
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -64,6 +66,8 @@ const MessageBox = ({ onClose, EnggId }) => {
       return null;
     }
   });
+
+  // console.log("this is all chat crteated", chatCreated);
 
   const getMessages = useSelector((state) => {
 
@@ -108,7 +112,7 @@ const MessageBox = ({ onClose, EnggId }) => {
     setIsLoadingMessages(true);
     dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id) {
-      dispatch(getSenderMessagesAction(chatCreated._id));
+      dispatch(getSenderMessagesAction(chatCreated._id,currentActiveService));
     }
     // Cleanup function
     return () => {
@@ -143,12 +147,15 @@ const MessageBox = ({ onClose, EnggId }) => {
       const myNewMessage = await sendChatMessageAction(
         "65e0103005fd2695f3aaf6d4",                                //TODO: - in future the id is dynamic as come from login user
         messageData,
-        chatCreated?._id
+        chatCreated?._id,
+        currentActiveService
+        // TODO: service id passed
+
       );
       if (myNewMessage) {
         socket.emit("aloo", myNewMessage.data);
       }
-      dispatch(getSenderMessagesAction(chatCreated._id));
+      dispatch(getSenderMessagesAction(chatCreated._id,currentActiveService));
       setMessageData("");
     }
 
@@ -159,7 +166,7 @@ const MessageBox = ({ onClose, EnggId }) => {
 
     setTimeout(() => {
       if (chatCreated?._id) {
-        dispatch(getSenderMessagesAction(chatCreated._id));
+        dispatch(getSenderMessagesAction(chatCreated._id,currentActiveService));
       }
     }, 100);
     socket.emit("aloo", sendMessage);
