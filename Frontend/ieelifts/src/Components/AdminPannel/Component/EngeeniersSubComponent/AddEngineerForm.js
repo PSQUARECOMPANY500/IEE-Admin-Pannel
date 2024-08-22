@@ -12,7 +12,7 @@ import { editEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminAction
 import toast from "react-hot-toast";
 import config from "../../../../config";
 
-const AddEngineerForm = ({ engID, onClose }) => {
+const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const dispatch = useDispatch();
   const divRef = useRef([]);
   const mainDivRef = useRef(null);
@@ -36,7 +36,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [role, setRole] = useState("");
 
   const [profilePhoto, setProfilePhoto] = useState("");
-  console.log("8888888888888888888",profilePhoto.length)
+  console.log("8888888888888888888", profilePhoto.length)
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -163,7 +163,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
         setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
 
-        console.log("vvvvvvvvvvvvvvvvvvv",getEnggBasicData.enggDetails.EnggPhoto.length)
+        console.log("vvvvvvvvvvvvvvvvvvv", getEnggBasicData.enggDetails.EnggPhoto.length)
 
       }
     };
@@ -229,7 +229,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   ];
 
 
-  
+
 
   const getSortedData = (qualification) => {
     return QualificationData.filter((item) => qualification === item.value).map(
@@ -245,7 +245,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
   const sortedData = getSortedData(qualification);
   const getData = getRoleData(role);
-  console.log("RAJ",getData[0]);
+  console.log("RAJ", getData[0]);
 
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
@@ -470,6 +470,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
     if (editEnggPersonal?.status === true) {
       toast.success("Engineer Edited successfully");
+      setOpenForm(false)
     }
   };
   return (
@@ -507,7 +508,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       border: "none",
                     }}
                     src={
-                      profilePhoto.length === 0 
+                      profilePhoto.length === 0
                         ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                         : `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                     }
@@ -663,7 +664,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         onClick={() => handleClick(4)}
                         style={{ outline: "none" }}
                       >
-                        
+
 
                         {editchange ? (
                           <AddEnggAttachment
@@ -675,7 +676,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                             value={role}
                           />
 
-                          
+
                         ) : (
                           <AddEnggAttachment
                             width="100%"

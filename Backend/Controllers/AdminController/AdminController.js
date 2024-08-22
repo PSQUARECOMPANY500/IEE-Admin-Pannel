@@ -1744,14 +1744,43 @@ module.exports.searchClients = async (req, res) => {
     const trimmedSearchTerm = searchTerm.trimStart();
     const regex = new RegExp(trimmedSearchTerm, "i");
 
-    const clients = await clientDetailSchema.find({
-      $or: [
-        { JobOrderNumber: { $regex: regex } },
-        { name: { $regex: regex } },
-        { PhoneNumber: { $regex: regex } },
-        { Address: { $regex: regex } },
-      ],
-    });
+    const clients = await clientDetailSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { JobOrderNumber: { $regex: regex } },
+            { name: { $regex: regex } },
+            { PhoneNumber: { $regex: regex } },
+            { Address: { $regex: regex } },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          searchPriority: {
+            $cond: {
+              if: { $regexMatch: { input: "$JobOrderNumber", regex } },
+              then: 1,
+              else: {
+                $cond: {
+                  if: { $regexMatch: { input: "$name", regex } },
+                  then: 2,
+                  else: {
+                    $cond: {
+                      if: { $regexMatch: { input: "$PhoneNumber", regex } },
+                      then: 3,
+                      else: 4,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      { $sort: { searchPriority: 1 } },
+      { $project: { searchPriority: 0 } },
+    ]);
 
     res.status(200).json({
       success: true,
@@ -2647,7 +2676,7 @@ module.exports.fetchAllotedSparePart = async (req, res) => {
     }
 
     const FilterAllotedSparePart = allotedSparePart.filter(
-      (data) => data.isApproved === true && data.isDenied === false
+      (data) => data.isApproved && !data.isDenied && !data.isApplied
     );
 
     res.status(200).json({ FilterAllotedSparePart });

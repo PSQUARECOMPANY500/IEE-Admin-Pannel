@@ -23,7 +23,11 @@ yarn-debug.log*
 yarn-error.log*
 
 
+<<<<<<< HEAD
 .env
 # /public 
+=======
+/public 
+>>>>>>> 7708839abdafdb687978b61b1f02a50e5cd6dda3
 
 #  disbale fror renvder only plese enavle it push on AWS...

@@ -12,7 +12,7 @@ const CollectCashModal = ({ onClose }) => {
   const handleSubmitCash = async () => {
 
 
-    if(!EngggId || !amount){
+    if (!EngggId || !amount) {
       toast.error("Please enter details in fields");
       return;
     }
@@ -32,7 +32,7 @@ const CollectCashModal = ({ onClose }) => {
         <div className="collect-body">
           <input
             type="text"
-            placeholder="Type id"
+            placeholder="Engineer Id"
             value={EngggId}
             onChange={(e) => {
               setEnggId(e.target.value);
@@ -40,8 +40,8 @@ const CollectCashModal = ({ onClose }) => {
             autoComplete="off"
           />
           <input
-            type="text"
-            placeholder="Amount Received"
+            type="number"
+            placeholder="Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             autoComplete="off"

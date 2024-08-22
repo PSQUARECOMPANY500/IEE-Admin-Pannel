@@ -106,20 +106,20 @@ const EngeeniersSubCard = (props) => {
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
                 <img src={
-                  e.EnggPhoto.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
+                  e.EnggPhoto?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
                     `${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}
-
                 />
 
               </div>
               <div className="EngCardDetailsR">
                 <div className="table-container">
                   <div className="table-item">NAME</div>
-                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
+                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName + " " + e.
+                    EnggLastName}</div>
                   <div className="table-item">ID</div>
                   <div className="table-item">{e.EnggId}</div>
                   <div className="table-item">LEAVES</div>
-                  <div className="table-item">0</div>
+                  <div className="table-item">{e.engLeaveRecord ? e.engLeaveRecord.UsedLeave : 0}</div>
                 </div>
               </div>
             </div>
