@@ -57,9 +57,17 @@ const EngeeniersCard = () => {
     };
   }, []);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash) => {
+  function checkLengthAndDispalyName(name) {
+    if (name.length > 20) {
+      return name.slice(0, 20) + "..."
+    }
+    return name
+  }
+
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, lastname) => {
+    const name = checkLengthAndDispalyName(engName + " " + lastname)
     setEngID(engId);
-    setCurrentEngName(engName);
+    setCurrentEngName(name);
     setCurrentEngImg(engImg);
     setCurrentEngCash(engCash);
   };
@@ -223,10 +231,10 @@ const EngeeniersCard = () => {
         <div
           className="EngeeniersCard"
           style={{
-            gridTemplateColumns: isFirst || isSecond ?mediumScreen? "2fr 0.8fr":"2fr 1fr" : "1fr",
+            gridTemplateColumns: isFirst || isSecond ? mediumScreen ? "2fr 0.8fr" : "2fr 1fr" : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
-            gridGap:isFirst?'0.5rem':0 ,
-       
+            gridGap: isFirst ? '0.5rem' : 0,
+
           }}
         >
           <EngeeniersSubCard

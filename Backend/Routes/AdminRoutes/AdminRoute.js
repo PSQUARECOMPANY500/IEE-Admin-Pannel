@@ -339,7 +339,7 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
-router.get('/getAllClients',adminContoller.getAllClients)
+router.get('/getAllClients', adminContoller.getAllClients)
 router.post('/upgradClientMembership', storageMembershipUpgradeBill.fields([
   {
     name: "MembershipInvoice",
@@ -353,5 +353,10 @@ router.get('/getAllClients', adminContoller.getAllClients);
 router.post('/updateStatusOfCancelServiceAndCallbackRequest', adminContoller.updateStatusOfCancelServiceAndCallbackRequest)
 
 router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServiceRequestOrCallback)
+
+
+// SOS requests routes
+router.get('/getSoSRequests', adminContoller.getSoSRequests)
+
 
 module.exports = router;

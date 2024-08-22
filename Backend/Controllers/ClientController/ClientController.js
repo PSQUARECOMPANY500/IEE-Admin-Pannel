@@ -21,6 +21,8 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+
 const Razorpay = require("razorpay");
 
 
@@ -486,6 +488,7 @@ const jwt = require("jsonwebtoken");
 const {
   createMemberShipOnTable,
 } = require("../AdminController/AdminController");
+const SoSRequests = require("../../Modals/SOSModels/SoSRequestModel");
 
 module.exports.verifyClient = (req, res) => {
   let token = req.header("Authorization");
@@ -1448,22 +1451,35 @@ module.exports.resumePreviousService = async (req, res) => {
 // ----------------{armaan-dev}--------------------------------------
 module.exports.sosRequest = async (req, res) => {
   try {
-    const { jon, desc } = req.body
-    const clientCount = await RegisterClientDetails.findOne({ JobOrderNumber: jon })
-    const now = new Date.now()
+    const { jon, desc } = req.body;
+    const clientCount = await RegisterClientDetails.findOne({ JobOrderNumber: jon });
+
+    const now = new Date();
     const time = now.toLocaleTimeString();
     const date = now.toLocaleDateString();
+
     const data = {
-      jon, desc, time, date, Address: clientCount.Address, membership: clientCount.MembershipType
-    }
+      jon,
+      desc,
+      time,
+      date,
+      Address: clientCount.Address,
+      membership: clientCount.MembershipType
+    };
 
-    return res.status(200).json({
-      data
-    })
+    const createdSoSRequest = await SoSRequestsTable.create(data)
+
+    res.status(200).json({
+      createdSoSRequest
+    });
   } catch (error) {
-
+    console.log(error);
+    res.status(400).json({
+      error
+    });
   }
 }
+
 // ----------------{armaan-dev}--------------------------------------
 
 

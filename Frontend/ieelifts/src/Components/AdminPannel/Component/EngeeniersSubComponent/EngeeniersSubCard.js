@@ -62,12 +62,12 @@ const EngeeniersSubCard = (props) => {
     }, [100])
   }
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash) => {
+  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash,lastname) => {
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash);
+    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash, lastname);
   };
 
 
@@ -95,6 +95,12 @@ const EngeeniersSubCard = (props) => {
     }
   }, [allSearchEngrs, engData])
 
+  function checkLengthAndDispalyName(name) {
+    if (name.length > 20) {
+      return name.slice(0, 20) + "..."
+    }
+    return name
+  }
 
 
   return (
@@ -102,7 +108,7 @@ const EngeeniersSubCard = (props) => {
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
         {allEngData && allEngData.map((e, index) => (
 
-          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+          <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash, e.EnggLastName)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
                 <img src={
@@ -115,7 +121,7 @@ const EngeeniersSubCard = (props) => {
               <div className="EngCardDetailsR">
                 <div className="table-container">
                   <div className="table-item">NAME</div>
-                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName}</div>
+                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{checkLengthAndDispalyName((e.EnggName + " " + e.EnggLastName))}</div>
                   <div className="table-item">ID</div>
                   <div className="table-item">{e.EnggId}</div>
                   <div className="table-item">LEAVES</div>

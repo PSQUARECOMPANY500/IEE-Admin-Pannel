@@ -23,9 +23,9 @@ const EngeeniersCard = () => {
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg) => {
+  const handleEnggNameDoubleClick = (engId, engName, engImg, lastname) => {
     setEngID(engId);
-    setCurrentEngName(engName);
+    setCurrentEngName(engName + " " + lastname);
     setCurrentEngImg(engImg);
   };
   // Render the selected component

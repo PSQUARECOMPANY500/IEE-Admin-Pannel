@@ -50,6 +50,8 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
@@ -4086,6 +4088,28 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
 };
 
 
+//--------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------{armaan-dev}---------------------------
+
+module.exports.getSoSRequests = async (req, res) => {
+  try {
+    const clients = await SoSRequestsTable.find();
+    const { page, limit } = req.query;
+    const skip = page * limit;
+    const paginatedClients = clients.slice(0, skip);
+    const totalPage = Math.ceil(clients.length / limit);
+    res.status(200).json({
+      message: "all  Clients fetched Succesfully",
+      Clients: paginatedClients,
+      totalPage,
+      len: clients.length,
+    });
+  } catch (error) {
+
+  }
+}
+
+// ----------------------------------{armaan-dev}---------------------------
 //--------------------------------------------------------------------------------------------------------------------------
 
 
