@@ -79,7 +79,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
           <div className="qqq">
             <div className="uuu" onClick={() => setOpenForm(true)}>
               <img src={details} />
-              <p>Details of Engineers</p>
+              <p>Engineer Detail</p>
             </div>
             <div
               className="uuu"
@@ -87,7 +87,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
               onClick={engAddharPhoto ? () => openIt() : null}
             >
               <img src={card} />
-              <p>Aadhar Card</p>
+              <p>Aadhaar Card</p>
             </div>
             <div
               className="uuu"
@@ -95,7 +95,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
               style={{ opacity: engDrivingData ? "1" : "0.3" }}
             >
               <img src={drivers} />
-              <p>Driving license</p>
+              <p>Driving Licence</p>
             </div>
             <div
               className="uuu"
@@ -103,7 +103,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
               onClick={engPancardData ? () => openPanCard() : null}
             >
               <img src={details} />
-              <p>Pan Card</p>
+              <p>PAN Card</p>
             </div>
             {/* <div className="uuu">
               <img src={details} />
@@ -117,7 +117,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
               style={{ opacity: engQualificationPhoto ? "1" : "0.3" }}
             >
               <img src={card} />
-              <p>Educatinational details</p>
+              <p>Educational Details</p>
             </div>
           </div>
         </div>
@@ -126,7 +126,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
       {openForm && (
         <div className="addform-modal-wrapper">
           <div className="addform-modal-container" ref={formRef}>
-            <AddEngineerForm engID={engID} onClose={handleCloseForm} />
+            <AddEngineerForm engID={engID} onClose={handleCloseForm} setOpenForm={setOpenForm} />
           </div>
         </div>
       )}

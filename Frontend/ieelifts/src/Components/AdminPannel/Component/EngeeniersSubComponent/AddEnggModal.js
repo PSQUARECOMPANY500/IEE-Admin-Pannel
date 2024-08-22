@@ -502,6 +502,7 @@ const AddEnggModal = () => {
                         objectFit: "contain",
                         border: "none",
                       }}
+                      name="enggPhoto"
                       src={
                         profilePhoto
                           ? URL.createObjectURL(profilePhoto)
