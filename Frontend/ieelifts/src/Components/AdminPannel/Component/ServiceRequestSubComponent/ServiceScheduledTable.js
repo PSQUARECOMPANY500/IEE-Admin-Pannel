@@ -59,7 +59,9 @@ const ServiceScheduledTable = () => {
     <div className="service-schedule-table">
       <div className="table-shadow"></div>
       <table>
-        <thead>
+        {/*-------Done by Paras---------------*/}
+        <thead style={{ zIndex: '1' }}>
+        {/* ----------------------------------*/}
           <tr>
             <th>
               <CheckBox

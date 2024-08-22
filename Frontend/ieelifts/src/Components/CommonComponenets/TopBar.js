@@ -93,9 +93,6 @@ const TopBar = (props) => {
     debouncedSearchClients(searchValue || null);
   }, [searchValue, debouncedSearchClients]);
 
-
-
-
   const filteredData = useSelector(
     (state) => state?.AdminRootReducer?.getFilterDataReducer?.clients?.data
   );
@@ -156,8 +153,6 @@ const TopBar = (props) => {
     dispatch(openAddClientModalAction());
   };
 
-  
-
   // const handleClickOutsideCollectCashModal = (event) => {
   //   if (collectCashRef.current && !collectCashRef.current.contains(event.target)) {
   //     handleCollectCash();
@@ -171,7 +166,6 @@ const TopBar = (props) => {
   //     document.removeEventListener("mousedown", handleClickOutsideCollectCashModal);
   //   };
   // }, []);
-
 
   // const handleCloseForm = () => {
   //   setOpenForm(false);
@@ -215,7 +209,6 @@ const TopBar = (props) => {
   //   }, [ref, handler]);
   // };
 
-
   const handleNotfication = () => {
     setShowNotification((prevState) => !prevState);
   };
@@ -223,7 +216,6 @@ const TopBar = (props) => {
   const handlecancelledNotfication = () => {
     setShowCancelledNotification((prevState) => !prevState);
   };
-  
   
   // collect cash
   const handleCollectCash = () => {
@@ -233,13 +225,10 @@ const TopBar = (props) => {
     setShowNotification(false);
   }, []);
 
-
   const handleOutsideCancelledClicknotification = useCallback(() => {
     setShowCancelledNotification(false);
   }, []);
-  
 
-  
   // collect cash
   // const handleClickOutsidecollectcash = useCallback(() => {
   //   setCollectCash(false);
@@ -382,7 +371,6 @@ const TopBar = (props) => {
         )}
 
 
-
 {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
     {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (  
@@ -392,13 +380,8 @@ const TopBar = (props) => {
             </span>
            <div className="dot"></div>
           
-
           {showCancelledNotification && <CancelNotificationSection />}
         </div>)}
-
-
-
-
 
         {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (                                       
           <div style={{ display: "flex" }} ref={notificationClickRef}>
@@ -414,7 +397,6 @@ const TopBar = (props) => {
 
           {showNotification && <NotificationSection />}
         </div> )}
-
 
 
 {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}

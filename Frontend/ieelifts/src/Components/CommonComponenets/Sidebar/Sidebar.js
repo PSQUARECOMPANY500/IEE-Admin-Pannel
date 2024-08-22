@@ -30,8 +30,6 @@ const Sidebar = ({ children }) => {
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
 
-
-
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
 
   // top bar headin changes

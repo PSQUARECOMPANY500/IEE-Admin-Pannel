@@ -11,6 +11,7 @@ import CheckBox from "../DashboardSubComponent/CheckBox";
 import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import toast, { Toaster } from "react-hot-toast";
+import AttendanceCalendar from "./AttendanceCalendar";
 
 const AddEnggModal = () => {
   const dispatch = useDispatch();
@@ -81,6 +82,7 @@ const AddEnggModal = () => {
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [error, setError] = useState("");
+ 
 
 
   // useEffect(() => {
@@ -600,9 +602,10 @@ const AddEnggModal = () => {
                               .classList.remove("errorBorder");
                           }
                         }}
+                       
                       />
                     </div>
-
+                
                     {/*------------------------ engg id and alternative number section starts  -------------------------*/}
                     <div className="PersonalDetailInput">
                       <input
