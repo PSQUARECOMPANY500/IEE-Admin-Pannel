@@ -101,5 +101,6 @@ router.post('/EnginnerCancellPreviousServiceOrCallbackRequest', clientController
 router.get('/getCallbackOrServiceCancelledRequests', clientController.getCallbackOrServiceCancelledRequests)
 
 router.post('/resumePreviousService', clientController.resumePreviousService)
+router.post('/sosRequest', clientController.sosRequest)
 
 module.exports = router;
