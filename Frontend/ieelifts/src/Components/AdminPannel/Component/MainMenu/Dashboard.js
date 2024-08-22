@@ -33,8 +33,6 @@ const Dashboard = () => {
     }, 1000);
   }, [renderTicket, dispatch]);
 
-
-
   const [ShowTicketModal1, setShowTicketModal1] = useState(false);
 
   const AdminReportData = useSelector((state) => {
@@ -55,12 +53,6 @@ const Dashboard = () => {
   //   "cancelRequestByEngg++++++++++-------------+++++++++++++++---------------++++++++++++++++++++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++++++++++++++++++-",
   //   cancelRequestByEngg
   // );
-
-
-
-
-
-
 
   useEffect(() => {
     if (ref.current && shouldScrollToTop) {
@@ -100,7 +92,6 @@ const Dashboard = () => {
           />                                                                                                              
         )}
 
-
         {!cancelRequestByEngg?.isCallback &&
           cancelRequestByEngg?.callbackId && (
             <ServiceRequestModals
@@ -114,10 +105,6 @@ const Dashboard = () => {
               isNotification={true}
             />
           )}
-
-
-
-
 
         {reportOpen && <RepotImage images={images} />}
         <div style={{ width: "100%", marginTop: "6%" }}>

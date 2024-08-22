@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const AttendanceCalendar = ({ setTodayDate }) => {
+
+const AttendanceCalendar = ({ setTodayDate, isModal = false }) => {
   const ACalendarRef = useRef(null);
   const AMonthyearRef = useRef(null);
   const ADayContainerRef = useRef(null);
@@ -51,12 +52,19 @@ const AttendanceCalendar = ({ setTodayDate }) => {
     const dayElement = document.createElement("div");
     dayElement.classList.add("aday-eng");
 
+
+ 
     if (date.toDateString() === new Date().toDateString()) {
       dayElement.classList.add("current");
     }
     if (aselectedDate && date.toDateString() === new Date(aselectedDate).toDateString()) {
       dayElement.classList.add("selected");
     }
+
+
+
+    console.log(date <= new Date(), '-------------------------------------->>>>>>>>>>>aayush')
+
 
     dayElement.textContent = day;
     dayElement.addEventListener("click", () => {

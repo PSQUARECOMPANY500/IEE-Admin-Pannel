@@ -72,6 +72,7 @@ const ClientTableView = ({
       index ===
       self?.findIndex((t) => t?.id === obj?.id && t?.name === obj?.name)
   );
+
   const HandleCardClick = (data) => {
     setShowClientModal(true);
     // console.log("client all data", data)
@@ -85,7 +86,6 @@ const ClientTableView = ({
   const handleExcelIconClick = () => {
     setCsvData(uniqueData);
   };
-
 
   return (
     <div className="table_view client_table_view">

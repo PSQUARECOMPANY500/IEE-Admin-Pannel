@@ -23,14 +23,14 @@ const SelectDepartment = ({getName}) => {
       name: "CRM Admin",
       value: "CRM",
       image: crm,
-       heading: "CRM Administrator"
+      heading: "CRM Administrator"
     },
     {
       id: 3,
       name: "Erection Admin",
       value: "ErectionAdmin",
       image: crm,
-       heading: "Erection Administrator"
+      heading: "Erection Administrator"
     },
   ];
 

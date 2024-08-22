@@ -37,8 +37,7 @@ const Sosrequest = () => {
     });
     setSelectedRecords(newSelectedRecords);
   };
-
-
+  
   return (
     <div className="main-container_sos">
       <div className="sosrequest_table_view">

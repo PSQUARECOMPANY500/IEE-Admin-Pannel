@@ -278,8 +278,10 @@ const ServiceRequestTable = ({
     <div className="service-request-table">
       <div className="table-shadow"></div>
       <table>
-        <thead>
-          <tr>
+        {/*----- done by Paras-------*/}
+        <thead style={{ zIndex: '1' }}>
+          {/*-------------------------*/}
+          <tr>  
             <th>
               <CheckBox
                 id="checkbox1"

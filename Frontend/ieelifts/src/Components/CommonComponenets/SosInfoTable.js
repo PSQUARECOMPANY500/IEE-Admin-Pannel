@@ -10,7 +10,7 @@ import React, {
   
   
   
-  const SosInfoTable = ({
+  const  SosInfoTable = ({
     fieldsToShow,
     maxHeight,
     selectedRecords,
@@ -56,7 +56,7 @@ import React, {
     const handleCheckboxChange = (index) => {
       const newSelectedRecords = { ...selectedRecords };
       newSelectedRecords[index] = !selectedRecords[index];
-      onCheckboxChange(index, newSelectedRecords[index]);
+      onCheckboxChange(index, newSelectedRecords[index]); 
   
       if (!newSelectedRecords[index]) {
         setSelectAll(false);
@@ -91,7 +91,9 @@ import React, {
           >
             <div className="eng-table-shadow"></div>
             <table>
-              <thead>
+              {/*------Done by Paras-----*/}
+              <thead style={{ zIndex: '1' }}>
+              {/*------------------------*/}
                 <tr>
                   {fieldsToShow.map((field, index) => (
                     <th key={index}>
@@ -108,18 +110,17 @@ import React, {
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
+                
                 {serviceData && serviceData.length > 0 ? (
                   serviceData?.map((row, rowIndex) => (
                     <tr key={rowIndex}>
                       <td  key={rowIndex}>
                         <div><CheckBox/></div>
                       </td>
-  
                       <td>
                         <div >{row.JON}</div>
                       </td>
-  
                       <td>
                         <div>{row.date}</div>
                       </td>

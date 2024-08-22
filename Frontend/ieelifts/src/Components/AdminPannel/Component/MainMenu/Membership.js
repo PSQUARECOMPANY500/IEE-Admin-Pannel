@@ -16,7 +16,6 @@ const Membership = () => {
   const [cards, setCards] = useState([]);
   const isInitialMount = useRef(true);
 
-
   useEffect(() => {
     dispatch(requestGetMemberShipDataAction());
   }, [dispatch]);
@@ -147,8 +146,6 @@ const Membership = () => {
     setCards(updatedCards);
   };
 
-
-
   return (
     <div className="main-container">
       <div
@@ -172,7 +169,6 @@ const Membership = () => {
                   click(true);
                 }}
               />
-              
            
             );
           })}
