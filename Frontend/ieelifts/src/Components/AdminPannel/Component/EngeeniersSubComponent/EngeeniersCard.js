@@ -38,6 +38,7 @@ const EngeeniersCard = () => {
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
   const [enggObjectId, setEnggObjectId] = useState(null);
+  const [sparePartsCount, setsparePartsCount] = useState(0);
   const [screenSize, setScree] = useState(null);
 
   const [onBackPress, setOnbackPress] = useState(false);
@@ -67,8 +68,7 @@ const EngeeniersCard = () => {
     };
   }, []);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash,enggObjectId) => {
-    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",enggObjectId);
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, enggObjectId, lastname, sparePartsCount) => {
     setEnggObjectId(enggObjectId)
     setEngID(engId);
     setCurrentEngName(engName + " " + lastname);
@@ -98,9 +98,9 @@ const EngeeniersCard = () => {
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
   const [messageData, setMessageData] = useState("");
-  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}",messageData);
+  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}", messageData);
 
-  
+
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
@@ -138,14 +138,14 @@ const EngeeniersCard = () => {
   });
 
   console.log("this is all chat crteatedddddddddddd", chatCreated);
-  
+
 
   const getMessages = useSelector((state) => {
     scroll();
     if (
       state.ChatRootReducer &&
       state.ChatRootReducer.getEnggPersonalMessagesReducer &&
-      state.ChatRootReducer.getEnggPersonalMessagesReducer.messages 
+      state.ChatRootReducer.getEnggPersonalMessagesReducer.messages
     ) {
       return state.ChatRootReducer.getEnggPersonalMessagesReducer.messages.messageModel;
     } else {
@@ -153,47 +153,47 @@ const EngeeniersCard = () => {
     }
   });
   // fetc engg personal informations --------------------------------
-// const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
-console.log("thisn is engg messages use selector: ",getMessages)
+  // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
+  console.log("thisn is engg messages use selector: ", getMessages)
 
-useEffect(() => {
-  const fetchIntiakMessages = async () => {
+  useEffect(() => {
+    const fetchIntiakMessages = async () => {
+      setIsLoadingMessages(true);
+      const FinalMessages = await getMessages && getMessages?.map((data) => {
+        return {
+          chatId: data.ChatId,
+          Content: data.Content,
+          Sender: data.Sender[0],
+        };
+      });
+
+      setAllMessages(FinalMessages);
+      setIsLoadingMessages(false);
+    };
+
+    fetchIntiakMessages();
+    scroll();
+  }, [getMessages]);
+
+
+
+  useEffect(() => {
+    setAllMessages([]);
     setIsLoadingMessages(true);
-    const FinalMessages = await getMessages && getMessages?.map((data) => {
-      return {
-        chatId: data.ChatId,
-        Content: data.Content,
-        Sender: data.Sender[0],
-      };
-    });
-
-    setAllMessages(FinalMessages);
-    setIsLoadingMessages(false);
-  };
-
-  fetchIntiakMessages();
-  scroll();
-}, [getMessages]);
-
-
-
-useEffect(() => {
-  setAllMessages([]);
-  setIsLoadingMessages(true);
-  console.log("_____________________________",engID);
-  dispatch(createChatActions(enggObjectId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
-  if (chatCreated?._id && engID) {
-    dispatch(getEnggPersonalChatMessages(engID))
-  }
-  // Cleanup function
-  return () => {
-    setIsLoadingMessages(true);
+    console.log("_____________________________", engID);
+    dispatch(createChatActions(enggObjectId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id && engID) {
-      dispatch(getEnggPersonalChatMessages()); // Clear sender messages when unmounting
-      dispatch(createChatActions());
+      dispatch(getEnggPersonalChatMessages(engID))
     }
-  };
-}, [dispatch, chatCreated?._id, engID]);
+    // Cleanup function
+    return () => {
+      setIsLoadingMessages(true);
+      if (chatCreated?._id && engID) {
+        dispatch(getEnggPersonalChatMessages()); // Clear sender messages when unmounting
+        dispatch(createChatActions());
+      }
+    };
+  }, [dispatch, chatCreated?._id, engID]);
 
 
 
@@ -223,11 +223,11 @@ useEffect(() => {
 
   const handleSendMessage = async () => {
     // if (chatCreated?._id){
-      console.log("lllllllllllllllllll",messageData)
-      console.log("oooooooooooooooooo",chatCreated?._id)
-      const myNewMessage = await sendChatMessageAction("65d49276f60a227274baf8e1", messageData, chatCreated?._id,"");
-      
-      console.log("333333333333333333333333",myNewMessage)
+    console.log("lllllllllllllllllll", messageData)
+    console.log("oooooooooooooooooo", chatCreated?._id)
+    const myNewMessage = await sendChatMessageAction("65d49276f60a227274baf8e1", messageData, chatCreated?._id, "");
+
+    console.log("333333333333333333333333", myNewMessage)
 
     // }
     setMessageData("");
@@ -252,18 +252,18 @@ useEffect(() => {
 
 
 
-// fetc engg personal informations --------------------------------
-// const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
-// console.log("thisn is engg messages use selector: ",enggMessages)
+  // fetc engg personal informations --------------------------------
+  // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
+  // console.log("thisn is engg messages use selector: ",enggMessages)
 
 
 
-useEffect(() => {
-  if(engID){
+  useEffect(() => {
+    if (engID) {
 
-    dispatch(getEnggPersonalChatMessages(engID))
-  }
-},[])
+      dispatch(getEnggPersonalChatMessages(engID))
+    }
+  }, [])
 
 
 
@@ -401,7 +401,7 @@ useEffect(() => {
             </div>
           </div>
 
-{/* -------------------------------------------------------engg chat section starts---------------------------------------------------------------------------- */}
+          {/* -------------------------------------------------------engg chat section starts---------------------------------------------------------------------------- */}
           <div
             className="EngeeniersChatF"
             style={{ display: isFirst || isSecond ? "block" : "none" }}
@@ -418,31 +418,31 @@ useEffect(() => {
               <div className="EngChatMsg">
                 <div className="SubEngChatMsg Yello_Scrollbar">
 
-                {allMessages && allMessages?.length >= 0 ? (
-                  allMessages?.map((item, index) => {
-                    const isCurrentUser =
-                      item.Sender === "65e0103005fd2695f3aaf6d4";                   //TODO: - in future the id is dynamic as come from login user
-                    return (
-                      <div className={!isCurrentUser ? "engchatmsg-sender-side" : ".engchatmsg-reciver-side"  }>
-                        <div className={!isCurrentUser ? "engchatmsg-sender-message" : "engchatmsg-reciver-message" }>
-                        <p>{item.Content}</p>
+                  {allMessages && allMessages?.length >= 0 ? (
+                    allMessages?.map((item, index) => {
+                      const isCurrentUser =
+                        item.Sender === "65e0103005fd2695f3aaf6d4";                   //TODO: - in future the id is dynamic as come from login user
+                      return (
+                        <div className={!isCurrentUser ? "engchatmsg-sender-side" : ".engchatmsg-reciver-side"}>
+                          <div className={!isCurrentUser ? "engchatmsg-sender-message" : "engchatmsg-reciver-message"}>
+                            <p>{item.Content}</p>
+                          </div>
                         </div>
-                       </div>
-                    )
-                  })             
-                ):(
-                  <div className="skelton-in-message">
-                  <div className="loader">
-                    <div classname="box"></div>
-                    <p>No Message Yet</p>
-                  </div>
-                </div>
+                      )
+                    })
+                  ) : (
+                    <div className="skelton-in-message">
+                      <div className="loader">
+                        <div classname="box"></div>
+                        <p>No Message Yet</p>
+                      </div>
+                    </div>
 
-                )}
-            
-               
+                  )}
 
-                 
+
+
+
                 </div>
               </div>
 
@@ -459,7 +459,7 @@ useEffect(() => {
                   // </div> */}
 
 
-{/* -------------------------------------------------------engg chat section ends---------------------------------------------------------------------------- */}
+              {/* -------------------------------------------------------engg chat section ends---------------------------------------------------------------------------- */}
 
 
 
