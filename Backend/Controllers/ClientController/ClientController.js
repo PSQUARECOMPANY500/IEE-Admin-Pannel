@@ -27,7 +27,6 @@ const Razorpay = require("razorpay");
 
 const fs = require("fs");
 const path = require("path");
-// var pdf = require("pdf-node");
 
 const htmlpdf = require("html-pdf");
 var pdf = require("pdf-creator-node");

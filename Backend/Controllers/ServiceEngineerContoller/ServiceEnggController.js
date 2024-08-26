@@ -1801,9 +1801,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
 
-    // console.log(serviceId, paymentdata);
     const ReportData = await ReportInfoModel.findOne({ serviceId });
-    console.log("ReportData", ReportData.EnggId);
 
     if (!ReportData) {
       return res.status(404).json({ message: "Report Not Found" });
@@ -1817,18 +1815,15 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
         },
         { $inc: { AvailableCash: JSON.parse(paymentdata).Total_Amount } }
       );
-    } // awaiting testing-------------------------------------------------------------------------------------------------------------------------------------------------
-
-    // console.log("tttttttttttttttt", JSON.parse(paymentdata).Total_Amount);
-
+    } 
     const paymentPDF = req.files.report[0].filename;
 
     ReportData.paymentDetils = paymentPDF;
     ReportData.isVerify = true;
     ReportData.isActive = false;
     ReportData.paymentMode = JSON.parse(paymentdata).Payment_Method;
-    ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount; //awating testing --------------------------------------- // // // //////////////////////////////////
-    ReportData.Date = sparePartRequestDate; // await testing --------------------------------------- // // //////////////////////////////////////
+    ReportData.TotalAmount = JSON.parse(paymentdata).Total_Amount;
+    ReportData.Date = sparePartRequestDate;
 
     await ReportData.save();
 
@@ -1849,9 +1844,6 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
       return false;
     });
-
-    // console.log(SparePartsChanged.length);
-
 
     SparePartsChanged.forEach(async (sparePart) => {
       const sparePartId = sparePart.questionResponse.sparePartDetail.subsparePartspartid
@@ -1884,10 +1876,12 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           SubSparePartName: questionResponse.sparePartDetail.subsparePartspartname,
           Date: sparePartRequestDate,
         });
-        // return await newSparePartRequest.save();
-        // console.log("newSparePartRequest", newSparePartRequest);
+        console.log("newSparePartRequest+++++++++++++++++++++++", newSparePartRequest);
       })
     );
+
+
+
 
     const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
       callbackId: serviceId,
@@ -1902,7 +1896,6 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       updateTaskStatusCallback.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;
       let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
-      console.log("activeMembership===============", activeMembership)
       if (activeMembership) {
         activeMembership.callbacksCount = activeMembership.callbacksCount > 0 ? activeMembership.callbacksCount + 1 : 1;
         activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
