@@ -262,7 +262,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
           }
         >
           <div className="task-top-section">
-            <p>Tasks hi</p>
+            <p>Tasks</p>
 
             <div className="switch-button ">
               <span className="ticket-service-flex">

@@ -15,7 +15,7 @@ const EnggLeaveRecord = new Schema({
     },
     ServiceEnggId: {
         type: String,
-        require: true,
+        required: true,
     },
     TotalLeave: {
         type: Number,
@@ -27,21 +27,21 @@ const EnggLeaveRecord = new Schema({
     },
     TypeOfLeave: {
         type: String,
-        require: true,
+        required: true,
     },
     Duration: {
         From: {
             type: String,
-            require: true
+            required: true
         },
         To: {
             type: String,
-            require: true
+            required: true
         }
     },
     Leave_Reason: {
         type: String,
-        require: true,
+        required: true,
     },
     Document: {
         type: String,

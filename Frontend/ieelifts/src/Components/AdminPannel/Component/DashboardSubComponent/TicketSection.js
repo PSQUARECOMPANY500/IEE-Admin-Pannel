@@ -704,17 +704,15 @@ const TicketSection = ({ setTicketUpdate }) => {
                       >
                         {data?.clientDetail?.name}
                       </td>
-                      <td
-                        className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
-                        }
-                      >
+                      <td className={ !isAssigned && isTimeoutData ? "timeout-data" : ""} >
                         {data?.clientDetail?.PhoneNumber}
                       </td>
-                      <td
-                        className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""
-                          } address`}
-                      >
+
+
+
+                      <td className={`${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`}>
+
+
                         <div className="dropdown-address">
                           <span
                             className={
@@ -845,6 +843,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
                         {data.JobOrderNumber}
                       </td>
@@ -852,13 +851,16 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                      style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
+
                         {data?.clientDetail?.name}
                       </td>
                       <td
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
                         {data?.clientDetail?.PhoneNumber}
                       </td>
@@ -931,6 +933,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
                         {data.TypeOfIssue}
                       </td>
@@ -938,6 +941,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
                         {data.callbackDate}
                       </td>
@@ -945,6 +949,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
+                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
                       >
                         {data.callbackTime}
                       </td>

@@ -106,7 +106,7 @@ const EngeeniersCard = () => {
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
   const [messageData, setMessageData] = useState("");
-  console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}", messageData);
+  // console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}", messageData);
 
 
   const [socketConnected, setSocketConnected] = useState(false);
@@ -145,7 +145,7 @@ const EngeeniersCard = () => {
     }
   });
 
-  console.log("this is all chat crteatedddddddddddd", chatCreated);
+  // console.log("this is all chat crteatedddddddddddd", chatCreated);
 
 
   const getMessages = useSelector((state) => {
@@ -162,7 +162,7 @@ const EngeeniersCard = () => {
   });
   // fetc engg personal informations --------------------------------
   // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
-  console.log("thisn is engg messages use selector: ", getMessages)
+  // console.log("thisn is engg messages use selector: ", getMessages)
 
   useEffect(() => {
     const fetchIntiakMessages = async () => {
@@ -189,7 +189,7 @@ const EngeeniersCard = () => {
     setAllMessages([]);
     setIsLoadingMessages(true);
     console.log("_____________________________", engID);
-    dispatch(createChatActions(enggObjectId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
+    enggObjectId && dispatch(createChatActions(enggObjectId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id && engID) {
       dispatch(getEnggPersonalChatMessages(engID))
     }
@@ -202,7 +202,6 @@ const EngeeniersCard = () => {
       }
     };
   }, [dispatch, chatCreated?._id, engID]);
-
 
 
 
@@ -231,11 +230,11 @@ const EngeeniersCard = () => {
 
   const handleSendMessage = async () => {
     // if (chatCreated?._id){
-    console.log("lllllllllllllllllll", messageData)
-    console.log("oooooooooooooooooo", chatCreated?._id)
-    const myNewMessage = await sendChatMessageAction("65d49276f60a227274baf8e1", messageData, chatCreated?._id, "");
+    // console.log("lllllllllllllllllll", messageData)
+    // console.log("oooooooooooooooooo", chatCreated?._id)
+    // const myNewMessage = await sendChatMessageAction("65d49276f60a227274baf8e1", messageData, chatCreated?._id, "");
 
-    console.log("333333333333333333333333", myNewMessage)
+    // console.log("333333333333333333333333", myNewMessage)
 
     // }
     setMessageData("");
@@ -283,8 +282,8 @@ const EngeeniersCard = () => {
   const navigateOneStepBack = () => {
     // <EngeeniersSubCard />
     setIsSecond(false)
-    console.log("true engg design")
-    console.log("{{{{{", onBackPress);
+    // console.log("true engg design")
+    // console.log("{{{{{", onBackPress);
   };
 
   useEffect(() => {
@@ -430,6 +429,7 @@ const EngeeniersCard = () => {
 
                   {allMessages && allMessages?.length >= 0 ? (
                     allMessages?.map((item, index) => {
+                      // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",item);
                       const isCurrentUser =
                         item.Sender === "65e0103005fd2695f3aaf6d4";                   //TODO: - in future the id is dynamic as come from login user
                       return (
