@@ -115,6 +115,7 @@ export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA = 'GET_ALL_CLIENT_CANCE
 export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING'
 
 export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
+export const GET_ALL_SOS = "GET_ALL_SOS"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1846,7 +1847,7 @@ export const cancelEnggServiceRequestFormShiftingAction = (isCallback, callbackI
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // action to update Status Of Cancel Service And Callback Request
 
-export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =>{
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) => {
   // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",serviceId)
   return async (dispatch) => {
     try {
@@ -1880,15 +1881,31 @@ export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =
 //custom hook for cancel Service Request Or Callback
 
 export const cancelServiceRequestOrCallback = async (serviceId) => {
-  console.log("cancel service request",serviceId);
+  console.log("cancel service request", serviceId);
   try {
-    const response = await axios.post(`${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`,{
+    const response = await axios.post(`${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`, {
       serviceId
     })
     return response.data;
   } catch (error) {
-    console.log("error to cancel Service Request or callback request",error)
+    console.log("error to cancel Service Request or callback request", error)
   }
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------
+export const getSoS = (page, limit) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getSoSRequests?limit=${limit}&page=${page}`);
+
+      dispatch({
+        type: GET_ALL_SOS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error in getting SOS Requests:", error.message || error);
+      throw error; // Re-throw the error so the caller can handle it
+    }
+  };
+};
+

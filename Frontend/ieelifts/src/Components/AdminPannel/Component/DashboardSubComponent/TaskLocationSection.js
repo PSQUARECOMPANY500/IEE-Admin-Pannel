@@ -247,12 +247,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
       });
     }
 
+
     //may be change logic in future make by aayush
     dispatch(
       getadminReportData(reportData?.callbackId || reportData?.RequestId)
     );
   }
-
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
@@ -262,7 +262,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
           }
         >
           <div className="task-top-section">
-            <p>Tasks</p>
+            <p>Tasks hi</p>
 
             <div className="switch-button ">
               <span className="ticket-service-flex">
@@ -306,6 +306,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
               </div>
             ) : null}
           </div>
+
 
           {props.kanban ? (
             <div
@@ -362,7 +363,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                  {console.log("================", value)}
+                                  {value?.engRating ? (<><h5>{value?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -372,6 +374,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     })
                     : filterData?.map((value, index) => {
                       let reportData = value;
+
                       return (
                         <div
                           className={`ticket-card ${handleCallbackSelection[index] &&
@@ -415,7 +418,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                  {value?.engRating ? (<><h5>{value?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -465,10 +468,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
-                            {reportData.rating &&
+                            {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                  {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+
+                                  {serviceData?.engRating ? (<><h5>{serviceData?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -515,11 +519,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData?.Slot)}</h5>
                             <h5>{extractEndTime(serviceData?.Slot)}</h5>
-                            {reportServiceData.rating &&
+                            {reportServiceData.engRating &&
                               reportServiceData?.ServiceProcess ===
                               "completed" && (
                                 <div className="star">
-                                  {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                  {serviceData?.engRating ? (<><h5>{serviceData?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}

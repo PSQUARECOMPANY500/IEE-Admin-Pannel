@@ -1458,13 +1458,15 @@ module.exports.sosRequest = async (req, res) => {
     const time = now.toLocaleTimeString();
     const date = now.toLocaleDateString();
 
+    console.log(clientCount.Address)
     const data = {
       jon,
       desc,
       time,
       date,
-      Address: clientCount.Address,
-      membership: clientCount.MembershipType
+      address: clientCount.Address,
+      membership: clientCount.MembershipType,
+      SoSCallCount: clientCount.sosCallCount + 1
     };
 
     const createdSoSRequest = await SoSRequestsTable.create(data)

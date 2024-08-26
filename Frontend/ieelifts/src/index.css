@@ -1770,6 +1770,10 @@ code {
   left: 50%;
 }
 
+.left-align-td-SOS-table td {
+  text-align: left;
+}
+
 
 .spare-part-table-container::-webkit-scrollbar-thumb {
   background-color: #f8ac1d;
@@ -4301,6 +4305,50 @@ input:-webkit-autofill {
 
 
 /* sidebar SOS button css ends */
+
+
+/* SOS CSS */
+.SOS-Action-modal-container {
+  width: 10%;
+  height: 20rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 9999;
+  border-radius: 15px;
+}
+
+.SOS-Action-modal-container-outer {
+  width: 100%;
+  position: relative;
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
+}
+
+.edit-SOS-Action-modal {
+  position: absolute;
+  top: 5%;
+  cursor: pointer;
+  left: 80%;
+  font-size: 1.3rem;
+}
+
+.SOS-Action-modal-items {
+  display: flex;
+  align-items: center;
+  width: 18vw;
+  margin-top: -1rem;
+  /* background-color: lightgray; */
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* SOS CSS */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
 

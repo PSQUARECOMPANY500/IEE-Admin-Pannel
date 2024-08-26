@@ -31,6 +31,9 @@ const SoSRequest = new Schema(
         membership: {
             type: String
         },
+        SoSCallCount: {
+            type: String
+        }
     },
     {
         timestamps: true,

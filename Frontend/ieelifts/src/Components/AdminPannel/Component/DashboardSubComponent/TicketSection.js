@@ -317,7 +317,6 @@ const TicketSection = ({ setTicketUpdate }) => {
     setGetFilterConditions(false);
   }, [fetchCallbacks]);
 
-  console.log(filteredCD)
 
   useEffect(() => {
     if (timer) {
@@ -415,7 +414,6 @@ const TicketSection = ({ setTicketUpdate }) => {
     });
 
     let ans = selectedClientArray.includes(filteredCD[index]);
-    console.log(index);
     if (ans) {
       const removeIndex = selectedClientArray.findIndex(
         (item) => item === filteredCD[index]

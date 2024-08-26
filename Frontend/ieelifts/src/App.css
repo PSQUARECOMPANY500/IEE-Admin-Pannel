@@ -5150,6 +5150,11 @@ footer a:hover {
   border-radius: 15px;
 }
 
+.SOS-Action-modal-container {
+  width: 10%;
+  height: 20vh;
+}
+
 .bigg {
   width: 100%;
   position: relative;
