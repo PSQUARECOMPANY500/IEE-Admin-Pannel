@@ -1,59 +1,45 @@
-import React, { useState } from "react";
-import InformationTable from "../../../CommonComponenets/InformationTable";
-import data from '../../Component/ClientsSubComponent/DatasClientServiceHis.json';
-import SosInfoTable from "../../../CommonComponenets/SosInfoTable";
-
+import React, { useEffect, useState, useRef } from "react";
+import SoSCallsShow from "../../../AdminPannel/Component/SOSSubComponent/SoSCallsShow";
+import SosModal from "../SOSSubComponent/SoSModalAction";
 const Sosrequest = () => {
-  const [selectedRecords, setSelectedRecords] = useState({});
-  const [selectAll, setSelectAll] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+  const [jobOrderNumber, setjobOrderNumber] = useState(null);
 
+  function handleDropDownClick(jon) {
+    setDropdown((prev) => !prev)
+    if (jon) {
+      setjobOrderNumber(jon)
+    } else {
+      setjobOrderNumber(null)
+    }
+  }
 
-  const fieldsToShow = [
-    "Checkbox",
-    "JON",
-    "Date",
-    "Time",
-    "Address",
-    "MEMBERSHIP",
-    "SOSCall",
-    "Description",
-  ];
-
-
-
-  const onCheckboxChange = (index, isSelected) => {
-    setSelectedRecords((prevSelectedRecords) => ({
-      ...prevSelectedRecords,
-      [index]: isSelected !== undefined ? isSelected : !prevSelectedRecords[index]
-    }));
+  const formRef = useRef();
+  const handleClickOutsideModal = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      handleDropDownClick();
+    }
   };
 
-  const handleSelectAllChange = () => {
-    const allSelected = !selectAll;
-    setSelectAll(allSelected);
-    const newSelectedRecords = {};
-    data.forEach((_, index) => {
-      newSelectedRecords[index] = allSelected;
-    });
-    setSelectedRecords(newSelectedRecords);
-  };
-  
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
+
+
   return (
     <div className="main-container_sos">
-      <div className="sosrequest_table_view">
-        <div className="sosrequest_table_view_inside">
-          <SosInfoTable fieldsToShow={fieldsToShow}
-           maxHeight="70vh"
-           showCheckboxes={true}
-           selectedRecords={selectedRecords}
-           onCheckboxChange={onCheckboxChange}
-           selectAll={selectAll}
-           setSelectAll={setSelectAll}
-           handleSelectAllChange={handleSelectAllChange}
-           serviceData={data}
-            />
+      <SoSCallsShow handleDropDownClick={handleDropDownClick} />
+      {dropdown &&
+        <div className="engineer-modal-wrapper">
+          <div className="SOS-Action-modal-container" ref={formRef}>
+            <SosModal handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} />
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

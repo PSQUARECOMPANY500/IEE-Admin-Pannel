@@ -9,7 +9,7 @@ const EngeeniersSubCard = (props) => {
   const [singleClickTimeout, setSingleClickTimeout] = useState(null);
   const [isDoubleClick, setIsDoubleClick] = useState(false);
   const [isActive, setIsActive] = useState(null);
-  const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick } = props;
+  const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick, checkLengthAndDispalyName } = props;
   const [allSearchEngrs, setAllSearchEngrs] = useState(null);
   const [allEngData, setAllEngData] = useState('');
   const scrollRef = useRef();
@@ -96,7 +96,6 @@ const EngeeniersSubCard = (props) => {
   }, [allSearchEngrs, engData])
 
 
-
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>
       <div className="AllCards" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }} >
@@ -114,8 +113,8 @@ const EngeeniersSubCard = (props) => {
               <div className="EngCardDetailsR">
                 <div className="table-container">
                   <div className="table-item">NAME</div>
-                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{e.EnggName + " " + e.
-                    EnggLastName}</div>
+                  <div className="table-item" style={{ whiteSpace: 'nowrap' }}>{checkLengthAndDispalyName(e.EnggName + " " + e.
+                    EnggLastName)}</div>
                   <div className="table-item">ID</div>
                   <div className="table-item">{e.EnggId}</div>
                   <div className="table-item">LEAVES</div>

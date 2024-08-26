@@ -24,6 +24,7 @@ yarn-error.log*
 
 
 .env
-# /public 
+
+/public 
 
 #  disbale fror renvder only plese enavle it push on AWS...

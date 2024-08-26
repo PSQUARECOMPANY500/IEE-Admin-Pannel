@@ -50,6 +50,8 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
@@ -94,16 +96,16 @@ module.exports.getEnggCrouserData = async (req, res) => {
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
           .map((data) => (
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",data),
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
             {
-            ServiceEnggId: data.ServiceEnggId,
-            serviceId: data.callbackId ? data.callbackId : data.RequestId,
-            type: data.callbackId ? "Calback" : "Service",
-            JobOrderNumber: data.JobOrderNumber,
-            Slot: data.Slot,
-            Date: data.Date,
-            TaskStatus: data.ServiceProcess,
-          }));
+              ServiceEnggId: data.ServiceEnggId,
+              serviceId: data.callbackId ? data.callbackId : data.RequestId,
+              type: data.callbackId ? "Calback" : "Service",
+              JobOrderNumber: data.JobOrderNumber,
+              Slot: data.Slot,
+              Date: data.Date,
+              TaskStatus: data.ServiceProcess,
+            }));
 
 
 
@@ -4121,6 +4123,50 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
 };
 
 
+//--------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------{armaan-dev}---------------------------
+module.exports.getSoSRequests = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
+    const skip = (page - 1) * limit;
+
+    const [SoSCalls, totalSoSCalls] = await Promise.all([
+      SoSRequestsTable.find().skip(skip).limit(limit),
+      SoSRequestsTable.countDocuments()
+    ]);
+
+
+
+    const totalPage = Math.ceil(totalSoSCalls / limit);
+
+    // const updateSOS = await Promise.all(
+    //   SoSCalls.map(async (SoSCall) => {
+    //     const clientData = await clientDetailSchema.findOne({ JobOrderNumber: SoSCall.jon });
+    //     return {
+    //       ...SoSCall,
+    //     }
+    //   })
+    // )
+    res.status(200).json({
+      message: "All SOS requests fetched successfully",
+      SoSCalls,
+      totalPage,
+      success: true
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Error in fetching data",
+      success: false,
+      error: error.message
+    });
+  }
+}
+
+
+
+// ----------------------------------{armaan-dev}---------------------------
 //--------------------------------------------------------------------------------------------------------------------------
 
 

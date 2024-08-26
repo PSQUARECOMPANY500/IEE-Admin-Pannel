@@ -68,6 +68,7 @@ import { GET_ALL_NOTIFICATIONS } from "../Actions/AdminActions";
 import { GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA } from "../Actions/AdminActions";
 import { CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING } from "../Actions/AdminActions";
 import { UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST } from "../Actions/AdminActions";
+import { GET_ALL_SOS } from "../Actions/AdminActions";
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -113,17 +114,20 @@ export const getFilterDataReducer = (state = intialState22, action) => {
       return state;
   }
 };
+
 const intialState21 = {
   clients: [],
 };
 export const getClientsReducer = (state = intialState21, action) => {
   switch (action.type) {
     case GET_ALL_CLIENTS:
+      console.log({ ...state, clients: action.payload })
       return { ...state, clients: action.payload };
     default:
       return state;
   }
 };
+
 const intialState20 = {
   clientCall: null,
 };
@@ -1189,13 +1193,13 @@ export const getNotificationDataAction = (state = Notifications, action) => {
 //Reducer to handle get ALL client cancel service/callback data
 const cancelRequests = {
   cancelRequestsData: null
-} 
+}
 
-export const getClientCancelServiceCallbackDataReducer = (state=cancelRequests, action) => {
-  switch(action.type){
+export const getClientCancelServiceCallbackDataReducer = (state = cancelRequests, action) => {
+  switch (action.type) {
     case GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA:
       return {
-       ...state,
+        ...state,
         cancelRequestsData: action.payload,
       }
     default:
@@ -1213,15 +1217,15 @@ const cancelRequestObject = {
   cancelRequestData: null
 }
 
-export const cancelEnggCallbackServiceRequestReducer = (state=cancelRequestObject, action) => {
-  switch (action.type){
+export const cancelEnggCallbackServiceRequestReducer = (state = cancelRequestObject, action) => {
+  switch (action.type) {
     case CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING:
       return {
         ...state,
         cancelRequestData: action.payload,
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 }
 
@@ -1233,14 +1237,30 @@ const updateCancelRequest = {
   updateStatusData: null
 }
 
-export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state=updateCancelRequest, action) => {
-  switch(action.type){
+export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state = updateCancelRequest, action) => {
+  switch (action.type) {
     case UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST:
       return {
-       ...state,
+        ...state,
         updateStatusData: action.payload,
       }
     default:
       return state;
   }
 }
+
+const SoSInitial = {
+  SoSCalls: {
+    clients: [],
+  }
+};
+export const getSoSReducer = (state = SoSInitial, action) => {
+  switch (action.type) {
+    case GET_ALL_SOS:
+      const calls = [...action.payload.SoSCalls]
+      console.log({ ...state, clients: [...calls], ...action.payload })
+      return { ...state, clients: [calls], ...action.payload };
+    default:
+      return state;
+  }
+};

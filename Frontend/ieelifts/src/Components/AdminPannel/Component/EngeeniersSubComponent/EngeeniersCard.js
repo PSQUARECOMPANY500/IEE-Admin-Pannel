@@ -68,10 +68,18 @@ const EngeeniersCard = () => {
     };
   }, []);
 
+  function checkLengthAndDispalyName(name) {
+    if (name.length > 13) {
+      return name.slice(0, 13) + "..."
+    }
+    return name
+  }
+
+
   const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, enggObjectId, lastname, sparePartsCount) => {
     setEnggObjectId(enggObjectId)
     setEngID(engId);
-    setCurrentEngName(engName + " " + lastname);
+    setCurrentEngName(checkLengthAndDispalyName(engName + " " + lastname));
     setCurrentEngImg(engImg);
     setCurrentEngCash(engCash);
     setsparePartsCount(sparePartsCount)
@@ -303,6 +311,7 @@ const EngeeniersCard = () => {
           isSecond={isSecond}
           setIsSecond={setIsSecond}
           handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+          checkLengthAndDispalyName={checkLengthAndDispalyName}
         />
       ) : (
         <div
@@ -320,6 +329,7 @@ const EngeeniersCard = () => {
             isSecond={isSecond}
             setIsSecond={setIsSecond}
             handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+            checkLengthAndDispalyName={checkLengthAndDispalyName}
           />
 
           <div className="SingleEng" style={{ display: isSecond && "block" }}>

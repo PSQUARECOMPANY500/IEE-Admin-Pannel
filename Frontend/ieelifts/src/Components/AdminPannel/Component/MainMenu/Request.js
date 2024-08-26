@@ -55,11 +55,11 @@ const Request = () => {
     const parts = dateString.split("/");
     if (parts.length === 3) {
       const [day, month, year] = parts;
-      return `${year}-${month}-${day}`;
+      return `${year}/${month}/${day}`;
     }
     return dateString; // return as is if format is incorrect
   };
-  
+
   const requestDetail = getAssignRequests?.map((value) => ({
     EnggId: value?.ServiceEnggId,
     requestId: value?.RequestId,

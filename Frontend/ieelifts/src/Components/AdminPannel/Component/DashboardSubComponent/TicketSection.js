@@ -77,7 +77,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   );
 
   const filterDropdowns = [
-    { name: "status", options: ["Unassigned", "Assigned", "Resolved"] },
+    { name: "status", options: ["Unassigned", "Assigned"] },
     {
       name: "engineers",
       options: engineers,
@@ -311,11 +311,12 @@ const TicketSection = ({ setTicketUpdate }) => {
   useEffect(() => {
     // console.log("re-rendering ho rahi hai");
     setFilteredCD(fetchCallbacks?.filter
-      ((item) => !item.isCancelled));
+      ((item) => !item.isCancelled && item.isDead));
     setallCD(fetchCallbacks?.filter
-      ((item) => !item.isCancelled));
+      ((item) => !item.isCancelled && !item.isDead));
     setGetFilterConditions(false);
   }, [fetchCallbacks]);
+
 
   useEffect(() => {
     if (timer) {
@@ -326,10 +327,10 @@ const TicketSection = ({ setTicketUpdate }) => {
       if (searchText) {
         const data = filtersearch(searchText, allCD);
         setFilteredCD(data?.filter
-          ((item) => !item.isCancelled));
+          ((item) => !item.isCancelle && item.isDeadd));
       } else {
         setFilteredCD(allCD?.filter
-          ((item) => !item.isCancelled));
+          ((item) => !item.isCancelled && !item.isDead));
       }
       setIsSearching(false); // Set isSearching to false after search completes
     }, 700);
@@ -413,7 +414,6 @@ const TicketSection = ({ setTicketUpdate }) => {
     });
 
     let ans = selectedClientArray.includes(filteredCD[index]);
-    console.log(index);
     if (ans) {
       const removeIndex = selectedClientArray.findIndex(
         (item) => item === filteredCD[index]

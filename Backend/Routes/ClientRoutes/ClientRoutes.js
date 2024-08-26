@@ -102,4 +102,7 @@ router.get('/getCallbackOrServiceCancelledRequests', clientController.getCallbac
 
 router.post('/resumePreviousService', clientController.resumePreviousService)
 
+// SOS requests routes
+router.post('/sosRequest', clientController.sosRequest)
+
 module.exports = router;

@@ -51,6 +51,10 @@ const clientRegister = new Schema(
     },
     emailAddress: {
       type: String
+    },
+    sosCallCount: {
+      type: Number,
+      default: 0
     }
   },
   {

@@ -21,6 +21,8 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+
 const Razorpay = require("razorpay");
 
 
@@ -411,7 +413,7 @@ module.exports.getClientDetail = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
-   const callbacks=await assignCallback.find({JobOrderNumber:JobOrderNumber, ServiceProcess: 'completed'})
+    const callbacks = await assignCallback.find({ JobOrderNumber: JobOrderNumber, ServiceProcess: 'completed' })
 
     const client = await RegisterClientDetails.findOne({ JobOrderNumber });
 
@@ -486,6 +488,7 @@ const jwt = require("jsonwebtoken");
 const {
   createMemberShipOnTable,
 } = require("../AdminController/AdminController");
+const SoSRequests = require("../../Modals/SOSModels/SoSRequestModel");
 
 module.exports.verifyClient = (req, res) => {
   let token = req.header("Authorization");
@@ -643,8 +646,8 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
         return {
           ...entry._doc,
           enggName: enggNameMap[entry.ServiceEnggId],
-          paymentDetails:paymentDetails && paymentDetails.length > 0? paymentDetails[0].paymentDetils : null,
-          PaymentPrice: paymentDetails && paymentDetails.length > 0? paymentDetails[0].TotalAmount : null
+          paymentDetails: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].paymentDetils : null,
+          PaymentPrice: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].TotalAmount : null
         };
       })
     );
@@ -654,7 +657,7 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
     const latestDateEntry = enrichedHistory.filter(
       (entry) => entry.Date === currentDate
     );
-     
+
     const previousHistory = enrichedHistory.filter(
       (entry) => entry.Date !== currentDate
     );
@@ -1266,7 +1269,7 @@ module.exports.updateClientProfile = async (req, res) => {
         });
     }
 
-    if(profile.length > 0) {
+    if (profile.length > 0) {
 
       await RegisterClientDetails.findOneAndUpdate(
         {
@@ -1275,7 +1278,7 @@ module.exports.updateClientProfile = async (req, res) => {
         {
           name,
           PhoneNumber: phone,
-          ProfileImage:profile[0].filename,
+          ProfileImage: profile[0].filename,
           Password: password,
           emailAddress,
         }
@@ -1337,24 +1340,24 @@ module.exports.removeClientFirebaseToken = async (req, res) => {
 
 // Enggineer can cancelled Previous  service or callback request ---------------------------------------------------------------
 
-module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res) => {
+module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req, res) => {
   try {
     const { serviceId, description } = req.body;
 
-    if(!serviceId && !description){
-      return res.status(400).json({message:"serviceId and description are required"});
+    if (!serviceId && !description) {
+      return res.status(400).json({ message: "serviceId and description are required" });
     }
 
-    const cancelledServiceRequest = await assignService.findOne({RequestId: serviceId});
-    const cancelledCallbackRequest = await assignCallback.findOne({callbackId: serviceId});
+    const cancelledServiceRequest = await assignService.findOne({ RequestId: serviceId });
+    const cancelledCallbackRequest = await assignCallback.findOne({ callbackId: serviceId });
 
-    if(!cancelledServiceRequest &&!cancelledCallbackRequest){
+    if (!cancelledServiceRequest && !cancelledCallbackRequest) {
       return res.status(404).json({ message: "Service or Callback Request not found" });
     }
 
-    await ReportTable.findOneAndUpdate({serviceId:serviceId},{isVerify:true,isActive:false})
+    await ReportTable.findOneAndUpdate({ serviceId: serviceId }, { isVerify: true, isActive: false })
 
-    if(cancelledServiceRequest) {
+    if (cancelledServiceRequest) {
       await Promise.all([
         assignService.findOneAndUpdate(
           { RequestId: serviceId },
@@ -1366,7 +1369,7 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res)
         )
       ]);
     }
-    else if(cancelledCallbackRequest) {
+    else if (cancelledCallbackRequest) {
       await Promise.all([
         assignCallback.findOneAndUpdate(
           { callbackId: serviceId },
@@ -1377,12 +1380,12 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res)
           { isCancelled: true }
         )
       ]);
-    }else {
+    } else {
       return res.status(404).json({ message: "Service or Callback Request not found" });
     }
 
-    res.status(200).json({message:"Request Cancelled successfully"});
-  
+    res.status(200).json({ message: "Request Cancelled successfully" });
+
 
 
   } catch (error) {
@@ -1394,20 +1397,20 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req,res)
 // -------------------------------------------------------------------------------------------------------------------------
 //api to get cancelled requests by the clients
 
-module.exports.getCallbackOrServiceCancelledRequests = async (req,res) => {
+module.exports.getCallbackOrServiceCancelledRequests = async (req, res) => {
   try {
 
-    const cancelledRequests = await assignService.find({ServiceProcess:"cancelled"})
-    const cancelledCallback = await assignCallback.find({ServiceProcess:"cancelled"})
+    const cancelledRequests = await assignService.find({ ServiceProcess: "cancelled" })
+    const cancelledCallback = await assignCallback.find({ ServiceProcess: "cancelled" })
 
 
-    if(cancelledRequests.length === 0 && cancelledCallback.length === 0){
-      return res.status(200).json({message:"No cancelled requests found"});
+    if (cancelledRequests.length === 0 && cancelledCallback.length === 0) {
+      return res.status(200).json({ message: "No cancelled requests found" });
     }
 
     const combinedRequestData = [...cancelledRequests, ...cancelledCallback]
 
-    res.status(200).json({cancelledRequests: combinedRequestData});
+    res.status(200).json({ cancelledRequests: combinedRequestData });
 
   } catch (error) {
     console.log(error);
@@ -1420,31 +1423,66 @@ module.exports.getCallbackOrServiceCancelledRequests = async (req,res) => {
 
 //resume previous service API by The Enggineer
 
-module.exports.resumePreviousService = async (req,res) => {
+module.exports.resumePreviousService = async (req, res) => {
   try {
     const { serviceId } = req.body;
-     
+
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString("en-GB");
-    
-    const serviceRequests = await assignService.findOne({RequestId:serviceId})
-    const serviceCallback = await assignCallback.findOne({callbackId:serviceId})
 
-    if(serviceRequests){
-      await assignService.findOneAndUpdate({RequestId:serviceId},{Date:todayDate,ServiceProcess:"InCompleted"})
-    }else if(serviceCallback){
-      await assignCallback.findOneAndUpdate({callbackId:serviceId},{Date:todayDate,ServiceProcess:"InCompleted"})
-    }else{
+    const serviceRequests = await assignService.findOne({ RequestId: serviceId })
+    const serviceCallback = await assignCallback.findOne({ callbackId: serviceId })
+
+    if (serviceRequests) {
+      await assignService.findOneAndUpdate({ RequestId: serviceId }, { Date: todayDate, ServiceProcess: "InCompleted" })
+    } else if (serviceCallback) {
+      await assignCallback.findOneAndUpdate({ callbackId: serviceId }, { Date: todayDate, ServiceProcess: "InCompleted" })
+    } else {
       return res.status(404).json({ message: "Service or Callback Request not found" });
     }
-    
-    res.status(200).json({success:true, message:"service/callback updated successfully"})
-    
+
+    res.status(200).json({ success: true, message: "service/callback updated successfully" })
+
   } catch (error) {
-    console.log("error while resuming engg service",error);
+    console.log("error while resuming engg service", error);
   }
 }
 
+// ----------------{armaan-dev}--------------------------------------
+module.exports.sosRequest = async (req, res) => {
+  try {
+    const { jon, desc } = req.body;
+    const clientCount = await RegisterClientDetails.findOne({ JobOrderNumber: jon });
+
+    const now = new Date();
+    const time = now.toLocaleTimeString();
+    const date = now.toLocaleDateString();
+
+    console.log(clientCount.Address)
+    const data = {
+      jon,
+      desc,
+      time,
+      date,
+      address: clientCount.Address,
+      membership: clientCount.MembershipType,
+      SoSCallCount: clientCount.sosCallCount + 1
+    };
+
+    const createdSoSRequest = await SoSRequestsTable.create(data)
+
+    res.status(200).json({
+      createdSoSRequest
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      error
+    });
+  }
+}
+
+// ----------------{armaan-dev}--------------------------------------
 
 
 //----------------------------------------------------------------------------------------------------------------------------------------
