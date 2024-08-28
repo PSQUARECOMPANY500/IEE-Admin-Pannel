@@ -200,10 +200,8 @@ module.exports.watchNotifications = () => {
 };
 
 const saveNotification = async (owner, data) => {
-  const now = new Date()
-    .toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
-    .split(", ")[1];
-  console.log("Saving notification =============== >>>>>>", owner, data);
+  const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+  console.log("Saving notification =============== >>>>>>", now);
   try {
     if (owner && data) {
       const existingNotification = await Notification.findOne({
