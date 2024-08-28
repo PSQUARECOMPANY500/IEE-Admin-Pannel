@@ -9,7 +9,8 @@ const Sosrequest = () => {
   const [dropdown, setDropdown] = useState(false);
   const [jobOrderNumber, setjobOrderNumber] = useState({
     jon: null,
-    _id: null
+    _id: null,
+    status: null
   });
   const [callbackModal, showCallbackModal] = useState(false);
   const SOSStatusUpdate = useSelector((state) =>
@@ -31,12 +32,15 @@ const Sosrequest = () => {
     if (SOSStatusUpdate?.success) {
       if (SOSStatusUpdate?.status === "RaisedCallback") {
         showCallbackModal(true)
+        setjobOrderNumber((prev) => ({
+          ...prev,
+          status: SOSStatusUpdate?.status
+        }));
       }
       handleDropDownClick()
     }
 
     return (() => {
-      console.log("reacehd here")
       dispatch(updateSOSStatus())
     })
   }, [SOSStatusUpdate?.success])
@@ -58,7 +62,7 @@ const Sosrequest = () => {
 
   return (
     <div className="main-container_sos">
-      <SoSCallsShow handleDropDownClick={handleDropDownClick} SOSStatusUpdate={SOSStatusUpdate} />
+      <SoSCallsShow handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} />
       {dropdown &&
         <div className="engineer-modal-wrapper">
           <div className="SOS-Action-modal-container" ref={formRef}>

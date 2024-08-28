@@ -5732,13 +5732,16 @@ footer a:hover {
 }
 
 .grid-form-container2 {
-  height: 90%;
+  height: 100%;
   width: 50%;
   display: flex;
   flex-direction: column;
   padding-top: 3.3rem;
   align-items: center;
   gap: 1.7rem;
+
+  /* height: 100%;   */
+  /* change the height media query */
 }
 
 .col75 input::placeholder {
@@ -10597,3 +10600,61 @@ a[href^="http://maps.google.com/maps"] {
 }
 
 /*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
+
+
+
+
+
+.sparePartContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+.sparePartHeading{
+  font-size: 16px;
+  color: #343434;
+  font-weight: 500;
+
+}
+.sunSparePartHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  width: 90%;
+  margin-top: 10px;
+  color: #343434;
+  font-weight: 500;
+}
+.sparePartNames {
+  font-size: 15px;
+  width: 90%;
+  margin-top: 6px;
+  height: 17vh;
+  overflow-y: auto;
+}
+
+
+.sparePartNames::-webkit-scrollbar-thumb {
+  background-color: #F8AC1D;
+}
+.sparePartNames:hover::-webkit-scrollbar {
+  width: 2px;
+}
+.sparePartNames::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+
+.spartpartnameswithParts{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  width: 90%;
+  margin-top: 8px;
+}

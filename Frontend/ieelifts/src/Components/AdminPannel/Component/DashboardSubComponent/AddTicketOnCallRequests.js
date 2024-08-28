@@ -376,10 +376,13 @@ const AddTicketOnCallRequests = ({
         }
       });
     }
-    setRenderTicket((prev) => !prev);
-    if (setTicketUpdate) {
-      setTicketUpdate((prev) => !prev);
+    if (setRenderTicket !== undefined) {
+      setRenderTicket((prev) => !prev);
+      if (setTicketUpdate) {
+        setTicketUpdate((prev) => !prev);
+      }
     }
+
   };
 
   const handlleValidation = (e) => {

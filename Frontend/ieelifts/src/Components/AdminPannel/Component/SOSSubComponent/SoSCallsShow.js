@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearSoS, getSoS } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
+const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
     const ref = useRef();
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
@@ -34,11 +34,11 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
         })
     }
     useEffect(() => {
-        if (SOSStatusUpdate?.success) {
+        if (jobOrderNumber?.status) {
             setLoader(true);
             setLoader(false)
         }
-    }, [SOSStatusUpdate?.success])
+    }, [(jobOrderNumber?.status)])
 
 
     useEffect(() => {
@@ -154,13 +154,13 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                                         <td
                                             className="dots3"
                                             onClick={() => {
-                                                if (!((SOSStatusUpdate?.id === data._id) || data.isDead)) {
+                                                if (!((jobOrderNumber?.id === data._id) || data.isDead)) {
                                                     handleClick(data.jon, data._id)
                                                 }
                                             }}
                                         >
 
-                                            {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
+                                            {((jobOrderNumber?.id === data._id) || data.isDead) ? <>{data.status || jobOrderNumber?.status}</> : < HiOutlineDotsVertical />}
                                         </td>
                                     </tr>
                                 ))}

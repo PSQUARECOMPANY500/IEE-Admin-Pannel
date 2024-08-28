@@ -417,7 +417,6 @@ module.exports.createEnggLocation = async (req, res) => {
 //         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
 //         .split(",")[0];
 
-
 //       // const response = await EnggLocationModel.findOneAndUpdate(
 //       //   { ServiceEnggId, AttendanceCreatedDate },
 //       //   {
@@ -485,8 +484,14 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    console.log("enngglocation serviceid ", ServiceEnggId, " latitude ", latitude, " longitute ", longitude)
-
+    console.log(
+      "enngglocation serviceid ",
+      ServiceEnggId,
+      " latitude ",
+      latitude,
+      " longitute ",
+      longitude
+    );
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -548,7 +553,6 @@ module.exports.getEnggLocationDetail = async (req, res) => {
         });
       })
     );
-
 
     const combinedData = enggDetail.map((detail, index) => ({
       ...detail.toObject(),
@@ -1004,10 +1008,10 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
     // return ;
     // return;
 
-
-    let document, response = null;
+    let document,
+      response = null;
     if (req.files && req.files.length > 0) {
-      console.log(ServiceEnggId, TypeOfLeave, From, To, Leave_Reason)
+      console.log(ServiceEnggId, TypeOfLeave, From, To, Leave_Reason);
       document = req.files.document[0].filename;
       response = await EnggLeaveServiceRecord.create({
         ServiceEnggId,
@@ -1016,15 +1020,13 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
         Leave_Reason,
         Document: document,
       });
-    }
-    else {
+    } else {
       response = await EnggLeaveServiceRecord.create({
         ServiceEnggId,
         TypeOfLeave,
         Duration: { From: From, To: To },
         Leave_Reason,
       });
-
     }
 
     res
@@ -1407,7 +1409,7 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
-    console.log(reqs)
+    console.log(reqs);
 
     // console.log("20",req.body)
     // console.log("21",req.files)
@@ -1588,20 +1590,26 @@ module.exports.getEngineerLeveCount = async (req, res) => {
 
 module.exports.getAllEngDetails = async (req, res) => {
   try {
-    const engDetails = await ServiceEnggBasicSchema.find().select("-EnggPassword");
+    const engDetails = await ServiceEnggBasicSchema.find().select(
+      "-EnggPassword"
+    );
 
     const combinedData = await Promise.all(
       engDetails.map(async (eng) => {
-        const spareParts = await sparePartRequestTable.find({ EnggId: eng.EnggId, isApproved: true, isApplied: true });
+        const spareParts = await sparePartRequestTable.find({
+          EnggId: eng.EnggId,
+          isApproved: true,
+          isApplied: true,
+        });
         const engLeaveRecord = await EnggLeaveServiceRecord.find({
           ServiceEnggId: eng.EnggId,
         });
-        const currentLeaveRecord = engLeaveRecord[engLeaveRecord.length - 1]
+        const currentLeaveRecord = engLeaveRecord[engLeaveRecord.length - 1];
 
         return {
           ...eng.toObject(),
           engLeaveRecord: currentLeaveRecord,
-          Spare: spareParts.length || 0
+          Spare: spareParts.length || 0,
         };
       })
     );
@@ -1643,7 +1651,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-          "") ||
+            "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -1696,7 +1704,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
     };
 
     // const membership = getMemberShipDetails.MembershipType || 'silver';  //todo - chnage is future--------------------
-    const membership = 'silver';
+    const membership = "silver";
     // console.log("membership -----", membership)
 
     // price caluclate login insiode the spare part
@@ -1801,6 +1809,11 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
 
+    const date = new Date().toLocaleDateString("en-GB");
+    const indiaTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata",
+    });
+
     const ReportData = await ReportInfoModel.findOne({ serviceId });
 
     if (!ReportData) {
@@ -1815,7 +1828,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
         },
         { $inc: { AvailableCash: JSON.parse(paymentdata).Total_Amount } }
       );
-    } 
+    }
     const paymentPDF = req.files.report[0].filename;
 
     ReportData.paymentDetils = paymentPDF;
@@ -1827,10 +1840,16 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
     await ReportData.save();
 
-
     const SparePartsChanged = ReportData.questionsDetails.filter((question) => {
-      const { isResolved, isSparePartRequest, sparePartDetail, SparePartDescription } = question.questionResponse;
-      const hasSparePartDetails = sparePartDetail.sparePartsType !== "" && sparePartDetail.subsparePartspartid !== "";
+      const {
+        isResolved,
+        isSparePartRequest,
+        sparePartDetail,
+        SparePartDescription,
+      } = question.questionResponse;
+      const hasSparePartDetails =
+        sparePartDetail.sparePartsType !== "" &&
+        sparePartDetail.subsparePartspartid !== "";
 
       if (
         (isResolved && hasSparePartDetails) ||
@@ -1846,23 +1865,26 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
     });
 
     SparePartsChanged.forEach(async (sparePart) => {
-      const sparePartId = sparePart.questionResponse.sparePartDetail.subsparePartspartid
-      const sparePartType = sparePart.questionResponse.sparePartDetail.sparePartsType
+      const sparePartId =
+        sparePart.questionResponse.sparePartDetail.subsparePartspartid;
+      const sparePartType =
+        sparePart.questionResponse.sparePartDetail.sparePartsType;
       const sparePartRequestUpdate = await sparePartRequestTable.findOne({
-        EnggId: ReportData.EnggId, sparePartId, Type: sparePartType
-      })
+        EnggId: ReportData.EnggId,
+        sparePartId,
+        Type: sparePartType,
+      });
       if (sparePartRequestUpdate) {
         sparePartRequestUpdate.isApplied = true;
         sparePartRequestUpdate.save();
       }
-    })
-
+    });
 
     const FilteredData = ReportData.questionsDetails.filter(
       (value) => value.questionResponse.isSparePartRequest === true
     );
 
-    await Promise.all(
+    const result = await Promise.all(
       FilteredData.map(async (item) => {
         const { questionResponse } = item; // (todo for spare part id (Discuss in Enventory Modules)
         const newSparePartRequest = await sparePartRequestTable.create({
@@ -1873,15 +1895,74 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
           Description: questionResponse.SparePartDescription,
           RequestType: "On Site Request",
           sparePartName: questionResponse.sparePartDetail.sparePartsname,
-          SubSparePartName: questionResponse.sparePartDetail.subsparePartspartname,
+          SubSparePartName:
+            questionResponse.sparePartDetail.subsparePartspartname,
           Date: sparePartRequestDate,
         });
-        console.log("newSparePartRequest+++++++++++++++++++++++", newSparePartRequest);
+        // console.log("newSparePartRequest+++++++++++++++++++++++", newSparePartRequest);
+        return questionResponse; // Return questionResponse
       })
     );
 
+    //implement the logic here to raised new request its callback or service and update spare part details in callbackRequest and serviceRequest and refrence to service id-------
+    const sparePartRequestedByEngg =
+      result &&
+      result.map((item) => ({
+        sparePartId: item.sparePartDetail.subsparePartspartid,
+        Type: item.sparePartDetail.sparePartsType,
+        sparePartName: item.sparePartDetail.sparePartsname,
+        SubSparePartName: item.sparePartDetail.subsparePartspartname,
+      }));
 
 
+    const checkitItCallback = await clientRequestImidiateVisit.findOne({
+      callbackId: serviceId,
+    });
+    const checkitItService = await serviceRequest.findOne({
+      RequestId: serviceId,
+    });
+
+    if (FilteredData.length > 0) {
+      if (checkitItCallback) {
+        await clientRequestImidiateVisit.create({
+          JobOrderNumber: checkitItCallback.JobOrderNumber,
+          // callbackId,
+          callbackDate: date,
+          callbackTime: indiaTime,
+          TypeOfIssue: checkitItCallback.TypeOfIssue
+            ? checkitItCallback.TypeOfIssue
+            : "",
+          Description: checkitItCallback.Description
+            ? checkitItCallback.Description
+            : "",
+          RepresentativeName: checkitItCallback.RepresentativeName
+            ? checkitItCallback.RepresentativeName
+            : "",
+          RepresentativeNumber: checkitItCallback.RepresentativeNumber
+            ? checkitItCallback.RepresentativeNumber
+            : "",
+          //update spare part information in callback table
+          sparePartDetails: sparePartRequestedByEngg,
+          previousServiceId:serviceId
+        });
+      }
+      if (checkitItService) {
+        await serviceRequest.create({
+          JobOrderNumber: checkitItService.JobOrderNumber,
+          // RequestId,
+          RequestDate: date,
+          RequestTime: indiaTime,
+          TypeOfIssue: checkitItService.TypeOfIssue
+            ? checkitItService.TypeOfIssue
+            : "",
+          //update spare part information in service table
+          sparePartDetails: sparePartRequestedByEngg,
+          previousServiceId:serviceId
+        });
+      }
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     const updateTaskStatusCallback = await callbackAssigntoEngg.findOne({
       callbackId: serviceId,
@@ -1890,38 +1971,56 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
       RequestId: serviceId,
     });
 
-
-
     if (updateTaskStatusCallback) {
       updateTaskStatusCallback.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;
-      let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+      let activeMembership = await memberShipTable.findOne({
+        JobOrderNumber: jon,
+        isDisable: false,
+        isRenewed: false,
+      });
       if (activeMembership) {
-        activeMembership.callbacksCount = activeMembership.callbacksCount > 0 ? activeMembership.callbacksCount + 1 : 1;
-        activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        activeMembership.callbacksCount =
+          activeMembership.callbacksCount > 0
+            ? activeMembership.callbacksCount + 1
+            : 1;
+        activeMembership.revenue =
+          activeMembership.revenue > 0
+            ? ReportData.TotalAmount + activeMembership.revenue
+            : ReportData.TotalAmount;
         activeMembership.sparePartsSoldCount =
           activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
         if (SparePartsChanged && SparePartsChanged.length > 0) {
           activeMembership.sparePartsSoldCount += SparePartsChanged.length;
         }
-        await activeMembership.save()
+        await activeMembership.save();
       }
       await updateTaskStatusCallback.save();
     } else {
       updateTaskStatusServiceRequest.ServiceProcess = "completed";
       let jon = updateTaskStatusCallback?.JobOrderNumber;
-      let activeMembership = await memberShipTable.findOne({ JobOrderNumber: jon, isDisable: false, isRenewed: false });
+      let activeMembership = await memberShipTable.findOne({
+        JobOrderNumber: jon,
+        isDisable: false,
+        isRenewed: false,
+      });
 
       if (activeMembership) {
-        activeMembership.callbacksCount = activeMembership.SOScallsCount > 0 ? activeMembership.SOScallsCount + 1 : 1;
-        activeMembership.revenue = activeMembership.revenue > 0 ? ReportData.TotalAmount + activeMembership.revenue : ReportData.TotalAmount;
+        activeMembership.callbacksCount =
+          activeMembership.SOScallsCount > 0
+            ? activeMembership.SOScallsCount + 1
+            : 1;
+        activeMembership.revenue =
+          activeMembership.revenue > 0
+            ? ReportData.TotalAmount + activeMembership.revenue
+            : ReportData.TotalAmount;
         activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
         activeMembership.sparePartsSoldCount =
           activeMembership.sparePartsSoldCount || 0; // Ensure it's a number
         if (SparePartsChanged && SparePartsChanged.length > 0) {
           activeMembership.sparePartsSoldCount += SparePartsChanged.length;
         }
-        await activeMembership.save()
+        await activeMembership.save();
       }
       await updateTaskStatusServiceRequest.save();
     }
@@ -2655,7 +2754,8 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           serviceId: item.RequestId ? item.RequestId : item.callbackId,
         });
 
-        if (report && report.Steps >= 2) {         //FIXME:
+        if (report && report.Steps >= 2) {
+          //FIXME:
           return item;
         }
         return null;
@@ -2667,10 +2767,10 @@ module.exports.getAllClientPreviousService = async (req, res) => {
     );
 
     const convertIntoMinutes = (timeRange) => {
-      const [start, end] = timeRange.split('-');
-      const [startHour, startMinute] = end.split(':').map(Number);
+      const [start, end] = timeRange.split("-");
+      const [startHour, startMinute] = end.split(":").map(Number);
       return startHour * 60 + startMinute;
-    }
+    };
 
     const EngScheduleData = await Promise.all(
       resultService.map(async (item) => {
@@ -2682,25 +2782,39 @@ module.exports.getAllClientPreviousService = async (req, res) => {
         }).select("EnggName");
 
         //make the engg time logic
-        const enggTimeInCallback = await ServiceAssigntoEngg.find({ ServiceEnggId: item.ServiceEnggId, Date: todayDate }).select('Slot');
-        const enggTimeInService = await AssignSecheduleRequest.find({ ServiceEnggId: item.ServiceEnggId, Date: todayDate }).select('Slot');
+        const enggTimeInCallback = await ServiceAssigntoEngg.find({
+          ServiceEnggId: item.ServiceEnggId,
+          Date: todayDate,
+        }).select("Slot");
+        const enggTimeInService = await AssignSecheduleRequest.find({
+          ServiceEnggId: item.ServiceEnggId,
+          Date: todayDate,
+        }).select("Slot");
 
-
-        const enggTodaysFirstSlotAssign = [...enggTimeInCallback, ...enggTimeInService]
+        const enggTodaysFirstSlotAssign = [
+          ...enggTimeInCallback,
+          ...enggTimeInService,
+        ];
         const enggSortedSlot = enggTodaysFirstSlotAssign.sort((a, b) => {
-          const aStart = a.Slot && a.Slot[0] ? convertIntoMinutes(a.Slot[0]) : Infinity;
-          const bStart = b.Slot && b.Slot[0] ? convertIntoMinutes(b.Slot[0]) : Infinity;
+          const aStart =
+            a.Slot && a.Slot[0] ? convertIntoMinutes(a.Slot[0]) : Infinity;
+          const bStart =
+            b.Slot && b.Slot[0] ? convertIntoMinutes(b.Slot[0]) : Infinity;
           return aStart - bStart;
         });
 
         let Type;
 
         if (item.callbackId) {
-          Type = await clientRequestImidiateVisit.findOne({
-            callbackId: item.callbackId,
-          }).select('Type');
+          Type = await clientRequestImidiateVisit
+            .findOne({
+              callbackId: item.callbackId,
+            })
+            .select("Type");
         } else {
-          Type = await serviceRequest.findOne({ RequestId: item.RequestId }).select('Type');
+          Type = await serviceRequest
+            .findOne({ RequestId: item.RequestId })
+            .select("Type");
         }
 
         return {
@@ -2708,7 +2822,7 @@ module.exports.getAllClientPreviousService = async (req, res) => {
           clientDetails,
           EnggDetails,
           Type,
-          todayEnggFirstSlot: enggSortedSlot[0]
+          todayEnggFirstSlot: enggSortedSlot[0],
         };
       })
     );
@@ -2719,10 +2833,6 @@ module.exports.getAllClientPreviousService = async (req, res) => {
     res.status(204).json({ status: "error", message: error });
   }
 };
-
-
-
-
 
 //--------------------------------service Engg login with OTP ----------------------------------------
 // api to handle service Engg login with OTP
@@ -2837,12 +2947,9 @@ module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req, res) => {
     console.log("@@@@@@@@@@@@@@@@@", useOTPVerificationRecords);
 
     if (useOTPVerificationRecords.length <= 0) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Account record does not exist, or has been verified already",
-        });
+      return res.status(404).json({
+        message: "Account record does not exist, or has been verified already",
+      });
     }
 
     const expiresAt = useOTPVerificationRecords.expiresAt;

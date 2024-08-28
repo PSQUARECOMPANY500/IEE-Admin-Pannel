@@ -53,7 +53,26 @@ const Services = new Schema(
     isCancelled:{
       type:Boolean,
       default:false
-    }
+    },
+    sparePartDetails:[
+      {
+        sparePartId:{
+          type: String,
+        },
+        Type:{
+          type: String,
+        },
+        sparePartName:{
+          type: String,
+        },
+        SubSparePartName:{
+          type: String,
+        }
+      }
+  ],
+  previousServiceId:{
+    type:String,
+  }
   },
   {
     timestamps: true,
