@@ -36,11 +36,6 @@ const AddTicketModals = ({
 }) => {
   const dispatch = useDispatch();
 
-  console.log(
-    "|||||||||||||||||\\\\\\\\\\\\\\passed spare part section ",
-    sparePartDetails
-  );
-
   const [selectedEnggId, setSelectedEnggId] = useState([]);
   // console.log('selectedEnggId',selectedEnggId[0])
 
@@ -396,9 +391,8 @@ const AddTicketModals = ({
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
       <div
-        className={`modal-container ${showTicketModal ? "active" : ""} ${
-          isNotification ? "notification-modal" : ""
-        }`}
+        className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? "notification-modal" : ""
+          }`}
       >
         <div className="child-modal-container">
           <div className="sub-child-modal-container">
@@ -931,9 +925,8 @@ const AddTicketModals = ({
                       {/* ------------------------------- cancel button functionality --------------------------- */}
 
                       <button
-                        className={`edit-button ${
-                          editchange && `edit-button-onClick`
-                        }`}
+                        className={`edit-button ${editchange && `edit-button-onClick`
+                          }`}
                         onClick={handleEditSection}
                       >
                         Edit

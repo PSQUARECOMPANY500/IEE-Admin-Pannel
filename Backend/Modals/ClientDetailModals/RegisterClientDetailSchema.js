@@ -54,15 +54,13 @@ const clientRegister = new Schema(
     },
     sosCallCount: {
       type: Number,
-      default: 0
+      default:0
     }
   },
   {
     timestamp: true,
   }
 );
-
-clientRegister.indexes({ JobOrderNumber: 1, name: 2, PhoneNumber: 3, Address: 4 });
 
 clientRegister.pre("save", function (next) {
   if (!this.Password) {

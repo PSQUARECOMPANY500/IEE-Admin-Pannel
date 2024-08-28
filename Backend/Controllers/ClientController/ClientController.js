@@ -1456,8 +1456,7 @@ module.exports.sosRequest = async (req, res) => {
     const now = new Date();
     const time = now.toLocaleTimeString();
     const date = now.toLocaleDateString();
-
-    console.log(clientCount.Address)
+    console.log(clientCount.sosCallCount)
     const data = {
       jon,
       desc,
@@ -1465,7 +1464,8 @@ module.exports.sosRequest = async (req, res) => {
       date,
       address: clientCount.Address,
       membership: clientCount.MembershipType,
-      SoSCallCount: clientCount.sosCallCount + 1
+      SoSCallCount: clientCount.sosCallCount,
+      name: clientCount.name
     };
 
     const createdSoSRequest = await SoSRequestsTable.create(data)

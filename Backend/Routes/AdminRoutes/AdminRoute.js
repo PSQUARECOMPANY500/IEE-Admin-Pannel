@@ -357,6 +357,7 @@ router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServi
 
 // SOS requests routes
 router.get('/getSoSRequests', adminContoller.getSoSRequests)
+router.put("/changeStatusSoS", adminContoller.changeStatusSoS)
 
 
 module.exports = router;
