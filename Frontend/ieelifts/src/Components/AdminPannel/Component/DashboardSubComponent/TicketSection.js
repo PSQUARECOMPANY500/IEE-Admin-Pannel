@@ -59,6 +59,10 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [filterData, setFilterData] = useState([]);
   const [getFilterConditions, setGetFilterConditions] = useState(false);
 
+
+  const [sparePartDetails,setsparepartDetails] = useState([]);
+
+
   useEffect(() => {
     const fetchData = () => {
       dispatch(getFilterLocation());
@@ -452,13 +456,14 @@ const TicketSection = ({ setTicketUpdate }) => {
   //aayush code for filter end--------------------------------------------------------------------------
   //.............................................................{/armaan}.................
 
-  const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned) => {
+  const openModal = (modalNumber, callbackIdOnModel, EngId, isAssigned, sparePartDetails) => {
     // Use the appropriate modal number to open the corresponding modal
     if (modalNumber === 1) {
       setCallbackId(callbackIdOnModel); // Set the callbackId here
       setEnggId(EngId);
       setIsAssigned(isAssigned);
       setShowTicketModal1(true);
+      setsparepartDetails(sparePartDetails);
     } else if (modalNumber === 0) {
       setShowTicketModal(true);
     }
@@ -812,6 +817,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 })
               ) : (
                 filteredCD?.map((data, index) => {
+                  // console.log("this is all data from the callback ", data);
                   const currentCallbackId = data.callbackId;
                   const IsDead = data.isDead;
                   const isCancelled = data.isCancelled;
@@ -820,6 +826,13 @@ const TicketSection = ({ setTicketUpdate }) => {
                   const isAssigned = data.isAssigned;
                   const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
                   const currentTime = new Date();
+                  
+
+                  const previousServiceId = data.previousServiceId;
+                  const sparePartDetails = data.sparePartDetails;
+
+
+
                   // Calculate time difference in milliseconds
                   const timeDifference = currentTime - createdAtTime;
                   const thirtyMinutesInMilliseconds = 30 * 60 * 1000; // 30 minutes in milliseconds
@@ -958,11 +971,11 @@ const TicketSection = ({ setTicketUpdate }) => {
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                         onClick={() =>
-                          openModal(1, currentCallbackId, EngId, isAssigned)
+                          openModal(1, currentCallbackId, EngId, isAssigned, sparePartDetails)
                         }
                       >
                         {isAssigned ? (
-                          isCancelled ? (
+                           isCancelled ? (
                             <AssignDropdown
                               customAssign="cancelRequest"
                               name="CANCEL"
@@ -981,20 +994,29 @@ const TicketSection = ({ setTicketUpdate }) => {
                               />
                             )
                           )
-
                         ) : (
-                          <AssignDropdown
+                          previousServiceId && sparePartDetails.length > 0 ? (
+                            <AssignDropdown
+                              customAssign="assignColor"
+                              name="Re-Assign"
+                            />
+                          ) : (<AssignDropdown
                             customAssign="assignColor"
                             name="Assign"
-                          />
+                          />)
                         )}
                       </td>
                       {/* todo : To be Changed in future */}
                     </tr>
                   );
+
+
+
                 })
               )}
             </tbody>
+
+
 
             {showTicketModal1 && (
               <AddTicketModals
@@ -1005,6 +1027,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                 setTicketUpdate={setTicketUpdate}
                 enggId={enggId}
                 isAssigned={isAssigned}
+                sparePartDetails={sparePartDetails}
               />
             )}
             {/* TABLE BODY ENDS */}

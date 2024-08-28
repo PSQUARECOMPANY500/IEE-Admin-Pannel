@@ -32,12 +32,13 @@ const AddTicketModals = ({
   isAssigned,
   setTicketUpdate,
   isNotification = false,
+  sparePartDetails = null,
 }) => {
   const dispatch = useDispatch();
 
   console.log(
-    "|||||||||||||||||\\\\\\\\\\\\\\passed from dashboard section ",
-    callbackId
+    "|||||||||||||||||\\\\\\\\\\\\\\passed spare part section ",
+    sparePartDetails
   );
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
@@ -386,7 +387,7 @@ const AddTicketModals = ({
   };
 
   const handleCancelTicket = async () => {
-    const response =  await cancelServiceRequestOrCallback(callbackId)
+    const response = await cancelServiceRequestOrCallback(callbackId);
     toast.success(response.message);
   };
 
@@ -850,44 +851,70 @@ const AddTicketModals = ({
                 </div>
                 <div className="grid-form-container2">
                   {/* ------------------------------------------------------------------------------------------------------------------------------- */}
-                  <div className="col75">
-                    <input
-                      placeholder={rn || "Enter Representative Name (Optional)"}
-                      value={rn}
-                      onChange={(e) => setrn(e.target.value)}
-                      autoComplete="off"
-                      readOnly={editchange ? false : isAssigned}
-                    />
-                  </div>
 
-                  <div className="col75">
-                    <input
-                      placeholder={
-                        rnum || "Enter Representative Name (Optional)"
-                      }
-                      readOnly={editchange ? false : isAssigned}
-                      value={rnum}
-                      onChange={(e) => setrum(e.target.value)}
-                      autoComplete="off"
-                    />
-                  </div>
+                  {sparePartDetails && sparePartDetails.length <= 0 && (
+                    <>
+                      <div className="col75">
+                        <input
+                          placeholder={
+                            rn || "Enter Representative Name (Optional)"
+                          }
+                          value={rn}
+                          onChange={(e) => setrn(e.target.value)}
+                          autoComplete="off"
+                          readOnly={editchange ? false : isAssigned}
+                        />
+                      </div>
 
-                  <div className="col75">
-                    <textarea
-                      id="subject"
-                      name="subject"
-                      style={{
-                        height: "105px",
-                        width: "93%",
-                        resize: "none",
-                      }}
-                      readOnly={editchange ? false : isAssigned}
-                      placeholder={isAssigned ? message : "message"}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                      }}
-                    ></textarea>
-                  </div>
+                      <div className="col75">
+                        <input
+                          placeholder={
+                            rnum || "Enter Representative Name (Optional)"
+                          }
+                          readOnly={editchange ? false : isAssigned}
+                          value={rnum}
+                          onChange={(e) => setrum(e.target.value)}
+                          autoComplete="off"
+                        />
+                      </div>
+
+                      <div className="col75">
+                        <textarea
+                          id="subject"
+                          name="subject"
+                          style={{
+                            height: "105px",
+                            width: "93%",
+                            resize: "none",
+                          }}
+                          readOnly={editchange ? false : isAssigned}
+                          placeholder={isAssigned ? message : "message"}
+                          onChange={(e) => {
+                            setMessage(e.target.value);
+                          }}
+                        ></textarea>
+                      </div>
+                    </>
+                  )}
+
+                  {sparePartDetails && sparePartDetails.length > 0 && (
+                    <div className="sparePartContainer">
+                      <p className="sparePartHeading">Spare Part Request</p>
+                      <div className="sunSparePartHeading">
+                        <p>Spare Part Name</p>
+                        <p>Sub SparePart Name</p>
+                      </div>
+                      <div className="sparePartNames">
+                        {sparePartDetails &&
+                          sparePartDetails.map((item) => (
+                            <div className="spartpartnameswithParts">
+                              <p>{item.sparePartName}</p>
+                              <p>{item.SubSparePartName}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="footer-section" style={{ width: "80%" }}>
                     <div className="buttons">
