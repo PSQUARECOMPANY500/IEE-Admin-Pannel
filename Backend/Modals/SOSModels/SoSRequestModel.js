@@ -9,9 +9,13 @@ const SoSRequest = new Schema(
             type: String,
             required: true,
         },
+        name: {
+            type: String,
+            required: true,
+        },
         RequestId: {
             type: String,
-            default: uuidv4, // Use uuid to generate a unique identifier
+            default: uuidv4,
             required: true,
             unique: true,
         },
@@ -32,7 +36,15 @@ const SoSRequest = new Schema(
             type: String
         },
         SoSCallCount: {
-            type: String
+            type: Number
+        },
+        status: {
+            type: String,
+            default: null
+        },
+        isDead: {
+            type: Boolean,
+            default: false
         }
     },
     {

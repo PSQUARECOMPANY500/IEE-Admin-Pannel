@@ -4132,23 +4132,13 @@ module.exports.getSoSRequests = async (req, res) => {
     limit = parseInt(limit);
     const skip = (page - 1) * limit;
 
+
     const [SoSCalls, totalSoSCalls] = await Promise.all([
       SoSRequestsTable.find().skip(skip).limit(limit),
       SoSRequestsTable.countDocuments()
     ]);
-
-
-
     const totalPage = Math.ceil(totalSoSCalls / limit);
 
-    // const updateSOS = await Promise.all(
-    //   SoSCalls.map(async (SoSCall) => {
-    //     const clientData = await clientDetailSchema.findOne({ JobOrderNumber: SoSCall.jon });
-    //     return {
-    //       ...SoSCall,
-    //     }
-    //   })
-    // )
     res.status(200).json({
       message: "All SOS requests fetched successfully",
       SoSCalls,
@@ -4163,7 +4153,56 @@ module.exports.getSoSRequests = async (req, res) => {
     });
   }
 }
+module.exports.changeStatusSoS = async (req, res) => {
+  try {
+    const { jon, status, _id } = req.body;
 
+    if (!jon || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "All values are required"
+      });
+    }
+
+    const SOSRequest = await SoSRequestsTable.findOne({ jon, _id });
+    if (!SOSRequest) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the request"
+      });
+    }
+
+
+    SOSRequest.status = status;
+    SOSRequest.isDead = true;
+    await SOSRequest.save();
+
+    const clientCount = await clientDetailSchema.findOne({ JobOrderNumber: jon });
+    if (!clientCount) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the client"
+      });
+    }
+
+    clientCount.sosCallCount = clientCount.sosCallCount + 1;
+    console.log(clientCount)
+    await clientCount.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Status has been updated successfully",
+      id: _id,
+      status
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message
+    });
+  }
+};
 
 
 // ----------------------------------{armaan-dev}---------------------------

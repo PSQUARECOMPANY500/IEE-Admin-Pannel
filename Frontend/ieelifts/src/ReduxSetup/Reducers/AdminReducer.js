@@ -69,6 +69,9 @@ import { GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA } from "../Actions/AdminAct
 import { CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING } from "../Actions/AdminActions";
 import { UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST } from "../Actions/AdminActions";
 import { GET_ALL_SOS } from "../Actions/AdminActions";
+import { update_SoS_Status } from "../Actions/AdminActions";
+import { CLEAR_SOS } from "../Actions/AdminActions";
+
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1250,16 +1253,37 @@ export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state = upd
 }
 
 const SoSInitial = {
-  SoSCalls: {
-    clients: [],
-  }
+  SoSCalls: [],
 };
+
 export const getSoSReducer = (state = SoSInitial, action) => {
   switch (action.type) {
     case GET_ALL_SOS:
-      const calls = [...action.payload.SoSCalls]
-      console.log({ ...state, clients: [...calls], ...action.payload })
-      return { ...state, clients: [calls], ...action.payload };
+      return {
+        ...state,
+        SoSCalls: [...state.SoSCalls, ...action.payload.SoSCalls],
+        totalPage: action.payload.totalPage,
+        message: action.payload.message,
+        success: action.payload.success,
+      };
+    case CLEAR_SOS:
+      return SoSInitial;
+    default:
+      return state;
+  }
+};
+
+
+const SoSStatus = {
+  status: null
+};
+export const updateSoSStatus = (state = SoSStatus, action) => {
+  switch (action.type) {
+    case update_SoS_Status:
+      return {
+        ...state,
+        status: action.payload,
+      }
     default:
       return state;
   }

@@ -7,10 +7,10 @@ import React, {
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import CheckBox from "../DashboardSubComponent/CheckBox";
 import { useSelector, useDispatch } from "react-redux";
-import { getSoS } from "../../../../ReduxSetup/Actions/AdminActions";
+import { clearSoS, getSoS } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const SoSCallsShow = ({ handleDropDownClick }) => {
+const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
     const ref = useRef();
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
@@ -26,11 +26,22 @@ const SoSCallsShow = ({ handleDropDownClick }) => {
             SoSCalls
     );
 
-    function handleClick(jon) {
-        handleDropDownClick(jon)
-    }
+    // console.log("================================", SoSDetails)
 
-    useLayoutEffect(() => {
+    function handleClick(jon, _id) {
+        handleDropDownClick({
+            jon, _id
+        })
+    }
+    useEffect(() => {
+        if (SOSStatusUpdate?.success) {
+            setLoader(true);
+            setLoader(false)
+        }
+    }, [SOSStatusUpdate?.success])
+
+
+    useEffect(() => {
         if (totalPage >= page || page === 1) {
             setLoader(true);
             dispatch(getSoS(page, 10))
@@ -40,7 +51,11 @@ const SoSCallsShow = ({ handleDropDownClick }) => {
                     console.error("Error fetching SOS requests:", error);
                 });
         }
-    }, [page]);
+
+        return () => {
+            dispatch(clearSoS());
+        };
+    }, [page, dispatch]);
 
     const handleInfiniteScroll = () => {
         const { scrollTop, scrollHeight, clientHeight } = ref.current;
@@ -138,9 +153,14 @@ const SoSCallsShow = ({ handleDropDownClick }) => {
                                         <td className="address">{data.desc}</td>
                                         <td
                                             className="dots3"
-                                            onClick={() => handleClick(data.jon)}
+                                            onClick={() => {
+                                                if (!((SOSStatusUpdate?.id === data._id) || data.isDead)) {
+                                                    handleClick(data.jon, data._id)
+                                                }
+                                            }}
                                         >
-                                            <HiOutlineDotsVertical />
+
+                                            {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
                                         </td>
                                     </tr>
                                 ))}

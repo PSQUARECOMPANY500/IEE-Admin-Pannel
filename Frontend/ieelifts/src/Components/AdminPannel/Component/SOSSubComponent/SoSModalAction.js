@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
+import { useDispatch } from 'react-redux';
+import { updateSOSStatus } from '../../../../ReduxSetup/Actions/AdminActions';
 
 const SosModal = ({ handleDropDownClick, jobOrderNumber }) => {
+    const dispatch = useDispatch()
     const [firstList, setFirstList] = useState(false);
+    const [status, updateStatus] = useState(null);
 
-    
+    useEffect(() => {
+        if (status !== null) {
+            dispatch(updateSOSStatus(jobOrderNumber.jon, status, jobOrderNumber._id))
+        }
+    }, [status])
 
     return (
         <div className="SOS-Action-modal-container-outer">
@@ -30,13 +38,13 @@ const SosModal = ({ handleDropDownClick, jobOrderNumber }) => {
                 </div>
             ) : (
                 <div className="SOS-Action-modal-items">
-                    <div className="uuu" >
+                    <div className="uuu" onClick={() => updateStatus("falseAlarm")}>
                         <p>False alarm</p>
                     </div>
-                    <div className="uuu">
+                    <div className="uuu" onClick={() => updateStatus("ResolvedCall")}>
                         <p>Solved on call</p>
                     </div>
-                    <div className="uuu">
+                    <div className="uuu" onClick={() => updateStatus("RaisedCallback")}>
                         <p>Make a callback</p>
                     </div>
                 </div>

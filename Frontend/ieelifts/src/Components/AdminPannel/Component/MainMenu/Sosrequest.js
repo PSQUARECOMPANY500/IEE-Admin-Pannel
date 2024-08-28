@@ -1,18 +1,45 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import SoSCallsShow from "../../../AdminPannel/Component/SOSSubComponent/SoSCallsShow";
 import SosModal from "../SOSSubComponent/SoSModalAction";
+import { useDispatch, useSelector } from "react-redux";
+import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
+import { updateSOSStatus } from "../../../../ReduxSetup/Actions/AdminActions";
 const Sosrequest = () => {
+  const dispatch = useDispatch()
   const [dropdown, setDropdown] = useState(false);
-  const [jobOrderNumber, setjobOrderNumber] = useState(null);
+  const [jobOrderNumber, setjobOrderNumber] = useState({
+    jon: null,
+    _id: null
+  });
+  const [callbackModal, showCallbackModal] = useState(false);
+  const SOSStatusUpdate = useSelector((state) =>
+    state.AdminRootReducer?.updateSoSStatus?.status
+  );
+
+  const closeModal = () => {
+    showCallbackModal(false)
+  };
 
   function handleDropDownClick(jon) {
     setDropdown((prev) => !prev)
     if (jon) {
       setjobOrderNumber(jon)
-    } else {
-      setjobOrderNumber(null)
     }
   }
+
+  useEffect(() => {
+    if (SOSStatusUpdate?.success) {
+      if (SOSStatusUpdate?.status === "RaisedCallback") {
+        showCallbackModal(true)
+      }
+      handleDropDownClick()
+    }
+
+    return (() => {
+      console.log("reacehd here")
+      dispatch(updateSOSStatus())
+    })
+  }, [SOSStatusUpdate?.success])
 
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
@@ -29,15 +56,25 @@ const Sosrequest = () => {
     };
   }, []);
 
-
   return (
     <div className="main-container_sos">
-      <SoSCallsShow handleDropDownClick={handleDropDownClick} />
+      <SoSCallsShow handleDropDownClick={handleDropDownClick} SOSStatusUpdate={SOSStatusUpdate} />
       {dropdown &&
         <div className="engineer-modal-wrapper">
           <div className="SOS-Action-modal-container" ref={formRef}>
-            <SosModal handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} />
+            <SosModal handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} SOSStatusUpdate={SOSStatusUpdate} />
           </div>
+        </div>
+      }
+      {callbackModal &&
+        <div>
+          <AddTicketOnCallRequests
+            closeModal={closeModal}
+            showTicketModal={showCallbackModal}
+            requestSection={false}
+            jobOrderNumber={jobOrderNumber}
+            SOSStatusUpdate={SOSStatusUpdate}
+          />
         </div>
       }
     </div>

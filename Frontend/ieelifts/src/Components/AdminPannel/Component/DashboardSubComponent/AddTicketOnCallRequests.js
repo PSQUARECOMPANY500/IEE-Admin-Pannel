@@ -28,6 +28,8 @@ const AddTicketOnCallRequests = ({
   setRenderTicket,
   requestSection,
   setTicketUpdate,
+  SOSStatusUpdate,
+  jobOrderNumber
 }) => {
   const dispatch = useDispatch();
 
@@ -64,8 +66,6 @@ const AddTicketOnCallRequests = ({
     repersentativeNumber: "",
   });
 
-  console.log("length", engDetails.enggName.length);
-
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
@@ -73,7 +73,11 @@ const AddTicketOnCallRequests = ({
   const [reName, setreName] = useState("");
   const [reNumber, setreNumber] = useState("");
 
-  // console.log("5555555555555555555", reNumber);
+  useEffect(() => {
+    if (jobOrderNumber?.jon) {
+      setJon(jobOrderNumber.jon);
+    }
+  }, [SOSStatusUpdate?.success])
 
   const timeSlots = [
     {
@@ -208,7 +212,7 @@ const AddTicketOnCallRequests = ({
       const currentDate = new Date();
       const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
       const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
-      console.log(updatedFormatedDate);
+
       setDate(updatedFormatedDate);
 
       const hours = currentDate.getHours();
@@ -320,7 +324,6 @@ const AddTicketOnCallRequests = ({
         )
       ).then((RequestId) => {
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
-          console.log("details -------------->> ", date ,engDate);
           dispatch(
             assignserviceRequestByAdmin(
               engDetails?.enggJon,
@@ -447,6 +450,7 @@ const AddTicketOnCallRequests = ({
                         onChange={(e) => setJon(e.target.value)}
                         type="text"
                         placeholder="Enter JON"
+                        value={jon}
                       />
                     </div>
                   </div>

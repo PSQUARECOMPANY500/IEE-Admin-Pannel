@@ -116,6 +116,9 @@ export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_R
 
 export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
 export const GET_ALL_SOS = "GET_ALL_SOS"
+export const update_SoS_Status = "update_SoS_Status"
+export const CLEAR_SOS = "CLEAR_SOS";
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -1893,6 +1896,8 @@ export const cancelServiceRequestOrCallback = async (serviceId) => {
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------{armaan-dev}------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------
 export const getSoS = (page, limit) => {
   return async (dispatch) => {
     try {
@@ -1908,4 +1913,47 @@ export const getSoS = (page, limit) => {
     }
   };
 };
+//-----------------------------------------------------------------------------------------------------------------------------
 
+export const clearSoS = () => ({
+  type: CLEAR_SOS,
+});
+//-----------------------------------------------------------------------------------------------------------------------------
+
+export const updateSOSStatus = (jon, status, _id) => {
+  return async (dispatch) => {
+    try {
+      console.log(jon, status, _id, ((jon === undefined) && (status === undefined) && (_id === undefined)))
+      if ((jon === undefined) && (status === undefined) && (_id === undefined)) {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {},
+        });
+        return
+      }
+
+      const response = await axios.put(`${config.apiUrl}/admin/changeStatusSoS`, {
+        jon, status, _id
+      });
+      if (response.data.success) {
+        dispatch({
+          type: update_SoS_Status,
+          payload: response.data,
+        });
+      } else {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {},
+        });
+      }
+
+    } catch (error) {
+      console.error("Error in getting SOS Requests:", error.message || error);
+      throw error; // Re-throw the error so the caller can handle it
+    }
+  };
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------{armaan-dev}------------------------------------------------------------

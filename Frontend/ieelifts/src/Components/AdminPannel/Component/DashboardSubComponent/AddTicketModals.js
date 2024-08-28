@@ -35,11 +35,6 @@ const AddTicketModals = ({
 }) => {
   const dispatch = useDispatch();
 
-  console.log(
-    "|||||||||||||||||\\\\\\\\\\\\\\passed from dashboard section ",
-    callbackId
-  );
-
   const [selectedEnggId, setSelectedEnggId] = useState([]);
   // console.log('selectedEnggId',selectedEnggId[0])
 
@@ -386,7 +381,7 @@ const AddTicketModals = ({
   };
 
   const handleCancelTicket = async () => {
-    const response =  await cancelServiceRequestOrCallback(callbackId)
+    const response = await cancelServiceRequestOrCallback(callbackId)
     toast.success(response.message);
   };
 
@@ -395,9 +390,8 @@ const AddTicketModals = ({
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
       <div
-        className={`modal-container ${showTicketModal ? "active" : ""} ${
-          isNotification ? "notification-modal" : ""
-        }`}
+        className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? "notification-modal" : ""
+          }`}
       >
         <div className="child-modal-container">
           <div className="sub-child-modal-container">
@@ -904,9 +898,8 @@ const AddTicketModals = ({
                       {/* ------------------------------- cancel button functionality --------------------------- */}
 
                       <button
-                        className={`edit-button ${
-                          editchange && `edit-button-onClick`
-                        }`}
+                        className={`edit-button ${editchange && `edit-button-onClick`
+                          }`}
                         onClick={handleEditSection}
                       >
                         Edit
