@@ -1,25 +1,28 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import SoSCallsShow from "../../../AdminPannel/Component/SOSSubComponent/SoSCallsShow";
 import SosModal from "../SOSSubComponent/SoSModalAction";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
-import { updateSOSStatus } from "../../../../ReduxSetup/Actions/AdminActions";
+
 const Sosrequest = () => {
-  const dispatch = useDispatch()
   const [dropdown, setDropdown] = useState(false);
   const [jobOrderNumber, setjobOrderNumber] = useState({
     jon: null,
     _id: null,
-    status: null
   });
-  const [callbackModal, showCallbackModal] = useState(false);
+  const [callbackModal, showCallbackModal] = useState(false)
   const SOSStatusUpdate = useSelector((state) =>
     state.AdminRootReducer?.updateSoSStatus?.status
   );
 
+
   const closeModal = () => {
     showCallbackModal(false)
   };
+
+  const handleModalOpen = () => {
+    showCallbackModal(true)
+  }
 
   function handleDropDownClick(jon) {
     setDropdown((prev) => !prev)
@@ -29,21 +32,17 @@ const Sosrequest = () => {
   }
 
   useEffect(() => {
-    if (SOSStatusUpdate?.success) {
-      if (SOSStatusUpdate?.status === "RaisedCallback") {
-        showCallbackModal(true)
-        setjobOrderNumber((prev) => ({
-          ...prev,
-          status: SOSStatusUpdate?.status
-        }));
-      }
-      handleDropDownClick()
+    if (!SOSStatusUpdate) {
+      return;
+    }
+    if (SOSStatusUpdate.status === "falseAlarm" || SOSStatusUpdate.status === "ResolvedCall") {
+      setDropdown(false);
     }
 
-    return (() => {
-      dispatch(updateSOSStatus())
-    })
-  }, [SOSStatusUpdate?.success])
+    // if (SOSStatusUpdate.status === "RaisedCallback" && jobOrderNumber.jon) {
+    //   showCallbackModal(true);
+    // }
+  }, [SOSStatusUpdate])
 
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
@@ -62,16 +61,17 @@ const Sosrequest = () => {
 
   return (
     <div className="main-container_sos">
-      <SoSCallsShow handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} />
+      <SoSCallsShow handleDropDownClick={handleDropDownClick} SOSStatusUpdate={SOSStatusUpdate} />
       {dropdown &&
         <div className="engineer-modal-wrapper">
           <div className="SOS-Action-modal-container" ref={formRef}>
-            <SosModal handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} SOSStatusUpdate={SOSStatusUpdate} />
+            {console.log()}
+            <SosModal handleDropDownClick={handleDropDownClick} jobOrderNumber={jobOrderNumber} SOSStatusUpdate={SOSStatusUpdate} showCallbackModal={() => handleModalOpen()} />
           </div>
         </div>
       }
       {callbackModal &&
-        <div>
+        <div style={{ width: "100%" }}>
           <AddTicketOnCallRequests
             closeModal={closeModal}
             showTicketModal={showCallbackModal}

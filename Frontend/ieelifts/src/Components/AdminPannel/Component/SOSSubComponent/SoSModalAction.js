@@ -3,14 +3,17 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from 'react-redux';
 import { updateSOSStatus } from '../../../../ReduxSetup/Actions/AdminActions';
 
-const SosModal = ({ handleDropDownClick, jobOrderNumber }) => {
+const SosModal = ({ handleDropDownClick, jobOrderNumber, showCallbackModal }) => {
     const dispatch = useDispatch()
     const [firstList, setFirstList] = useState(false);
     const [status, updateStatus] = useState(null);
+    console.log("=======================================",jobOrderNumber)
 
     useEffect(() => {
-        if (status !== null) {
+        if (status !== null && status !== "RaisedCallback") {
             dispatch(updateSOSStatus(jobOrderNumber.jon, status, jobOrderNumber._id))
+        } else if (status === "RaisedCallback") {
+            showCallbackModal()
         }
     }, [status])
 

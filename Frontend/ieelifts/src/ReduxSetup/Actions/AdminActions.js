@@ -1923,7 +1923,6 @@ export const clearSoS = () => ({
 export const updateSOSStatus = (jon, status, _id) => {
   return async (dispatch) => {
     try {
-      console.log(jon, status, _id, ((jon === undefined) && (status === undefined) && (_id === undefined)))
       if ((jon === undefined) && (status === undefined) && (_id === undefined)) {
         dispatch({
           type: update_SoS_Status,

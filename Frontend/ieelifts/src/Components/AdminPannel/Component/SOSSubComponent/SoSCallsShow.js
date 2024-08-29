@@ -10,11 +10,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearSoS, getSoS } from "../../../../ReduxSetup/Actions/AdminActions";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 
-const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
+const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
     const ref = useRef();
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [loader, setLoader] = useState(false);
+    const [loader1, setLoader1] = useState(false);
     const [checkboxStates, setCheckboxStates] = useState([]);
 
     const totalPage = useSelector(
@@ -26,7 +27,6 @@ const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
             SoSCalls
     );
 
-    // console.log("================================", SoSDetails)
 
     function handleClick(jon, _id) {
         handleDropDownClick({
@@ -34,11 +34,15 @@ const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
         })
     }
     useEffect(() => {
-        if (jobOrderNumber?.status) {
-            setLoader(true);
-            setLoader(false)
-        }
-    }, [(jobOrderNumber?.status)])
+        // if (SOSStatusUpdate?.status) {
+        //     setLoader1(true);
+        //     setTimeout(() => {
+        //         setLoader1(false)
+        //     }, 1000)
+        // }
+        setLoader(true);
+        setLoader(false)
+    }, [SOSStatusUpdate?.status])
 
 
     useEffect(() => {
@@ -59,7 +63,6 @@ const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
 
     const handleInfiniteScroll = () => {
         const { scrollTop, scrollHeight, clientHeight } = ref.current;
-        console.log("I reached here", totalPage)
         if (SoSDetails && page < totalPage) {
             if (scrollTop + clientHeight >= scrollHeight - 10) {
                 setPage((prevPage) => prevPage + 1);
@@ -119,7 +122,7 @@ const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
                             </tr>
                         </thead>
                         <tbody req={ref}>
-                            {SoSDetails && SoSDetails?.length > 0 &&
+                            {!loader1 && SoSDetails && SoSDetails?.length > 0 &&
                                 SoSDetails?.map((data, index) => (
                                     <tr className="selected single" key={index}>
                                         <td className="checkbox">
@@ -154,17 +157,16 @@ const SoSCallsShow = ({ handleDropDownClick, jobOrderNumber }) => {
                                         <td
                                             className="dots3"
                                             onClick={() => {
-                                                if (!((jobOrderNumber?.id === data._id) || data.isDead)) {
+                                                if (!((SOSStatusUpdate?.id === data._id) || data.isDead)) {
                                                     handleClick(data.jon, data._id)
                                                 }
                                             }}
                                         >
-
-                                            {((jobOrderNumber?.id === data._id) || data.isDead) ? <>{data.status || jobOrderNumber?.status}</> : < HiOutlineDotsVertical />}
+                                           {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
                                         </td>
                                     </tr>
                                 ))}
-                            {loader && page <= totalPage ? (
+                            {(loader || loader1) && page <= totalPage ? (
                                 <>
                                     <tr style={{ overflowX: "hidden" }}>
                                         <td colSpan="10">

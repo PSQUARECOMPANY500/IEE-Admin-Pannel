@@ -22,18 +22,23 @@ import SelectDepartment from "./Components/AdminPannel/Pages/SelectDepartment";
 import ErectionDashboard from "./Components/ErectionPannel/MainMenu/ErectionDashboard";
 import ErectionEngineers from "./Components/ErectionPannel/MainMenu/ErectionEngineers";
 import { useState } from "react";
-import Todo  from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
+import Todo from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
 import Sosrequest from './Components/AdminPannel/Component/MainMenu/Sosrequest';
 function App() {
-  const [departmentName,setDepartmentName]=useState('')
+  const [departmentName, setDepartmentName] = useState('')
   const isLoggedIn = useSelector(
     (state) => state?.AdminRootReducer?.loginAdminReducer.isLoggedIn
   );
+  const isLoggedIn2 = useSelector(
+    (state) => state?.AdminRootReducer?.loginAdminReducer
+  );
+
+  console.log("=======================================", isLoggedIn2)
 
   const role = localStorage.getItem("Role");
 
-  const getName=(e)=>{
-setDepartmentName(e)
+  const getName = (e) => {
+    setDepartmentName(e)
   }
 
   return (
@@ -53,8 +58,8 @@ setDepartmentName(e)
                   role === "CRM"
                     ? "/Clients"
                     : role === "ErectionAdmin"
-                    ? "/ErectionDashboard"
-                    : "/Dashboard"
+                      ? "/ErectionDashboard"
+                      : "/Dashboard"
                 }
               />
             )
@@ -73,8 +78,8 @@ setDepartmentName(e)
                   role === "CRM"
                     ? "/Clients"
                     : role === "ErectionAdmin"
-                    ? "/ErectionDashboard"
-                    : "/Dashboard"
+                      ? "/ErectionDashboard"
+                      : "/Dashboard"
                 }
               />
             )
@@ -93,8 +98,8 @@ setDepartmentName(e)
                   role === "CRM"
                     ? "/Clients"
                     : role === "ErectionAdmin"
-                    ? "/ErectionDashboard"
-                    : "/Dashboard"
+                      ? "/ErectionDashboard"
+                      : "/Dashboard"
                 }
               />
             )
@@ -113,8 +118,8 @@ setDepartmentName(e)
                   role === "CRM"
                     ? "/Clients"
                     : role === "ErectionAdmin"
-                    ? "/ErectionDashboard"
-                    : "/Dashboard"
+                      ? "/ErectionDashboard"
+                      : "/Dashboard"
                 }
               />
             )
@@ -133,20 +138,20 @@ setDepartmentName(e)
                   role === "CRM"
                     ? "/Clients"
                     : role === "ErectionAdmin"
-                    ? "/ErectionDashboard"
-                    : "/Dashboard"
+                      ? "/ErectionDashboard"
+                      : "/Dashboard"
                 }
               />
             )
           }
         />
 
-<Route
+        <Route
           path="/todo"
           element={
             (isLoggedIn && role === "ServiceAdmin") ? (
               <Sidebar>
-                <Todo/>
+                <Todo />
               </Sidebar>
             ) : (
               <Navigate to="/" />
@@ -251,7 +256,7 @@ setDepartmentName(e)
             )
           }
         />
-    
+
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

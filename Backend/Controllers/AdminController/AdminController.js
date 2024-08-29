@@ -1242,11 +1242,9 @@ module.exports.loginServiceAdmin = async (req, res) => {
   try {
     const { AdminId, Password, Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });
-    /*  if(Admin.Role !== Role){
-      return res.status(401).json({status:"error", message: "permission denied" });
-    }   */
-
-    console.log(AdminId, Password, Role);
+    if (Admin.Role !== Role) {
+      return res.status(401).json({ status: "error", message: "permission denied" });
+    }
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
