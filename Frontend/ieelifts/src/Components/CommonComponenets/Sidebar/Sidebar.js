@@ -19,8 +19,22 @@ import { MdOutlineSos } from "react-icons/md";
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
+import config from "../../../config";
+
+const { jwtDecode } = require("jwt-decode");
+
 
 const Sidebar = ({ children }) => {
+
+  
+
+  const token = localStorage.getItem("adminData");
+  const decoded = token && jwtDecode(token);
+
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",decoded.user)
+
+
+
   // const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
   const pathname = location.pathname;
@@ -31,6 +45,8 @@ const Sidebar = ({ children }) => {
   const [menuIcon2, setMenueIcon2] = useState(true);
 
   // const [isButtonOpen, setIsButtonOpen] = useState(false);
+
+
 
   // top bar headin changes
   const [topBarHeading, setTopBarHeading] = useState("Default Heading");
@@ -285,7 +301,7 @@ setIsOpen(!isOpen);
           >
             <div className="ineer-menue" onClick={mainToogle}>
               <img
-                src="https://ieelifts.com/wp-content/uploads/2023/08/03-972x1024.jpg"
+                src={decoded.user.ProfilePhoto? `${config.documentUrl}/EnggAttachments/${decoded.user.ProfilePhoto}`  : "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"}
                 style={{
     
                   pointerEvents: isOpen ? "none" : "auto",
@@ -297,8 +313,8 @@ setIsOpen(!isOpen);
                 className="main-profile-item"
                 style={{ display: isOpen ? "block" : "none" }}
               >
-                <h2>Prabhsimran</h2>
-                <p>Id: 23456</p>
+                <h2>{decoded.user.AdminName}</h2>
+                <p>{decoded.user.AdminId}</p>
                 {!toogleOpen && <p>Leaves taken: 6</p>}
               </div>
               <LuChevronsUpDown

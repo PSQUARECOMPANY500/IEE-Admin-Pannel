@@ -407,8 +407,6 @@ const TopBar = (props) => {
 
 
 
-
-
         {location.pathname === "/Clients" && (
           <div className="add-client-button" onClick={openClientModalHandle}>
             Add Client
