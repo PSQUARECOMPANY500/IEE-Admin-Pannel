@@ -2955,9 +2955,10 @@ module.exports.putElevatorForm = async (req, res) => {
 
 module.exports.getNotification = async (req, res) => {
   try {
-    const now = new Date()
-      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-      .split(",")[0];
+    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+
+    console.log("this is notification todays data ",now);
+
     const response = await Notification.find({ Date: now });
     // console.log("response", response);
     if (response) {

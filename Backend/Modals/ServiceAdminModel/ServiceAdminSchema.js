@@ -6,6 +6,10 @@ const AdminInfo = new Schema({
         type:String,
         required:true
     },
+    ProfilePhoto: {
+        type:String,
+        default:""
+    },
     Password:{ 
         type:String,
         required:true

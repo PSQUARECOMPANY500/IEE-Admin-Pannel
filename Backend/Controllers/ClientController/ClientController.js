@@ -143,10 +143,10 @@ module.exports.loginClientwithPhoneNumber = async (req, res) => {
     const client = await RegisterClientAsPhoneNumber.findOne({
       PhoneNumber: Number,
     });
-    // console.log("nulaa",client)
+    console.log("nulaa",client)
 
     if (!client || client.Password !== password) {
-      return res.status(401).json({ message: "Invalid Credentials" });
+      return res.status(200).json({ message: "Invalid Credentials" });
     }
 
     const clientJonDetail = await RegisterClientDetails.findOne({
