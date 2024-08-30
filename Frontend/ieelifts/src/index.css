@@ -4310,7 +4310,7 @@ input:-webkit-autofill {
 /* SOS CSS */
 .SOS-Action-modal-container {
   width: 10%;
-  height: 20rem;
+  height: 12rem;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -4343,10 +4343,20 @@ input:-webkit-autofill {
   align-items: center;
   width: 18vw;
   margin-top: -1rem;
-  /* background-color: lightgray; */
   justify-content: center;
   flex-direction: column;
 }
+
+.SOS-SentEngineer-Modal {
+  position: absolute;
+  top: 30%;
+  cursor: pointer;
+  left: 35%;
+  font-size: 1.3rem;
+  background-color: white;
+  /* padding: 10rem; */
+}
+
 
 /* SOS CSS */
 

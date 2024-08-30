@@ -33,8 +33,6 @@ function App() {
     (state) => state?.AdminRootReducer?.loginAdminReducer
   );
 
-  console.log("=======================================", isLoggedIn2)
-
   const role = localStorage.getItem("Role");
 
   const getName = (e) => {

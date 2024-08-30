@@ -4,6 +4,7 @@
   text-decoration: none;
   font-family: "Poppins";
 }
+
 /* set body scroll property starts */
 /* set scroll behaviour  */
 body::-webkit-scrollbar {
@@ -4569,7 +4570,7 @@ footer a:hover {
   width: 100px;
   margin-left: 27px;
   padding: 7px 0px;
-  
+
 }
 
 .filter-icons {
@@ -5119,11 +5120,9 @@ footer a:hover {
   /* background-color: lightgray; */
   z-index: 9999;
   width: 100%;
-}
-
-.engineer-modal-wrapper {
   text-transform: capitalize;
 }
+
 
 .engineer-modal-container {
   /* top: 9%; */
@@ -5145,11 +5144,6 @@ footer a:hover {
 
 .engineer-modal-container {
   border-radius: 15px;
-}
-
-.SOS-Action-modal-container {
-  width: 10%;
-  height: 20vh;
 }
 
 .bigg {
@@ -10595,7 +10589,7 @@ a[href^="http://maps.google.com/maps"] {
     height: 95%;
 
   }
-  
+
 
 }
 
@@ -10613,12 +10607,14 @@ a[href^="http://maps.google.com/maps"] {
   justify-content: flex-start;
   width: 100%;
 }
-.sparePartHeading{
+
+.sparePartHeading {
   font-size: 16px;
   color: #343434;
   font-weight: 500;
 
 }
+
 .sunSparePartHeading {
   display: flex;
   justify-content: space-between;
@@ -10629,6 +10625,7 @@ a[href^="http://maps.google.com/maps"] {
   color: #343434;
   font-weight: 500;
 }
+
 .sparePartNames {
   font-size: 15px;
   width: 90%;
@@ -10641,16 +10638,18 @@ a[href^="http://maps.google.com/maps"] {
 .sparePartNames::-webkit-scrollbar-thumb {
   background-color: #F8AC1D;
 }
+
 .sparePartNames:hover::-webkit-scrollbar {
   width: 2px;
 }
+
 .sparePartNames::-webkit-scrollbar {
   width: 0px;
 }
 
 
 
-.spartpartnameswithParts{
+.spartpartnameswithParts {
   display: flex;
   justify-content: space-between;
   align-items: center;

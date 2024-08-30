@@ -1931,6 +1931,19 @@ export const updateSOSStatus = (jon, status, _id) => {
         return
       }
 
+      if (status === "RaisedCallback") {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {
+            success: true,
+            message: "Status has been updated successfully",
+            id: _id,
+            status: "falseAlarm"
+          },
+        });
+        return
+      }
+
       const response = await axios.put(`${config.apiUrl}/admin/changeStatusSoS`, {
         jon, status, _id
       });

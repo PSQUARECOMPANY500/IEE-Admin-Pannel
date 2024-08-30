@@ -26,14 +26,10 @@ const { jwtDecode } = require("jwt-decode");
 
 const Sidebar = ({ children }) => {
 
-  
+
 
   const token = localStorage.getItem("adminData");
   const decoded = token && jwtDecode(token);
-
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",decoded.user)
-
-
 
   // const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
@@ -61,32 +57,27 @@ const Sidebar = ({ children }) => {
   };
 
   const toogleMenue = () => {
-    console.log("clicked");
     settoogleClose(!toogleOpen);
     setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
-    console.log("image clicked");
     setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
 
   const mainToogle = () => {
-    console.log("all div clicked");
     settoogleClose(!toogleOpen);
   };
 
   const menuUpDown = () => {
-    console.log("menue button clicked");
     setMenueIcon(!menuIcon);
     setMainMenuOpen(!mainMenuOpen);
     setOfficeMenuOpen(false);
   };
 
   const menuUpDown2 = () => {
-    console.log("menue button clicked");
     setMenueIcon2(!menuIcon2);
 
     setOfficeMenuOpen(!officeMenuOpen);
@@ -298,7 +289,7 @@ const Sidebar = ({ children }) => {
           >
             <div className="ineer-menue" onClick={mainToogle}>
               <img
-                src={decoded.user.ProfilePhoto? `${config.documentUrl}/EnggAttachments/${decoded.user.ProfilePhoto}`  : "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"}
+                src={decoded.user.ProfilePhoto ? `${config.documentUrl}/EnggAttachments/${decoded.user.ProfilePhoto}` : "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"}
                 style={{
 
                   pointerEvents: isOpen ? "none" : "auto",

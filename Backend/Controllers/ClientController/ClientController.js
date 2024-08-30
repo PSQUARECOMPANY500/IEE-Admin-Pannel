@@ -143,7 +143,7 @@ module.exports.loginClientwithPhoneNumber = async (req, res) => {
     const client = await RegisterClientAsPhoneNumber.findOne({
       PhoneNumber: Number,
     });
-    console.log("nulaa",client)
+    console.log("nulaa", client)
 
     if (!client || client.Password !== password) {
       return res.status(200).json({ message: "Invalid Credentials" });
@@ -281,8 +281,6 @@ module.exports.loginClientWithJobOrderNumber = async (req, res) => {
 
 module.exports.RequestCallbacks = async (req, res) => {
   try {
-    // console.log("preet");
-    // console.log("######################", req.body);
     const {
       JobOrderNumber,
       callbackId,
@@ -293,7 +291,15 @@ module.exports.RequestCallbacks = async (req, res) => {
       AssignedEng,
       RepresentativeName,
       RepresentativeNumber,
+      SOSRequestId,
+      SoSRequestStatus
     } = req.body;
+
+    if (SOSRequestId && SoSRequestStatus) {
+      await SoSRequestsTable.findByIdAndUpdate({ _id: SOSRequestId }, {
+        status: "falseAlarm", isDead: true
+      })
+    }
 
     const newCallback = await clientRequestCallback.create({
       JobOrderNumber,

@@ -5,7 +5,7 @@ import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchAllClientDetailAction, updateSOSStatus } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -345,6 +345,7 @@ const AddTicketOnCallRequests = ({
         }
       });
     } else {
+      dispatch(updateSOSStatus(jobOrderNumber.jon, "RaisedCallback", jobOrderNumber._id))
       dispatch(
         requestCallBackByAdmin(
           jon,
@@ -353,28 +354,31 @@ const AddTicketOnCallRequests = ({
           typeOfIssue.label,
           dtext,
           reName,
-          reNumber
+          reNumber,
+          jobOrderNumber._id,
+          jobOrderNumber.status
         )
-      ).then((callbackId) => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
-          dispatch(
-            assignCallBackByAdminAction(
-              engDetails?.enggJon,
-              jon,
-              callbackId,
-              ClickListOnSelect.value,
-              selectedSlot,
-              date,
-              message,
-              engDetails?.enggName,
-              engDetails.enggJon
-            )
-          );
-          closeModal();
-        } else {
-          toast.error("Please fill all the fields");
-        }
-      });
+      )
+        .then((callbackId) => {
+          if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+            dispatch(
+              assignCallBackByAdminAction(
+                engDetails?.enggJon,
+                jon,
+                callbackId,
+                ClickListOnSelect.value,
+                selectedSlot,
+                date,
+                message,
+                engDetails?.enggName,
+                engDetails.enggJon
+              )
+            );
+            closeModal();
+          } else {
+            toast.error("Please fill all the fields");
+          }
+        });
     }
     if (setRenderTicket !== undefined) {
       setRenderTicket((prev) => !prev);

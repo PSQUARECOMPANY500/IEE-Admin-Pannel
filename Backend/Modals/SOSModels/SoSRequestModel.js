@@ -45,6 +45,10 @@ const SoSRequest = new Schema(
         isDead: {
             type: Boolean,
             default: false
+        },
+        EngId: {
+            type: String,
+            default: ""
         }
     },
     {

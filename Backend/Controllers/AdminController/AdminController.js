@@ -4185,7 +4185,6 @@ module.exports.changeStatusSoS = async (req, res) => {
     }
 
     clientCount.sosCallCount = clientCount.sosCallCount + 1;
-    console.log(clientCount)
     await clientCount.save();
 
     return res.status(200).json({

@@ -15,7 +15,6 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [loader, setLoader] = useState(false);
-    const [loader1, setLoader1] = useState(false);
     const [checkboxStates, setCheckboxStates] = useState([]);
 
     const totalPage = useSelector(
@@ -26,20 +25,29 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
         state.AdminRootReducer?.getSoSReducer?.
             SoSCalls
     );
+    useLayoutEffect(() => {
+        if (SoSDetails) {
+            setCheckboxStates(Array(SoSDetails.length).fill(false));
+        }
+    }, [SoSDetails]);
 
-
-    function handleClick(jon, _id) {
+    const handleCheckBoxSingle = (index) => {
+        setCheckboxStates((prevStates) => {
+            const newCheckboxStates = [...prevStates];
+            newCheckboxStates[index] = !prevStates[index];
+            return newCheckboxStates;
+        });
+    }
+    const handleCheckBoxAll = async () => {
+        const allChecked = checkboxStates.every((isChecked) => isChecked);
+        setCheckboxStates(Array(SoSDetails.length).fill(!allChecked));
+    };
+    function handleClick(jon) {
         handleDropDownClick({
-            jon, _id
+            ...jon
         })
     }
     useEffect(() => {
-        // if (SOSStatusUpdate?.status) {
-        //     setLoader1(true);
-        //     setTimeout(() => {
-        //         setLoader1(false)
-        //     }, 1000)
-        // }
         setLoader(true);
         setLoader(false)
     }, [SOSStatusUpdate?.status])
@@ -109,6 +117,7 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                                             SoSDetails?.length > 0 &&
                                             checkboxStates.every((isChecked) => isChecked)
                                         }
+                                        handleCheckboxChange={handleCheckBoxAll}
                                     />
                                 </th>
                                 <th>JON</th>
@@ -122,13 +131,14 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                             </tr>
                         </thead>
                         <tbody req={ref}>
-                            {!loader1 && SoSDetails && SoSDetails?.length > 0 &&
+                            {SoSDetails && SoSDetails?.length > 0 &&
                                 SoSDetails?.map((data, index) => (
                                     <tr className="selected single" key={index}>
                                         <td className="checkbox">
                                             <CheckBox
                                                 id={`checkbox-${index}`}
                                                 checked={checkboxStates[index] || false}
+                                                handleCheckboxChange={() => handleCheckBoxSingle(index)}
                                             />
                                         </td>
                                         <td className="JON">{data.jon}</td>
@@ -156,17 +166,35 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                                         <td className="address">{data.desc}</td>
                                         <td
                                             className="dots3"
+                                            //     jon:null,
+                                            // _id: null,
+                                            // status: null,
+                                            // date: "",
+                                            // time: "",
+                                            // description: "",
+                                            // name: "",
+                                            // address: "",
+
                                             onClick={() => {
                                                 if (!((SOSStatusUpdate?.id === data._id) || data.isDead)) {
-                                                    handleClick(data.jon, data._id)
+                                                    handleClick({
+                                                        jon: data.jon,
+                                                        _id: data._id,
+                                                        date: data.date,
+                                                        description: data.desc,
+                                                        time: data.time,
+                                                        name: data.name,
+                                                        address: data.address,
+                                                        sosCallCount: data.SoSCallCount
+                                                    })
                                                 }
                                             }}
                                         >
-                                           {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
+                                            {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
                                         </td>
                                     </tr>
                                 ))}
-                            {(loader || loader1) && page <= totalPage ? (
+                            {(loader) && page <= totalPage ? (
                                 <>
                                     <tr style={{ overflowX: "hidden" }}>
                                         <td colSpan="10">
