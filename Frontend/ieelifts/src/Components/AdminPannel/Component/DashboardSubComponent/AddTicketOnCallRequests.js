@@ -345,7 +345,6 @@ const AddTicketOnCallRequests = ({
         }
       });
     } else {
-      dispatch(updateSOSStatus(jobOrderNumber.jon, "RaisedCallback", jobOrderNumber._id))
       dispatch(
         requestCallBackByAdmin(
           jon,
@@ -360,6 +359,7 @@ const AddTicketOnCallRequests = ({
         )
       )
         .then((callbackId) => {
+          dispatch(updateSOSStatus(jobOrderNumber.jon, "RaisedCallback", jobOrderNumber._id))
           if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
             dispatch(
               assignCallBackByAdminAction(
