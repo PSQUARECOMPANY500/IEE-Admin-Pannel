@@ -89,15 +89,20 @@ const ServiceEnggDataOnCrousel = ({
           <img
             src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
             alt="img"
-
+            
             className='basic-info-profile'
-          />
+            />
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>
             <span className="star-icon">
               {item.averageRating}
               <LiaStarSolid style={{ color: "#F8AC1D" }} />
             </span>
+
+            
+            {/* <span>preet </span> */}
+            
+
           </div>
         </div>
 

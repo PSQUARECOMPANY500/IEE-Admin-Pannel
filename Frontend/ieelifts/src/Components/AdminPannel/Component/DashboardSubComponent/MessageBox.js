@@ -12,6 +12,10 @@ import io from "socket.io-client";
 import EngChatNav from "../EngeeniersSubComponent/EngChatNav";
 import { IoCallOutline } from "react-icons/io5";
 import { CiVideoOn } from "react-icons/ci";
+import { jwtDecode } from "jwt-decode";
+
+
+
 const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
   const dispatch = useDispatch();
   const fileInputField = useRef(null);
@@ -24,6 +28,12 @@ const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
   const [swapIcon, setSwapIcon] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
+
+
+  const adminID = localStorage.getItem("adminData")
+
+const decodeAdmin = jwtDecode(adminID);
+
 
 
   // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",currentActiveService);
@@ -76,7 +86,7 @@ const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
       state.ChatRootReducer.getSenderMessagesReducer &&
       state.ChatRootReducer.getSenderMessagesReducer.message
     ) {
-      return state.ChatRootReducer.getSenderMessagesReducer.message.chats;
+      return state.ChatRootReducer.getSenderMessagesReducer.message.messageModel;
     } else {
       return null;
     }
@@ -110,7 +120,7 @@ const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
   useEffect(() => {
     setAllMessages([]);
     setIsLoadingMessages(true);
-    dispatch(createChatActions(EnggId, "65e0103005fd2695f3aaf6d4")); //TODO: - in future the id is dynamic as come from login user
+    dispatch(createChatActions(EnggId, decodeAdmin.user._id)); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id) {
       dispatch(getSenderMessagesAction(chatCreated._id,currentActiveService));
     }
@@ -145,7 +155,7 @@ const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
     e.preventDefault();
     if (chatCreated?._id) {
       const myNewMessage = await sendChatMessageAction(
-        "65e0103005fd2695f3aaf6d4",                                //TODO: - in future the id is dynamic as come from login user
+        decodeAdmin.user._id,                                //TODO: - in future the id is dynamic as come from login user
         messageData,
         chatCreated?._id,
         currentActiveService
@@ -215,7 +225,7 @@ const MessageBox = ({ onClose, EnggId,currentActiveService }) => {
             ) : allMessages?.length >= 0 ? (
               allMessages?.map((item, index) => {
                 const isCurrentUser =
-                  item.Sender === "65e0103005fd2695f3aaf6d4";                   //TODO: - in future the id is dynamic as come from login user
+                  item.Sender === decodeAdmin.user._id;                   //TODO: - in future the id is dynamic as come from login user
                 return (
                   <div
                     className={

@@ -66,11 +66,16 @@ const moment = require("moment");
 
 module.exports.getEnggCrouserData = async (req, res) => {
   try {
-    const EnggDetail = await ServiceEnggData.find({});
+    const EnggDetail = await ServiceEnggData.find({}).select("EnggId EnggRole EnggName EnggRole EnggLastName PhoneNumber EnggAddress EnggPhoto AvailableCash ActiveDevice");
     const currentDate = new Date();
+
+    // console.log("current date crouser ",currentDate.toLocaleDateString("en-GB"));
 
     const BasicDetail = await Promise.all(
       EnggDetail.map(async (item) => {
+        // console.log("this is data inside the service Engg crouser>>>>>>>> ",item);
+       //fetch data engg break time
+        const enggBreakTimining = await EnggAttendanceServiceRecord.find({ServiceEnggId:item.EnggId , Date:currentDate.toLocaleDateString("en-GB")})
         const enggRating = await EnggRating.find({
           ServiceEnggId: item.EnggId,
         });
@@ -96,7 +101,7 @@ module.exports.getEnggCrouserData = async (req, res) => {
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
           .map((data) => (
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
+            // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
             {
               ServiceEnggId: data.ServiceEnggId,
               serviceId: data.callbackId ? data.callbackId : data.RequestId,
@@ -141,9 +146,12 @@ module.exports.getEnggCrouserData = async (req, res) => {
           ServiceEnggPic: item.EnggPhoto,
           averageRating,
           filteredServiceAssignmentsWithClientName,
+          enggBreakTimining
         };
       })
     );
+
+
 
     res.status(200).json({
       BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
@@ -155,6 +163,9 @@ module.exports.getEnggCrouserData = async (req, res) => {
     });
   }
 };
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
