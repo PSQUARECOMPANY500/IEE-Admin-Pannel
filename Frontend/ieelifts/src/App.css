@@ -28,6 +28,26 @@ body::-webkit-scrollbar-thumb {
 
 /* set body scroll property ends */
 
+.small-screen{
+  display: none;
+ 
+}
+
+
+@media only screen and  (max-width: 1024px) {
+.large-screen{
+  display: none;
+}
+
+.small-screen{
+  height: 100vh;
+ display: flex;
+  align-items: center;
+  justify-content: center;
+}
+}
+
+
 .main-container {
   width: 100%;
   background: #fff9ef;

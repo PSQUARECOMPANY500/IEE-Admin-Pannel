@@ -25,8 +25,6 @@ const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
 
 const Razorpay = require("razorpay");
 
-
-
 const fs = require("fs");
 const path = require("path");
 
@@ -310,7 +308,7 @@ module.exports.RequestCallbacks = async (req, res) => {
     // console.log("888888888888", newCallback)
 
     res.status(201).json({
-      message: "Client raised ticket for a callback successfully",
+      message: "Immediate Visit Request Raised Successfully",
       Requests: newCallback,
     });
   } catch (error) {
@@ -395,7 +393,7 @@ module.exports.imediateServiceRequest = async (req, res) => {
       // Description,
     });
     res.status(201).json({
-      message: "Client raised imidiate Request ticket successfully",
+      message: "Service Request Raised Successfully",
       imidiateRequest: newRequest,
     });
   } catch (error) {
@@ -744,7 +742,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service",
+        message: "Schedule Your Service",
         time: null,
         date: null,
         liveTracking: false,

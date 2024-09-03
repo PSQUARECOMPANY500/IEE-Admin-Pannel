@@ -1256,6 +1256,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Phone: Admin.Phone,
       Role: Admin.Role,
       AdminId: Admin.AdminId,
+      ProfilePhoto: Admin.ProfilePhoto
     });
 
     res.status(200).json({

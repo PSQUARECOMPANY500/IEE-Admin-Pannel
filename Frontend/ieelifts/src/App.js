@@ -42,7 +42,9 @@ function App() {
   }
 
   return (
-    <>
+    < >
+    <div className="large-screen">
+
       <Routes>
         {/* login routes */}
         <Route
@@ -260,6 +262,12 @@ function App() {
         {/* not found Pages */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+
+    </div>
+
+    <div className="small-screen">
+      <h1>This device is not compatible</h1>
+    </div>
     </>
   );
 }

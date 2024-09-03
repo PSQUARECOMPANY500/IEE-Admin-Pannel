@@ -10,7 +10,7 @@ const checkClientServiceExist = async (req, res, next) => {
   const ClientServiceData = await callback.find({ JobOrderNumber });
   const ClientCallbackData = await service.find({ JobOrderNumber });
 
-  if(ClientCallbackData.length === 0 || ClientServiceData.length === 0){
+  if(ClientCallbackData.length === 0 && ClientServiceData.length === 0){
    return next();
   }
 

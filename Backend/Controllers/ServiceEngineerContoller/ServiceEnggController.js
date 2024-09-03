@@ -581,18 +581,20 @@ module.exports.getEngScheduleData = async (req, res) => {
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString("en-GB");
 
+    console.log("todays date =====> ", todayDate);
+
     const tomorrowDate = new Date(currentDate);
     tomorrowDate.setDate(currentDate.getDate() + 1);
-    const tomorrowDateString = tomorrowDate.toLocaleDateString("en-GB");
+    // const tomorrowDateString = tomorrowDate.toLocaleDateString("en-GB");  //FIXME: I remove the "tomorrowDateString" date string from the Query...
 
     const serviceAssignments = await ServiceAssigntoEngg.find({
       ServiceEnggId: ServiceEnggId,
-      Date: { $in: [todayDate, tomorrowDateString] },
+      Date: { $in: [todayDate] },
     });
 
     const assignScheduleRequests = await AssignSecheduleRequest.find({
       ServiceEnggId: ServiceEnggId,
-      Date: { $in: [todayDate, tomorrowDateString] },
+      Date: { $in: [todayDate] },
     });
 
     const clientDetailsCallbackRequest = await Promise.all(
