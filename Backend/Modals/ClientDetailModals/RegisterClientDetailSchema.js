@@ -54,7 +54,17 @@ const clientRegister = new Schema(
     },
     sosCallCount: {
       type: Number,
-      default:0
+      default: 0
+    },
+    ClientCoordinates: {
+      longitude: {
+        type: Number,
+        default: 0
+      },
+      latitude: {
+        type: Number,
+        default: 0
+      }
     }
   },
   {

@@ -60,6 +60,7 @@ import { cancelEnggCallbackServiceRequestReducer } from "../Reducers/AdminReduce
 import { updateStatusOfCancelServiceAndCallbackRequestReducer } from "../Reducers/AdminReducer";
 import { getSoSReducer } from "../Reducers/AdminReducer";
 import { updateSoSStatus } from "../Reducers/AdminReducer";
+import { findAvailableEngineer } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -128,6 +129,7 @@ const AdminRootReducer = combineReducers({
   getClientCancelServiceCallbackDataReducer: getClientCancelServiceCallbackDataReducer,
   getSoSReducer: getSoSReducer,
   updateSoSStatus: updateSoSStatus,
+  findAvailableEngineer: findAvailableEngineer,
 });
 
 export default AdminRootReducer;

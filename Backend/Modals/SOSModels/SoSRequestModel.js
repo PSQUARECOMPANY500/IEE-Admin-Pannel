@@ -46,7 +46,7 @@ const SoSRequest = new Schema(
             type: Boolean,
             default: false
         },
-        EngId: {
+        EnggId: {
             type: String,
             default: ""
         }

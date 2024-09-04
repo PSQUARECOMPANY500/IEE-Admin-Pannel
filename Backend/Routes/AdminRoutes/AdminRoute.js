@@ -311,26 +311,12 @@ router.put(
   adminContoller.editEnggDetailsForm            //
 );
 
-
-
-
-
-
 router.post("/registerNewMembershipData", adminContoller.postMembershipData)
 
 
 
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
-
-
-
-
-
 // router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
-
-
-
-
 router.get('/getEnggSparePartRevenueData/:EnggId', adminContoller.getEnggSparePartRevenueData);
 
 
@@ -346,18 +332,18 @@ router.post('/upgradClientMembership', storageMembershipUpgradeBill.fields([
   }
 ]), adminContoller.upgradClientMembership);
 
-
 router.get('/getAllClients', adminContoller.getAllClients);
-
-
 router.post('/updateStatusOfCancelServiceAndCallbackRequest', adminContoller.updateStatusOfCancelServiceAndCallbackRequest)
 
 router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServiceRequestOrCallback)
 
-
 // SOS requests routes
 router.get('/getSoSRequests', adminContoller.getSoSRequests)
 router.put("/changeStatusSoS", adminContoller.changeStatusSoS)
-
+router.get("/FindEngineerSOS", adminContoller.FindEngineerSOS)
 
 module.exports = router;
+
+
+
+// { lat: 30.715885973818526, lng: 76.6965589420526 }

@@ -71,6 +71,7 @@ import { UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST } from "../Actions
 import { GET_ALL_SOS } from "../Actions/AdminActions";
 import { update_SoS_Status } from "../Actions/AdminActions";
 import { CLEAR_SOS } from "../Actions/AdminActions";
+import { SoS_Available_Engineer } from "../Actions/AdminActions";
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1283,6 +1284,21 @@ export const updateSoSStatus = (state = SoSStatus, action) => {
       return {
         ...state,
         status: action.payload,
+      }
+    default:
+      return state;
+  }
+};
+
+const SoSAvailable = {
+  engineers: null
+};
+export const findAvailableEngineer = (state = SoSAvailable, action) => {
+  switch (action.type) {
+    case SoS_Available_Engineer:
+      return {
+        ...state,
+        engineers: action.payload,
       }
     default:
       return state;

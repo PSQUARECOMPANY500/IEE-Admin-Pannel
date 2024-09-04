@@ -4351,10 +4351,19 @@ input:-webkit-autofill {
   position: absolute;
   top: 30%;
   cursor: pointer;
-  left: 35%;
+  left: 45%;
+  padding: 1.5rem;
   font-size: 1.3rem;
   background-color: white;
   /* padding: 10rem; */
+}
+
+.SOS-SentEngineer-Modal-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 

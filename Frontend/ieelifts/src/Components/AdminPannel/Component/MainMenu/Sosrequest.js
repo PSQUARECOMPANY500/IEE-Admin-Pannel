@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import SoSCallsShow from "../../../AdminPannel/Component/SOSSubComponent/SoSCallsShow";
 import SosModal from "../SOSSubComponent/SoSModalAction";
@@ -61,8 +60,6 @@ const Sosrequest = () => {
       setDropdown(false);
     }
   }, [SOSStatusUpdate])
-
-
 
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {

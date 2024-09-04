@@ -283,7 +283,7 @@ const AddTicketOnCallRequests = ({
   }, [getEnggState]);
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    setSelectedEnggId(selectedOptions); // selected Engg id
+    setSelectedEnggId(selectedOptions);
     dispatch(fetchEnggDetailAction(selectedOptions));
 
     if (selectedOptions.length === 0) {
@@ -354,12 +354,12 @@ const AddTicketOnCallRequests = ({
           dtext,
           reName,
           reNumber,
-          jobOrderNumber._id,
-          jobOrderNumber.status
+          jobOrderNumber?._id,
+          jobOrderNumber?.status
         )
       )
         .then((callbackId) => {
-          dispatch(updateSOSStatus(jobOrderNumber.jon, "RaisedCallback", jobOrderNumber._id))
+          dispatch(updateSOSStatus(jobOrderNumber?.jon, "RaisedCallback", jobOrderNumber?._id))
           if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
             dispatch(
               assignCallBackByAdminAction(

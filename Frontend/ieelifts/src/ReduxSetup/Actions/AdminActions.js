@@ -117,6 +117,7 @@ export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_R
 export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
 export const GET_ALL_SOS = "GET_ALL_SOS"
 export const update_SoS_Status = "update_SoS_Status"
+export const SoS_Available_Engineer = "SoS_Available_Engineer"
 export const CLEAR_SOS = "CLEAR_SOS";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1964,6 +1965,27 @@ export const updateSOSStatus = (jon, status, _id) => {
       throw error; // Re-throw the error so the caller can handle it
     }
   };
+}
+
+export const findAvailableEngineerForSOS = (SOSID, slot) => {
+  return async (dispatch) => {
+    if (SOSID === undefined || SOSID === null || slot === undefined || slot === null) {
+      dispatch({
+        type: SoS_Available_Engineer,
+        payload: {}
+      })
+    }
+
+    const response = await axios.get(`${config.apiUrl}/admin/FindEngineerSOS`, {
+      params: {
+        SOSID, slot
+      }
+    });
+    dispatch({
+      type: SoS_Available_Engineer,
+      payload: response.data
+    })
+  }
 }
 
 

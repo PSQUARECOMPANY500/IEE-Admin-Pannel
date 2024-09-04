@@ -52,6 +52,8 @@ const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbac
 
 const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
 
+const EngineerLocation = require("../../Modals/LocationModel/EnggLocationSchema")
+
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
@@ -59,6 +61,7 @@ const Notification = require("../../Modals/NotificationModal/notificationModal")
 const { response } = require("express");
 const TodoSchema = require("../../Modals/TodoModel/TodoSchema");
 const moment = require("moment");
+const clientRegistration = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2957,7 +2960,7 @@ module.exports.getNotification = async (req, res) => {
   try {
     const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
 
-    console.log("this is notification todays data ",now);
+    console.log("this is notification todays data ", now);
 
     const response = await Notification.find({ Date: now });
     // console.log("response", response);
@@ -4201,6 +4204,148 @@ module.exports.changeStatusSoS = async (req, res) => {
     });
   }
 };
+
+function creatingDestinationCoordinates(locations) {
+  const engineerCoordinates = locations.map(location => location.currentLocation.coordinates);
+  const formattedCoordinates = engineerCoordinates
+    .map(coord => `${coord[0]},${coord[1]}`)
+    .join('|');
+
+  return formattedCoordinates
+}
+
+module.exports.FindEngineerSOS = async (req, res) => {
+  try {
+    const { slot, SOSID } = req.query;
+
+    const Sosrequest = await SoSRequestsTable.findById({ _id: SOSID });
+    const engineers = await ServiceEnggBasicSchema.find();
+    const todayDate = new Date();
+
+    let [month, day, year] = todayDate.toLocaleDateString().split('/').map(num => num.padStart(2, '0'));
+    let formattedDate = `${day}/${month}/${year}`;
+
+    const engineersCheckedIn = await EnggAttendanceServiceRecord.find({
+      "Check_In.time": { $exists: true },
+      "Check_Out.time": { $exists: false },
+      Date: formattedDate,
+    });
+
+    if (!engineersCheckedIn || engineersCheckedIn.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No Engineer Check-In",
+      });
+    }
+    const checkedInEnggIds = engineersCheckedIn.map(engineer => engineer.ServiceEnggId);
+
+    const todayCallBack = await assignCallback.find({
+      Date: formattedDate,
+      Slot: slot,
+      ServiceEnggId: { $in: checkedInEnggIds }
+    });
+
+    const todayService = await AssignSecheduleRequest.find({
+      Date: formattedDate,
+      Slot: slot,
+      ServiceEnggId: { $in: checkedInEnggIds }
+    });
+
+    const assignedEnggIds = [
+      ...todayCallBack.map(callback => callback.ServiceEnggId),
+      ...todayService.map(service => service.ServiceEnggId),
+    ];
+
+    let freeEngineers = engineers.filter(engineer => !assignedEnggIds.includes(engineer.EnggId) && checkedInEnggIds.includes(engineer.EnggId));
+    let freeEngineersIds = freeEngineers.map(engineer => engineer.EnggId);
+
+    let [month1, day1, year1] = todayDate.toLocaleDateString().split('/')
+    formattedDate = `${day1}/${month1}/${year1}`;
+
+    const EngineerLocations = await EngineerLocation.find({ AttendanceCreatedDate: formattedDate });
+    const locations = EngineerLocations.filter(location => freeEngineersIds.includes(location.ServiceEnggId));
+
+    const ClientCoordinates = await clientRegistration.findOne({ JobOrderNumber: Sosrequest.jon });
+
+    if (!ClientCoordinates || !ClientCoordinates.ClientCoordinates) {
+      return res.status(400).json({
+        success: false,
+        message: "Client coordinates not found.",
+      });
+    }
+    const formattedCoordinates = creatingDestinationCoordinates(locations)
+
+    const googleApiResponse = await fetch(
+      `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`
+    );
+
+    if (googleApiResponse.ok) {
+      const googleApiData = await googleApiResponse.json();
+
+      const EngineersAvailable = await Promise.all(
+        locations.map(async (location, index) => {
+          const engineer = engineers.find(engineer => engineer.EnggId === location.ServiceEnggId);
+          const element = googleApiData.rows[0].elements[index];
+          if (element && element.duration) {
+            return {
+              ServiceEnggId: location.ServiceEnggId,
+              Name: engineer.EnggName,
+              duration: element.duration.text,
+            };
+          }
+        })
+      );
+
+      const filteredEngineers = EngineersAvailable.filter(engineer => engineer);
+
+      return res.status(200).json({
+        success: true,
+        EngineersAvailable: filteredEngineers,
+        message: "All available engineers"
+      });
+    } else {
+      console.error(`Google API request failed with status: ${googleApiResponse.status}`);
+      return res.status(500).json({
+        success: false,
+        message: `Google API request failed with status: ${googleApiResponse.status}`,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
+  }
+};
+
+
+module.exports.assignSoSRequest = async (req, res) => {
+  try {
+    const { SoSId, EnggId } = req.query;
+    const SOSRequest = await SoSRequestsTable.findByIdAndUpdate({ _id: SoSId }, {
+      EnggId
+    });
+
+    if (!SOSRequest) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the request"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "SOS request assigned successfully",
+      SoSId
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
+  }
+}
+
 
 
 // ----------------------------------{armaan-dev}---------------------------
