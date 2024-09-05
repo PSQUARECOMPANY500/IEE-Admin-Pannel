@@ -931,7 +931,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     if (!ratingAvailable && combineData.length === 0) {
       return res.status(200).json({
         status: "success",
-        message: "Service Completed s",
+        message: "Service Completed",
         time: latestRecord.Slot,
         date: latestRecord.Date,
         liveTracking: false,
@@ -996,7 +996,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service POO",
+        message: "Schedule your service",
         time: null,
         date: null,
         liveTracking: false,
