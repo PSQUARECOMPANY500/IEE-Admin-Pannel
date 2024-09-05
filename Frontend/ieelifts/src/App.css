@@ -3010,6 +3010,20 @@ footer a:hover {
   box-shadow: 1px 2px 5px #00000029;
 }
 
+/* badges on engg crouser ---------- */
+.message-icon .serviceEnggCrouserBadges {
+  margin-right: 10px;
+  background-color: #FEF3DE;
+  font-size: 10px;
+  color: #F8AC1D;
+  padding: 2px 4px 2px 4px;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+/* --------------------------------- */
+
 .file-icon {
   margin-top: 3px;
 }
@@ -4622,7 +4636,7 @@ footer a:hover {
   background-color: #F8AC1D;
 }
 
-.listing-filter {}
+/* .listing-filter {} */
 
 .filter-icons span {
   padding: 0;
@@ -8223,8 +8237,8 @@ element.style {
   height: 30rem;
   background-color: #fffbf4;
   border-radius: 5px;
-  margin-top: 2px;
-  margin-left: -16.25rem;
+  margin-top: 32px;
+  margin-left: -17.9rem;
   position: absolute;
   z-index: 99999;
   box-shadow: 10px 10px 25px #00000029;
@@ -10334,10 +10348,9 @@ a[href^="http://maps.google.com/maps"] {
   .EngChatBox-Dash {
     width: 15rem;
     height: 24rem;
-    margin-top: 3px;
-    margin-left: -12.7rem;
-  }
-
+    margin-top: 31px;
+    margin-left: -14.7rem;
+}
   .text-area-message-eng-card-dash {
     width: 85%;
     top: -47px;

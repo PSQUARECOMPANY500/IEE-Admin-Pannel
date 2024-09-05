@@ -21,7 +21,7 @@ const ReportTable = require("../../Modals/ReportModal/ReportModal");
 
 const createMemberShipOnTables = require("../../Modals/MemebershipModal/MembershipDataSchema");
 
-const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel");
 
 const Razorpay = require("razorpay");
 
@@ -36,7 +36,7 @@ const { jsPDF } = require("jspdf");
 
 const pdfFormat = require("../../public/MembershipInvoice/membershipInvoiceTemplate");
 
-const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema")
+const RegisteredElevatorForm = require("../../Modals/ClientDetailModals/ClientFormSchema");
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //function to hadle getReferal By JobOrderNumber (to-do)
@@ -48,7 +48,12 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
     const clientReferal = await ReferalSchema.find({ jobOrderNumber });
 
     if (!clientReferal || clientReferal.length === 0) {
-      return res.status(202).json({ message: "No referal found on this JobOrderNumber", status: "error" });
+      return res
+        .status(202)
+        .json({
+          message: "No referal found on this JobOrderNumber",
+          status: "error",
+        });
     }
 
     return res.status(200).json({ message: "Referal Found", clientReferal });
@@ -64,13 +69,13 @@ module.exports.getAllReferalByJobOrderNumber = async (req, res) => {
 module.exports.referalUser = async (req, res) => {
   try {
     const { jobOrderNumber, Name, Number, City, Hot } = req.body;
-    let result = Number.replace(/\s+/g, '');
+    let result = Number.replace(/\s+/g, "");
     const checkClient = await RegisterClientDetails.findOne({
       PhoneNumber: result,
     });
 
     const checkReferal = await ReferalSchema.findOne({
-      Number: result
+      Number: result,
     });
     if (checkClient) {
       return res
@@ -141,7 +146,7 @@ module.exports.loginClientwithPhoneNumber = async (req, res) => {
     const client = await RegisterClientAsPhoneNumber.findOne({
       PhoneNumber: Number,
     });
-    console.log("nulaa",client)
+    console.log("nulaa", client);
 
     if (!client || client.Password !== password) {
       return res.status(200).json({ message: "Invalid Credentials" });
@@ -382,7 +387,10 @@ module.exports.imediateServiceRequest = async (req, res) => {
       // Description,
     } = req.body;
 
-    console.log("---------------------------------------------899999999999999999999", req.body);
+    console.log(
+      "---------------------------------------------899999999999999999999",
+      req.body
+    );
 
     const newRequest = await serviceRequest.create({
       JobOrderNumber,
@@ -410,7 +418,10 @@ module.exports.getClientDetail = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
 
-    const callbacks = await assignCallback.find({ JobOrderNumber: JobOrderNumber, ServiceProcess: 'completed' })
+    const callbacks = await assignCallback.find({
+      JobOrderNumber: JobOrderNumber,
+      ServiceProcess: "completed",
+    });
 
     const client = await RegisterClientDetails.findOne({ JobOrderNumber });
 
@@ -422,7 +433,7 @@ module.exports.getClientDetail = async (req, res) => {
     res.status(200).json({
       message: "Client found",
       client: client,
-      callbacks
+      callbacks,
     });
   } catch (error) {
     console.log(error);
@@ -643,8 +654,14 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
         return {
           ...entry._doc,
           enggName: enggNameMap[entry.ServiceEnggId],
-          paymentDetails: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].paymentDetils : null,
-          PaymentPrice: paymentDetails && paymentDetails.length > 0 ? paymentDetails[0].TotalAmount : null
+          paymentDetails:
+            paymentDetails && paymentDetails.length > 0
+              ? paymentDetails[0].paymentDetils
+              : null,
+          PaymentPrice:
+            paymentDetails && paymentDetails.length > 0
+              ? paymentDetails[0].TotalAmount
+              : null,
         };
       })
     );
@@ -672,11 +689,6 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
   }
 };
 
-
-
-
-
-
 //==================================================================
 //==================================================================
 
@@ -697,8 +709,156 @@ const convertTo12HourFormat = (time24) => {
   return `${hours}:${minutes} ${ampm}`;
 };
 
+// module.exports.getCurrentScheduleService = async (req, res) => {
+// to do -> middlaware implemented
+// try {
+//   const { JobOrderNumber } = req.params;
+
+//   const currentDate = new Date().toLocaleDateString("en-GB");
+
+//   const service = await serviceRequest.find({
+//     JobOrderNumber,
+//   });
+//   const callback = await clientRequestCallback.find({
+//     JobOrderNumber,
+//   });
+
+// console.log("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{",service)
+// console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",callback)
+
+// const combineData = [...service , ...callback]
+// console.log("*******************************", combineData)
+
+// const filterData = combineData.filter((item) => !item.isDead)
+// console.log("...............................", filterData)
+
+// console.log("))))))))))))))",service);
+// console.log("((((((((((((((((((",callback);
+
+// let data = [];
+// if (service.length > 0) {
+//   data = await Promise.all(
+//     service.map(async (item) => {
+//       const resp = await assignService.find({
+//         RequestId: item.RequestId,
+//       });
+
+//       return resp;
+
+//     })
+//   );
+// } else if (callback.length > 0) {
+//   data = await Promise.all(
+//     callback.map(async (item) => {
+//       const resp = await assignCallback.find({
+//         callbackId: item.callbackId,
+//       });
+//       return resp;
+
+//     })
+//   );
+// } else {
+//   return res.status(200).json({
+//     status: "complete",
+//     message: "Schedule Your Service Preet",
+//     time: null,
+//     date: null,
+//     liveTracking: false,
+//     rating: false,
+//   });
+// }
+
+// if ( data[0].length === 0 && (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) && filterData.length) {
+//   return res.status(200).json({
+//     status: "success",
+//     message: "service Booked",
+//     time: null,
+//     date: null,
+//     liveTracking: false,
+//     rating: false,
+//   });
+// }
+
+// const rating = await engineerRating.findOne({
+//   ServiceId: data[0][0].RequestId || data[0][0].callbackId,
+// });
+// // first case 1:
+// if (
+//   (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
+// !rating &&
+//   filterData.length > 0 &&
+//   data[0][0].ServiceProcess === "InCompleted"
+// ) {
+//   res.status(200).json({
+//     status: "success",
+//     message: "service Booked",
+//     time: null,
+//     date: null,
+//     liveTracking: false,
+//     rating: false,
+//   });
+// }
+// else if (
+//   (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) && (service[0]?.isDead === false || callback[0]?.isDead === false ) && !rating || filterData.length > 0 && data[0][0].ServiceProcess === "InCompleted" ) {
+//case 2:
+//   res.status(200).json({
+//     status: "success",
+//     message:
+//       currentDate === data[0][0].Date
+//         ? `Service Today at ${convertTo12HourFormat(
+//           data[0][0].Slot[0].split("-")[0]
+//         )}`
+//         : currentDate > data[0][0].Date
+//           ? "Service Expired"
+//           : "Service Booked",
+//     time:
+//       currentDate > data[0][0].Date
+//         ? "(Awaiting Cancelation)"
+//         : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
+//         "-" +
+//         convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
+//     date: data[0][0].Date,
+//     trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
+//     liveTracking: currentDate === data[0][0].Date ? true : false,
+//     rating: false,
+//   });
+// } else if (
+//   ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) && (service[0]?.isDead === true || callback[0]?.isDead === true ), filterData.length === 0 && data[0][0].ServiceProcess === "completed" )
+// ) {
+
+// console.log("this is or data --------", data)
+
+//case 3
+//       res.status(200).json({
+//         status: "success",
+//         message: "Service Completed s",
+//         time: data[0][0].Slot,
+//         date: data[0][0].Date,
+//         liveTracking: false,
+//         rating: true, // add Enggid and ServiceId  ----------------------------------------------------------
+//         enggId: data[0][0]?.ServiceEnggId,
+//         trackingId: data[0][0]?.RequestId || data[0][0]?.callbackId,
+//       });
+//     } else {
+//       return res.status(200).json({
+//         status: "complete",
+//         message: "Schedule your service POO",
+//         time: null,
+//         date: null,
+//         liveTracking: false,
+//         rating: false,
+//       });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     res
+//       .status(500)
+//       .json({ error: "Error while fetching current active client service" });
+//   }
+// };
+
+// *********************************** rebuild API for tracking location  ********************************************************
 module.exports.getCurrentScheduleService = async (req, res) => {
-  // to do -> middlaware implemented
   try {
     const { JobOrderNumber } = req.params;
 
@@ -706,18 +866,16 @@ module.exports.getCurrentScheduleService = async (req, res) => {
 
     const service = await serviceRequest.find({
       JobOrderNumber,
+      isDead: false,
     });
     const callback = await clientRequestCallback.find({
       JobOrderNumber,
+      isDead: false,
     });
 
-    // console.log("pppppppppppppppppp",callback);
-
+    const combineData = [...service, ...callback];
 
     let data = [];
-
-
-
     if (service.length > 0) {
       data = await Promise.all(
         service.map(async (item) => {
@@ -726,7 +884,6 @@ module.exports.getCurrentScheduleService = async (req, res) => {
           });
 
           return resp;
-
         })
       );
     } else if (callback.length > 0) {
@@ -736,25 +893,49 @@ module.exports.getCurrentScheduleService = async (req, res) => {
             callbackId: item.callbackId,
           });
           return resp;
-
         })
       );
-    } else {
+    }
+
+    const lastcallback = await assignCallback
+      .findOne({ JobOrderNumber, ServiceProcess: "completed" })
+      .sort({ _id: -1 });
+    const lastService = await assignService
+      .findOne({ JobOrderNumber, ServiceProcess: "completed" })
+      .sort({ _id: -1 });
+
+    // If both are present, return the one with the most recent 'createdAt' date
+    // Determine the most recent service or callback
+    let latestRecord;
+    if (lastcallback && lastService) {
+      latestRecord =
+        lastcallback.createdAt > lastService.createdAt
+          ? lastcallback
+          : lastService;
+    } else if (lastcallback) {
+      latestRecord = lastcallback;
+    } else if (lastService) {
+      latestRecord = lastService;
+    }
+
+    const ratingAvailable = await engineerRating.findOne({
+      ServiceId: latestRecord.callbackId || latestRecord.RequestId,
+    });
+
+    if (!ratingAvailable && combineData.length === 0) {
       return res.status(200).json({
-        status: "complete",
-        message: "Schedule Your Service",
-        time: null,
-        date: null,
+        status: "success",
+        message: "Service Completed s",
+        time: latestRecord.Slot,
+        date: latestRecord.Date,
         liveTracking: false,
-        rating: false,
+        rating: true,
+        enggId: latestRecord?.ServiceEnggId,
+        trackingId: latestRecord?.RequestId || latestRecord?.callbackId,
       });
     }
-    // console.log("***************************************",data);
 
-    if (
-      data[0].length === 0 &&
-      (service[0]?.isAssigned === false || callback[0]?.isAssigned === false)
-    ) {
+    if (combineData[0].isAssigned === false) {
       return res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -766,14 +947,10 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     }
 
     const rating = await engineerRating.findOne({
-      ServiceId: data[0][0].RequestId || data[0][0].callbackId,
+      ServiceId: combineData[0].RequestId || combineData[0].callbackId,
     });
-    // first case 1:
-    if (
-      (service[0]?.isAssigned === false || callback[0]?.isAssigned === false) &&
-      !rating &&
-      data[0][0].ServiceProcess === "InCompleted"
-    ) {
+    // // first case 1:
+    if (combineData[0].isAssigned === false && !rating) {
       res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -782,54 +959,38 @@ module.exports.getCurrentScheduleService = async (req, res) => {
         liveTracking: false,
         rating: false,
       });
-    } else if (
-      (service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
-      !rating &&
+    }
+    //case 2
+    else if (
+      combineData[0].isAssigned === true &&
+      combineData[0]?.isDead === false &&
       data[0][0].ServiceProcess === "InCompleted"
     ) {
-      //case 2:
       res.status(200).json({
         status: "success",
         message:
           currentDate === data[0][0].Date
             ? `Service Today at ${convertTo12HourFormat(
-              data[0][0].Slot[0].split("-")[0]
-            )}`
+                data[0][0].Slot[0].split("-")[0]
+              )}`
             : currentDate > data[0][0].Date
-              ? "Service Expired"
-              : "Service Booked",
+            ? "Service Expired"
+            : "Service Booked",
         time:
           currentDate > data[0][0].Date
             ? "(Awaiting Cancelation)"
             : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
-            "-" +
-            convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
+              "-" +
+              convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
         rating: false,
       });
-    } else if (
-      ((service[0]?.isAssigned === true || callback[0]?.isAssigned === true) &&
-        service[0]?.isDead === false,
-        !rating && data[0][0].ServiceProcess === "completed")
-    ) {
-      // console.log("*********************",rating);
-      //case 3
-      res.status(200).json({
-        status: "success",
-        message: "Service Completed",
-        time: data[0][0].Slot,
-        date: data[0][0].Date,
-        liveTracking: false,
-        rating: true, // add Enggid and ServiceId  ----------------------------------------------------------
-        enggId: data[0][0]?.ServiceEnggId,
-        trackingId: data[0][0]?.RequestId || data[0][0]?.callbackId,
-      });
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service",
+        message: "Schedule your service POO",
         time: null,
         date: null,
         liveTracking: false,
@@ -843,6 +1004,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {
       .json({ error: "Error while fetching current active client service" });
   }
 };
+
+// *********************************** rebuild API for tracking location  ********************************************************
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1018,7 +1181,10 @@ const caluclateMembershipPriceAndTime = async (
   const appliedMembershipPriceDaysToBeAdded =
     PriviousMembershipPrice / (appliedMembership.MembershipPrice / 365);
 
-  console.log("this is applied membership", appliedMembershipPriceDaysToBeAdded);
+  console.log(
+    "this is applied membership",
+    appliedMembershipPriceDaysToBeAdded
+  );
 
   return appliedMembershipPriceDaysToBeAdded;
 };
@@ -1042,11 +1208,14 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
 
     // when order id "1" evaluate the conditions
     if (Details.OrderId === "1") {
-      const updateMembershipData = await memberShipDetails.findOneAndUpdate({
-        _id: Details._id
-      }, {
-        IsPaid: true
-      })
+      const updateMembershipData = await memberShipDetails.findOneAndUpdate(
+        {
+          _id: Details._id,
+        },
+        {
+          IsPaid: true,
+        }
+      );
 
       const DaysToBeAdded = await caluclateMembershipPriceAndTime(
         MembershipData,
@@ -1068,11 +1237,10 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
         EndDate: Details.EndDate,
         PricePaid: Details.PricePaid,
         MembershipInvoice: Details.MembershipInvoice,
-      }
+      };
 
       return res.status(200).json({ status: "success", Details: data });
     }
-
 
     const instance = new Razorpay({
       key_id: process.env.key_id,
@@ -1241,7 +1409,9 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
       );
     }
 
-    res.status(200).json({ message: "Token added successfully", status: "success" });
+    res
+      .status(200)
+      .json({ message: "Token added successfully", status: "success" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -1252,22 +1422,17 @@ module.exports.firebaseTokenForPushNotificationPurpose = async (req, res) => {
 
 module.exports.updateClientProfile = async (req, res) => {
   try {
-    const { JobOrderNumber, name, emailAddress, phone, password } =
-      req.body;
+    const { JobOrderNumber, name, emailAddress, phone, password } = req.body;
     const profile = req.files;
 
-
     if (!JobOrderNumber && !name && !emailAddress && !phone) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "Profile updation failed due to missing fields",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "Profile updation failed due to missing fields",
+      });
     }
 
     if (profile.length > 0) {
-
       await RegisterClientDetails.findOneAndUpdate(
         {
           JobOrderNumber,
@@ -1280,8 +1445,7 @@ module.exports.updateClientProfile = async (req, res) => {
           emailAddress,
         }
       );
-    }
-    else {
+    } else {
       await RegisterClientDetails.findOneAndUpdate(
         {
           JobOrderNumber,
@@ -1295,13 +1459,16 @@ module.exports.updateClientProfile = async (req, res) => {
       );
     }
 
-    await RegisteredElevatorForm.findOneAndUpdate({
-      "clientFormDetails.jon": JobOrderNumber
-    }, {
-      "clientFormDetails.userName": name,
-      "clientFormDetails.phoneNumber": phone,
-      "clientFormDetails.email": emailAddress,
-    })
+    await RegisteredElevatorForm.findOneAndUpdate(
+      {
+        "clientFormDetails.jon": JobOrderNumber,
+      },
+      {
+        "clientFormDetails.userName": name,
+        "clientFormDetails.phoneNumber": phone,
+        "clientFormDetails.email": emailAddress,
+      }
+    );
 
     return res.status(200).json({
       success: true,
@@ -1311,7 +1478,6 @@ module.exports.updateClientProfile = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
 
 //-----------------------------------------------------------------------------------------------------------
 // delete firebase token of client on logout --- Abhishek
@@ -1334,25 +1500,38 @@ module.exports.removeClientFirebaseToken = async (req, res) => {
   }
 };
 
-
 // Enggineer can cancelled Previous  service or callback request ---------------------------------------------------------------
 
-module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req, res) => {
+module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (
+  req,
+  res
+) => {
   try {
     const { serviceId, description } = req.body;
 
     if (!serviceId && !description) {
-      return res.status(400).json({ message: "serviceId and description are required" });
+      return res
+        .status(400)
+        .json({ message: "serviceId and description are required" });
     }
 
-    const cancelledServiceRequest = await assignService.findOne({ RequestId: serviceId });
-    const cancelledCallbackRequest = await assignCallback.findOne({ callbackId: serviceId });
+    const cancelledServiceRequest = await assignService.findOne({
+      RequestId: serviceId,
+    });
+    const cancelledCallbackRequest = await assignCallback.findOne({
+      callbackId: serviceId,
+    });
 
     if (!cancelledServiceRequest && !cancelledCallbackRequest) {
-      return res.status(404).json({ message: "Service or Callback Request not found" });
+      return res
+        .status(404)
+        .json({ message: "Service or Callback Request not found" });
     }
 
-    await ReportTable.findOneAndUpdate({ serviceId: serviceId }, { isVerify: true, isActive: false })
+    await ReportTable.findOneAndUpdate(
+      { serviceId: serviceId },
+      { isVerify: true, isActive: false }
+    );
 
     if (cancelledServiceRequest) {
       await Promise.all([
@@ -1363,10 +1542,9 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req, res
         serviceRequest.findOneAndUpdate(
           { RequestId: serviceId },
           { isCancelled: true }
-        )
+        ),
       ]);
-    }
-    else if (cancelledCallbackRequest) {
+    } else if (cancelledCallbackRequest) {
       await Promise.all([
         assignCallback.findOneAndUpdate(
           { callbackId: serviceId },
@@ -1375,48 +1553,53 @@ module.exports.EnginnerCancellPreviousServiceOrCallbackRequest = async (req, res
         clientRequestCallback.findOneAndUpdate(
           { callbackId: serviceId },
           { isCancelled: true }
-        )
+        ),
       ]);
     } else {
-      return res.status(404).json({ message: "Service or Callback Request not found" });
+      return res
+        .status(404)
+        .json({ message: "Service or Callback Request not found" });
     }
 
     res.status(200).json({ message: "Request Cancelled successfully" });
-
-
-
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error while cancelling the request" });
+    res
+      .status(500)
+      .json({ error: "Internal server error while cancelling the request" });
   }
-}
+};
 
 // -------------------------------------------------------------------------------------------------------------------------
 //api to get cancelled requests by the clients
 
 module.exports.getCallbackOrServiceCancelledRequests = async (req, res) => {
   try {
-
-    const cancelledRequests = await assignService.find({ ServiceProcess: "cancelled" })
-    const cancelledCallback = await assignCallback.find({ ServiceProcess: "cancelled" })
-
+    const cancelledRequests = await assignService.find({
+      ServiceProcess: "cancelled",
+    });
+    const cancelledCallback = await assignCallback.find({
+      ServiceProcess: "cancelled",
+    });
 
     if (cancelledRequests.length === 0 && cancelledCallback.length === 0) {
       return res.status(200).json({ message: "No cancelled requests found" });
     }
 
-    const combinedRequestData = [...cancelledRequests, ...cancelledCallback]
+    const combinedRequestData = [...cancelledRequests, ...cancelledCallback];
 
     res.status(200).json({ cancelledRequests: combinedRequestData });
-
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error while fething cancelling the request" });
+    res
+      .status(500)
+      .json({
+        error: "Internal server error while fething cancelling the request",
+      });
   }
-}
+};
 
 //----------------------------------------------------------------------------------------------------------------------------------------
-
 
 //resume previous service API by The Enggineer
 
@@ -1427,34 +1610,52 @@ module.exports.resumePreviousService = async (req, res) => {
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString("en-GB");
 
-    const serviceRequests = await assignService.findOne({ RequestId: serviceId })
-    const serviceCallback = await assignCallback.findOne({ callbackId: serviceId })
+    const serviceRequests = await assignService.findOne({
+      RequestId: serviceId,
+    });
+    const serviceCallback = await assignCallback.findOne({
+      callbackId: serviceId,
+    });
 
     if (serviceRequests) {
-      await assignService.findOneAndUpdate({ RequestId: serviceId }, { Date: todayDate, ServiceProcess: "InCompleted" })
+      await assignService.findOneAndUpdate(
+        { RequestId: serviceId },
+        { Date: todayDate, ServiceProcess: "InCompleted" }
+      );
     } else if (serviceCallback) {
-      await assignCallback.findOneAndUpdate({ callbackId: serviceId }, { Date: todayDate, ServiceProcess: "InCompleted" })
+      await assignCallback.findOneAndUpdate(
+        { callbackId: serviceId },
+        { Date: todayDate, ServiceProcess: "InCompleted" }
+      );
     } else {
-      return res.status(404).json({ message: "Service or Callback Request not found" });
+      return res
+        .status(404)
+        .json({ message: "Service or Callback Request not found" });
     }
 
-    res.status(200).json({ success: true, message: "service/callback updated successfully" })
-
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "service/callback updated successfully",
+      });
   } catch (error) {
     console.log("error while resuming engg service", error);
   }
-}
+};
 
 // ----------------{armaan-dev}--------------------------------------
 module.exports.sosRequest = async (req, res) => {
   try {
     const { jon, desc } = req.body;
-    const clientCount = await RegisterClientDetails.findOne({ JobOrderNumber: jon });
+    const clientCount = await RegisterClientDetails.findOne({
+      JobOrderNumber: jon,
+    });
 
     const now = new Date();
     const time = now.toLocaleTimeString();
     const date = now.toLocaleDateString();
-    console.log(clientCount.sosCallCount)
+    console.log(clientCount.sosCallCount);
     const data = {
       jon,
       desc,
@@ -1463,23 +1664,22 @@ module.exports.sosRequest = async (req, res) => {
       address: clientCount.Address,
       membership: clientCount.MembershipType,
       SoSCallCount: clientCount.sosCallCount,
-      name: clientCount.name
+      name: clientCount.name,
     };
 
-    const createdSoSRequest = await SoSRequestsTable.create(data)
+    const createdSoSRequest = await SoSRequestsTable.create(data);
 
     res.status(200).json({
-      createdSoSRequest
+      createdSoSRequest,
     });
   } catch (error) {
     console.log(error);
     res.status(400).json({
-      error
+      error,
     });
   }
-}
+};
 
 // ----------------{armaan-dev}--------------------------------------
-
 
 //----------------------------------------------------------------------------------------------------------------------------------------

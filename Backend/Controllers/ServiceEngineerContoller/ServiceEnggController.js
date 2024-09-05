@@ -484,14 +484,14 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     /* Attendances logic hear */
     const { ServiceEnggId, latitude, longitude } = req.body;
 
-    console.log(
-      "enngglocation serviceid ",
-      ServiceEnggId,
-      " latitude ",
-      latitude,
-      " longitute ",
-      longitude
-    );
+    // console.log(
+    //   "enngglocation serviceid ",
+    //   ServiceEnggId,
+    //   " latitude ",
+    //   latitude,
+    //   " longitute ",
+    //   longitude
+    // );
 
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date()
@@ -581,7 +581,7 @@ module.exports.getEngScheduleData = async (req, res) => {
     const currentDate = new Date();
     const todayDate = currentDate.toLocaleDateString("en-GB");
 
-    console.log("todays date =====> ", todayDate);
+    // console.log("todays date =====> ", todayDate);
 
     const tomorrowDate = new Date(currentDate);
     tomorrowDate.setDate(currentDate.getDate() + 1);
