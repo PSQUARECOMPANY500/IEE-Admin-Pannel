@@ -10,7 +10,7 @@ const memebership = new Schema(
     },
     MembershipType: {
       type: String,
-      enum: ["warrenty", "gold", "platinum", "silver"],
+      enum: ["warrenty", "gold", "platinum", "silver","Not Applicable"],
       required: true,
       default: "silver"
     },

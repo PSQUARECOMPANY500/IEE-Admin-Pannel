@@ -23,7 +23,8 @@ const ClientDropDown = ({
     selectedOption.includes("Warranty") ||
     selectedOption.includes("gold") ||
     selectedOption.includes("platinum") ||
-    selectedOption.includes("silver");
+    selectedOption.includes("silver") ||
+    selectedOption.includes("Not Applicable");
 
   // console.log("selectedOption", selectedOption);
 
@@ -116,6 +117,15 @@ const ClientDropDown = ({
 
   const handleTextColor = (option) => {
     switch (option) {
+
+      case "Not Applicable":
+        setTextColor("Warranty #000");
+        setBackgroundColor("#fff");
+        setWarrentyColor("#fff");
+        break;
+
+
+      case "Application":
       case "Warranty":
         setTextColor("Warranty #0F351D");
         setBackgroundColor("#D6F8BF");
@@ -175,6 +185,8 @@ const ClientDropDown = ({
       setWarrentyColor("#F8AC1D");
     } else if (selectedOption === "silver") {
       setWarrentyColor("#8E8E8E");
+    } else if (selectedOption === "Not Applicable"){
+      setWarrentyColor("#fff");
     }
   }, [id, selectedOption]);
 
@@ -305,7 +317,8 @@ const getBackgroundColor = (selectedOption) => {
       return "#F3DCC6";
     case "silver":
       return "#E5E5E5";
-
+    case "Not Applicable":
+      return "#fff";
     default:
       return "";
   }
