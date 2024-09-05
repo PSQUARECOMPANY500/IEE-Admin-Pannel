@@ -109,14 +109,14 @@ const ServiceEnggDataOnCrousel = ({
           style={{ display: "flex" }}
         >
           {item?.enggBreakTimining[0]?.First_halfs_time &&
-          !item?.enggBreakTimining[0]?.First_halfe_time ? (
-            <p className="serviceEnggCrouserBadges">First Break</p>
+            !item?.enggBreakTimining[0]?.First_halfe_time ? (
+            <p className="serviceEnggCrouserBadges">Morning Break</p>
           ) : item?.enggBreakTimining[0]?.Lunch_breaks_time &&
             !item?.enggBreakTimining[0]?.Lunch_breake_time ? (
             <p className="serviceEnggCrouserBadges">Lunch Break</p>
           ) : item?.enggBreakTimining[0]?.Second_halfs_time &&
             !item?.enggBreakTimining[0]?.Second_halfe_time ? (
-            <p className="serviceEnggCrouserBadges">"Second Break"</p>
+            <p className="serviceEnggCrouserBadges">Evening Break</p>
           ) : null}
           <span onClick={() => handleMesageBox(index)}>
             <TbMessage2 className="message-box-crouser" />
