@@ -274,6 +274,29 @@ const ServiceRequestTable = ({
     getData(selectedClientArray)
   }, [selectedClientArray])
 
+  const formatDate = (date) => {
+    const [day, month, year] = date.split("-")
+    if (day && month && year) {
+      return `${day}/${month}/${year}`
+    }
+    return date
+  }
+
+  const formatTime = (time) => {
+    const [datePart, timePart] = time.includes(',') ? time.split(',') : [null, time];
+    const [hrs, min] = (timePart || time).split(':');
+
+    if (hrs !== undefined && min !== undefined) {
+      console.log(min)
+      const formattedHours = hrs === 12 ? 12 : hrs % 12 || 12;
+      const formattedTime = `${formattedHours}:${min.toString().padStart(2, '0')}`;
+
+      return datePart ? `${datePart},${formattedTime}` : formattedTime;
+    }
+
+    return time;
+  };
+
   return (
     <div className="service-request-table">
       <div className="table-shadow"></div>
@@ -281,7 +304,7 @@ const ServiceRequestTable = ({
         {/*----- done by Paras-------*/}
         <thead style={{ zIndex: '1' }}>
           {/*-------------------------*/}
-          <tr>  
+          <tr>
             <th>
               <CheckBox
                 id="checkbox1"
@@ -397,7 +420,19 @@ const ServiceRequestTable = ({
                       />
                     </td>
                     <td>{value.JobOrderNumber}</td>
-                    <td>{value?.clientDetail?.name}</td>
+                    <td>
+                      <div className="dropdown-address">
+                        <span>
+                          {value?.clientDetail?.name.length > 20 ? `${value?.clientDetail?.name.slice(0, 20)}...` : value?.clientDetail?.name}
+                        </span>
+
+                        {value?.clientDetail?.name.length && <div className="dropdown-address-menu">
+                          <p>
+                            {value?.clientDetail?.name}
+                          </p>
+                        </div>}
+                      </div>
+                    </td>
                     <td>{value?.clientDetail?.PhoneNumber}</td>
 
 
@@ -479,7 +514,22 @@ const ServiceRequestTable = ({
                       />
                     </td>
                     <td>{value.JobOrderNumber}</td>
-                    <td>{value?.clientDetail?.name}</td>
+                    <td
+                      className="address"
+                    >
+                      {/* {data?.Address} */}
+                      <div className="dropdown-address">
+                        <span>
+                          {value?.clientDetail?.name.length > 20 ? `${value?.clientDetail?.name.slice(0, 20)}...` : value?.clientDetail?.name}
+                        </span>
+
+                        {value?.clientDetail?.name.length && <div className="dropdown-address-menu">
+                          <p>
+                            {value?.clientDetail?.name}
+                          </p>
+                        </div>}
+                      </div>
+                    </td>
                     <td>{value?.clientDetail?.PhoneNumber}</td>
 
                     <td
@@ -503,8 +553,8 @@ const ServiceRequestTable = ({
                     <td style={{ textTransform: "capitalize" }}
                     >{value?.clientDetail?.MembershipType}
                     </td>
-                    <td>{value?.RequestDate}</td>
-                    <td>{value?.RequestTime}</td>
+                    <td>{formatDate(value?.RequestDate)}</td>
+                    <td>{formatTime(value?.RequestTime)}</td>
 
                     <td
                       onClick={() =>

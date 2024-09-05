@@ -60,7 +60,7 @@ const TicketSection = ({ setTicketUpdate }) => {
   const [getFilterConditions, setGetFilterConditions] = useState(false);
 
 
-  const [sparePartDetails,setsparepartDetails] = useState([]);
+  const [sparePartDetails, setsparepartDetails] = useState([]);
 
 
   useEffect(() => {
@@ -476,6 +476,22 @@ const TicketSection = ({ setTicketUpdate }) => {
   };
 
   //--------------------------------------------------------------------------------------
+
+  const formatTime = (time) => {
+    const [datePart, timePart] = time.includes(',') ? time.split(',') : [null, time];
+    const [hrs, min] = (timePart || time).split(':').map(Number);
+
+    if (hrs !== undefined && min !== undefined) {
+      const period = hrs < 12 ? 'AM' : 'PM';
+      const formattedHours = hrs === 12 ? 12 : hrs % 12 || 12; // Handles midnight (0 => 12 AM)
+      const formattedTime = `${formattedHours}:${min.toString().padStart(2, '0')} ${period}`;
+
+      return datePart ? `${datePart},${formattedTime}` : formattedTime;
+    }
+
+    return time;
+  };
+
   return (
     <div className="parent-full-div">
       <div className="child-ticket-div">
@@ -618,7 +634,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                   </div>
                 </th>
                 <th>DESCRIPTION</th>
-                <th>TYPE</th>
+                <th>ISSUE</th>
                 <th>DATE</th>
                 <th>TIME</th>
                 <th>
@@ -704,12 +720,22 @@ const TicketSection = ({ setTicketUpdate }) => {
                       </td>
                       <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
                       >
-                        {data?.clientDetail?.name}
+                        <div className="dropdown-address">
+                          <span>
+                            {data?.clientDetail?.name.length > 20 ? `${data?.clientDetail?.name.slice(0, 20)}...` : data?.clientDetail?.name}
+                          </span>
+
+                          {data?.clientDetail?.name.length && <div className="dropdown-address-menu">
+                            <p>
+                              {data?.clientDetail?.name}
+                            </p>
+                          </div>}
+                        </div>
                       </td>
-                      <td className={ !isAssigned && isTimeoutData ? "timeout-data" : ""} >
+                      <td className={!isAssigned && isTimeoutData ? "timeout-data" : ""} >
                         {data?.clientDetail?.PhoneNumber}
                       </td>
 
@@ -789,7 +815,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
                       >
-                        {data.callbackTime}
+                        {formatTime(data.callbackTime)}
                       </td>
                       <td
                         className={
@@ -826,7 +852,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                   const isAssigned = data.isAssigned;
                   const createdAtTime = new Date(data.createdAt); // Convert createdAt string to Date object
                   const currentTime = new Date();
-                  
+
 
                   const previousServiceId = data.previousServiceId;
                   const sparePartDetails = data.sparePartDetails;
@@ -856,24 +882,34 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
-                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
                         {data.JobOrderNumber}
                       </td>
                       <td
                         className={
-                          !isAssigned && isTimeoutData ? "timeout-data" : ""
+                          `${!isAssigned && isTimeoutData ? "timeout-data" : ""} address`
                         }
-                      style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
 
-                        {data?.clientDetail?.name}
+                        <div className="dropdown-address">
+                          <span>
+                            {data?.clientDetail?.name.length > 20 ? `${data?.clientDetail?.name.slice(0, 20)}...` : data?.clientDetail?.name}
+                          </span>
+
+                          {data?.clientDetail?.name.length && <div className="dropdown-address-menu">
+                            <p>
+                              {data?.clientDetail?.name}
+                            </p>
+                          </div>}
+                        </div>
                       </td>
                       <td
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
-                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
                         {data?.clientDetail?.PhoneNumber}
                       </td>
@@ -946,7 +982,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
-                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
                         {data.TypeOfIssue}
                       </td>
@@ -954,7 +990,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
-                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
                         {data.callbackDate}
                       </td>
@@ -962,9 +998,9 @@ const TicketSection = ({ setTicketUpdate }) => {
                         className={
                           !isAssigned && isTimeoutData ? "timeout-data" : ""
                         }
-                        style={{color:!isAssigned && isTimeoutData ? "red" : ""}}
+                        style={{ color: !isAssigned && isTimeoutData ? "red" : "" }}
                       >
-                        {data.callbackTime}
+                        {formatTime(data.callbackTime)}
                       </td>
                       <td
                         className={
@@ -975,7 +1011,7 @@ const TicketSection = ({ setTicketUpdate }) => {
                         }
                       >
                         {isAssigned ? (
-                           isCancelled ? (
+                          isCancelled ? (
                             <AssignDropdown
                               customAssign="cancelRequest"
                               name="CANCEL"
