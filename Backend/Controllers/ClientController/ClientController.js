@@ -930,7 +930,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
 
 
     // Handle case if no records are found
-if (!latestRecord) {
+if (!latestRecord && combineData.length === 0) {
   return res.status(200).json({
     status: "complete",
     message: "Schedule your service",
