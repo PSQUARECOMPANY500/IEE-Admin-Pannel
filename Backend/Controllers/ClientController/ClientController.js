@@ -925,8 +925,21 @@ module.exports.getCurrentScheduleService = async (req, res) => {
     }
 
     const ratingAvailable = await engineerRating.findOne({
-      ServiceId: latestRecord.callbackId || latestRecord.RequestId,
+      ServiceId: latestRecord && (latestRecord.callbackId || latestRecord.RequestId),
     });
+
+
+    // Handle case if no records are found
+if (!latestRecord) {
+  return res.status(200).json({
+    status: "complete",
+    message: "Schedule your service",
+    time: null,
+    date: null,
+    liveTracking: false,
+    rating: false,
+  });
+}
 
     if (!ratingAvailable && combineData.length === 0) {
       return res.status(200).json({
@@ -940,6 +953,8 @@ module.exports.getCurrentScheduleService = async (req, res) => {
         trackingId: latestRecord?.RequestId || latestRecord?.callbackId,
       });
     }
+
+
 
     if (combineData[0].isAssigned === false) {
       return res.status(200).json({
