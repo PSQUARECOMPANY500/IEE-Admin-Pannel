@@ -166,17 +166,13 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                                         <td className="address">{data.desc}</td>
                                         <td
                                             className="dots3"
-                                            //     jon:null,
-                                            // _id: null,
-                                            // status: null,
-                                            // date: "",
-                                            // time: "",
-                                            // description: "",
-                                            // name: "",
-                                            // address: "",
-
                                             onClick={() => {
-                                                if (!((SOSStatusUpdate?.id === data._id) || data.isDead)) {
+                                                const isSOSUpdating = SOSStatusUpdate?.id === data._id;
+                                                const isDead = data.isDead;
+                                                const isAssigned = data.assignEngineerDetails.EnggId;
+
+                                                // Only handle click if it's not updating, not dead, and no engineer assigned
+                                                if (!isSOSUpdating && !isDead && !isAssigned) {
                                                     handleClick({
                                                         jon: data.jon,
                                                         _id: data._id,
@@ -185,13 +181,31 @@ const SoSCallsShow = ({ handleDropDownClick, SOSStatusUpdate }) => {
                                                         time: data.time,
                                                         name: data.name,
                                                         address: data.address,
-                                                        sosCallCount: data.SoSCallCount
-                                                    })
+                                                        sosCallCount: data.SoSCallCount,
+                                                    });
                                                 }
                                             }}
                                         >
-                                            {((SOSStatusUpdate?.id === data._id) || data.isDead) ? <>{data.status || SOSStatusUpdate?.status}</> : < HiOutlineDotsVertical />}
+                                            {(() => {
+                                                const isSOSUpdating = SOSStatusUpdate?.id === data._id;
+                                                const isDead = data.isDead;
+                                                const isAssigned = data.assignEngineerDetails.EnggId;
+
+                                                // If SOS is updating or data is dead, show status
+                                                if (isSOSUpdating || isDead) {
+                                                    return <>{data.status || SOSStatusUpdate?.status}</>;
+                                                }
+
+                                                // If an engineer is assigned, show the engineer's name
+                                                if (isAssigned) {
+                                                    return data.assignEngineerDetails.EnggName;
+                                                }
+
+                                                // Default case: show the dots icon
+                                                return <HiOutlineDotsVertical />;
+                                            })()}
                                         </td>
+
                                     </tr>
                                 ))}
                             {(loader) && page <= totalPage ? (

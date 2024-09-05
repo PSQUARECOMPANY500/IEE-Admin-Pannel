@@ -27,6 +27,7 @@ const Sosrequest = () => {
 
   const closeModal = () => {
     showCallbackModal(false)
+    setSentEngineerForm(false)
   };
 
   const handleModalOpen = () => {
@@ -93,7 +94,7 @@ const Sosrequest = () => {
       {sentEngineerForm &&
         <div className="engineer-modal-wrapper">
           <div className="SOS-SentEngineer-Modal" ref={formRef}>
-            <SoSSentEngineerModal jobOrderNumber={jobOrderNumber} />
+            <SoSSentEngineerModal jobOrderNumber={jobOrderNumber} closeModal={() => { closeModal() }} />
           </div>
         </div>
       }

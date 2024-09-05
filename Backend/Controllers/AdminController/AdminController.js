@@ -4218,7 +4218,8 @@ module.exports.FindEngineerSOS = async (req, res) => {
   try {
     const { slot, SOSID } = req.query;
 
-    const Sosrequest = await SoSRequestsTable.findById({ _id: SOSID });
+    const AllSosrequests = await SoSRequestsTable.find();
+    const Sosrequest = AllSosrequests.find((request) => request._id.toString() === SOSID)
     const engineers = await ServiceEnggBasicSchema.find();
     const todayDate = new Date();
 
@@ -4230,7 +4231,6 @@ module.exports.FindEngineerSOS = async (req, res) => {
       "Check_Out.time": { $exists: false },
       Date: formattedDate,
     });
-
     if (!engineersCheckedIn || engineersCheckedIn.length === 0) {
       return res.status(400).json({
         success: false,
@@ -4251,9 +4251,14 @@ module.exports.FindEngineerSOS = async (req, res) => {
       ServiceEnggId: { $in: checkedInEnggIds }
     });
 
+    const todaySOS = AllSosrequests.filter((request) => {
+      return request.date.toString() === todayDate.toLocaleDateString() && request.assignEngineerDetails.EnggId !== ""
+    })
+
     const assignedEnggIds = [
       ...todayCallBack.map(callback => callback.ServiceEnggId),
       ...todayService.map(service => service.ServiceEnggId),
+      ...todaySOS.map(service => service.assignEngineerDetails.EnggId)
     ];
 
     let freeEngineers = engineers.filter(engineer => !assignedEnggIds.includes(engineer.EnggId) && checkedInEnggIds.includes(engineer.EnggId));
@@ -4296,12 +4301,43 @@ module.exports.FindEngineerSOS = async (req, res) => {
         })
       );
 
-      const filteredEngineers = EngineersAvailable.filter(engineer => engineer);
+      const filteredEngineers = EngineersAvailable
+        .filter(engineer => engineer)
+        .sort((a, b) => {
+          const convertToMinutes = (duration) => {
+            const parts = duration.split(' ');
+            let totalMinutes = 0;
+            for (let i = 0; i < parts.length; i += 2) {
+              const value = parseInt(parts[i], 10);
+              const unit = parts[i + 1];
+
+              if (unit.includes('hour')) {
+                totalMinutes += value * 60;
+              } else if (unit.includes('min')) {
+                totalMinutes += value;
+              }
+            }
+
+            return totalMinutes;
+          };
+
+          const minutesA = convertToMinutes(a.duration);
+          const minutesB = convertToMinutes(b.duration);
+
+          return minutesA - minutesB;
+        });
+
+      if (filteredEngineers.length) {
+        return res.status(200).json({
+          success: true,
+          EngineersAvailable: filteredEngineers,
+          message: "All available engineers"
+        });
+      }
 
       return res.status(200).json({
-        success: true,
-        EngineersAvailable: filteredEngineers,
-        message: "All available engineers"
+        success: false,
+        message: "No Engineer available at moment"
       });
     } else {
       console.error(`Google API request failed with status: ${googleApiResponse.status}`);
@@ -4318,13 +4354,32 @@ module.exports.FindEngineerSOS = async (req, res) => {
   }
 };
 
-
 module.exports.assignSoSRequest = async (req, res) => {
   try {
-    const { SoSId, EnggId } = req.query;
-    const SOSRequest = await SoSRequestsTable.findByIdAndUpdate({ _id: SoSId }, {
-      EnggId
-    });
+    const { SoSId, EnggId } = req.body;
+    if (!SoSId || !EnggId) {
+      return res.status(400).json({
+        success: false,
+        message: "All values are required"
+      });
+    }
+    const engineerDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
+    if (!engineerDetail) {
+      return res.status(400).json({
+        success: false,
+        message: "Engineer not found"
+      });
+    }
+    const SOSRequest = await SoSRequestsTable.findByIdAndUpdate(
+      { _id: SoSId },
+      {
+        assignEngineerDetails: {
+          EnggId,
+          EnggName: engineerDetail.EnggName
+        },
+        status: "Assigned"
+      }
+    );
 
     if (!SOSRequest) {
       return res.status(400).json({
@@ -4336,15 +4391,17 @@ module.exports.assignSoSRequest = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "SOS request assigned successfully",
-      SoSId
-    })
+      SoSId,
+      name: engineerDetail.EnggName
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Internal server error: " + error.message,
     });
   }
-}
+};
+
 
 
 

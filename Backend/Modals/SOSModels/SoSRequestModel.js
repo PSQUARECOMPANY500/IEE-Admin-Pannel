@@ -46,9 +46,15 @@ const SoSRequest = new Schema(
             type: Boolean,
             default: false
         },
-        EnggId: {
-            type: String,
-            default: ""
+        assignEngineerDetails: {
+            EnggId: {
+                type: String,
+                default: ""
+            },
+            EnggName: {
+                type: String,
+                default: ""
+            }
         }
     },
     {

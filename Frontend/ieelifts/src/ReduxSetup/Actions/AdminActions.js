@@ -1921,7 +1921,7 @@ export const clearSoS = () => ({
 });
 //-----------------------------------------------------------------------------------------------------------------------------
 
-export const updateSOSStatus = (jon, status, _id) => {
+export const updateSOSStatus = (jon, status, _id, enggName) => {
   return async (dispatch) => {
     try {
       if ((jon === undefined) && (status === undefined) && (_id === undefined)) {
@@ -1932,14 +1932,14 @@ export const updateSOSStatus = (jon, status, _id) => {
         return
       }
 
-      if (status === "RaisedCallback") {
+      if (status === "RaisedCallback" || status === "Assigned") {
         dispatch({
           type: update_SoS_Status,
           payload: {
             success: true,
             message: "Status has been updated successfully",
             id: _id,
-            status: "falseAlarm"
+            status: status === "RaisedCallback" ? "falseAlarm" : enggName
           },
         });
         return
@@ -1987,6 +1987,20 @@ export const findAvailableEngineerForSOS = (SOSID, slot) => {
     })
   }
 }
+
+export const assignSoSRequest = async (SoSId, EnggId) => {
+  try {
+    const response = await axios.put(`${config.apiUrl}/admin/assignSoSRequest`, {
+      SoSId,
+      EnggId
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in assigning SOS Requests:", error.message || error);
+    throw error;
+  }
+}
+
 
 
 //-----------------------------------------------------------------------------------------------------------------------------

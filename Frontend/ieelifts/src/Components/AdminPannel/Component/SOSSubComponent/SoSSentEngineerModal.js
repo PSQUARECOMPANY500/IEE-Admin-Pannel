@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { findAvailableEngineerForSOS } from '../../../../ReduxSetup/Actions/AdminActions';
+import { assignSoSRequest, findAvailableEngineerForSOS, updateSOSStatus } from '../../../../ReduxSetup/Actions/AdminActions';
 import SoSEngineersDropdown from './SoSEngineersDropdown';
+import toast from "react-hot-toast";
 
-const SoSSentEngineerModal = ({ jobOrderNumber }) => {
+const SoSSentEngineerModal = ({ jobOrderNumber, closeModal }) => {
     const dispatch = useDispatch();
     const [selectedEngineer, setSelectedEngineer] = useState('');
     const timeSlots = [
@@ -19,8 +20,16 @@ const SoSSentEngineerModal = ({ jobOrderNumber }) => {
         return state?.AdminRootReducer?.findAvailableEngineer?.engineers
     });
 
-    console.log("==================", EngineerDetails)
-
+    async function handleAssignEngineer(SoSId, EnggId) {
+        await assignSoSRequest(SoSId, EnggId).then((response) => {
+            dispatch(updateSOSStatus(jobOrderNumber?.jon, "Assigned", jobOrderNumber?._id, response.data.name))
+            toast.success("Engineer assigned successfully")
+            closeModal()
+        }).catch((err) => {
+            toast.error("Failed to assign engineer")
+            console.log(err)
+        })
+    }
 
     useEffect(() => {
         const currentTime = new Date().toTimeString().slice(0, 5);
@@ -41,7 +50,7 @@ const SoSSentEngineerModal = ({ jobOrderNumber }) => {
             <p>Time: {jobOrderNumber.time}</p>
             <p>SOS Call Count: {jobOrderNumber.sosCallCount}</p>
             <p><SoSEngineersDropdown EngineerDetails={EngineerDetails} setSelectedEngineer={setSelectedEngineer} selectedEngineer={selectedEngineer} /></p>
-            <p>Sent Engineer</p>
+            <button onClick={() => handleAssignEngineer(jobOrderNumber._id, selectedEngineer)}>Sent Engineer</button>
         </div>
     );
 };

@@ -341,6 +341,7 @@ router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServi
 router.get('/getSoSRequests', adminContoller.getSoSRequests)
 router.put("/changeStatusSoS", adminContoller.changeStatusSoS)
 router.get("/FindEngineerSOS", adminContoller.FindEngineerSOS)
+router.put("/assignSoSRequest", adminContoller.assignSoSRequest)
 
 module.exports = router;
 
