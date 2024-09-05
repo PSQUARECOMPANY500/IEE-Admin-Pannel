@@ -24,7 +24,7 @@ yarn-error.log*
 
 /.github
 
-# /public                               
+# /public                    
 # /src                                                    
 # /package.json
 # /package-lock.json

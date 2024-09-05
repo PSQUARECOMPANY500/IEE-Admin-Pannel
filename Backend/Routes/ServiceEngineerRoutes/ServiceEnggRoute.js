@@ -224,17 +224,8 @@ router.put(
   uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
-// router.put('/enggOnFirstHalfBreak',checkInorOutAttendance,serviceEnggContoller.EnggOnFirstHalfBreak);
-// router.put('/enggOnSecondHalfBreak',checkInorOutAttendance,serviceEnggContoller.EnggOnSecondHalfBreak);
-// router.put('/enggOnLunchBreak', checkInorOutAttendance ,serviceEnggContoller.EnggOnLunchBreak);
 
-/* 
-router.post('/gnggCheckIn', verifyEnggToken,  serviceEnggContoller.EnggCheckIn);
-router.post('/gnggCheckOut', verifyEnggToken,  serviceEnggContoller.EnggCheckOut);
-router.post('/gnggOnFirstHalfBreak', verifyEnggToken,  serviceEnggContoller.EnggOnFirstHalfBreak);
-router.post('/gnggOnSecondHalfBreak', verifyEnggToken,  serviceEnggContoller.EnggOnSecondHalfBreak);
-router.post('/gnggOnLunchBreak', verifyEnggToken,  serviceEnggContoller.EnggOnLunchBreak);
- */
+
 
 router.get("/enggLeaveRecord", serviceEnggContoller.enggLeaveRecord);
 router.post("/generateOtpForClient", serviceEnggContoller.generateOtpForClient);
