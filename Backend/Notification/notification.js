@@ -16,6 +16,7 @@ const ClientDetails = require("../Modals/ClientDetailModals/RegisterClientDetail
 const report = require("../Modals/ReportModal/ReportModal.js");
 
 const ServiceEnggDetails = require("../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
+const SoSRequestTable = require("../Modals/SOSModels/SoSRequestModel.js")
 
 const admin = require("firebase-admin");
 serviceAccount = {
@@ -57,6 +58,17 @@ const tokenFindingInEnggDatabase = async (data) => {
           leaveInformation.IsApproved === "true"
             ? `Your Leave is Approved By Admin for ${leaveInformation.Duration.From} to ${leaveInformation.Duration.To}`
             : `Your Leave is Not Approved By Admin for ${leaveInformation.Duration.From} to ${leaveInformation.Duration.To}`,
+      };
+    }
+    if (data.ns.coll = "sosrequests" && Object.keys(data.updateDescription.updatedFields)[0] === "assignEngineerDetails.EnggId") {
+      const enggDetails = await ServiceEnggDetails.findOne({
+        EnggId: data.updateDescription.updatedFields['assignEngineerDetails.EnggId'],
+      }).select("firebaseToken");
+      datas = {
+        tokens: enggDetails.firebaseToken,
+        title: "SOS Request",
+        body:
+          "A new SoS Request is Assigned",
       };
     }
   }
@@ -124,6 +136,27 @@ const tokenFindingInClientDatabase = async (data) => {
         body: `Your service request has been accepted by the engineer with ID ${data.fullDocument.EnggId}`,
       };
     }
+    if (data.ns.coll === "sosrequests") {
+      const clientJob = await SoSRequestTable.findById({ _id: data.documentKey._id }).select("jon");
+      const clientFirebaseToken = await ClientDetails.findOne({ JobOrderNumber: clientJob.jon })
+      console.log("reached")
+      datas = {
+        tokens: clientFirebaseToken.firebaseToken,
+        title: "SOS Request",
+        body: `Your SOS request is Raised`,
+      }
+    }
+  }
+  if (data.operationType === "update") {
+    if (data.ns.coll = "sosrequests" && Object.keys(data.updateDescription.updatedFields)[0] === "assignEngineerDetails.EnggId") {
+      const clientJob = await SoSRequestTable.findById({ _id: data.documentKey._id }).select("jon");
+      const clientFirebaseToken = await ClientDetails.findOne({ JobOrderNumber: clientJob.jon })
+      datas = {
+        tokens: clientFirebaseToken.firebaseToken,
+        title: "SOS Request",
+        body: `Your SOS request is assigned to ${data.updateDescription.updatedFields["assignEngineerDetails.EnggName"]}`,
+      }
+    }
   }
 
   return FirebaseNotificationTestingPurpose(datas);
@@ -156,10 +189,20 @@ module.exports.watchNotifications = () => {
     }
 
     if (
-      collectionName === "assignservicerequests" &&
-      data.operationType === "insert"
+      collectionName === "sosrequests" &&
+      data.operationType === "update"
     ) {
       await tokenFindingInEnggDatabase(data);
+      await tokenFindingInClientDatabase(data);
+    }
+
+    if (collectionName === "sosrequests" &&
+      data.operationType === "update") {
+      await tokenFindingInEnggDatabase(data);
+      await tokenFindingInClientDatabase(data);
+    }
+    if (collectionName === "sosrequests" &&
+      data.operationType === "insert") {
       await tokenFindingInClientDatabase(data);
     }
   };
@@ -196,6 +239,14 @@ module.exports.watchNotifications = () => {
   );
   EngineerRating.watch().on("change", (data) =>
     handleDatabaseChange(data, "engineerratings", ["Client"])
+  );
+  SoSRequestTable.watch().on("change", (data) => {
+    if (data.operationType === "update")
+      handleDatabaseChange(data, "sosrequests", ["Engg", "Client"])
+    else
+      handleDatabaseChange(data, "sosrequests", ["Client"])
+
+  }
   );
 };
 
