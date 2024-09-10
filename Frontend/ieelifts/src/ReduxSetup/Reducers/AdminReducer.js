@@ -73,6 +73,10 @@ import { update_SoS_Status } from "../Actions/AdminActions";
 import { CLEAR_SOS } from "../Actions/AdminActions";
 import { SoS_Available_Engineer } from "../Actions/AdminActions";
 
+
+import { GET_ENGG_LOCATION_COORDINATES_FOR_PATH } from "../Actions/AdminActions";
+
+
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -1304,3 +1308,21 @@ export const findAvailableEngineer = (state = SoSAvailable, action) => {
       return state;
   }
 };
+
+
+
+//reducer to get location coordinates to make path on map
+const Coordinates = {
+  coordinates: null
+}
+export const getEnggLocationCoordinatesReducer = (state =Coordinates,action) => {
+  switch (action.type){
+    case GET_ENGG_LOCATION_COORDINATES_FOR_PATH:
+      return {
+       ...state,
+        coordinates: action.payload,
+      }
+    default:
+      return state;
+  }
+}

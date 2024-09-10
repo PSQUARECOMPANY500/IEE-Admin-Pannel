@@ -120,6 +120,8 @@ export const update_SoS_Status = "update_SoS_Status"
 export const SoS_Available_Engineer = "SoS_Available_Engineer"
 export const CLEAR_SOS = "CLEAR_SOS";
 
+export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH = "GET_ENGG_LOCATION_COORDINATES_FOR_PATH"
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -2005,3 +2007,23 @@ export const assignSoSRequest = async (SoSId, EnggId) => {
 
 //-----------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------{armaan-dev}------------------------------------------------------------
+
+
+
+
+// action to handle get engg location coordinates to make path on map
+
+export const getEnggLocationCoordinatesAction = (enggId) => {
+  console.log("engg ID:  in action ", enggId);
+  try {
+    return async (dispatch) => {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getEnggCoordinates/${enggId}`)
+      dispatch({
+        type: GET_ENGG_LOCATION_COORDINATES_FOR_PATH,
+        payload: response.data,
+      })
+    }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
+}

@@ -404,65 +404,125 @@ module.exports.createEnggLocation = async (req, res) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
+module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
+  //this is the api to update current locations(real time )
+  try {
+    /* Attendances logic hear */
+    const { ServiceEnggId, latitude, longitude } = req.body;
+
+    console.log("location latitude and langitude", latitude, longitude);
+
+    if (ServiceEnggId && latitude && longitude) {
+      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+
+    
+
+      const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
+
+      // console.log("++++++----------", response.currentLocation.coordinates);
+
+      if (response) {
+        let coordinate;
+        coordinate = {
+          origin: `${latitude},${longitude}`,
+        }
+        response.currentLocation.coordinates.push(coordinate)
+        await response.save();
+      } else {
+        await EnggLocationModel.create({
+          ServiceEnggId, currentLocation: {
+            type: "Point",
+            coordinates: {
+              origin: `${latitude},${longitude}`,
+            },
+          },
+        })
+      }
+
+      res
+        .status(200)
+        .json({ message: "Attendance marked and Location connection started" });
+    } else {
+      res.status(400).json({
+        message: "400 Bad Request",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error in Location creation" });
+  }
+};
+
+//-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
+module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req,res) => {
+  try {
+    const { ServiceEnggId } = req.params;
+
+    const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+
+
+    const coordinatesResponse = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate })
+
+    // console.log("console the coordinates ---->>> " ,coordinatesResponse);
+
+    if (!coordinatesResponse) {
+      return res.status(200).json({ message: "No location found for the specified Service Engineer ID and date" });
+    }
+    
+    let coordinatesToSend = []
+    const coordinates = coordinatesResponse &&  coordinatesResponse.currentLocation && coordinatesResponse.currentLocation.coordinates.map((item)=> {
+      let coordinate = item?.origin?.split(",")
+      // console.log("this is corrdibatyes found", coordinate)
+      let lat = parseFloat(coordinate[0])
+      let lng = parseFloat(coordinate[1])
+      coordinatesToSend.push({ lat, lng })
+   })
+    
+    
+    res.status(200).json({coordinates:coordinatesToSend})
+    
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error while fetching the cordinates"});
+  }
+};
+//-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
+
+
 // module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
 //   //this is the api to update current locations(real time )
 //   try {
 //     /* Attendances logic hear */
 //     const { ServiceEnggId, latitude, longitude } = req.body;
 
-//     console.log("location latitude and langitude", latitude, longitude);
+//     // console.log("enngglocation serviceid ",ServiceEnggId,"latitude ",latitude,"longitute ",longitude);
 
 //     if (ServiceEnggId && latitude && longitude) {
 //       const AttendanceCreatedDate = new Date()
 //         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
 //         .split(",")[0];
-
-//       // const response = await EnggLocationModel.findOneAndUpdate(
-//       //   { ServiceEnggId, AttendanceCreatedDate },
-//       //   {
-//       //     currentLocation: {
-//       //       type: "Point",
-//       //       coordinates: [latitude, longitude],
-//       //     },
-//       //   }
-//       // );
-
-//       //console.log(response)
-//       // if (!response) {
-//       // await EnggLocationModel.create({
-//       // ServiceEnggId,
-//       //mark Attandance Logic here
-//       // currentLocation: {
-//       // type: "Point",
-//       // coordinates: [latitude, longitude],
-//       // },
-//       //   });
-//       // // }
-
-//       const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
-
-//       console.log("++++++----------", response.currentLocation.coordinates);
-
-//       if (response) {
-//         let coordinate;
-//         coordinate = {
-//           origin: `${latitude}, ${longitude}`,
-//           destination: `${latitude}, ${longitude}`
-//         }
-//         response.currentLocation.coordinates.push(coordinate)
-//         await response.save();
-//       } else {
-//         await EnggLocationModel.create({
-//           ServiceEnggId, currentLocation: {
+//       const response = await EnggLocationModel.findOneAndUpdate(
+//         { ServiceEnggId, AttendanceCreatedDate },
+//         {
+//           currentLocation: {
 //             type: "Point",
-//             coordinates: {
-//               origin: `${latitude}, ${longitude}`,
-//               destination: `${latitude}, ${longitude}`
-//             },
+//             coordinates: [latitude, longitude],
 //           },
-//         })
+//         }
+//       );
+//       //console.log(response)
+//       if (!response) {
+//         await EnggLocationModel.create({
+//           ServiceEnggId,
+//           //mark Attandance Logic here
+//           currentLocation: {
+//             type: "Point",
+//             coordinates: [latitude, longitude],
+//           },
+//         });
 //       }
-
 //       res
 //         .status(200)
 //         .json({ message: "Attendance marked and Location connection started" });
@@ -478,62 +538,13 @@ module.exports.createEnggLocation = async (req, res) => {
 //       .json({ error: "Internal server error in Location creation" });
 //   }
 // };
-module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
-  //this is the api to update current locations(real time )
-  try {
-    /* Attendances logic hear */
-    const { ServiceEnggId, latitude, longitude } = req.body;
-
-    // console.log(
-    //   "enngglocation serviceid ",
-    //   ServiceEnggId,
-    //   " latitude ",
-    //   latitude,
-    //   " longitute ",
-    //   longitude
-    // );
-
-    if (ServiceEnggId && latitude && longitude) {
-      const AttendanceCreatedDate = new Date()
-        .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-        .split(",")[0];
-      const response = await EnggLocationModel.findOneAndUpdate(
-        { ServiceEnggId, AttendanceCreatedDate },
-        {
-          currentLocation: {
-            type: "Point",
-            coordinates: [latitude, longitude],
-          },
-        }
-      );
-      //console.log(response)
-      if (!response) {
-        await EnggLocationModel.create({
-          ServiceEnggId,
-          //mark Attandance Logic here
-          currentLocation: {
-            type: "Point",
-            coordinates: [latitude, longitude],
-          },
-        });
-      }
-      res
-        .status(200)
-        .json({ message: "Attendance marked and Location connection started" });
-    } else {
-      res.status(400).json({
-        message: "400 Bad Request",
-      });
-    }
-  } catch (error) {
-    //console.log(error);
-    res
-      .status(500)
-      .json({ error: "Internal server error in Location creation" });
-  }
-};
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 module.exports.getEnggLocationDetail = async (req, res) => {
   try {

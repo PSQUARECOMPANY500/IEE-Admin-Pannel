@@ -58,7 +58,9 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);     
+router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);  
+
+
 router.post(
   "/createEnggLocationOnAttendance",checkClientDeviceLogins,
   serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
@@ -439,6 +441,11 @@ router.get('/getNotFullfillPreviousService/:ServiceEnggId', serviceEnggContoller
 router.post('/loginWithOTP',serviceEnggContoller.serviceEnggLoginWithOtp);
 
 router.post('/verifyEnggOTPWhileLoging', serviceEnggContoller.verifyEnggOTPWhileLogingWithMobileDevice);
+
+
+//route to get engg coordinates
+
+router.get('/getEnggCoordinates/:ServiceEnggId', serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap);
 
 
 module.exports = router;
