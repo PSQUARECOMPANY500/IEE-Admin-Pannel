@@ -37,11 +37,21 @@ const Sidebar = ({ children }) => {
   // const initialIsOpen = smallLaptopSizes ? false : true
   const [isOpen, setIsOpen] = useState(true);
   const [toogleOpen, settoogleClose] = useState(true);
+  const [visible, setVisible] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
 
-  // const [isButtonOpen, setIsButtonOpen] = useState(false);
+  useEffect(() => {
+    if (toogleOpen) {
+      const timeoutId = setTimeout(() => {
+        setVisible(false);
+      }, 300);
 
+      return () => clearTimeout(timeoutId);
+    } else {
+      setVisible(true);
+    }
+  }, [toogleOpen]);
 
 
   // top bar headin changes
@@ -225,7 +235,7 @@ const Sidebar = ({ children }) => {
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
           {!toogleOpen && <div className="overlay" onClick={toogleMenue}></div>}
 
-          <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
+          <div className="top_section" >
             <h1
               // className="logo"
               // style={{ marginLeft: isOpen ? "-41px" : "-20px" }}
@@ -233,7 +243,7 @@ const Sidebar = ({ children }) => {
             >
               <img
                 // className="logo-image"
-                className={isOpen ? 'logo-image logo-image-open' : 'logo-image logo-image-close'}
+                className={`logo-image ${isOpen ? 'logo-image-open' : 'logo-image-close'}`}
 
                 src={logo}
                 alt="logo"
@@ -241,7 +251,7 @@ const Sidebar = ({ children }) => {
               <p
 
 
-                className={isOpen ? 'logo-open-heading' : 'logo-close-heading'}
+                className={isOpen ? 'logo-heading logo-open-heading' : 'logo-heading logo-close-heading'}
               >
                 Service
               </p>
@@ -298,14 +308,16 @@ const Sidebar = ({ children }) => {
                 alt="logo1"
               />
               <div
-                className="main-profile-item"
+                className={`main-profile-item ${isOpen && "user-profile"}`}
                 style={{ display: isOpen ? "block" : "none" }}
               >
                 <h2>{decoded.user.AdminName}</h2>
                 <p>{decoded.user.AdminId}</p>
-                {!toogleOpen && <p>Leaves taken: 6</p>}
+                {<p className={`user-leaves ${visible ? "user-leaves-show" : "user-leave-hide"
+                  }`}>Leaves taken: 6</p>}
               </div>
               <LuChevronsUpDown
+                className={`${isOpen && "user-profile"}`}
                 style={{
                   display: isOpen ? "block" : "none",
                   marginTop: "16px",
