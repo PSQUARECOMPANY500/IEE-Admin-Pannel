@@ -27,14 +27,12 @@ const EnggLocation = () => {
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
 
-  // console.log("this is engg Changes cordinates-----====\\\\\\|||||||" ,enggLocationDetails);
 
   const enggServiceID = useSelector(
     (state) =>
       state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
   );
 
-  console.log("this is Engg Id ^^^^^^^^^^^^^^^^^^^^^^^", enggServiceID);
 
   const MapCoordinates = useSelector(
     (state) =>
@@ -44,9 +42,9 @@ const EnggLocation = () => {
 
   console.log("this is map coordinaets-----", MapCoordinates);
 
-  const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 };
+  const IEELifts = { lat: 30.71424661365234, lng: 76.696212667490 };
   const [center, setCenter] = useState({
-    lat: 30.715885973818526,lng: 76.6965589420526
+    lat: 30.71424661365234,lng: 76.696212667490
   });
 
   const [mainOpen, setMainOpen] = useState(false);
@@ -54,11 +52,13 @@ const EnggLocation = () => {
   const [enggId, setEnggId] = useState("");
   const [state, setState] = useState(0);
 
-  const [map, setMap] = useState(false);
+  const [map, setMap] = useState(null);
+// console.log("this is map console----->>*************************** ", map);
+
 
   const [directions, setDirections] = useState([]);
 
-  console.log("this is consosle the direction 999999  ", directions);
+  // console.log("this is consosle the direction 999999  ", directions);
 
   const enggMarkerSymbol = {
     path: window.google?.maps?.SymbolPath?.CIRCLE,
@@ -96,15 +96,26 @@ const EnggLocation = () => {
     }
   }, [dispatch, enggServiceID]);
 
+
+
+
+
+
   const calculateDirection = async () => {
     if (MapCoordinates && MapCoordinates.length > 1) {
       const directionService = new window.google.maps.DirectionsService();
 
       // Ensure waypoints are formatted correctly
-      const waypoints = MapCoordinates.slice(1, -1).map((point) => ({
-        location: { lat: point.lat, lng: point.lng },
-      }));
-
+      const waypoints = MapCoordinates.slice(1, -1).reduce((acc, point, index) => {
+        
+        if(index % Math.ceil(MapCoordinates.length / 23) === 0 && index !== 0) {
+          acc.push({
+            location: { lat: point.lat, lng: point.lng },
+          });
+        }
+        return acc;
+      },[]);
+      
       const request = {
         origin: { lat: MapCoordinates[0].lat, lng: MapCoordinates[0].lng }, // Starting point
         destination: {
@@ -112,7 +123,7 @@ const EnggLocation = () => {
           lng: MapCoordinates[MapCoordinates.length - 1].lng,
         }, // Ending point
         waypoints: waypoints,
-        travelMode: window.google.maps.TravelMode.DRIVING,
+        travelMode: window.google.maps.TravelMode.WALKING,
       };
 
       try {
@@ -136,13 +147,6 @@ const EnggLocation = () => {
 
 
 
-
-
-
-
-
-
-  
 
   useEffect(() => {
     const fetchData = () => {
@@ -172,16 +176,11 @@ const EnggLocation = () => {
   useMemo(() => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
-        // console.log("data inside the for each loop ", data.currentLocation.coordinates[0].origin?.split(",")[0]);
         if (data.ServiceEnggId === enggServiceID) {
           // const lat = parseFloat(data.currentLocation.coordinates[0]);
           // const lng = parseFloat(data.currentLocation.coordinates[1]);
-          const lat = parseFloat(
-            data.currentLocation.coordinates[0].origin?.split(",")[0]
-          );
-          const lng = parseFloat(
-            data.currentLocation.coordinates[0].origin?.split(",")[1]
-          );
+          const lat = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[1]);
           setCenter({ lat, lng });
         }
       });
@@ -685,17 +684,13 @@ const EnggLocation = () => {
       )}
       {enggLocationDetails &&
         enggLocationDetails.map((data, index) => {
-          const lastLatitude = parseFloat(
-            data?.currentLocation?.coordinates?.length - 1
-          );
-          console.log(lastLatitude);
+          const coordinates = data?.currentLocation?.coordinates;
+          // console.log("inside the map", coordinates)
+          // const lastLatitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          // console.log("this is last lattitude -->>  ", lastLatitude);
 
-          const latitude = parseFloat(
-            data.currentLocation.coordinates[0].origin?.split(",")[0]
-          );
-          const longitude = parseFloat(
-            data.currentLocation.coordinates[0].origin?.split(",")[1]
-          );
+          const latitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          const longitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[1]);
 
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
@@ -733,7 +728,7 @@ const EnggLocation = () => {
             polylineOptions: {
               strokeColor: "#F8AC1D", // Set the polyline color (red in this case)
               strokeOpacity: 0.9,
-              strokeWeight: 5,
+              strokeWeight: 3,
             },
             suppressMarkers: true, // Removes the default markers
           }}

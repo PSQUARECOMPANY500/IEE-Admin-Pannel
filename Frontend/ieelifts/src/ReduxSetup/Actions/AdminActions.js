@@ -122,6 +122,8 @@ export const CLEAR_SOS = "CLEAR_SOS";
 
 export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH = "GET_ENGG_LOCATION_COORDINATES_FOR_PATH"
 
+export const GET_ENGG_COORDINATES_FOR_MAP_MODAL = "GET_ENGG_COORDINATES_FOR_MAP_MODAL"
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -2023,6 +2025,24 @@ export const getEnggLocationCoordinatesAction = (enggId) => {
         payload: response.data,
       })
     }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//action to get teh Engg corrdinates to shosws on map Model
+
+export const getEnggCoordinatesForMapModalAction = (enggId,date) => {
+  try {
+   return async (dispatch) => {
+    const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
+    dispatch({
+      type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
+      payload: response.data,
+    })
+  }
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
   }

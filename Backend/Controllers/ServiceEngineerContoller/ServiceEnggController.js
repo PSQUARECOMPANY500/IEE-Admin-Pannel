@@ -40,6 +40,8 @@ const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestM
 
 const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema");
 
+const engglocationmodels = require("../../Modals/LocationModel/EnggLocationSchema")
+
 const Razorpay = require("razorpay");
 
 // const twilio  = require('twilio')
@@ -796,20 +798,46 @@ module.exports.EnggCheckOut = async (req, res) => {
       });
       const date = new Date().toLocaleDateString("en-GB");
 
+          
       const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate(
-        { ServiceEnggId, Date: date },
-        {
-          Check_Out: {
-            engPhoto: enggPhoto,
-            time: time,
-          },
-        }
-      );
+          { ServiceEnggId, Date: date },
+          {
+              Check_Out: {
+                  engPhoto: enggPhoto,
+                  time: time,
+                },
+              }
+            );
+            
+      //make the logic that delete the coordinates from the EnggLocation Table "Starts" ----------------  
+      const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+
+      const EnggCoordinates = await engglocationmodels.findOne({ServiceEnggId:ServiceEnggId,AttendanceCreatedDate:now});
+
+      const keepIndexes = [];
+      if(EnggCoordinates){
+        
+        const waypoints = EnggCoordinates.currentLocation.coordinates.slice(1, -1).reduce((acc, point, index) => {
+        
+          if(index % Math.ceil(EnggCoordinates.currentLocation.coordinates.length / 23) === 0 && index !== 0) {
+            keepIndexes.push(index+1);
+          }
+          return acc;
+        },[]);
+
+        const filteredconditions = EnggCoordinates.currentLocation.coordinates.filter((_,index) =>{
+          return index === 0 || index === EnggCoordinates.currentLocation.coordinates.length - 1 || keepIndexes.includes(index)
+        })
+        await engglocationmodels.updateOne({ServiceEnggId:ServiceEnggId,AttendanceCreatedDate:now},{$set:{'currentLocation.coordinates': filteredconditions}})
+      }
+
+      //make the logic that delete the coordinates from the EnggLocation Table "Ends" ------------------
+
       return res.status(201).json(time);
     }
-    return res.status(500).json({ error: "ServiceEnggId not find" });
+    return res.status(500).json({ error: "ServiceEnggId not fonnd" });
   } catch (error) {
-    //console.error(error);
+    console.error(error);
     return res
       .status(500)
       .json({ error: "Internal server error in EnggCheckOut" });

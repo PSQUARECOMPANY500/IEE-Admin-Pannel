@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
-const {
-  verifyEnggToken,
-} = require("../../Middleware/ServiceEnggAuthMiddleware");
+
+const { verifyEnggToken, EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
@@ -174,6 +173,8 @@ const checkOutAttendance = async (req, res, next) => {
   }
 };
 
+
+
 const checkInorOutAttendance = async (req, res, next) => {
 
   let ServiceEnggId;
@@ -221,8 +222,8 @@ router.post(
 );
 router.put(
   "/enggCheckOut/:ServiceEnggId",
-  checkClientDeviceLogins,
-  checkOutAttendance,
+  // checkClientDeviceLogins,
+  // checkOutAttendance,
   uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
@@ -445,7 +446,7 @@ router.post('/verifyEnggOTPWhileLoging', serviceEnggContoller.verifyEnggOTPWhile
 
 //route to get engg coordinates
 
-router.get('/getEnggCoordinates/:ServiceEnggId', serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap);
+router.get('/getEnggCoordinates/:ServiceEnggId',serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap);
 
 
 module.exports = router;

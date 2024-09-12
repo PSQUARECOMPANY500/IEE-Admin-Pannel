@@ -110,4 +110,34 @@ const checkInorOutAttendance = async (req, res, next) => {
 };
 
 
-module.exports = { generateEnggToken, verifyEnggToken, checkInAttendance, checkOutAttendance ,checkInorOutAttendance};
+
+//moddleware to check if the Engg is checkoout or not --------------------------------   -----------------------------
+const EnggCheckoutOrNot = async (req, res, next) => {
+  const Id = req.params.ServiceEnggId;
+  console.log("this is id checking ", Id);
+  if (Id) {
+    const date = new Date().toLocaleDateString("en-GB");
+
+    
+    // const ModifyAttendanceCreatedDate = date.replace(/^0+/, '').replace(/\/0+/, '/');
+    console.log("ModifyAttendance: ", date)
+
+    const checksum = await EnggAttendanceServiceRecord.findOne({
+      ServiceEnggId: Id,
+      Date: date,
+    });
+    console.log("this is checksum ", checksum);
+    if (checksum?.Check_Out?.time) {
+      next();
+    }else{
+      return res.status(200).json({ status:"Error", message: "Engg not CheckedOUT" });
+    }
+  }
+};
+
+
+
+
+
+
+module.exports = { generateEnggToken, verifyEnggToken, checkInAttendance, checkOutAttendance ,checkInorOutAttendance, EnggCheckoutOrNot};
