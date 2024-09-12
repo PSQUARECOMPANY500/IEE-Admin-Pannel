@@ -79,7 +79,7 @@ const ClientModal = ({ showClientModal, handleCloseModal, selectedClient }) => {
     },
     {
       id: 1,
-      options: ["Warranty", "platinum", "gold", "silver"],
+      options: ["Warranty", "platinum", "gold", "silver","Not Applicable"],
       defaultName: "Membership :",
       pic: MailIcon,
       selectedOption: defaultOptions[1],

@@ -15,6 +15,8 @@ const { uploadEdit, storageMembershipUpgradeBill } = require("../../Multer/EnggA
 
 const { token } = require("../../Controllers/AdminController/AdminController")
 
+const {EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
+
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -342,6 +344,10 @@ router.get('/getSoSRequests', adminContoller.getSoSRequests)
 router.put("/changeStatusSoS", adminContoller.changeStatusSoS)
 router.get("/FindEngineerSOS", adminContoller.FindEngineerSOS)
 router.put("/assignSoSRequest", adminContoller.assignSoSRequest)
+
+
+// router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId',EnggCheckoutOrNot, adminContoller.getEnggCoorinatesToShowOnMapModal)
+router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId', adminContoller.getEnggCoorinatesToShowOnMapModal)
 
 module.exports = router;
 

@@ -120,6 +120,10 @@ export const update_SoS_Status = "update_SoS_Status"
 export const SoS_Available_Engineer = "SoS_Available_Engineer"
 export const CLEAR_SOS = "CLEAR_SOS";
 
+export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH = "GET_ENGG_LOCATION_COORDINATES_FOR_PATH"
+
+export const GET_ENGG_COORDINATES_FOR_MAP_MODAL = "GET_ENGG_COORDINATES_FOR_MAP_MODAL"
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -2005,3 +2009,41 @@ export const assignSoSRequest = async (SoSId, EnggId) => {
 
 //-----------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------{armaan-dev}------------------------------------------------------------
+
+
+
+
+// action to handle get engg location coordinates to make path on map
+
+export const getEnggLocationCoordinatesAction = (enggId) => {
+  console.log("engg ID:  in action ", enggId);
+  try {
+    return async (dispatch) => {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getEnggCoordinates/${enggId}`)
+      dispatch({
+        type: GET_ENGG_LOCATION_COORDINATES_FOR_PATH,
+        payload: response.data,
+      })
+    }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//action to get teh Engg corrdinates to shosws on map Model
+
+export const getEnggCoordinatesForMapModalAction = (enggId,date) => {
+  try {
+   return async (dispatch) => {
+    const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
+    dispatch({
+      type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
+      payload: response.data,
+    })
+  }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
+}

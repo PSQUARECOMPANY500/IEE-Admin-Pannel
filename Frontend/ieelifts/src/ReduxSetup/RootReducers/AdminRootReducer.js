@@ -62,6 +62,9 @@ import { getSoSReducer } from "../Reducers/AdminReducer";
 import { updateSoSStatus } from "../Reducers/AdminReducer";
 import { findAvailableEngineer } from "../Reducers/AdminReducer";
 
+import { getEnggLocationCoordinatesReducer } from "../Reducers/AdminReducer";
+import { getEnggCoordinatesForMapModalAction } from "../Reducers/AdminReducer";
+
 
 const AdminRootReducer = combineReducers({
   EnggLocationDetailsFetchReducer: EnggLocationDetailsFetchReducer,
@@ -130,6 +133,8 @@ const AdminRootReducer = combineReducers({
   getSoSReducer: getSoSReducer,
   updateSoSStatus: updateSoSStatus,
   findAvailableEngineer: findAvailableEngineer,
+  getEnggLocationCoordinatesReducer:getEnggLocationCoordinatesReducer,
+  getEnggCoordinatesForMapModalAction:getEnggCoordinatesForMapModalAction
 });
 
 export default AdminRootReducer;

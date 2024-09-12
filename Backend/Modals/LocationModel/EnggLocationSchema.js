@@ -16,6 +16,9 @@ const EnggLocationSchema = new Schema(
             type: { type: String },
             coordinates: []
         },
+
+
+        
         AllotDetails: [{
             JobOrderNumber: {
                 type: String,

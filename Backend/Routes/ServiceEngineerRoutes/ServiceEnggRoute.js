@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
-const {
-  verifyEnggToken,
-} = require("../../Middleware/ServiceEnggAuthMiddleware");
+
+const { verifyEnggToken, EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
@@ -58,7 +57,9 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);     
+router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);  
+
+
 router.post(
   "/createEnggLocationOnAttendance",checkClientDeviceLogins,
   serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
@@ -172,6 +173,8 @@ const checkOutAttendance = async (req, res, next) => {
   }
 };
 
+
+
 const checkInorOutAttendance = async (req, res, next) => {
 
   let ServiceEnggId;
@@ -219,8 +222,8 @@ router.post(
 );
 router.put(
   "/enggCheckOut/:ServiceEnggId",
-  checkClientDeviceLogins,
-  checkOutAttendance,
+  // checkClientDeviceLogins,
+  // checkOutAttendance,
   uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
@@ -439,6 +442,11 @@ router.get('/getNotFullfillPreviousService/:ServiceEnggId', serviceEnggContoller
 router.post('/loginWithOTP',serviceEnggContoller.serviceEnggLoginWithOtp);
 
 router.post('/verifyEnggOTPWhileLoging', serviceEnggContoller.verifyEnggOTPWhileLogingWithMobileDevice);
+
+
+//route to get engg coordinates
+
+router.get('/getEnggCoordinates/:ServiceEnggId',serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap);
 
 
 module.exports = router;

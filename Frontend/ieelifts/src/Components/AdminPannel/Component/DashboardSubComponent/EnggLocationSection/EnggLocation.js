@@ -3,14 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   EnggLocationDetailsFetch,
   onClickPinCart,
+  getEnggLocationCoordinatesAction,
 } from "../../../../../ReduxSetup/Actions/AdminActions";
 import {
   GoogleMap,
   Marker,
   InfoWindow,
   useJsApiLoader,
-  DirectionsRenderer,
+  xl,
   Polyline,
+  DirectionsRenderer,
 } from "@react-google-maps/api";
 import { onClickEnggCart } from "../../../../../ReduxSetup/Actions/AdminActions";
 
@@ -26,18 +28,23 @@ const EnggLocation = () => {
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
 
 
-
   const enggServiceID = useSelector(
     (state) =>
       state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
   );
 
 
+  const MapCoordinates = useSelector(
+    (state) =>
+      state?.AdminRootReducer?.getEnggLocationCoordinatesReducer?.coordinates
+        ?.coordinates
+  );
 
-  const IEELifts = { lat: 30.715885973818526, lng: 76.6965589420526 };
+  console.log("this is map coordinaets-----", MapCoordinates);
+
+  const IEELifts = { lat: 30.71424661365234, lng: 76.696212667490 };
   const [center, setCenter] = useState({
-    lat: 30.715885973818526,
-    lng: 76.6965589420526,
+    lat: 30.71424661365234,lng: 76.696212667490
   });
 
   const [mainOpen, setMainOpen] = useState(false);
@@ -45,67 +52,13 @@ const EnggLocation = () => {
   const [enggId, setEnggId] = useState("");
   const [state, setState] = useState(0);
 
-  // const [directionsResponses, setDirectionsResponses] = useState([]);
-  // const [distances, setDistances] = useState([]);
-  // const [durations, setDurations] = useState([]);
-  // console.log("$$$$$$$$$$$$$$$$$$$$$$$$", distances);
-  // console.log("!!!!!!!!!!!!!!!!!!", durations);
-
-  // const locations = [
-  //   {
-  //     origin: "30.714428633668856, 76.69627382349806",
-  //     destination: "30.786394881867572, 76.81068259533569",
-  //   },
-  //   {
-  //     origin: "30.786394881867572, 76.81068259533569",
-  //     destination: "30.699955351116518, 76.86418011009073",
-  //   },
-  //   {
-  //     origin: "30.699955351116518, 76.86418011009073",
-  //     destination: "30.673769256945302, 76.74035592749549",
-  //   },
-  //   // Add more locations as needed
-  // ];
+  const [map, setMap] = useState(null);
+// console.log("this is map console----->>*************************** ", map);
 
 
-  // const locationss = enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates?.map(item => ({
-  //   origin: item.origin,
-  //   destination: item.destination
-  // }));
-  
-  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!11111111111111",locationss);
+  const [directions, setDirections] = useState([]);
 
-
-  //--------------------------------------------------------------------------------------------------------------------
-  // useEffect(() => {
-  //   const calculateRoutes = async () => {
-  //     const directionsService = new window.google.maps.DirectionsService();
-
-  //     const newDirectionsResponses = [];
-  //     const newDistances = [];
-  //     const newDurations = [];
-
-  //     for (const location of locations) {
-  //       const { origin, destination } = location;
-  //       const results = await directionsService.route({
-  //         origin,
-  //         destination,
-  //         travelMode: window.google.maps.TravelMode.DRIVING,
-  //       });
-  //       newDirectionsResponses.push(results);
-  //       newDistances.push(results.routes[0].legs[0].distance.text);
-  //       newDurations.push(results.routes[0].legs[0].duration.text);
-  //     }
-
-  //     setDirectionsResponses(newDirectionsResponses);
-  //     setDistances(newDistances);
-  //     setDurations(newDurations);
-  //   };
-
-  //   calculateRoutes();
-  // }, []);
-
-  //------------------------------------------------------------------------------------------------------------------------
+  // console.log("this is consosle the direction 999999  ", directions);
 
   const enggMarkerSymbol = {
     path: window.google?.maps?.SymbolPath?.CIRCLE,
@@ -133,6 +86,67 @@ const EnggLocation = () => {
     strokeColor: "white",
     strokeWeight: 2,
   };
+
+  useEffect(() => {
+    if (enggServiceID) {
+      console.log("ths id is inside the useEfefct", enggServiceID);
+      dispatch(getEnggLocationCoordinatesAction(enggServiceID)); // get the corrdinates from the engg database to path on map
+    } else {
+      dispatch(getEnggLocationCoordinatesAction()); // get the corrdinates from the engg database to path on map
+    }
+  }, [dispatch, enggServiceID]);
+
+
+
+
+
+
+  const calculateDirection = async () => {
+    if (MapCoordinates && MapCoordinates.length > 1) {
+      const directionService = new window.google.maps.DirectionsService();
+
+      // Ensure waypoints are formatted correctly
+      const waypoints = MapCoordinates.slice(1, -1).reduce((acc, point, index) => {
+        
+        if(index % Math.ceil(MapCoordinates.length / 23) === 0 && index !== 0) {
+          acc.push({
+            location: { lat: point.lat, lng: point.lng },
+          });
+        }
+        return acc;
+      },[]);
+      
+      const request = {
+        origin: { lat: MapCoordinates[0].lat, lng: MapCoordinates[0].lng }, // Starting point
+        destination: {
+          lat: MapCoordinates[MapCoordinates.length - 1].lat,
+          lng: MapCoordinates[MapCoordinates.length - 1].lng,
+        }, // Ending point
+        waypoints: waypoints,
+        travelMode: window.google.maps.TravelMode.WALKING,
+      };
+
+      try {
+        const res = await directionService.route(request);
+        console.log("this is response console ", res);
+        if (res.status === "OK") {
+          setDirections(res);
+        } else {
+          console.error("Directions request failed due to", res.status);
+        }
+      } catch (error) {
+        console.error("Error fetching directions", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    calculateDirection();
+  }, [MapCoordinates]);
+
+
+
+
 
   useEffect(() => {
     const fetchData = () => {
@@ -163,8 +177,10 @@ const EnggLocation = () => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
         if (data.ServiceEnggId === enggServiceID) {
-          const lat = parseFloat(data.currentLocation.coordinates[0]);
-          const lng = parseFloat(data.currentLocation.coordinates[1]);
+          // const lat = parseFloat(data.currentLocation.coordinates[0]);
+          // const lng = parseFloat(data.currentLocation.coordinates[1]);
+          const lat = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[1]);
           setCenter({ lat, lng });
         }
       });
@@ -332,6 +348,311 @@ const EnggLocation = () => {
   //   },
   // ];
 
+
+//   const mapStyles = [
+//     {
+//         "featureType": "administrative",
+//         "elementType": "labels",
+//         "stylers": [
+//             {
+//                 "visibility": "simplified"
+//             },
+//             {
+//                 "color": "#c8b671"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "administrative.province",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "color": "#958456"
+//             },
+//             {
+//                 "saturation": "0"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "administrative.locality",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "color": "#9b8958"
+//             },
+//             {
+//                 "saturation": "0"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "administrative.neighborhood",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "color": "#9b8958"
+//             },
+//             {
+//                 "saturation": "0"
+//             },
+//             {
+//                 "lightness": "35"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "landscape",
+//         "elementType": "geometry",
+//         "stylers": [
+//             {
+//                 "color": "#faf2d6"
+//             },
+//             {
+//                 "lightness": "82"
+//             },
+//             {
+//                 "saturation": "100"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi",
+//         "elementType": "labels",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.attraction",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "color": "#ff0000"
+//             },
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.business",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.government",
+//         "elementType": "all",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.medical",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.park",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "color": "#b3edaf"
+//             },
+//             {
+//                 "lightness": "20"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.place_of_worship",
+//         "elementType": "all",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.school",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "poi.sports_complex",
+//         "elementType": "all",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             },
+//             {
+//                 "color": "#ff0000"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road",
+//         "elementType": "geometry.stroke",
+//         "stylers": [
+//             {
+//                 "color": "#fbf3ac"
+//             },
+//             {
+//                 "saturation": "-60"
+//             },
+//             {
+//                 "lightness": "-21"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.highway",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "color": "#f6eebb"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.highway",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "saturation": "0"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.highway",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.highway.controlled_access",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.arterial",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "color": "#9b8958"
+//             },
+//             {
+//                 "saturation": "0"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.arterial",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.local",
+//         "elementType": "labels.text.fill",
+//         "stylers": [
+//             {
+//                 "color": "#9b8958"
+//             },
+//             {
+//                 "saturation": "0"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "road.local",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "transit",
+//         "elementType": "labels",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "transit",
+//         "elementType": "labels.icon",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "water",
+//         "elementType": "geometry.fill",
+//         "stylers": [
+//             {
+//                 "hue": "#00acff"
+//             },
+//             {
+//                 "saturation": "10"
+//             },
+//             {
+//                 "lightness": "32"
+//             }
+//         ]
+//     },
+//     {
+//         "featureType": "water",
+//         "elementType": "labels",
+//         "stylers": [
+//             {
+//                 "visibility": "off"
+//             }
+//         ]
+//     }
+// ]
+
+
   return (
     <GoogleMap
       zoom={12}
@@ -345,6 +666,7 @@ const EnggLocation = () => {
         fullscreenControl: true,
         // styles: mapStyles,
       }}
+      onLoad={(map) => setMap(map)}
     >
       <Marker
         position={IEELifts}
@@ -362,12 +684,14 @@ const EnggLocation = () => {
       )}
       {enggLocationDetails &&
         enggLocationDetails.map((data, index) => {
+          const coordinates = data?.currentLocation?.coordinates;
+          // console.log("inside the map", coordinates)
+          // const lastLatitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          // console.log("this is last lattitude -->>  ", lastLatitude);
 
-          const lastLatitude = parseFloat(data?.currentLocation?.coordinates?.length - 1);
-          console.log(lastLatitude)
+          const latitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          const longitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[1]);
 
-          const latitude = parseFloat(data.currentLocation.coordinates?.[0]);
-          const longitude = parseFloat(data.currentLocation.coordinates?.[1]);
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
           const isActive =
@@ -397,23 +721,19 @@ const EnggLocation = () => {
           );
         })}
 
-      {/* {directionsResponses.map((response, index) => (
+      {directions && (
         <DirectionsRenderer
-          key={index}
-          directions={response}
+          directions={directions}
           options={{
             polylineOptions: {
-              strokeColor: "#FF5C5C", // Customize the color of the route
+              strokeColor: "#F8AC1D", // Set the polyline color (red in this case)
+              strokeOpacity: 0.9,
               strokeWeight: 3,
             },
-            markerOptions: {
-              visible: false, // Hide default route markers
-            },
+            suppressMarkers: true, // Removes the default markers
           }}
         />
-      )) } */}
-
-
+      )}
     </GoogleMap>
   );
 };

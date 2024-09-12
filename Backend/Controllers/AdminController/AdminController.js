@@ -3400,6 +3400,8 @@ module.exports.getCheckInCheckOut = async (req, res) => {
   }
 };
 
+
+
 module.exports.getClientCallbackByJON = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
@@ -4292,9 +4294,7 @@ module.exports.FindEngineerSOS = async (req, res) => {
     }
     const formattedCoordinates = creatingDestinationCoordinates(locations)
 
-    const googleApiResponse = await fetch(
-      `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`
-    );
+    const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`);
 
     if (googleApiResponse.ok) {
       const googleApiData = await googleApiResponse.json();
@@ -4420,7 +4420,40 @@ module.exports.assignSoSRequest = async (req, res) => {
 // ----------------------------------{armaan-dev}---------------------------
 //--------------------------------------------------------------------------------------------------------------------------
 
+// -------------------------------- preet -------------------------------------------- 12/09/2024 ----------------------
 
+// get engg cordinates on the basics of date and its EnggID to show in map modal
+
+module.exports.getEnggCoorinatesToShowOnMapModal = async (req,res) => {
+  try {
+
+    const {ServiceEnggId } = req.params;
+    const { AttendanceCreatedDate } = req.query;
+
+    const ModifyAttendanceCreatedDate = AttendanceCreatedDate.replace(/^0+/, '').replace(/\/0+/, '/');  //this code is used to eleminate the leading Zero's
+
+
+    const engineerCoordinates = await EngineerLocation.findOne({ServiceEnggId, AttendanceCreatedDate:ModifyAttendanceCreatedDate});
+    if (!engineerCoordinates) {
+      return res.status(200).json({message: "Engineer coordinates not found for the given date and ID."});
+    }
+
+    let coordinatesToSend = []
+    const coordinates = engineerCoordinates &&  engineerCoordinates.currentLocation && engineerCoordinates.currentLocation.coordinates.map((item)=> {
+      let coordinate = item?.origin?.split(",")
+      let lat = parseFloat(coordinate[0])
+      let lng = parseFloat(coordinate[1])
+      coordinatesToSend.push({ lat, lng })
+   })
+    
+    
+    res.status(200).json({coordinates:coordinatesToSend})
+
+  } catch (error) {
+    console.log("this is eror while fetching the Engg Coordinates to show ohn modal ", error)
+    return res.status(500).json({message: "Internal server error: " + error.message,});
+  }
+}
 
 
 

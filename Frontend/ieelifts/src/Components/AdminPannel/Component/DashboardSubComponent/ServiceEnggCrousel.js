@@ -44,7 +44,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
     }
   });
 
-  console.log("*****************************************))))))))))))))))))",getBasicData);
+  // console.log("*****************************************))))))))))))))))))",getBasicData);
 
   
 

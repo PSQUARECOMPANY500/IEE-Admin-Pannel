@@ -72,6 +72,11 @@ import { GET_ALL_SOS } from "../Actions/AdminActions";
 import { update_SoS_Status } from "../Actions/AdminActions";
 import { CLEAR_SOS } from "../Actions/AdminActions";
 import { SoS_Available_Engineer } from "../Actions/AdminActions";
+import { GET_ENGG_COORDINATES_FOR_MAP_MODAL } from "../Actions/AdminActions";
+
+
+import { GET_ENGG_LOCATION_COORDINATES_FOR_PATH } from "../Actions/AdminActions";
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1304,3 +1309,40 @@ export const findAvailableEngineer = (state = SoSAvailable, action) => {
       return state;
   }
 };
+
+
+//----------------------------------------------------------------------------------------------------------------------------
+//reducer to get location coordinates to make path on map
+const Coordinates = {
+  coordinates: null
+}
+export const getEnggLocationCoordinatesReducer = (state =Coordinates,action) => {
+  switch (action.type){
+    case GET_ENGG_LOCATION_COORDINATES_FOR_PATH:
+      return {
+       ...state,
+        coordinates: action.payload,
+      }
+    default:
+      return state;
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------------
+//reducer to get engg selected corrdinates to show on modal
+const locationCorrdinates ={
+  locationCorrdinates:null
+}
+
+export const getEnggCoordinatesForMapModalAction = (state=locationCorrdinates, action) => {
+  switch(action.type){
+    case GET_ENGG_COORDINATES_FOR_MAP_MODAL:
+      return {
+        ...state,
+        locationCorrdinates: action.payload,
+      }
+      default:
+        return state;
+  }
+}
