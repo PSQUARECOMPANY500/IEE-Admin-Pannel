@@ -1353,7 +1353,7 @@ input::-webkit-inner-spin-button {
 .user-info-open {
   width: 14.5rem;
   pointer-events: 'auto';
-  padding: 0;
+  padding-left: 0.3rem;
 }
 
 .user-info-close {
@@ -10219,7 +10219,7 @@ a[href^="http://maps.google.com/maps"] {
   .user-info-open {
     width: 13rem;
     pointer-events: 'auto';
-    padding: 0rem;
+    padding-left: 0.5rem;
   }
 
   .user-info-close {
