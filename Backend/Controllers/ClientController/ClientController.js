@@ -703,17 +703,7 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
 
 // convert the format for Am/Pm
 
-const convertTo12HourFormat = (time24) => {
-  let [hours, minutes] = time24.split(":");
 
-  hours = parseInt(hours, 10);
-
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  hours = hours % 12 || 12;
-
-  return `${hours}:${minutes} ${ampm}`;
-};
 
 // module.exports.getCurrentScheduleService = async (req, res) => {
 // to do -> middlaware implemented
@@ -864,6 +854,38 @@ const convertTo12HourFormat = (time24) => {
 // };
 
 // *********************************** rebuild API for tracking location  ********************************************************
+
+const convertTo12HourFormat = (time24) => {
+  let [hours, minutes] = time24.split(":");
+  hours = parseInt(hours, 10); 
+  const ampm = time24.split(":")[0]  >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+
+  return `${hours}:${minutes} ${ampm}`;
+};
+
+
+const convertTo12HourFormatScheduleService = (time24) => {
+  let [hours, minutes] = time24.split(":");  
+  hours = parseInt(hours, 10); 
+  const caluclatedHour = parseInt(time24.split(":")[0]) 
+  let ampm;
+  if (caluclatedHour >= 9 && caluclatedHour <= 12) {
+    ampm = "AM";
+  } else {
+    ampm = "PM";
+  }
+
+
+
+
+
+  hours = hours % 12 || 12;
+
+  return `${hours}:${minutes} ${ampm}`;
+}
+
+
 module.exports.getCurrentScheduleService = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
@@ -990,19 +1012,8 @@ if (!latestRecord && combineData.length === 0) {
       res.status(200).json({
         status: "success",
         message:
-          currentDate === data[0][0].Date
-            ? `Service Today at ${convertTo12HourFormat(
-                data[0][0].Slot[0].split("-")[0]
-              )}`
-            : currentDate > data[0][0].Date
-            ? "Service Expired"
-            : "Service Booked",
-        time:
-          currentDate > data[0][0].Date
-            ? "(Awaiting Cancelation)"
-            : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
-              "-" +
-              convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
+          currentDate === data[0][0].Date ? `Service Today at ${convertTo12HourFormatScheduleService(data[0][0].Slot[0].split("-")[0])}`: currentDate > data[0][0].Date? "Service Expired": "Service Booked",time:
+          currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) + "-" + convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
         liveTracking: currentDate === data[0][0].Date ? true : false,
