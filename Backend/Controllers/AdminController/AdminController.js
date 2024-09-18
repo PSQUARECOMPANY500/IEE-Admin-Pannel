@@ -525,7 +525,7 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
         let checkRequest = await getAllServiceRequest.findOne({
           RequestId: request.RequestId
         });
-        if (checkRequest.isCancelled) {
+        if (checkRequest?.isCancelled) {
           return
         }
         else {
