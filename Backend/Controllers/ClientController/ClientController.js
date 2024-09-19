@@ -978,7 +978,7 @@ if (!latestRecord && combineData.length === 0) {
 
 
 
-    if (combineData[0].isAssigned === false) {
+    if (combineData[0]?.isAssigned === false) {
       return res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -990,10 +990,10 @@ if (!latestRecord && combineData.length === 0) {
     }
 
     const rating = await engineerRating.findOne({
-      ServiceId: combineData[0].RequestId || combineData[0].callbackId,
+      ServiceId: combineData[0]?.RequestId || combineData[0]?.callbackId,
     });
     // // first case 1:
-    if (combineData[0].isAssigned === false && !rating) {
+    if (combineData[0]?.isAssigned === false && !rating) {
       res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -1005,7 +1005,7 @@ if (!latestRecord && combineData.length === 0) {
     }
     //case 2
     else if (
-      combineData[0].isAssigned === true &&
+      combineData[0]?.isAssigned === true &&
       combineData[0]?.isDead === false &&
       data[0][0].ServiceProcess === "InCompleted"
     ) {
