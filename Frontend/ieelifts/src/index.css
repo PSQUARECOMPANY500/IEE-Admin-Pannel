@@ -86,7 +86,7 @@ code {
 /* ----------------- Membership Card css --------------------------- */
 
 .membershipCards {
-  margin-top: 4.8rem;
+  margin-top: 6%;
   transition: all 0.6s ease;
 }
 
@@ -95,7 +95,7 @@ code {
   grid-template-columns: 49% 49%;
   justify-content: center;
   align-content: center;
-  margin-top: 4.8rem;
+  /* margin-top: 4.8rem; */
   /* gap: 2rem; */
   /* margin-left: 2rem; */
   /* margin-right: 2rem; */
@@ -115,13 +115,13 @@ code {
   /* background-color: red; */
 }
 
-.non_expand_gap .membership_card {
+/* .non_expand_gap .membership_card {
   height: 41vh;
 
-}
+} */
 
 .membership_card_expand_non {
-  height: 17vh;
+  min-height: 17vh;
   margin: 1rem;
 }
 
@@ -289,6 +289,7 @@ code {
 }
 
 .membership_card_scrollable_non_expand {
+  min-height: 2rem;
   height: 14rem;
 }
 
@@ -556,7 +557,7 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 85vh;
+  min-height: 85vh;
   transition: border 1s ease;
 
 }
@@ -4113,9 +4114,9 @@ input:-webkit-autofill {
     overflow-y: auto;
   }
 
-  .non_expand_gap .membership_card {
+  /* .non_expand_gap .membership_card {
     height: 37vh;
-  }
+  } */
 
   .membership_card_title {
     font-size: 1.2rem;
@@ -4125,11 +4126,6 @@ input:-webkit-autofill {
     font-size: 0.8rem;
   }
 
-  .expandCardName {
-    font-size: 0.7rem;
-    width: 120px;
-
-  }
 
 
   .membership_card_expiring {
@@ -4141,7 +4137,6 @@ input:-webkit-autofill {
   }
 
   .membership_card_expand_non {
-    height: 17vh;
     margin: 0.5rem;
   }
 
@@ -4176,7 +4171,9 @@ input:-webkit-autofill {
 
 
   .membership_card_expand {
+    /* background-color: red; */
     height: 80vh;
+    /* min-height: 40vh; */
   }
 
 
@@ -4388,9 +4385,9 @@ input:-webkit-autofill {
     height: 85vh;
   }
 
-  .non_expand_gap .membership_card {
+  /* .non_expand_gap .membership_card {
     height: 39vh;
-  }
+  } */
 
   .membership_card_scrollable {
     height: 19rem;
@@ -4398,13 +4395,22 @@ input:-webkit-autofill {
     overflow-y: auto;
   }
 
+
+
+  /* .membershipCards {
+    margin-top: 6%;
+  } */
 }
 
 
 @media screen and (min-width : 1024px) and (max-width:1440px) {
-  .membership_card_expiring {
+
+  /* .membership_card_expiring {
     height: 15rem;
     max-height: 15rem;
+  } */
+  .membershipCards {
+    margin-top: 8%;
   }
 
   .membership_card_scrollable_non_expand {
@@ -4435,7 +4441,10 @@ input:-webkit-autofill {
     font-size: smaller;
   }
 
-
+  .expandCardName {
+    font-size: 0.6rem;
+    width: 90px;
+  }
 
   .clients {
     height: 26rem;
@@ -4456,10 +4465,10 @@ input:-webkit-autofill {
 
 
 @media screen and (min-width : 1440px) and (max-width:1550px) {
-  .membership_card_expiring {
+  /* .membership_card_expiring {
     height: 15rem;
     max-height: 15rem;
-  }
+  } */
 
   .membership_card_scrollable_non_expand {
     height: 8.3rem;
