@@ -58,6 +58,12 @@ import { requestLimitedClientDataExpiredReducer } from "../Reducers/AdminReducer
 import { settingJONforMembship } from "../Reducers/AdminReducer";
 import { cancelEnggCallbackServiceRequestReducer } from "../Reducers/AdminReducer";
 import { updateStatusOfCancelServiceAndCallbackRequestReducer } from "../Reducers/AdminReducer";
+import { getSoSReducer } from "../Reducers/AdminReducer";
+import { updateSoSStatus } from "../Reducers/AdminReducer";
+import { findAvailableEngineer } from "../Reducers/AdminReducer";
+
+import { getEnggLocationCoordinatesReducer } from "../Reducers/AdminReducer";
+import { getEnggCoordinatesForMapModalAction } from "../Reducers/AdminReducer";
 
 
 const AdminRootReducer = combineReducers({
@@ -123,8 +129,12 @@ const AdminRootReducer = combineReducers({
   requestLimitedClientDataExpiredReducer: requestLimitedClientDataExpiredReducer,
   requestLimitedClientDataExpiringReducer: requestLimitedClientDataExpiringReducer,
   settingJONforMembship: settingJONforMembship,
-  getClientCancelServiceCallbackDataReducer: getClientCancelServiceCallbackDataReducer
-
+  getClientCancelServiceCallbackDataReducer: getClientCancelServiceCallbackDataReducer,
+  getSoSReducer: getSoSReducer,
+  updateSoSStatus: updateSoSStatus,
+  findAvailableEngineer: findAvailableEngineer,
+  getEnggLocationCoordinatesReducer:getEnggLocationCoordinatesReducer,
+  getEnggCoordinatesForMapModalAction:getEnggCoordinatesForMapModalAction
 });
 
 export default AdminRootReducer;

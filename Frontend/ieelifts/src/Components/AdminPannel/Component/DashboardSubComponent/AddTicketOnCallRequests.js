@@ -5,7 +5,7 @@ import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchAllClientDetailAction, updateSOSStatus } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -28,6 +28,8 @@ const AddTicketOnCallRequests = ({
   setRenderTicket,
   requestSection,
   setTicketUpdate,
+  SOSStatusUpdate,
+  jobOrderNumber
 }) => {
   const dispatch = useDispatch();
 
@@ -45,8 +47,8 @@ const AddTicketOnCallRequests = ({
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
-  const [membershipType,setMembershipType] = useState('')
-  const[doh,setDoh]=useState('')
+  const [membershipType, setMembershipType] = useState("");
+  const [doh, setDoh] = useState("");
 
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
@@ -64,8 +66,6 @@ const AddTicketOnCallRequests = ({
     repersentativeNumber: "",
   });
 
-  console.log("length", engDetails.enggName.length);
-
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
@@ -73,7 +73,11 @@ const AddTicketOnCallRequests = ({
   const [reName, setreName] = useState("");
   const [reNumber, setreNumber] = useState("");
 
-  // console.log("5555555555555555555", reNumber);
+  useEffect(() => {
+    if (jobOrderNumber?.jon) {
+      setJon(jobOrderNumber.jon);
+    }
+  }, [SOSStatusUpdate?.success])
 
   const timeSlots = [
     {
@@ -133,7 +137,6 @@ const AddTicketOnCallRequests = ({
     }
   });
 
-
   const filteredSlots = timeSlots
     .slice(timeSlots.length - filterTime.length)
     .filter((slot, i) => {
@@ -144,7 +147,6 @@ const AddTicketOnCallRequests = ({
 
       return !bookedSlots.includes(slot.slot);
     });
-
 
   //-------------------------------------------------
   // use use selector select to select the service engg state
@@ -190,11 +192,11 @@ const AddTicketOnCallRequests = ({
     return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
       ?.client;
   });
- 
-  const callBackDetails=useSelector((state)=>{
+
+  const callBackDetails = useSelector((state) => {
     return state?.AdminRootReducer?.fetchClientDetailsByJon?.clientDetails
-    ?.callbacks;
-  })
+      ?.callbacks;
+  });
 
   //  console.log("}}}}}}}",clientDetails)
 
@@ -204,13 +206,13 @@ const AddTicketOnCallRequests = ({
       setnumber(clientDetails.PhoneNumber);
       setaddress(clientDetails.Address);
       setModelType(clientDetails.ModelType);
-      setMembershipType(clientDetails.MembershipType)
-      setDoh(clientDetails.DateOfHandover)
+      setMembershipType(clientDetails.MembershipType);
+      setDoh(clientDetails.DateOfHandover);
 
       const currentDate = new Date();
       const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
       const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
-      console.log(updatedFormatedDate);
+
       setDate(updatedFormatedDate);
 
       const hours = currentDate.getHours();
@@ -225,8 +227,8 @@ const AddTicketOnCallRequests = ({
       setModelType("");
       setDate("");
       setTime("");
-      setMembershipType('')
-      setDoh('')
+      setMembershipType("");
+      setDoh("");
     }
   }, [clientDetails]);
 
@@ -281,7 +283,7 @@ const AddTicketOnCallRequests = ({
   }, [getEnggState]);
 
   const handleEnggSelectionChange = (selectedOptions) => {
-    setSelectedEnggId(selectedOptions); // selected Engg id
+    setSelectedEnggId(selectedOptions);
     dispatch(fetchEnggDetailAction(selectedOptions));
 
     if (selectedOptions.length === 0) {
@@ -351,42 +353,41 @@ const AddTicketOnCallRequests = ({
           typeOfIssue.label,
           dtext,
           reName,
-          reNumber
+          reNumber,
+          jobOrderNumber?._id,
+          jobOrderNumber?.status
         )
-      ).then((callbackId) => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
-          dispatch(
-            assignCallBackByAdminAction(
-              engDetails?.enggJon,
-              jon,
-              callbackId,
-              ClickListOnSelect.value,
-              selectedSlot,
-              engDate,
-              message,
-              engDetails?.enggName,
-              engDetails.enggJon
-            )
-          );
-          closeModal();
-        } else {
-          toast.error("Please fill all the fields");
-        }
-      });
+      )
+        .then((callbackId) => {
+          dispatch(updateSOSStatus(jobOrderNumber?.jon, "RaisedCallback", jobOrderNumber?._id))
+          if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+            dispatch(
+              assignCallBackByAdminAction(
+                engDetails?.enggJon,
+                jon,
+                callbackId,
+                ClickListOnSelect.value,
+                selectedSlot,
+                date,
+                message,
+                engDetails?.enggName,
+                engDetails.enggJon
+              )
+            );
+            closeModal();
+          } else {
+            toast.error("Please fill all the fields");
+          }
+        });
     }
-    setRenderTicket((prev) => !prev);
-    if (setTicketUpdate) {
-      setTicketUpdate((prev) => !prev);
+    if (setRenderTicket !== undefined) {
+      setRenderTicket((prev) => !prev);
+      if (setTicketUpdate) {
+        setTicketUpdate((prev) => !prev);
+      }
     }
+
   };
-
-
-
-
-
-
-
-  
 
   const handlleValidation = (e) => {
     if (e.target.name === "phoneNumber") {
@@ -456,6 +457,7 @@ const AddTicketOnCallRequests = ({
                         onChange={(e) => setJon(e.target.value)}
                         type="text"
                         placeholder="Enter JON"
+                        value={jon}
                       />
                     </div>
                   </div>
@@ -566,23 +568,29 @@ const AddTicketOnCallRequests = ({
                     <div className="membership-form-col1">
                       <p>NO. OF CALLBACKS: </p>
                     </div>
-                    {callBackDetails?<div className="membership-form-col2">
-                      <p>{callBackDetails&&callBackDetails.length}</p>
-                    </div>
-                    :<div className="membership-form-col22">
+                    {callBackDetails ? (
+                      <div className="membership-form-col2">
+                        <p>{callBackDetails && callBackDetails.length}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
-                      </div>}
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP: </p>
                     </div>
-                    {membershipType?<div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
-                    </div>
-                    :<div className="membership-form-col22">
+                    {membershipType ? (
+                      <div className="membership-form-col2">
+                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
-                      </div>}
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
@@ -649,12 +657,15 @@ const AddTicketOnCallRequests = ({
                       <div className="req-elevator-col1">
                         <p>DOH:</p>
                       </div>
-                      {doh?<div className="req-elevator-col2">
-                        <p> {doh}</p>
-                      </div>
-                      :<div className="membership-form-col22">
-                        <SkeltonLoader width="100px" />
-                      </div>}
+                      {doh ? (
+                        <div className="req-elevator-col2">
+                          <p> {doh}</p>
+                        </div>
+                      ) : (
+                        <div className="membership-form-col22">
+                          <SkeltonLoader width="100px" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

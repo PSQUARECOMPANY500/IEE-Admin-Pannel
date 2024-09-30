@@ -8,7 +8,7 @@ import { FaAngleRight } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import RequestScheduledSection from "../ServiceRequestSubComponent/RequestScheduledSection";
 import { useSelector, useDispatch } from "react-redux";
-
+import config from "../../../../config";
 import { getAllAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import ServiceRequestModals from "../ServiceRequestSubComponent/ServiceRequestModals";
 
@@ -55,7 +55,7 @@ const Request = () => {
     const parts = dateString.split("/");
     if (parts.length === 3) {
       const [day, month, year] = parts;
-      return `${year}-${month}-${day}`;
+      return `${year}/${month}/${day}`;
     }
     return dateString; // return as is if format is incorrect
   };
@@ -68,14 +68,10 @@ const Request = () => {
     time: value?.Slot,
     jobNumber: value?.JobOrderNumber,
     jobType: value?.checklistDetail?.checklistName,
-    profilePics: [
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-      "https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg",
-    ],
+    profilepic: value?.EnggPicture
   }));
 
   const data = [...requestDetail];
-  // console.log(".0.00.00", data)
 
   const onChange = (newDate) => {
     setDate(newDate);
@@ -100,13 +96,10 @@ const Request = () => {
     onChange(newDate);
 
     if (days < 0) {
-      // console.log("date is less then zero");
       setAnimationDirection("slideLeftToRight");
     } else if (days > 0) {
-      // console.log("date is greater then zero");
       setAnimationDirection("slideRightToLeft");
     } else {
-      // console.log("equal value");
       setAnimationDirection("slideToTop");
     }
   };
@@ -114,7 +107,6 @@ const Request = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      // console.log("renderTicket", renderTicket);
       dispatch(getAllAssignServiceRequestAction());
     }, 1000);
   }, [renderTicket]);
@@ -138,7 +130,7 @@ const Request = () => {
                 <div className="date-swap-icon">
                   <div className="swap-icons">
                     <FaAngleLeft onClick={() => handleDateChange(-1)} />
-                    <p style={{ width: "30%" }}>{date.toDateString()}</p>
+                    <p style={{ width: "30%" }}>{`${date.toDateString().slice(0, 3)},${date.toDateString().slice(3)}`}</p>
                     <FaAngleRight onClick={() => handleDateChange(1)} />
                   </div>
                 </div>
@@ -172,7 +164,7 @@ const Request = () => {
                                       <span style={{ fontWeight: "500" }}>
                                         JON
                                       </span>
-                                      :{value?.jobNumber}
+                                      : {value?.jobNumber}
                                     </p>
                                     <p>{value?.jobType}</p>
                                   </div>
@@ -188,7 +180,11 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        src={
+                                          value?.profilepic === null
+                                            ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                                            : `${config.documentUrl}/EnggAttachments/${value?.profilepic}`
+                                        }
                                         width={40}
                                         className="profile-pic"
                                         alt="img"
@@ -196,7 +192,11 @@ const Request = () => {
                                     </div>
                                     <div className="image-border-collapse2">
                                       <img
-                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        src={
+                                          value?.profilepic === null
+                                            ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                                            : `${config.documentUrl}/EnggAttachments/${value?.profilepic}`
+                                        }
                                         width={40}
                                         className="profile-pic"
                                         alt="img"
@@ -246,7 +246,7 @@ const Request = () => {
                                       <span style={{ fontWeight: "500" }}>
                                         JON
                                       </span>
-                                      :{value?.jobNumber}
+                                      : {value?.jobNumber}
                                     </p>
                                     <p>{value?.jobType}</p>
                                   </div>
@@ -262,7 +262,11 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                        src="https://wallpapers.com/images/hd/cool-profile-picture-87h46gcobjl5e4xu.jpg"
+                                        src={
+                                          value?.profilepic === null
+                                            ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                                            : `${config.documentUrl}/EnggAttachments/${value?.profilepic}`
+                                        }
                                         width={40}
                                         className="profile-pic"
                                         alt="img"

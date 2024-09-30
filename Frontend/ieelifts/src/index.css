@@ -1680,7 +1680,7 @@ code {
   height: 85%;
   position: relative;
   padding: 1.5rem;
-  margin-top: 5%;
+  margin-top: 4%;
   padding-bottom: 0.5rem;
 }
 
@@ -1768,6 +1768,10 @@ code {
   position: absolute;
   top: 350%;
   left: 50%;
+}
+
+.left-align-td-SOS-table td {
+  text-align: left;
 }
 
 
@@ -3477,7 +3481,7 @@ input:-webkit-autofill {
 
   .spare-part-table-container {
     max-height: 23vh;
-  
+
 
   }
 
@@ -4301,6 +4305,69 @@ input:-webkit-autofill {
 
 
 /* sidebar SOS button css ends */
+
+
+/* SOS CSS */
+.SOS-Action-modal-container {
+  width: 10%;
+  height: 12rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  z-index: 9999;
+  border-radius: 15px;
+}
+
+.SOS-Action-modal-container-outer {
+  width: 100%;
+  position: relative;
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: medium;
+}
+
+.edit-SOS-Action-modal {
+  position: absolute;
+  top: 5%;
+  cursor: pointer;
+  left: 80%;
+  font-size: 1.3rem;
+}
+
+.SOS-Action-modal-items {
+  display: flex;
+  align-items: center;
+  width: 18vw;
+  margin-top: -1rem;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.SOS-SentEngineer-Modal {
+  position: absolute;
+  top: 30%;
+  cursor: pointer;
+  left: 45%;
+  padding: 1.5rem;
+  font-size: 1.3rem;
+  background-color: white;
+  /* padding: 10rem; */
+}
+
+.SOS-SentEngineer-Modal-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+/* SOS CSS */
 
 /* ---------------- Author:- Armaan Singh --------------------------------*/
 

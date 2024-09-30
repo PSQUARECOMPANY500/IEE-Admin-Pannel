@@ -22,9 +22,9 @@ const SparePartRequests = (props) => {
     const data = await ApproveDenySparepartAction(id, true, false);
     if (data.status === 200) {
       setDataChanged(data);
-      toast.success("SparePart Approve Successfully")   
-     } else {
-      toast.error("Error while Alloting SparePart")   
+      toast.success("SparePart Approve Successfully")
+    } else {
+      toast.error("Error while Alloting SparePart")
     }
   };
 
@@ -32,10 +32,16 @@ const SparePartRequests = (props) => {
     const data = await ApproveDenySparepartAction(id, false, true);
     if (data.status === 200) {
       setDataChanged(data);
-      toast.success("SparePart Deny Successfully")   
+      toast.success("SparePart Deny Successfully")
     } else {
-      toast.error("Error while Deny SparePart")     
+      toast.error("Error while Deny SparePart")
     }
+  };
+
+  const formatDateWithLeadingZero = (dateStr) => {
+    const [day, month, year] = dateStr.split('/').map(num => num.padStart(2, '0'));
+
+    return `${day}/${month}/${year}`;
   };
 
   return (
@@ -47,7 +53,7 @@ const SparePartRequests = (props) => {
               (
                 <div className="spare-part-req-card">
                   <div className="spare-part-req-card-col1 spare-part-colums">
-                    <h5 style={{ fontWeight: "400" }}>{data.Date}</h5>
+                    <h5 style={{ fontWeight: "400" }}>{formatDateWithLeadingZero(data.Date)}</h5>
                   </div>
                   <div className="spare-part-req-card-col2 spare-part-colums">
                     <div className="spare-part-req-col2-head">
@@ -79,7 +85,11 @@ const SparePartRequests = (props) => {
                           <p>Type:</p>
                         </div>
                         <div className="spare-part-text-table-row-right">
-                          <p>{data.Type}</p>
+                          <p>{data.SubSparePartName ? (
+                            data.SubSparePartName
+                          ) : (
+                            "-------"
+                          )}</p>
                         </div>
                       </div>
                     </div>

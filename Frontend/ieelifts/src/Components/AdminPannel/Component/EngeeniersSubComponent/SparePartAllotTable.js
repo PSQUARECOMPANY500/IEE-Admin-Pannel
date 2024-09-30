@@ -34,11 +34,11 @@ const SparePartAllotTable = (props) => {
             </thead>
             <tbody>
               {/*-------------------- map starts here ------------------ */}
-              {allotedSparePart&&allotedSparePart.length > 0 ? (
+              {allotedSparePart && allotedSparePart.length > 0 ? (
                 allotedSparePart?.map((data) => (
                   <tr>
                     <td>{data.sparePartId}</td>
-                    <td>{data.Type}</td>
+                    <td>{data.sparePartName}</td>
                     <td>{data.SubSparePartName}</td>
                     <td>{data.quantity}</td>
                   </tr>

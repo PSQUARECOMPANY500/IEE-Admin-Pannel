@@ -68,6 +68,16 @@ import { GET_ALL_NOTIFICATIONS } from "../Actions/AdminActions";
 import { GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA } from "../Actions/AdminActions";
 import { CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING } from "../Actions/AdminActions";
 import { UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST } from "../Actions/AdminActions";
+import { GET_ALL_SOS } from "../Actions/AdminActions";
+import { update_SoS_Status } from "../Actions/AdminActions";
+import { CLEAR_SOS } from "../Actions/AdminActions";
+import { SoS_Available_Engineer } from "../Actions/AdminActions";
+import { GET_ENGG_COORDINATES_FOR_MAP_MODAL } from "../Actions/AdminActions";
+
+
+import { GET_ENGG_LOCATION_COORDINATES_FOR_PATH } from "../Actions/AdminActions";
+
+
 //----------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 //reducer to handle VerifyOTPPasswordReducer
@@ -113,17 +123,20 @@ export const getFilterDataReducer = (state = intialState22, action) => {
       return state;
   }
 };
+
 const intialState21 = {
   clients: [],
 };
 export const getClientsReducer = (state = intialState21, action) => {
   switch (action.type) {
     case GET_ALL_CLIENTS:
+      console.log({ ...state, clients: action.payload })
       return { ...state, clients: action.payload };
     default:
       return state;
   }
 };
+
 const intialState20 = {
   clientCall: null,
 };
@@ -1189,13 +1202,13 @@ export const getNotificationDataAction = (state = Notifications, action) => {
 //Reducer to handle get ALL client cancel service/callback data
 const cancelRequests = {
   cancelRequestsData: null
-} 
+}
 
-export const getClientCancelServiceCallbackDataReducer = (state=cancelRequests, action) => {
-  switch(action.type){
+export const getClientCancelServiceCallbackDataReducer = (state = cancelRequests, action) => {
+  switch (action.type) {
     case GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA:
       return {
-       ...state,
+        ...state,
         cancelRequestsData: action.payload,
       }
     default:
@@ -1213,15 +1226,15 @@ const cancelRequestObject = {
   cancelRequestData: null
 }
 
-export const cancelEnggCallbackServiceRequestReducer = (state=cancelRequestObject, action) => {
-  switch (action.type){
+export const cancelEnggCallbackServiceRequestReducer = (state = cancelRequestObject, action) => {
+  switch (action.type) {
     case CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING:
       return {
         ...state,
         cancelRequestData: action.payload,
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 }
 
@@ -1233,14 +1246,103 @@ const updateCancelRequest = {
   updateStatusData: null
 }
 
-export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state=updateCancelRequest, action) => {
-  switch(action.type){
+export const updateStatusOfCancelServiceAndCallbackRequestReducer = (state = updateCancelRequest, action) => {
+  switch (action.type) {
     case UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST:
       return {
-       ...state,
+        ...state,
         updateStatusData: action.payload,
       }
     default:
       return state;
+  }
+}
+
+const SoSInitial = {
+  SoSCalls: [],
+};
+
+export const getSoSReducer = (state = SoSInitial, action) => {
+  switch (action.type) {
+    case GET_ALL_SOS:
+      return {
+        ...state,
+        SoSCalls: [...state.SoSCalls, ...action.payload.SoSCalls],
+        totalPage: action.payload.totalPage,
+        message: action.payload.message,
+        success: action.payload.success,
+      };
+    case CLEAR_SOS:
+      return SoSInitial;
+    default:
+      return state;
+  }
+};
+
+
+const SoSStatus = {
+  status: null
+};
+export const updateSoSStatus = (state = SoSStatus, action) => {
+  switch (action.type) {
+    case update_SoS_Status:
+      return {
+        ...state,
+        status: action.payload,
+      }
+    default:
+      return state;
+  }
+};
+
+const SoSAvailable = {
+  engineers: null
+};
+export const findAvailableEngineer = (state = SoSAvailable, action) => {
+  switch (action.type) {
+    case SoS_Available_Engineer:
+      return {
+        ...state,
+        engineers: action.payload,
+      }
+    default:
+      return state;
+  }
+};
+
+
+//----------------------------------------------------------------------------------------------------------------------------
+//reducer to get location coordinates to make path on map
+const Coordinates = {
+  coordinates: null
+}
+export const getEnggLocationCoordinatesReducer = (state =Coordinates,action) => {
+  switch (action.type){
+    case GET_ENGG_LOCATION_COORDINATES_FOR_PATH:
+      return {
+       ...state,
+        coordinates: action.payload,
+      }
+    default:
+      return state;
+  }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------------
+//reducer to get engg selected corrdinates to show on modal
+const locationCorrdinates ={
+  locationCorrdinates:null
+}
+
+export const getEnggCoordinatesForMapModalAction = (state=locationCorrdinates, action) => {
+  switch(action.type){
+    case GET_ENGG_COORDINATES_FOR_MAP_MODAL:
+      return {
+        ...state,
+        locationCorrdinates: action.payload,
+      }
+      default:
+        return state;
   }
 }

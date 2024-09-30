@@ -50,6 +50,10 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+
+const EngineerLocation = require("../../Modals/LocationModel/EnggLocationSchema")
+
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
@@ -57,6 +61,7 @@ const Notification = require("../../Modals/NotificationModal/notificationModal")
 const { response } = require("express");
 const TodoSchema = require("../../Modals/TodoModel/TodoSchema");
 const moment = require("moment");
+const clientRegistration = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,11 +69,16 @@ const moment = require("moment");
 
 module.exports.getEnggCrouserData = async (req, res) => {
   try {
-    const EnggDetail = await ServiceEnggData.find({});
+    const EnggDetail = await ServiceEnggData.find({}).select("EnggId EnggRole EnggName EnggRole EnggLastName PhoneNumber EnggAddress EnggPhoto AvailableCash ActiveDevice");
     const currentDate = new Date();
+
+    // console.log("current date crouser ",currentDate.toLocaleDateString("en-GB"));
 
     const BasicDetail = await Promise.all(
       EnggDetail.map(async (item) => {
+        // console.log("this is data inside the service Engg crouser>>>>>>>> ",item);
+       //fetch data engg break time
+        const enggBreakTimining = await EnggAttendanceServiceRecord.find({ServiceEnggId:item.EnggId , Date:currentDate.toLocaleDateString("en-GB")})
         const enggRating = await EnggRating.find({
           ServiceEnggId: item.EnggId,
         });
@@ -94,14 +104,19 @@ module.exports.getEnggCrouserData = async (req, res) => {
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
           .map((data) => (
+            // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
             {
               ServiceEnggId: data.ServiceEnggId,
+              serviceId: data.callbackId ? data.callbackId : data.RequestId,
               type: data.callbackId ? "Calback" : "Service",
               JobOrderNumber: data.JobOrderNumber,
               Slot: data.Slot,
               Date: data.Date,
               TaskStatus: data.ServiceProcess,
             }));
+
+
+
 
         const filteredServiceAssignments = mainDetails.filter((item) => {
           return item.Date === currentDate.toLocaleDateString("en-GB");
@@ -134,9 +149,12 @@ module.exports.getEnggCrouserData = async (req, res) => {
           ServiceEnggPic: item.EnggPhoto,
           averageRating,
           filteredServiceAssignmentsWithClientName,
+          enggBreakTimining
         };
       })
     );
+
+
 
     res.status(200).json({
       BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
@@ -148,6 +166,9 @@ module.exports.getEnggCrouserData = async (req, res) => {
     });
   }
 };
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------
 
 function convertTimeToSortableFormat(time) {
   const [startTime, endTime] = time.split("-").map((slot) =>
@@ -199,8 +220,6 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
     // Grouping slots by ServiceEnggId
     const slotsByEnggId = {};
 
-    
-
     combinedData.forEach((entry) => {
       if (!slotsByEnggId[entry.ServiceEnggId]) {
         slotsByEnggId[entry.ServiceEnggId] = [];
@@ -223,7 +242,6 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
       })
     );
 
-
     res.status(200).json({
       BookedSlots: result,
     });
@@ -239,7 +257,9 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 //function to handle get current date Assign Service Detail
 module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailServiceRequest = await AssignSecheduleRequest.find({
       Date: currentDate,
     });
@@ -252,15 +272,19 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 
     const serviceRequestDetail = await Promise.all(
       currentDetailServiceRequest.map(async (item) => {
+        const ServiceRequestdetail = await getAllServiceRequest.findOne({
+          RequestId: item.RequestId,
+        });
+        if (ServiceRequestdetail.isCancelled) {
+          return
+        }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
         });
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-        const ServiceRequestdetail = await getAllServiceRequest.findOne({
-          RequestId: item.RequestId,
-        });
+
 
         const engRating = await EnggRating.findOne({
           ServiceId: item.RequestId,
@@ -299,8 +323,9 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         };
       })
     );
+    const clearUndefined = serviceRequestDetail.filter((item) => item !== undefined);
     return res.status(200).json({
-      serviceRequestDetail,
+      serviceRequestDetail: clearUndefined
     });
   } catch (error) {
     console.log("get assign service request", error);
@@ -314,13 +339,12 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
 //function to handle get AssignCallbackDetail of current date
 module.exports.getCurrentDateAssignCallback = async (req, res) => {
   try {
-    const currentDate = moment(new Date().toLocaleDateString("en-Us", { timeZone: 'Asia/Kolkata' })).format("DD/MM/YYYY");
+    const currentDate = moment(
+      new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+    ).format("DD/MM/YYYY");
     const currentDetailCallback = await ServiceAssigntoEngg.find({
       Date: currentDate,
     });
-
-    console.log("currentDate=====================", currentDate)
-    console.log("currentDetailCallback=====================", currentDetailCallback)
 
     if (currentDetailCallback.length === 0) {
       return res.status(400).json({
@@ -330,15 +354,20 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     // console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
+        const callbackdetail = await getAllCalbacks.findOne({
+          callbackId: item.callbackId,
+        });
+        if (callbackdetail?.isCancelled) {
+          return
+        }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
         });
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
+
         });
-        const callbackdetail = await getAllCalbacks.findOne({
-          callbackId: item.callbackId,
-        });
+
         const rating = await EnggRating.findOne({
           ServiceId: item.callbackId,
         });
@@ -379,8 +408,10 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         };
       })
     );
+    console.log(callbackWithDetails)
+    const clearUndefined = callbackWithDetails.filter((item) => item !== undefined);
     return res.status(200).json({
-      callbackWithDetails,
+      callbackWithDetails: clearUndefined,
     });
   } catch (error) {
     console.error("Error:", error);
@@ -389,6 +420,7 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     });
   }
 };
+
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -443,8 +475,11 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     const allotAChecklistIds = assignServicerequest.map(
       (request) => request.AllotAChecklist
     );
+    const allEngId = assignServicerequest.map((request) => request.ServiceEnggId)
+
     const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
     const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
+    const uniqueAllEngId = Array.from(new Set(allEngId));
 
     // Fetch client details for each unique JobOrderNumber
     const clientDetails = await clientDetailSchema.find({
@@ -460,6 +495,12 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
       },
     });
 
+    const EngineerDetails = await ServiceEnggData.find({
+      EnggId: {
+        $in: uniqueAllEngId
+      }
+    })
+
     // Create a map for quick access to client and checklist details
     const clientMap = {};
     clientDetails.forEach((client) => {
@@ -471,16 +512,36 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
       checklistMap[checklist._id] = checklist;
     });
 
+    const enggMap = {};
+    EngineerDetails.forEach((engg) => {
+      enggMap[engg.EnggId] = engg.EnggPhoto
+    })
+
     // Combine assign service requests with client and checklist details
-    const clientdetailsEmbeded = assignServicerequest.map((request) => ({
-      ...request._doc,
-      clientDetail: clientMap[request.JobOrderNumber] || null,
-      checklistDetail: checklistMap[request.AllotAChecklist] || null,
-    }));
+    const clientdetailsEmbeded = await Promise.all(
+      assignServicerequest.map(async (request) => {
+        let checkRequest = await getAllServiceRequest.findOne({
+          RequestId: request.RequestId
+        });
+        if (checkRequest.isCancelled) {
+          return
+        }
+        else {
+          return {
+            ...request._doc,
+            clientDetail: clientMap[request.JobOrderNumber] || null,
+            checklistDetail: checklistMap[request.AllotAChecklist] || null,
+            EnggPicture: enggMap[request.ServiceEnggId] || null
+          }
+        }
+      })
+    );
+
+    const clearUndefined = clientdetailsEmbeded.filter((item) => item !== undefined);
 
     res.status(200).json({
       message: "Fetch All Assign Service Request successfully",
-      clientdetailsEmbeded,
+      clientdetailsEmbeded: clearUndefined,
     });
   } catch (error) {
     console.error("Error creating engg detail:", error);
@@ -553,7 +614,7 @@ module.exports.getAllChecklist = async (req, res) => {
     const filterChecklist = checklist.filter((item) => {
       return item.checklistName.toLowerCase().includes(type.toLowerCase());
     });
-      
+
     res.status(200).json({
       message: "fetch checklist sucessfully",
       Checklists: filterChecklist,
@@ -642,18 +703,29 @@ module.exports.assignCallbacks = async (req, res) => {
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //function to assign requests from the client
-module.exports.AssignServiceRequests = async (req, res) => {     TODO:  
+module.exports.AssignServiceRequests = async (req, res) => {
   try {
-    const { ServiceEnggId,JobOrderNumber,RequestId,AllotAChecklist,Slot,Date,Message,ServiceProcess,RepresentativeName,RepresentativeNumber} = req.body;
+    const {
+      ServiceEnggId,
+      JobOrderNumber,
+      RequestId,
+      AllotAChecklist,
+      Slot,
+      Date,
+      Message,
+      ServiceProcess,
+      RepresentativeName,
+      RepresentativeNumber,
+    } = req.body;
 
     let callback;
-  
+
     const existingCallback = await AssignSecheduleRequest.findOne({
       RequestId,
     });
 
 
-    
+
 
 
     if (existingCallback) {
@@ -796,7 +868,7 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       callbackId,
     });
 
- 
+
     // console.log("HE",clientCallbacksDetails)
 
     if (!clientCallbacksDetails) {
@@ -809,19 +881,21 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
     // console.log("HE",clientCallbacksDetails.JobOrderNumber)
-    const allCallBacks=await assignCallback.find({JobOrderNumber: clientCallbacksDetails.JobOrderNumber, ServiceProcess: 'completed'})
 
+    const allCallBacks = await assignCallback.find({
+      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
+      ServiceProcess: "completed",
+    });
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
       clientDetail: clientDetail,
     };
 
-
     res.status(200).json({
       message: "all detal fetched successfully",
       callback: callbackClientdetails,
-      allCallBacks
+      allCallBacks,
     });
   } catch (error) {
     console.log(error);
@@ -856,7 +930,6 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
       ...clientRequestDetails._doc,
       clientDetail: clientDetail,
     };
-
 
     res.status(200).json({
       message: "all detal fetched successfully",
@@ -1183,11 +1256,9 @@ module.exports.loginServiceAdmin = async (req, res) => {
   try {
     const { AdminId, Password, Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });
-    /*  if(Admin.Role !== Role){
-      return res.status(401).json({status:"error", message: "permission denied" });
-    }   */
-
-    console.log(AdminId, Password, Role);
+    if (Admin.Role !== Role) {
+      return res.status(401).json({ status: "error", message: "permission denied" });
+    }
 
     if (!Admin || Admin.Password !== Password) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -1199,6 +1270,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Phone: Admin.Phone,
       Role: Admin.Role,
       AdminId: Admin.AdminId,
+      ProfilePhoto: Admin.ProfilePhoto
     });
 
     res.status(200).json({
@@ -1578,10 +1650,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-          ? elevatorData
-          : locationData && locationData.length
-          ? locationData
-          : [];
+            ? elevatorData
+            : locationData && locationData.length
+              ? locationData
+              : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -1684,37 +1756,47 @@ module.exports.filterClient = async (req, res) => {
 module.exports.searchClients = async (req, res) => {
   try {
     const { searchTerm } = req.query;
-    // Create a regular expression to match the search term case-insensitively
-    const regex = new RegExp(searchTerm, "i");
-    // Use $or operator to search across multiple fields
-    const clients = await clientDetailSchema.find({
-      $or: [
-        {
-          JobOrderNumber: {
-            $regex: regex,
+    const trimmedSearchTerm = searchTerm.trimStart();
+    const regex = new RegExp(trimmedSearchTerm, "i");
+
+    const clients = await clientDetailSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { JobOrderNumber: { $regex: regex } },
+            { name: { $regex: regex } },
+            { PhoneNumber: { $regex: regex } },
+            { Address: { $regex: regex } },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          searchPriority: {
+            $cond: {
+              if: { $regexMatch: { input: "$JobOrderNumber", regex } },
+              then: 1,
+              else: {
+                $cond: {
+                  if: { $regexMatch: { input: "$name", regex } },
+                  then: 2,
+                  else: {
+                    $cond: {
+                      if: { $regexMatch: { input: "$PhoneNumber", regex } },
+                      then: 3,
+                      else: 4,
+                    },
+                  },
+                },
+              },
+            },
           },
         },
-        {
-          name: {
-            $regex: regex,
-          },
-        },
-        {
-          PhoneNumber: {
-            $regex: regex,
-          },
-        },
-        {
-          Address: {
-            $regex: regex,
-          },
-        },
-      ],
-    });
-    console.log(clients);
-    console.log("\n");
-    console.log("\n");
-    console.log(regex);
+      },
+      { $sort: { searchPriority: 1 } },
+      { $project: { searchPriority: 0 } },
+    ]);
+
     res.status(200).json({
       success: true,
       clients,
@@ -1727,6 +1809,7 @@ module.exports.searchClients = async (req, res) => {
     });
   }
 };
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------
 // {armaan-dev}
@@ -1927,7 +2010,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2608,7 +2691,7 @@ module.exports.fetchAllotedSparePart = async (req, res) => {
     }
 
     const FilterAllotedSparePart = allotedSparePart.filter(
-      (data) => data.isApproved === true && data.isDenied === false
+      (data) => data.isApproved && !data.isDenied && !data.isApplied
     );
 
     res.status(200).json({ FilterAllotedSparePart });
@@ -2697,7 +2780,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+            "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2845,7 +2928,8 @@ module.exports.postElevatorForm = async (req, res) => {
       ModelType: elevatorFormSchema.elevatorDetails.type
         ? elevatorFormSchema.elevatorDetails.type
         : "NA",
-      ProfileImage:"https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+      ProfileImage:
+        "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
     });
 
     res.status(200).json({ msg: "data submit successfully" });
@@ -2886,9 +2970,10 @@ module.exports.putElevatorForm = async (req, res) => {
 
 module.exports.getNotification = async (req, res) => {
   try {
-    const now = new Date()
-      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-      .split(",")[0];
+    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+
+    console.log("this is notification todays data ", now);
+
     const response = await Notification.find({ Date: now });
     // console.log("response", response);
     if (response) {
@@ -3186,8 +3271,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-          ? EnggDataChecker.EnggPhoto
-          : "",
+            ? EnggDataChecker.EnggPhoto
+            : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3206,28 +3291,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-          ? EnggDataChecker.AddharPhoto
-          : "",
+            ? EnggDataChecker.AddharPhoto
+            : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-          ? EnggDataChecker.DrivingLicensePhoto
-          : "",
+            ? EnggDataChecker.DrivingLicensePhoto
+            : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-          ? EnggDataChecker.PancardPhoto
-          : "",
+            ? EnggDataChecker.PancardPhoto
+            : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-          ? EnggDataChecker.QualificationPhoto
-          : "",
+            ? EnggDataChecker.QualificationPhoto
+            : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-          ? EnggDataChecker.AdditionalCoursePhoto
-          : "",
+            ? EnggDataChecker.AdditionalCoursePhoto
+            : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3315,6 +3400,8 @@ module.exports.getCheckInCheckOut = async (req, res) => {
   }
 };
 
+
+
 module.exports.getClientCallbackByJON = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
@@ -3344,7 +3431,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3356,7 +3443,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3416,7 +3503,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3428,7 +3515,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3680,7 +3767,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
+              "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3692,7 +3779,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
+              "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -3852,12 +3939,10 @@ module.exports.upgradClientMembership = async (req, res) => {
       { MembershipType: MembershipType }
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Client Membership upgraded successfully",
-        newMembership,
-      });
+    res.status(200).json({
+      message: "Client Membership upgraded successfully",
+      newMembership,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -3929,75 +4014,446 @@ module.exports.putEngineerAttendence = async (req, res) => {
     res.status(200).json({ success: true, message: "All OK" });
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal Server Error",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
 //----------------------------------------------------------------------------------------------
 
-
-
 //api to update cancel status of serviceRequest and callback requests
 
-module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (req,res) =>{
+module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (
+  req,
+  res
+) => {
   try {
     const { serviceId } = req.body;
-    
-  
-    const cancelCallbacks = await ServiceAssigntoEngg.findOne({callbackId:serviceId})
-    const cancelService = await AssignSecheduleRequest.findOne({RequestId:serviceId})
- 
 
-    if(!cancelCallbacks && !cancelService){
-      return res.status(400).json({ message: "Service not found" });
+    const cancelCallbacks = await ServiceAssigntoEngg.findOne({
+      callbackId: serviceId,
+    });
+    const cancelService = await AssignSecheduleRequest.findOne({
+      RequestId: serviceId,
+    });
+
+    // console.log("////////////////////////////////////////",cancelCallbacks)
+    // console.log("----------------------------------------",cancelService)
+
+    // if(!cancelCallbacks && !cancelService){
+    //   return res.status(400).json({ message: "Service not found" });
+    // }
+
+    if (cancelCallbacks) {
+      await ServiceAssigntoEngg.findOneAndUpdate(
+        { callbackId: serviceId },
+        { ServiceProcess: "dead" }
+      );
+      await getAllCalbacks.findOneAndUpdate(
+        { callbackId: serviceId },
+        { isDead: true }
+      );
+    } else if (cancelService) {
+      await AssignSecheduleRequest.findOneAndUpdate(
+        { RequestId: serviceId },
+        { ServiceProcess: "dead" }
+      );
+      await getAllServiceRequest.findOneAndUpdate(
+        { RequestId: serviceId },
+        { isDead: true }
+      );
     }
 
-    if(cancelCallbacks){
-      await ServiceAssigntoEngg.findOneAndUpdate({callbackId:serviceId},{ServiceProcess:"dead"})
-      await getAllCalbacks.findOneAndUpdate({callbackId:serviceId},{isDead:true})
-    }else if(cancelService){
-      await AssignSecheduleRequest.findOneAndUpdate({RequestId:serviceId},{ServiceProcess:"dead"})
-      await getAllServiceRequest.findOneAndUpdate({RequestId:serviceId},{isDead:true})
-    }
-
-    res.status(200).json({message:"Request updated successfully"});
-
+    res.status(200).json({ message: "Request updated successfully" });
   } catch (error) {
     console.error("Error in putEngineerAttendence:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Internal Server Error while update the status of cancel service and callback requests",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message:
+        "Internal Server Error while update the status of cancel service and callback requests",
+      error: error.message,
+    });
+  }
+};
+
+//-------------------------------------------------------------------------------------------------------------------
+//controller to handle cancel Request/callback requests
+
+module.exports.cancelServiceRequestOrCallback = async (req, res) => {
+  try {
+    const { serviceId } = req.body;
+
+    const serviceStarted = await ReportTable.findOne({ serviceId });
+
+    if (serviceStarted) {
+      return res
+        .status(200)
+        .json({ status: "error", message: "Service is Service is already started" });
+    }
+
+    const [cancelCallbacks, cancelService] = await Promise.all([
+      ServiceAssigntoEngg.findOne({ callbackId: serviceId }),
+      AssignSecheduleRequest.findOne({ RequestId: serviceId }),
+    ]);
+
+    if (cancelCallbacks) {
+      await Promise.all([
+        ServiceAssigntoEngg.findOneAndUpdate(
+          { callbackId: serviceId },
+          { ServiceProcess: "cancelled" }
+        ),
+        getAllCalbacks.findOneAndUpdate(
+          { callbackId: serviceId },
+          { isCancelled: true, isDead: true }
+        ),
+      ]);
+      res
+        .status(200)
+        .json({ status: "success", message: "Service callback is cancelled" });
+    }
+
+    if (cancelService) {
+      await Promise.all([
+        AssignSecheduleRequest.findOneAndUpdate(
+          { RequestId: serviceId },
+          { ServiceProcess: "cancelled" }
+        ),
+        getAllServiceRequest.findOneAndUpdate(
+          { RequestId: serviceId },
+          { isCancelled: true, isDead: true }
+        ),
+      ]);
+      res
+        .status(200)
+        .json({ status: "success", message: "Scheduled service is cancelled" });
+    }
+
+    return res.status(400).json({ message: "Service not found" });
+
+  } catch (error) {
+    console.log("Error in cancelServiceRequestOrCallback:", error);
+  }
+};
+
+
+//--------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------{armaan-dev}---------------------------
+module.exports.getSoSRequests = async (req, res) => {
+  try {
+    let { page = 1, limit = 10 } = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
+    const skip = (page - 1) * limit;
+
+
+    const [SoSCalls, totalSoSCalls] = await Promise.all([
+      SoSRequestsTable.find().skip(skip).limit(limit),
+      SoSRequestsTable.countDocuments()
+    ]);
+    const totalPage = Math.ceil(totalSoSCalls / limit);
+
+    res.status(200).json({
+      message: "All SOS requests fetched successfully",
+      SoSCalls,
+      totalPage,
+      success: true
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Error in fetching data",
+      success: false,
+      error: error.message
+    });
   }
 }
+module.exports.changeStatusSoS = async (req, res) => {
+  try {
+    const { jon, status, _id } = req.body;
+
+    if (!jon || !status) {
+      return res.status(400).json({
+        success: false,
+        message: "All values are required"
+      });
+    }
+
+    const SOSRequest = await SoSRequestsTable.findOne({ jon, _id });
+    if (!SOSRequest) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the request"
+      });
+    }
+
+
+    SOSRequest.status = status;
+    SOSRequest.isDead = true;
+    await SOSRequest.save();
+
+    const clientCount = await clientDetailSchema.findOne({ JobOrderNumber: jon });
+    if (!clientCount) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the client"
+      });
+    }
+
+    clientCount.sosCallCount = clientCount.sosCallCount + 1;
+    await clientCount.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Status has been updated successfully",
+      id: _id,
+      status
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message
+    });
+  }
+};
+
+function creatingDestinationCoordinates(locations) {
+  const engineerCoordinates = locations.map(location => location.currentLocation.coordinates);
+  const formattedCoordinates = engineerCoordinates
+    .map(coord => `${coord[0]},${coord[1]}`)
+    .join('|');
+
+  return formattedCoordinates
+}
+
+module.exports.FindEngineerSOS = async (req, res) => {
+  try {
+    const { slot, SOSID } = req.query;
+
+    const AllSosrequests = await SoSRequestsTable.find();
+    const Sosrequest = AllSosrequests.find((request) => request._id.toString() === SOSID)
+    const engineers = await ServiceEnggBasicSchema.find();
+    const todayDate = new Date();
+
+    let [month, day, year] = todayDate.toLocaleDateString().split('/').map(num => num.padStart(2, '0'));
+    let formattedDate = `${day}/${month}/${year}`;
+
+    const engineersCheckedIn = await EnggAttendanceServiceRecord.find({
+      "Check_In.time": { $exists: true },
+      "Check_Out.time": { $exists: false },
+      Date: formattedDate,
+    });
+    if (!engineersCheckedIn || engineersCheckedIn.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No Engineer Check-In",
+      });
+    }
+    const checkedInEnggIds = engineersCheckedIn.map(engineer => engineer.ServiceEnggId);
+
+    const todayCallBack = await assignCallback.find({
+      Date: formattedDate,
+      Slot: slot,
+      ServiceEnggId: { $in: checkedInEnggIds }
+    });
+
+    const todayService = await AssignSecheduleRequest.find({
+      Date: formattedDate,
+      Slot: slot,
+      ServiceEnggId: { $in: checkedInEnggIds }
+    });
+
+    const todaySOS = AllSosrequests.filter((request) => {
+      return request.date.toString() === todayDate.toLocaleDateString() && request.assignEngineerDetails.EnggId !== ""
+    })
+
+    const assignedEnggIds = [
+      ...todayCallBack.map(callback => callback.ServiceEnggId),
+      ...todayService.map(service => service.ServiceEnggId),
+      ...todaySOS.map(service => service.assignEngineerDetails.EnggId)
+    ];
+
+    let freeEngineers = engineers.filter(engineer => !assignedEnggIds.includes(engineer.EnggId) && checkedInEnggIds.includes(engineer.EnggId));
+    let freeEngineersIds = freeEngineers.map(engineer => engineer.EnggId);
+
+    let [month1, day1, year1] = todayDate.toLocaleDateString().split('/')
+    formattedDate = `${day1}/${month1}/${year1}`;
+
+    const EngineerLocations = await EngineerLocation.find({ AttendanceCreatedDate: formattedDate });
+    const locations = EngineerLocations.filter(location => freeEngineersIds.includes(location.ServiceEnggId));
+
+    const ClientCoordinates = await clientRegistration.findOne({ JobOrderNumber: Sosrequest.jon });
+
+    if (!ClientCoordinates || !ClientCoordinates.ClientCoordinates) {
+      return res.status(400).json({
+        success: false,
+        message: "Client coordinates not found.",
+      });
+    }
+    const formattedCoordinates = creatingDestinationCoordinates(locations)
+
+    const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`);
+
+    if (googleApiResponse.ok) {
+      const googleApiData = await googleApiResponse.json();
+
+      const EngineersAvailable = await Promise.all(
+        locations.map(async (location, index) => {
+          const engineer = engineers.find(engineer => engineer.EnggId === location.ServiceEnggId);
+          const element = googleApiData.rows[0].elements[index];
+          if (element && element.duration) {
+            return {
+              ServiceEnggId: location.ServiceEnggId,
+              Name: engineer.EnggName,
+              duration: element.duration.text,
+            };
+          }
+        })
+      );
+
+      const filteredEngineers = EngineersAvailable
+        .filter(engineer => engineer)
+        .sort((a, b) => {
+          const convertToMinutes = (duration) => {
+            const parts = duration.split(' ');
+            let totalMinutes = 0;
+            for (let i = 0; i < parts.length; i += 2) {
+              const value = parseInt(parts[i], 10);
+              const unit = parts[i + 1];
+
+              if (unit.includes('hour')) {
+                totalMinutes += value * 60;
+              } else if (unit.includes('min')) {
+                totalMinutes += value;
+              }
+            }
+
+            return totalMinutes;
+          };
+
+          const minutesA = convertToMinutes(a.duration);
+          const minutesB = convertToMinutes(b.duration);
+
+          return minutesA - minutesB;
+        });
+
+      if (filteredEngineers.length) {
+        return res.status(200).json({
+          success: true,
+          EngineersAvailable: filteredEngineers,
+          message: "All available engineers"
+        });
+      }
+
+      return res.status(200).json({
+        success: false,
+        message: "No Engineer available at moment"
+      });
+    } else {
+      console.error(`Google API request failed with status: ${googleApiResponse.status}`);
+      return res.status(500).json({
+        success: false,
+        message: `Google API request failed with status: ${googleApiResponse.status}`,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
+  }
+};
+
+module.exports.assignSoSRequest = async (req, res) => {
+  try {
+    const { SoSId, EnggId } = req.body;
+    if (!SoSId || !EnggId) {
+      return res.status(400).json({
+        success: false,
+        message: "All values are required"
+      });
+    }
+    const engineerDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
+    if (!engineerDetail) {
+      return res.status(400).json({
+        success: false,
+        message: "Engineer not found"
+      });
+    }
+    const SOSRequest = await SoSRequestsTable.findByIdAndUpdate(
+      { _id: SoSId },
+      {
+        assignEngineerDetails: {
+          EnggId,
+          EnggName: engineerDetail.EnggName
+        },
+        status: "Assigned"
+      }
+    );
+
+    if (!SOSRequest) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the request"
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "SOS request assigned successfully",
+      SoSId,
+      name: engineerDetail.EnggName
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error: " + error.message,
+    });
+  }
+};
 
 
 
 
+// ----------------------------------{armaan-dev}---------------------------
+//--------------------------------------------------------------------------------------------------------------------------
+
+// -------------------------------- preet -------------------------------------------- 12/09/2024 ----------------------
+
+// get engg cordinates on the basics of date and its EnggID to show in map modal
+
+module.exports.getEnggCoorinatesToShowOnMapModal = async (req,res) => {
+  try {
+
+    const {ServiceEnggId } = req.params;
+    const { AttendanceCreatedDate } = req.query;
+
+    const ModifyAttendanceCreatedDate = AttendanceCreatedDate.replace(/^0+/, '').replace(/\/0+/, '/');  //this code is used to eleminate the leading Zero's
 
 
+    const engineerCoordinates = await EngineerLocation.findOne({ServiceEnggId, AttendanceCreatedDate:ModifyAttendanceCreatedDate});
+    if (!engineerCoordinates) {
+      return res.status(200).json({message: "Engineer coordinates not found for the given date and ID."});
+    }
 
+    let coordinatesToSend = []
+    const coordinates = engineerCoordinates &&  engineerCoordinates.currentLocation && engineerCoordinates.currentLocation.coordinates.map((item)=> {
+      let coordinate = item?.origin?.split(",")
+      let lat = parseFloat(coordinate[0])
+      let lng = parseFloat(coordinate[1])
+      coordinatesToSend.push({ lat, lng })
+   })
+    
+    
+    res.status(200).json({coordinates:coordinatesToSend})
 
-
-
-
-
-
-
-
-
-
-
-
+  } catch (error) {
+    console.log("this is eror while fetching the Engg Coordinates to show ohn modal ", error)
+    return res.status(500).json({message: "Internal server error: " + error.message,});
+  }
+}
 
 
 
@@ -4143,6 +4599,6 @@ module.exports.clientMembership = async () => {
       "1912108",
     ];
 
-    array.forEach(async (job) => {});
-  } catch (error) {}
+    array.forEach(async (job) => { });
+  } catch (error) { }
 };

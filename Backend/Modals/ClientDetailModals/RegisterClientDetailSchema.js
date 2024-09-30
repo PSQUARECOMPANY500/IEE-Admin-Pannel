@@ -51,6 +51,20 @@ const clientRegister = new Schema(
     },
     emailAddress: {
       type: String
+    },
+    sosCallCount: {
+      type: Number,
+      default: 0
+    },
+    ClientCoordinates: {
+      longitude: {
+        type: Number,
+        default: 0
+      },
+      latitude: {
+        type: Number,
+        default: 0
+      }
     }
   },
   {
@@ -69,6 +83,5 @@ const clientRegistration = mongoose.model(
   "RegisterClientJONDetails",
   clientRegister
 );
-
 
 module.exports = clientRegistration;

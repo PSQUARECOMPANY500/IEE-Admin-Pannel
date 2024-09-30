@@ -74,7 +74,7 @@ const ClientFilterDropdown = () => {
     {
       type: "membership",
       label: "By Membership",
-      options: ["Warrenty", "Platinum", "Gold", "Silver"],
+      options: ["Warrenty", "Platinum", "Gold", "Silver", "Not Applicable"],
     },
     {
       type: "elevatorType",

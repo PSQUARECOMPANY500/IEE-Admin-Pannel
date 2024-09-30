@@ -8,7 +8,7 @@ import MultiSelectDropdown from "../DashboardSubComponent/DropdownCollection/Mul
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchCallbackDetailWithCallbackIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
-import { assignserviceRequestByAdmin, updateStatusOfCancelServiceAndCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { assignserviceRequestByAdmin, cancelServiceRequestOrCallback, updateStatusOfCancelServiceAndCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import { getRequestDetailByRequestIdAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchAllClientDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -27,6 +27,7 @@ const ServiceRequestModals = ({
   closeModal,
   showTicketModal,
   RequestId,
+  RequestIdtoPassed,
   setRenderTicket,
   enggId,
   isAssigned,
@@ -278,7 +279,7 @@ const ServiceRequestModals = ({
               reNumber
             )
           );
-         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestId));
+         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestIdtoPassed));
          closeModal();
        }
      });
@@ -399,6 +400,11 @@ const ServiceRequestModals = ({
     setEditChange(!editchange)
   }
 
+
+  const handleCancelTicket = async () => {
+    const response =  await cancelServiceRequestOrCallback(RequestId)
+    toast.success(response.message);
+  };
   
   return (
 
@@ -848,6 +854,15 @@ const ServiceRequestModals = ({
 
                   <div className="footer-section" style={{ width: '80%' }}>
                     <div className="buttons">
+                    <button
+                        // className={`edit-button ${
+                        //   editchange && `edit-button-onClick`
+                        // }`}
+                        onClick={handleCancelTicket}
+                        className="edit-button"
+                      >
+                        Cancel
+                      </button>
                       <button className={`edit-button ${editchange && `edit-button-onClick`}`} onClick={handleEditSection} >Edit</button>
                       <button
                         className="assign-button"

@@ -7,6 +7,10 @@ export const SEND_MESSAGE_BY_SENDER = "SEND_MESSAGE_BY_SENDER"
 
 export const FETCH_ALL_MESSAGES_BY_CHATID = "FETCH_ALL_MESSAGES_BY_CHATID"
 
+export const FETCH_ALL_MESSAGES_OF_ENGINNER_CHAT = "FETCH_ALL_MESSAGES_OF_ENGINNER_CHAT"
+
+
+
 //-------------------------------------------------------------------------------------------------------------------
 //action to create chat
 
@@ -21,7 +25,7 @@ export const createChatActions = (userId, LoginId) => {
                 })
             }
             else{
-                // console.log("chat is fetched2")
+                console.log("chat is fetched2")
             const response = await axios.post(`${config.apiUrl}/chat/createChat`,
                 {
                     userId,
@@ -29,7 +33,7 @@ export const createChatActions = (userId, LoginId) => {
                 }
             );
 
-            //  console.log(response.data);
+             console.log("chat should be created",response.data);
 
             dispatch({
                 type: CREATE_CHAT_ACTION,
@@ -47,15 +51,16 @@ export const createChatActions = (userId, LoginId) => {
 
 //action to send message
 
-export const sendChatMessageAction = async (Sender,Content,ChatId) => {
-    console.log(Sender,Content,ChatId)
+export const sendChatMessageAction = async (Sender,Content,ChatId,currentActiveService) => {
+    console.log(Sender,Content,ChatId,currentActiveService)
     // return async (dispatch) => {
         try {
             const response = await axios.post(`${config.apiUrl}/chat/sendMessage`,
                 {
                     Sender,
                     Content,
-                    ChatId
+                    ChatId,
+                    serviceId:currentActiveService
                 }
             );
 
@@ -76,7 +81,7 @@ export const sendChatMessageAction = async (Sender,Content,ChatId) => {
 
 //action to get sender messages
 
-export const getSenderMessagesAction = (chatId) => {
+export const getSenderMessagesAction = (chatId,serviceId) => {
 
     // console.log("this is the chats",chatId)
     return async (dispatch) => {
@@ -85,7 +90,7 @@ export const getSenderMessagesAction = (chatId) => {
         }
         try {
             // console.log("log")
-            const response = await axios.get(`${config.apiUrl}/chat/getChatMessages/${chatId}`);
+            const response = await axios.get(`${config.apiUrl}/chat/getChatMessages/${chatId}/${serviceId}`);
             dispatch({
                 type: FETCH_ALL_MESSAGES_BY_CHATID,
                 payload: response.data
@@ -99,3 +104,25 @@ export const getSenderMessagesAction = (chatId) => {
 
 
 //-------------------------------------------------------------------------------------------------------------------
+
+//action to get messages OF particular engineer
+
+export const getEnggPersonalChatMessages = (ServiceEnggId) => {
+    console.log("getEnggPersonalChatMessages",ServiceEnggId);
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`${config.apiUrl}/chat/getEnggPersonalChatWithAdmin/${ServiceEnggId}`);
+
+            dispatch({
+                type: FETCH_ALL_MESSAGES_OF_ENGINNER_CHAT,
+                payload: response.data
+            })
+
+        } catch (error) {
+            console.log("error while fetching data from messages", error)
+        }
+    }
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------

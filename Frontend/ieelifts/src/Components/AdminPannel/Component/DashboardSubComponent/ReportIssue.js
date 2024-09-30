@@ -9,7 +9,11 @@ const ReportIssue = ({ RedportData }) => {
       <div className="IssueDoors IssuesDoor2" style={{ paddingLeft: "1rem" }}>
         <div className="IssuesDoor2L">
           <div className="ClientImg">
-            <img src={`${config.documentUrl}/ClientProfiles/${src}`} alt="Client" />
+            <img
+              src={RedportData?.ClientPhoto ? `${config?.documentUrl}/ClientProfiles/${RedportData.ClientPhoto}` : src}
+              alt="Client"
+            />
+
           </div>
           <div className="ClientName">
             <h5>

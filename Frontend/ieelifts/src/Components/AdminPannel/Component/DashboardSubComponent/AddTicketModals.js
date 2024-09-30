@@ -14,6 +14,7 @@ import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/Admi
 import { requestAssignCallbackDetail } from "../../../../ReduxSetup/Actions/AdminActions";
 import { getBookedSlotsforEnggsAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { updateStatusOfCancelServiceAndCallbackRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
+import { cancelServiceRequestOrCallback } from "../../../../ReduxSetup/Actions/AdminActions";
 
 import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
@@ -25,11 +26,13 @@ const AddTicketModals = ({
   closeModal,
   showTicketModal,
   callbackId,
+  callbackIdtoPassed,
   setRenderTicket,
   enggId,
   isAssigned,
   setTicketUpdate,
-  isNotification=false
+  isNotification = false,
+  sparePartDetails = null,
 }) => {
   const dispatch = useDispatch();
 
@@ -46,10 +49,9 @@ const AddTicketModals = ({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [modelType, setModelType] = useState("");
-  const [engDate, setengDate] = useState("")
-  const [membershipType,setMembershipType] = useState('')
-  const[doh,setDoh]=useState('')
-
+  const [engDate, setengDate] = useState("");
+  const [membershipType, setMembershipType] = useState("");
+  const [doh, setDoh] = useState("");
 
   // console.log('engDate', engDate)
 
@@ -105,12 +107,11 @@ const AddTicketModals = ({
       ?.callbackData?.callback;
   });
 
-  
   const allCallBack = useSelector((state) => {
     return state?.AdminRootReducer?.fetchCallbackDetailWithCallbackIdReducer
       ?.callbackData?.allCallBacks;
   });
-console.log("userCallBackDetail",userCallBackDetail)
+  // console.log("userCallBackDetail",userCallBackDetail)
   //get eng state by use selector hook
 
   const getEnggState = useSelector((state) => {
@@ -129,7 +130,6 @@ console.log("userCallBackDetail",userCallBackDetail)
     return state?.AdminRootReducer?.fetchAssignCallbacksDetailsReducer
       ?.assignDetails;
   });
-
 
   useEffect(() => {
     if (isAssigned) {
@@ -164,7 +164,7 @@ console.log("userCallBackDetail",userCallBackDetail)
   }, [getEnggState]);
 
   const [rn, setrn] = useState("");
-  const [rnum, setrum] = useState("");    //FIXME:
+  const [rnum, setrum] = useState(""); //FIXME:
 
   useEffect(() => {
     setJon(userCallBackDetail?.JobOrderNumber || "");
@@ -175,17 +175,11 @@ console.log("userCallBackDetail",userCallBackDetail)
     setDescription(userCallBackDetail?.Description || "");
     setDate(userCallBackDetail?.callbackDate || "");
     setTime(userCallBackDetail?.callbackTime || "");
-    setrn(
-      userCallBackDetail?.RepresentativeName ||
-        ""
-    );
-    setrum(
-      userCallBackDetail?.RepresentativeNumber ||
-        ""
-    );
+    setrn(userCallBackDetail?.RepresentativeName || "");
+    setrum(userCallBackDetail?.RepresentativeNumber || "");
     setModelType(userCallBackDetail?.clientDetail?.ModelType || "");
-    setMembershipType(userCallBackDetail?.clientDetail?.MembershipType || "")
-    setDoh(userCallBackDetail?.clientDetail?.DateOfHandover || "")
+    setMembershipType(userCallBackDetail?.clientDetail?.MembershipType || "");
+    setDoh(userCallBackDetail?.clientDetail?.DateOfHandover || "");
   }, [userCallBackDetail]);
 
   // useEffect(() => {
@@ -305,9 +299,9 @@ console.log("userCallBackDetail",userCallBackDetail)
 
   //----------------------------------------------------------------------------------------------------
   const handleElevatorSectionDetails = () => {
-
     if (isNotification) {
-       return dispatch(requestCallBackByAdmin(
+      return dispatch(
+        requestCallBackByAdmin(
           jon,
           date,
           time,
@@ -317,7 +311,7 @@ console.log("userCallBackDetail",userCallBackDetail)
           rnum
         )
       ).then((callbackId) => {
-          let dateOnAssign;
+        let dateOnAssign;
         if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
           if (engDate === "") {
             dateOnAssign = fetchedDate;
@@ -337,12 +331,16 @@ console.log("userCallBackDetail",userCallBackDetail)
               engDetails.enggJon
             )
           );
-          dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(callbackId));
+          console.log("callback id to be passed", callbackId);
+          dispatch(
+            updateStatusOfCancelServiceAndCallbackRequestAction(
+              callbackIdtoPassed
+            )
+          );
           closeModal();
         }
       });
     }
-
 
     let dateOnAssign;
     if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
@@ -351,6 +349,7 @@ console.log("userCallBackDetail",userCallBackDetail)
       } else {
         dateOnAssign = engDate;
       }
+      console.log("date on assign", dateOnAssign);
       dispatch(
         assignCallBackByAdminAction(
           engDetails?.enggJon,
@@ -375,8 +374,6 @@ console.log("userCallBackDetail",userCallBackDetail)
     }
   };
 
-
-  
   //-------------------------------------------OnClick Edit-------------------------------------------------
   const [editchange, setEditChange] = useState(false);
 
@@ -384,11 +381,19 @@ console.log("userCallBackDetail",userCallBackDetail)
     setEditChange(!editchange);
   };
 
+  const handleCancelTicket = async () => {
+    const response = await cancelServiceRequestOrCallback(callbackId);
+    toast.success(response.message);
+  };
+
   return (
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
-      <div className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? 'notification-modal' : ''}`}>
+      <div
+        className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? "notification-modal" : ""
+          }`}
+      >
         <div className="child-modal-container">
           <div className="sub-child-modal-container">
             <div className="req-client-section">
@@ -504,24 +509,29 @@ console.log("userCallBackDetail",userCallBackDetail)
                     <div className="membership-form-col1">
                       <p>NO. OF CALLBACKS: </p>
                     </div>
-                   {allCallBack? <div className="membership-form-col2">
-                      <p>{allCallBack&&allCallBack.length}</p>
-                    </div>: (<div className="membership-form-col22">
-                      <SkeltonLoader width="100px" />
-                    </div>)}
-
+                    {allCallBack ? (
+                      <div className="membership-form-col2">
+                        <p>{allCallBack && allCallBack.length}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
+                        <SkeltonLoader width="100px" />
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP:</p>
                     </div>
-                    {membershipType?<div className="membership-form-col2">
-                      <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
-                    </div>
-                    :<div className="membership-form-col22">
+                    {membershipType ? (
+                      <div className="membership-form-col2">
+                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                      </div>
+                    ) : (
+                      <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
-                      </div>}
-
+                      </div>
+                    )}
                   </div>
                   <div className="membership-form-row">
                     <div className="membership-form-col1">
@@ -586,12 +596,15 @@ console.log("userCallBackDetail",userCallBackDetail)
                       <div className="req-elevator-col1">
                         <p>DOH:</p>
                       </div>
-                      {doh?<div className="req-elevator-col2">
-                        <p> {doh}</p>
-                      </div>
-                      :<div className="membership-form-col22">
-                        <SkeltonLoader width="100px" />
-                      </div>}
+                      {doh ? (
+                        <div className="req-elevator-col2">
+                          <p> {doh}</p>
+                        </div>
+                      ) : (
+                        <div className="membership-form-col22">
+                          <SkeltonLoader width="100px" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -832,46 +845,88 @@ console.log("userCallBackDetail",userCallBackDetail)
                 </div>
                 <div className="grid-form-container2">
                   {/* ------------------------------------------------------------------------------------------------------------------------------- */}
-                  <div className="col75">
-                    <input placeholder={rn || "Enter Representative Name (Optional)"} value={rn}  onChange={(e) => setrn(e.target.value)}   autoComplete="off" 
-                    readOnly={editchange ? false : isAssigned}/>  
-                  </div>
 
-                  <div className="col75">
-                    <input
-                      placeholder={
-                        rnum || "Enter Representative Name (Optional)"
-                      }
-                      readOnly={editchange ? false : isAssigned}
-                      value={rnum}
-                      onChange={(e) => setrum(e.target.value)}
-                      autoComplete="off"
-                    />
-                  </div>
+                  {sparePartDetails && sparePartDetails.length <= 0 && (
+                    <>
+                      <div className="col75">
+                        <input
+                          placeholder={
+                            rn || "Enter Representative Name (Optional)"
+                          }
+                          value={rn}
+                          onChange={(e) => setrn(e.target.value)}
+                          autoComplete="off"
+                          readOnly={editchange ? false : isAssigned}
+                        />
+                      </div>
 
-                  <div className="col75">
-                    <textarea
-                      id="subject"
-                      name="subject"
-                      style={{
-                        height: "105px",
-                        width: "93%",
-                        resize: "none",
-                      }}
-                      readOnly={editchange ? false : isAssigned}
-                      placeholder={isAssigned ? message : "message"}
-                      onChange={(e) => {
-                        setMessage(e.target.value);
-                      }}
-                    ></textarea>
-                  </div>
+                      <div className="col75">
+                        <input
+                          placeholder={
+                            rnum || "Enter Representative Name (Optional)"
+                          }
+                          readOnly={editchange ? false : isAssigned}
+                          value={rnum}
+                          onChange={(e) => setrum(e.target.value)}
+                          autoComplete="off"
+                        />
+                      </div>
+
+                      <div className="col75">
+                        <textarea
+                          id="subject"
+                          name="subject"
+                          style={{
+                            height: "105px",
+                            width: "93%",
+                            resize: "none",
+                          }}
+                          readOnly={editchange ? false : isAssigned}
+                          placeholder={isAssigned ? message : "message"}
+                          onChange={(e) => {
+                            setMessage(e.target.value);
+                          }}
+                        ></textarea>
+                      </div>
+                    </>
+                  )}
+
+                  {sparePartDetails && sparePartDetails.length > 0 && (
+                    <div className="sparePartContainer">
+                      <p className="sparePartHeading">Spare Part Request</p>
+                      <div className="sunSparePartHeading">
+                        <p>Spare Part Name</p>
+                        <p>Sub SparePart Name</p>
+                      </div>
+                      <div className="sparePartNames">
+                        {sparePartDetails &&
+                          sparePartDetails.map((item) => (
+                            <div className="spartpartnameswithParts">
+                              <p>{item.sparePartName}</p>
+                              <p>{item.SubSparePartName}</p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="footer-section" style={{ width: "80%" }}>
                     <div className="buttons">
+                      {/* ------------------------------- cancel button functionality --------------------------- */}
                       <button
-                        className={`edit-button ${
-                          editchange && `edit-button-onClick`
-                        }`}
+                        // className={`edit-button ${
+                        //   editchange && `edit-button-onClick`
+                        // }`}
+                        onClick={handleCancelTicket}
+                        className="edit-button"
+                      >
+                        Cancel
+                      </button>
+                      {/* ------------------------------- cancel button functionality --------------------------- */}
+
+                      <button
+                        className={`edit-button ${editchange && `edit-button-onClick`
+                          }`}
                         onClick={handleEditSection}
                       >
                         Edit

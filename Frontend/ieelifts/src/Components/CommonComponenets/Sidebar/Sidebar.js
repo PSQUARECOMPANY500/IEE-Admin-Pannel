@@ -19,18 +19,40 @@ import { MdOutlineSos } from "react-icons/md";
 import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
+import config from "../../../config";
+
+const { jwtDecode } = require("jwt-decode");
+
 
 const Sidebar = ({ children }) => {
+
+
+
+  const token = localStorage.getItem("adminData");
+  const decoded = token && jwtDecode(token);
+
   // const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
   const location = useLocation();
   const pathname = location.pathname;
   // const initialIsOpen = smallLaptopSizes ? false : true
   const [isOpen, setIsOpen] = useState(true);
   const [toogleOpen, settoogleClose] = useState(true);
+  const [visible, setVisible] = useState(true);
   const [menuIcon, setMenueIcon] = useState(true);
   const [menuIcon2, setMenueIcon2] = useState(true);
 
-  // const [isButtonOpen, setIsButtonOpen] = useState(false);
+  useEffect(() => {
+    if (toogleOpen) {
+      const timeoutId = setTimeout(() => {
+        setVisible(false);
+      }, 300);
+
+      return () => clearTimeout(timeoutId);
+    } else {
+      setVisible(true);
+    }
+  }, [toogleOpen]);
+
 
   // top bar headin changes
   const [topBarHeading, setTopBarHeading] = useState("Default Heading");
@@ -41,36 +63,31 @@ const Sidebar = ({ children }) => {
 
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
-     setIsOpen(!isOpen);
+    setIsOpen(!isOpen);
   };
 
   const toogleMenue = () => {
-    console.log("clicked");
     settoogleClose(!toogleOpen);
- setIsOpen(isOpen);
+    setIsOpen(isOpen);
   };
 
   const toogefinal = () => {
-    console.log("image clicked");
-setIsOpen(!isOpen);
+    setIsOpen(!isOpen);
     settoogleClose(!toogleOpen);
     // setIsButtonOpen((prevState) => !prevState);
   };
 
   const mainToogle = () => {
-    console.log("all div clicked");
     settoogleClose(!toogleOpen);
   };
 
   const menuUpDown = () => {
-    console.log("menue button clicked");
     setMenueIcon(!menuIcon);
     setMainMenuOpen(!mainMenuOpen);
     setOfficeMenuOpen(false);
   };
 
   const menuUpDown2 = () => {
-    console.log("menue button clicked");
     setMenueIcon2(!menuIcon2);
 
     setOfficeMenuOpen(!officeMenuOpen);
@@ -169,9 +186,6 @@ setIsOpen(!isOpen);
       case "/todo":
         setTopBarHeading("Todo");
         break;
-      // Add more cases for other pages
-      case "/todo":
-        setTopBarHeading("ToDo");
         break;
       // Add more cases for other pages
       default:
@@ -215,29 +229,29 @@ setIsOpen(!isOpen);
     <div className="container">
       <TopBar isOpen={isOpen} heading={topBarHeading} />
 
-      <div 
-      className={isOpen?"sidebar sidebarOpenWidth" :"sidebar sidebarCloseWidth"}
+      <div
+        className={isOpen ? "sidebar sidebarOpenWidth" : "sidebar sidebarCloseWidth"}
       >
         <div style={{ position: "fixed" }} className="fixed-content-navbar">
           {!toogleOpen && <div className="overlay" onClick={toogleMenue}></div>}
 
-          <div className="top_section" style={{ gap: isOpen ? "40px" : "5px" }}>
+          <div className="top_section" >
             <h1
               // className="logo"
               // style={{ marginLeft: isOpen ? "-41px" : "-20px" }}
-              className={isOpen?'logo logo-open':'logo logo-close'}
+              className={isOpen ? 'logo logo-open' : 'logo logo-close'}
             >
               <img
                 // className="logo-image"
-                className={isOpen?'logo-image logo-image-open':'logo-image logo-image-close'}
-      
+                className={`logo-image ${isOpen ? 'logo-image-open' : 'logo-image-close'}`}
+
                 src={logo}
                 alt="logo"
               />
               <p
-               
 
-                className={isOpen?'logo-open-heading':'logo-close-heading'}
+
+                className={isOpen ? 'logo-heading logo-open-heading' : 'logo-heading logo-close-heading'}
               >
                 Service
               </p>
@@ -246,8 +260,8 @@ setIsOpen(!isOpen);
             <div
               // style={{ marginLeft: isOpen ? "3.1rem" : "-0.6rem" }}
               // className="bars"
-              className={isOpen?'bars bars-open':'bars bars-close'}
-            
+              className={isOpen ? 'bars bars-open' : 'bars bars-close'}
+
             >
               {/* hamburger animationa and functionality */}
               <div
@@ -281,27 +295,29 @@ setIsOpen(!isOpen);
             //   pointerEvents: isOpen ? "auto" : "none",
             // }}
 
-            className={isOpen?'user-info user-info-open':'user-info user-info-close'}
+            className={isOpen ? 'user-info user-info-open' : 'user-info user-info-close'}
           >
             <div className="ineer-menue" onClick={mainToogle}>
               <img
-                src="https://ieelifts.com/wp-content/uploads/2023/08/03-972x1024.jpg"
+                src={decoded.user.ProfilePhoto ? `${config.documentUrl}/EnggAttachments/${decoded.user.ProfilePhoto}` : "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png"}
                 style={{
-    
+
                   pointerEvents: isOpen ? "none" : "auto",
                 }}
                 onClick={toogefinal}
                 alt="logo1"
               />
               <div
-                className="main-profile-item"
+                className={`main-profile-item ${isOpen && "user-profile"}`}
                 style={{ display: isOpen ? "block" : "none" }}
               >
-                <h2>Prabhsimran</h2>
-                <p>Id: 23456</p>
-                {!toogleOpen && <p>Leaves taken: 6</p>}
+                <h2>{decoded.user.AdminName}</h2>
+                <p>{decoded.user.AdminId}</p>
+                {<p className={`user-leaves ${visible ? "user-leaves-show" : "user-leave-hide"
+                  }`}>Leaves taken: 6</p>}
               </div>
               <LuChevronsUpDown
+                className={`${isOpen && "user-profile"}`}
                 style={{
                   display: isOpen ? "block" : "none",
                   marginTop: "16px",
@@ -311,13 +327,13 @@ setIsOpen(!isOpen);
 
             <div
               className={
-                toogleOpen ? "sub-menu-wrap" :  "sub-menu-wrap open-menu" 
+                toogleOpen ? "sub-menu-wrap" : "sub-menu-wrap open-menu"
               }
               style={{ animationName: isOpen ? "sliders" : "" }}
             >
               <div className="sub-menu">
                 <hr></hr>
-                <Link to="/todo" className="sub-menue-link" onClick={handleToggleClose}>
+                <Link to="/" className="sub-menue-link" onClick={handleToggleClose}>
                   <p>Todo</p>
                 </Link>
                 <Link to="/" className="sub-menue-link">
@@ -341,7 +357,7 @@ setIsOpen(!isOpen);
             //   alignItems: isOpen ? "start" : "center",
             // }}
 
-            className={isOpen?'nav-open':'nav-close'}
+            className={isOpen ? 'nav-open' : 'nav-close'}
           >
             {/* MAIN MENUE items goes here starts */}
             <div className="main-menue" onClick={menuUpDown}>
@@ -374,6 +390,7 @@ setIsOpen(!isOpen);
                 {menueItems.map((item, index) => (
                   <NavLink
                     to={item.Path}
+                    id={item.name}
                     key={index}
                     className="link"
                     style={{ justifyContent: isOpen ? "" : "center" }}

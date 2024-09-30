@@ -4,8 +4,10 @@ import EnggLocation from "../DashboardSubComponent/EnggLocationSection/EnggLocat
 import Arrow from "../../../../Assets/Images/arrow.png";
 import { getCheckInCheckOuts } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
+import EnggLocationHistoryModal from "../DashboardSubComponent/EnggLocationSection/EnggLocationHistoryModal";
 
 const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
+
   // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", engID, selectedDateIndex);
 
   const [isCliked, setIsCliked] = useState(false);
@@ -47,7 +49,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
     getData();
   }, []);
 
-  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0])
+  // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0])
 
   return (
     <div className="engeeniersattendancecard-main">
@@ -149,7 +151,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
         <div className="engeeniersattendancecard-right-inner2">
           <div className="engeeniersattendancecard-description-section">
             <div className="engeeniersattendancecard-more-descriptive">
-              <EnggLocation />
+              <EnggLocationHistoryModal  engID={engID}  selectedDate={selectedDateIndex} />
             </div>
           </div>
         </div>

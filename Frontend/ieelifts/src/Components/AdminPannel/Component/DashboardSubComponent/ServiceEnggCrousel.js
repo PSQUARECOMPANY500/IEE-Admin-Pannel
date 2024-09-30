@@ -44,6 +44,10 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
     }
   });
 
+  // console.log("*****************************************))))))))))))))))))",getBasicData);
+
+  
+
   useEffect(() => {
     if (getBasicData) {
       setAssignedArray([]);

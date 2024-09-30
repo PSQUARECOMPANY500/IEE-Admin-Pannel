@@ -15,11 +15,14 @@ router.post("/RegisterClientAsPhone", clientController.RegisterClientAsPhoneNumb
 router.post("/loginWithPhone", clientController.loginClientwithPhoneNumber);
 router.post("/loginClientJON", clientController.loginClientWithJobOrderNumber)
 
-
+//client raised callback and service request --------------------------------
 router.post("/requestCallbacks", checkClientServiceExist, clientController.RequestCallbacks);
+router.post("/imediateServiceRequest", checkClientServiceExist, clientController.imediateServiceRequest);
+
+
+
 router.put("/updateCallbacks", clientController.updateCallbacks);
 
-router.post("/imediateServiceRequest", checkClientServiceExist, clientController.imediateServiceRequest);
 
 router.post("/createReferal", verifyToken('client'), clientController.referalUser);
 router.get("/getClientReferalByJobOrderNumber/:jobOrderNumber", verifyToken('client'), clientController.getAllReferalByJobOrderNumber);
@@ -100,6 +103,9 @@ router.post('/EnginnerCancellPreviousServiceOrCallbackRequest', clientController
 
 router.get('/getCallbackOrServiceCancelledRequests', clientController.getCallbackOrServiceCancelledRequests)
 
+router.post('/resumePreviousService', clientController.resumePreviousService)
 
+// SOS requests routes
+router.post('/sosRequest', clientController.sosRequest)
 
 module.exports = router;

@@ -84,7 +84,6 @@ const AddEnggModal = () => {
   const [error, setError] = useState("");
  
 
-
   // useEffect(() => {
   //   document.body.style.overflow = "hidden";
   //   return () => {
@@ -100,15 +99,15 @@ const AddEnggModal = () => {
   const QualificationData = [
     {
       value: "10",
-      label: "10th MarkSheet",
+      label: "10th Marksheet",
     },
     {
       value: "12",
-      label: "12th MarkSheet",
+      label: "12th Marksheet",
     },
     {
       value: "Diploma",
-      label: "Diploma MarkSheet",
+      label: "Diploma Marksheet",
     },
   ];
 
@@ -489,6 +488,7 @@ const AddEnggModal = () => {
                 <div className="EnggDetailHeading">Engineer Details</div>
                 <div className="EnggDetailInputField">
                   <div
+                    name="EnggPhoto"
                     className="imageUploadDiv"
                     onClick={() => handleUploadClick("profilePhoto")}
                     style={{ cursor: "pointer" }}
@@ -504,6 +504,7 @@ const AddEnggModal = () => {
                         objectFit: "contain",
                         border: "none",
                       }}
+                      name="enggPhoto"
                       src={
                         profilePhoto
                           ? URL.createObjectURL(profilePhoto)
@@ -513,7 +514,7 @@ const AddEnggModal = () => {
                     <input
                       id="profilePhoto"
                       type="file"
-                      name="fields[]"
+                      name="profilePhoto"
                       onChange={(e) => {
                         setProfilePhoto(e.target.files[0]);
                         if (e.target.value.trim() !== "") {
@@ -571,7 +572,7 @@ const AddEnggModal = () => {
                       <input
                         id="mobileNumberInput"
                         type="text"
-                        placeholder="Mobile no"
+                        placeholder="Mobile Number"
                         autoComplete="off"
                         required
                         value={mobileNumber}
@@ -611,7 +612,7 @@ const AddEnggModal = () => {
                       <input
                         id="EnggIdInput"
                         type="text"
-                        placeholder="Engg Id"
+                        placeholder="Engineer Id"
                         required
                         autoComplete="off"
                         name="enggId"
@@ -687,7 +688,7 @@ const AddEnggModal = () => {
                           />
                           <input
                             type="file"
-                            name="fields[]"
+                            name="Role"
                             onChange={(e) => setRole(e.target.files[0])}
                             style={{ display: "none" }}
                             autoComplete="off"
@@ -869,7 +870,7 @@ const AddEnggModal = () => {
                           <input
                             id="pancardsInput"
                             type="text"
-                            placeholder="Pancard No"
+                            placeholder="PAN Card No"
                             required
                             style={{ outline: "none" }}
                             value={pancards}
@@ -961,11 +962,11 @@ const AddEnggModal = () => {
 
               {/* ---------------------------------------------------------------------------  Educational details section starts--------------------------------------------------------------------------- */}
             </div>
-            {/* ---------------------------------------------------------------------------  Banking Details section starts--------------------------------------------------------------------------- */}
+            {/* ---------------------------------------------------------------------------  Bank Details section starts--------------------------------------------------------------------------- */}
 
             <div className="BankWorkSection">
               <div className="ExtraCiricularSection">
-                <div className="EnggDetailHeading">Educational details</div>
+                <div className="EnggDetailHeading">Educational Details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="mainPersonalDetialSection">
                     <div className="PersonalDetailInput">
@@ -1073,7 +1074,7 @@ const AddEnggModal = () => {
               </div>
 
               <div className="ExtraCiricularSection">
-                <div className="EnggDetailHeading">Banking Details</div>
+                <div className="EnggDetailHeading">Bank Details</div>
                 <div className="ExtraCiricularSectionInputFields">
                   <div className="mainPersonalDetialSection">
                     <div className="PersonalDetailInput">
@@ -1167,8 +1168,9 @@ const AddEnggModal = () => {
                           readOnly
                           autoComplete="off"
                           type="text"
-                          placeholder="Previos Work Experience"
+                          placeholder="Previous Work Experience"
                           required
+                          name="Previos Work"
                           style={{ border: "none", outline: "none" }}
                         />
                         <CheckBox
@@ -1182,7 +1184,7 @@ const AddEnggModal = () => {
                           id="jobDurationInput"
                           type="text"
                           autoComplete="off"
-                          placeholder="Duration of Job"
+                          placeholder="Total Experience"
                           required
                           value={jobDuration}
                           onChange={(e) => {
@@ -1220,7 +1222,7 @@ const AddEnggModal = () => {
                         <input
                           id="jobTitleInput"
                           type="text"
-                          placeholder="Job title"
+                          placeholder="Job Title"
                           required
                           value={jobTitle}
                           autoComplete="off"
@@ -1259,7 +1261,7 @@ const AddEnggModal = () => {
                           id="managerNumberInput"
                           type="text"
                           autoComplete="off"
-                          placeholder="Manager No"
+                          placeholder="Manager Number"
                           required
                           value={managerNumber}
                           onChange={(e) => {

@@ -1,59 +1,115 @@
-import React, { useState } from "react";
-import InformationTable from "../../../CommonComponenets/InformationTable";
-import data from '../../Component/ClientsSubComponent/DatasClientServiceHis.json';
-import SosInfoTable from "../../../CommonComponenets/SosInfoTable";
+import React, { useEffect, useState, useRef } from "react";
+import SoSCallsShow from "../../../AdminPannel/Component/SOSSubComponent/SoSCallsShow";
+import SosModal from "../SOSSubComponent/SoSModalAction";
+import { useSelector } from "react-redux";
+import AddTicketOnCallRequests from "../DashboardSubComponent/AddTicketOnCallRequests";
+import SoSSentEngineerModal from "../SOSSubComponent/SoSSentEngineerModal";
 
 const Sosrequest = () => {
-  const [selectedRecords, setSelectedRecords] = useState({});
-  const [selectAll, setSelectAll] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
+  const [jobOrderNumber, setjobOrderNumber] = useState({
+    jon: null,
+    _id: null,
+    status: null,
+    date: null,
+    time: null,
+    description: null,
+    name: null,
+    address: null,
+    sosCallCount: null
+  });
+  const [callbackModal, showCallbackModal] = useState(false)
+  const [sentEngineerForm, setSentEngineerForm] = useState(false)
 
+  const SOSStatusUpdate = useSelector((state) =>
+    state.AdminRootReducer?.updateSoSStatus?.status
+  );
 
-  const fieldsToShow = [
-    "Checkbox",
-    "JON",
-    "Date",
-    "Time",
-    "Address",
-    "MEMBERSHIP",
-    "SOSCall",
-    "Description",
-  ];
-
-
-
-  const onCheckboxChange = (index, isSelected) => {
-    setSelectedRecords((prevSelectedRecords) => ({
-      ...prevSelectedRecords,
-      [index]: isSelected !== undefined ? isSelected : !prevSelectedRecords[index]
-    }));
+  const closeModal = () => {
+    showCallbackModal(false)
+    setSentEngineerForm(false)
   };
 
-  const handleSelectAllChange = () => {
-    const allSelected = !selectAll;
-    setSelectAll(allSelected);
-    const newSelectedRecords = {};
-    data.forEach((_, index) => {
-      newSelectedRecords[index] = allSelected;
-    });
-    setSelectedRecords(newSelectedRecords);
+  const handleModalOpen = () => {
+    showCallbackModal(true)
+  }
+
+  const handleSentEngineerModal = () => {
+    setDropdown(false)
+    setSentEngineerForm(true)
+  }
+
+  function handleDropDownClick(jon, status) {
+    if (!status) {
+      setDropdown((prev) => !prev)
+      if (jon) {
+        setjobOrderNumber(jon)
+      }
+    }
+    else {
+      setjobOrderNumber((prev) => ({
+        ...prev,
+        status: status
+      }));
+    }
+  }
+  useEffect(() => {
+    if (!SOSStatusUpdate) {
+      return;
+    }
+    if (SOSStatusUpdate.status === "falseAlarm" || SOSStatusUpdate.status === "ResolvedCall") {
+      setDropdown(false);
+    }
+  }, [SOSStatusUpdate])
+
+  const formRef = useRef();
+  const handleClickOutsideModal = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      setDropdown(false)
+      setSentEngineerForm(false)
+    }
   };
-  
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideModal);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideModal);
+    };
+  }, []);
+
   return (
     <div className="main-container_sos">
-      <div className="sosrequest_table_view">
-        <div className="sosrequest_table_view_inside">
-          <SosInfoTable fieldsToShow={fieldsToShow}
-           maxHeight="70vh"
-           showCheckboxes={true}
-           selectedRecords={selectedRecords}
-           onCheckboxChange={onCheckboxChange}
-           selectAll={selectAll}
-           setSelectAll={setSelectAll}
-           handleSelectAllChange={handleSelectAllChange}
-           serviceData={data}
+      <SoSCallsShow handleDropDownClick={handleDropDownClick} SOSStatusUpdate={SOSStatusUpdate} />
+      {dropdown &&
+        <div className="engineer-modal-wrapper">
+          <div className="SOS-Action-modal-container"
+            ref={formRef}>
+            <SosModal handleDropDownClick={handleDropDownClick} setjobOrderNumber={setjobOrderNumber} jobOrderNumber={jobOrderNumber} SOSStatusUpdate={SOSStatusUpdate} showCallbackModal={() => handleModalOpen()}
+              handleSentEngineerModal={handleSentEngineerModal}
             />
+          </div>
         </div>
-      </div>
+      }
+      {sentEngineerForm &&
+        <div className="engineer-modal-wrapper">
+          <div className="SOS-SentEngineer-Modal" ref={formRef}>
+            <SoSSentEngineerModal jobOrderNumber={jobOrderNumber} closeModal={() => { closeModal() }} />
+          </div>
+        </div>
+      }
+      {callbackModal &&
+        <div>
+          <AddTicketOnCallRequests
+            closeModal={closeModal}
+            showTicketModal={showCallbackModal}
+            requestSection={false}
+            jobOrderNumber={jobOrderNumber}
+            SOSStatusUpdate={SOSStatusUpdate}
+          />
+        </div>
+      }
+
     </div>
   );
 };

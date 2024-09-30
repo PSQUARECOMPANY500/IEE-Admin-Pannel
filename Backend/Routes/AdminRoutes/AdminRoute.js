@@ -15,6 +15,8 @@ const { uploadEdit, storageMembershipUpgradeBill } = require("../../Multer/EnggA
 
 const { token } = require("../../Controllers/AdminController/AdminController")
 
+const {EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
+
 //----------------------------- All post requests ---------------------------------------------
 
 router.post("/assigncallback", adminContoller.assignCallbacks);
@@ -311,26 +313,12 @@ router.put(
   adminContoller.editEnggDetailsForm            //
 );
 
-
-
-
-
-
 router.post("/registerNewMembershipData", adminContoller.postMembershipData)
 
 
 
 router.post('/offerDiscountByServiceEngg', adminContoller.offerMemberShipDiscount);
-
-
-
-
-
 // router.post('/registerFirebaseTokenTesting', adminContoller.FirebaseNotificationTestingPurpose);
-
-
-
-
 router.get('/getEnggSparePartRevenueData/:EnggId', adminContoller.getEnggSparePartRevenueData);
 
 
@@ -339,17 +327,30 @@ router.get('/GetSparePartProfitSummaryGraphData/:EnggId', adminContoller.GetSpar
 
 
 router.get('/getEnggCheckInOrNotOnCurrentDate/:ServiceEnggId', adminContoller.checkEnggCheckInOrNotOnCurrentDate);
-router.get('/getAllClients',adminContoller.getAllClients)
+router.get('/getAllClients', adminContoller.getAllClients)
 router.post('/upgradClientMembership', storageMembershipUpgradeBill.fields([
   {
     name: "MembershipInvoice",
   }
 ]), adminContoller.upgradClientMembership);
 
-
 router.get('/getAllClients', adminContoller.getAllClients);
-
-
 router.post('/updateStatusOfCancelServiceAndCallbackRequest', adminContoller.updateStatusOfCancelServiceAndCallbackRequest)
 
+router.post('/cancelServiceRequestOrCallbackByAdmin', adminContoller.cancelServiceRequestOrCallback)
+
+// SOS requests routes
+router.get('/getSoSRequests', adminContoller.getSoSRequests)
+router.put("/changeStatusSoS", adminContoller.changeStatusSoS)
+router.get("/FindEngineerSOS", adminContoller.FindEngineerSOS)
+router.put("/assignSoSRequest", adminContoller.assignSoSRequest)
+
+
+// router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId',EnggCheckoutOrNot, adminContoller.getEnggCoorinatesToShowOnMapModal)
+router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId', adminContoller.getEnggCoorinatesToShowOnMapModal)
+
 module.exports = router;
+
+
+
+// { lat: 30.715885973818526, lng: 76.6965589420526 }

@@ -4,6 +4,7 @@
   text-decoration: none;
   font-family: "Poppins";
 }
+
 /* set body scroll property starts */
 /* set scroll behaviour  */
 body::-webkit-scrollbar {
@@ -27,6 +28,26 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* set body scroll property ends */
+
+.small-screen {
+  display: none;
+
+}
+
+
+@media only screen and (max-width: 1024px) {
+  .large-screen {
+    display: none;
+  }
+
+  .small-screen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 
 .main-container {
   width: 100%;
@@ -94,6 +115,7 @@ main {
   align-items: center;
   width: 100px;
   display: flex;
+  transition: all 0.5s ease;
 }
 
 
@@ -107,23 +129,28 @@ main {
 
 .top_section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 0px 0px;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 40px;
+  width: 0;
+  transition: all 0.5s ease;
 }
+
+
 
 .logo {
   margin-top: 1.3rem;
+  transition: all 0.5s ease;
 }
 
 .logo-open {
-  margin-left: -2.5rem;
+  margin-left: -6.5rem;
 }
 
 
 .logo-close {
-  margin-left: -1.3rem;
+  margin-left: -2.3rem;
 }
 
 .bars {
@@ -1284,13 +1311,14 @@ input::-webkit-inner-spin-button {
   width: 250px;
   max-height: 0px;
   overflow: hidden;
-  transition: max-height 0.3s;
+  transition: max-height 0.5s;
   justify-content: center;
   display: flex;
   padding-top: 0px;
 }
 
 .sub-menu-wrap.open-menu {
+  transition: max-height 0.5s;
   max-height: 400px;
 }
 
@@ -1313,7 +1341,7 @@ input::-webkit-inner-spin-button {
   margin-left: auto;
   border-radius: 12px;
   position: relative;
-  align-items: center;
+  align-items: flex-start;
   box-shadow: 1px 2px 5px #c1c1c1;
   transition: all 0.5s;
   animation-duration: 0.5s all;
@@ -1325,12 +1353,13 @@ input::-webkit-inner-spin-button {
 .user-info-open {
   width: 14.5rem;
   pointer-events: 'auto';
-  padding: 0;
+  padding-left: 0.3rem;
 }
 
 .user-info-close {
   width: 5rem;
   pointer-events: none;
+  padding-left: 0.8rem;
 }
 
 /* -----------------ToDO components-------- -------------------------- */
@@ -2401,6 +2430,39 @@ input:-webkit-autofill {
   font-size: 14px;
 }
 
+.user-profile {
+  animation: user-details-animation 0.3s ease 0.3s forwards;
+  opacity: 0;
+  visibility: hidden;
+}
+
+@keyframes user-details-animation {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.user-leaves {
+  transition: all .3s ease;
+}
+
+.user-leave-hide {
+  display: none;
+}
+
+.user-leaves-show {
+  display: block;
+}
+
+
+
+
 .sub-menue-link p {
   padding: 5px 50px;
   border-radius: 10px;
@@ -2718,14 +2780,11 @@ display: none;
 }
 
 .excelIcon {
-  /* width: 80%;*/
-  margin-top: -0.5rem;
-  transform: scale(.5);
+  margin-top: 0.38rem;
 }
 
 .excelIconParent {
-  /* width: 80%; */
-  height: 2.8rem;
+  height: 2.74rem;
 }
 
 .search-box {
@@ -2992,6 +3051,21 @@ footer a:hover {
   color: #343434;
   box-shadow: 1px 2px 5px #00000029;
 }
+
+/* badges on engg crouser ---------- */
+.message-icon .serviceEnggCrouserBadges {
+  margin-right: 10px;
+  background-color: #FEF3DE;
+  font-size: 10px;
+  color: #F8AC1D;
+  padding: 2px 4px 2px 4px;
+  height: -moz-fit-content;
+  height: fit-content;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+/* --------------------------------- */
 
 .file-icon {
   margin-top: 3px;
@@ -4253,6 +4327,7 @@ footer a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 2.5rem
 }
 
 .icon-align-div {
@@ -4571,7 +4646,7 @@ footer a:hover {
   width: 100px;
   margin-left: 27px;
   padding: 7px 0px;
-  
+
 }
 
 .filter-icons {
@@ -4604,7 +4679,7 @@ footer a:hover {
   background-color: #F8AC1D;
 }
 
-.listing-filter {}
+/* .listing-filter {} */
 
 .filter-icons span {
   padding: 0;
@@ -5121,11 +5196,9 @@ footer a:hover {
   /* background-color: lightgray; */
   z-index: 9999;
   width: 100%;
-}
-
-.engineer-modal-wrapper {
   text-transform: capitalize;
 }
+
 
 .engineer-modal-container {
   /* top: 9%; */
@@ -5397,7 +5470,8 @@ footer a:hover {
   background: white;
   z-index: 9999;
 }
-.notification-modal{
+
+.notification-modal {
   top: 10%;
   left: 10%;
   border-radius: 6px;
@@ -5728,13 +5802,16 @@ footer a:hover {
 }
 
 .grid-form-container2 {
-  height: 90%;
+  height: 100%;
   width: 50%;
   display: flex;
   flex-direction: column;
   padding-top: 3.3rem;
   align-items: center;
   gap: 1.7rem;
+
+  /* height: 100%;   */
+  /* change the height media query */
 }
 
 .col75 input::placeholder {
@@ -8196,8 +8273,8 @@ element.style {
   height: 30rem;
   background-color: #fffbf4;
   border-radius: 5px;
-  margin-top: 2px;
-  margin-left: -16.25rem;
+  margin-top: 32px;
+  margin-left: -17.9rem;
   position: absolute;
   z-index: 99999;
   box-shadow: 10px 10px 25px #00000029;
@@ -9366,9 +9443,6 @@ element.style {
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
 
-
-
-
   .tasks-section {
     width: 35%;
   }
@@ -10100,6 +10174,9 @@ a[href^="http://maps.google.com/maps"] {
   }
 }
 
+.logo-heading {
+  transition: all 0.5s ease;
+}
 
 .logo-open-heading {
   margin-top: 14px;
@@ -10142,7 +10219,7 @@ a[href^="http://maps.google.com/maps"] {
   .user-info-open {
     width: 13rem;
     pointer-events: 'auto';
-    padding: 0rem;
+    padding-left: 0.5rem;
   }
 
   .user-info-close {
@@ -10154,7 +10231,7 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .logo-open {
-    margin-left: -1.1rem;
+    margin-left: -5.1rem;
   }
 
   .main-crouser {
@@ -10307,8 +10384,8 @@ a[href^="http://maps.google.com/maps"] {
   .EngChatBox-Dash {
     width: 15rem;
     height: 24rem;
-    margin-top: 3px;
-    margin-left: -12.7rem;
+    margin-top: 31px;
+    margin-left: -14.7rem;
   }
 
   .text-area-message-eng-card-dash {
@@ -10588,8 +10665,71 @@ a[href^="http://maps.google.com/maps"] {
     height: 95%;
 
   }
-  
+
 
 }
 
 /*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
+
+
+
+
+
+.sparePartContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.sparePartHeading {
+  font-size: 16px;
+  color: #343434;
+  font-weight: 500;
+
+}
+
+.sunSparePartHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  width: 90%;
+  margin-top: 10px;
+  color: #343434;
+  font-weight: 500;
+}
+
+.sparePartNames {
+  font-size: 15px;
+  width: 90%;
+  margin-top: 6px;
+  height: 17vh;
+  overflow-y: auto;
+}
+
+
+.sparePartNames::-webkit-scrollbar-thumb {
+  background-color: #F8AC1D;
+}
+
+.sparePartNames:hover::-webkit-scrollbar {
+  width: 2px;
+}
+
+.sparePartNames::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+
+.spartpartnameswithParts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  width: 90%;
+  margin-top: 8px;
+}

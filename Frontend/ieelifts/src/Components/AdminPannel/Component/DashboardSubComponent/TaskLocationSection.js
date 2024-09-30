@@ -116,7 +116,6 @@ const TaskLocationSection = forwardRef((props, ref) => {
     }
   }, [currentDateCallback, filterData]);
 
-  console.log(handleCallbackSelection);
   const handlekanban = () => {
     props.handleKanbanToggle();
   };
@@ -223,7 +222,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
     return slots[0]?.split("-")[0];
   };
   const extractEndTime = (slots) => {
-    return slots[slots.length - 1]?.split("-")[1];
+    return slots[slots?.length - 1]?.split("-")[1];
   };
   /*.......................................................... apX13 code by emit ................................................................ */
   function handleReportSectionData(reportData, index, type) {
@@ -248,12 +247,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
       });
     }
 
+
     //may be change logic in future make by aayush
     dispatch(
       getadminReportData(reportData?.callbackId || reportData?.RequestId)
     );
   }
-
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
@@ -308,6 +307,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
             ) : null}
           </div>
 
+
           {props.kanban ? (
             <div
               className="task-description-section Yello_Scrollbar"
@@ -318,18 +318,13 @@ const TaskLocationSection = forwardRef((props, ref) => {
                 <>
                   {!filterData
                     ? currentDateCallback?.map((value, index) => {
-                        let reportData = value;
-                        // console.log(
-                        //   "==========reportData",
-                        //   reportData.engRating
-                        // );
-                        return (
-                          <div
-                            style={{
-                              backgroundColor: `${
-                                reportData?.ServiceProcess === "completed"
-                                  ? "#FFF9EF"
-                                  : "#ffffff"
+                      let reportData = value;
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: `${reportData?.ServiceProcess === "completed"
+                              ? "#FFF9EF"
+                              : "#ffffff"
                               }`,
                           }}
                           className={`ticket-card ${handleCallbackSelection[index] &&
@@ -368,7 +363,8 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                  {console.log("================", value)}
+                                  {value?.engRating ? (<><h5>{value?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -378,6 +374,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                     })
                     : filterData?.map((value, index) => {
                       let reportData = value;
+
                       return (
                         <div
                           className={`ticket-card ${handleCallbackSelection[index] &&
@@ -421,7 +418,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                             {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                  {value?.rating ? (<><h5>{value?.rating}</h5>
+                                  {value?.engRating ? (<><h5>{value?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -471,10 +468,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData.Slot)}</h5>
                             <h5>{extractEndTime(serviceData.Slot)}</h5>
-                            {reportData.rating &&
+                            {reportData.engRating &&
                               reportData?.ServiceProcess === "completed" && (
                                 <div className="star">
-                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+
+                                  {serviceData?.engRating ? (<><h5>{serviceData?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}
@@ -521,11 +519,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
                           <div className="service-card-bottom">
                             <h5>{extractStartTime(serviceData?.Slot)}</h5>
                             <h5>{extractEndTime(serviceData?.Slot)}</h5>
-                            {reportServiceData.rating &&
+                            {reportServiceData.engRating &&
                               reportServiceData?.ServiceProcess ===
                               "completed" && (
                                 <div className="star">
-                                {serviceData?.rating ? (<><h5>{serviceData?.rating}</h5>
+                                  {serviceData?.engRating ? (<><h5>{serviceData?.engRating}</h5>
                                     <FaStar className="Icon_Color small-Icon" /></>) : (<p style={{ fontSize: '12px' }}>NA</p>)}
                                 </div>
                               )}

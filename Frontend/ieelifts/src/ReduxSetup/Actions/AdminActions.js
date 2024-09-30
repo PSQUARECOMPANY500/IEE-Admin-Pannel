@@ -115,6 +115,15 @@ export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA = 'GET_ALL_CLIENT_CANCE
 export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING'
 
 export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
+export const GET_ALL_SOS = "GET_ALL_SOS"
+export const update_SoS_Status = "update_SoS_Status"
+export const SoS_Available_Engineer = "SoS_Available_Engineer"
+export const CLEAR_SOS = "CLEAR_SOS";
+
+export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH = "GET_ENGG_LOCATION_COORDINATES_FOR_PATH"
+
+export const GET_ENGG_COORDINATES_FOR_MAP_MODAL = "GET_ENGG_COORDINATES_FOR_MAP_MODAL"
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
 //function to handle Registraction Engginers  (hook)
@@ -289,7 +298,7 @@ export const getCurrentDateAssignCalbackAction = () => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getCurrentDateAssignCallback`
       );
-      //console.log("response",response);
+      console.log("response", response);
       dispatch({
         type: GET_CURRENT_DATE_ASSIGN_CALLBACK,
         payload: response.data,
@@ -559,7 +568,7 @@ export const fetchCallbackDetailWithCallbackIdAction = (callbackId) => {
       const response = await axios.get(
         `${config.apiUrl}/admin/getClientCalbackDetailWithClientDetail/${callbackId}`
       );
- 
+
       dispatch({
         type: GET_CALLBACK_BY_ID,
         payload: response.data,
@@ -1807,7 +1816,7 @@ export const upgradeClientMembershipByAdminPannelAction = (formData) => {
 //-------------------------------------------------------------------------------------------------------------------------------
 //action to handle get ALL client cancel service/callback data
 
-export const getClientCancelServiceCallbackDataAction = () => {  
+export const getClientCancelServiceCallbackDataAction = () => {
   //  TODO: start here
   return async (dispatch) => {
     try {
@@ -1829,12 +1838,12 @@ export const getClientCancelServiceCallbackDataAction = () => {
 
 //action to handle cancel Engg callback/serivce request
 
-export const cancelEnggServiceRequestFormShiftingAction = (isCallback,callbackId,EnggId) => {
+export const cancelEnggServiceRequestFormShiftingAction = (isCallback, callbackId, EnggId) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING,
-        payload: {isCallback,callbackId,EnggId},
+        payload: { isCallback, callbackId, EnggId },
       })
     } catch (error) {
       console.log("error while fetching cancel service request form shifting")
@@ -1846,10 +1855,11 @@ export const cancelEnggServiceRequestFormShiftingAction = (isCallback,callbackId
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // action to update Status Of Cancel Service And Callback Request
 
-export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =>{
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) => {
+  // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",serviceId)
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`,{
+      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`, {
         serviceId
       })
 
@@ -1858,9 +1868,182 @@ export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =
         payload: response.data,
       })
 
+      // console.log("update the status of service and callback currecnt console",response)
+
     } catch (error) {
-      console.log("error to update Status Of Cancel Service And Callback Request",error)
+      console.log("error to update Status Of Cancel Service And Callback Request", error)
     }
   }
+}
 
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//custom hook for cancel Service Request Or Callback
+
+export const cancelServiceRequestOrCallback = async (serviceId) => {
+  console.log("cancel service request", serviceId);
+  try {
+    const response = await axios.post(`${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`, {
+      serviceId
+    })
+    return response.data;
+  } catch (error) {
+    console.log("error to cancel Service Request or callback request", error)
+  }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------{armaan-dev}------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------
+export const getSoS = (page, limit) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${config.apiUrl}/admin/getSoSRequests?limit=${limit}&page=${page}`);
+
+      dispatch({
+        type: GET_ALL_SOS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error in getting SOS Requests:", error.message || error);
+      throw error; // Re-throw the error so the caller can handle it
+    }
+  };
+};
+//-----------------------------------------------------------------------------------------------------------------------------
+
+export const clearSoS = () => ({
+  type: CLEAR_SOS,
+});
+//-----------------------------------------------------------------------------------------------------------------------------
+
+export const updateSOSStatus = (jon, status, _id, enggName) => {
+  return async (dispatch) => {
+    try {
+      if ((jon === undefined) && (status === undefined) && (_id === undefined)) {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {},
+        });
+        return
+      }
+
+      if (status === "RaisedCallback" || status === "Assigned") {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {
+            success: true,
+            message: "Status has been updated successfully",
+            id: _id,
+            status: status === "RaisedCallback" ? "falseAlarm" : enggName
+          },
+        });
+        return
+      }
+
+      const response = await axios.put(`${config.apiUrl}/admin/changeStatusSoS`, {
+        jon, status, _id
+      });
+      if (response.data.success) {
+        dispatch({
+          type: update_SoS_Status,
+          payload: response.data,
+        });
+      } else {
+        dispatch({
+          type: update_SoS_Status,
+          payload: {},
+        });
+      }
+
+    } catch (error) {
+      console.error("Error in getting SOS Requests:", error.message || error);
+      throw error; // Re-throw the error so the caller can handle it
+    }
+  };
+}
+
+export const findAvailableEngineerForSOS = (SOSID, slot) => {
+  return async (dispatch) => {
+    if (SOSID === undefined || SOSID === null || slot === undefined || slot === null) {
+      dispatch({
+        type: SoS_Available_Engineer,
+        payload: {}
+      })
+    }
+
+    const response = await axios.get(`${config.apiUrl}/admin/FindEngineerSOS`, {
+      params: {
+        SOSID, slot
+      }
+    });
+    dispatch({
+      type: SoS_Available_Engineer,
+      payload: response.data
+    })
+  }
+}
+
+export const assignSoSRequest = async (SoSId, EnggId) => {
+  try {
+    const response = await axios.put(`${config.apiUrl}/admin/assignSoSRequest`, {
+      SoSId,
+      EnggId
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in assigning SOS Requests:", error.message || error);
+    throw error;
+  }
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------{armaan-dev}------------------------------------------------------------
+
+
+
+
+// action to handle get engg location coordinates to make path on map
+
+export const getEnggLocationCoordinatesAction = (enggId) => {
+  console.log("engg ID:  in action ", enggId);
+  try {
+    return async (dispatch) => {
+      const response = await axios.get(`${config.apiUrl}/serviceEngg/getEnggCoordinates/${enggId}`)
+      dispatch({
+        type: GET_ENGG_LOCATION_COORDINATES_FOR_PATH,
+        payload: response.data,
+      })
+    }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
+}
+
+
+// ----------------------------------------------------------------------------------------------------------------------------
+//action to get teh Engg corrdinates to shosws on map Model
+
+export const getEnggCoordinatesForMapModalAction = (enggId,date) => {
+  try {
+   return async (dispatch) => {
+    const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
+    dispatch({
+      type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
+      payload: response.data,
+    })
+  }
+  } catch (error) {
+    console.log("error while geting the Engg coordinates", error);
+  }
 }

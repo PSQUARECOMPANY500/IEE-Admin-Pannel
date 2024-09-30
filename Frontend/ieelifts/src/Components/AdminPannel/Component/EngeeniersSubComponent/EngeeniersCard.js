@@ -12,17 +12,29 @@ import { MdSend } from "react-icons/md";
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import { createChatActions, sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import { getEnggPersonalChatMessages } from "../../../../ReduxSetup/Actions/ChatActions";
 import Rating from "./Rating";
 import EditEngineerDetails from "./EditEngineerDetails";
 import config from "../../../../config";
+
+import { jwtDecode } from "jwt-decode";
+
+
 
 import { BsArrowLeft } from "react-icons/bs";
 import "../../../../Assets/Engeeniers.css";
 
 const EngeeniersCard = () => {
   const navigate = useNavigate();
+
+const adminID = localStorage.getItem("adminData")
+
+const decodeAdmin = jwtDecode(adminID);
+
+console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
+
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
 
@@ -32,11 +44,17 @@ const EngeeniersCard = () => {
   const [engID, setEngID] = useState(null);
   const [currentEngName, setCurrentEngName] = useState(null);
   const [currentengImg, setCurrentEngImg] = useState(null);
+  const [enggObjectId, setEnggObjectId] = useState(null);
+  const [sparePartsCount, setsparePartsCount] = useState(0);
   const [screenSize, setScree] = useState(null);
 
   const [onBackPress, setOnbackPress] = useState(false);
 
   const [currentengCash, setCurrentEngCash] = useState(null);
+
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [allMessages, setAllMessages] = useState([]);
+
 
 
 
@@ -57,11 +75,21 @@ const EngeeniersCard = () => {
     };
   }, []);
 
-  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash) => {
+  function checkLengthAndDispalyName(name) {
+    if (name.length > 13) {
+      return name.slice(0, 13) + "..."
+    }
+    return name
+  }
+
+
+  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, enggObjectId, lastname, sparePartsCount) => {
+    setEnggObjectId(enggObjectId)
     setEngID(engId);
-    setCurrentEngName(engName);
+    setCurrentEngName(checkLengthAndDispalyName(engName + " " + lastname));
     setCurrentEngImg(engImg);
     setCurrentEngCash(engCash);
+    setsparePartsCount(sparePartsCount)
   };
   // Render the selected component
   const renderSelectedComponent = () => {
@@ -84,7 +112,10 @@ const EngeeniersCard = () => {
   const fileInputField = useRef(null);
   const textareaRef = useRef();
   const messageBodyRef = useRef(null);
-  const [messageData, setMessageData] = useState();
+  const [messageData, setMessageData] = useState("");
+  // console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}", messageData);
+
+
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
@@ -121,18 +152,66 @@ const EngeeniersCard = () => {
     }
   });
 
+  // console.log("this is all chat crteatedddddddddddd", chatCreated);
+
+
   const getMessages = useSelector((state) => {
     scroll();
     if (
       state.ChatRootReducer &&
-      state.ChatRootReducer.getSenderMessagesReducer &&
-      state.ChatRootReducer.getSenderMessagesReducer.message
+      state.ChatRootReducer.getEnggPersonalMessagesReducer &&
+      state.ChatRootReducer.getEnggPersonalMessagesReducer.messages
     ) {
-      return state.ChatRootReducer.getSenderMessagesReducer.message.chats;
+      return state.ChatRootReducer.getEnggPersonalMessagesReducer.messages.messageModel;
     } else {
       return null;
     }
   });
+  // fetc engg personal informations --------------------------------
+  // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
+  // console.log("thisn is engg messages use selector: ", getMessages)
+
+  useEffect(() => {
+    const fetchIntiakMessages = async () => {
+      setIsLoadingMessages(true);
+      const FinalMessages = await getMessages && getMessages?.map((data) => {
+        return {
+          chatId: data.ChatId,
+          Content: data.Content,
+          Sender: data.Sender[0],
+        };
+      });
+
+      setAllMessages(FinalMessages);
+      setIsLoadingMessages(false);
+    };
+
+    fetchIntiakMessages();
+    scroll();
+  }, [getMessages]);
+
+
+
+  useEffect(() => {
+    setAllMessages([]);
+    setIsLoadingMessages(true);
+    console.log("_____________________________", engID);
+    enggObjectId && dispatch(createChatActions(enggObjectId, decodeAdmin.user._id)); //TODO: - in future the id is dynamic as come from login user
+    if (chatCreated?._id && engID) {
+      dispatch(getEnggPersonalChatMessages(engID))
+    }
+    // Cleanup function
+    return () => {
+      setIsLoadingMessages(true);
+      if (chatCreated?._id && engID) {
+        dispatch(getEnggPersonalChatMessages()); // Clear sender messages when unmounting
+        dispatch(createChatActions());
+      }
+    };
+  }, [dispatch, chatCreated?._id, engID]);
+
+
+
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -156,15 +235,17 @@ const EngeeniersCard = () => {
     setSwapIcon(!textareaRef.current.value.trim());
   };
 
-  const handleSendMessage = () => {
-    dispatch(
-      sendChatMessageAction(
-        "65d49276f60a227274baf8e1",  //to be dynamic in future
-        messageData,
-        chatCreated?._id
-      )
-    );
+  const handleSendMessage = async () => {
+    if (chatCreated?._id){
+    console.log("lllllllllllllllllll", messageData)
+    console.log("oooooooooooooooooo", chatCreated?._id)
+    const myNewMessage = await sendChatMessageAction(decodeAdmin.user._id, messageData, chatCreated?._id, "");   //TODO: it shoul be dynamically created  
+
+    console.log("333333333333333333333333", myNewMessage)
+
+    }
     setMessageData("");
+    dispatch(getEnggPersonalChatMessages(engID))
 
     if (textareaRef.current) {
       textareaRef.current.value = "";
@@ -172,8 +253,8 @@ const EngeeniersCard = () => {
     }
 
     setTimeout(() => {
-      if (chatCreated?._id) {
-        dispatch(getSenderMessagesAction(chatCreated._id));
+      if (chatCreated?._id && engID) {
+        dispatch(getEnggPersonalChatMessages(engID))
       }
     }, 400);
   };
@@ -181,6 +262,24 @@ const EngeeniersCard = () => {
   useLayoutEffect(() => {
     scroll();
   }, [getMessages]);
+
+
+
+
+  // fetc engg personal informations --------------------------------
+  // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
+  // console.log("thisn is engg messages use selector: ",enggMessages)
+
+
+
+  useEffect(() => {
+    if (engID) {
+
+      dispatch(getEnggPersonalChatMessages(engID))
+    }
+  }, [])
+
+
 
   const handleCurrentComponent = (c, m) => {
     setCurrentComponent(c);
@@ -190,8 +289,8 @@ const EngeeniersCard = () => {
   const navigateOneStepBack = () => {
     // <EngeeniersSubCard />
     setIsSecond(false)
-    console.log("true engg design")
-    console.log("{{{{{", onBackPress);
+    // console.log("true engg design")
+    // console.log("{{{{{", onBackPress);
   };
 
   useEffect(() => {
@@ -218,15 +317,16 @@ const EngeeniersCard = () => {
           isSecond={isSecond}
           setIsSecond={setIsSecond}
           handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+          checkLengthAndDispalyName={checkLengthAndDispalyName}
         />
       ) : (
         <div
           className="EngeeniersCard"
           style={{
-            gridTemplateColumns: isFirst || isSecond ?mediumScreen? "2fr 0.8fr":"2fr 1fr" : "1fr",
+            gridTemplateColumns: isFirst || isSecond ? mediumScreen ? "2fr 0.8fr" : "2fr 1fr" : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
-            gridGap:isFirst?'0.5rem':0 ,
-       
+            gridGap: isFirst ? '0.5rem' : 0,
+
           }}
         >
           <EngeeniersSubCard
@@ -235,6 +335,7 @@ const EngeeniersCard = () => {
             isSecond={isSecond}
             setIsSecond={setIsSecond}
             handleEnggNameDoubleClick={handleEnggNameDoubleClick}
+            checkLengthAndDispalyName={checkLengthAndDispalyName}
           />
 
           <div className="SingleEng" style={{ display: isSecond && "block" }}>
@@ -268,7 +369,7 @@ const EngeeniersCard = () => {
                   ID: <span>{engID}</span>
                 </h1>
                 <h1>
-                  Spare Parts: <span>25</span>
+                  Spare Parts: <span>{sparePartsCount}</span>
                 </h1>
                 <h1 className="ooo">
                   Cash In Hand: <span>{currentengCash}</span>
@@ -316,6 +417,7 @@ const EngeeniersCard = () => {
             </div>
           </div>
 
+          {/* -------------------------------------------------------engg chat section starts---------------------------------------------------------------------------- */}
           <div
             className="EngeeniersChatF"
             style={{ display: isFirst || isSecond ? "block" : "none" }}
@@ -331,36 +433,60 @@ const EngeeniersCard = () => {
               </div>
               <div className="EngChatMsg">
                 <div className="SubEngChatMsg Yello_Scrollbar">
-                  <div className="engchatmsg-sender-side">
-                    <div className="engchatmsg-sender-message">
-                      <p>Hi there! How are you doing today?</p>
-                    </div>
-                  </div>
 
-                  <div className=".engchatmsg-reciver-side">
-                    <div className="engchatmsg-reciver-message">
-                      <p>Hey! I'm doing well, thanks. How about you?</p>
+                  {allMessages && allMessages?.length >= 0 ? (
+                    allMessages?.map((item, index) => {
+                      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",item.Sender);
+                      const senderId = decodeAdmin.user._id;
+                      const isCurrentUser =  item.Sender === senderId;                   //TODO: - in future the id is dynamic as come from login user
+                      return (
+                        <div className={isCurrentUser ? "engchatmsg-sender-side" : ".engchatmsg-reciver-side"}>
+                          <div className={isCurrentUser ? "engchatmsg-sender-message" : "engchatmsg-reciver-message"}>
+                            <p>{item.Content}</p>
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <div className="skelton-in-message">
+                      <div className="loader">
+                        <div classname="box"></div>
+                        <p>No Message Yet</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="engchatmsg-sender-side">
-                    <div className="engchatmsg-sender-message">
-                      <p>
-                        I'm good too, thanks for asking. Did you do anything
-                        interesting recently?
-                      </p>
-                    </div>
-                  </div>
 
-                  <div className=".engchatmsg-reciver-side">
-                    <div className="engchatmsg-reciver-message">
-                      <p>
-                        Not much, just caught up on some reading and went for a
-                        walk. How about you?
-                      </p>
-                    </div>
-                  </div>
+                  )}
+
+
+
+
                 </div>
               </div>
+
+              {/* // <div className="engchatmsg-sender-side">
+                  //   <div className="engchatmsg-sender-message">
+                  //     <p>Hi there! How are you doing today?</p>
+                  //   </div>
+                  // </div>
+
+                  // <div className=".engchatmsg-reciver-side">
+                  //   <div className="engchatmsg-reciver-message">
+                  //     <p>Hey! I'm doing well, thanks. How about you?</p>
+                  //   </div>
+                  // </div> */}
+
+
+              {/* -------------------------------------------------------engg chat section ends---------------------------------------------------------------------------- */}
+
+
+
+
+
+
+
+
+
+
 
               <div className="agdam-eng-card">
                 <div className="eng-card-message-text">

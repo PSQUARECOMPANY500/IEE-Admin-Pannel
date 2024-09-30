@@ -7,7 +7,7 @@ const NotificationSlides = ({ notifications, buttons, setTicketUpdate }) => {
   const [key, setKey] = useState(0);
 
  
-
+console.log("notificaation testing ", notifications);
 
 
   const openModal = (isCallback,callbackId,EnggId) => {

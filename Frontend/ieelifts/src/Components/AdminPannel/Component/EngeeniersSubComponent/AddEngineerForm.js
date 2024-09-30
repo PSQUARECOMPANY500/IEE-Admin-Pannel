@@ -12,7 +12,7 @@ import { editEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminAction
 import toast from "react-hot-toast";
 import config from "../../../../config";
 
-const AddEngineerForm = ({ engID, onClose }) => {
+const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const dispatch = useDispatch();
   const divRef = useRef([]);
   const mainDivRef = useRef(null);
@@ -36,7 +36,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const [role, setRole] = useState("");
 
   const [profilePhoto, setProfilePhoto] = useState("");
-  console.log("8888888888888888888",profilePhoto.length)
+  console.log("8888888888888888888", profilePhoto.length)
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -163,7 +163,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
         setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
 
-        console.log("vvvvvvvvvvvvvvvvvvv",getEnggBasicData.enggDetails.EnggPhoto.length)
+        console.log("vvvvvvvvvvvvvvvvvvv", getEnggBasicData.enggDetails.EnggPhoto.length)
 
       }
     };
@@ -205,15 +205,15 @@ const AddEngineerForm = ({ engID, onClose }) => {
   const QualificationData = [
     {
       value: "10",
-      label: "10th MarkSheet",
+      label: "10th Marksheet",
     },
     {
       value: "12",
-      label: "12th MarkSheet",
+      label: "12th Marksheet",
     },
     {
       value: "Diploma",
-      label: "Diploma MarkSheet",
+      label: "Diploma Marksheet",
     },
   ];
 
@@ -229,7 +229,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
   ];
 
 
-  
+
 
   const getSortedData = (qualification) => {
     return QualificationData.filter((item) => qualification === item.value).map(
@@ -245,7 +245,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
   const sortedData = getSortedData(qualification);
   const getData = getRoleData(role);
-  console.log("RAJ",getData[0]);
+  console.log("RAJ", getData[0]);
 
   const handlePinCodeInput = async (event) => {
     const newEvent = event.target.value;
@@ -470,6 +470,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
     if (editEnggPersonal?.status === true) {
       toast.success("Engineer Edited successfully");
+      setOpenForm(false)
     }
   };
   return (
@@ -507,7 +508,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       border: "none",
                     }}
                     src={
-                      profilePhoto.length === 0 
+                      profilePhoto.length === 0
                         ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                         : `${config.documentUrl}/EnggAttachments/${profilePhoto}`
                     }
@@ -570,7 +571,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       disabled={!editchange}
                       id="mobileNumberInput"
                       type="text"
-                      placeholder="Mobile no"
+                      placeholder="Mobile Number"
                       value={mobileNumber}
                       onChange={(e) => {
                         setMobileNumber(e.target.value);
@@ -607,7 +608,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                       id="EnggIdInput"
                       autoComplete="off"
                       type="text"
-                      placeholder="Engg Id"
+                      placeholder="Engineer Id"
                       value={EngggId}
                       onChange={(e) => {
                         setEnggId(e.target.value);
@@ -663,7 +664,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         onClick={() => handleClick(4)}
                         style={{ outline: "none" }}
                       >
-                        
+
 
                         {editchange ? (
                           <AddEnggAttachment
@@ -675,7 +676,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                             value={role}
                           />
 
-                          
+
                         ) : (
                           <AddEnggAttachment
                             width="100%"
@@ -977,7 +978,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
 
           <div className="BankWorkSection">
             <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Educational details</div>
+              <div className="EnggDetailHeading">Educational Details</div>
               <div className="ExtraCiricularSectionInputFields">
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
@@ -1096,7 +1097,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
             </div>
 
             <div className="ExtraCiricularSection">
-              <div className="EnggDetailHeading">Banking Details</div>
+              <div className="EnggDetailHeading">Bank Details</div>
               <div className="ExtraCiricularSectionInputFields">
                 <div className="mainPersonalDetialSection">
                   <div className="PersonalDetailInput">
@@ -1190,7 +1191,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         readOnly
                         type="text"
-                        placeholder="Previos Work Experience"
+                        placeholder="Previous Work Experience"
                         style={{ border: "none", outline: "none" }}
                         autoComplete="off"
                       />
@@ -1207,7 +1208,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         id="jobDurationInput"
                         type="text"
                         autoComplete="off"
-                        placeholder="Duration of Job"
+                        placeholder="Total Experience"
                         value={jobDuration}
                         onChange={(e) => {
                           setJobDuration(e.target.value);
@@ -1245,7 +1246,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         id="jobTitleInput"
                         type="text"
-                        placeholder="Job title"
+                        placeholder="Job Title"
                         value={jobTitle}
                         autoComplete="off"
                         onChange={(e) => {
@@ -1283,7 +1284,7 @@ const AddEngineerForm = ({ engID, onClose }) => {
                         disabled={!editchange}
                         id="managerNumberInput"
                         type="text"
-                        placeholder="Manager No"
+                        placeholder="Manager Number"
                         autoComplete="off"
                         value={managerNumber}
                         onChange={(e) => {
