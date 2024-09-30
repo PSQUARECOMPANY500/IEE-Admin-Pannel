@@ -2,25 +2,25 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  html,
-  body {
+}
+
+html,
+body {
     height: 100%;
     width: 100%;
-  }
-  
-  .SingleEng {
+}
+
+.SingleEng {
     grid-area: SingleEng;
     position: relative;
     display: none;
     grid-area: SingleEng;
-  
-  }
-  
-  .SubSingleEng {
+
+}
+
+.SubSingleEng {
     /* margin-top: .4rem; */
-  
+
     /* margin-bottom: 1.2rem; */
     width: 100%;
     height: 100%;
@@ -29,21 +29,27 @@
     grid-template-rows: 10% 5% 1% 84%;
     grid-row-gap: .2rem;
     padding: .5rem 1rem;
-  
-  }
-  
-  .PDetails {
+
+}
+
+
+.container-attendance{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.PDetails {
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
     height: 100%;
     width: 100%;
-  
-  
-  }
-  
-  .Pimg {
+
+
+}
+
+.Pimg {
     height: 4rem;
     width: 4rem;
     display: flex;
@@ -54,28 +60,28 @@
     object-fit: cover;
     object-position: center;
     overflow: hidden;
-  }
-  
-  .Pimg img {
+}
+
+.Pimg img {
     height: 100%;
     width: 100%;
-  }
-  
-  .ODetailsColumn {
+}
+
+.ODetailsColumn {
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
-  
-  }
-  
-  .ODetails {
+
+}
+
+.ODetails {
     position: relative;
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .EngeeniersCard {
+}
+
+.EngeeniersCard {
     min-height: 87vh;
     width: 100%;
     background-color: #ffffff;
@@ -83,13 +89,13 @@
     display: grid;
     grid-template-rows: 1fr;
     grid-template-areas: "EngeeniersSubCard";
-  }
-  
-  .EngeeniersSubCard {
+}
+
+.EngeeniersSubCard {
     grid-area: EngeeniersSubCard;
-  }
-  
-  .AllCards {
+}
+
+.AllCards {
     max-height: 83vh;
     overflow-y: auto;
     margin-bottom: 1.2rem;
@@ -100,35 +106,35 @@
     grid-row-gap: 4rem;
     grid-column-gap: 7rem;
     padding: 2rem 4rem;
-   
-  }
-  
-  .EngeeniersChatF {
+
+}
+
+.EngeeniersChatF {
     border-radius: 1.2rem;
     position: relative;
     height: 95%;
     margin-bottom: 1.2rem;
     display: none;
-  }
-  
-  .AllCards::-webkit-scrollbar-track {
+}
+
+.AllCards::-webkit-scrollbar-track {
     border-radius: 10px;
-  }
-  
-  .AllCards::-webkit-scrollbar {
+}
+
+.AllCards::-webkit-scrollbar {
     width: 5px;
-  }
-  
-  .AllCards::-webkit-scrollbar-thumb {
+}
+
+.AllCards::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #ffffff;
-  }
-  
-  .AllCards:hover::-webkit-scrollbar-thumb {
+}
+
+.AllCards:hover::-webkit-scrollbar-thumb {
     background-color: #f8ac1d;
-  }
-  
-  .EngCards {
+}
+
+.EngCards {
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 2px 4px 10px 1px #00000029;
@@ -140,18 +146,18 @@
     gap: 2.2rem;
     flex-direction: column;
     padding: .4rem;
-  
-  }
-  
-  .EngCardDetails {
+
+}
+
+.EngCardDetails {
     display: flex;
     width: 90%;
     justify-content: space-between;
     position: relative;
     height: 50%;
-  }
-  
-  .EngCardDetailsL {
+}
+
+.EngCardDetailsL {
     display: flex;
     margin-top: 1rem;
     width: 30%;
@@ -162,30 +168,30 @@
     object-fit: cover;
     object-position: center;
     overflow: hidden;
-  }
-  
-  .EngCardDetailsL img {
+}
+
+.EngCardDetailsL img {
     height: 100px;
     width: 100px;
     border-radius: 10px;
-  }
-  
-  .EngCardRText {
+}
+
+.EngCardRText {
     display: flex;
     width: 10vw;
     justify-content: center;
     align-items: center;
-  }
-  
-  .EngCardDetailsR {
+}
+
+.EngCardDetailsR {
     width: 70%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-  }
-  
-  .table-container {
+}
+
+.table-container {
     margin-top: 1.8rem;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -198,34 +204,34 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     position: relative;
-  }
-  
-  .table-item {
+}
+
+.table-item {
     font-weight: 600;
     color: #343434;
     border-bottom: 2px solid transparent;
     font-size: 0.9rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
-  }
-  
-  .table-container>.table-item:nth-child(even) {
+}
+
+.table-container>.table-item:nth-child(even) {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 500;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .table-container>.table-item:nth-child(odd) {
+}
+
+.table-container>.table-item:nth-child(odd) {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 400;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .EngCardCash {
+}
+
+.EngCardCash {
     height: 4vh;
     width: 85%;
     display: flex;
@@ -236,9 +242,9 @@
     box-shadow: inset 1px 2px 3px 1px #00000029;
     border-radius: 5px;
     margin-bottom: -7rem;
-  }
-  
-  .EngCardCash h5 {
+}
+
+.EngCardCash h5 {
     text-wrap: nowrap;
     display: flex;
     gap: 0.5rem;
@@ -248,52 +254,52 @@
     font-weight: 400;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .EngCardCash h5 span {
+}
+
+.EngCardCash h5 span {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 500;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .HoriZontalLine {
+}
+
+.HoriZontalLine {
     height: 60%;
     border-radius: 1px;
     width: 1px;
     background-color: #7070704d;
-  }
-  
-  .AHoriZontalLine {
+}
+
+.AHoriZontalLine {
     height: 80%;
-  }
-  
-  .vertical-line {
+}
+
+.vertical-line {
     height: 1px;
     width: 100%;
     background-color: #70707018;
     position: relative;
-  }
-  
-  .overlay-vertical-line {
+}
+
+.overlay-vertical-line {
     height: 1px;
     width: 25%;
     background-color: #f8ac1d;
     position: relative;
     position: absolute;
     transition: 0.5s ease;
-  }
-  
-  .EngCardMessage {
+}
+
+.EngCardMessage {
     height: 5vh;
     width: 100%;
     margin-top: 1rem;
     bottom: -20%;
     position: relative;
-  }
-  
-  .EngChatNav {
+}
+
+.EngChatNav {
     height: 40px;
     width: 100%;
     display: flex;
@@ -301,23 +307,23 @@
     justify-content: center;
     position: relative;
     display: none;
-  }
-  
-  .VerticalLine {
+}
+
+.VerticalLine {
     height: 2%;
     width: 25%;
     background-color: #7070704d;
-  }
-  
-  .EngChatNavText {
+}
+
+.EngChatNavText {
     width: 80%;
     height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-  }
-  
-  .EngChatNavText h5 {
+}
+
+.EngChatNavText h5 {
     text-wrap: nowrap;
     font-size: 1.1rem;
     font-size: 0.8rem;
@@ -325,25 +331,25 @@
     font-weight: 500;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .EngChatBoxHead {
+}
+
+.EngChatBoxHead {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     padding: 0.8rem;
     border-bottom: 1px solid #00000029;
-  }
-  
-  .EngChatBoxIcons {
+}
+
+.EngChatBoxIcons {
     width: 50%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 0.4rem;
-  }
-  
-  .EngChatBox h6 {
+}
+
+.EngChatBox h6 {
     text-wrap: nowrap;
     font-size: 1.1rem;
     font-size: 0.8rem;
@@ -351,50 +357,52 @@
     font-weight: 500;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .EngChatBox {
+}
+
+.EngChatBox {
     width: 100%;
     background-color: #fffbf4;
     border-radius: 5px;
     box-shadow: 1px 2px 5px 1px #00000029;
     position: relative;
-    height: 100%;
+    /* height: 100%; */
     margin-top: 1rem;
-  }
-  
-  .EngChatMsg {
-    height: 85%;
+}
+
+.EngChatMsg {
+    /* height: 85%; */
     width: 100%;
     position: relative;
-  }
-  
-  .SubEngChatMsg {
-    height: 100%;
+}
+
+.SubEngChatMsg {
+    /* height: 100%; */
+
+    height: 68vh;
     width: 100%;
     padding: 0rem 1rem;
     padding-bottom: 2rem;
     overflow-y: auto;
-  }
-  
-  .engchatmsg-sender-side {
+}
+
+.engchatmsg-sender-side {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     margin-top: 0.4rem;
-  }
-  
-  .engchatmsg-reciver-side {
+}
+
+.engchatmsg-reciver-side {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-top: 0.4rem;
-  }
-  
-  .engchatmsg-reciver-message,
-  .engchatmsg-sender-message {
+}
+
+.engchatmsg-reciver-message,
+.engchatmsg-sender-message {
     max-width: 70%;
     border-radius: 5px;
     padding: 0.5rem 0.5rem;
@@ -403,11 +411,11 @@
     line-height: 1.1;
     text-align: start;
     font-family: "Poppins";
-  }
-  
-  .engchatmsg-sender-message {
+}
+
+.engchatmsg-sender-message {
     color: #444444;
-  
+
     /* background: #fef3de; */
     margin-left: 8.4rem;
     margin-top: 0.2rem;
@@ -416,17 +424,17 @@
     font-family: "Poppins";
     box-shadow: 1px 2px 5px #00000029;
     opacity: 1;
-  }
-  
-  .engchatmsg-reciver-side {
+}
+
+.engchatmsg-reciver-side {
     /* padding: 10px 6px; */
     margin-top: 0.5rem;
     font-family: "Poppins";
     margin-right: 0.3rem;
     word-wrap: break-word;
-  }
-  
-  .engchatmsg-reciver-message {
+}
+
+.engchatmsg-reciver-message {
     color: #000;
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 1px 2px 5px #00000029;
@@ -435,13 +443,13 @@
     font-family: "Poppins";
     margin-left: 0.3rem;
     word-wrap: break-word;
-  }
-  
-  .eng-icon {
+}
+
+.eng-icon {
     font-size: 1rem;
-  }
-  
-  .PDetails h1 {
+}
+
+.PDetails h1 {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 400;
@@ -449,30 +457,30 @@
     line-height: 1.3rem;
     display: flex;
     gap: 0.5rem;
-  }
-  
-  .PDetails h1 span {
+}
+
+.PDetails h1 span {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 490;
     font-family: "Poppins";
     line-height: 1.3rem;
-  }
-  
-  .SubPDetails {
+}
+
+.SubPDetails {
     display: flex;
     width: 27%;
     height: 100%;
     justify-content: space-around;
     align-items: center;
-  }
-  
-  .Icon_Color {
+}
+
+.Icon_Color {
     color: #f8ac1d;
     cursor: pointer;
-  }
-  
-  .ODetailsColumn h5 {
+}
+
+.ODetailsColumn h5 {
     text-align: left;
     font-family: "Poppins";
     font-weight: 500;
@@ -481,32 +489,32 @@
     color: #444444;
     font-size: 0.9rem;
     cursor: pointer;
-  }
-  
-  .TaskHistory {
+}
+
+.TaskHistory {
     min-height: 100%;
     width: 100%;
     display: grid;
     grid-template-rows: 7%;
-  
-  }
-  
-  .TaskHeading {
+
+}
+
+.TaskHeading {
     position: relative;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
     /* border-bottom: 2px solid #5353533b; */
-  }
-  
-  .TaskHeading h5 {
+}
+
+.TaskHeading h5 {
     color: #1d1d1d;
     font-size: 1rem;
     font-weight: 550;
     margin-bottom: 0.3rem;
-  }
-  
-  .AllTask {
+}
+
+.AllTask {
     min-height: 100%;
     width: 100%;
     position: relative;
@@ -514,50 +522,50 @@
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 0.3rem;
     overflow-y: auto;
-  }
-  
-  .Services {
+}
+
+.Services {
     margin-top: 1rem;
     padding: 0.9rem;
     width: 100%;
     height: 100%;
     position: relative;
-  }
-  
-  .CallBacks {
+}
+
+.CallBacks {
     margin-top: 1rem;
     padding: 0.9rem;
     width: 100%;
     height: 100%;
     position: relative;
-  }
-  
-  .ServicContainer {
+}
+
+.ServicContainer {
     height: 65vh;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
-  }
-  
-  .CallbackContainer {
+}
+
+.CallbackContainer {
     height: 65vh;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
-  }
-  
-  .AllServices,
-  .AllCallback {
+}
+
+.AllServices,
+.AllCallback {
     height: 100%;
     width: 100%;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-gap: 1rem;
     padding: 1rem;
-  }
-  
-  .ServiceCards,
-  .CallBackCards {
+}
+
+.ServiceCards,
+.CallBackCards {
     border-radius: 10px;
     /* height: 10vh; */
     background-color: #FFFBF4;
@@ -570,10 +578,10 @@
     padding: .2rem;
     height: 10vh;
     padding: 1rem;
-  
-  }
-  
-  /* 
+
+}
+
+/* 
   table {
     margin-top: .8rem;
     margin-left: .8rem;
@@ -598,9 +606,9 @@
     color: #fff;
     font-weight: bold;
   } */
-  
-  .service-table-item,
-  .callback-table-item {
+
+.service-table-item,
+.callback-table-item {
     word-wrap: break-word;
     overflow-wrap: break-word;
     font-size: 0.8rem;
@@ -612,67 +620,67 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  
-  }
-  
-  tr>td:nth-child(2) {
+
+}
+
+tr>td:nth-child(2) {
     font-size: 0.8rem;
     color: #444444;
     font-weight: 490;
     font-family: "Poppins";
     line-height: 0.9rem;
-  }
-  
-  
-  .ServiceCardsBottom {
+}
+
+
+.ServiceCardsBottom {
     width: 100%;
     height: 20%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-around;
-  }
-  
-  .ServiceCardsBottom>h5:nth-child(1) {
+}
+
+.ServiceCardsBottom>h5:nth-child(1) {
     font-family: " Poppins";
     font-size: 0.9rem;
     font-weight: 700;
     color: #389300;
-  }
-  
-  .ServiceCardsBottom>h5:nth-child(2) {
+}
+
+.ServiceCardsBottom>h5:nth-child(2) {
     font-family: " Poppins";
     font-size: 0.9rem;
     font-weight: 700;
     color: #f8ac1d;
-  }
-  
-  .CallBackCardsBottom {
+}
+
+.CallBackCardsBottom {
     width: 100%;
     height: 20%;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: space-around;
-  }
-  
-  .CallBackCardsBottom>h5:nth-child(1) {
+}
+
+.CallBackCardsBottom>h5:nth-child(1) {
     font-family: " Poppins";
     font-size: 0.9rem;
     font-weight: 700;
     color: #389300;
-  }
-  
-  .CallBackCardsBottom>h5:nth-child(2) {
+}
+
+.CallBackCardsBottom>h5:nth-child(2) {
     font-family: " Poppins";
     font-size: 0.9rem;
     font-weight: 700;
     color: #F8AC1D;
-  
-  
-  }
-  
-  .star {
+
+
+}
+
+.star {
     width: 45px;
     height: 22px;
     display: flex;
@@ -683,39 +691,39 @@
     padding: 0.1rem;
     margin-bottom: 0.3rem;
     gap: 0.1rem;
-  }
-  
-  .star h5 {
+}
+
+.star h5 {
     font-size: 0.8rem;
     font-family: " Poppins";
     letter-spacing: 0px;
     color: #444444;
     text-align: left;
     font-weight: 600;
-  }
-  
-  .small-Icon {
+}
+
+.small-Icon {
     font-size: 0.8rem;
-  }
-  
-  .Yello_Scrollbar::-webkit-scrollbar-track {
+}
+
+.Yello_Scrollbar::-webkit-scrollbar-track {
     border-radius: 10px;
-  }
-  
-  .Yello_Scrollbar::-webkit-scrollbar {
+}
+
+.Yello_Scrollbar::-webkit-scrollbar {
     width: 2px;
-  }
-  
-  .Yello_Scrollbar::-webkit-scrollbar-thumb {
+}
+
+.Yello_Scrollbar::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #ffffff;
-  }
-  
-  .Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
+}
+
+.Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
     background-color: #f8ac1d;
-  }
-  
-  /* .Yello_Scrollbar::-webkit-scrollbar {
+}
+
+/* .Yello_Scrollbar::-webkit-scrollbar {
     width: 2px;
     height: 5px; 
   }
@@ -729,12 +737,12 @@
     border-radius: 10px;
     background-color: #FFFFFF; 
   } */
-  
-  /* .Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
+
+/* .Yello_Scrollbar:hover::-webkit-scrollbar-thumb {
     background-color: #F8AC1D; 
   } */
-  
-  /* 
+
+/* 
   .Yello_Scrollbar::-ms-scrollbar {
     width: 2px;
     height: 5px;
@@ -763,8 +771,8 @@
   .Yello_Scrollbar:hover {
     scrollbar-color: #F8AC1D transparent; 
   } */
-  
-  .DateHeading {
+
+.DateHeading {
     border-bottom: 1px solid #c1c1c180;
     display: flex;
     align-items: center;
@@ -773,61 +781,64 @@
     position: absolute;
     margin-top: -2rem;
     font-size: 1rem;
-  }
-  
-  .callBackDateHeading {
+}
+
+.callBackDateHeading {
     border-bottom: 1px solid #c1c1c180;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .Attendancecalendar {
+}
+
+.Attendancecalendar {
     margin-top: 0.8rem;
-    border-radius: 8px;
+    border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 1;
     display: block;
     min-height: 20%;
     background-color: #fffbf4;
-    overflow-x: auto;
-  
-  
-  
-  
-  }
-  
-  .Attendance {
+    /* overflow-x: auto; */
+
+
+
+
+}
+
+.eng-attendance {
     height: 100%;
     width: 100%;
     position: relative;
     display: grid;
     padding: 0.5rem 0.5rem;
-    grid-template-columns: 30% 70%;
-  
-  }
-  
-  .Attendacne-header {
+    grid-template-columns: 35% 65%;
+
+
+
+
+}
+
+.Attendacne-header {
     background-color: #fffbf4;
     border-bottom: none;
     padding: 1rem;
-  }
-  
-  #monthYear {
+}
+
+#monthYear {
     font-size: 0.8rem;
-  }
-  
-  #aprevBtn,
-  #anextBtn {
+}
+
+#aprevBtn,
+#anextBtn {
     background: none;
     border: none;
     color: #343434;
     cursor: pointer;
     font-size: 0.6rem;
-  }
-  
-  .aday-eng {
+}
+
+.aday-eng {
     padding: .2rem;
     text-align: center;
     cursor: pointer;
@@ -839,50 +850,50 @@
     border-radius: 50%;
     width: 30px;
     height: 30px;
-  }
-  
-  .aday-eng:hover {
+}
+
+.aday-eng:hover {
     background-color: #FEF3DE;
     color: #F8AC1D;
-  }
-  
-  .adays-eng {
+}
+
+.adays-eng {
     display: grid;
     grid-template-columns: repeat(7, 9%);
     grid-column-gap: 1rem;
     padding: 1rem 1rem;
     height: 70%;
     position: relative;
-  }
-  
-  .ui-datepicker-prev {
+}
+
+.ui-datepicker-prev {
     order: 1;
-  }
-  
-  .aday-eng.current {
-  
+}
+
+.aday-eng.current {
+
     color: #F8AC1D;
-  
-  }
-  
-  
-  .aday-eng.current:hover {
-  
+
+}
+
+
+.aday-eng.current:hover {
+
     background-color: transparent;
     box-shadow: none;
-  }
-  
-  .ui-datepicker-next {
+}
+
+.ui-datepicker-next {
     order: 3;
-  }
-  
-  .aday-eng.selected {
+}
+
+.aday-eng.selected {
     background: #F8AC1D;
     box-shadow: inset 1px 2px 3px #00000080;
     color: black;
-  }
-  
-  .days-header {
+}
+
+.days-header {
     font-weight: bold;
     width: 100%;
     padding-left: 1.2rem;
@@ -893,125 +904,130 @@
     font-size: 0.7rem;
     font-weight: 500;
     top: -2%;
-  }
-  
-  .DatesContainer {
+}
+
+.DatesContainer {
     display: grid;
     grid-template-rows: repeat(5, 17%);
     height: 60%;
     width: 100%;
     grid-row-gap: 1rem;
-    padding: 1rem 0rem;
-  }
-  
-  .DatesCard {
+    padding: 0rem 0rem;
+    
+}
+
+.DatesCard {
     background-color: #ffffff;
     box-shadow: 1px 2px 5px #00000029;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-  }
-  
-  .DateCardData {
+}
+
+.DateCardData {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-  }
-  
-  .DateCardData h5 {
+}
+
+.DateCardData h5 {
     font-family: "Poppins";
     font-weight: 500;
     font-size: 1.2rem;
-  }
-  
-  .DateCardData>h5:nth-child(2) {
+}
+
+.DateCardData>h5:nth-child(2) {
     font-weight: 400;
     font-size: 0.5rem;
-  }
-  
-  .DateCardData:nth-child(1) {
+}
+
+.DateCardData:nth-child(1) {
     height: fit-content;
     background-color: #fef3de;
     box-shadow: inset 1px 2px 3px #99886b66;
     width: 20%;
     height: 90%;
-  }
-  
-  .LeaveHistory {
+}
+
+.LeaveHistory {
     position: relative;
-  }
-  
-  .SubLeaveHistory {
+
+}
+
+.SubLeaveHistory {
+
     height: 100%;
     width: 100%;
     display: grid;
     grid-template-rows: 40% 0.1rem 55%;
     grid-row-gap: 1rem;
-  }
-  
-  .LeaveHistoryTop {
+
+}
+
+.LeaveHistoryTop {
+ 
     display: grid;
     grid-template-rows: 10% 90%;
-  }
-  
-  .VerticalLinelarge {
+}
+
+.VerticalLinelarge {
     width: 90%;
     margin-left: 3rem;
     background-color: #70707021;
-  }
-  
-  .Leaveheading {
+}
+
+.Leaveheading {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0rem 3rem;
     padding-right: 2.2rem;
-  }
-  
-  .Leaveheading h5 {
+}
+
+.Leaveheading h5 {
     font-size: 0.9rem;
-  }
-  
-  .Leaveheading>h5:nth-child(1) {
+}
+
+.Leaveheading>h5:nth-child(1) {
     color: #1D1D1D;
     font-weight: 500;
     font-family: 'Poppins';
-  
-  }
-  
-  .Leaveheading>h5:nth-child(2) {
+
+}
+
+.Leaveheading>h5:nth-child(2) {
     color: #444444;
     font-family: 'Poppins';
-  
+
     font-weight: 400;
-  }
-  
-  .Leaveheading>h5:nth-child(3) {
+}
+
+.Leaveheading>h5:nth-child(3) {
     color: #F8AC1D;
     font-family: 'Poppins';
     font-weight: 400;
-  }
-  
-  .OldLeaveHistory {
+}
+
+.OldLeaveHistory {
     overflow-y: auto;
-  }
-  
-  .SubOldLeaveHistory {
+}
+
+.SubOldLeaveHistory {
     padding: 1rem 3rem;
     height: 15vh;
     min-height: 10vh;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-gap: 1rem;
-  }
-  
-  
-  
-  .OldLeaveCard {
+}
+
+
+
+.OldLeaveCard {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1020,18 +1036,18 @@
     box-shadow: 1px 2px 5px #00000029;
     border-radius: 5px;
     padding: 0rem 0.5rem;
-  }
-  
-  .OldCardData {
+}
+
+.OldCardData {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-  }
-  
-  /* armaan */
-  .leave_Details {
+}
+
+/* armaan */
+.leave_Details {
     width: 100%;
     display: flex;
     align-items: center;
@@ -1039,60 +1055,60 @@
     border-radius: 5px;
     text-transform: capitalize;
     gap: 2rem;
-  }
-  
-  .leave_Details h5 {
+}
+
+.leave_Details h5 {
     font-size: 1rem;
-  }
-  
-  .leave_dates h5 {
+}
+
+.leave_dates h5 {
     font-size: 0.8rem;
     color: #444444;
-  }
-  
-  /* armaan */
-  
-  .OldCardData h5 {
+}
+
+/* armaan */
+
+.OldCardData h5 {
     font-family: "Poppins";
     font-weight: 500;
     font-size: 1rem;
-  }
-  
-  .OldCardData>h5:nth-child(2) {
+}
+
+.OldCardData>h5:nth-child(2) {
     font-weight: 400;
     font-size: 0.5rem;
-  }
-  
-  .OldCardData:nth-child(1) {
+}
+
+.OldCardData:nth-child(1) {
     background-color: #fef3de;
     box-shadow: inset 1px 2px 3px #99886b66;
     width: 60px;
     height: 50px;
     border-radius: 5px;
-  }
-  
-  .RejecTedCard {
+}
+
+.RejecTedCard {
     background-color: #c10000 !important;
     color: white !important;
-  }
-  
-  .OldLeaveCard>.OldCardData:nth-child(2) {
+}
+
+.OldLeaveCard>.OldCardData:nth-child(2) {
     font-family: "Poppins";
     font-weight: 700;
     font-size: 1.2rem;
-  }
-  
-  .OldLeaveCard>.OldCardData:nth-child(3) {
+}
+
+.OldLeaveCard>.OldCardData:nth-child(3) {
     font-family: "Poppins";
     font-weight: 700;
     font-size: 1rem;
-  }
-  
-  .LeaveHistoryBottom {
+}
+
+.LeaveHistoryBottom {
     position: relative;
-  }
-  
-  .SubLeaveHistoryBottom {
+}
+
+.SubLeaveHistoryBottom {
     height: 100%;
     width: 100%;
     display: flex;
@@ -1100,17 +1116,17 @@
     gap: 1rem;
     position: relative;
     padding: 0rem 2.5rem 0rem 3rem;
-  }
-  
-  .ReqMainContainer {
+}
+
+.ReqMainContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     height: 30%;
-  }
-  
-  .ReqContainer {
+}
+
+.ReqContainer {
     height: 70%;
     width: 100%;
     border: 1px solid #00000029;
@@ -1118,122 +1134,122 @@
     border-radius: 10px;
     display: flex;
     align-items: center;
-  }
-  
-  .ResMainContainer {
+}
+
+.ResMainContainer {
     width: 100%;
     height: 45%;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-  }
-  
-  .ResContainer {
+}
+
+.ResContainer {
     height: 80%;
     width: 100%;
     border: 1px solid #00000029;
     border-radius: 10px;
-  }
-  
-  .SubLeaveHistoryBottom h5 {
+}
+
+.SubLeaveHistoryBottom h5 {
     color: #1d1d1d;
-  }
-  
-  .ReqContainerL {
+}
+
+.ReqContainerL {
     width: 50%;
     height: 100%;
     display: flex;
     padding: 0rem 2rem;
     justify-content: center;
     flex-direction: column;
-  }
-  
-  .ReqContainerL>h5:nth-child(1) {
+}
+
+.ReqContainerL>h5:nth-child(1) {
     font-family: "Poppins";
     color: #1d1d1d;
     font-size: 1rem;
     font-weight: 450;
-  }
-  
-  .ReqContainerL>h5:nth-child(2) {
+}
+
+.ReqContainerL>h5:nth-child(2) {
     color: #b7b7b7;
     font-size: 0.8rem;
     font-weight: 450;
     text-align: justify;
     font-family: "Poppins";
-  }
-  
-  .ReqContainerR {
+}
+
+.ReqContainerR {
     width: 50%;
     height: 100%;
-  }
-  
-  .ReqMainContainer h5 {
+}
+
+.ReqMainContainer h5 {
     font-family: "Poppins";
     font-size: 0.9rem;
-  }
-  
-  .ResMainContainer h5 {
+}
+
+.ResMainContainer h5 {
     font-family: "Poppins";
     font-size: 0.9rem;
     font-weight: 400;
-  }
-  
-  .ReqContainerR {
+}
+
+.ReqContainerR {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 0rem 2rem;
     justify-content: center;
-  
-  }
-  
-  .ReqRDuration {
+
+}
+
+.ReqRDuration {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-  }
-  
-  .ReqRDuration h6 {
+}
+
+.ReqRDuration h6 {
     letter-spacing: 0px;
     color: #b7b7b7;
     font-family: "Poppins";
     font-size: 0.7rem;
-  }
-  
-  .ReqContainerR h5 {
+}
+
+.ReqContainerR h5 {
     color: #1d1d1d;
     font-family: "Poppins";
     font-size: 0.9rem;
     font-weight: 400;
-  }
-  
-  .ReqRDuration>h6:nth-child(2) {
+}
+
+.ReqRDuration>h6:nth-child(2) {
     color: #1d1d1d;
-  }
-  
-  /* armaan */
-  .ResContainer {
+}
+
+/* armaan */
+.ResContainer {
     padding: 1rem 1rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
     color: #444444;
-  }
-  
-  /* armaan */
-  
-  .Buttons {
+}
+
+/* armaan */
+
+.Buttons {
     width: 100%;
     display: flex;
     gap: 1rem;
     align-items: center;
     justify-content: flex-end;
-  }
-  
-  .Buttons button {
+}
+
+.Buttons button {
     padding: 0.5rem 2rem;
     background-color: transparent;
     border: 1px solid #c10000;
@@ -1242,21 +1258,21 @@
     font-weight: 500;
     cursor: pointer;
     font-size: 1rem;
-  }
-  
-  .Buttons>button:nth-child(2) {
+}
+
+.Buttons>button:nth-child(2) {
     border: 1px solid #46a70a;
-  }
-  
-  .eng-card-message-text {
+}
+
+.eng-card-message-text {
     position: absolute;
-    bottom: 15px;
+    bottom: -15px;
     max-height: 10rem;
     width: 100%;
     padding: 1rem;
-  }
-  
-  .text-area-message-eng-card {
+}
+
+.text-area-message-eng-card {
     width: 90%;
     outline: none;
     border: none;
@@ -1270,25 +1286,25 @@
     color: #444444;
     padding-right: 80px;
     margin-bottom: 10px;
-  }
-  
-  /* .text-area-message-eng-card:hover::-webkit-scrollbar-thumb {
+}
+
+/* .text-area-message-eng-card:hover::-webkit-scrollbar-thumb {
     border: 1px solid #f8ac1d; 
   } */
-  /* set scroll behaviour  */
-  .text-area-message-eng-card::-webkit-scrollbar {
+/* set scroll behaviour  */
+.text-area-message-eng-card::-webkit-scrollbar {
     width: 2px;
     /* width of the entire scrollbar */
-  }
-  
-  .text-area-message-eng-card::-webkit-scrollbar-track {
+}
+
+.text-area-message-eng-card::-webkit-scrollbar-track {
     background: 0;
     /* color of the tracking area */
     margin-top: 7px;
     margin-bottom: 5px;
-  }
-  
-  .text-area-message-eng-card::-webkit-scrollbar-thumb {
+}
+
+.text-area-message-eng-card::-webkit-scrollbar-thumb {
     background-color: #f8ac1d;
     /* color of the scroll thumb */
     border-radius: 20px;
@@ -1297,19 +1313,20 @@
     /* creates padding around scroll thumb */
     transition: background-color 0.3s ease;
     /* Adjust the transition duration as needed */
-  }
-  
-  .agdam-eng-card {
+}
+
+.agdam-eng-card {
     height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     /* padding: 20px; */
+    /* background-color: red; */
     position: relative;
     width: 100%;
-  }
-  
-  .user-attachment4-eng-card {
+}
+
+.user-attachment4-eng-card {
     position: absolute;
     height: 100px;
     right: 20px;
@@ -1322,11 +1339,11 @@
     justify-content: center;
     align-items: center;
     width: 15%;
-    top: -18px;
+    top: 13px;
     cursor: pointer;
-  }
-  
-  .send-messsage-eng-card {
+}
+
+.send-messsage-eng-card {
     background: #fef3de;
     border-radius: 50%;
     text-align: center;
@@ -1335,43 +1352,43 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .text-area-message-eng-card ::placeholder {
+}
+
+.text-area-message-eng-card ::placeholder {
     color: #4444441f;
     opacity: 0.5;
-  }
-  
-  /*------------------------------------------------------ Rating code start  from heree--------------------------------------------------------- */
-  .ratings {
+}
+
+/*------------------------------------------------------ Rating code start  from heree--------------------------------------------------------- */
+.ratings {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .sub-ratings {
+}
+
+.sub-ratings {
     height: 100%;
     width: 100%;
     position: relative;
     display: grid;
-  }
-  
-  .rating-card-container {
+}
+
+.rating-card-container {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .rating-sub-card-container {
+}
+
+.rating-sub-card-container {
     display: grid;
     gap: 2rem;
     padding: 1rem;
     overflow-y: auto;
     max-height: 65vh;
-  }
-  
-  .rating-sub-card {
-    height: 11vh;
+}
+
+.rating-sub-card {
+
     margin-top: 0.5rem;
     width: 100%;
     position: relative;
@@ -1383,66 +1400,66 @@
     justify-content: space-between;
     padding: 0.5rem 1rem;
     gap: 1rem;
-    
-  }
-  
-  .rating-sub-card-row {
+
+}
+
+.rating-sub-card-row {
     display: flex;
     gap: 1rem;
     height: auto;
     position: relative;
     width: 100%;
     min-height: 3%;
-  }
-  
-  .rating-sub-card-row:nth-child(2) {
+}
+
+.rating-sub-card-row:nth-child(2) {
     margin-top: -0.5rem;
-  }
-  
-  .rating-sub-card-row-right {
+}
+
+.rating-sub-card-row-right {
     width: 16%;
-  }
-  
-  .rating-sub-card-row-right h5 {
+}
+
+.rating-sub-card-row-right h5 {
     color: #444444;
     font-family: "Poppins";
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.0099rem;
     font-weight: 500;
-  }
-  
-  .rating-sub-card-row-left {
+}
+
+.rating-sub-card-row-left {
     width: 78%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  
-  
-  
-  
-  /* .two-line-text {
+}
+
+
+
+
+/* .two-line-text {
     -webkit-line-clamp: 2;
   } */
-  
-  .two-line-text h5 {
+
+.two-line-text h5 {
     color: #444444;
     font-family: "Poppins";
     font-size: 0.8rem;
     font-weight: 500;
     letter-spacing: 0.0099rem;
-  
-  }
-  
-  .rating-sub-card-row:nth-child(3) {
+
+}
+
+.rating-sub-card-row:nth-child(3) {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .medium_dark_font h5 {
+}
+
+.medium_dark_font h5 {
     color: #444444;
     font-family: "Poppins";
     font-size: 0.8rem;
@@ -1452,26 +1469,26 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  
-  }
-  
-  .footer-rating h5:nth-child(1) {
+
+}
+
+.footer-rating h5:nth-child(1) {
     color: #389300;
     font-family: "Poppins";
     font-size: 0.8rem;
     font-weight: 450;
     letter-spacing: 0.0099rem;
-  }
-  
-  .footer-rating h5:nth-child(2) {
+}
+
+.footer-rating h5:nth-child(2) {
     color: #c10000;
     font-family: "Poppins";
     font-size: 0.8rem;
     font-weight: 450;
     letter-spacing: 0.0099rem;
-  }
-  
-  .footer-rating h5:nth-child(3) {
+}
+
+.footer-rating h5:nth-child(3) {
     border: 1px solid #f8ac1d;
     padding: 0.2rem 0.2rem;
     width: 2.5vw;
@@ -1483,35 +1500,35 @@
     font-size: 0.8rem;
     font-weight: 450;
     letter-spacing: 0.0099rem;
-  }
-  
-  .footer-rating h5 span {
+}
+
+.footer-rating h5 span {
     font-size: 0.7rem;
     margin-left: 0.5rem;
     font-family: "Poppins";
     font-weight: 600;
     letter-spacing: 0.0099rem;
-  }
-  
-  .rating_star {
+}
+
+.rating_star {
     color: #f8ac1d;
-  }
-  
-  .rating-card-container-header {
+}
+
+.rating-card-container-header {
     height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.1rem;
-  }
-  
-  .rating-card-container-header-right {
+}
+
+.rating-card-container-header-right {
     display: flex;
     gap: 0.7rem;
     align-items: center;
-  }
-  
-  .rating-overall-rating {
+}
+
+.rating-overall-rating {
     height: 4vh;
     width: 8vw;
     box-shadow: inset 1px 2px 3px #00000029;
@@ -1523,16 +1540,16 @@
     justify-content: center;
     position: relative;
     cursor: pointer;
-  }
-  
-  .rating-overall-rating h5 span {
+}
+
+.rating-overall-rating h5 span {
     font-family: "Poppins";
     color: #f8ac1ddb;
     font-size: 0.9rem;
     font-weight: 500;
-  }
-  
-  .rating-overall-rating h5 {
+}
+
+.rating-overall-rating h5 {
     font-weight: 400;
     color: #1d1d1d;
     font-family: "Poppins";
@@ -1540,9 +1557,9 @@
     display: flex;
     gap: 0.4rem;
     align-items: center;
-  }
-  
-  .rating-clients {
+}
+
+.rating-clients {
     height: 4vh;
     width: 6vw;
     box-shadow: inset 1px 2px 3px #00000029;
@@ -1554,9 +1571,9 @@
     justify-content: center;
     position: relative;
     cursor: pointer;
-  }
-  
-  .rating-clients h5 {
+}
+
+.rating-clients h5 {
     font-family: "Poppins";
     font-size: 0.7rem;
     display: flex;
@@ -1564,16 +1581,16 @@
     color: #1d1d1d;
     align-items: center;
     font-weight: 400;
-  }
-  
-  .rating-clients h5 span {
+}
+
+.rating-clients h5 span {
     font-weight: 500;
     color: #1d1d1d;
     font-family: "Poppins";
     font-size: 0.9rem;
-  }
-  
-  .rating-filter {
+}
+
+.rating-filter {
     height: 3.9vh;
     width: 2.2vw;
     box-shadow: 1px 2px 5px #00000029;
@@ -1585,39 +1602,39 @@
     justify-content: center;
     position: relative;
     cursor: pointer;
-  }
-  
-  .rating-quetions-container {
+}
+
+.rating-quetions-container {
     display: grid;
     grid-template-rows: 10% 15% 70%;
     position: relative;
-  }
-  
-  .rating-quetions-container-head {
+}
+
+.rating-quetions-container-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     padding: 1rem 1.5rem;
     padding-left: 1.7rem;
-  }
-  
-  .rating-quetions-container-textarea {
+}
+
+.rating-quetions-container-textarea {
     display: flex;
     align-items: flex-start;
     justify-content: center;
-  }
-  
-  .rating-quetions-container-quiz {
+}
+
+.rating-quetions-container-quiz {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-  }
-  
-  
-  
-  .rating-quetions-container-may {
+}
+
+
+
+.rating-quetions-container-may {
     box-shadow: inset 1px 2px 3px #00000029, 1px 2px 5px #00000029;
     border: 1px solid #00000008;
     background-color: #ffffff;
@@ -1628,15 +1645,15 @@
     width: 90%;
     font-size: 0.9rem;
     padding: 0.7rem;
-  
+
     /* color: #89848459; */
     color: #1b1b1b;
     text-align: left;
     font-family: "Poppins";
     font-weight: 400;
-  }
-  
-  .rating-quiz-row {
+}
+
+.rating-quiz-row {
     width: 100%;
     display: flex;
     align-items: center;
@@ -1644,26 +1661,26 @@
     height: 20%;
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .rating-quiz-row p {
+}
+
+.rating-quiz-row p {
     letter-spacing: 0px;
     color: #1d1d1d;
     opacity: 1;
     font-family: "Poppins";
     font-size: 0.9rem;
     font-weight: 500;
-  }
-  
-  .rating-quiz-row-buttons {
+}
+
+.rating-quiz-row-buttons {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-  }
-  
-  .rating-quiz-row-buttons button {
+}
+
+.rating-quiz-row-buttons button {
     width: 2.8vw;
     padding: 0.2rem;
     font-size: 0.8rem;
@@ -1675,13 +1692,13 @@
     border: 1px solid #f8ac1d;
     border-radius: 3px;
     cursor: pointer;
-  }
-  
-  /* .rating-quiz-row-buttons button:nth-child(2) {
+}
+
+/* .rating-quiz-row-buttons button:nth-child(2) {
     background-color: transparent;
    }  */
-  
-  .rating-quetions-container-head h5 {
+
+.rating-quetions-container-head h5 {
     color: #1d1d1d;
     font-family: "Poppins";
     font-weight: 500;
@@ -1689,77 +1706,77 @@
     margin-left: -1vw;
     display: flex;
     gap: 0.3rem;
-  }
-  
-  .rating-quetions-container-head h5 span {
+}
+
+.rating-quetions-container-head h5 span {
     font-weight: 400;
-  }
-  
-  .rating_gap {
+}
+
+.rating_gap {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.3rem;
-  }
-  
-  .spare-part {
+}
+
+.spare-part {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .spare-part-progress {
+}
+
+.spare-part-progress {
     height: 1px;
     position: absolute;
     width: 200px;
     /* top: 7%; */
     background-color: #f8ac1d;
     transition: 0.5s ease;
-  }
-  
-  .sub-spare-part {
+}
+
+.sub-spare-part {
     position: relative;
     height: 100%;
     width: 100%;
     display: grid;
     grid-template-rows: 7% 3% 90%;
-  }
-  
-  .spare-part-head {
+}
+
+.spare-part-head {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 100%;
     position: relative;
-  }
-  
-  .spare-part-head h5 {
+}
+
+.spare-part-head h5 {
     cursor: pointer;
     font-size: 1rem;
-  }
-  
-  .spare-part-content {
+}
+
+.spare-part-content {
     padding: 0.5rem;
     padding-top: 0.2rem;
     width: 100%;
     position: relative;
-  }
-  
-  .spare-part-req {
+}
+
+.spare-part-req {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .spare-part-req-card-container {
+}
+
+.spare-part-req-card-container {
     height: 100%;
     width: 100%;
     max-height: 670px;
     overflow-y: auto;
-  }
-  
-  .spare-part-req-card {
-    height: 20vh;
+}
+
+.spare-part-req-card {
+   
     width: 98%;
     border: 1px solid #e5e5e5;
     border-radius: 19px;
@@ -1769,38 +1786,38 @@
     align-items: center;
     padding: 1rem;
     margin-top: 1rem;
-  }
-  
-  .spare-part-colums {
+}
+
+.spare-part-colums {
     height: 100%;
     width: 20%;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .spare-part-req-card-col1 {
+}
+
+.spare-part-req-card-col1 {
     width: 12%;
-  }
-  
-  /* center the warning  by -> preet*/
-  .center-warning {
+}
+
+/* center the warning  by -> preet*/
+.center-warning {
     position: absolute;
     top: 50%;
     right: 50%;
     transform: translate(50%, -50%);
-  }
-  
-  /* center the warning */
-  
-  .spare-part-req-card-col2 {
+}
+
+/* center the warning */
+
+.spare-part-req-card-col2 {
     width: 28%;
     height: 100%;
     position: relative;
-  }
-  
-  .spare-part-req-col2-text-table {
+}
+
+.spare-part-req-col2-text-table {
     height: 80%;
     width: 100%;
     display: flex;
@@ -1808,56 +1825,56 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-  }
-  
-  .spare-part-text-table-row {
+}
+
+.spare-part-text-table-row {
     height: 10%;
     width: 100%;
     position: relative;
     display: flex;
-  }
-  
-  .spare-part-text-table-row-left {
+}
+
+.spare-part-text-table-row-left {
     width: 35%;
     height: 100%;
     position: relative;
-  }
-  
-  .spare-part-text-table-row-right {
+}
+
+.spare-part-text-table-row-right {
     width: 50%;
     height: 100%;
     position: relative;
-  }
-  
-  .spare-part-text-table-row-right p {
+}
+
+.spare-part-text-table-row-right p {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-  
-  .spare-part-colums p {
+}
+
+.spare-part-colums p {
     color: #1d1d1d;
     font-family: "Poppins";
     font-size: 0.8rem;
     font-weight: 500;
-  }
-  
-  .spare-part-colums h5 {
+}
+
+.spare-part-colums h5 {
     font-size: 0.9rem;
     font-weight: 600;
     font-family: "Poppins";
     color: #1d1d1d;
-  }
-  
-  .spare-part-text-table-row-left p {
+}
+
+.spare-part-text-table-row-left p {
     color: #444444ad;
-  }
-  
-  .spare-part-text-table-row-right p {
+}
+
+.spare-part-text-table-row-right p {
     font-weight: 500;
-  }
-  
-  .spare-part-colums textarea {
+}
+
+.spare-part-colums textarea {
     height: 12vh;
     width: 80%;
     position: relative;
@@ -1871,9 +1888,9 @@
     text-align: left;
     font-family: "Poppins";
     font-weight: 400;
-  }
-  
-  .spare-part-req-type {
+}
+
+.spare-part-req-type {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1883,24 +1900,24 @@
     background: #ffffff;
     border: 1px solid #c10000;
     border-radius: 5px;
-  }
-  
-  .spare-part-req-type p {
+}
+
+.spare-part-req-type p {
     color: #444444;
     font-family: "Poppins";
     font-weight: 500;
     opacity: 0.9;
-  }
-  
-  .spare-part-buttons {
+}
+
+.spare-part-buttons {
     height: 100%;
     padding-top: 1.7rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .spare-part-colums button {
+}
+
+.spare-part-colums button {
     padding: 0.5rem 0rem;
     width: 70%;
     background: #f8ac1d;
@@ -1909,50 +1926,52 @@
     opacity: 1;
     cursor: pointer;
     font-size: 0.9rem;
-  }
-  
-  .spare-part-colums button:nth-child(2) {
+}
+
+.spare-part-colums button:nth-child(2) {
     background-color: transparent;
-  }
-  
-  .revenue {
+}
+
+.revenue {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .sub-revenue {
+}
+
+.sub-revenue {
     height: 100%;
     width: 100%;
     position: relative;
-  }
-  
-  .sub-revenue-top {
-    height: 45%;
+}
+
+.sub-revenue-top {
+
+    height: 300px;
     width: 100%;
     position: relative;
     display: flex;
     gap: 1rem;
     padding-bottom: 0.5rem;
-  }
-  
-  .sub-revenue-bottom {
+}
+
+.sub-revenue-bottom {
     height: 55%;
     width: 100%;
     position: relative;
-  }
-  
-  .sub-revenue-top-left {
+}
+
+.sub-revenue-top-left {
     height: 100%;
     width: 65%;
     position: relative;
     padding: 0.5rem;
     border: 1px solid #cccccc;
     border-radius: 19px;
-  }
-  
-  .sub-revenue-top-right {
-    height: 100%;
+}
+
+.sub-revenue-top-right {
+
+
     width: 35%;
     position: relative;
     border: 1px solid #cccccc;
@@ -1961,11 +1980,13 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-  }
-  
-  .sub-revenue-top-left-head,
-  .sub-revenue-top-right-head,
-  .sub-revenue-top-right-footer {
+    padding: 1rem 0.2rem;
+
+}
+
+.sub-revenue-top-left-head,
+.sub-revenue-top-right-head,
+.sub-revenue-top-right-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1973,52 +1994,52 @@
     height: 20px;
     padding: 0.8rem;
     width: 100%;
-  }
-  
-  .sub-revenue-top-right-footer {
+}
+
+.sub-revenue-top-right-footer {
     margin-top: -1rem;
-  }
-  
-  .cr {
+}
+
+.cr {
     height: 10px;
     width: 10px;
     border-radius: 50%;
-  }
-  
-  .revenue-circular-progress-bar {
+}
+
+.revenue-circular-progress-bar {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .revenue-progress-ring {
+}
+
+.revenue-progress-ring {
     position: relative;
     height: 100%;
     width: 100%;
-  }
-  
-  .revenue-progress-ring svg {
+}
+
+.revenue-progress-ring svg {
     transform: rotate(-90deg);
-  }
-  
-  .revenue-progress-ring circle {
+}
+
+.revenue-progress-ring circle {
     fill: none;
     stroke-width: 5;
     box-shadow: inset 1px 2px 3px #00000029;
-  }
-  
-  .revenue-progress-ring .revenue-background {
+}
+
+.revenue-progress-ring .revenue-background {
     stroke: #dddee0;
     box-shadow: inset 1px 2px 3px #00000029;
-  }
-  
-  .revenue-progress-ring .revenue-progress {
+}
+
+.revenue-progress-ring .revenue-progress {
     stroke: #6e4bb1;
     transition: stroke-dasharray 0.3s;
     box-shadow: inset 1px 2px 3px #00000029;
-  }
-  
-  .revenue-progress-text {
+}
+
+.revenue-progress-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -2027,15 +2048,15 @@
     color: #898484;
     font-family: "Poppins";
     font-weight: 500;
-  }
-  
-  .revenue-progress-text span {
+}
+
+.revenue-progress-text span {
     color: #444444;
     font-size: 1.5rem;
     font-weight: 500;
-  }
-  
-  .sub-revenue h5 {
+}
+
+.sub-revenue h5 {
     text-align: left;
     text-transform: capitalize;
     font-size: 1rem;
@@ -2044,27 +2065,27 @@
     color: #444444;
     opacity: 1;
     font-weight: 600;
-  }
-  
-  .sub-revenue-top-right-footer-right,
-  .sub-revenue-top-right-footer-left {
+}
+
+.sub-revenue-top-right-footer-right,
+.sub-revenue-top-right-footer-left {
     display: flex;
     align-items: center;
     gap: 0.2rem;
     height: 20px;
     width: 50%;
     position: relative;
-  
-  }
-  
-  .sub-revenue-top-right-footer-left {
+
+}
+
+.sub-revenue-top-right-footer-left {
     width: 50%;
     display: flex;
     justify-content: flex-end;
-  }
-  
-  .sub-revenue-top-right-footer h5,
-  .sub-revenue-top-left-head p {
+}
+
+.sub-revenue-top-right-footer h5,
+.sub-revenue-top-left-head p {
     color: #898484;
     font-size: 0.8rem;
     font-weight: 400;
@@ -2072,431 +2093,456 @@
     text-transform: capitalize;
     font-weight: 400;
     font-family: "Poppins";
-  }
-  
-  .change-chart {
+}
+
+.change-chart {
     margin-left: -1rem;
-  }
-  
-  .sub-revenue-head-cr {
+}
+
+.sub-revenue-head-cr {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-  }
-  
-  .OldLeaveHistoryNoLeave {
+}
+
+.OldLeaveHistoryNoLeave {
     height: 65vh;
-  }
-  
-  .OldLeaveHistoryLeave {
+}
+
+.OldLeaveHistoryLeave {
     height: 25vh;
-  }
-  
-  /* @media only screen and (min-width: 481px) and (max-width: 768px) {}
+}
+
+/* @media only screen and (min-width: 481px) and (max-width: 768px) {}
   
   @media only screen and (min-width: 769px) and (max-width: 1024px) {}
   
   @media only screen and (min-width: 1025px) and (max-width: 1200px) {}
   
   @media only screen and (min-width: 1201px) {} */
-  
-  @media only screen and (min-width: 769px) and (max-width: 1550px) {
-  
+
+@media only screen and (min-width: 769px) and (max-width: 1550px) {
+
     tr>td:nth-child(2) {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .AllCards {
-      max-height: 81vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-row-gap: 3rem;
-      grid-column-gap: 3rem;
-      padding: 2rem 3rem;
+        max-height: 81vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-row-gap: 3rem;
+        grid-column-gap: 3rem;
+        padding: 2rem 3rem;
     }
-  
-  
+
+
     .table-container>.table-item:nth-child(even) {
-      font-size: 0.7rem;
-      line-height: 1.2rem;
-  
+        font-size: 0.7rem;
+        line-height: 1.2rem;
+
     }
-  
+
     .table-container>.table-item:nth-child(odd) {
-      font-size: 0.7rem;
-      line-height: 1.2rem;
-  
+        font-size: 0.7rem;
+        line-height: 1.2rem;
+
     }
-  
+
     .EngCardCash h5 {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .EngCardCash h5 span {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
-  
+
+
     .EngCards {
-      min-height: 10rem;
+        min-height: 10rem;
     }
-  
+
     .EngCardMessage {
-      height: 5vh;
-      width: 100%;
-      margin-top: 1rem;
-      bottom: -20%;
-      position: relative;
-  
+        height: 5vh;
+        width: 100%;
+        margin-top: 1rem;
+        bottom: -20%;
+        position: relative;
+
     }
-  
-  
-  
-  
+
+
+
+
     .EngCardCash {
-      height: 3.5vh;
-      margin-bottom: -7rem;
+        height: 3.5vh;
+        margin-bottom: -7rem;
     }
-  
+
     .adays-eng {
-      grid-template-columns: repeat(7, 10%);
-      grid-column-gap: 0.6rem;
-  
-      padding: 0.5rem 0.5rem;
+        grid-template-columns: repeat(7, 10%);
+        grid-column-gap: 0.6rem;
+
+        padding: 0.5rem 0.5rem;
     }
-  
-  
+
+
     .aday-eng {
-      font-size: 0.7rem;
-      width: 24px;
-      height: 24px;
-  
+        font-size: 0.7rem;
+        width: 24px;
+        height: 24px;
+
     }
-  
+
     .days-header {
-      font-weight: bold;
-      width: 100%;
-      padding-left: 0.6rem;
-      position: absolute;
-      display: grid;
-      grid-template-columns: repeat(7, 10%);
-      grid-column-gap: .6rem;
-      font-size: .6rem;
-      font-weight: 500;
-      top: -2.5%;
+        font-weight: bold;
+        width: 100%;
+        padding-left: 0.6rem;
+        position: absolute;
+        display: grid;
+        grid-template-columns: repeat(7, 10%);
+        grid-column-gap: .6rem;
+        font-size: .6rem;
+        font-weight: 500;
+        top: -2.5%;
     }
-  
+
     .ODetailsColumn h5 {
-      font-size: .7rem;
+        font-size: .7rem;
     }
-  
+
     .SubPDetails {
-      width: 40%;
+        width: 40%;
     }
-  
+
     .PDetails h1,
     .PDetails h1 span {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .DateCardData h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .Leaveheading h5 {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .OldCardData:nth-child(1) {
-      width: 50px;
-      height: 35px;
-      border-radius: 4px;
+        width: 50px;
+        height: 35px;
+        border-radius: 4px;
     }
-  
+
     .OldCardData h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
-  
+
+
     .leave_Details h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .leave_Details {
-      gap: 1rem;
-      margin-left: 0.4rem;
+        gap: 1rem;
+        margin-left: 0.4rem;
     }
-  
+
     .SubOldLeaveHistory {
-      padding: 0.5rem 2.5rem;
+        padding: 0.5rem 2.5rem;
     }
-  
+
     .leave_dates h5 {
-      font-size: 0.6rem;
-      color: #444444;
+        font-size: 0.6rem;
+        color: #444444;
     }
-  
+
     .OldLeaveCard>.OldCardData:nth-child(3) {
-      font-size: 0.8rem;
-      margin-left: 0.2rem;
+        font-size: 0.8rem;
+        margin-left: 0.2rem;
     }
-  
+
     .ReqMainContainer h5 {
-      font-family: 'Poppins';
-      font-size: .8rem;
+        font-family: 'Poppins';
+        font-size: .8rem;
     }
-  
-  
+
+
     .ReqContainerL>h5:nth-child(1) {
-      font-size: 0.9rem;
+        font-size: 0.9rem;
     }
-  
-  
+
+
     .ReqContainerR {
-      padding: 0rem 1rem;
+        padding: 0rem 1rem;
     }
-  
+
     .ResMainContainer h5 {
-      font-size: .8rem;
+        font-size: .8rem;
     }
-  
+
     .Buttons button {
-      padding: .4rem 1rem;
-      font-size: 0.8rem;
+        padding: .4rem 1rem;
+        font-size: 0.8rem;
     }
-  
+
     .spare-part-head h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .sub-revenue h5 {
-      font-size: 0.8rem;
-  
+        font-size: 0.8rem;
+
     }
-  
-    .sub-revenue-top {
+
+    /* .sub-revenue-top {
       height: 60%;
+    } */
+
+    .sub-revenue-top {
+
+        height: 240px;
+
     }
-  
+
+
+
     .sub-revenue-bottom {
-      height: 40%;
+        height: 40%;
     }
-  
-  
+
+
     .sub-revenue-top-right-footer h5 {
-      font-size: 0.6rem;
-      white-space: nowrap;
+        font-size: 0.6rem;
+        white-space: nowrap;
     }
-  
+
     .cr {
-      height: 8px;
-      width: 8px;
-  
+        height: 8px;
+        width: 8px;
+
     }
-  
+
     .sub-revenue-top-left-head,
     .sub-revenue-top-right-head,
     .sub-revenue-top-right-footer {
-      padding: 0.6rem;
+        padding: 0.6rem;
     }
-  
+
     .spare-part-req-card {
-      width: 99%;
-      padding: 0.8rem;
+        width: 99%;
+        padding: 0.8rem;
     }
-  
+
     .spare-part-colums h5,
     .spare-part-colums p {
-      font-size: 0.7rem;
-      line-height: 0.7rem;
-  
+        font-size: 0.7rem;
+        line-height: 0.7rem;
+
     }
-  
+
     .spare-part-req-type {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: 75%;
-      height: 4.2vh;
-      padding: 0.2rem;
-  
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 75%;
+        height: 4.2vh;
+        padding: 0.2rem;
+
     }
-  
+
     .spare-part-colums button {
-      padding: 0.4rem 0rem;
-      font-size: 0.7rem;
+        padding: 0.4rem 0rem;
+        font-size: 0.7rem;
     }
-  
+
     .spare-part-buttons {
-      gap: 0.5rem;
+        gap: 0.5rem;
     }
-  
+
     .TaskHeading h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .star {
-      width: 25px;
-      height: 15px;
-  
-  
+        width: 25px;
+        height: 15px;
+
+
     }
-  
+
     .service-table-item,
     .callback-table-item {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .ServiceCards,
     .CallBackCards {
-      padding: 0.2rem;
+        padding: 0.2rem;
     }
-  
+
     .small-Icon {
-      font-size: 0.6rem;
-      margin-bottom: 0.1rem;
+        font-size: 0.6rem;
+        margin-bottom: 0.1rem;
     }
-  
+
     .ServiceCardsBottom>h5:nth-child(1) {
-      font-size: .7rem;
-  
+        font-size: .7rem;
+
     }
-  
+
     .ServiceCardsBottom>h5:nth-child(2) {
-      font-size: .7rem;
-  
+        font-size: .7rem;
+
     }
-  
+
     .CallBackCardsBottom>h5:nth-child(1) {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .CallBackCardsBottom>h5:nth-child(2) {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .footer-rating h5:nth-child(3) {
-      padding: 0.1rem 0.1rem;
-      width: 3vw;
-      height: 18px;
+        padding: 0.1rem 0.1rem;
+        width: 3vw;
+        height: 18px;
     }
-  
+
     .footer-rating h5:nth-child(1) {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .footer-rating h5:nth-child(2) {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .rating-sub-card-row-right h5 {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .two-line-text h5 {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .rating-quetions-container-head h5 {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .rating-quetions-container-may {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .rating-quiz-row p {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
-  
+
+
     .rating-quiz-row-buttons button {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
-    .agdam-eng-card {
+
+    /* .agdam-eng-card {
       bottom: 6%;
     }
-  
+   */
     .send-messsage-eng-card {
-      padding: 5px;
-  
+        padding: 5px;
+
     }
-  
+
     .eng-icon {
-      font-size: 0.8rem;
+        font-size: 0.8rem;
     }
-  
+
     .DatesContainer {
-      height: 52%;
-      display: grid;
-      grid-template-rows: repeat(5, 17%);
-      width: 100%;
-      grid-row-gap: 0.5rem;
-      padding: 0.5rem 0rem;
-  
+        height: 48%;
+        display: grid;
+        grid-template-rows: repeat(5, 17%);
+        width: 100%;
+        grid-row-gap: 0.5rem;
+
+
     }
-  
-  
+
+
     .SubLeaveHistoryBottom {
-      gap: 0.5rem;
+        gap: 0.5rem;
     }
-  
-  
+
+
     .EngeeniersCard {
-      min-height: 85vh;
-      position: relative;
-  
+        min-height: 85vh;
+        position: relative;
+
     }
-  
+
     .rating-sub-card-container {
-      display: grid;
-      gap: 0.5rem;
-      padding: 0.5rem 0.5rem;
-      overflow-y: auto;
-      max-height: 59vh;
-  
+        display: grid;
+        gap: 0.5rem;
+        padding: 0.5rem 0.5rem;
+        overflow-y: auto;
+        max-height: 59vh;
+
     }
-  
+
     .DateCardData:nth-child(1) {
-      width: 17%;
+        width: 17%;
     }
-  
+
     .OldLeaveHistoryNoLeave {
-      height: 57vh;
+        height: 55vh;
     }
-  
+
     .spare-part-req-card-container {
-      height: 100%;
-      width: 100%;
-      max-height: 370px;
-      overflow-y: auto;
+        height: 100%;
+        width: 100%;
+        max-height: 370px;
+        overflow-y: auto;
     }
-  
-  
-    .ServicContainer,.CallbackContainer {
-      height: 59vh;
-    
+
+
+    .ServicContainer,
+    .CallbackContainer {
+        height: 59vh;
+
     }
-  
-    .rating-sub-card {
-      height: 12vh; 
+
+
+
+    .SubEngChatMsg {
+        height: 55vh;
+
     }
-    
-  }
-  
-  
-  @media only screen and (min-width: 1371px) and (max-width: 1550px) {
+
+    .Attendancecalendar {
+        margin-top: 0rem;
+    }
+
+    .container-attendance{
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+
+
+}
+
+
+@media only screen and (min-width: 1371px) and (max-width: 1550px) {
     .DatesContainer {
-      height: 52%;
+        height: 52%;
+        padding: 0rem 0rem;
     }
-  
-  
-  }
-  
-  /* @media only screen and (min-width: 1201px) {
+
+
+}
+
+/* @media only screen and (min-width: 1201px) {
   
   }  */
-  /*------------------------------------------------------ Rating code ending point--------------------------------------------------------- */
+/*------------------------------------------------------ Rating code ending point--------------------------------------------------------- */
