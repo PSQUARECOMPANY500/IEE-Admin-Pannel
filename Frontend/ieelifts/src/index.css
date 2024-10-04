@@ -294,8 +294,9 @@ code {
 }
 
 .membership_card_scrollable_height {
-  min-height: 67vh;
-  height: 67vh;
+  padding-bottom: 0.1rem;
+  min-height: 69vh;
+  height: 69vh;
 }
 
 .membership_card_expiring-title {
@@ -4107,11 +4108,11 @@ input:-webkit-autofill {
 
   /* ------------------------------------------------------------------------------------------------------------responsive by aayush membership card------------------------------------------------------------------------------ */
 
-  .membership_card_scrollable {
-    height: 24rem;
+  /* .membership_card_scrollable {
+    height: 23rem;
     max-height: 30rem;
     overflow-y: auto;
-  }
+  } */
 
   /* .non_expand_gap .membership_card {
     height: 37vh;
@@ -4378,7 +4379,7 @@ input:-webkit-autofill {
   } */
 
   .membership_card_scrollable {
-    height: 19rem;
+    height: 19.5rem;
     max-height: 12rem;
     overflow-y: auto;
   }
@@ -4458,14 +4459,16 @@ input:-webkit-autofill {
     margin-bottom: 1.8rem;
   }
 
+  .membership_card_scrollable_height {
+    min-height: 65vh;
+    height: 65vh;
+  }
+
+
 }
 
 
 @media screen and (min-width : 1440px) and (max-width:1550px) {
-  .membership_card_expand {
-    /* min-height: 73vh */
-    /* ba */
-  }
 
   .notificationmembershipwrapper {
     margin-bottom: 1.5rem;
@@ -4522,7 +4525,7 @@ input:-webkit-autofill {
   }
 
   .membership_card_scrollable_height {
-    min-height: 65vh;
+    min-height: 64.9vh;
     max-width: 30rem;
   }
 
