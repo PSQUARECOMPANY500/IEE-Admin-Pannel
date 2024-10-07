@@ -78,8 +78,8 @@ import React, {
       <div className="spare-part-table_view">
         <div className="spare-part-sub-table-view">
           <div
-            className="spare-part-table-container Yello_Scrollbar"
-            style={{ maxHeight: maxHeight,marginTop:'2rem'}}
+            className="spare-part-table-container"
+            style={{ maxHeight: maxHeight, overflowY: "auto" }}
             onScroll={(e) => {
               if (
                 e.target.scrollHeight - e.target.scrollTop ===
@@ -181,8 +181,6 @@ import React, {
           </div>
         </div>
       </div>
-
-      
     );
   };
   

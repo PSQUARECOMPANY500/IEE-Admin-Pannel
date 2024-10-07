@@ -622,9 +622,8 @@ export const requestAssignCallbackDetail = (callbackId) => {
 export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        `${config.apiUrl}/admin/getEnggLocationDetail`
-      );
+      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
+  
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,
@@ -819,7 +818,7 @@ export const getClients = (page) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
-      
+
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,

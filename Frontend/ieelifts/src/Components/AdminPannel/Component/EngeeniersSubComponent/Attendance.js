@@ -30,13 +30,11 @@ const Attendance = (props) => {
 
 
   return (
-    <div className="Attendance eng-attendance">
- <div className="container-attendance">
-
+    <div className="Attendance">
+      <div className="CalendarHistory">
         <AttendanceCalendar setTodayDate={setTodayDate} />
         <AttendanceDateConatiner engID={engID} date={date} />
- </div>
-    
+      </div>
       <div className="LeaveHistory">
         <div className="SubLeaveHistory">
           <LeaveHistory
@@ -60,4 +58,4 @@ const Attendance = (props) => {
   );
 };
 
-export default Attendance;
+export default Attendance;                          

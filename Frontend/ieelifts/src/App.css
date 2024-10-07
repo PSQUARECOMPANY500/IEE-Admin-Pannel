@@ -3891,14 +3891,14 @@ footer a:hover {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  color: #f8ac1d;
+  /* color: #f8ac1d; */
   font-weight: 500;
   font-size: 16px;
   margin-left: 0px;
 }
 
 .switch-button-hover {
-  color: #f8ac1d;
+  color: #f8ac1d!important;
   background: #fef3de;
   transition: all 0.5s;
   cursor: pointer;
@@ -3906,7 +3906,7 @@ footer a:hover {
 
 .switch-button-without-hover {
   color: #000000;
-  background: #ffffff;
+  /* background: #ffffff; */
   transition: all 0.5s;
   cursor: pointer;
 }
@@ -8818,10 +8818,32 @@ element.style {
   height: 5vh;
   width: 30;
   position: absolute;
-  bottom: 3%;
+  bottom: 5%;
   right: 5%;
 }
 
+/* ---------------------edit engg form------------------------------ */
+
+.buttoncssTricks{
+  background: #0000;
+  border: 1px solid #f8ac1d;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 50px;
+  transition: background .1s ease-in-out;
+  transition-delay: .1s
+}
+
+.buttoncssTricks:hover{
+  background: #f8ac1d;
+  color: #000;
+}
+/* --------------------------------------------------- */
+
+
+   
 /* CSS */
 .button-69,
 .button-69-cancel {
@@ -10733,3 +10755,16 @@ a[href^="http://maps.google.com/maps"] {
   width: 90%;
   margin-top: 8px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

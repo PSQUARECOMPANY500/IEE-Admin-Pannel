@@ -1303,17 +1303,19 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
             </div>
             {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
-            <div className="addEnggButtons addEnggButtons-view">
+            <div className="addEnggButtons edit-engg-form_button">
               <button
                 onClick={handleEditSection}
                 style={{ background: editchange ? "#F8AC1D" : "#fff" }}
-                classname="button-69-cancel"
+                // classname="button-69-cancel"
+                className="buttoncssTricks"
                 role="button"
               >
                 Edit
               </button>
               <button
-                classname="button-69"
+                // classname="button-69"
+                className="buttoncssTricks"
                 role="button"
                 onClick={(e) => handleSaveEnggProfileData(e)}
                 disabled={!editchange}

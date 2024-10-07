@@ -152,7 +152,7 @@ const AttendanceCalendar = ({ setTodayDate, isModal = false }) => {
   }, [acurrentDate, aselectedDate]);
 
   return (
-    <div className="CalendarHistory" >
+    <div className="CalendarHistory">
       <div
         className="Attendancecalendar responsiveAttendancecalendar"
         id="Attendancecalendar"

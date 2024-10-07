@@ -62,6 +62,8 @@ const { response } = require("express");
 const TodoSchema = require("../../Modals/TodoModel/TodoSchema");
 const moment = require("moment");
 const clientRegistration = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
+
+const registerWithMobileNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema")
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -523,7 +525,7 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
         let checkRequest = await getAllServiceRequest.findOne({
           RequestId: request.RequestId
         });
-        if (checkRequest.isCancelled) {
+        if (checkRequest?.isCancelled) {
           return
         }
         else {
@@ -2855,8 +2857,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 
 //post client form controller
 module.exports.postElevatorForm = async (req, res) => {
-  const { clientFormDetails, clientSalesManDetails, clientArchitect } =
-    req.body;
+  const { clientFormDetails, clientSalesManDetails, clientArchitect } = req.body;
 
   try {
     const { jon } = JSON.parse(clientFormDetails);
@@ -2931,6 +2932,18 @@ module.exports.postElevatorForm = async (req, res) => {
       ProfileImage:
         "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
     });
+ 
+
+    // upadte the ionformation also in "registerWithNumber"  ----------------
+    const checkExistingClientOrNot = await registerWithMobileNumber.findOne({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
+    console.log("login ---------------------- save data", checkExistingClientOrNot);
+    if(!checkExistingClientOrNot){
+      await registerWithMobileNumber.create({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
+    }
+    //-----------------------------------------------------------------------
+
+
+
 
     res.status(200).json({ msg: "data submit successfully" });
   } catch (err) {
