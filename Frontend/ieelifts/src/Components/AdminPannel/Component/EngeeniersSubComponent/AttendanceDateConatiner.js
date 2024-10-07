@@ -156,7 +156,7 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     return renderedDates;
   };
 
-  return <div className="DatesContainer" >{renderDates()}</div>;
+  return <div className="DatesContainer">{renderDates()}</div>;
 };
 
 export default AttendanceDateConatiner;

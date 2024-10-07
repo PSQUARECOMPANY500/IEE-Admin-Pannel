@@ -120,7 +120,6 @@ const Clients = () => {
     } else {
       dataToRender = clients;
     }
-
     if (layout === "grid") {
       return (
         <ClientCardView

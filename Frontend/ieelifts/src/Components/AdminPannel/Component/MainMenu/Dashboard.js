@@ -39,20 +39,16 @@ const Dashboard = () => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  // console.log(
-  //   "dashboard pit area",
-  //   AdminReportData?.AdminReportData?.ReportImages[3]?.photo
-  // );
+  console.log("dashboard pit area",AdminReportData?.AdminReportData?.ReportImages?.photo);
 
   const cancelRequestByEngg = useSelector(
     (state) =>
       state?.AdminRootReducer?.cancelEnggCallbackServiceRequestReducer
         ?.cancelRequestData
   );
-  // console.log(
-  //   "cancelRequestByEngg++++++++++-------------+++++++++++++++---------------++++++++++++++++++++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++++++++++++++++++-",
-  //   cancelRequestByEngg
-  // );
+
+  // console.log( "cancelRequestByEngg++++++++++-------------+++++++++++++++---------------++++++++++++++++++++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++++++++++++++++++-", cancelRequestByEngg );
+
 
   useEffect(() => {
     if (ref.current && shouldScrollToTop) {
@@ -107,6 +103,8 @@ const Dashboard = () => {
           )}
 
         {reportOpen && <RepotImage images={images} />}
+
+
         <div style={{ width: "100%", marginTop: "6%" }}>
           <ServiceEnggCrousel ticketUpdate={ticketUpdate} />
           <TaskLocationSection

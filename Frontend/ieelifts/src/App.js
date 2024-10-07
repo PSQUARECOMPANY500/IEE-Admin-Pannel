@@ -41,231 +41,231 @@ function App() {
 
   return (
     < >
-    <div className="large-screen">
+      <div className="large-screen">
 
-      <Routes>
-        {/* login routes */}
-        <Route
-          path="/"
-          element={
-            !isLoggedIn ? (
-              <LoginPage name="Module selection">
-                <SelectDepartment getName={getName} />
-              </LoginPage>
-            ) : (
-              <Navigate
-                to={
-                  role === "CRM"
-                    ? "/Clients"
-                    : role === "ErectionAdmin"
-                      ? "/ErectionDashboard"
-                      : "/Dashboard"
-                }
-              />
-            )
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            !isLoggedIn ? (
-              <LoginPage name={departmentName}>
-                <LoginPageInput />
-              </LoginPage>
-            ) : (
-              <Navigate
-                to={
-                  role === "CRM"
-                    ? "/Clients"
-                    : role === "ErectionAdmin"
-                      ? "/ErectionDashboard"
-                      : "/Dashboard"
-                }
-              />
-            )
-          }
-        />
-        <Route
-          path="/forgetpassword"
-          element={
-            !isLoggedIn ? (
-              <LoginPage name={getName}>
-                <SendPasswordVerificationCode />
-              </LoginPage>
-            ) : (
-              <Navigate
-                to={
-                  role === "CRM"
-                    ? "/Clients"
-                    : role === "ErectionAdmin"
-                      ? "/ErectionDashboard"
-                      : "/Dashboard"
-                }
-              />
-            )
-          }
-        />
-        <Route
-          path="/enterOTP"
-          element={
-            !isLoggedIn ? (
-              <LoginPage name={getName}>
-                <ForgetPasswordOTP />
-              </LoginPage>
-            ) : (
-              <Navigate
-                to={
-                  role === "CRM"
-                    ? "/Clients"
-                    : role === "ErectionAdmin"
-                      ? "/ErectionDashboard"
-                      : "/Dashboard"
-                }
-              />
-            )
-          }
-        />
-        <Route
-          path="/setnewpassword"
-          element={
-            !isLoggedIn ? (
-              <LoginPage name={getName}>
-                <EnterNewPassword />
-              </LoginPage>
-            ) : (
-              <Navigate
-                to={
-                  role === "CRM"
-                    ? "/Clients"
-                    : role === "ErectionAdmin"
-                      ? "/ErectionDashboard"
-                      : "/Dashboard"
-                }
-              />
-            )
-          }
-        />
+        <Routes>
+          {/* login routes */}
+          <Route
+            path="/"
+            element={
+              !isLoggedIn ? (
+                <LoginPage name="Module selection">
+                  <SelectDepartment getName={getName} />
+                </LoginPage>
+              ) : (
+                <Navigate
+                  to={
+                    role === "CRM"
+                      ? "/Clients"
+                      : role === "ErectionAdmin"
+                        ? "/ErectionDashboard"
+                        : "/Dashboard"
+                  }
+                />
+              )
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              !isLoggedIn ? (
+                <LoginPage name={departmentName}>
+                  <LoginPageInput />
+                </LoginPage>
+              ) : (
+                <Navigate
+                  to={
+                    role === "CRM"
+                      ? "/Clients"
+                      : role === "ErectionAdmin"
+                        ? "/ErectionDashboard"
+                        : "/Dashboard"
+                  }
+                />
+              )
+            }
+          />
+          <Route
+            path="/forgetpassword"
+            element={
+              !isLoggedIn ? (
+                <LoginPage name={getName}>
+                  <SendPasswordVerificationCode />
+                </LoginPage>
+              ) : (
+                <Navigate
+                  to={
+                    role === "CRM"
+                      ? "/Clients"
+                      : role === "ErectionAdmin"
+                        ? "/ErectionDashboard"
+                        : "/Dashboard"
+                  }
+                />
+              )
+            }
+          />
+          <Route
+            path="/enterOTP"
+            element={
+              !isLoggedIn ? (
+                <LoginPage name={getName}>
+                  <ForgetPasswordOTP />
+                </LoginPage>
+              ) : (
+                <Navigate
+                  to={
+                    role === "CRM"
+                      ? "/Clients"
+                      : role === "ErectionAdmin"
+                        ? "/ErectionDashboard"
+                        : "/Dashboard"
+                  }
+                />
+              )
+            }
+          />
+          <Route
+            path="/setnewpassword"
+            element={
+              !isLoggedIn ? (
+                <LoginPage name={getName}>
+                  <EnterNewPassword />
+                </LoginPage>
+              ) : (
+                <Navigate
+                  to={
+                    role === "CRM"
+                      ? "/Clients"
+                      : role === "ErectionAdmin"
+                        ? "/ErectionDashboard"
+                        : "/Dashboard"
+                  }
+                />
+              )
+            }
+          />
 
-        <Route
-          path="/todo"
-          element={
-            (isLoggedIn && role === "ServiceAdmin") ? (
-              <Sidebar>
-                <Todo />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
+          <Route
+            path="/todo"
+            element={
+              (isLoggedIn && role === "ServiceAdmin") ? (
+                <Sidebar>
+                  <Todo />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
 
-        {/* pages routes */}
-        <Route
-          path="/Dashboard"
-          element={
-            isLoggedIn && role === "ServiceAdmin" ? (
-              <Sidebar>
-                <Dashboard />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/SOS"
-          element={
-            isLoggedIn && role === "ServiceAdmin" ? (
-              <Sidebar>
-                <Sosrequest />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/ErectionDashboard"
-          element={
-            isLoggedIn && role === "ErectionAdmin" ? (
-              <Sidebar>
-                <ErectionDashboard />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/ErectionEngeeniers"
-          element={
-            isLoggedIn && role === "ErectionAdmin" ? (
-              <Sidebar>
-                <ErectionEngineers />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/Requests"
-          element={
-            isLoggedIn && role === "ServiceAdmin" ? (
-              <Sidebar>
-                <Request />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/Memberships"
-          element={
-            isLoggedIn && role === "ServiceAdmin" ? (
-              <Sidebar>
-                <Membership />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/Engeeniers"
-          element={
-            isLoggedIn && role === "ServiceAdmin" ? (
-              <Sidebar>
-                <Enggeniers />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/Clients"
-          element={
-            isLoggedIn && (role === "ServiceAdmin" || role === "CRM") ? (
-              <Sidebar>
-                <Clients />
-              </Sidebar>
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
+          {/* pages routes */}
+          <Route
+            path="/Dashboard"
+            element={
+              isLoggedIn && role === "ServiceAdmin" ? (
+                <Sidebar>
+                  <Dashboard />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/SOS"
+            element={
+              isLoggedIn && role === "ServiceAdmin" ? (
+                <Sidebar>
+                  <Sosrequest />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/ErectionDashboard"
+            element={
+              isLoggedIn && role === "ErectionAdmin" ? (
+                <Sidebar>
+                  <ErectionDashboard />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/ErectionEngeeniers"
+            element={
+              isLoggedIn && role === "ErectionAdmin" ? (
+                <Sidebar>
+                  <ErectionEngineers />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/Requests"
+            element={
+              isLoggedIn && role === "ServiceAdmin" ? (
+                <Sidebar>
+                  <Request />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/Memberships"
+            element={
+              isLoggedIn && role === "ServiceAdmin" ? (
+                <Sidebar>
+                  <Membership />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/Engeeniers"
+            element={
+              isLoggedIn && role === "ServiceAdmin" ? (
+                <Sidebar>
+                  <Enggeniers />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/Clients"
+            element={
+              isLoggedIn && (role === "ServiceAdmin" || role === "CRM") ? (
+                <Sidebar>
+                  <Clients />
+                </Sidebar>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
 
-        {/* not found Pages */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+          {/* not found Pages */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
 
-    </div>
+      </div>
 
-    <div className="small-screen">
-      <h1>This device is not compatible</h1>
-    </div>
+      <div className="small-screen">
+        <h1>This device is not compatible</h1>
+      </div>
     </>
   );
 }

@@ -267,14 +267,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
             <div className="switch-button ">
               <span className="ticket-service-flex">
                 <p
-                  className={
-                    ticket
-                      ? "switch-button-hover"
-                      : "switch-button-without-hover"
-                  }
+                  className={ticket ? "switch-button-hover": "switch-button-without-hover"}
                   onClick={toggleTickets}
                 >
-                  Ticket
+                  Tickets
                 </p>
                 <p
                   className={
@@ -284,7 +280,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }
                   onClick={toogleService}
                 >
-                  Service
+                  Services
                 </p>
               </span>
             </div>
