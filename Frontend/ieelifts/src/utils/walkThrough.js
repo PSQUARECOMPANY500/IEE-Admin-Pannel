@@ -1,6 +1,7 @@
 export const walkThroughSteps = [
+
     {
-        target: '.large-screen',
+        target: '.walkthrough-screen',
         content: 'Welcome to IEE-Admin-Pannel, a comprehensive platform for managing IEE events, resources, and communication.',
     },
     {

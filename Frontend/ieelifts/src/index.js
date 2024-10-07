@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -14,19 +14,71 @@ import Joyride from 'react-joyride';
 import { walkThroughSteps } from './utils/walkThrough';
 
 function RootComponent() {
+  const [run, setRun] = useState(false);
 
+  const handleWalkthroughCallback = (data) => {
+    const { status } = data;
+    const finishedStatuses = ['finished', "skipped"];
+    console.log("status", status);
+    if (finishedStatuses.includes(status)) {
+      localStorage.setItem('walkthroughVisited', true);
+    }
+  };
+
+  const getWalkthrough = localStorage.getItem('walkthroughVisited');
+
+  const handleClickStart = () => {
+    setRun(true)
+  };
+  useEffect(() => {
+    if (!getWalkthrough && !run) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [getWalkthrough, run]);
 
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Joyride
-          steps={walkThroughSteps}
-          run={true}
-          continuous
-          showProgress
-          showSkipButton
-          spotlightClicks
-        />
+        {
+          !getWalkthrough && !run && (
+            <div className='walkthrough-screen-parent'>
+              <div className='walkthrough-screen'>
+                <p>
+                  Welcome to IEE-Admin-Pannel, a comprehensive platform for managing IEE events, resources, and communication.
+                </p>
+                <button onClick={handleClickStart}>Start</button>
+              </div>
+            </div>
+          )
+        }
+        {
+          !getWalkthrough && (
+            <Joyride
+              steps={walkThroughSteps}
+              run={run}
+              continuous
+              showSkipButton
+              disableScrolling
+              disableOverlayClose
+              hideCloseButton
+              // spotlightPadding
+              spotlightClicks
+              callback={handleWalkthroughCallback}
+              styles={{
+                options: {
+                  primaryColor: '#f8ae23',
+                  textColor: '#000',
+                  zIndex: 1000,
+                },
+              }}
+            />
+          )
+        }
         <App />
         <Toaster />
       </BrowserRouter>
