@@ -21,7 +21,7 @@ function RootComponent() {
     const finishedStatuses = ['finished', "skipped"];
     console.log("status", status);
     if (finishedStatuses.includes(status)) {
-      localStorage.setItem('walkthroughVisited', true);
+      // localStorage.setItem('walkthroughVisited', true);
     }
   };
 

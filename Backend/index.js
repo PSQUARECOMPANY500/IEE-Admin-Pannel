@@ -33,10 +33,10 @@ app.use("/api/admin", AdminRoutes);
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
 
-app.use("/api/document/:foldername/:filename",(req,res)=>{
+app.use("/api/document/:foldername/:filename", (req, res) => {
   const filename = req.params.filename
   const foldername = req.params.foldername
-  const filepath = path.join(__dirname,`public/${foldername}`,filename)
+  const filepath = path.join(__dirname, `public/${foldername}`, filename)
   res.sendFile(filepath)
 });
 
@@ -89,4 +89,3 @@ httpServer.listen(socketPort, () => {
 app.listen(httpPort, () => {
   console.log(`HTTP server listening on port ${httpPort}`);
 });
-

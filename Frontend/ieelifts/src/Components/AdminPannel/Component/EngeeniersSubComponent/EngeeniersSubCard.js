@@ -102,6 +102,7 @@ const EngeeniersSubCard = (props) => {
         {allEngData && allEngData.map((e, index) => (
 
           <div className="EngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto, e.AvailableCash, e._id, e.EnggLastName, e.Spare)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
+            {e?.isCheckedIn && <div className="EngCardCheckinIndicator"></div>}
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
                 <img src={
