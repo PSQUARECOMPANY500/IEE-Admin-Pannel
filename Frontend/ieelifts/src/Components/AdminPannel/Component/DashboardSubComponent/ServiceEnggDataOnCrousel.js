@@ -18,16 +18,18 @@ const ServiceEnggDataOnCrousel = ({
     "(min-width: 769px) and (max-width: 1280px)"
   );
 
-  // console.log(
-  //   "============================================================_+_+_+_+_+_+_+_+_+_+",
-  //   item?.enggBreakTimining[0]
-  // );
+  // console.log("============================================================_+_+_+_+_+_+_+_+_+_+",item);
 
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState([false]);
   const renderArray = [];
   const renderArrayon = [];
+
+
+  // console.log("this is a dropdown ", renderArray);
+  // console.log("this is a dropdown ", renderArrayon);
+
 
   const handleMessageBoxClose = () => {
     setShowMessage(false);
@@ -164,19 +166,13 @@ const ServiceEnggDataOnCrousel = ({
             <div className="hover-icon-service">
               <div className="dropdown">
                 <span>
-                  {renderArray[0]?.ClientName >= 10
-                    ? renderArray[0]?.ClientName
-                    : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
+                  {renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
                 </span>
                 <span>{renderArray[0]?.type}</span>
                 <div className="dropdown-menu dropdown1-menu">
                   <div className="drop-parent">
                     <div className="upper-sec">
-                      <p>
-                        {renderArray[0]?.ClientName >= 10
-                          ? renderArray[0]?.ClientName
-                          : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
-                      </p>
+                      <p>{renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}</p>
                       <p>{renderArray[0]?.type}</p>
                       <div className="horizontal-row-container">
                         <span className="horizontal-row"></span>
@@ -190,9 +186,7 @@ const ServiceEnggDataOnCrousel = ({
                       <p style={{ display: "flex" }}>
                         <p>No :</p>
                         <p>
-                          {renderArray[0]?.ClientName >= 10
-                            ? renderArray[0]?.ClientName
-                            : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
+                          {renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
                         </p>
                       </p>
                       <p style={{ display: "flex" }}>
@@ -211,7 +205,7 @@ const ServiceEnggDataOnCrousel = ({
                   <span className="dropdown2-text">
                     {renderArray[1].ClientName?.split(" ")[0]}
                   </span>
-                  <span>{renderArray[0]?.type}</span>
+                  <span>{renderArray[1]?.type}</span>
 
                   <div className="dropdown-menu dropdown2-menu">
                     <div className="drop-parent">
@@ -221,7 +215,7 @@ const ServiceEnggDataOnCrousel = ({
                             ? renderArray[1]?.ClientName
                             : `${renderArray[1]?.ClientName.slice(0, 10)}...`}
                         </p>
-                        <p>{renderArray[0]?.type}</p>
+                        <p>{renderArray[1]?.type}</p>
                         <div className="horizontal-row-container">
                           <span className="horizontal-row"></span>
                         </div>
@@ -265,6 +259,7 @@ const ServiceEnggDataOnCrousel = ({
               {item.filteredServiceAssignmentsWithClientName.length != 0 ? (
                 item.filteredServiceAssignmentsWithClientName.map(
                   (itemData, dataIndex) => (
+                    console.log("this is item data ", itemData),
                     <React.Fragment key={dataIndex}>
                       <div className="task-main-div">
                         <div className="dot-name">
@@ -283,7 +278,7 @@ const ServiceEnggDataOnCrousel = ({
                           </div>
                         </div>
                         <div className="taskmain-info">
-                          <p>{renderArray[0]?.type}</p>
+                          <p>{itemData?.type}</p>
                         </div>
                       </div>
                       <span className="horizontal-row2"></span>
