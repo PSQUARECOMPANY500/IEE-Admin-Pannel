@@ -30,11 +30,13 @@ const Attendance = (props) => {
 
 
   return (
-    <div className="Attendance">
-      <div className="CalendarHistory">
+    <div className="Attendance eng-attendance">
+ <div className="container-attendance">
+
         <AttendanceCalendar setTodayDate={setTodayDate} />
         <AttendanceDateConatiner engID={engID} date={date} />
-      </div>
+ </div>
+    
       <div className="LeaveHistory">
         <div className="SubLeaveHistory">
           <LeaveHistory
