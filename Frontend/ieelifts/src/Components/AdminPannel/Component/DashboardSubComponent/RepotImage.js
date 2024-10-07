@@ -40,15 +40,6 @@ console.log("images carsouls",images);
     };
   }, []);
 
-
-  const arr=[]
-
-  images.map((items) => {
-    arr.push(`${config.documentUrl}/ReportAttachments/${items}`)
-  })
-
-  // <img src={`${config.documentUrl}/ReportAttachments/${items}`} />    
-
   return (
     <>
       <div className="images" onClick={handleClick}>
@@ -67,11 +58,15 @@ console.log("images carsouls",images);
           </div>
         </div>
 
-        <div className="image-container">      
-          <img src={arr[currentIndex]} />   
+        <div className="image-container">
+          {images?.map((items)=>{
+           return <img src={`${config.documentUrl}/ReportAttachments/${items}`} />
+          })}
+
+          {/* <div className="image-container-bottom">
+            <p>hello </p>
+          </div> */}
         </div>
-
-
 
         <div
           className="report-image-next"
@@ -91,9 +86,3 @@ console.log("images carsouls",images);
 };
 
 export default RepotImage;
-
-
-    {/* {images?.map((items) => {  
-            console.log("items --- >>  >>> >>>  >>>>   > >> > > > > >  >",items);
-            return <img src={`${config.documentUrl}/ReportAttachments/${items}`} />      
-          })}  */}

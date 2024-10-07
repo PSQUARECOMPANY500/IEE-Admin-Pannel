@@ -622,8 +622,9 @@ export const requestAssignCallbackDetail = (callbackId) => {
 export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
-  
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggLocationDetail`
+      );
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,

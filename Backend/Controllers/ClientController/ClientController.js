@@ -703,7 +703,17 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
 
 // convert the format for Am/Pm
 
+const convertTo12HourFormat = (time24) => {
+  let [hours, minutes] = time24.split(":");
 
+  hours = parseInt(hours, 10);
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+
+  hours = hours % 12 || 12;
+
+  return `${hours}:${minutes} ${ampm}`;
+};
 
 // module.exports.getCurrentScheduleService = async (req, res) => {
 // to do -> middlaware implemented
@@ -854,38 +864,6 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
 // };
 
 // *********************************** rebuild API for tracking location  ********************************************************
-
-const convertTo12HourFormat = (time24) => {
-  let [hours, minutes] = time24.split(":");
-  hours = parseInt(hours, 10); 
-  const ampm = time24.split(":")[0]  >= 12 ? "PM" : "AM";
-  hours = hours % 12 || 12;
-
-  return `${hours}:${minutes} ${ampm}`;
-};
-
-
-const convertTo12HourFormatScheduleService = (time24) => {
-  let [hours, minutes] = time24.split(":");  
-  hours = parseInt(hours, 10); 
-  const caluclatedHour = parseInt(time24.split(":")[0]) 
-  let ampm;
-  if (caluclatedHour >= 9 && caluclatedHour <= 12) {
-    ampm = "AM";
-  } else {
-    ampm = "PM";
-  }
-
-
-
-
-
-  hours = hours % 12 || 12;
-
-  return `${hours}:${minutes} ${ampm}`;
-}
-
-
 module.exports.getCurrentScheduleService = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
@@ -978,7 +956,7 @@ if (!latestRecord && combineData.length === 0) {
 
 
 
-    if (combineData[0]?.isAssigned === false) {
+    if (combineData[0].isAssigned === false) {
       return res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -990,10 +968,10 @@ if (!latestRecord && combineData.length === 0) {
     }
 
     const rating = await engineerRating.findOne({
-      ServiceId: combineData[0]?.RequestId || combineData[0]?.callbackId,
+      ServiceId: combineData[0].RequestId || combineData[0].callbackId,
     });
     // // first case 1:
-    if (combineData[0]?.isAssigned === false && !rating) {
+    if (combineData[0].isAssigned === false && !rating) {
       res.status(200).json({
         status: "success",
         message: "service Booked",
@@ -1005,15 +983,26 @@ if (!latestRecord && combineData.length === 0) {
     }
     //case 2
     else if (
-      combineData[0]?.isAssigned === true &&
+      combineData[0].isAssigned === true &&
       combineData[0]?.isDead === false &&
       data[0][0].ServiceProcess === "InCompleted"
     ) {
       res.status(200).json({
         status: "success",
         message:
-          currentDate === data[0][0].Date ? `Service Today at ${convertTo12HourFormatScheduleService(data[0][0].Slot[0].split("-")[0])}`: currentDate > data[0][0].Date? "Service Expired": "Service Booked",time:
-          currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) + "-" + convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
+          currentDate === data[0][0].Date
+            ? `Service Today at ${convertTo12HourFormat(
+                data[0][0].Slot[0].split("-")[0]
+              )}`
+            : currentDate > data[0][0].Date
+            ? "Service Expired"
+            : "Service Booked",
+        time:
+          currentDate > data[0][0].Date
+            ? "(Awaiting Cancelation)"
+            : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) +
+              "-" +
+              convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,
         liveTracking: currentDate === data[0][0].Date ? true : false,

@@ -195,7 +195,6 @@ const MCRoom = ({ serviceId }) => {
                   <>
                     {/* <img src="https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg" /> */}
                     <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`}/>
-                    <img src={`${config.documentUrl}/ReportAttachments/${images[1]}`}/>
                   </>
                 </div>
               </div>

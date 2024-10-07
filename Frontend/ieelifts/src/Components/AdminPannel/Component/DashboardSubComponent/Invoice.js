@@ -1,4 +1,4 @@
-              import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GrGallery } from "react-icons/gr";
 import { BsFiletypePdf } from "react-icons/bs";
 
