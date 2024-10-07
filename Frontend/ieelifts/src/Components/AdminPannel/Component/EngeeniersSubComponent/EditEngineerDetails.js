@@ -118,7 +118,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
             >
               <img src={card} />
               <p>Educational Details</p>
-            </div>
+            </div>.
           </div>
         </div>
       </div>

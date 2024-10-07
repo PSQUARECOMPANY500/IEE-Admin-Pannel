@@ -8818,10 +8818,32 @@ element.style {
   height: 5vh;
   width: 30;
   position: absolute;
-  bottom: 3%;
+  bottom: 5%;
   right: 5%;
 }
 
+/* ---------------------edit engg form------------------------------ */
+
+.buttoncssTricks{
+  background: #0000;
+  border: 1px solid #f8ac1d;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 50px;
+  transition: background .1s ease-in-out;
+  transition-delay: .1s
+}
+
+.buttoncssTricks:hover{
+  background: #f8ac1d;
+  color: #000;
+}
+/* --------------------------------------------------- */
+
+
+   
 /* CSS */
 .button-69,
 .button-69-cancel {
@@ -10733,3 +10755,16 @@ a[href^="http://maps.google.com/maps"] {
   width: 90%;
   margin-top: 8px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
