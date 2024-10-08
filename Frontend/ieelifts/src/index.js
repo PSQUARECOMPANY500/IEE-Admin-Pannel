@@ -44,7 +44,7 @@ function RootComponent() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        {
+        {/* {
           !getWalkthrough && !run && (
             <div className='walkthrough-screen-parent'>
               <div className='walkthrough-screen'>
@@ -55,8 +55,8 @@ function RootComponent() {
               </div>
             </div>
           )
-        }
-        {
+        } */}
+        {/* {
           !getWalkthrough && (
             <Joyride
               steps={walkThroughSteps}
@@ -78,7 +78,7 @@ function RootComponent() {
               }}
             />
           )
-        }
+        } */}
         <App />
         <Toaster />
       </BrowserRouter>

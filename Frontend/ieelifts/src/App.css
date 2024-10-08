@@ -5077,6 +5077,33 @@ footer a:hover {
   z-index: 999999999999999999;
 }
 
+.Arrow-engeeniersattendancecardleft {
+  position: absolute;
+  right: 0%;
+  /* display: none; */
+  top: 45%;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #202020;
+  z-index: 999999999999999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+
+.Arrow-engeeniersattendancecardRight {
+  width: fit-content;
+  left: 0%;
+}
+
+.Arrow-engeeniersattendancecardleft:hover {
+  background: #f8ac1d;
+  color: white;
+}
+
 .engeeniersattendancecard-right-inner {
   display: flex;
   align-items: center;

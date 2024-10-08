@@ -5,6 +5,7 @@ import Arrow from "../../../../Assets/Images/arrow.png";
 import { getCheckInCheckOuts } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
 import EnggLocationHistoryModal from "../DashboardSubComponent/EnggLocationSection/EnggLocationHistoryModal";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
@@ -37,24 +38,61 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
     setIsArrowVisible(!isArrowVisible);
   };
 
+  const handleRightClick = () => {
+    if (isCliked) {
+      setIsCliked2(true);
+      setIsCliked(false);
+    }
+    else {
+      setIsCliked4(true);
+      setIsCliked3(false);
+    }
+  }
+  const handleLeftClick = () => {
+    if (isCliked2) {
+      setIsCliked(true);
+      setIsCliked2(false);
+    }
+    else {
+      setIsCliked3(true);
+      setIsCliked4(false);
+    }
+  }
+
+  const handleBack = () => {
+    setIsCliked3(false);
+    setIsCliked(false);
+    setIsCliked4(false);
+    setIsCliked2(false);
+    setIsArrowVisible(false);
+  }
+
   useEffect(() => {
     const getData = async () => {
       const getCheckInOut = await getCheckInCheckOuts(
-       engID,
+        engID,
         selectedDateIndex
-      ); 
+      );
       setCheckInCheckOutData(getCheckInOut);
     };
 
     getData();
   }, []);
 
-  // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0])
-
   return (
     <div className="engeeniersattendancecard-main">
       <div className="engeeniersattendancecard-left">
         <button id="checkin">Check in</button>
+        {
+          (isCliked || isCliked3) && <div onClick={handleRightClick} className="Arrow-engeeniersattendancecardleft">
+            <FaArrowRight />
+          </div>
+        }
+        {
+          (isCliked2 || isCliked4) && <div onClick={handleLeftClick} className="Arrow-engeeniersattendancecardleft Arrow-engeeniersattendancecardRight">
+            <FaArrowLeft />
+          </div>
+        }
         <div
           onClick={handleImage}
           className={
@@ -63,11 +101,9 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box"
           }
         >
-          
-
           <img
             src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0] ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}`: "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0] ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}` : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
             }
           ></img>
         </div>
@@ -79,14 +115,13 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box"
           }
         >
-         
+
 
           <img
             src={
               checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                ? `${config.documentUrl}/uplodes/${
-                    checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                  }`
+                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
+                }`
                 : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
             }
           ></img>
@@ -100,14 +135,13 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box2"
           }
         >
-         
+
 
           <img
             src={
               checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
-                ? `${config.documentUrl}/uplodes/${
-                    checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0]
-                  }`
+                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0]
+                }`
                 : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
             }
           ></img>
@@ -120,17 +154,18 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
               : "engeeniersattendancecard-box2"
           }
         >
-          
-           <img
+
+          <img
             src={
               checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                ? `${config.documentUrl}/uplodes/${
-                    checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[1]
-                  }`
+                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[1]
+                }`
                 : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
             }
           ></img>
+
         </div>
+
       </div>
       <div className="engeeniersattendancecard-right">
         <div className="engeeniersattendancecard-right-inner">
@@ -140,7 +175,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
             className="closeIconengeeniersattendancecard"
           />
           <img
-            onClick={onClose}
+            onClick={handleBack}
             style={{ display: isArrowVisible ? "block" : "none" }}
             className="Arrow-engeeniersattendancecard"
             src={Arrow}
@@ -151,7 +186,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
         <div className="engeeniersattendancecard-right-inner2">
           <div className="engeeniersattendancecard-description-section">
             <div className="engeeniersattendancecard-more-descriptive">
-              <EnggLocationHistoryModal  engID={engID}  selectedDate={selectedDateIndex} />
+              <EnggLocationHistoryModal engID={engID} selectedDate={selectedDateIndex} />
             </div>
           </div>
         </div>

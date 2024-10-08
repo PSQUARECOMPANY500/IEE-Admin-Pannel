@@ -13,10 +13,6 @@
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 npm-debug.log*
 yarn-debug.log*                                            
@@ -24,9 +20,9 @@ yarn-error.log*
 
 /.github
 
-# /public                    
-# /src                                                    
-# /package.json
-# /package-lock.json
+/public                    
+/src                                                    
+/package.json
+/package-lock.json
 
 #  disable when push it on render but enable when push it on AWS ....gui
