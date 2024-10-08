@@ -1,3 +1,4 @@
+const moment = require("moment")
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
 const callbackAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
@@ -417,7 +418,7 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     if (ServiceEnggId && latitude && longitude) {
       const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
 
-    
+
 
       const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
 
@@ -458,7 +459,7 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
 };
 
 //-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
-module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req,res) => {
+module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req, res) => {
   try {
     const { ServiceEnggId } = req.params;
 
@@ -472,22 +473,22 @@ module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req,res) =>
     if (!coordinatesResponse) {
       return res.status(200).json({ message: "No location found for the specified Service Engineer ID and date" });
     }
-    
+
     let coordinatesToSend = []
-    const coordinates = coordinatesResponse &&  coordinatesResponse.currentLocation && coordinatesResponse.currentLocation.coordinates.map((item)=> {
+    const coordinates = coordinatesResponse && coordinatesResponse.currentLocation && coordinatesResponse.currentLocation.coordinates.map((item) => {
       let coordinate = item?.origin?.split(",")
       // console.log("this is corrdibatyes found", coordinate)
       let lat = parseFloat(coordinate[0])
       let lng = parseFloat(coordinate[1])
       coordinatesToSend.push({ lat, lng })
-   })
-    
-    
-    res.status(200).json({coordinates:coordinatesToSend})
-    
+    })
+
+
+    res.status(200).json({ coordinates: coordinatesToSend })
+
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error while fetching the cordinates"});
+    res.status(500).json({ error: "Internal server error while fetching the cordinates" });
   }
 };
 //-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
@@ -798,37 +799,37 @@ module.exports.EnggCheckOut = async (req, res) => {
       });
       const date = new Date().toLocaleDateString("en-GB");
 
-          
+
       const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate(
-          { ServiceEnggId, Date: date },
-          {
-              Check_Out: {
-                  engPhoto: enggPhoto,
-                  time: time,
-                },
-              }
-            );
-            
+        { ServiceEnggId, Date: date },
+        {
+          Check_Out: {
+            engPhoto: enggPhoto,
+            time: time,
+          },
+        }
+      );
+
       //make the logic that delete the coordinates from the EnggLocation Table "Starts" ----------------  
       const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
 
-      const EnggCoordinates = await engglocationmodels.findOne({ServiceEnggId:ServiceEnggId,AttendanceCreatedDate:now});
+      const EnggCoordinates = await engglocationmodels.findOne({ ServiceEnggId: ServiceEnggId, AttendanceCreatedDate: now });
 
       const keepIndexes = [];
-      if(EnggCoordinates){
-        
+      if (EnggCoordinates) {
+
         const waypoints = EnggCoordinates.currentLocation.coordinates.slice(1, -1).reduce((acc, point, index) => {
-        
-          if(index % Math.ceil(EnggCoordinates.currentLocation.coordinates.length / 23) === 0 && index !== 0) {
-            keepIndexes.push(index+1);
+
+          if (index % Math.ceil(EnggCoordinates.currentLocation.coordinates.length / 23) === 0 && index !== 0) {
+            keepIndexes.push(index + 1);
           }
           return acc;
-        },[]);
+        }, []);
 
-        const filteredconditions = EnggCoordinates.currentLocation.coordinates.filter((_,index) =>{
+        const filteredconditions = EnggCoordinates.currentLocation.coordinates.filter((_, index) => {
           return index === 0 || index === EnggCoordinates.currentLocation.coordinates.length - 1 || keepIndexes.includes(index)
         })
-        await engglocationmodels.updateOne({ServiceEnggId:ServiceEnggId,AttendanceCreatedDate:now},{$set:{'currentLocation.coordinates': filteredconditions}})
+        await engglocationmodels.updateOne({ ServiceEnggId: ServiceEnggId, AttendanceCreatedDate: now }, { $set: { 'currentLocation.coordinates': filteredconditions } })
       }
 
       //make the logic that delete the coordinates from the EnggLocation Table "Ends" ------------------
@@ -1646,11 +1647,18 @@ module.exports.getAllEngDetails = async (req, res) => {
           ServiceEnggId: eng.EnggId,
         });
         const currentLeaveRecord = engLeaveRecord[engLeaveRecord.length - 1];
+        const enggCheckIn = await EnggAttendanceServiceRecord.find({
+          ServiceEnggId: eng.EnggId,
+          Date: moment(Date.now()).format("DD/MM/YYYY"),
+          "Check_In.time": { $exists: true, $ne: null },
+          "Check_Out.time": { $exists: false }
+        });
 
         return {
           ...eng.toObject(),
           engLeaveRecord: currentLeaveRecord,
           Spare: spareParts.length || 0,
+          isCheckedIn: enggCheckIn.length ? true : false
         };
       })
     );
@@ -1692,7 +1700,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+          "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -1984,7 +1992,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
             : "",
           //update spare part information in callback table
           sparePartDetails: sparePartRequestedByEngg,
-          previousServiceId:serviceId
+          previousServiceId: serviceId
         });
       }
       if (checkitItService) {
@@ -1998,7 +2006,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
             : "",
           //update spare part information in service table
           sparePartDetails: sparePartRequestedByEngg,
-          previousServiceId:serviceId
+          previousServiceId: serviceId
         });
       }
     }

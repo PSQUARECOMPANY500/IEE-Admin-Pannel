@@ -46,7 +46,6 @@ console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
   const [currentengImg, setCurrentEngImg] = useState(null);
   const [enggObjectId, setEnggObjectId] = useState(null);
   const [sparePartsCount, setsparePartsCount] = useState(0);
-  const [screenSize, setScree] = useState(null);
 
   const [onBackPress, setOnbackPress] = useState(false);
 

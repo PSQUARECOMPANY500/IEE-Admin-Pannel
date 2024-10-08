@@ -3898,7 +3898,7 @@ footer a:hover {
 }
 
 .switch-button-hover {
-  color: #f8ac1d!important;
+  color: #f8ac1d !important;
   background: #fef3de;
   transition: all 0.5s;
   cursor: pointer;
@@ -5075,6 +5075,33 @@ footer a:hover {
   font-size: 2rem;
   color: #202020;
   z-index: 999999999999999999;
+}
+
+.Arrow-engeeniersattendancecardleft {
+  position: absolute;
+  right: 0%;
+  /* display: none; */
+  top: 45%;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #202020;
+  z-index: 999999999999999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+
+.Arrow-engeeniersattendancecardRight {
+  width: fit-content;
+  left: 0%;
+}
+
+.Arrow-engeeniersattendancecardleft:hover {
+  background: #f8ac1d;
+  color: white;
 }
 
 .engeeniersattendancecard-right-inner {
@@ -8824,7 +8851,7 @@ element.style {
 
 /* ---------------------edit engg form------------------------------ */
 
-.buttoncssTricks{
+.buttoncssTricks {
   background: #0000;
   border: 1px solid #f8ac1d;
   border-radius: 5px;
@@ -8836,14 +8863,15 @@ element.style {
   transition-delay: .1s
 }
 
-.buttoncssTricks:hover{
+.buttoncssTricks:hover {
   background: #f8ac1d;
   color: #000;
 }
+
 /* --------------------------------------------------- */
 
 
-   
+
 /* CSS */
 .button-69,
 .button-69-cancel {
@@ -10194,6 +10222,10 @@ a[href^="http://maps.google.com/maps"] {
     padding: 0 1rem;
     overflow: hidden;
   }
+
+  .sub-menu-wrap {
+    width: 190px;
+  }
 }
 
 .logo-heading {
@@ -10755,16 +10787,3 @@ a[href^="http://maps.google.com/maps"] {
   width: 90%;
   margin-top: 8px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
