@@ -2,7 +2,6 @@ import axios from "axios";
 import config from "../../config";
 
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
@@ -623,7 +622,7 @@ export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
-  
+
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,
@@ -2033,15 +2032,15 @@ export const getEnggLocationCoordinatesAction = (enggId) => {
 // ----------------------------------------------------------------------------------------------------------------------------
 //action to get teh Engg corrdinates to shosws on map Model
 
-export const getEnggCoordinatesForMapModalAction = (enggId,date) => {
+export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
   try {
-   return async (dispatch) => {
-    const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
-    dispatch({
-      type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
-      payload: response.data,
-    })
-  }
+    return async (dispatch) => {
+      const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
+      dispatch({
+        type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
+        payload: response.data,
+      })
+    }
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
   }

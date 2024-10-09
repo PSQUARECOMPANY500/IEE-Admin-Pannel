@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -10,13 +10,11 @@ import { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import 'react-toastify/dist/ReactToastify.css';
 import store from './ReduxSetup/Store';
-import Joyride from 'react-joyride';
-import { walkThroughSteps } from './utils/walkThrough';
+// import Joyride from 'react-joyride';
+// import { walkThroughSteps } from './utils/walkThrough';
 
 function RootComponent() {
   // const [run, setRun] = useState(false);
-
-  
 
   // const handleWalkthroughCallback = (data) => {
   //   const { status } = data;

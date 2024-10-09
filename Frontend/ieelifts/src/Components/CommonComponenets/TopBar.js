@@ -28,6 +28,7 @@ import {
 } from "../../ReduxSetup/Actions/AdminActions";
 import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
 import CancelNotificationSection from "../AdminPannel/Component/DashboardSubComponent/CancelNotificationSection";
+import WalkthroughWrapper from "../../Walkthrough/WalkthroughWrapper";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -253,15 +254,13 @@ const TopBar = (props) => {
 
   return (
     <div className="top-bar">
+      {/* <WalkthroughWrapper index={1} top={"17"} left={"15"}> */}
       <div
-        // className="left-side-heading"
         className={props.isOpen ? "left-side-heading left-side-heading-open" : "left-side-heading left-side-heading-close"}
-      // style={{
-      //   marginLeft: props.isOpen ? "0%" : "-9.5rem",
-      // }}
       >
         <p>{props.heading}</p>
       </div>
+      {/* </WalkthroughWrapper> */}
 
       <div className="right-side-icons">
         {/* <div>
