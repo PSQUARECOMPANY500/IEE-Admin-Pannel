@@ -101,28 +101,32 @@ export const CLEAR_CLIENT_FORM_DATA = "CLEAR_CLIENT_FORM_DATA";
 export const ADD_TODO = "ADD_TODO";
 export const GET_TODO = "GET_TODO";
 export const UPDATE_TODO_DATA = "UPDATE_TODO_DATA";
-export const DELETE_TODO = "DELETE_TODO"
-export const JON_MEMBERSHIP = "JON_MEMBERSHIP"
+export const DELETE_TODO = "DELETE_TODO";
+export const JON_MEMBERSHIP = "JON_MEMBERSHIP";
 
+export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE =
+  "UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE";
 
-export const UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE = 'UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE'
+export const GET_ALL_NOTIFICATIONS = "GET_ALL_NOTIFICATIONS";
 
-export const GET_ALL_NOTIFICATIONS = 'GET_ALL_NOTIFICATIONS'
+export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA =
+  "GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA";
 
-export const GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA = 'GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA'
+export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING =
+  "CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING";
 
-
-export const CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING = 'CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING'
-
-export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST = "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST"
-export const GET_ALL_SOS = "GET_ALL_SOS"
-export const update_SoS_Status = "update_SoS_Status"
-export const SoS_Available_Engineer = "SoS_Available_Engineer"
+export const UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST =
+  "UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST";
+export const GET_ALL_SOS = "GET_ALL_SOS";
+export const update_SoS_Status = "update_SoS_Status";
+export const SoS_Available_Engineer = "SoS_Available_Engineer";
 export const CLEAR_SOS = "CLEAR_SOS";
 
-export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH = "GET_ENGG_LOCATION_COORDINATES_FOR_PATH"
+export const GET_ENGG_LOCATION_COORDINATES_FOR_PATH =
+  "GET_ENGG_LOCATION_COORDINATES_FOR_PATH";
 
-export const GET_ENGG_COORDINATES_FOR_MAP_MODAL = "GET_ENGG_COORDINATES_FOR_MAP_MODAL"
+export const GET_ENGG_COORDINATES_FOR_MAP_MODAL =
+  "GET_ENGG_COORDINATES_FOR_MAP_MODAL";
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // by preet 05/04/2024
@@ -516,7 +520,9 @@ export const fetchEnggDetailAction = (EnggId) => {
 export const fetchChecklistAction = (type) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getCheckList/${type}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getCheckList/${type}`
+      );
       dispatch({
         type: GET_ALL_CHECKLIST,
         payload: response.data,
@@ -622,8 +628,10 @@ export const requestAssignCallbackDetail = (callbackId) => {
 export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
-  
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggLocationDetail`
+      );
+
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
         payload: response.data?.combinedData,
@@ -665,9 +673,8 @@ export const settingJOBORDER = (jon) => {
     } catch (error) {
       console.log("error while fetching data", error);
     }
-  }
-}
-
+  };
+};
 
 export const requestLimitedClientDataAction = async (
   dispatch,
@@ -814,19 +821,17 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 export const getClients = (page) => {
-
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/AllClients?limit=16&page=${page}`
+      );
 
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,
       });
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
   };
 };
 
@@ -848,7 +853,7 @@ export const getfilteredData = (filterCondition) => {
         type: GET_FILTER_DATA,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -871,7 +876,7 @@ export const changeLayout = (type, to) => {
         default:
           break;
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -885,7 +890,7 @@ export const getFilterLocation = () => {
         type: GET_FILTER_LOCATIONS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -899,7 +904,7 @@ export const getEngineerNames = () => {
         type: GET_Engineer_Name,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -925,7 +930,7 @@ export const searchClients = (searchTerm) => {
         type: GET_SEARCHED_CLIENTS,
         payload: response.data,
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -936,7 +941,7 @@ export const membershipLayoutButton = (button) => {
         type: CHANGE_MEMBERSHIP_LAYOUT_BUTTON,
         payload: { button },
       });
-    } catch (error) { }
+    } catch (error) {}
   };
 };
 
@@ -1212,6 +1217,7 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
       const response = await axios.get(
         `${config.apiUrl}/admin/fetchEnggAttendance/${ServiceEnggId}/${selectedDate}`
       );
+
       dispatch({
         type: "GET_ENGINEER_ATTENDANCE",
         payload: response.data,
@@ -1236,11 +1242,12 @@ export const getEngineerAttendance = (ServiceEnggId, selectedDate) => {
 //   }
 // };
 
-
 export const getNotificationDataAction = () => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getNotification`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getNotification`
+      );
       dispatch({
         type: GET_ALL_NOTIFICATIONS,
         payload: response.data,
@@ -1248,16 +1255,8 @@ export const getNotificationDataAction = () => {
     } catch (error) {
       console.log("error while fetching Notification data", error);
     }
-  }
-}
-
-
-
-
-
-
-
-
+  };
+};
 
 //-------------------------------------------------------------------------------------------------------
 
@@ -1285,7 +1284,8 @@ export const getadminReportData = (callbackId) => {
   };
 };
 
-export const ReportCrouserHandler = (Index, IsOpen) => {             // TODO:
+export const ReportCrouserHandler = (Index, IsOpen) => {
+  // TODO:
   return async (dispatch) => {
     dispatch({
       type: REPORT_CROUSER_HANDLER,
@@ -1647,7 +1647,7 @@ export const engSearchHandler = (Engkey) => {
     type: ENGINEER_SEARCH_HANDLER_STATE,
     payload: { Engkey },
   };
-}
+};
 
 //-------------------Rahul Kumar-----------------------
 export const addTodo = async (todo) => {
@@ -1716,35 +1716,37 @@ export const deletedTodo = (flag) => {
       dispatch({
         type: DELETE_TODO,
         payload: {
-          flag: flag
-        }
-      })
+          flag: flag,
+        },
+      });
     } catch (err) {
       console.log("error while updating delete flag", err);
     }
-  }
-}
-
+  };
+};
 
 export const getTodoById = async (id) => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/todo/getTodoById/${id}`)
+    const response = await axios.get(
+      `${config.apiUrl}/admin/todo/getTodoById/${id}`
+    );
     return response.data;
   } catch (err) {
     console.log("error while getting the TodoById", err);
   }
-}
+};
 
 export const updateTodoDataById = async (id, todo) => {
   try {
-    const response = await axios.put(`${config.apiUrl}/admin/todo/updateTodoById/${id}`, { todo })
+    const response = await axios.put(
+      `${config.apiUrl}/admin/todo/updateTodoById/${id}`,
+      { todo }
+    );
     return response;
   } catch (err) {
     console.log("error while updating the TodoById", err);
   }
-}
-
-
+};
 
 export const offerDiscountByServiceId = async (
   JobOrderNumber,
@@ -1768,49 +1770,47 @@ export const offerDiscountByServiceId = async (
   }
 };
 
-
 export const getAllClient = async () => {
   try {
-    const response = await axios.get(`${config.apiUrl}/admin/getAllClients`)
+    const response = await axios.get(`${config.apiUrl}/admin/getAllClients`);
     return response.data;
   } catch (err) {
     console.log("error while fetching all clients", err);
   }
-}
+};
 // ----------------------action of Offer discount by service id---------------------------
-
-
 
 //-------------- action to handle upgradeMembership by the admin ----------------------
 
 export const upgradeClientMembershipByAdminPannelAction = (formData) => {
   return async (dispatch) => {
     try {
-      const reponse = await axios.post(`${config.apiUrl}/admin/upgradClientMembership`,
+      const reponse = await axios.post(
+        `${config.apiUrl}/admin/upgradClientMembership`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
-      )
+      );
       dispatch({
         type: UPGRADE_CLIENT_MEMBERSHIP_BY_ADMIN_STATE,
         payload: reponse.data,
-      })
+      });
 
-      console.log("upgrade membership by client", reponse)
+      console.log("upgrade membership by client", reponse);
       if (reponse.status === 200) {
         toast.success(reponse.data.message);
       }
-
     } catch (error) {
-      console.log('error while fetching upgrade client memebershiop buy admin pannel', error);
+      console.log(
+        "error while fetching upgrade client memebershiop buy admin pannel",
+        error
+      );
     }
-  }
-}
-
-
+  };
+};
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //action to handle get ALL client cancel service/callback data
@@ -1819,70 +1819,71 @@ export const getClientCancelServiceCallbackDataAction = () => {
   //  TODO: start here
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/client/getCallbackOrServiceCancelledRequests`)
+      const response = await axios.get(
+        `${config.apiUrl}/client/getCallbackOrServiceCancelledRequests`
+      );
 
       dispatch({
         type: GET_ALL_CLIENT_CANCEL_SERVICE_CALLBACK_DATA,
         payload: response.data,
-      })
-
-
+      });
     } catch (error) {
-      console.error("error while fetching client cancel service")
+      console.error("error while fetching client cancel service");
     }
-  }
-}
+  };
+};
 
 //-------------------------------------------------------------------------------------------------------------------------------
 
 //action to handle cancel Engg callback/serivce request
 
-export const cancelEnggServiceRequestFormShiftingAction = (isCallback, callbackId, EnggId) => {
+export const cancelEnggServiceRequestFormShiftingAction = (
+  isCallback,
+  callbackId,
+  EnggId
+) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: CANCEL_ENGG_SERVICE_REQUEST_FORM_SHIFTTING,
         payload: { isCallback, callbackId, EnggId },
-      })
+      });
     } catch (error) {
-      console.log("error while fetching cancel service request form shifting")
+      console.log("error while fetching cancel service request form shifting");
     }
-  }
-}
-
+  };
+};
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 // action to update Status Of Cancel Service And Callback Request
 
-export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) => {
+export const updateStatusOfCancelServiceAndCallbackRequestAction = (
+  serviceId
+) => {
   // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",serviceId)
   return async (dispatch) => {
     try {
-      const response = await axios.post(`${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`, {
-        serviceId
-      })
+      const response = await axios.post(
+        `${config.apiUrl}/admin/updateStatusOfCancelServiceAndCallbackRequest`,
+        {
+          serviceId,
+        }
+      );
 
       dispatch({
         type: UPDATE_STATUS_OF_CANCEL_SERVICE_AND_CALLBACK_REQUEST,
         payload: response.data,
-      })
+      });
 
       // console.log("update the status of service and callback currecnt console",response)
-
     } catch (error) {
-      console.log("error to update Status Of Cancel Service And Callback Request", error)
+      console.log(
+        "error to update Status Of Cancel Service And Callback Request",
+        error
+      );
     }
-  }
-}
-
-
-
-
-
-
-
-
-
+  };
+};
 
 //----------------------------------------------------------------------------------------------------------------------
 //custom hook for cancel Service Request Or Callback
@@ -1890,14 +1891,17 @@ export const updateStatusOfCancelServiceAndCallbackRequestAction = (serviceId) =
 export const cancelServiceRequestOrCallback = async (serviceId) => {
   console.log("cancel service request", serviceId);
   try {
-    const response = await axios.post(`${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`, {
-      serviceId
-    })
+    const response = await axios.post(
+      `${config.apiUrl}/admin/cancelServiceRequestOrCallbackByAdmin`,
+      {
+        serviceId,
+      }
+    );
     return response.data;
   } catch (error) {
-    console.log("error to cancel Service Request or callback request", error)
+    console.log("error to cancel Service Request or callback request", error);
   }
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------{armaan-dev}------------------------------------------------------------
@@ -1905,7 +1909,9 @@ export const cancelServiceRequestOrCallback = async (serviceId) => {
 export const getSoS = (page, limit) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getSoSRequests?limit=${limit}&page=${page}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getSoSRequests?limit=${limit}&page=${page}`
+      );
 
       dispatch({
         type: GET_ALL_SOS,
@@ -1927,12 +1933,12 @@ export const clearSoS = () => ({
 export const updateSOSStatus = (jon, status, _id, enggName) => {
   return async (dispatch) => {
     try {
-      if ((jon === undefined) && (status === undefined) && (_id === undefined)) {
+      if (jon === undefined && status === undefined && _id === undefined) {
         dispatch({
           type: update_SoS_Status,
           payload: {},
         });
-        return
+        return;
       }
 
       if (status === "RaisedCallback" || status === "Assigned") {
@@ -1942,15 +1948,20 @@ export const updateSOSStatus = (jon, status, _id, enggName) => {
             success: true,
             message: "Status has been updated successfully",
             id: _id,
-            status: status === "RaisedCallback" ? "falseAlarm" : enggName
+            status: status === "RaisedCallback" ? "falseAlarm" : enggName,
           },
         });
-        return
+        return;
       }
 
-      const response = await axios.put(`${config.apiUrl}/admin/changeStatusSoS`, {
-        jon, status, _id
-      });
+      const response = await axios.put(
+        `${config.apiUrl}/admin/changeStatusSoS`,
+        {
+          jon,
+          status,
+          _id,
+        }
+      );
       if (response.data.success) {
         dispatch({
           type: update_SoS_Status,
@@ -1962,55 +1973,58 @@ export const updateSOSStatus = (jon, status, _id, enggName) => {
           payload: {},
         });
       }
-
     } catch (error) {
       console.error("Error in getting SOS Requests:", error.message || error);
       throw error; // Re-throw the error so the caller can handle it
     }
   };
-}
+};
 
 export const findAvailableEngineerForSOS = (SOSID, slot) => {
   return async (dispatch) => {
-    if (SOSID === undefined || SOSID === null || slot === undefined || slot === null) {
+    if (
+      SOSID === undefined ||
+      SOSID === null ||
+      slot === undefined ||
+      slot === null
+    ) {
       dispatch({
         type: SoS_Available_Engineer,
-        payload: {}
-      })
+        payload: {},
+      });
     }
 
     const response = await axios.get(`${config.apiUrl}/admin/FindEngineerSOS`, {
       params: {
-        SOSID, slot
-      }
+        SOSID,
+        slot,
+      },
     });
     dispatch({
       type: SoS_Available_Engineer,
-      payload: response.data
-    })
-  }
-}
+      payload: response.data,
+    });
+  };
+};
 
 export const assignSoSRequest = async (SoSId, EnggId) => {
   try {
-    const response = await axios.put(`${config.apiUrl}/admin/assignSoSRequest`, {
-      SoSId,
-      EnggId
-    });
+    const response = await axios.put(
+      `${config.apiUrl}/admin/assignSoSRequest`,
+      {
+        SoSId,
+        EnggId,
+      }
+    );
     return response;
   } catch (error) {
     console.error("Error in assigning SOS Requests:", error.message || error);
     throw error;
   }
-}
-
-
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------{armaan-dev}------------------------------------------------------------
-
-
-
 
 // action to handle get engg location coordinates to make path on map
 
@@ -2018,31 +2032,34 @@ export const getEnggLocationCoordinatesAction = (enggId) => {
   console.log("engg ID:  in action ", enggId);
   try {
     return async (dispatch) => {
-      const response = await axios.get(`${config.apiUrl}/serviceEngg/getEnggCoordinates/${enggId}`)
+      const response = await axios.get(
+        `${config.apiUrl}/serviceEngg/getEnggCoordinates/${enggId}`
+      );
       dispatch({
         type: GET_ENGG_LOCATION_COORDINATES_FOR_PATH,
         payload: response.data,
-      })
-    }
+      });
+    };
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
   }
-}
-
+};
 
 // ----------------------------------------------------------------------------------------------------------------------------
 //action to get teh Engg corrdinates to shosws on map Model
 
-export const getEnggCoordinatesForMapModalAction = (enggId,date) => {
+export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
   try {
-   return async (dispatch) => {
-    const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
-    dispatch({
-      type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
-      payload: response.data,
-    })
-  }
+    return async (dispatch) => {
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`
+      );
+      dispatch({
+        type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
+        payload: response.data,
+      });
+    };
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
   }
-}
+};
