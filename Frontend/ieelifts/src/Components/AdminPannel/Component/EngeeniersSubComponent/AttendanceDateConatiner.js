@@ -109,27 +109,54 @@ const AttendanceDateConatiner = ({ date, engID }) => {
   function convertTo12HourFormat(time) {
     const [hours, minutes] = time.split(":").map(Number);
 
-    const normalizedHour = hours % 12;
+    let period = hours >= 12 ? "p.m" : "a.m";
+    const normalizedHour = hours % 12 === 0 ? 12 : hours % 12;
+    if (hours / 12 === 1) {
+      period = "p.m";
+    } else if (hours / 12 === 2) {
+      period = "a.m";
+    }
     const formattedHour =
       normalizedHour < 10 ? `0${normalizedHour}` : normalizedHour;
 
-    return `${formattedHour}:${minutes < 10 ? "0" + minutes : minutes}`;
+    return `${formattedHour}:${
+      minutes < 10 ? "0" + minutes : minutes
+    } ${period}`;
   }
 
   const renderDates = () => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {
-      const checkinTime =
+      let checkinTime = "";
+
+      if (
         attendance &&
         attendance[i]?.Check_In &&
-        attendance[i]?.Check_In?.time &&
-        convertTo24HourFormat(attendance[i].Check_In.time.substring(0, 5));
+        attendance[i]?.Check_In?.time
+      ) {
+        checkinTime = convertTo24HourFormat(
+          attendance[i].Check_In.time.substring(0, 5)
+        );
+      }
+      let [checkinhours, minutes] = [null, null];
+      if (checkinTime) {
+        [checkinhours, minutes] = checkinTime.split(":").map(Number);
+      }
 
-      const checkoutTime =
+      let checkoutTime = "";
+      if (
         attendance &&
         attendance[i]?.Check_Out &&
-        attendance[i]?.Check_Out?.time &&
-        convertTo24HourFormat(attendance[i].Check_Out.time.substring(0, 5));
+        attendance[i]?.Check_Out?.time
+      ) {
+        checkoutTime = convertTo24HourFormat(
+          attendance[i].Check_Out.time.substring(0, 5)
+        );
+      }
+      let [checkouthours, minutes2] = [null, null];
+      if (checkoutTime) {
+        [checkouthours, minutes2] = checkoutTime.split(":").map(Number);
+      }
 
       renderedDates.push(
         <>
@@ -152,11 +179,10 @@ const AttendanceDateConatiner = ({ date, engID }) => {
                 {attendance &&
                 attendance[i]?.Check_In &&
                 attendance[i]?.Check_In?.time
-                  ? convertTo24HourFormat(
+                  ? convertTo12HourFormat(
                       attendance[i].Check_In.time.substring(0, 5)
                     )
                   : "--"}
-       
               </h5>
               {/* By Paras bug fix ended*/}
               <h5>Check In</h5>
@@ -168,11 +194,10 @@ const AttendanceDateConatiner = ({ date, engID }) => {
                 {attendance &&
                 attendance[i]?.Check_Out &&
                 attendance[i]?.Check_Out?.time
-                  ? convertTo24HourFormat(
+                  ? convertTo12HourFormat(
                       attendance[i].Check_Out.time.substring(0, 5)
                     )
                   : "--"}
-         
               </h5>
               {/* By Paras bug fix ended*/}
               <h5>Check out</h5>
