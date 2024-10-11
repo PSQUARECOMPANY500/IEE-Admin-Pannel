@@ -138,7 +138,10 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
+    console.log("this is m,y response is asmin action ",response);
     return response;
+
+
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -2045,3 +2048,5 @@ export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
     console.log("error while geting the Engg coordinates", error);
   }
 }
+
+
