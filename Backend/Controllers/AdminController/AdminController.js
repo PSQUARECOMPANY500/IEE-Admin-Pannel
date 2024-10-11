@@ -79,8 +79,8 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const BasicDetail = await Promise.all(
       EnggDetail.map(async (item) => {
         // console.log("this is data inside the service Engg crouser>>>>>>>> ",item);
-       //fetch data engg break time
-        const enggBreakTimining = await EnggAttendanceServiceRecord.find({ServiceEnggId:item.EnggId , Date:currentDate.toLocaleDateString("en-GB")})
+        //fetch data engg break time
+        const enggBreakTimining = await EnggAttendanceServiceRecord.find({ ServiceEnggId: item.EnggId, Date: currentDate.toLocaleDateString("en-GB") })
         const enggRating = await EnggRating.find({
           ServiceEnggId: item.EnggId,
         });
@@ -2932,13 +2932,13 @@ module.exports.postElevatorForm = async (req, res) => {
       ProfileImage:
         "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
     });
- 
+
 
     // upadte the ionformation also in "registerWithNumber"  ----------------
-    const checkExistingClientOrNot = await registerWithMobileNumber.findOne({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
+    const checkExistingClientOrNot = await registerWithMobileNumber.findOne({ PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber });
     console.log("login ---------------------- save data", checkExistingClientOrNot);
-    if(!checkExistingClientOrNot){
-      await registerWithMobileNumber.create({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
+    if (!checkExistingClientOrNot) {
+      await registerWithMobileNumber.create({ PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber });
     }
     //-----------------------------------------------------------------------
 
@@ -4437,34 +4437,34 @@ module.exports.assignSoSRequest = async (req, res) => {
 
 // get engg cordinates on the basics of date and its EnggID to show in map modal
 
-module.exports.getEnggCoorinatesToShowOnMapModal = async (req,res) => {
+module.exports.getEnggCoorinatesToShowOnMapModal = async (req, res) => {
   try {
 
-    const {ServiceEnggId } = req.params;
+    const { ServiceEnggId } = req.params;
     const { AttendanceCreatedDate } = req.query;
 
     const ModifyAttendanceCreatedDate = AttendanceCreatedDate.replace(/^0+/, '').replace(/\/0+/, '/');  //this code is used to eleminate the leading Zero's
 
 
-    const engineerCoordinates = await EngineerLocation.findOne({ServiceEnggId, AttendanceCreatedDate:ModifyAttendanceCreatedDate});
+    const engineerCoordinates = await EngineerLocation.findOne({ ServiceEnggId, AttendanceCreatedDate: ModifyAttendanceCreatedDate });
     if (!engineerCoordinates) {
-      return res.status(200).json({message: "Engineer coordinates not found for the given date and ID."});
+      return res.status(200).json({ message: "Engineer coordinates not found for the given date and ID." });
     }
 
     let coordinatesToSend = []
-    const coordinates = engineerCoordinates &&  engineerCoordinates.currentLocation && engineerCoordinates.currentLocation.coordinates.map((item)=> {
+    const coordinates = engineerCoordinates && engineerCoordinates.currentLocation && engineerCoordinates.currentLocation.coordinates.map((item) => {
       let coordinate = item?.origin?.split(",")
       let lat = parseFloat(coordinate[0])
       let lng = parseFloat(coordinate[1])
       coordinatesToSend.push({ lat, lng })
-   })
-    
-    
-    res.status(200).json({coordinates:coordinatesToSend})
+    })
+
+
+    res.status(200).json({ coordinates: coordinatesToSend })
 
   } catch (error) {
     console.log("this is eror while fetching the Engg Coordinates to show ohn modal ", error)
-    return res.status(500).json({message: "Internal server error: " + error.message,});
+    return res.status(500).json({ message: "Internal server error: " + error.message, });
   }
 }
 
@@ -4505,113 +4505,181 @@ module.exports.getEnggCoorinatesToShowOnMapModal = async (req,res) => {
 
 
 
+// const generateDailyAttendancePDF = require('../../Utils/EngineerAttendence/generateDailyAttendancePDF');
+// const path = require('path');
 
+// // Api for getting daily attendence of Engineerss
+// module.exports.getEngineerAttendance = async (req, res) => {
+//   try {
+//     // Getting engineer details
+//     const EngineerIDs = await ServiceEnggBasicSchema.find().select("EnggId EnggName EnggLastName");
 
+//     const todayDate = moment(
+//       new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
+//     ).subtract(1, 'days').format("DD/MM/YYYY");
 
+//     // Getting current date attendance
+//     const todayAttendances = await EnggAttendanceServiceRecord.find({ Date: todayDate }).select("ServiceEnggId Check_In Check_Out");
 
+//     // Making the Data Format
+//     const EngineerData = await Promise.all(
+//       EngineerIDs.map(async (engineer, index) => {
+//         const engineerAttendence = todayAttendances.find(attendance => attendance.ServiceEnggId === engineer.EnggId);
+
+//         let totalWorkingHours = null;
+//         // Calculating the total working hours
+//         if (engineerAttendence && engineerAttendence.Check_In.time && engineerAttendence.Check_Out.time) {
+//           const checkIn = moment(engineerAttendence?.Check_In, "HH:mm:ss");
+//           const checkOut = moment(engineerAttendence?.Check_Out, "HH:mm:ss");
+//           const duration = moment.duration(checkOut.diff(checkIn));
+//           const hours = Math.floor(duration.asMinutes()) % 60;
+//           const minutes = Math.floor(duration.asSeconds()) % 60;
+
+//           totalWorkingHours = `${hours}:${minutes}`;
+//         }
+//         console.log(" engineerAttendence.Check_In.time: ", engineerAttendence?.Check_In.time)
+//         return {
+//           engineerId: engineer.EnggId,
+//           engineerName: `${engineer.EnggName} ${engineer.EnggLastName}`,
+//           checkInTime: engineerAttendence?.Check_In?.time || "--",
+//           checkOutTime: engineerAttendence?.Check_Out?.time || "--",
+//           totalWorkingHours: totalWorkingHours || "--",
+//           checkInFrontImage: engineerAttendence?.Check_In.time !== undefined
+//             ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_In.engPhoto?.split(" ")[0]}`
+//             : "--",
+//           checkInBackImage: engineerAttendence?.Check_In.time !== undefined
+//             ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_In.engPhoto?.split(" ")[1]}`
+//             : "--",
+//           checkOutFrontImage: engineerAttendence?.Check_Out.time !== undefined
+//             ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_Out.engPhoto?.split(" ")[0]}`
+//             : "--",
+//           checkOutBackImage: engineerAttendence?.Check_Out.time !== undefined
+//             ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_Out.engPhoto?.split(" ")[1]}`
+//             : "--",
+//         };
+//       })
+//     );
+//     const pdfFilePath = path.join(__dirname, '../../public/EngineerDailyAttendanceFolder', 'EngineerAttendance.pdf');
+
+//     await generateDailyAttendancePDF(EngineerData, todayDate, pdfFilePath);
+
+//     // res.status(200).json({
+//     //   EngineerData
+//     // })
+//     res.download(pdfFilePath, (err) => {
+//       if (err) {
+//         console.error(err);
+//         return res.status(500).json({ success: false, message: 'Error downloading file.' });
+//       }
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ success: false, message: "Internal server error: " + error.message });
+//   }
+// };
 
 
 
 
 // api for putting the memberships
 
-module.exports.clientMembership = async () => {
-  try {
-    const array = [
-      "1901017",
-      "1901018",
-      "1901019",
-      "1901020",
-      "1901021",
-      "1901022",
-      "1901023",
-      "1902024",
-      "1902025",
-      "1902026",
-      "1902027",
-      "1902028",
-      "1902029",
-      "1902030",
-      "1902031",
-      "1902032",
-      "1902033",
-      "1902034",
-      "1902035",
-      "1902036",
-      "1902037",
-      "1902038",
-      "1902039",
-      "1902040",
-      "1902041",
-      "1903042",
-      "1903043",
-      "1903044",
-      "1903045",
-      "1903046",
-      "1903047",
-      "1903048",
-      "1903049",
-      "1903050",
-      "1903051",
-      "1904052",
-      "1904053",
-      "1904054",
-      "1904055",
-      "1904056",
-      "1905057",
-      "1905058",
-      "1905059",
-      "1905060",
-      "1905061",
-      "1905062",
-      "1906063",
-      "1906064",
-      "1907065",
-      "1907066",
-      "1908067",
-      "1908068",
-      "1908069",
-      "1908070",
-      "1908071",
-      "1908072",
-      "1908073",
-      "1909074",
-      "1909075",
-      "1909076",
-      "1909077",
-      "1909078",
-      "1909079",
-      "1910080",
-      "1910081",
-      "1910082",
-      "1910083",
-      "1911084",
-      "1911085",
-      "1911086",
-      "1911087",
-      "1911088",
-      "1911089",
-      "1911090",
-      "1911091",
-      "1911092",
-      "1911093",
-      "1911094",
-      "1911095",
-      "1911096",
-      "1911097",
-      "1912098",
-      "1912099",
-      "1912100",
-      "1912101",
-      "1912102",
-      "1912103",
-      "1912104",
-      "1912105",
-      "1912106",
-      "1912107",
-      "1912108",
-    ];
+// module.exports.clientMembership = async () => {
+//   try {
+//     const array = [
+//       "1901017",
+//       "1901018",
+//       "1901019",
+//       "1901020",
+//       "1901021",
+//       "1901022",
+//       "1901023",
+//       "1902024",
+//       "1902025",
+//       "1902026",
+//       "1902027",
+//       "1902028",
+//       "1902029",
+//       "1902030",
+//       "1902031",
+//       "1902032",
+//       "1902033",
+//       "1902034",
+//       "1902035",
+//       "1902036",
+//       "1902037",
+//       "1902038",
+//       "1902039",
+//       "1902040",
+//       "1902041",
+//       "1903042",
+//       "1903043",
+//       "1903044",
+//       "1903045",
+//       "1903046",
+//       "1903047",
+//       "1903048",
+//       "1903049",
+//       "1903050",
+//       "1903051",
+//       "1904052",
+//       "1904053",
+//       "1904054",
+//       "1904055",
+//       "1904056",
+//       "1905057",
+//       "1905058",
+//       "1905059",
+//       "1905060",
+//       "1905061",
+//       "1905062",
+//       "1906063",
+//       "1906064",
+//       "1907065",
+//       "1907066",
+//       "1908067",
+//       "1908068",
+//       "1908069",
+//       "1908070",
+//       "1908071",
+//       "1908072",
+//       "1908073",
+//       "1909074",
+//       "1909075",
+//       "1909076",
+//       "1909077",
+//       "1909078",
+//       "1909079",
+//       "1910080",
+//       "1910081",
+//       "1910082",
+//       "1910083",
+//       "1911084",
+//       "1911085",
+//       "1911086",
+//       "1911087",
+//       "1911088",
+//       "1911089",
+//       "1911090",
+//       "1911091",
+//       "1911092",
+//       "1911093",
+//       "1911094",
+//       "1911095",
+//       "1911096",
+//       "1911097",
+//       "1912098",
+//       "1912099",
+//       "1912100",
+//       "1912101",
+//       "1912102",
+//       "1912103",
+//       "1912104",
+//       "1912105",
+//       "1912106",
+//       "1912107",
+//       "1912108",
+//     ];
 
-    array.forEach(async (job) => { });
-  } catch (error) { }
-};
+//     array.forEach(async (job) => { });
+//   } catch (error) { }
+// };

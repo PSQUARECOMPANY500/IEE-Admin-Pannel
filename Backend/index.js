@@ -11,9 +11,10 @@ const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
 const { watchNotifications } = require("./Notification/notification");
+const cronjob = require("./Utils/EngineerAttendence/EngineerAttendenceCronJob")
 
 const path = require("path");
-
+cronjob()
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
