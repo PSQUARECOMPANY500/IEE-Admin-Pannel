@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import store from './ReduxSetup/Store';
 // import Joyride from 'react-joyride';
 // import { walkThroughSteps } from './utils/walkThrough';
+// import WalkthroughCustomTooltip from './Walkthrough/WalkthroughCustomTooltip';
 
 function RootComponent() {
   // const [run, setRun] = useState(false);
@@ -22,16 +23,17 @@ function RootComponent() {
   //   console.log("status", status);
   //   if (finishedStatuses.includes(status)) {
   //     // localStorage.setItem('walkthroughVisited', true);
+  //     document.body.style.overflow = 'auto';
   //   }
   // };
 
   // const getWalkthrough = localStorage.getItem('walkthroughVisited');
 
-  // // const handleClickStart = () => {
+  // const handleClickStart = () => {
   //   setRun(true)
   // };
   // useEffect(() => {
-  //   if (!getWalkthrough && !run) {
+  //   if (!getWalkthrough && run) {
   //     document.body.style.overflow = 'hidden';
   //   } else {
   //     document.body.style.overflow = 'auto';
@@ -60,13 +62,14 @@ function RootComponent() {
           !getWalkthrough && (
             <Joyride
               steps={walkThroughSteps}
+              tooltipComponent={WalkthroughCustomTooltip}
               run={run}
               continuous
               showSkipButton
-              disableScrolling
+              // disableScrolling
               disableOverlayClose
               hideCloseButton
-              // spotlightPadding
+              spotlightPadding
               spotlightClicks
               callback={handleWalkthroughCallback}
               styles={{

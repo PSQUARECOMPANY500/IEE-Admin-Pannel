@@ -4,6 +4,7 @@ const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/Servi
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance")
 const moment = require("moment");
 
+// Calculating the total working hours
 const calculateTotalHours = (checkIn, checkOut, checkintw, checkouttw) => {
     if (!checkIn || !checkOut || checkintw === "--" || checkouttw === "--") return "--";
     let checkInTime = new Date(`2000-01-01T${checkIn}`);
@@ -25,7 +26,6 @@ const calculateTotalHours = (checkIn, checkOut, checkintw, checkouttw) => {
 };
 
 function convertTo24HourFormat(time) {
-    // console.log("convertTo24HourFormat", time);
     if (time !== undefined) {
         const [hours, minutes] = time.split(":").map(Number);
 
@@ -71,16 +71,8 @@ async function generateEngineerAttendance() {
                 const engineerAttendence = todayAttendances.find(attendance => attendance.ServiceEnggId === engineer.EnggId);
 
                 let totalWorkingHours = null;
-                // Calculating the total working hours
+
                 if (engineerAttendence && engineerAttendence.Check_In.time && engineerAttendence.Check_Out.time) {
-                    // const checkIn = moment(engineerAttendence?.Check_In, "HH:mm:ss");
-                    // const checkOut = moment(engineerAttendence?.Check_Out, "HH:mm:ss");
-                    // const duration = moment.duration(checkOut.diff(checkIn));
-                    // const hours = Math.floor(duration.asMinutes()) % 60;
-                    // const minutes = Math.floor(duration.asSeconds()) % 60;
-
-                    // totalWorkingHours = `${hours}:${minutes}`;
-
                     let checkIn = convertTo24HourFormat(engineerAttendence?.Check_In.time)
                     let checkOut = convertTo24HourFormat(engineerAttendence?.Check_Out.time)
                     totalWorkingHours = calculateTotalHours(engineerAttendence?.Check_In.time, engineerAttendence?.Check_Out.time, checkIn, checkOut);
