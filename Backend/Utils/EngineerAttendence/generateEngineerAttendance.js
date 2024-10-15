@@ -60,7 +60,7 @@ async function generateEngineerAttendance() {
 
         const todayDate = moment(
             new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
-        ).format("DD/MM/YYYY");
+        ).subtract(1,"days").format("DD/MM/YYYY");
 
         // Getting current date attendance
         const todayAttendances = await EnggAttendanceServiceRecord.find({ Date: todayDate }).select("ServiceEnggId Check_In Check_Out");

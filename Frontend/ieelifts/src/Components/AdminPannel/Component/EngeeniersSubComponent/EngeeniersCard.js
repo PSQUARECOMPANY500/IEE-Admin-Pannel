@@ -29,11 +29,11 @@ import "../../../../Assets/Engeeniers.css";
 const EngeeniersCard = () => {
   const navigate = useNavigate();
 
-const adminID = localStorage.getItem("adminData")
+  const adminID = localStorage.getItem("adminData")
 
-const decodeAdmin = jwtDecode(adminID);
+  const decodeAdmin = jwtDecode(adminID);
 
-console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
+  console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
 
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
@@ -235,12 +235,12 @@ console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
   };
 
   const handleSendMessage = async () => {
-    if (chatCreated?._id){
-    console.log("lllllllllllllllllll", messageData)
-    console.log("oooooooooooooooooo", chatCreated?._id)
-    const myNewMessage = await sendChatMessageAction(decodeAdmin.user._id, messageData, chatCreated?._id, "");   //TODO: it shoul be dynamically created  
+    if (chatCreated?._id) {
+      console.log("lllllllllllllllllll", messageData)
+      console.log("oooooooooooooooooo", chatCreated?._id)
+      const myNewMessage = await sendChatMessageAction(decodeAdmin.user._id, messageData, chatCreated?._id, "");   //TODO: it shoul be dynamically created  
 
-    console.log("333333333333333333333333", myNewMessage)
+      console.log("333333333333333333333333", myNewMessage)
 
     }
     setMessageData("");
@@ -384,24 +384,28 @@ console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
                     handleCurrentComponent("c1", 0);
                   }}
                   style={{ color: borderMergin === 0 && "#F8AC1DAD" }}
+                  id="Task"
                 >
                   Task History
                 </h5>
                 <h5
                   onClick={() => handleCurrentComponent("c2", 25.5)}
                   style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
-                >
+
+                  id="Attendence">
                   Attendence
                 </h5>
                 <h5
                   onClick={() => handleCurrentComponent("c3", 50)}
                   style={{ color: borderMergin === 32 && "#F8AC1DAD" }}
+                  id="Rating"
                 >
                   Rating
                 </h5>
                 <h5
                   onClick={() => handleCurrentComponent("c4", 75)}
                   style={{ color: borderMergin === 49 && "#F8AC1DAD" }}
+                  id="Spare"
                 >
                   Spare parts
                 </h5>
@@ -435,9 +439,9 @@ console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
 
                   {allMessages && allMessages?.length >= 0 ? (
                     allMessages?.map((item, index) => {
-                      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",item.Sender);
+                      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", item.Sender);
                       const senderId = decodeAdmin.user._id;
-                      const isCurrentUser =  item.Sender === senderId;                   //TODO: - in future the id is dynamic as come from login user
+                      const isCurrentUser = item.Sender === senderId;                   //TODO: - in future the id is dynamic as come from login user
                       return (
                         <div className={isCurrentUser ? "engchatmsg-sender-side" : ".engchatmsg-reciver-side"}>
                           <div className={isCurrentUser ? "engchatmsg-sender-message" : "engchatmsg-reciver-message"}>

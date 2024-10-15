@@ -325,7 +325,7 @@ const TopBar = (props) => {
         )}
 
         {location.pathname === "/Memberships" && (
-          <div className="top-icon" onClick={toggleGrid}>
+          <div className="top-icon" onClick={toggleGrid} id="MembershipViewChange">
             {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
         )}
@@ -345,7 +345,7 @@ const TopBar = (props) => {
               {showTicketFilter && <ClientFilterDropdown />}
             </div>
 
-            <div className="top-icon" onClick={clienttoggleGrid}>
+            <div className="top-icon" onClick={clienttoggleGrid} id="ClientViewChange">
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
           </>
