@@ -15,35 +15,35 @@ const s3 = new S3Client({
 
 
 
-const storage = multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
-  },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/ClientDocumentData/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-  },
-})
+// const storage = multerS3({
+//   s3: s3,
+//   bucket: 'ieelifts.in',
+//   metadata:(req, file, cb) => {
+//     cb(null, { fieldName: file.fieldname });
+//   },
+//   key: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1]; // Get file extension
+//     cb(null, `public/ClientDocumentData/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+//   },
+// })
 
+
+
+
+
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/ClientDocumentData');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    cb(null, `${file.originalname}-${Date.now()}.${parts}`);
+  },
+});
 
 const uploadClientData = multer({ storage: storage });
-
-
-
-
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, './public/ClientDocumentData');
-//   },
-//   filename: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1];
-//     cb(null, `${file.originalname}-${Date.now()}.${parts}`);
-//   },
-// });
-
 
 module.exports = uploadClientData;
 

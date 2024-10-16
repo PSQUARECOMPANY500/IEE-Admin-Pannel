@@ -33,7 +33,7 @@ const adminID = localStorage.getItem("adminData")
 
 const decodeAdmin = jwtDecode(adminID);
 
-console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
+// console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
 
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
@@ -236,11 +236,11 @@ console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
 
   const handleSendMessage = async () => {
     if (chatCreated?._id){
-    console.log("lllllllllllllllllll", messageData)
-    console.log("oooooooooooooooooo", chatCreated?._id)
+    // console.log("lllllllllllllllllll", messageData)
+    // console.log("oooooooooooooooooo", chatCreated?._id)
     const myNewMessage = await sendChatMessageAction(decodeAdmin.user._id, messageData, chatCreated?._id, "");   //TODO: it shoul be dynamically created  
 
-    console.log("333333333333333333333333", myNewMessage)
+    // console.log("333333333333333333333333", myNewMessage)
 
     }
     setMessageData("");

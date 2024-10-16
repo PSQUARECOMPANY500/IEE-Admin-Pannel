@@ -2050,3 +2050,23 @@ export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
 }
 
 
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------
+// custom action to handle the images get from S3 bucket through API
+
+export const getImagesFromS3Bucket = async (key) => {
+    try {
+      const response = await axios.get(`https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`);
+      return response;
+    } catch (error) {
+      console.error("Error while fetching images from S3 bucket:", error);
+    }
+  };

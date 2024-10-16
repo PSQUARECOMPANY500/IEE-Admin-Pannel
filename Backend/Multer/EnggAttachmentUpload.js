@@ -18,116 +18,116 @@ const s3 = new S3Client({
 
 
 
-const storage = multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
-  },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/EnggAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-  },
-})
+// const storage = multerS3({
+//   s3: s3,
+//   bucket: 'ieelifts.in',
+//   metadata:(req, file, cb) => {
+//     cb(null, { fieldName: file.fieldname });
+//   },
+//   key: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1]; // Get file extension
+//     cb(null, `public/EnggAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+//   },
+// })
 
-const uploaded = multer({ storage: storage });
 
 
 // ||||||||||||||||||||||||||||||||||||||||||||  multer setup older approach  |||||||||||||||||||||||||||||||||||||
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, './public/EnggAttachments');
-//   },
-//   filename: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1];
-//     cb(null, `${file.fieldname}-${Date.now()}.${parts}`);         // TODO:change to AWS S3 bucket URL
-//   },
-// });
-// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||||||
-
-
-
-
-
-
-
-
-
-const storageEdit = multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/EnggAttachments');
   },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/EnggAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    cb(null, `${file.fieldname}-${Date.now()}.${parts}`);         // TODO:change to AWS S3 bucket URL
+  },
+});
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||||||
+const uploaded = multer({ storage: storage });
+
+
+
+
+
+
+
+
+
+// const storageEdit = multerS3({
+//   s3: s3,
+//   bucket: 'ieelifts.in',
+//   metadata:(req, file, cb) => {
+//     cb(null, { fieldName: file.fieldname });
+//   },
+//   key: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1]; // Get file extension
+//     cb(null, `public/EnggAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+//   },
+// })
+
+
+
+// ||||||||||||||||||||||||||||||||||||||||||||  multer setup older approach  |||||||||||||||||||||||||||||||||||||
+
+const storageEdit = multer.diskStorage({
+  destination:(req,res,cb) => {
+    cb(null, './public/EnggAttachments');
+  },
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
   },
 })
+
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||||||
 
 const uploadEdit = multer({ storage: storageEdit });
 
 
-// ||||||||||||||||||||||||||||||||||||||||||||  multer setup older approach  |||||||||||||||||||||||||||||||||||||
 
-// const storageEdit = multer.diskStorage({
-//   destination:(req,res,cb) => {
-//     cb(null, './public/EnggAttachments');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const storageMembershipUpgradeBillByAdmin =  multerS3({
+//   s3: s3,
+//   bucket: 'ieelifts.in',
+//   metadata:(req, file, cb) => {
+//     cb(null, { fieldName: file.fieldname });
 //   },
-//   filename: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1];
-//     cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
+//   key: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1]; // Get file extension
+//     cb(null, `public/MembershipInvoice/MembershipBillReport/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
 //   },
 // })
 
-// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||||||
 
+// ||||||||||||||||||||||||||||||||||||||||||||  multer setup older approach  |||||||||||||||||||||||||||||||||||||
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const storageMembershipUpgradeBillByAdmin =  multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
+const storageMembershipUpgradeBillByAdmin = multer.diskStorage({
+  destination:(req,res,cb) => {
+    cb(null, './public/MembershipInvoice/MembershipBillReport')
   },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/MembershipInvoice/MembershipBillReport/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-  },
+  filename:(req,file,cb) => {
+    const parts = file.mimetype.split("/")[1];
+    console.log("}}}}}}}}}}}}}}}}}",file)
+    cb(null, `${file.fieldname}-${Date.now()}.${parts}`)
+  }
 })
 const storageMembershipUpgradeBill = multer({ storage: storageMembershipUpgradeBillByAdmin})
-
-
-// ||||||||||||||||||||||||||||||||||||||||||||  multer setup older approach  |||||||||||||||||||||||||||||||||||||
-
-// const storageMembershipUpgradeBillByAdmin = multer.diskStorage({
-//   destination:(req,res,cb) => {
-//     cb(null, './public/MembershipInvoice/MembershipBillReport')
-//   },
-//   filename:(req,file,cb) => {
-//     const parts = file.mimetype.split("/")[1];
-//     console.log("}}}}}}}}}}}}}}}}}",file)
-//     cb(null, `${file.fieldname}-${Date.now()}.${parts}`)
-//   }
-// })
 
 // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| |||||||||||||||||||||||||||||||
 

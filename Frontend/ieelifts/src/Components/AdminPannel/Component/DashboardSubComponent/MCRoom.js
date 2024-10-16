@@ -11,7 +11,7 @@ import config from "../../../../config";
 const MCRoom = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
-  console.log("images preettttttt", images);
+  // console.log("images preettttttt", images);
   const [showReportImage, setShowReportImage] = useState(false);
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
@@ -46,10 +46,6 @@ const MCRoom = ({ serviceId }) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  console.log(
-    "AdminReportData",
-    AdminReportData?.AdminReportData?.ReportImages
-  );
 
   const ReportUpdate = useSelector((state) => {
     return state?.AdminRootReducer?.ReportCrouserHandlerReducer;

@@ -23,6 +23,9 @@ import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactD
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
+
 const ServiceRequestModals = ({
   closeModal,
   showTicketModal,
@@ -53,6 +56,9 @@ const ServiceRequestModals = ({
 
   const[time,setTime]=useState('')
 
+  const [ImageUrl,setImageUrl] = useState();
+
+
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -74,8 +80,8 @@ const ServiceRequestModals = ({
   const [reName, setreName] = useState("")
   const [reNumber, setreNumber] = useState("")
 
-  console.log("reName  --> ", reName)
-  console.log("reNumber ---> ", reNumber)
+  // console.log("reName  --> ", reName)
+  // console.log("reNumber ---> ", reNumber)
 
 
 
@@ -116,7 +122,7 @@ const ServiceRequestModals = ({
     }
   });
 
-  console.log("getUserRequestDetail ========================>",getUserRequestDetail)
+  // console.log("getUserRequestDetail ========================>",getUserRequestDetail)
 
 
 
@@ -141,7 +147,7 @@ const ServiceRequestModals = ({
     console.log('testing', getAssignedCallbackDetails) */
 
   const getAssignRequestdetail = useSelector((state) => state?.AdminRootReducer?.assignServiceRequestDetailByRequestIdAction?.assignServiceRequestdetail?.details);
-  console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
+  // console.log('-=-=-=---=-=->>>>>', getAssignRequestdetail)
 
   useEffect(() => {
     if (isAssigned) {
@@ -207,7 +213,7 @@ const ServiceRequestModals = ({
     const currentDate = new Date();
     const formatedDate = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
     const updatedFormatedDate = currentDate.toLocaleDateString("en-GB");
-    console.log(updatedFormatedDate);
+    // console.log(updatedFormatedDate);
     setDate(updatedFormatedDate);
 
     const hours = currentDate.getHours();
@@ -406,6 +412,32 @@ const ServiceRequestModals = ({
     toast.success(response.message);
   };
   
+
+   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+   const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
+   }
+  
+  
+   useEffect(() => {
+    const fetchImage = async () => {
+      const url = await fetchImageUrl(engDetails.enggPhoto);
+      // console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
+      fetchImage();
+  }, [engDetails]);
+  
+  
+  // console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+
+
+
   return (
 
     <>
@@ -643,7 +675,8 @@ const ServiceRequestModals = ({
                           {getEnggState ? (
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                              src={engDetails.enggPhoto}
+                              // src={engDetails.enggPhoto}
+                              src={ImageUrl}
                               alt="lift"
                             />
                           ) : (

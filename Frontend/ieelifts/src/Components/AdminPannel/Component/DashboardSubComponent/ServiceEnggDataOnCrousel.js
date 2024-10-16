@@ -6,6 +6,8 @@ import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 const ServiceEnggDataOnCrousel = ({
   item,
   index,
@@ -23,6 +25,13 @@ const ServiceEnggDataOnCrousel = ({
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState([false]);
+
+
+  const [ImageUrl,setImageUrl] = useState();
+
+
+
+
   const renderArray = [];
   const renderArrayon = [];
 
@@ -74,6 +83,33 @@ const ServiceEnggDataOnCrousel = ({
 
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
+  
+//-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+const fetchImageUrl = async (key) => {
+  try {
+    const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`)
+    // console.log("this is response for Engg id ", response.data.url);
+    return response.data.url;
+  } catch (error) {
+    console.log("error while fecthing the engg Images from S3 bucket ", error)
+  }
+}
+
+useEffect(() => {
+  const fetchImage = async () => {
+    const url = await fetchImageUrl(item?.ServiceEnggPic);
+    // console.log("this is consoling my url ", url);
+    setImageUrl(url);
+  };
+
+  // if (item?.ServiceEnggPic) {
+    fetchImage();
+  // }
+}, [item]);
+
+
+
+
   return (
     <div
       className="main-crouser"
@@ -91,11 +127,10 @@ const ServiceEnggDataOnCrousel = ({
     >
       <div className="second-carusel">
         <div className="basic-info">
-          <img
-            src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
-            alt="img"
-            className="basic-info-profile"
-          />
+
+          {/* <img src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`} alt="img" className="basic-info-profile" /> */}
+          <img src={ImageUrl} alt="img" className="basic-info-profile" />
+
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>
             <span className="star-icon">
@@ -259,7 +294,7 @@ const ServiceEnggDataOnCrousel = ({
               {item.filteredServiceAssignmentsWithClientName.length != 0 ? (
                 item.filteredServiceAssignmentsWithClientName.map(
                   (itemData, dataIndex) => (
-                    console.log("this is item data ", itemData),
+                    // console.log("this is item data ", itemData),
                     <React.Fragment key={dataIndex}>
                       <div className="task-main-div">
                         <div className="dot-name">

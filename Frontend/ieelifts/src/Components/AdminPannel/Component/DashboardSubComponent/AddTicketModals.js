@@ -20,6 +20,9 @@ import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
 import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
+
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -54,6 +57,9 @@ const AddTicketModals = ({
   const [doh, setDoh] = useState("");
 
   // console.log('engDate', engDate)
+
+  const [ImageUrl,setImageUrl] = useState();
+
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -386,6 +392,34 @@ const AddTicketModals = ({
     toast.success(response.message);
   };
 
+
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
+   }
+  
+  
+   useEffect(() => {
+    const fetchImage = async () => {
+      const url = await fetchImageUrl(engDetails.enggPhoto);
+      console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
+      fetchImage();
+  }, [engDetails]);
+  
+  
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+
+
+
+
+
   return (
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
@@ -627,7 +661,8 @@ const AddTicketModals = ({
                                 objectPosition: "center",
                                 borderRadius: "2px",
                               }}
-                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              src={ImageUrl}
                               alt="lift"
                             />
                           ) : (

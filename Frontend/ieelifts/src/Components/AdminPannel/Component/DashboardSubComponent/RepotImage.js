@@ -3,9 +3,14 @@ import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminAction
 import { useDispatch, useSelector } from "react-redux";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
+
 const RepotImage = ({ images }) => {
 
-console.log("images carsouls",images);
+console.log("images carsouls ==============>>>>>>>>> ",images);
+
+const [imageUrls, setImageUrls] = useState({});
+console.log("this is report images inside the repost data ",imageUrls)
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,11 +46,49 @@ console.log("images carsouls",images);
   }, []);
 
 
+  
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
+    try {
+      console.log("this is key for Engg id **************** ---------- ///////// ", key);
+      const response = await getImagesFromS3Bucket(`public/ReportAttachments/${key}`)
+      console.log("this is response for Engg id ", response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error)
+    }
+  }
+
+
+  useEffect(() => {
+    const getImages = async () => {
+      const imageKeys = images || [];
+        const urlPromises = imageKeys.map(imageKey => fetchImageUrl(imageKey));
+      try {
+        const urls = await Promise.all(urlPromises);
+          const urlMap = imageKeys.reduce((acc, imageKey, index) => {
+          acc[imageKey] = urls[index];
+          return acc;
+        }, {});
+  
+        setImageUrls(urlMap); 
+      } catch (error) {
+        console.error("Error fetching image URLs", error);
+      }
+    };
+  
+    getImages();
+  }, [images]); 
+  //-----------------------------------------------------------------------------------------------------------------
+
   const arr=[]
 
+
   images.map((items) => {
-    arr.push(`${config.documentUrl}/ReportAttachments/${items}`)
-  })
+        arr.push(`${config.documentUrl}/ReportAttachments/${items}`)
+    })
+
+
 
   // <img src={`${config.documentUrl}/ReportAttachments/${items}`} />    
 
@@ -70,8 +113,7 @@ console.log("images carsouls",images);
         <div className="image-container">      
           <img src={arr[currentIndex]} />   
         </div>
-
-
+\\
 
         <div
           className="report-image-next"
