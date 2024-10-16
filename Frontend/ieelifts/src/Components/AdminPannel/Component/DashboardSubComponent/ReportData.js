@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ReportIssue from "./ReportIssue";
 import ReportCrouserData from "./ReportCrouserData";
 
-function ReportTable({ handleRedportData, RedportData }) {
+function ReportTable({ handleRedportData, RedportData, ticket }) {
 
   // console.log("handleRedportData", handleRedportData);
 
@@ -16,7 +16,7 @@ function ReportTable({ handleRedportData, RedportData }) {
         {handleRedportData ? (
           <ReportIssue RedportData={RedportData} />
         ) : (
-          <ReportCrouserData serviceId={RedportData}/>
+          <ReportCrouserData serviceId={RedportData} ticket={ticket} />
         )}
       </div>
     </>

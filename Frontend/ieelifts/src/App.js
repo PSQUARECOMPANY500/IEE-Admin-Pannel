@@ -44,12 +44,12 @@ function App() {
   const [firstLoad, setfirstLoad] = useState(true);
 
 
-  useEffect(() => {
-    if (!getWalkthrough && isLoggedIn && firstLoad) {
-      navigate("/Engeeniers")
-      setfirstLoad(false)
-    }
-  })
+  // useEffect(() => {
+  //   if (!getWalkthrough && isLoggedIn && firstLoad) {
+  //     navigate("/Engeeniers")
+  //     setfirstLoad(false)
+  //   }
+  // })
 
   return (
     < >

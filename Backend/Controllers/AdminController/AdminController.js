@@ -563,15 +563,30 @@ module.exports.getEnggDetail = async (req, res) => {
       EnggId,
     });
 
+    const averageRating = await EnggRating.aggregate([
+      {
+        $match: { ServiceEnggId: EnggId }
+      },
+      {
+        $group: {
+          _id: null,
+          avgRating: { $avg: "$Rating" }
+        }
+      }
+    ]);
+
+    const avgRatingValue = averageRating.length > 0 ? averageRating[0].avgRating : null;
+
     if (!enggDetail) {
       return res.status(404).json({
         message: "No services Engg found for the specified Service Engineer ID",
       });
     }
-
+    const responseResult = { ...enggDetail._doc, avgRatingValue };
+    console.log(responseResult);
     res.status(200).json({
       message: "servicesc Engg retrieved by ID successfully",
-      enggDetail,
+      enggDetail: responseResult,
     });
   } catch (error) {
     console.error("Error creating engg detail:", error);

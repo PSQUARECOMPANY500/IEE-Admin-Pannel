@@ -11,19 +11,19 @@ const CartopShift = () => {
   const [adminReportData, setAdminReportData] = useState('')
   const [images, setImages] = useState();
   const [showReportImage, setShowReportImage] = useState(false);
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
-console.log("pwwww",images);
+  console.log("pwwww", images);
   useEffect(() => {
     setImages(AdminReportData?.AdminReportData?.ReportImages[2]?.photo);
     setAdminReportData(AdminReportData?.AdminReportData?.finalReportedData?.CartopShaft
     )
   }, [AdminReportData])
-  const handleReport=()=>{
-    dispatch(ReportCrouserHandler(2,true));
+  const handleReport = () => {
+    dispatch(ReportCrouserHandler(2, true));
   }
   return (
     <div className="McRoom">
@@ -85,10 +85,10 @@ console.log("pwwww",images);
 
             )}
           </div>
-          <div className="Amount CardShiftCards">
+          {/* <div className="Amount CardShiftCards">
             <h5>Total Amount</h5>
             <h5>Rs. 12000/-</h5>
-          </div>
+          </div> */}
         </div> :
         <>
           <h5>All areas are working well</h5>
@@ -106,7 +106,7 @@ console.log("pwwww",images);
                 </>
               </div>
             </div>}
-     
+
         </>
       }
 

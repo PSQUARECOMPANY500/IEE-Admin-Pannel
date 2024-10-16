@@ -548,6 +548,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
+                    ticket={ticket}
                   />
                 </div>
               </div>

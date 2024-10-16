@@ -278,6 +278,7 @@ const AddTicketOnCallRequests = ({
         enggPhoto: getEnggState.EnggPhoto,
         repersentativeName: getEnggState.RepresentativeName,
         repersentativeNumber: getEnggState.RepresentativeNumber,
+        enggRating: getEnggState?.avgRatingValue
       });
     }
   }, [getEnggState]);
@@ -779,7 +780,7 @@ const AddTicketOnCallRequests = ({
                       </div>
 
                       <div>
-                        {getEnggState ? (
+                        {/* {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -805,7 +806,7 @@ const AddTicketOnCallRequests = ({
                             height="20px"
                             marginBottom="10px"
                           />
-                        )}
+                        )} */}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">
@@ -820,7 +821,7 @@ const AddTicketOnCallRequests = ({
                                 type="text"
                                 name="name"
                                 autoComplete="off"
-                                value={engDetails.enggRating}
+                                value={engDetails.enggRating || "--"}
                               />
                             </div>
                           </div>

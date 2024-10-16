@@ -32,9 +32,9 @@ const PitArea = () => {
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 ||
-      adminReportData?.IssuesNotResolved?.length > 0 ||
-      adminReportData?.SparePartsChanged?.length > 0 ||
-      adminReportData?.SparePartsRequested?.length > 0 ? (
+        adminReportData?.IssuesNotResolved?.length > 0 ||
+        adminReportData?.SparePartsChanged?.length > 0 ||
+        adminReportData?.SparePartsRequested?.length > 0 ? (
         <div className="CarTopShift Yello_Scrollbar">
           <div className="IssueResolved CardShiftCards">
             <div className="IssueResolvedL">
@@ -124,10 +124,10 @@ const PitArea = () => {
               </>
             ))}
           </div>
-          <div className="Amount CardShiftCards">
+          {/* <div className="Amount CardShiftCards">
             <h5>Total Amount</h5>
             <h5>Rs. 12000/-</h5>
-          </div>
+          </div> */}
         </div>
       ) : (
         <>

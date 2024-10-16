@@ -393,7 +393,7 @@ const EngeeniersCard = () => {
                   style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
 
                   id="Attendence">
-                  Attendence
+                  Attendance
                 </h5>
                 <h5
                   onClick={() => handleCurrentComponent("c3", 50)}

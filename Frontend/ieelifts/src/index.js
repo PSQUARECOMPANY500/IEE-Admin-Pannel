@@ -24,7 +24,7 @@ function WalkthroughComponent() {
     const finishedStatuses = ['finished', 'skipped'];
     console.log('status', status);
     if (finishedStatuses.includes(status)) {
-      // localStorage.setItem('walkthroughVisited', true);
+      localStorage.setItem('walkthroughVisited', true);
     }
   };
 
@@ -77,7 +77,7 @@ function RootComponent() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <WalkthroughComponent />
+        {/* <WalkthroughComponent /> */}
         <App />
         <Toaster />
       </BrowserRouter>

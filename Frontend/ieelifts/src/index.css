@@ -4576,3 +4576,25 @@ input:-webkit-autofill {
   }
 
 }
+
+
+.CarouselScrollDots {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+.Reportdot {
+  height: 6px;
+  width: 6px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.Reportdot.active {
+  background-color: #f9b83f;
+}
