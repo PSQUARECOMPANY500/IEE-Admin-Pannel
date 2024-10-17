@@ -892,7 +892,7 @@ const AddTicketModals = ({
                           id="subject"
                           name="subject"
                           style={{
-                            height: "105px",
+                            height: "110px",
                             width: "93%",
                             resize: "none",
                           }}

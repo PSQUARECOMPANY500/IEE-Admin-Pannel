@@ -38,13 +38,13 @@ const ReportCrouserData = ({ serviceId, ticket }) => {
 
     const goToNext = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === routes.length - 1 ? 0 : prevIndex + 1
+            prevIndex === routes?.length - 1 ? 0 : prevIndex + 1
         );
     };
 
     const goToPrev = () => {
         setCurrentIndex((prevIndex) =>
-            prevIndex === 0 ? routes.length - 1 : prevIndex - 1
+            prevIndex === 0 ? routes?.length - 1 : prevIndex - 1
         );
     };
     const goToIndex = (index) => {
@@ -71,7 +71,8 @@ const ReportCrouserData = ({ serviceId, ticket }) => {
                     )}
                 </div>
                 <div className="ComponentNames">
-                    <div className="PreviousComponentName">
+                    {console.log("currentIndex == 0 && !ticket", currentIndex == 0 && ticket)}
+                    <div className="PreviousComponentName" style={{ minWidth: currentIndex == 0 ? (ticket ? "60px" : "75px") : "" }}>
                         {currentIndex > 0 && (<p>{truncateText(routes[currentIndex - 1]?.name, 8)}</p>
                         )}
                     </div>
@@ -107,7 +108,7 @@ const ReportCrouserData = ({ serviceId, ticket }) => {
             </div>
 
             {CurrentComponent}
-        </div>
+        </div >
     )
 }
 

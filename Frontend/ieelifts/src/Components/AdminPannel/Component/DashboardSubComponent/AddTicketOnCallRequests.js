@@ -934,7 +934,7 @@ const AddTicketOnCallRequests = ({
                       id="subject"
                       name="subject"
                       style={{
-                        height: "82px",
+                        height: "110px",
                         width: "93%",
                         resize: "none",
                       }}
