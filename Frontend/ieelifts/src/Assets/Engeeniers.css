@@ -168,16 +168,16 @@ body {
 }
 
 .EngCardDetailsL {
-    display: flex;
-    margin-top: 1rem;
-    width: 30%;
-    position: relative;
-    background-color: transparent;
-    border: 1px solid #707070;
-    border-radius: 10px;
-    object-fit: cover;
-    object-position: center;
-    overflow: hidden;
+  display: flex;
+  margin-top: 1rem;
+  /* width: 30%; */
+  position: relative;
+  background-color: transparent;
+  border: 1px solid #707070;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+  overflow: hidden;
 }
 
 .EngCardDetailsL img {

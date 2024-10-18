@@ -40,7 +40,7 @@ const EnggLocation = () => {
         ?.coordinates
   );
 
-  console.log("this is map coordinaets-----", MapCoordinates);
+  // console.log("this is map coordinaets-----", MapCoordinates);
 
   const IEELifts = { lat: 30.71424661365234, lng: 76.696212667490 };
   const [center, setCenter] = useState({
@@ -89,7 +89,7 @@ const EnggLocation = () => {
 
   useEffect(() => {
     if (enggServiceID) {
-      console.log("ths id is inside the useEfefct", enggServiceID);
+      // console.log("ths id is inside the useEfefct", enggServiceID);
       dispatch(getEnggLocationCoordinatesAction(enggServiceID)); // get the corrdinates from the engg database to path on map
     } else {
       dispatch(getEnggLocationCoordinatesAction()); // get the corrdinates from the engg database to path on map
@@ -128,7 +128,7 @@ const EnggLocation = () => {
 
       try {
         const res = await directionService.route(request);
-        console.log("this is response console ", res);
+        // console.log("this is response console ", res);
         if (res.status === "OK") {
           setDirections(res);
         } else {
@@ -176,6 +176,7 @@ const EnggLocation = () => {
   useMemo(() => {
     if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
+        // console.log("this is my data",data);
         if (data.ServiceEnggId === enggServiceID) {
           // const lat = parseFloat(data.currentLocation.coordinates[0]);
           // const lng = parseFloat(data.currentLocation.coordinates[1]);

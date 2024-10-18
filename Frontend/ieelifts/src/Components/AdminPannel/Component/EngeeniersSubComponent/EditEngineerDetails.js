@@ -8,6 +8,10 @@ import AddEngineerForm from "./AddEngineerForm";
 import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
+
+
 const EditEngineerDetails = ({ engID, onClose }) => {
   const [openForm, setOpenForm] = useState(false);
   const [engAddharPhoto, setEngAddharPhoto] = useState("");
@@ -21,26 +25,76 @@ const EditEngineerDetails = ({ engID, onClose }) => {
       handleCloseForm();
     }
   };
-  const openIt = () => {
-    const url = `${config.documentUrl}/EnggAttachments/${engAddharPhoto}`;
 
-    window.open(url);
-  };
-  const openPanCard = () => {
-    const url = `${config.documentUrl}/EnggAttachments/${engPancardData}`;
 
-    window.open(url);
-  };
-  const openDrivingLicence = () => {
-    const url = `${config.documentUrl}/EnggAttachments/${engDrivingData}`;
 
-    window.open(url);
-  };
-  const openEduvationalDets = () => {
-    const url = `${config.documentUrl}/EnggAttachments/${engQualificationPhoto}`;
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
+  }
+  
+  //------------------------------------------------------------------------------------------------------------------------------------------------
+  
 
-    window.open(url);
+  const openIt = async () => {
+    try {
+      const url = await fetchImageUrl(engAddharPhoto);
+      if (url) {
+        window.open(url);
+      }
+    } catch (error) {
+      console.error("Error while opening Aadhaar image: ", error);
+    }
   };
+
+
+  const openPanCard = async () => {
+    try{
+    const url = await fetchImageUrl(engPancardData);
+    if (url) {
+      window.open(url);
+    }
+  } catch (error) {
+    console.error("Error while opening Aadhaar image: ", error);
+  }
+};
+
+
+
+
+  const openDrivingLicence = async () => {
+    try {
+      const url = await fetchImageUrl(engDrivingData);
+      if (url) {
+        window.open(url);
+      }
+    } catch (error) {
+      console.error("Error while opening Aadhaar image: ", error);
+    }
+  };
+
+
+  const openEduvationalDets = async () => {
+    try {
+      const url = await fetchImageUrl(engQualificationPhoto);
+      if (url) {
+        window.open(url);
+      }
+    } catch (error) {      
+    }
+  };
+
+
+
+
+
+
+
   const handleCloseForm = () => {
     setOpenForm(false);
   };
@@ -67,6 +121,7 @@ const EditEngineerDetails = ({ engID, onClose }) => {
 
     getData();
   }, []);
+
 
 
 

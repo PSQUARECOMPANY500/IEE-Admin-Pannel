@@ -4,15 +4,31 @@ import { useSelector, useDispatch } from 'react-redux'
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
 import "../../../../Assets/Engeeniers.css";
+
+import {getImagesFromS3Bucket} from "../../../../ReduxSetup/Actions/AdminActions" 
+
+
 const EngeeniersSubCard = (props) => {
+
+  // console.log("prop inside the Engg location ", props)
 
   const [singleClickTimeout, setSingleClickTimeout] = useState(null);
   const [isDoubleClick, setIsDoubleClick] = useState(false);
   const [isActive, setIsActive] = useState(null);
   const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick, checkLengthAndDispalyName } = props;
   const [allSearchEngrs, setAllSearchEngrs] = useState(null);
+
   const [allEngData, setAllEngData] = useState('');
+
+  
+  
+  
   const scrollRef = useRef();
+  
+  
+  const [imageUrls, setImageUrls] = useState({});
+  console.log("this image in show in Engg Subcard ------------***************----------- ", imageUrls)
+
 
   const dispatch = useDispatch();
   const engData = useSelector((state) => {
@@ -24,9 +40,62 @@ const EngeeniersSubCard = (props) => {
     return state?.AdminRootReducer?.EngineerSearchHandler?.SearchEngineers
   });
 
+
   useEffect(() => {
     dispatch(fetchEngDetails());
   }, [])
+
+
+  // useEffect(() => {
+  //   const getEnggImages = async () => {
+  //     const response = await getImagesFromS3Bucket();
+  //   }
+  // }, [])
+
+
+//-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${key}`);
+        return response.data.url;
+      } catch (error) {
+        console.log("error while fecthing the engg Images from S3 bucket ", error);
+      }
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+useEffect(() => {
+  const getImages = async () => {
+    const engineers = engData?.engdetails?.combinedData || [];
+    const urlPromises = engineers.map(engineer => fetchImageUrl(engineer.EnggPhoto));
+    
+    try {
+      const urls = await Promise.all(urlPromises);
+      const urlMap = engineers.reduce((acc, engineer, index) => {
+        acc[engineer.EnggId] = urls[index]; 
+        return acc;
+      }, {});      
+      setImageUrls(urlMap); 
+    } catch (error) {
+      console.error("Error fetching image URLs", error);
+    }
+  };
+
+  if (engData?.engdetails?.combinedData) {
+    getImages();
+  }
+}, [engData]);
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 
 
 
@@ -105,10 +174,10 @@ const EngeeniersSubCard = (props) => {
             {e?.isCheckedIn && <div className="EngCardCheckinIndicator"></div>}
             <div className="EngCardDetails">
               <div className="EngCardDetailsL">
-                <img src={
-                  e.EnggPhoto?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :
-                    `${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}
-                />
+
+                {/* <img src={ e.EnggPhoto?.length === 0 ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" :`${config.documentUrl}/EnggAttachments/${e.EnggPhoto}`} alt={`Image for ID`}/> */}
+                <img src={imageUrls[e.EnggId] || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg" }/>
+                {/* <img src="https://ieelifts.in/api/public/EnggAttachments/profilePhoto-1720785171328.jpeg"/> */}
 
               </div>
               <div className="EngCardDetailsR">

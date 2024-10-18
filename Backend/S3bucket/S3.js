@@ -22,14 +22,14 @@ module.exports.getObjectURL = async (key) => {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------
 
-module.exports.PutObjectURL = async (key,contentType) => {
-    const command = new PutObjectCommand({
-        Bucket:"ieelifts.in",
-        Key:key,
-        ContentType: contentType
-    });
-    const url = getSignedUrl(s3Client,command)
-    return url;
-}
+// module.exports.PutObjectURL = async (key,contentType) => {
+//     const command = new PutObjectCommand({
+//         Bucket:"ieelifts.in",
+//         Key:key,
+//         ContentType: contentType
+//     });
+//     const url = getSignedUrl(s3Client,command)
+//     return url;
+// }
 
 

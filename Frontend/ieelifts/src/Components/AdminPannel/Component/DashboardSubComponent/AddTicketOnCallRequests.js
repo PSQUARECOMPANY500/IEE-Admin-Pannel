@@ -22,6 +22,8 @@ import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 const AddTicketOnCallRequests = ({
   closeModal,
   showTicketModal,
@@ -53,6 +55,9 @@ const AddTicketOnCallRequests = ({
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
+  const [ImageUrl,setImageUrl] = useState();
+
+
   //assign-callbacks-state
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -65,6 +70,8 @@ const AddTicketOnCallRequests = ({
     repersentativeName: "",
     repersentativeNumber: "",
   });
+
+  
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -424,6 +431,33 @@ const AddTicketOnCallRequests = ({
       setFlag(true);
     }
   }, [window.innerWidth]);
+
+
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+const fetchImageUrl = async (key) => {
+  try {
+    const response = await getImagesFromS3Bucket(`${key}`);
+    return response.data.url;
+  } catch (error) {
+    console.log("error while fecthing the engg Images from S3 bucket ", error);
+  }
+ }
+
+
+ useEffect(() => {
+  const fetchImage = async () => {
+    const url = await fetchImageUrl(engDetails.enggPhoto);
+    console.log("this is consoling my url ", url);
+    setImageUrl(url);
+  };
+    fetchImage();
+}, [engDetails]);
+
+
+console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+
+
+
   return (
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
@@ -680,15 +714,25 @@ const AddTicketOnCallRequests = ({
                       <div className="engg-photo-section">
                         <div>
                           {getEnggState ? (
-                            <img
-                              style={{
+                            // <img style={{
+                            //     width: "90px",
+                            //     height: "90px",
+                            //     objectFit: "cover",
+                            //     objectPosition: "center",
+                            //     borderRadius: "2px",
+                            //   }}
+                            //   src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                            //   alt="lift"
+                            // />
+                            <img style={{
                                 width: "90px",
                                 height: "90px",
                                 objectFit: "cover",
                                 objectPosition: "center",
                                 borderRadius: "2px",
                               }}
-                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              src={ImageUrl}
                               alt="lift"
                             />
                           ) : (

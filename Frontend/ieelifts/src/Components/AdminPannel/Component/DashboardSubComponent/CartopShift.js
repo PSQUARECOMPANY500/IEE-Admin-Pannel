@@ -3,15 +3,21 @@ import { GrGallery } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import ReportImageIcon from '../../../../Assets/Images/repotimage.png'
 import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
-import RepotImage from "./RepotImage";
 import config from "../../../../config";
+
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
+
 
 
 const CartopShift = () => {
   const [adminReportData, setAdminReportData] = useState('')
   const [images, setImages] = useState();
   const [showReportImage, setShowReportImage] = useState(false);
-  const dispatch = useDispatch();
+  const [imageUrls, setImageUrls] = useState([]); // State to store fetched image URLs
+
+
+  const dispatch=useDispatch();
 
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
@@ -25,6 +31,52 @@ const CartopShift = () => {
   const handleReport = () => {
     dispatch(ReportCrouserHandler(2, true));
   }
+
+
+
+  //----------------------------------------------------------------------------------------------
+  useEffect(()=>{
+    const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${images[0]}`);
+        setImageUrls(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log("Error while fetching the image from S3 bucket:", error);
+        return null; 
+      }
+    };
+     if (images && images.length > 0) {
+      fetchImageUrl(); 
+    }
+  }, [images]);
+ 
+  
+  // useEffect(() => {
+  //   const getImages = async () => {
+  //     const imageKeys = images || [];
+  //     const urlPromises = imageKeys.map((imageKey) => fetchImageUrl(imageKey));
+      
+  //     try {
+  //       const urls = await Promise.all(urlPromises);
+  //       const validUrls = urls.filter((url) => url !== null); // Filter out any null values
+  //       setImageUrls(validUrls); // Set fetched URLs
+  //     } catch (error) {
+  //       console.error("Error fetching image URLs", error);
+  //     }
+  //   };
+    
+  //   if (images && images.length > 0) {
+  //     getImages(); // Fetch the image URLs if there are images
+  //   }
+  // }, [images]);
+  
+  //----------------------------------------------------------------------------------------------
+
+
+
+
+
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 || adminReportData?.IssuesNotResolved?.length > 0 ||
@@ -102,7 +154,7 @@ const CartopShift = () => {
                   <p>+{images.length}</p>
                 </div>
                 <>
-                  <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`} />
+                  <img src={imageUrls} />
                 </>
               </div>
             </div>}

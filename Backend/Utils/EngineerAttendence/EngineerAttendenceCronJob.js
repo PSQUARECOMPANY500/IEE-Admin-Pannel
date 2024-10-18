@@ -8,6 +8,8 @@ const cronjob = () => {
         console.log("Running cron job to generate engineer attendance PDF at 17:41PM...");
         await generateEngineerAttendance();
         await sendEmail();
+
+        
     });
 }
 
