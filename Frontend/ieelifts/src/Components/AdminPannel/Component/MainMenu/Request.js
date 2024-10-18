@@ -53,7 +53,6 @@ const Request = () => {
     }
   });
 
-  console.log("kehti hai ish jisko duniya meri  janeman , isko ek labs pe chipi kayanat hai " , getAssignRequests);
 
 
   useEffect(() => {
@@ -127,7 +126,7 @@ const Request = () => {
    //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
    const fetchImageUrl = async (key) => {
     try {
-      const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`);
+      const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
       console.log("error while fecthing the engg Images from S3 bucket ", error);
@@ -161,10 +160,12 @@ const Request = () => {
       }
     };
   
- 
+    if(getAssignRequests){
       getImages();
+    }
+
    
-  }, [getAssignRequests]);
+  }, []);
   
 //------------------------------------------------------------------------------------------------------------------------
 

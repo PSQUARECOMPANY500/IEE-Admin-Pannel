@@ -6,6 +6,8 @@ import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminAction
 import RepotImage from "./RepotImage";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 
 
 const MCRoom = ({ serviceId }) => {
@@ -13,6 +15,8 @@ const MCRoom = ({ serviceId }) => {
   const [images, setImages] = useState();
   // console.log("images preettttttt", images);
   const [showReportImage, setShowReportImage] = useState(false);
+  const [imageUrls, setImageUrls] = useState({});
+
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const dispatch = useDispatch();
@@ -64,6 +68,22 @@ const MCRoom = ({ serviceId }) => {
   };
 
   // const firstImage = images?.map((images) => images?.photo[0]);
+
+  useEffect(()=>{
+    const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${images[0]}`);
+        setImageUrls(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log("Error while fetching the image from S3 bucket:", error);
+        return null; 
+      }
+    };
+     if (images && images.length > 0) {
+      fetchImageUrl(); 
+    }
+  }, [images]);
 
 
   return (
@@ -189,9 +209,9 @@ const MCRoom = ({ serviceId }) => {
                     <p>+{images?.length}</p>
                   </div>
                   <>
+                    <img src={imageUrls}/>
                     {/* <img src="https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg" /> */}
-                    <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`}/>
-                    <img src={`${config.documentUrl}/ReportAttachments/${images[1]}`}/>
+                    {/* <img src={`${config.documentUrl}/ReportAttachments/${images[1]}`}/> */}
                   </>
                 </div>
               </div>

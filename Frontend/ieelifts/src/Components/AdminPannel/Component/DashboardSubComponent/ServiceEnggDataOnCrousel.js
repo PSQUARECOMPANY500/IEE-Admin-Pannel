@@ -87,7 +87,7 @@ const ServiceEnggDataOnCrousel = ({
 //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
 const fetchImageUrl = async (key) => {
   try {
-    const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`)
+    const response = await getImagesFromS3Bucket(`${key}`)
     // console.log("this is response for Engg id ", response.data.url);
     return response.data.url;
   } catch (error) {

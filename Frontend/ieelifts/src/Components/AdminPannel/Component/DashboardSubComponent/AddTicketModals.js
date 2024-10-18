@@ -396,7 +396,7 @@ const AddTicketModals = ({
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
   const fetchImageUrl = async (key) => {
     try {
-      const response = await getImagesFromS3Bucket(`public/EnggAttachments/${key}`);
+      const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
       console.log("error while fecthing the engg Images from S3 bucket ", error);
@@ -406,6 +406,7 @@ const AddTicketModals = ({
   
    useEffect(() => {
     const fetchImage = async () => {
+      // console.log("this is engg photo &&&&&&&&&&&&&&&&&&&&&&&& ", engDetails.enggPhoto)
       const url = await fetchImageUrl(engDetails.enggPhoto);
       console.log("this is consoling my url ", url);
       setImageUrl(url);

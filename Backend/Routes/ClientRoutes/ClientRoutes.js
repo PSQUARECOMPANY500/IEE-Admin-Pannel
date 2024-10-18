@@ -81,29 +81,29 @@ router.get("/checkpaymentstatusandmakeinvoice/:JobOrderNumber", clientController
 router.post('/registerFirebaseToken', clientController.firebaseTokenForPushNotificationPurpose);
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/ClientProfiles/");
-  },
-  filename: (req, file, cb) => {
-    console.log("file", file)
-    const parts = file.mimetype.split("/")[1];
-    const fileName = file.originalname.split(".")[0];
-    cb(null, `${fileName}-${Date.now()}.${parts}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/ClientProfiles/");
+//   },
+//   filename: (req, file, cb) => {
+//     console.log("file", file)
+//     const parts = file.mimetype.split("/")[1];
+//     const fileName = file.originalname.split(".")[0];
+//     cb(null, `${fileName}-${Date.now()}.${parts}`);
+//   },
+// });
 
-// const storage = multerS3({
-//   s3: s3,
-//   bucket: 'ieelifts.in',
-//   metadata:(req, file, cb) => {
-//     cb(null, { fieldName: file.fieldname });
-//   },
-//   key: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1]; // Get file extension
-//     cb(null, `public/ClientProfiles/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-//   },
-// })
+const storage = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/ClientProfiles/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  },
+})
 
 const upload = multer({ storage: storage });
 

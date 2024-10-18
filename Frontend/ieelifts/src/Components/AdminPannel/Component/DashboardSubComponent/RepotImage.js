@@ -9,8 +9,11 @@ const RepotImage = ({ images }) => {
 
 console.log("images carsouls ==============>>>>>>>>> ",images);
 
-const [imageUrls, setImageUrls] = useState({});
-console.log("this is report images inside the repost data ",imageUrls)
+// const [imageUrls, setImageUrls] = useState({});
+// console.log("this is report images inside the repost data ",imageUrls)
+
+const [imageUrls, setImageUrls] = useState([]); // State to store fetched image URLs
+
 
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,47 +53,46 @@ console.log("this is report images inside the repost data ",imageUrls)
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
   const fetchImageUrl = async (key) => {
     try {
-      console.log("this is key for Engg id **************** ---------- ///////// ", key);
-      const response = await getImagesFromS3Bucket(`public/ReportAttachments/${key}`)
-      console.log("this is response for Engg id ", response.data.url);
-      return response.data.url;
+      const response = await getImagesFromS3Bucket(key);
+      console.log("Fetched URL from S3:", response.data.url);
+      return response.data.url; 
     } catch (error) {
-      console.log("error while fecthing the engg Images from S3 bucket ", error)
+      console.log("Error while fetching the image from S3 bucket:", error);
+      return null; 
     }
-  }
-
+  };
 
   useEffect(() => {
     const getImages = async () => {
       const imageKeys = images || [];
-        const urlPromises = imageKeys.map(imageKey => fetchImageUrl(imageKey));
+      const urlPromises = imageKeys.map((imageKey) => fetchImageUrl(imageKey));
+
       try {
         const urls = await Promise.all(urlPromises);
-          const urlMap = imageKeys.reduce((acc, imageKey, index) => {
-          acc[imageKey] = urls[index];
-          return acc;
-        }, {});
-  
-        setImageUrls(urlMap); 
+        const validUrls = urls.filter((url) => url !== null); 
+        setImageUrls(validUrls); 
       } catch (error) {
         console.error("Error fetching image URLs", error);
       }
     };
-  
-    getImages();
-  }, [images]); 
-  //-----------------------------------------------------------------------------------------------------------------
 
-  const arr=[]
+    if (images && images.length > 0) {
+      getImages(); // Fetch the image URLs if there are images
+    }
+  }, [images]);
 
+  // //-----------------------------------------------------------------------------------------------------------------
 
-  images.map((items) => {
-        arr.push(`${config.documentUrl}/ReportAttachments/${items}`)
-    })
+  // const arr=[]
 
 
+  // images.map((items) => {
+  //       arr.push(`${config.documentUrl}/ReportAttachments/${items}`)
+  //   })
 
   // <img src={`${config.documentUrl}/ReportAttachments/${items}`} />    
+
+
 
   return (
     <>
@@ -111,9 +113,9 @@ console.log("this is report images inside the repost data ",imageUrls)
         </div>
 
         <div className="image-container">      
-          <img src={arr[currentIndex]} />   
+          <img src={imageUrls[currentIndex]} />   
         </div>
-\\
+
 
         <div
           className="report-image-next"

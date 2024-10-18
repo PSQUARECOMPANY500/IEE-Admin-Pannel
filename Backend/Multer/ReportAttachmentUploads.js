@@ -14,28 +14,28 @@ const s3 = new S3Client({
 });
 
 
-// const storage = multerS3({
-//   s3: s3,
-//   bucket: 'ieelifts.in',
-//   metadata:(req, file, cb) => {
-//     cb(null, { fieldName: file.fieldname });
-//   },
-//   key: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1]; // Get file extension
-//     cb(null, `public/ReportAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-//   },
-// })
+const storage = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/ReportAttachments/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  },
+})
 
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/ReportAttachments');
-  },
-  filename: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1];
-    cb(null, `ReportImage-${Date.now()}.${parts}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, './public/ReportAttachments');
+//   },
+//   filename: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1];
+//     cb(null, `ReportImage-${Date.now()}.${parts}`);
+//   },
+// });
 
 
 const uploadReportAttachment = multer({ storage: storage });
@@ -43,28 +43,28 @@ const uploadReportAttachment = multer({ storage: storage });
 
 //=---------------------------------------------------------------- --------------------------------                            
 
-// const PDFStore = multerS3({
-//   s3: s3,
-//   bucket: 'ieelifts.in',
-//   metadata:(req, file, cb) => {
-//     cb(null, { fieldName: file.fieldname });
-//   },
-//   key: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1]; // Get file extension
-//     cb(null, `public/ReportPdf/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
-//   },
-// })
+const PDFStore = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/ReportPdf/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  },
+})
 
 
-const PDFStore = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/ReportPdf');
-  },
-  filename: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1];
-    cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
-  },
-});
+// const PDFStore = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, './public/ReportPdf');
+//   },
+//   filename: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1];
+//     cb(null, `${file.fieldname}-${Date.now()}.${parts}`);
+//   },
+// });
 
 const reportPdf = multer({ storage: PDFStore });
 

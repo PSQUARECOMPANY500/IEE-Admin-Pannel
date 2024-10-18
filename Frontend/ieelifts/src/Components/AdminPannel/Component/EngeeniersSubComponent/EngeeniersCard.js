@@ -23,8 +23,11 @@ import { jwtDecode } from "jwt-decode";
 
 
 
+
+
 import { BsArrowLeft } from "react-icons/bs";
 import "../../../../Assets/Engeeniers.css";
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const EngeeniersCard = () => {
   const navigate = useNavigate();
@@ -54,8 +57,7 @@ const decodeAdmin = jwtDecode(adminID);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
 
-
-
+  const [ImageURL,setImageURL] = useState();
 
 
 
@@ -262,15 +264,6 @@ const decodeAdmin = jwtDecode(adminID);
     scroll();
   }, [getMessages]);
 
-
-
-
-  // fetc engg personal informations --------------------------------
-  // const enggMessages = useSelector((state) => state?.ChatRootReducer?.getEnggPersonalMessagesReducer?.messages?.messageModel);
-  // console.log("thisn is engg messages use selector: ",enggMessages)
-
-
-
   useEffect(() => {
     if (engID) {
 
@@ -307,6 +300,30 @@ const decodeAdmin = jwtDecode(adminID);
       window.removeEventListener('resize', checkScreenSie);
     }
   })
+
+  
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+ useEffect(() => {
+  const fetchImageUrl = async () => {
+    try {
+      const response = await getImagesFromS3Bucket(`${currentengImg}`);
+      setImageURL(response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
+   }
+
+   fetchImageUrl()
+
+ },[currentengImg])
+ 
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+  
   return (
     <>
       {onBackPress ? (
@@ -351,13 +368,17 @@ const decodeAdmin = jwtDecode(adminID);
                   <div className="Pimg">
                     {/* <img src={currentengImg} alt="eng persnol image" /> */}
                     <img
+                      src={ImageURL}
+                      alt="eng persnol image"
+                    />
+                    {/* <img
                       src={
                         currentengImg?.length === 0
                           ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
                           : `${config.documentUrl}/EnggAttachments/${currentengImg}`
                       }
                       alt="eng persnol image"
-                    />
+                    /> */}
                   </div>
                   <h1>
                     Name:<span>{currentEngName}</span>
