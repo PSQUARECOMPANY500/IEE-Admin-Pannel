@@ -1,6 +1,13 @@
 const express = require("express");
 const router = express.Router();
+
+
 const multer = require("multer");
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3'); 
+
+const {s3} = require('../../Multer/EnggAttachmentUpload')
+
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
 
 const { verifyEnggToken, EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
@@ -97,29 +104,65 @@ router.get(
 
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/uplodes/");
+
+
+// Initialize the S3 client -------------------------------------------------------------
+
+// TODO: Above code woluld be Dynamic
+
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/uplodes/");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+//   },
+// });
+
+const storage = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
   },
-  filename: (req, file, cb) => {
-    cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/uplodes/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
   },
-});
+})
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
-const storage2 = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/leaveAttachment");
+// const storage2 = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/leaveAttachment");
+//   },
+//   filename: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1];
+//     const fileName = `leaveAttachment-${Date.now()}.${parts}`;
+//     cb(null, fileName);
+//   },
+// });
+
+
+const storage2 = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
   },
-  filename: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1];
-    const fileName = `leaveAttachment-${Date.now()}.${parts}`;
-    cb(null, fileName);
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/leaveAttachment/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
   },
-});
+})
+
+
 const upload2 = multer({ storage: storage2 });
 const upload = multer({ storage: storage });
+
+
 
 
 const uploadImg = upload.fields([
@@ -132,6 +175,8 @@ const uploadImg = upload.fields([
     maxCount: 1,
   },
 ]);
+
+
 
 const checkInAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
@@ -450,3 +495,5 @@ router.get('/getEnggCoordinates/:ServiceEnggId',serviceEnggContoller.getEnggLoca
 
 
 module.exports = router;
+ 
+ 

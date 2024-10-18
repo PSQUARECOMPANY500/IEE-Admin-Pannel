@@ -324,6 +324,8 @@ const AddEnggModal = () => {
 
     const response = await RegistrationEnggDetails(formData);
 
+    console.log("this is console to check the stsatus ---------------------->>>>>>>>>>????????? ", response);
+
     if (response.status === 200) {
       toast.error(response.data.message);
     }

@@ -79,13 +79,13 @@ module.exports.referalUser = async (req, res) => {
     });
     if (checkClient) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Lift is already installed on this number" });
     }
 
     if (checkReferal) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Referal for this number already exists" });
     }
 

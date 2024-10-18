@@ -39,7 +39,7 @@ const Dashboard = () => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  console.log("dashboard pit area",AdminReportData?.AdminReportData?.ReportImages?.photo);
+  console.log("dashboard pit area ##########################",AdminReportData?.AdminReportData?.ReportImages?.photo);
 
   const cancelRequestByEngg = useSelector(
     (state) =>

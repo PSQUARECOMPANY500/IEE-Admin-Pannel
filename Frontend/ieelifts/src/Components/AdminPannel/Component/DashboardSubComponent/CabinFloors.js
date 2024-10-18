@@ -6,10 +6,18 @@ import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminAction
 import RepotImage from "./RepotImage";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
+
 const CabinFloors = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
-  console.log("imagescabin\rom", images);
+
+  const [imageUrls, setImageUrls] = useState({});
+
+
+
+
+  
   const [showReportImage, setShowReportImage] = useState(false);
   const dispatch = useDispatch();
 
@@ -17,10 +25,10 @@ const CabinFloors = ({ serviceId }) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  console.log(
-    "cabin-floors",
-    AdminReportData?.AdminReportData?.ReportImages[1]?.photo
-  );
+  // console.log(
+  //   "cabin-floors",
+  //   AdminReportData?.AdminReportData?.ReportImages[1]?.photo
+  // );
 
   useEffect(() => {
     setImages(AdminReportData?.AdminReportData?.ReportImages[1]?.photo);
@@ -31,6 +39,33 @@ const CabinFloors = ({ serviceId }) => {
   const handleReport = () => {
     dispatch(ReportCrouserHandler(1, true));
   };
+
+
+
+
+
+  useEffect(()=>{
+    const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${images[0]}`);
+        setImageUrls(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log("Error while fetching the image from S3 bucket:", error);
+        return null; 
+      }
+    };
+     if (images && images.length > 0) {
+      fetchImageUrl(); 
+    }
+  }, [images]);
+
+
+
+
+
+
+
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 ||
@@ -148,7 +183,7 @@ const CabinFloors = ({ serviceId }) => {
                 </div>
                 <>
                   <img
-                    src={`${config.documentUrl}/ReportAttachments/${images[0]}`}
+                    src={imageUrls}
                   />
                 </>
               </div>
