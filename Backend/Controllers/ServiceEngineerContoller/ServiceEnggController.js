@@ -746,8 +746,8 @@ module.exports.EnggCheckIn = async (req, res) => {
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
     const images = req.files;
-    const frontimagename = images?.frontimage[0].filename;
-    const backimagename = images?.backimage[0].filename;
+    const frontimagename = images?.frontimage[0].key;
+    const backimagename = images?.backimage[0].key;
     const { IsAttendance } = req.body;
     if (IsAttendance && ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;
@@ -785,8 +785,8 @@ module.exports.EnggCheckOut = async (req, res) => {
   //console.log("req of checkout",req)
   try {
     const images = req.files;
-    const frontimagename = images?.frontimage[0].filename;
-    const backimagename = images?.backimage[0].filename;
+    const frontimagename = images?.frontimage[0].key;
+    const backimagename = images?.backimage[0].key;
     const ServiceEnggId = req.params.ServiceEnggId;
     if (ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;

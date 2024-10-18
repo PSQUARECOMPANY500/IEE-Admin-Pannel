@@ -258,6 +258,8 @@ const checkInorOutAttendance = async (req, res, next) => {
 //----------------------------------------------------------------------------------------------------------------------------------
 
 router.get("/getTime",checkClientDeviceLogins, serviceEnggContoller.EnggTime);
+
+// --------------------------------  Engg check in data ----------------------------------------------------
 router.post(
   "/enggCheckIn/:ServiceEnggId",
   checkClientDeviceLogins,
@@ -272,6 +274,7 @@ router.put(
   uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
+// --------------------------------  Engg check out data ----------------------------------------------------
 
 
 
