@@ -149,6 +149,16 @@ body {
 
 }
 
+.EngCardCheckinIndicator {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #fac663;
+  border-radius: 50%;
+  right: 5%;
+  top: 10%;
+}
+
 .EngCardDetails {
     display: flex;
     width: 90%;

@@ -3898,7 +3898,7 @@ footer a:hover {
 }
 
 .switch-button-hover {
-  color: #f8ac1d;
+  color: #f8ac1d !important;
   background: #fef3de;
   transition: all 0.5s;
   cursor: pointer;
@@ -5075,6 +5075,33 @@ footer a:hover {
   font-size: 2rem;
   color: #202020;
   z-index: 999999999999999999;
+}
+
+.Arrow-engeeniersattendancecardleft {
+  position: absolute;
+  right: 0%;
+  /* display: none; */
+  top: 45%;
+  cursor: pointer;
+  font-size: 2rem;
+  color: #202020;
+  z-index: 999999999999999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  transition: all 0.5s ease;
+}
+
+.Arrow-engeeniersattendancecardRight {
+  width: fit-content;
+  left: 0%;
+}
+
+.Arrow-engeeniersattendancecardleft:hover {
+  background: #f8ac1d;
+  color: white;
 }
 
 .engeeniersattendancecard-right-inner {
@@ -7590,7 +7617,9 @@ element.style {
   height: 100%;
   width: 100%;
   position: relative;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .CarouselButtons {
@@ -7603,9 +7632,14 @@ element.style {
   position: relative;
 }
 
+.CarouselButtons p {
+  font-size: 0.8rem;
+  width: 100%;
+}
+
 .CarouselButtonsL {
   height: 100%;
-  width: 20%;
+  /* width: 20%; */
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -7613,7 +7647,7 @@ element.style {
 
 .CarouselButtonsR {
   height: 100%;
-  width: 20%;
+  /* width: 20%; */
 
   display: flex;
   align-items: flex-start;
@@ -8074,18 +8108,28 @@ element.style {
 }
 
 .ComponentNames {
-  width: 100%;
+  width: 60%;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 1rem;
 }
 
 .ComponentNames p {
   color: #444444;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   align-items: center;
   font-family: "Poppins";
-  margin-left: 2.5rem;
+  /* margin-left: 2.5rem; */
+  width: 100%;
   margin-top: 0.5rem;
+  text-align: center;
   /* white-space:nowrap; */
+}
+
+.NextComponentName {
+  min-width: 72px;
+  font-size: 0.6rem !important;
 }
 
 .ticket-card {
@@ -8615,7 +8659,7 @@ element.style {
 }
 
 .EngCardDetailsL img {
-  object-fit: cover;
+  object-fit: fill;
   object-position: top;
 }
 
@@ -8821,6 +8865,29 @@ element.style {
   bottom: 3%;
   right: 5%;
 }
+
+/* ---------------------edit engg form------------------------------ */
+
+.buttoncssTricks {
+  background: #0000;
+  border: 1px solid #f8ac1d;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 50px;
+  transition: background .1s ease-in-out;
+  transition-delay: .1s
+}
+
+.buttoncssTricks:hover {
+  background: #f8ac1d;
+  color: #000;
+}
+
+/* --------------------------------------------------- */
+
+
 
 /* CSS */
 .button-69,
@@ -9594,7 +9661,7 @@ element.style {
   }
 
   .ComponentNames p {
-    font-size: 0.6rem;
+    font-size: 0.3rem;
   }
 
   .CurrentComponentName p {
@@ -10171,6 +10238,10 @@ a[href^="http://maps.google.com/maps"] {
     transform: translate(-50%, -50%);
     padding: 0 1rem;
     overflow: hidden;
+  }
+
+  .sub-menu-wrap {
+    width: 190px;
   }
 }
 

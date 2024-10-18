@@ -22,6 +22,7 @@ import { assignServiceRequestDetailByRequestIdAction } from "../../../../ReduxSe
 import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import { requestServiceRequestByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
+import config from "../../../../config";
 
 const ServiceRequestModals = ({
   closeModal,
@@ -31,8 +32,8 @@ const ServiceRequestModals = ({
   setRenderTicket,
   enggId,
   isAssigned,
-  isNotification=false
-  
+  isNotification = false
+
 }) => {
   const dispatch = useDispatch();
 
@@ -48,10 +49,10 @@ const ServiceRequestModals = ({
   const [date, setDate] = useState("");
   const [modelType, setModelType] = useState("");
   const [engDate, setengDate] = useState("");
-  const [membershipType,setMembershipType] = useState('')
-  const[doh,setDoh]=useState('')
+  const [membershipType, setMembershipType] = useState('')
+  const [doh, setDoh] = useState('')
 
-  const[time,setTime]=useState('')
+  const [time, setTime] = useState('')
 
 
   const [engDetails, setEngDetails] = useState({
@@ -116,7 +117,7 @@ const ServiceRequestModals = ({
     }
   });
 
-  console.log("getUserRequestDetail ========================>",getUserRequestDetail)
+  console.log("getUserRequestDetail ========================>", getUserRequestDetail)
 
 
 
@@ -171,7 +172,8 @@ const ServiceRequestModals = ({
         enggName: getEnggState.EnggName,
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
-        enggPhoto: getEnggState.EnggPhoto
+        enggPhoto: getEnggState.EnggPhoto,
+        enggRating: getEnggState?.avgRatingValue
       });
     }
   }, [getEnggState]);
@@ -279,11 +281,11 @@ const ServiceRequestModals = ({
               reNumber
             )
           );
-         dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestIdtoPassed));
-         closeModal();
-       }
-     });
-   }
+          dispatch(updateStatusOfCancelServiceAndCallbackRequestAction(RequestIdtoPassed));
+          closeModal();
+        }
+      });
+    }
 
 
 
@@ -402,16 +404,16 @@ const ServiceRequestModals = ({
 
 
   const handleCancelTicket = async () => {
-    const response =  await cancelServiceRequestOrCallback(RequestId)
+    const response = await cancelServiceRequestOrCallback(RequestId)
     toast.success(response.message);
   };
-  
+
   return (
 
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
-      <div className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification? 'notification-modal' : ''}`}>
+      <div className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? 'notification-modal' : ''}`}>
 
 
         <div className="child-modal-container">
@@ -545,10 +547,10 @@ const ServiceRequestModals = ({
                     <div className="membership-form-col1">
                       <p> MEMBERSHIP:  </p>
                     </div>
-                    {membershipType?<div className="membership-form-col2">
+                    {membershipType ? <div className="membership-form-col2">
                       <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
                     </div>
-                    :<div className="membership-form-col22">
+                      : <div className="membership-form-col22">
                         <SkeltonLoader width="100px" />
                       </div>}
 
@@ -618,12 +620,12 @@ const ServiceRequestModals = ({
                         <p>DOH:</p>
 
                       </div>
-                      {doh?<div className="req-elevator-col2">
+                      {doh ? <div className="req-elevator-col2">
                         <p> {doh}</p>
                       </div>
-                      :<div className="membership-form-col22">
-                        <SkeltonLoader width="100px" />
-                      </div>}
+                        : <div className="membership-form-col22">
+                          <SkeltonLoader width="100px" />
+                        </div>}
                     </div>
                   </div>
 
@@ -640,10 +642,11 @@ const ServiceRequestModals = ({
 
                       <div className="engg-photo-section">
                         <div>
+                          {console.log("/////////////Engniere photo ", engDetails.enggPhoto)}
                           {getEnggState ? (
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
-                              src={engDetails.enggPhoto}
+                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               alt="lift"
                             />
                           ) : (
@@ -715,7 +718,7 @@ const ServiceRequestModals = ({
                       </div>
 
                       <div>
-                        {getEnggState ? (
+                        {/* {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -737,7 +740,7 @@ const ServiceRequestModals = ({
                           </div>
                         ) : (
                           <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
-                        )}
+                        )} */}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">
@@ -752,7 +755,7 @@ const ServiceRequestModals = ({
                                 type="text"
                                 name="name"
                                 autoComplete="off"
-                                value={engDetails.enggRating}
+                                value={engDetails.enggRating || "--"}
                               />
                             </div>
                           </div>
@@ -779,15 +782,21 @@ const ServiceRequestModals = ({
                   <div className="sm-box sm-box--2">
                     <div className="col75">
                       {engDate || isAssigned ? (<MultiSelectDropdown
-                        placeholder={isAssigned ? engDetails.enggName : "Select Engineers"}
+                        placeholder={isAssigned ? engDetails.enggName : "Select Engineer"}
                         Details={serviceEnggDetail}
                         handleEnggSelectionChange={handleEnggSelectionChange}
                         isAssigned={isAssigned}
                         editchange={editchange}
                         enggName={engDetails.enggName}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Date First"
-                      />)}
+                      />) : (<div className="col75">
+                        <input
+                          placeholder={"Select Engineer"}
+                          disabled={true}
+                          style={{ width: "109%", boxShadow: "none" }}
+                          autoComplete="off"
+                        />
+                      </div>
+                      )}
 
                     </div>
                   </div>
@@ -801,9 +810,14 @@ const ServiceRequestModals = ({
                         isAssigned={isAssigned}
                         editchange={editchange}
                         enggName={engDetails.enggName}
-                      />) : (<MultiSelectDropdown
-                        placeholder="Please Select Engg First"
-                      />)}
+                      />) : (<div className="col75">
+                        <input
+                          placeholder={"Select Slot"}
+                          disabled={true}
+                          style={{ width: "109%", boxShadow: "none" }}
+                          autoComplete="off"
+                        />
+                      </div>)}
                     </div>
                   </div>
 
@@ -854,7 +868,7 @@ const ServiceRequestModals = ({
 
                   <div className="footer-section" style={{ width: '80%' }}>
                     <div className="buttons">
-                    <button
+                      <button
                         // className={`edit-button ${
                         //   editchange && `edit-button-onClick`
                         // }`}

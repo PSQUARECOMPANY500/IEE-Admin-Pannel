@@ -146,7 +146,9 @@ const Clients = () => {
   return (
     <div className="main-container">
       {clientModalOperation && <ClientForm />}
-      {renderClientView()}
+      <div id="ClientView">
+        {renderClientView()}
+      </div>
     </div>
   );
 };

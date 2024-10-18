@@ -56,7 +56,7 @@ const MCRoom = ({ serviceId }) => {
   });
 
   useEffect(() => {
-      setImages(AdminReportData?.AdminReportData?.ReportImages[0].photo)
+    setImages(AdminReportData?.AdminReportData?.ReportImages[0].photo)
     setAdminReportData(
       AdminReportData?.AdminReportData?.finalReportedData?.MCRoom
     );
@@ -74,9 +74,9 @@ const MCRoom = ({ serviceId }) => {
     <>
       <div className="McRoom ">
         {adminReportData?.IssuesResolved?.length > 0 ||
-        adminReportData?.IssuesNotResolved?.length > 0 ||
-        adminReportData?.SparePartsChanged?.length > 0 ||
-        adminReportData?.SparePartsRequested?.length > 0 ? (
+          adminReportData?.IssuesNotResolved?.length > 0 ||
+          adminReportData?.SparePartsChanged?.length > 0 ||
+          adminReportData?.SparePartsRequested?.length > 0 ? (
           <div className="CarTopShift Yello_Scrollbar">
             <div className="IssueResolved CardShiftCards">
               <div className="IssueResolvedL">
@@ -170,10 +170,10 @@ const MCRoom = ({ serviceId }) => {
                 </>
               ))}
             </div>
-            <div className="Amount CardShiftCards">
+            {/* <div className="Amount CardShiftCards">
               <h5>Total Amount</h5>
               <h5>Rs. 12000/-</h5>
-            </div>
+            </div> */}
           </div>
         ) : (
           <>
@@ -194,7 +194,8 @@ const MCRoom = ({ serviceId }) => {
                   </div>
                   <>
                     {/* <img src="https://ieelifts.com/wp-content/uploads/2023/09/1O3A3827-1-1024x683.jpg" /> */}
-                    <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`}/>
+                    <img src={`${config.documentUrl}/ReportAttachments/${images[0]}`} />
+                    <img src={`${config.documentUrl}/ReportAttachments/${images[1]}`} />
                   </>
                 </div>
               </div>

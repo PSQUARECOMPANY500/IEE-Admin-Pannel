@@ -15,7 +15,7 @@ const ClientDetails = ({ dataType, clientDetail }) => {
         <div className="clientDetailLeft">
           {clientDetail && clientDetail.responseData && (
             <img
-              src={clientDetail?.responseData?.profileImage}
+              src={clientDetail?.responseData?.profileImage || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"}
               width={100}
               height={100}
               style={{ borderRadius: "0.5rem" }}

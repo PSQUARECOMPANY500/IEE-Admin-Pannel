@@ -46,7 +46,7 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
 
   // console.log("*****************************************))))))))))))))))))",getBasicData);
 
-  
+
 
   useEffect(() => {
     if (getBasicData) {
@@ -207,70 +207,72 @@ const ServiceEnggCrousel = ({ ticketUpdate }) => {
           <SkeltonLoader width="370px" height="175px" />
         </div>
       ) : (
-        <Slider
-          ref={(slider) => (sliderRef.current = slider)}
-          {...settings}
-          beforeChange={handleBeforeChange}
-        >
-          {assignedArray?.map((item, index) => {
-            if (
-              item.ServiceEnggId === dataOnPin ||
-              (item.ServiceEnggId === click && checkChecIn)
-            ) {
-              return (
-                <ServiceEnggDataOnCrousel
-                  item={item}
-                  index={index}
-                  len={len}
-                  setClick={setClick}
-                  setOnClick={setOnClick}
-                  isHover={true}
-                />
-              );
-            } else {
-              return (
-                <ServiceEnggDataOnCrousel
-                  item={item}
-                  index={index}
-                  len={len}
-                  setClick={setClick}
-                  setOnClick={setOnClick}
-                  isHover={false}
-                />
-              );
-            }
-          })}
-          {notAssignedArray?.map((item, index) => {
-            if (
-              item.ServiceEnggId === dataOnPin ||
-              (item.ServiceEnggId === click && checkChecIn)
-            ) {
-              return (
-                <ServiceEnggDataOnCrousel
-                  item={item}
-                  index={index}
-                  len={len}
-                  setClick={setClick}
-                  setOnClick={setOnClick}
-                  isHover={true}
-                  click={click}
-                />
-              );
-            } else {
-              return (
-                <ServiceEnggDataOnCrousel
-                  item={item}
-                  click={click}
-                  index={index}
-                  len={len}
-                  setClick={setClick}
-                  setOnClick={setOnClick}
-                  isHover={false}
-                />
-              );
-            }
-          })}
-        </Slider>
+        <div id="EngineerCrausel">
+          <Slider
+            ref={(slider) => (sliderRef.current = slider)}
+            {...settings}
+            beforeChange={handleBeforeChange}
+          >
+            {assignedArray?.map((item, index) => {
+              if (
+                item.ServiceEnggId === dataOnPin ||
+                (item.ServiceEnggId === click && checkChecIn)
+              ) {
+                return (
+                  <ServiceEnggDataOnCrousel
+                    item={item}
+                    index={index}
+                    len={len}
+                    setClick={setClick}
+                    setOnClick={setOnClick}
+                    isHover={true}
+                  />
+                );
+              } else {
+                return (
+                  <ServiceEnggDataOnCrousel
+                    item={item}
+                    index={index}
+                    len={len}
+                    setClick={setClick}
+                    setOnClick={setOnClick}
+                    isHover={false}
+                  />
+                );
+              }
+            })}
+            {notAssignedArray?.map((item, index) => {
+              if (
+                item.ServiceEnggId === dataOnPin ||
+                (item.ServiceEnggId === click && checkChecIn)
+              ) {
+                return (
+                  <ServiceEnggDataOnCrousel
+                    item={item}
+                    index={index}
+                    len={len}
+                    setClick={setClick}
+                    setOnClick={setOnClick}
+                    isHover={true}
+                    click={click}
+                  />
+                );
+              } else {
+                return (
+                  <ServiceEnggDataOnCrousel
+                    item={item}
+                    click={click}
+                    index={index}
+                    len={len}
+                    setClick={setClick}
+                    setOnClick={setOnClick}
+                    isHover={false}
+                  />
+                );
+              }
+            })}
+          </Slider>
+        </div>
       )}
     </div>
   );

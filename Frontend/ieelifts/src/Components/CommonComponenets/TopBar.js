@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
 import CancelNotificationSection from "../AdminPannel/Component/DashboardSubComponent/CancelNotificationSection";
+import WalkthroughWrapper from "../../Walkthrough/WalkthroughWrapper";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -255,15 +256,13 @@ const TopBar = (props) => {
 
   return (
     <div className="top-bar">
+      {/* <WalkthroughWrapper index={1} top={"17"} left={"15"}> */}
       <div
-        // className="left-side-heading"
-        className={props.isOpen?"left-side-heading left-side-heading-open":"left-side-heading left-side-heading-close"}
-        // style={{
-        //   marginLeft: props.isOpen ? "0%" : "-9.5rem",
-        // }}
+        className={props.isOpen ? "left-side-heading left-side-heading-open" : "left-side-heading left-side-heading-close"}
       >
         <p>{props.heading}</p>
       </div>
+      {/* </WalkthroughWrapper> */}
 
       <div className="right-side-icons">
         {/* <div>
@@ -330,7 +329,7 @@ const TopBar = (props) => {
         )}
 
         {location.pathname === "/Memberships" && (
-          <div className="top-icon" onClick={toggleGrid}>
+          <div className="top-icon" onClick={toggleGrid} id="MembershipViewChange">
             {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
         )}
@@ -350,7 +349,7 @@ const TopBar = (props) => {
               {showTicketFilter && <ClientFilterDropdown />}
             </div>
 
-            <div className="top-icon" onClick={clienttoggleGrid}>
+            <div className="top-icon" onClick={clienttoggleGrid} id="ClientViewChange">
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
           </>
@@ -373,10 +372,10 @@ const TopBar = (props) => {
 
 {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
-    {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (  
-      <div style={{ display: "flex" }} ref={CancelledRequestNotificationRef}>
-            <span className="top-icon-bell" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     {/*TODO:  uncommented */}
-              <ImNotification  className="iconColor" />{" "}
+        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
+          <div style={{ display: "flex" }} ref={CancelledRequestNotificationRef}>
+            <span className="top-icon-bell" id="cancelNotification" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     {/*TODO:  uncommented */}
+              <ImNotification className="iconColor" />{" "}
             </span>
            <div className="dot"></div>
           
@@ -385,7 +384,7 @@ const TopBar = (props) => {
 
         {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (                                       
           <div style={{ display: "flex" }} ref={notificationClickRef}>
-             <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+            <span className="top-icon-bell" id="notification" onClick={handleNotfication} ref={notificationRef}>
               <HiOutlineBell className="iconColor" />{" "}
             </span>
             <div className="dot"></div>

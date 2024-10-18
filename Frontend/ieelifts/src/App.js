@@ -1,7 +1,7 @@
 import "./App.css";
 import "../src/Assets/LoginPage.css";
 
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
@@ -21,10 +21,12 @@ import NotFoundPage from "./Components/CommonComponenets/NotFoundPage";
 import SelectDepartment from "./Components/AdminPannel/Pages/SelectDepartment";
 import ErectionDashboard from "./Components/ErectionPannel/MainMenu/ErectionDashboard";
 import ErectionEngineers from "./Components/ErectionPannel/MainMenu/ErectionEngineers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Todo from "./Components/AdminPannel/Component/SubMenu/Todo/Todo";
 import Sosrequest from './Components/AdminPannel/Component/MainMenu/Sosrequest';
 function App() {
+  const navigate = useNavigate();
+  const getWalkthrough = localStorage.getItem('walkthroughVisited');
   const [departmentName, setDepartmentName] = useState('')
   const isLoggedIn = useSelector(
     (state) => state?.AdminRootReducer?.loginAdminReducer.isLoggedIn
@@ -38,6 +40,16 @@ function App() {
   const getName = (e) => {
     setDepartmentName(e)
   }
+
+  const [firstLoad, setfirstLoad] = useState(true);
+
+
+  // useEffect(() => {
+  //   if (!getWalkthrough && isLoggedIn && firstLoad) {
+  //     navigate("/Engeeniers")
+  //     setfirstLoad(false)
+  //   }
+  // })
 
   return (
     < >
