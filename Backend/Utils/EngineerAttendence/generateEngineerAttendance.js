@@ -3,6 +3,7 @@ const path = require('path');
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance")
 const moment = require("moment");
+const getObjectURL = require("../../S3bucket/S3")
 
 // Calculating the total working hours
 const calculateTotalHours = (checkIn, checkOut, checkintw, checkouttw) => {
@@ -53,6 +54,18 @@ function convertTo12HourFormat(time) {
 }
 
 
+const getS3Image =async  (key)=>{
+    try {
+        console.error("Main chkl gaya")
+        if(key !== undefined)
+         return  await getObjectURL(key)
+        
+    return "--"
+    } catch (error) {
+        console.error("Error");
+    }
+}
+
 async function generateEngineerAttendance() {
     try {
         // Getting engineer details
@@ -60,8 +73,8 @@ async function generateEngineerAttendance() {
 
         const todayDate = moment(
             new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" })
-        ).subtract(1,"days").format("DD/MM/YYYY");
-
+        ).format("DD/MM/YYYY");
+        // .subtract(1,"days")
         // Getting current date attendance
         const todayAttendances = await EnggAttendanceServiceRecord.find({ Date: todayDate }).select("ServiceEnggId Check_In Check_Out");
 
@@ -85,23 +98,26 @@ async function generateEngineerAttendance() {
                     checkOutTime: convertTo12HourFormat(engineerAttendence?.Check_Out?.time),
                     totalWorkingHours: totalWorkingHours || "--",
                     checkInFrontImage: engineerAttendence?.Check_In.time !== undefined
-                        ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_In.engPhoto?.split(" ")[0]}`
+                        ? `${await getS3Image(engineerAttendence.Check_In.engPhoto?.split(" ")[0])}`
                         : "--",
                     checkInBackImage: engineerAttendence?.Check_In.time !== undefined
-                        ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_In.engPhoto?.split(" ")[1]}`
+                        ? `${await getS3Image(engineerAttendence.Check_In.engPhoto?.split(" ")[1])}`
                         : "--",
                     checkOutFrontImage: engineerAttendence?.Check_Out.time !== undefined
-                        ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_Out.engPhoto?.split(" ")[0]}`
+                        ? `${await getS3Image(engineerAttendence.Check_Out.engPhoto?.split(" ")[0])}`
                         : "--",
                     checkOutBackImage: engineerAttendence?.Check_Out.time !== undefined
-                        ? `https://ieelifts.in/api/document/uplodes/${engineerAttendence.Check_Out.engPhoto?.split(" ")[1]}`
+                        ? `${await getS3Image(engineerAttendence.Check_Out.engPhoto?.split(" ")[1])}`
                         : "--",
                 };
             })
         );
         const pdfFilePath = path.join(__dirname, '../../public/EngineerDailyAttendanceFolder', 'EngineerAttendance.pdf');
+        const generatedAtDate = new Date(todayDate);
+    generatedAtDate.setDate(todayDate.getDate() + 1);
+    const formattedGeneratedAtDate = generatedAtDate.toISOString().split('T')[0];
 
-        await generateDailyAttendancePDF(EngineerData, todayDate, pdfFilePath);
+        await generateDailyAttendancePDF(EngineerData, todayDate, pdfFilePath,formattedGeneratedAtDate);
     } catch (error) {
         console.error(error);
         return error.message

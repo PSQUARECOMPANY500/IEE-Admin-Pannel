@@ -52,7 +52,7 @@ const ReportIssue = ({ RedportData }) => {
 
       <div className="IssueDoors IssuesDoor4" style={{ paddingLeft: "1rem" }}>
         <h5>
-          <span>{RedportData?.ClientDescription.slice(0, 100) + "..."}</span>
+          {RedportData?.ClientDescription&&<span>{RedportData?.ClientDescription?.slice(0, 100) + "..."}</span>}
         </h5>
       </div>
 

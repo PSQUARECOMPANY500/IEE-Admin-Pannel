@@ -1,13 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.36df5725.css",
-    "main.js": "/static/js/main.2d8d8001.js",
+    "main.css": "/static/css/main.23cf5502.css",
+    "main.js": "/static/js/main.e00c08ff.js",
     "static/js/239.a713bd7a.chunk.js": "/static/js/239.a713bd7a.chunk.js",
     "static/js/213.b0d69e39.chunk.js": "/static/js/213.b0d69e39.chunk.js",
     "static/js/455.913294f7.chunk.js": "/static/js/455.913294f7.chunk.js",
     "static/js/453.181644d9.chunk.js": "/static/js/453.181644d9.chunk.js",
     "static/media/backgroudImageLoginPage.jpg": "/static/media/backgroudImageLoginPage.88159fcebfec98b6775d.jpg",
+    "static/media/kanbanView.png": "/static/media/kanbanView.405bbc775358eec36cbe.png",
+    "static/media/AddTicketForm.png": "/static/media/AddTicketForm.e6945827abcaf6559486.png",
+    "static/media/MembershipDetailedView.png": "/static/media/MembershipDetailedView.e7fd2949a054e564bfa6.png",
+    "static/media/AddEngineerForm.png": "/static/media/AddEngineerForm.c9994be39e12e5269f6c.png",
+    "static/media/AddClientForm.png": "/static/media/AddClientForm.61296e025a3cfab8fd6b.png",
     "static/media/logo.png": "/static/media/logo.04b7af2160b1d875f3d6.png",
+    "static/media/CancleNotifications.png": "/static/media/CancleNotifications.a2783c6c78a086a329c1.png",
+    "static/media/Notifications.png": "/static/media/Notifications.2a41aaf53a0ad35ea575.png",
     "static/media/ieelogo.png": "/static/media/ieelogo.e294b4944cfed38e35cb.png",
     "static/media/calendar.png": "/static/media/calendar.8c08368f6efee33c0f03.png",
     "static/media/drivers.svg": "/static/media/drivers.3d9173ed04014d6602c0289b8801da2e.svg",
@@ -18,15 +25,15 @@
     "static/media/card.svg": "/static/media/card.cd9953e8b0ae7b7ad15c74a1ec37fcd6.svg",
     "static/media/uploadicon.svg": "/static/media/uploadicon.e4222e1ecdba5e8905024aad3158646b.svg",
     "static/media/mailIon.svg": "/static/media/mailIon.2d11fd1f064edd838bf3806cf88a6861.svg",
-    "main.36df5725.css.map": "/static/css/main.36df5725.css.map",
-    "main.2d8d8001.js.map": "/static/js/main.2d8d8001.js.map",
+    "main.23cf5502.css.map": "/static/css/main.23cf5502.css.map",
+    "main.e00c08ff.js.map": "/static/js/main.e00c08ff.js.map",
     "239.a713bd7a.chunk.js.map": "/static/js/239.a713bd7a.chunk.js.map",
     "213.b0d69e39.chunk.js.map": "/static/js/213.b0d69e39.chunk.js.map",
     "455.913294f7.chunk.js.map": "/static/js/455.913294f7.chunk.js.map",
     "453.181644d9.chunk.js.map": "/static/js/453.181644d9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.36df5725.css",
-    "static/js/main.2d8d8001.js"
+    "static/css/main.23cf5502.css",
+    "static/js/main.e00c08ff.js"
   ]
 }
