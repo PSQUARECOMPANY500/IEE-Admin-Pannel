@@ -209,19 +209,19 @@ code {
 }
 
 .membership_card_title_warrenty {
-  color: #0f351d;
+  color: #0f351d !important;
 }
 
 .membership_card_title_platinum {
-  color: #ff7f00;
+  color: #ff7f00 !important;
 }
 
 .membership_card_title_gold {
-  color: #f8ac1d;
+  color: #f8ac1d !important;
 }
 
 .membership_card_title_silver {
-  color: #8e8e8e;
+  color: #8e8e8e !important;
 }
 
 .membership_card_revenue {
@@ -3842,7 +3842,7 @@ input:-webkit-autofill {
   }
 
   .col75 input[type="text"] {
-    width: 100% !important;
+    /* width: 100% !important; */
     padding: 0.48rem !important;
     border-radius: 4px;
     resize: vertical;

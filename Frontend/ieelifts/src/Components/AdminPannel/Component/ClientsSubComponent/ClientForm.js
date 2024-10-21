@@ -91,7 +91,7 @@ const ClientForm = () => {
   //------------------handle next page-------------------
   const handleNextPage = () => {
     changeInData(false);
-    setToggle(false);
+    setToggle(true);
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
       allFormData;
 
@@ -125,8 +125,8 @@ const ClientForm = () => {
     } else {
       dispatch(RegisterClientDataAction(formData));
     }
-    closeModal();
-    dispatch(closeClientModalAction());
+    // closeModal();
+    // dispatch(closeClientModalAction());
   };
   //-----------------------------------------------------
   const handlePreviousPage = () => {

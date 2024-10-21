@@ -881,46 +881,45 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
   try {
     const { callbackId } = req.params;
 
-    const clientCallbacksDetails = await getAllCalbacks.findOne({
-      callbackId,
-    });
+    // Fetch the callback details
+    const clientCallbacksDetails = await getAllCalbacks.findOne({ callbackId });
 
-
-    // console.log("HE",clientCallbacksDetails)
-
+    // Return 404 if no details are found
     if (!clientCallbacksDetails) {
-      res.status(404).json({
-        message: "no data found with this callback id",
+      return res.status(404).json({
+        message: "No data found with this callback ID",
       });
     }
 
-    const clientDetail = await clientDetailSchema.findOne({
-      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
-    });
-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    const jobOrderNumber = clientCallbacksDetails.JobOrderNumber;
 
-    const allCallBacks = await assignCallback.find({
-      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
-      ServiceProcess: "completed",
-    });
+    // Parallel database queries
+    const [clientDetail, allCallBacks] = await Promise.all([
+      clientDetailSchema.findOne({ JobOrderNumber: jobOrderNumber }),
+      assignCallback.find({
+        JobOrderNumber: jobOrderNumber,
+        ServiceProcess: "completed",
+      }),
+    ]);
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
-      clientDetail: clientDetail,
+      clientDetail,
     };
 
-    res.status(200).json({
-      message: "all detal fetched successfully",
+    return res.status(200).json({
+      message: "All details fetched successfully",
       callback: callbackClientdetails,
       allCallBacks,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: "intenal server error",
+    console.error("Error fetching callback details:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Function to handle get Request detail By RequestId

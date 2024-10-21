@@ -11,19 +11,17 @@ const MembershipCardTopBar = ({
 }) => {
   return (
     <div
-      className={`membership_card_topbar ${
-        setClick
-          ? order !== 1
-            ? "membership_card_topbar_non_expand "
-            : ` membership_card_topbar_expand  ${
-                clickCount !== 1 ? "animation" : "animationExpand"
-              }
+      className={`membership_card_topbar ${setClick
+        ? order !== 1
+          ? "membership_card_topbar_non_expand "
+          : ` membership_card_topbar_expand  ${clickCount !== 1 ? "animation" : "animationExpand"
+          }
           `
-          : ""
-      }`}
+        : ""
+        } `}
     >
       <div className="membership_card_topbar_left">
-        <p className={`membership_card_title ${setClick && order !== 1 ? 'membership_card_title_non_expand' : 'membership_card_title_expand'}`}>
+        <p className={`membership_card_title ${setClick && order !== 1 ? 'membership_card_title_non_expand' : 'membership_card_title_expand'} ${titleClass}`}>
           {DemoData?.dataType}
         </p>
         <p
@@ -37,9 +35,8 @@ const MembershipCardTopBar = ({
         </p>
       </div>
       <div
-        className={`membership_card_counts ${cardColor} ${
-          setClick && "membership_card_counts_expand"
-        } ${order === 1 && "membership_card_counts_expanded"}`}
+        className={`membership_card_counts ${cardColor} ${setClick && "membership_card_counts_expand"
+          } ${order === 1 && "membership_card_counts_expanded"}`}
         style={{
           padding: setClick ? (order !== 1 ? "2% 3%" : "1% 1.2%") : "",
         }}
@@ -47,7 +44,7 @@ const MembershipCardTopBar = ({
         <p>{DemoData?.Data?.details?.count}</p>
       </div>
     </div>
-  
+
   );
 };
 

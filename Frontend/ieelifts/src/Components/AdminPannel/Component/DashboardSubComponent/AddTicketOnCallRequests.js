@@ -55,7 +55,7 @@ const AddTicketOnCallRequests = ({
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
-  const [ImageUrl,setImageUrl] = useState();
+  const [ImageUrl, setImageUrl] = useState();
 
 
   //assign-callbacks-state
@@ -71,7 +71,15 @@ const AddTicketOnCallRequests = ({
     repersentativeNumber: "",
   });
 
-  
+  const titleClass =
+    membershipType.toLocaleLowerCase() === "warrenty"
+      ? "membership_card_title_warrenty"
+      : membershipType.toLocaleLowerCase() === "platinum"
+        ? "membership_card_title_platinum"
+        : membershipType.toLocaleLowerCase() === "gold"
+          ? "membership_card_title_gold"
+          : "membership_card_title_silver";
+
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -434,27 +442,27 @@ const AddTicketOnCallRequests = ({
 
 
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
-const fetchImageUrl = async (key) => {
-  try {
-    const response = await getImagesFromS3Bucket(`${key}`);
-    return response.data.url;
-  } catch (error) {
-    console.log("error while fecthing the engg Images from S3 bucket ", error);
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
   }
- }
 
 
- useEffect(() => {
-  const fetchImage = async () => {
-    const url = await fetchImageUrl(engDetails.enggPhoto);
-    console.log("this is consoling my url ", url);
-    setImageUrl(url);
-  };
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await fetchImageUrl(engDetails.enggPhoto);
+      console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
     fetchImage();
-}, [engDetails]);
+  }, [engDetails]);
 
 
-console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
 
 
 
@@ -619,7 +627,7 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                     </div>
                     {membershipType ? (
                       <div className="membership-form-col2">
-                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                        <p className={`${titleClass}`}> {membershipType}</p>
                       </div>
                     ) : (
                       <div className="membership-form-col22">
@@ -725,12 +733,12 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                             //   alt="lift"
                             // />
                             <img style={{
-                                width: "90px",
-                                height: "90px",
-                                objectFit: "cover",
-                                objectPosition: "center",
-                                borderRadius: "2px",
-                              }}
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              objectPosition: "center",
+                              borderRadius: "2px",
+                            }}
                               // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               src={ImageUrl}
                               alt="lift"
