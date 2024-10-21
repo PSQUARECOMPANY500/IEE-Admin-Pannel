@@ -14,32 +14,34 @@ import Joyride from 'react-joyride';
 import { walkThroughSteps } from './utils/walkThrough';
 
 function RootComponent() {
-  const [run, setRun] = useState(false);
+  // const [run, setRun] = useState(false);
 
-  const handleWalkthroughCallback = (data) => {
-    const { status } = data;
-    const finishedStatuses = ['finished', "skipped"];
-    console.log("status", status);
-    if (finishedStatuses.includes(status)) {
-      // localStorage.setItem('walkthroughVisited', true);
-    }
-  };
+  
 
-  const getWalkthrough = localStorage.getItem('walkthroughVisited');
+  // const handleWalkthroughCallback = (data) => {
+  //   const { status } = data;
+  //   const finishedStatuses = ['finished', "skipped"];
+  //   console.log("status", status);
+  //   if (finishedStatuses.includes(status)) {
+  //     // localStorage.setItem('walkthroughVisited', true);
+  //   }
+  // };
 
-  const handleClickStart = () => {
-    setRun(true)
-  };
-  useEffect(() => {
-    if (!getWalkthrough && !run) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [getWalkthrough, run]);
+  // const getWalkthrough = localStorage.getItem('walkthroughVisited');
+
+  // // const handleClickStart = () => {
+  //   setRun(true)
+  // };
+  // useEffect(() => {
+  //   if (!getWalkthrough && !run) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = 'auto';
+  //   }
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, [getWalkthrough, run]);
 
   return (
     <Provider store={store}>

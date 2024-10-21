@@ -15,7 +15,7 @@
     "changes-stream": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express": "^4.19.2",
+    "express": "^4.21.0",
     "fast-two-sms": "^3.0.0",
     "firebase-admin": "^12.1.1",
     "html-pdf": "^3.0.1",

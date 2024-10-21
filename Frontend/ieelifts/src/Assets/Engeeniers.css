@@ -15,7 +15,6 @@ body {
   position: relative;
   display: none;
   grid-area: SingleEng;
-
 }
 
 .SubSingleEng {
@@ -27,9 +26,8 @@ body {
   display: grid;
   position: relative;
   grid-template-rows: 10% 5% 1% 84%;
-  grid-row-gap: .2rem;
-  padding: .5rem 1rem;
-
+  grid-row-gap: 0.2rem;
+  padding: 0.5rem 1rem;
 }
 
 .PDetails {
@@ -39,8 +37,6 @@ body {
   position: relative;
   height: 100%;
   width: 100%;
-
-
 }
 
 .Pimg {
@@ -65,7 +61,6 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
-
 }
 
 .ODetails {
@@ -100,7 +95,6 @@ body {
   grid-row-gap: 4rem;
   grid-column-gap: 7rem;
   padding: 2rem 4rem;
- 
 }
 
 .EngeeniersChatF {
@@ -139,11 +133,10 @@ body {
   /* justify-content: space-between; */
   gap: 2.2rem;
   flex-direction: column;
-  padding: .4rem;
-
+  padding: 0.4rem;
 }
 
-.EngCardCheckinIndicator{
+.EngCardCheckinIndicator {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -219,7 +212,7 @@ body {
   overflow-wrap: break-word;
 }
 
-.table-container>.table-item:nth-child(even) {
+.table-container > .table-item:nth-child(even) {
   font-size: 0.8rem;
   color: #444444;
   font-weight: 500;
@@ -227,7 +220,7 @@ body {
   line-height: 1.3rem;
 }
 
-.table-container>.table-item:nth-child(odd) {
+.table-container > .table-item:nth-child(odd) {
   font-size: 0.8rem;
   color: #444444;
   font-weight: 400;
@@ -498,7 +491,6 @@ body {
   width: 100%;
   display: grid;
   grid-template-rows: 7%;
-
 }
 
 .TaskHeading {
@@ -570,17 +562,16 @@ body {
 .CallBackCards {
   border-radius: 10px;
   /* height: 10vh; */
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   box-shadow: 1px 2px 5px #00000029;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: .2rem;
+  padding: 0.2rem;
   height: 10vh;
   padding: 1rem;
-
 }
 
 /* 
@@ -616,23 +607,21 @@ th {
   font-size: 0.8rem;
   color: #444444;
   font-weight: 400;
-  font-family: 'Poppins';
-  line-height: .9rem;
+  font-family: "Poppins";
+  line-height: 0.9rem;
   max-width: 50px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
-tr>td:nth-child(2) {
+tr > td:nth-child(2) {
   font-size: 0.8rem;
   color: #444444;
   font-weight: 490;
   font-family: "Poppins";
   line-height: 0.9rem;
 }
-
 
 .ServiceCardsBottom {
   width: 100%;
@@ -643,14 +632,14 @@ tr>td:nth-child(2) {
   justify-content: space-around;
 }
 
-.ServiceCardsBottom>h5:nth-child(1) {
+.ServiceCardsBottom > h5:nth-child(1) {
   font-family: " Poppins";
   font-size: 0.9rem;
   font-weight: 700;
   color: #389300;
 }
 
-.ServiceCardsBottom>h5:nth-child(2) {
+.ServiceCardsBottom > h5:nth-child(2) {
   font-family: " Poppins";
   font-size: 0.9rem;
   font-weight: 700;
@@ -666,20 +655,18 @@ tr>td:nth-child(2) {
   justify-content: space-around;
 }
 
-.CallBackCardsBottom>h5:nth-child(1) {
+.CallBackCardsBottom > h5:nth-child(1) {
   font-family: " Poppins";
   font-size: 0.9rem;
   font-weight: 700;
   color: #389300;
 }
 
-.CallBackCardsBottom>h5:nth-child(2) {
+.CallBackCardsBottom > h5:nth-child(2) {
   font-family: " Poppins";
   font-size: 0.9rem;
   font-weight: 700;
-  color: #F8AC1D;
-
-
+  color: #f8ac1d;
 }
 
 .star {
@@ -802,10 +789,6 @@ tr>td:nth-child(2) {
   min-height: 20%;
   background-color: #fffbf4;
   overflow-x: auto;
-
-
-
-
 }
 
 .Attendance {
@@ -815,7 +798,6 @@ tr>td:nth-child(2) {
   display: grid;
   padding: 0.5rem 0.5rem;
   grid-template-columns: 30% 70%;
-
 }
 
 .Attendacne-header {
@@ -838,7 +820,7 @@ tr>td:nth-child(2) {
 }
 
 .aday-eng {
-  padding: .2rem;
+  padding: 0.2rem;
   text-align: center;
   cursor: pointer;
   font-size: 0.8rem;
@@ -852,8 +834,8 @@ tr>td:nth-child(2) {
 }
 
 .aday-eng:hover {
-  background-color: #FEF3DE;
-  color: #F8AC1D;
+  background-color: #fef3de;
+  color: #f8ac1d;
 }
 
 .adays-eng {
@@ -870,14 +852,10 @@ tr>td:nth-child(2) {
 }
 
 .aday-eng.current {
-
-  color: #F8AC1D;
-
+  color: #f8ac1d;
 }
 
-
 .aday-eng.current:hover {
-
   background-color: transparent;
   box-shadow: none;
 }
@@ -887,7 +865,7 @@ tr>td:nth-child(2) {
 }
 
 .aday-eng.selected {
-  background: #F8AC1D;
+  background: #f8ac1d;
   box-shadow: inset 1px 2px 3px #00000080;
   color: black;
 }
@@ -934,10 +912,10 @@ tr>td:nth-child(2) {
 .DateCardData h5 {
   font-family: "Poppins";
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
 }
 
-.DateCardData>h5:nth-child(2) {
+.DateCardData > h5:nth-child(2) {
   font-weight: 400;
   font-size: 0.5rem;
 }
@@ -986,23 +964,22 @@ tr>td:nth-child(2) {
   font-size: 0.9rem;
 }
 
-.Leaveheading>h5:nth-child(1) {
-  color: #1D1D1D;
+.Leaveheading > h5:nth-child(1) {
+  color: #1d1d1d;
   font-weight: 500;
-  font-family: 'Poppins';
-
+  font-family: "Poppins";
 }
 
-.Leaveheading>h5:nth-child(2) {
+.Leaveheading > h5:nth-child(2) {
   color: #444444;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 
   font-weight: 400;
 }
 
-.Leaveheading>h5:nth-child(3) {
-  color: #F8AC1D;
-  font-family: 'Poppins';
+.Leaveheading > h5:nth-child(3) {
+  color: #f8ac1d;
+  font-family: "Poppins";
   font-weight: 400;
 }
 
@@ -1018,8 +995,6 @@ tr>td:nth-child(2) {
   grid-template-columns: 50% 50%;
   grid-gap: 1rem;
 }
-
-
 
 .OldLeaveCard {
   display: flex;
@@ -1068,7 +1043,7 @@ tr>td:nth-child(2) {
   font-size: 1rem;
 }
 
-.OldCardData>h5:nth-child(2) {
+.OldCardData > h5:nth-child(2) {
   font-weight: 400;
   font-size: 0.5rem;
 }
@@ -1086,13 +1061,13 @@ tr>td:nth-child(2) {
   color: white !important;
 }
 
-.OldLeaveCard>.OldCardData:nth-child(2) {
+.OldLeaveCard > .OldCardData:nth-child(2) {
   font-family: "Poppins";
   font-weight: 700;
   font-size: 1.2rem;
 }
 
-.OldLeaveCard>.OldCardData:nth-child(3) {
+.OldLeaveCard > .OldCardData:nth-child(3) {
   font-family: "Poppins";
   font-weight: 700;
   font-size: 1rem;
@@ -1159,14 +1134,14 @@ tr>td:nth-child(2) {
   flex-direction: column;
 }
 
-.ReqContainerL>h5:nth-child(1) {
+.ReqContainerL > h5:nth-child(1) {
   font-family: "Poppins";
   color: #1d1d1d;
   font-size: 1rem;
   font-weight: 450;
 }
 
-.ReqContainerL>h5:nth-child(2) {
+.ReqContainerL > h5:nth-child(2) {
   color: #b7b7b7;
   font-size: 0.8rem;
   font-weight: 450;
@@ -1196,7 +1171,6 @@ tr>td:nth-child(2) {
   align-items: flex-start;
   padding: 0rem 2rem;
   justify-content: center;
-
 }
 
 .ReqRDuration {
@@ -1220,7 +1194,7 @@ tr>td:nth-child(2) {
   font-weight: 400;
 }
 
-.ReqRDuration>h6:nth-child(2) {
+.ReqRDuration > h6:nth-child(2) {
   color: #1d1d1d;
 }
 
@@ -1254,7 +1228,7 @@ tr>td:nth-child(2) {
   font-size: 1rem;
 }
 
-.Buttons>button:nth-child(2) {
+.Buttons > button:nth-child(2) {
   border: 1px solid #46a70a;
 }
 
@@ -1393,7 +1367,6 @@ tr>td:nth-child(2) {
   justify-content: space-between;
   padding: 0.5rem 1rem;
   gap: 1rem;
-  
 }
 
 .rating-sub-card-row {
@@ -1431,9 +1404,6 @@ tr>td:nth-child(2) {
   text-overflow: ellipsis;
 }
 
-
-
-
 /* .two-line-text {
   -webkit-line-clamp: 2;
 } */
@@ -1444,7 +1414,6 @@ tr>td:nth-child(2) {
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.0099rem;
-
 }
 
 .rating-sub-card-row:nth-child(3) {
@@ -1462,7 +1431,6 @@ tr>td:nth-child(2) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 .footer-rating h5:nth-child(1) {
@@ -1624,8 +1592,6 @@ tr>td:nth-child(2) {
   justify-content: space-around;
   align-items: center;
 }
-
-
 
 .rating-quetions-container-may {
   box-shadow: inset 1px 2px 3px #00000029, 1px 2px 5px #00000029;
@@ -2064,7 +2030,6 @@ tr>td:nth-child(2) {
   height: 20px;
   width: 50%;
   position: relative;
-
 }
 
 .sub-revenue-top-right-footer-left {
@@ -2112,8 +2077,7 @@ tr>td:nth-child(2) {
 @media only screen and (min-width: 1201px) {} */
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
-
-  tr>td:nth-child(2) {
+  tr > td:nth-child(2) {
     font-size: 0.7rem;
   }
 
@@ -2126,17 +2090,14 @@ tr>td:nth-child(2) {
     padding: 2rem 3rem;
   }
 
-
-  .table-container>.table-item:nth-child(even) {
+  .table-container > .table-item:nth-child(even) {
     font-size: 0.7rem;
     line-height: 1.2rem;
-
   }
 
-  .table-container>.table-item:nth-child(odd) {
+  .table-container > .table-item:nth-child(odd) {
     font-size: 0.7rem;
     line-height: 1.2rem;
-
   }
 
   .EngCardCash h5 {
@@ -2146,7 +2107,6 @@ tr>td:nth-child(2) {
   .EngCardCash h5 span {
     font-size: 0.7rem;
   }
-
 
   .EngCards {
     min-height: 10rem;
@@ -2158,11 +2118,7 @@ tr>td:nth-child(2) {
     margin-top: 1rem;
     bottom: -20%;
     position: relative;
-
   }
-
-
-
 
   .EngCardCash {
     height: 3.5vh;
@@ -2176,12 +2132,10 @@ tr>td:nth-child(2) {
     padding: 0.5rem 0.5rem;
   }
 
-
   .aday-eng {
     font-size: 0.7rem;
     width: 24px;
     height: 24px;
-
   }
 
   .days-header {
@@ -2191,14 +2145,14 @@ tr>td:nth-child(2) {
     position: absolute;
     display: grid;
     grid-template-columns: repeat(7, 10%);
-    grid-column-gap: .6rem;
-    font-size: .6rem;
+    grid-column-gap: 0.6rem;
+    font-size: 0.6rem;
     font-weight: 500;
     top: -2.5%;
   }
 
   .ODetailsColumn h5 {
-    font-size: .7rem;
+    font-size: 0.7rem;
   }
 
   .SubPDetails {
@@ -2228,7 +2182,6 @@ tr>td:nth-child(2) {
     font-size: 0.8rem;
   }
 
-
   .leave_Details h5 {
     font-size: 0.8rem;
   }
@@ -2247,32 +2200,30 @@ tr>td:nth-child(2) {
     color: #444444;
   }
 
-  .OldLeaveCard>.OldCardData:nth-child(3) {
+  .OldLeaveCard > .OldCardData:nth-child(3) {
     font-size: 0.8rem;
     margin-left: 0.2rem;
   }
 
   .ReqMainContainer h5 {
-    font-family: 'Poppins';
-    font-size: .8rem;
+    font-family: "Poppins";
+    font-size: 0.8rem;
   }
 
-
-  .ReqContainerL>h5:nth-child(1) {
+  .ReqContainerL > h5:nth-child(1) {
     font-size: 0.9rem;
   }
-
 
   .ReqContainerR {
     padding: 0rem 1rem;
   }
 
   .ResMainContainer h5 {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 
   .Buttons button {
-    padding: .4rem 1rem;
+    padding: 0.4rem 1rem;
     font-size: 0.8rem;
   }
 
@@ -2282,7 +2233,6 @@ tr>td:nth-child(2) {
 
   .sub-revenue h5 {
     font-size: 0.8rem;
-
   }
 
   .sub-revenue-top {
@@ -2293,7 +2243,6 @@ tr>td:nth-child(2) {
     height: 40%;
   }
 
-
   .sub-revenue-top-right-footer h5 {
     font-size: 0.6rem;
     white-space: nowrap;
@@ -2302,7 +2251,6 @@ tr>td:nth-child(2) {
   .cr {
     height: 8px;
     width: 8px;
-
   }
 
   .sub-revenue-top-left-head,
@@ -2320,7 +2268,6 @@ tr>td:nth-child(2) {
   .spare-part-colums p {
     font-size: 0.7rem;
     line-height: 0.7rem;
-
   }
 
   .spare-part-req-type {
@@ -2331,7 +2278,6 @@ tr>td:nth-child(2) {
     width: 75%;
     height: 4.2vh;
     padding: 0.2rem;
-
   }
 
   .spare-part-colums button {
@@ -2350,8 +2296,6 @@ tr>td:nth-child(2) {
   .star {
     width: 25px;
     height: 15px;
-
-
   }
 
   .service-table-item,
@@ -2369,21 +2313,19 @@ tr>td:nth-child(2) {
     margin-bottom: 0.1rem;
   }
 
-  .ServiceCardsBottom>h5:nth-child(1) {
-    font-size: .7rem;
-
-  }
-
-  .ServiceCardsBottom>h5:nth-child(2) {
-    font-size: .7rem;
-
-  }
-
-  .CallBackCardsBottom>h5:nth-child(1) {
+  .ServiceCardsBottom > h5:nth-child(1) {
     font-size: 0.7rem;
   }
 
-  .CallBackCardsBottom>h5:nth-child(2) {
+  .ServiceCardsBottom > h5:nth-child(2) {
+    font-size: 0.7rem;
+  }
+
+  .CallBackCardsBottom > h5:nth-child(1) {
+    font-size: 0.7rem;
+  }
+
+  .CallBackCardsBottom > h5:nth-child(2) {
     font-size: 0.7rem;
   }
 
@@ -2421,7 +2363,6 @@ tr>td:nth-child(2) {
     font-size: 0.8rem;
   }
 
-
   .rating-quiz-row-buttons button {
     font-size: 0.8rem;
   }
@@ -2432,7 +2373,6 @@ tr>td:nth-child(2) {
 
   .send-messsage-eng-card {
     padding: 5px;
-
   }
 
   .eng-icon {
@@ -2446,19 +2386,15 @@ tr>td:nth-child(2) {
     width: 100%;
     grid-row-gap: 0.5rem;
     padding: 0.5rem 0rem;
-
   }
-
 
   .SubLeaveHistoryBottom {
     gap: 0.5rem;
   }
 
-
   .EngeeniersCard {
     min-height: 85vh;
     position: relative;
-
   }
 
   .rating-sub-card-container {
@@ -2467,7 +2403,6 @@ tr>td:nth-child(2) {
     padding: 0.5rem 0.5rem;
     overflow-y: auto;
     max-height: 59vh;
-
   }
 
   .DateCardData:nth-child(1) {
@@ -2485,25 +2420,20 @@ tr>td:nth-child(2) {
     overflow-y: auto;
   }
 
-
-  .ServicContainer,.CallbackContainer {
+  .ServicContainer,
+  .CallbackContainer {
     height: 59vh;
-  
   }
 
   .rating-sub-card {
-    height: 12vh; 
+    height: 12vh;
   }
-  
 }
-
 
 @media only screen and (min-width: 1371px) and (max-width: 1550px) {
   .DatesContainer {
     height: 52%;
   }
-
-
 }
 
 /* @media only screen and (min-width: 1201px) {
