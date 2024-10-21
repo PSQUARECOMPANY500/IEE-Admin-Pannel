@@ -2,7 +2,7 @@
 const express = require("express");
 const { createServer: createHttpServer } = require("http");
 const { Server: SocketServer } = require("socket.io");
-const morgan = require('morgan');
+const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -11,14 +11,18 @@ const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
 const { watchNotifications } = require("./Notification/notification");
+const cronjob = require("./Utils/EngineerAttendence/EngineerAttendenceCronJob")
+
+//s3 import url
+const { getObjectURL } = require("./S3bucket/S3");
 
 const path = require("path");
-
+cronjob()
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // ------ Routes ------
 // ---------service engg routes---------
@@ -33,12 +37,34 @@ app.use("/api/admin", AdminRoutes);
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
 
-app.use("/api/document/:foldername/:filename", (req, res) => {
-  const filename = req.params.filename
-  const foldername = req.params.foldername
-  const filepath = path.join(__dirname, `public/${foldername}`, filename)
-  res.sendFile(filepath)
+  
+
+
+  //API aws s3 bucket to get the images.... from s3 bucket  ------------------------------------------------------------
+app.get('/api/getImagesDataFromS3Bucket',async (req,res) => {
+  try {
+    const fileKey = req.query.key
+    const signedUrl = await getObjectURL(fileKey);
+    res.status(200).json({ url: signedUrl });
+  } catch (error) {
+    res.status(500).json({message:"Internal sever error while fetching images"});
+  }
 });
+//------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+app.use("/api/document/:foldername/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const foldername = req.params.foldername;
+  const filepath = path.join(__dirname, `public/${foldername}`, filename);
+  res.sendFile(filepath);
+});
+
+
+
 
 main().catch((err) => console.log(err));
 
@@ -67,19 +93,21 @@ const io = new SocketServer(httpServer, {
   allowEIO3: true,
 });
 
+
+
 // Listen for new connections
 io.on("connection", (socket) => {
   console.log(`A user connected: ${socket.id}`);
 
   socket.on("aloo", (recivedMessaege) => {
-    console.log("message si recives", recivedMessaege)
-    io.emit('messagerecieved', recivedMessaege)
+    console.log("message si recives", recivedMessaege);
+    io.emit("messagerecieved", recivedMessaege);
   });
 
-  socket.on('newEnggmessage', (messageRecives) => {
+  socket.on("newEnggmessage", (messageRecives) => {
     console.log("pankaj side", messageRecives);
-    io.emit("EnggNewMessage", messageRecives)
-  })
+    io.emit("EnggNewMessage", messageRecives);
+  });
 });
 
 httpServer.listen(socketPort, () => {

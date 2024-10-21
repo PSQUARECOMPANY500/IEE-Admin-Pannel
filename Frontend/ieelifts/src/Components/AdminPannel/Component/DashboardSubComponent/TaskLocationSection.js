@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 
 import RepotImage from "./RepotImage";
+import WalkthroughWrapper from "../../../../Walkthrough/WalkthroughWrapper";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
@@ -256,6 +257,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   return (
     <div className={"parent-full-div"} ref={ref}>
       <div className={"task-child-div"}>
+        {/* <WalkthroughWrapper index={2}> */}
         <div
           className={
             props.kanban ? "tasks-section" : "tasks-section-on-kanban "
@@ -267,10 +269,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
             <div className="switch-button ">
               <span className="ticket-service-flex">
                 <p
-                  className={ticket ? "switch-button-hover": "switch-button-without-hover"}
+                  className={ticket ? "switch-button-hover" : "switch-button-without-hover"}
                   onClick={toggleTickets}
                 >
-                  Tickets
+                  Ticket
                 </p>
                 <p
                   className={
@@ -280,7 +282,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   }
                   onClick={toogleService}
                 >
-                  Services
+                  Service
                 </p>
               </span>
             </div>
@@ -532,6 +534,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
             </div>
           ) : null}
         </div>
+        {/* </WalkthroughWrapper> */}
 
         {props.kanban ? (
           <div className="Report-section">
@@ -545,6 +548,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
                   <ReportData
                     handleRedportData={handleRedportData}
                     RedportData={RedportData}
+                    ticket={ticket}
                   />
                 </div>
               </div>

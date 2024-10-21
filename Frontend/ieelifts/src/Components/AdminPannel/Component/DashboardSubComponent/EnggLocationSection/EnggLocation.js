@@ -20,9 +20,9 @@ const EnggLocation = () => {
   const dispatch = useDispatch();
 
   const enggLocationDetails = useSelector((state) => {
-    return state?.AdminRootReducer?.EnggLocationDetailsFetchReducer?.enggLocatioDetails;
+    return state.AdminRootReducer?.EnggLocationDetailsFetchReducer
+      ?.enggLocatioDetails;
   });
-
 
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
   // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
@@ -40,7 +40,7 @@ const EnggLocation = () => {
         ?.coordinates
   );
 
-  console.log("this is map coordinaets-----", MapCoordinates);
+  // console.log("this is map coordinaets-----", MapCoordinates);
 
   const IEELifts = { lat: 30.71424661365234, lng: 76.696212667490 };
   const [center, setCenter] = useState({
@@ -56,7 +56,7 @@ const EnggLocation = () => {
 // console.log("this is map console----->>*************************** ", map);
 
 
-  const [directions, setDirections] = useState();
+  const [directions, setDirections] = useState([]);
 
   // console.log("this is consosle the direction 999999  ", directions);
 
@@ -89,7 +89,7 @@ const EnggLocation = () => {
 
   useEffect(() => {
     if (enggServiceID) {
-      console.log("ths id is inside the useEfefct", enggServiceID);
+      // console.log("ths id is inside the useEfefct", enggServiceID);
       dispatch(getEnggLocationCoordinatesAction(enggServiceID)); // get the corrdinates from the engg database to path on map
     } else {
       dispatch(getEnggLocationCoordinatesAction()); // get the corrdinates from the engg database to path on map
@@ -102,7 +102,7 @@ const EnggLocation = () => {
 
 
   const calculateDirection = async () => {
-    if (MapCoordinates && MapCoordinates.length > 0) {
+    if (MapCoordinates && MapCoordinates.length > 1) {
       const directionService = new window.google.maps.DirectionsService();
 
       // Ensure waypoints are formatted correctly
@@ -117,7 +117,7 @@ const EnggLocation = () => {
       },[]);
       
       const request = {
-        origin: { lat: MapCoordinates[0]?.lat, lng: MapCoordinates[0]?.lng }, // Starting point
+        origin: { lat: MapCoordinates[0].lat, lng: MapCoordinates[0].lng }, // Starting point
         destination: {
           lat: MapCoordinates[MapCoordinates.length - 1].lat,
           lng: MapCoordinates[MapCoordinates.length - 1].lng,
@@ -128,7 +128,7 @@ const EnggLocation = () => {
 
       try {
         const res = await directionService.route(request);
-        console.log("this is response console ", res);
+        // console.log("this is response console ", res);
         if (res.status === "OK") {
           setDirections(res);
         } else {
@@ -174,16 +174,14 @@ const EnggLocation = () => {
   }, [dispatch, enggId, state]);
 
   useMemo(() => {
-  
-    if (enggLocationDetails && enggLocationDetails.length > 0) {
-
+    if (enggLocationDetails) {
       enggLocationDetails.forEach((data) => {
-        console.log("this is my data",data);
+        // console.log("this is my data",data);
         if (data.ServiceEnggId === enggServiceID) {
           // const lat = parseFloat(data.currentLocation.coordinates[0]);
           // const lng = parseFloat(data.currentLocation.coordinates[1]);
-          const lat = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[0]);
-          const lng = parseFloat(data?.currentLocation?.coordinates[0]?.origin?.split(",")[1]);
+          const lat = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[0]);
+          const lng = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[1]);
           setCenter({ lat, lng });
         }
       });
@@ -656,8 +654,6 @@ const EnggLocation = () => {
 // ]
 
 
-
-         
   return (
     <GoogleMap
       zoom={12}
@@ -687,45 +683,44 @@ const EnggLocation = () => {
           <p>IEE LIFTS</p>
         </InfoWindow>
       )}
-      {enggLocationDetails && enggLocationDetails.length > 0 &&
+      {enggLocationDetails &&
         enggLocationDetails.map((data, index) => {
           const coordinates = data?.currentLocation?.coordinates;
+          // console.log("inside the map", coordinates)
+          // const lastLatitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          // console.log("this is last lattitude -->>  ", lastLatitude);
 
-   if(coordinates && coordinates.length>0){
+          const latitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
+          const longitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[1]);
 
-
-     const latitude = parseFloat(coordinates[coordinates.length - 1]?.origin?.split(",")[0]);
-     const longitude = parseFloat(coordinates[coordinates.length - 1]?.origin?.split(",")[1]);
-
-     const position = { lat: latitude, lng: longitude };
-     const engId = data.ServiceEnggId;
-     const isActive =
-       data.ServiceEnggId === enggServiceID || pinIndex === index;
-     const markerSymbol = isActive
-       ? inactiveMarkerSymbol
-       : enggMarkerSymbol;
-     const isMarkerActive = pinIndex === index;
-     return (
-       <Marker
-         key={index}
-         position={position}
-         icon={markerSymbol}
-         onClick={() => {
-           if (isMarkerActive && pinIndex >= 0) {
-             setPinIndex(-1);
-             setEnggId(null);
-             setState(state + 1);
-           } else {
-             dispatch(onClickEnggCart(""));
-             setEnggId(engId);
-             setPinIndex(index);
-             setState(state + 1);
-           }
-         }}
-       />
-     );
-    }
-  })}
+          const position = { lat: latitude, lng: longitude };
+          const engId = data.ServiceEnggId;
+          const isActive =
+            data.ServiceEnggId === enggServiceID || pinIndex === index;
+          const markerSymbol = isActive
+            ? inactiveMarkerSymbol
+            : enggMarkerSymbol;
+          const isMarkerActive = pinIndex === index;
+          return (
+            <Marker
+              key={index}
+              position={position}
+              icon={markerSymbol}
+              onClick={() => {
+                if (isMarkerActive && pinIndex >= 0) {
+                  setPinIndex(-1);
+                  setEnggId(null);
+                  setState(state + 1);
+                } else {
+                  dispatch(onClickEnggCart(""));
+                  setEnggId(engId);
+                  setPinIndex(index);
+                  setState(state + 1);
+                }
+              }}
+            />
+          );
+        })}
 
       {directions && (
         <DirectionsRenderer

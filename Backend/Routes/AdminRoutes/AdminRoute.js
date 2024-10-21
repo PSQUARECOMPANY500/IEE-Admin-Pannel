@@ -3,6 +3,9 @@ const path = require("path");
 const multer = require("multer");
 const express = require("express");
 const router = express.Router();
+
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3'); 
 // const {verifyToken} = require('../../Middleware/ClientAuthMiddleware')
 
 const adminContoller = require("../../Controllers/AdminController/AdminController");
@@ -15,7 +18,7 @@ const { uploadEdit, storageMembershipUpgradeBill } = require("../../Multer/EnggA
 
 const { token } = require("../../Controllers/AdminController/AdminController")
 
-const {EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
+const { EnggCheckoutOrNot } = require("../../Middleware/ServiceEnggAuthMiddleware");
 
 //----------------------------- All post requests ---------------------------------------------
 
@@ -189,17 +192,51 @@ router.get("/getNotification", adminContoller.getNotification);
 //   },
 // });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/ElevatorDimensions/");
-  },
-  filename: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1];
-    const fileName = file.originalname.split(".")[0];
-    cb(null, `${fileName}-${Date.now()}.${parts}`);
+
+
+// Initialize the S3 client -------------------------------------------------------------
+const s3 = new S3Client({
+  region: "ap-south-1", // Set your region
+  credentials: {
+    accessKeyId: "AKIARFSYGNLRBGIA5DHK",
+    secretAccessKey: "aTLDBN/9g7YvKmwTcAJgGidI5lgq/Rv3d/rBFg1P",
   },
 });
+//-----------------------------------------------------------------------------------
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/ElevatorDimensions/");
+//   },
+//   filename: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1];
+//     const fileName = file.originalname.split(".")[0];
+//     cb(null, `${fileName}-${Date.now()}.${parts}`);
+//   },
+// });
+
+
+const storage = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
+  },
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/ElevatorDimensions/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  },
+})
+
 const upload = multer({ storage: storage });
+
+
+
+
+
+
+
+
 
 router.put(
   "/putElevatorDimensions",
@@ -348,6 +385,9 @@ router.put("/assignSoSRequest", adminContoller.assignSoSRequest)
 
 // router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId',EnggCheckoutOrNot, adminContoller.getEnggCoorinatesToShowOnMapModal)
 router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId', adminContoller.getEnggCoorinatesToShowOnMapModal)
+
+// Get eningeer attendence 
+// router.get('/getEngineerAttendence', adminContoller.getEngineerAttendance)
 
 module.exports = router;
 

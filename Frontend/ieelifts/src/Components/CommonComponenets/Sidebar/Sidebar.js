@@ -20,6 +20,9 @@ import { LuChevronsUpDown } from "react-icons/lu";
 import TopBar from "../TopBar";
 import Todo from "../../AdminPannel/Component/SubMenu/Todo/Todo";
 import config from "../../../config";
+import WalkthroughWrapper from "../../../Walkthrough/WalkthroughWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { handelWalkthroughIndex } from "../../../ReduxSetup/Actions/WalkthroughActions";
 
 const { jwtDecode } = require("jwt-decode");
 
@@ -61,6 +64,12 @@ const Sidebar = ({ children }) => {
   const [mainMenuOpen, setMainMenuOpen] = useState(true);
   const [officeMenuOpen, setOfficeMenuOpen] = useState(false);
 
+  const currentWalkthroughIndex = useSelector((state) =>
+    state?.WalkthroughRootReducer?.walkthroughIndexReducer?.index
+  )
+
+  const dispatch = useDispatch()
+
   const handleToggleClick = () => {
     // setIsButtonOpen((prevState) => !prevState);
     setIsOpen(!isOpen);
@@ -78,6 +87,9 @@ const Sidebar = ({ children }) => {
   };
 
   const mainToogle = () => {
+    // dispatch(handelWalkthroughIndex(currentWalkthroughIndex))
+    // setTimeout(() => {
+    // }, 1000)
     settoogleClose(!toogleOpen);
   };
 
@@ -287,14 +299,8 @@ const Sidebar = ({ children }) => {
               </div>
             </div>
           </div>
-
+          {/* <WalkthroughWrapper index={0} top={"17"} left={"15"}> */}
           <div
-            // className="user-info"
-            // style={{
-            //   width: isOpen ? "230px" : "75px",
-            //   pointerEvents: isOpen ? "auto" : "none",
-            // }}
-
             className={isOpen ? 'user-info user-info-open' : 'user-info user-info-close'}
           >
             <div className="ineer-menue" onClick={mainToogle}>
@@ -348,6 +354,7 @@ const Sidebar = ({ children }) => {
               </div>
             </div>
           </div>
+          {/* </WalkthroughWrapper> */}
 
           <nav
             // style={{

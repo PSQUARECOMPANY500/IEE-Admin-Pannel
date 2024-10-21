@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import { GrGallery } from "react-icons/gr";
 import { useDispatch, useSelector } from "react-redux";
 import ReportImageIcon from "../../../../Assets/Images/repotimage.png";
-import { ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
+import { getImagesFromS3Bucket, ReportCrouserHandler } from "../../../../ReduxSetup/Actions/AdminActions";
 import RepotImage from "./RepotImage";
 import config from "../../../../config";
+
+
 
 const PitArea = () => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
   const [showReportImage, setShowReportImage] = useState(false);
+
+  const [imageUrls, setImageUrls] = useState({});
+
   const dispatch = useDispatch();
 
   console.log("pit area", images);
@@ -29,12 +34,29 @@ const PitArea = () => {
     dispatch(ReportCrouserHandler(3, true));
   };
 
+  
+  useEffect(()=>{
+    const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${images[0]}`);
+        setImageUrls(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log("Error while fetching the image from S3 bucket:", error);
+        return null; 
+      }
+    };
+     if (images && images.length > 0) {
+      fetchImageUrl(); 
+    }
+  }, [images]);
+
   return (
     <div className="McRoom">
       {adminReportData?.IssuesResolved?.length > 0 ||
-      adminReportData?.IssuesNotResolved?.length > 0 ||
-      adminReportData?.SparePartsChanged?.length > 0 ||
-      adminReportData?.SparePartsRequested?.length > 0 ? (
+        adminReportData?.IssuesNotResolved?.length > 0 ||
+        adminReportData?.SparePartsChanged?.length > 0 ||
+        adminReportData?.SparePartsRequested?.length > 0 ? (
         <div className="CarTopShift Yello_Scrollbar">
           <div className="IssueResolved CardShiftCards">
             <div className="IssueResolvedL">
@@ -124,10 +146,10 @@ const PitArea = () => {
               </>
             ))}
           </div>
-          <div className="Amount CardShiftCards">
+          {/* <div className="Amount CardShiftCards">
             <h5>Total Amount</h5>
             <h5>Rs. 12000/-</h5>
-          </div>
+          </div> */}
         </div>
       ) : (
         <>
@@ -145,9 +167,7 @@ const PitArea = () => {
                   <p>+{images.length}</p>
                 </div>
                 <>
-                  <img
-                    src={`${config.documentUrl}/ReportAttachments/${images[0]}`}
-                  />
+                <img src={imageUrls}/>
                 </>
               </div>
             </div>

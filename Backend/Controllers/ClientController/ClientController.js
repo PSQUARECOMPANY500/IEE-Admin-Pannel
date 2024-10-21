@@ -79,13 +79,13 @@ module.exports.referalUser = async (req, res) => {
     });
     if (checkClient) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Lift is already installed on this number" });
     }
 
     if (checkReferal) {
       return res
-        .status(400)
+        .status(200)
         .json({ message: "Referal for this number already exists" });
     }
 
@@ -955,7 +955,7 @@ module.exports.getCurrentScheduleService = async (req, res) => {
 if (!latestRecord && combineData.length === 0) {
   return res.status(200).json({
     status: "complete",
-    message: "Schedule your service",
+    message: "Schedule Your Service",
     time: null,
     date: null,
     liveTracking: false,
@@ -981,7 +981,7 @@ if (!latestRecord && combineData.length === 0) {
     if (combineData[0]?.isAssigned === false) {
       return res.status(200).json({
         status: "success",
-        message: "service Booked",
+        message: "Service Booked",
         time: null,
         date: null,
         liveTracking: false,
@@ -996,7 +996,7 @@ if (!latestRecord && combineData.length === 0) {
     if (combineData[0]?.isAssigned === false && !rating) {
       res.status(200).json({
         status: "success",
-        message: "service Booked",
+        message: "Service Booked",
         time: null,
         date: null,
         liveTracking: false,
@@ -1022,7 +1022,7 @@ if (!latestRecord && combineData.length === 0) {
     } else {
       return res.status(200).json({
         status: "complete",
-        message: "Schedule your service",
+        message: "Schedule Your Service",
         time: null,
         date: null,
         liveTracking: false,

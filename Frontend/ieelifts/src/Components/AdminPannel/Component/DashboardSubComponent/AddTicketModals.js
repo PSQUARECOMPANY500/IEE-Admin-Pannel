@@ -20,6 +20,9 @@ import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
 import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
+
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -54,6 +57,9 @@ const AddTicketModals = ({
   const [doh, setDoh] = useState("");
 
   // console.log('engDate', engDate)
+
+  const [ImageUrl,setImageUrl] = useState();
+
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -159,6 +165,7 @@ const AddTicketModals = ({
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
         enggPhoto: getEnggState.EnggPhoto,
+        enggRating: getEnggState?.avgRatingValue
       });
     }
   }, [getEnggState]);
@@ -385,6 +392,35 @@ const AddTicketModals = ({
     const response = await cancelServiceRequestOrCallback(callbackId);
     toast.success(response.message);
   };
+
+
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
+   }
+  
+  
+   useEffect(() => {
+    const fetchImage = async () => {
+      // console.log("this is engg photo &&&&&&&&&&&&&&&&&&&&&&&& ", engDetails.enggPhoto)
+      const url = await fetchImageUrl(engDetails.enggPhoto);
+      console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
+      fetchImage();
+  }, [engDetails]);
+  
+  
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+
+
+
+
 
   return (
     <>
@@ -627,7 +663,8 @@ const AddTicketModals = ({
                                 objectPosition: "center",
                                 borderRadius: "2px",
                               }}
-                              src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
+                              src={ImageUrl}
                               alt="lift"
                             />
                           ) : (
@@ -720,7 +757,7 @@ const AddTicketModals = ({
                       </div>
 
                       <div>
-                        {getEnggState ? (
+                        {/* {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -746,7 +783,7 @@ const AddTicketModals = ({
                             height="20px"
                             marginBottom="10px"
                           />
-                        )}
+                        )} */}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">
@@ -760,7 +797,7 @@ const AddTicketModals = ({
                               <input
                                 type="text"
                                 name="name"
-                                value={engDetails.enggRating}
+                                value={engDetails.enggRating || "--"}
                                 autoComplete="off"
                               />
                             </div>
@@ -802,7 +839,14 @@ const AddTicketModals = ({
                           enggName={engDetails.enggName}
                         />
                       ) : (
-                        <MultiSelectDropdown placeholder="Please Select Date First" />
+                        <div className="col75">
+                          <input
+                            placeholder={"Select Engineer"}
+                            disabled={true}
+                            style={{ width: "109%", boxShadow: "none" }}
+                            autoComplete="off"
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -822,7 +866,14 @@ const AddTicketModals = ({
                           enggName={engDetails.enggName}
                         />
                       ) : (
-                        <MultiSelectDropdown placeholder="Please Select Engg First" />
+                        <div className="col75">
+                          <input
+                            placeholder={"Select Slot"}
+                            disabled={true}
+                            style={{ width: "109%", boxShadow: "none" }}
+                            autoComplete="off"
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -877,7 +928,7 @@ const AddTicketModals = ({
                           id="subject"
                           name="subject"
                           style={{
-                            height: "105px",
+                            height: "110px",
                             width: "93%",
                             resize: "none",
                           }}

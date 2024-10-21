@@ -1,15 +1,20 @@
-              import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GrGallery } from "react-icons/gr";
 import { BsFiletypePdf } from "react-icons/bs";
 
 
-import { fetchFinalReportData } from "../../../../ReduxSetup/Actions/AdminActions";
+import { fetchFinalReportData, getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 import { useSelector } from "react-redux";
 import config from "../../../../config";
+
+
 
 const Invoice = ({ serviceId }) => {
   const [sparePartData, setSparePartData] = useState();
   const [totalAmount, setTotalAmount] = useState();
+
+  const [imageUrls, setImageUrls] = useState({});
+
 
   // console.log("[[[[[[[[[[[[[[", sparePartData);
 
@@ -27,14 +32,30 @@ const Invoice = ({ serviceId }) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer?.AdminReportData
       ?.finalReportedData;
   });
-  // console.log("gggggggggggggggggggggggggggggggggggggggg",AdminReportData.AdminReportData.finalReportedData.PaymentDetails);
-  // console.log("gggggggggggggggggggggggggggggggggggggggg",AdminReportData.PaymentDetails);
-  // console.log("gggggggggggggggggggggggggggggggggggggggg",AdminReportData.AdminReportData.finalReportedData.PaymentMode);
+
+
+  useEffect(()=>{
+    const fetchImageUrl = async () => {
+      try {
+        const response = await getImagesFromS3Bucket(AdminReportData?.PaymentDetails);
+        setImageUrls(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log("Error while fetching the image from S3 bucket:", error);
+        return null; 
+      }
+    };
+     if (AdminReportData.PaymentDetails) {
+      fetchImageUrl(); 
+    }
+  }, [AdminReportData?.PaymentDetails]);
+
 
   const openIt = () => {
-    const url = `${config.documentUrl}/ReportPdf/${AdminReportData.PaymentDetails}`;
+    // const url = `${config.documentUrl}/ReportPdf/${AdminReportData.PaymentDetails}`;
+    // const url = imageUrls;
 
-    window.open(url);
+    window.open(imageUrls,"_blank");
   };
 
   return (
