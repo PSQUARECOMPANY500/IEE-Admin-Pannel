@@ -175,7 +175,8 @@ const AddTicketModals = ({
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
         enggPhoto: getEnggState.EnggPhoto,
-        enggRating: getEnggState?.avgRatingValue
+        enggRating: getEnggState?.avgRatingValue,
+        enggLocation: getEnggState.enggLocation,
       });
     }
   }, [getEnggState]);
@@ -767,7 +768,7 @@ const AddTicketModals = ({
                       </div>
 
                       <div>
-                        {/* {getEnggState ? (
+                        {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -776,15 +777,10 @@ const AddTicketModals = ({
                               className="col-elevator25"
                               style={{ width: "30%" }}
                             >
-                              <label>LOCATION:</label>
+                              <label>LOCATION: </label>
                             </div>
-                            <div className="col-elevator75">
-                              <input
-                                type="text"
-                                name="name"
-                                value={engDetails.enggLocation}
-                                autoComplete="off"
-                              />
+                            <div className="col-elevator75 modalLocation">
+                              {engDetails.enggLocation}
                             </div>
                           </div>
                         ) : (
@@ -793,7 +789,7 @@ const AddTicketModals = ({
                             height="20px"
                             marginBottom="10px"
                           />
-                        )} */}
+                        )}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">

@@ -293,7 +293,8 @@ const AddTicketOnCallRequests = ({
         enggPhoto: getEnggState.EnggPhoto,
         repersentativeName: getEnggState.RepresentativeName,
         repersentativeNumber: getEnggState.RepresentativeNumber,
-        enggRating: getEnggState?.avgRatingValue
+        enggRating: getEnggState?.avgRatingValue,
+        enggLocation: getEnggState.enggLocation,
       });
     }
   }, [getEnggState]);
@@ -462,7 +463,7 @@ const AddTicketOnCallRequests = ({
   }, [engDetails]);
 
 
-  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails)
 
 
 
@@ -832,7 +833,7 @@ const AddTicketOnCallRequests = ({
                       </div>
 
                       <div>
-                        {/* {getEnggState ? (
+                        {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -841,15 +842,10 @@ const AddTicketOnCallRequests = ({
                               className="col-elevator25"
                               style={{ width: "30%" }}
                             >
-                              <label>LOCATION:</label>
+                              <label>LOCATION: </label>
                             </div>
-                            <div className="col-elevator75">
-                              <input
-                                type="text"
-                                autoComplete="off"
-                                name="name"
-                                value={engDetails.enggLocation}
-                              />
+                            <div className="col-elevator75 modalLocation">
+                              {engDetails.enggLocation}
                             </div>
                           </div>
                         ) : (
@@ -858,7 +854,7 @@ const AddTicketOnCallRequests = ({
                             height="20px"
                             marginBottom="10px"
                           />
-                        )} */}
+                        )}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">

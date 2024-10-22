@@ -5449,6 +5449,13 @@ footer a:hover {
   font-family: "Poppins";
 }
 
+.modalLocation {
+  font-size: 0.7rem !important;
+  color: #343434;
+  /* padding-left: 1rem; */
+  font-weight: 500;
+}
+
 .req-elevator-col2 {
   width: 75%;
 }

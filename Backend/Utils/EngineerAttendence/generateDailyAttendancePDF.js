@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath) => {
+const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,formattedGeneratedAtDate) => {
     // Create HTML content
     const htmlContent = `
     <!DOCTYPE html>
@@ -23,7 +23,7 @@ const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath) 
     <body>
         <h1>Engineer Attendance Report</h1>
         <h2>Date: ${todayDate}</h2>
-        <h2>Generated At: 21/10/2024 10:25 A.M.</h2>
+        <h2>Generated At:  ${formattedGeneratedAtDate} 12:00 A.M.</h2>
         <table>
             <tr>
                 <th>Engineer ID</th>
