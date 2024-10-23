@@ -39,10 +39,10 @@ const ClientForm = () => {
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
-  const [validate, setValidate] = useState(false); //validation for dimensions
+  const [validate, setValidate] = useState(false); 
   const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
-  const [prevData, setPrevData] = useState(false);
+  const [prevData, setPrevData] = useState("");
   const clientModalOperation = useSelector(
     (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
   );
@@ -123,15 +123,25 @@ const ClientForm = () => {
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
 
-    if (prevData) {
-      // dispatch(RegisterClientDataAction(formData));
+    if (prevData !== "") {
+      // dispatch(RegissterClientDataAction(formData));
+
     } else {
       dispatch(RegisterClientDataAction(formData));
+      setPrevData(jon)
     }
   };
+
+  console.log("prevData", prevData)
   //-----------------------------------------------------
   const handlePreviousPage = () => {
     setToggle(true);
+    if (jon) {
+      fetchData(prevData)
+    }
+    else {
+      handleReset()
+    }
   };
   const closeModal = () => {
     setAllFormData({
@@ -251,6 +261,7 @@ const ClientForm = () => {
 
   const fetchData = async (jon) => {
     try {
+      console.log("Fetching data", jon)
       const data = await getDataBasedOnJon(jon);
       dispatch(putDataBasedOnJon(data));
 
@@ -287,16 +298,15 @@ const ClientForm = () => {
       });
     }
   };
-  useEffect(() => {
-    fetchData(jon);
-  }, [jon]);
-  const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
+  // useEffect(() => {
+  //   fetchData(jon);
+  // }, [jon]);
+  const debouncedFetchData = useCallback(debounce(fetchData, 2000), []);
   useEffect(() => {
     if (jon) {
       debouncedFetchData(jon);
     }
   }, [jon, debouncedFetchData]);
-  console.log("allFormData", allFormData)
   //------------------------------------------------------------------------
   const handleReset = () => {
     setAllFormData({
