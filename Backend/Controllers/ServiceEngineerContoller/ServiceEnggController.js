@@ -1451,7 +1451,7 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
-    console.log("we can console the files -------------->>>>>>>>>////////>>>>>> ",file);
+    console.log("we can console the files -------------->>>>>>>>>////////>>>>>> ", file);
 
     // console.log("20",req.body)
     // console.log("21",req.files)
@@ -1554,13 +1554,12 @@ module.exports.getEngineerLeveCount = async (req, res) => {
     // console.log("working inside this");
     // console.log(ServiceEnggId);
     const leaves = await EnggLeaveServiceRecord.find({ ServiceEnggId });
-    0;
     // console.log("leaves", leaves);
     if (!leaves || leaves.length === 0) {
       return res.status(404).json({ message: "No leaves found" });
     }
     const approved = leaves.filter((leave) => leave.IsApproved === "Approved");
-    const count = approved[approved.length - 1].UsedLeave;
+    const count = approved.length > 0 ? approved[approved.length - 1].UsedLeave : 0;
     // console.log(count);
     res.status(200).json({
       success: true,

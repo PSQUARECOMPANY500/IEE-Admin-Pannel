@@ -46,12 +46,12 @@ const AddTicketOnCallRequests = ({
   const [address, setaddress] = useState(""); //-api
   const [ModelType, setModelType] = useState("");
   const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
+  const [otherIssue, setOtherIssue] = useState("")
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
   const [membershipType, setMembershipType] = useState("");
   const [doh, setDoh] = useState("");
-
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
@@ -334,7 +334,7 @@ const AddTicketOnCallRequests = ({
           jon,
           date,
           time,
-          typeOfIssue.label,
+          typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label,
           dtext,
           reName,
           reNumber
@@ -353,7 +353,8 @@ const AddTicketOnCallRequests = ({
               engDetails?.enggName,
               engDetails.enggJon,
               reName,
-              reNumber
+              reNumber,
+              typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
             )
           );
           closeModal();
@@ -367,7 +368,7 @@ const AddTicketOnCallRequests = ({
           jon,
           date,
           time,
-          typeOfIssue.label,
+          typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label,
           dtext,
           reName,
           reNumber,
@@ -388,7 +389,8 @@ const AddTicketOnCallRequests = ({
                 date,
                 message,
                 engDetails?.enggName,
-                engDetails.enggJon
+                engDetails.enggJon,
+                typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
               )
             );
             closeModal();
@@ -558,8 +560,7 @@ const AddTicketOnCallRequests = ({
                       </div>
                     )}
                   </div>
-
-                  <div className="row">
+                  {typeOfIssue.label !== "Other" && <div className="row">
                     <div className="col25">
                       <label>TYPE OF ISSUE:</label>
                     </div>
@@ -582,7 +583,21 @@ const AddTicketOnCallRequests = ({
                         flag={flag}
                       />
                     </div>
-                  </div>
+                  </div>}
+                  {typeOfIssue.label === "Other" && <div className="row">
+                    <div className="col25">
+                      <label>Type of Issue:</label>
+                    </div>
+
+                    <div className="col75 col75-jon">
+                      <input
+                        onChange={(e) => setOtherIssue(e.target.value)}
+                        type="text"
+                        placeholder="Enter Your Issue"
+                        value={otherIssue}
+                      />
+                    </div>
+                  </div>}
 
                   <div className="row">
                     <div className="col25">

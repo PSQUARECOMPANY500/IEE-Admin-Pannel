@@ -39,7 +39,7 @@ const ClientForm = () => {
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
-  const [validate, setValidate] = useState(false); 
+  const [validate, setValidate] = useState(false);
   const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
   const [prevData, setPrevData] = useState("");
@@ -124,8 +124,7 @@ const ClientForm = () => {
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
 
     if (prevData !== "") {
-      // dispatch(RegissterClientDataAction(formData));
-
+      dispatch(RegisterClientDataAction(formData));
     } else {
       dispatch(RegisterClientDataAction(formData));
       setPrevData(jon)

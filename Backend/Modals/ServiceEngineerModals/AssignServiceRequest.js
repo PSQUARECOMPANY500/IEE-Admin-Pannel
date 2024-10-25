@@ -34,7 +34,7 @@ const AssignRequest = new Schema(
     },
     ServiceProcess: {
       type: String,
-      enum: ["onGoing", "completed", "InCompleted","cancelled",'dead'],
+      enum: ["onGoing", "completed", "InCompleted", "cancelled", 'dead'],
       default: "InCompleted",
     },
     RepresentativeName: {
@@ -46,6 +46,10 @@ const AssignRequest = new Schema(
     cancelDescription: {
       type: String,
     },
+    TypeOfIssue: {
+      type: String,
+      default: "",
+    }
   },
   {
     timestamps: true,

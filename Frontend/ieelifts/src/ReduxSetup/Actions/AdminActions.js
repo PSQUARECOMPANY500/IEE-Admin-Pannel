@@ -138,7 +138,7 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
-    console.log("this is m,y response is asmin action ",response);
+    console.log("this is m,y response is asmin action ", response);
     return response;
 
 
@@ -385,7 +385,8 @@ export const assignserviceRequestByAdmin = (
   name,
   enggJon,
   RepresentativeName,
-  RepresentativeNumber
+  RepresentativeNumber,
+  TypeOfIssue
 ) => {
   return async (dispatch) => {
     try {
@@ -401,6 +402,7 @@ export const assignserviceRequestByAdmin = (
           Message,
           RepresentativeName,
           RepresentativeNumber,
+          TypeOfIssue
         }
       );
 
@@ -453,7 +455,8 @@ export const assignCallBackByAdminAction = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  TypeOfIssue
 ) => {
   return async (dispatch) => {
     try {
@@ -467,6 +470,7 @@ export const assignCallBackByAdminAction = (
           Slot,
           Date,
           Message,
+          TypeOfIssue
         }
       );
 
@@ -820,7 +824,7 @@ export const getClients = (page) => {
   return async (dispatch) => {
     try {
       const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
-      
+
       dispatch({
         type: GET_ALL_CLIENTS,
         payload: response.data,
@@ -2063,10 +2067,10 @@ export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
 // custom action to handle the images get from S3 bucket through API
 
 export const getImagesFromS3Bucket = async (key) => {
-    try {
-      const response = await axios.get(`https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`);
-      return response;
-    } catch (error) {
-      console.error("Error while fetching images from S3 bucket:", error);
-    }
-  };
+  try {
+    const response = await axios.get(`https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`);
+    return response;
+  } catch (error) {
+    console.error("Error while fetching images from S3 bucket:", error);
+  }
+};

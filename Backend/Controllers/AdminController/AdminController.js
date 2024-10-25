@@ -680,6 +680,7 @@ module.exports.assignCallbacks = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
+      TypeOfIssue,
     } = req.body;
 
     let callback;
@@ -705,6 +706,7 @@ module.exports.assignCallbacks = async (req, res) => {
           Date,
           Message,
           ServiceProcess,
+          TypeOfIssue
         },
         {
           new: true,
@@ -721,6 +723,7 @@ module.exports.assignCallbacks = async (req, res) => {
         Date,
         Message,
         ServiceProcess,
+        TypeOfIssue
       });
     }
     // console.log("***",callback._id)
@@ -756,6 +759,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       ServiceProcess,
       RepresentativeName,
       RepresentativeNumber,
+      TypeOfIssue
     } = req.body;
 
     let callback;
@@ -784,6 +788,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           RepresentativeName,
           RepresentativeNumber,
           RepresentativeNumber,
+          TypeOfIssue
         },
         {
           new: true,
@@ -801,6 +806,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
         ServiceProcess,
         RepresentativeName,
         RepresentativeNumber,
+        TypeOfIssue
       });
     }
     await getAllServiceRequest.findOneAndUpdate(
