@@ -46,16 +46,16 @@ const AddTicketOnCallRequests = ({
   const [address, setaddress] = useState(""); //-api
   const [ModelType, setModelType] = useState("");
   const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
+  const [otherIssue, setOtherIssue] = useState("")
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
   const [membershipType, setMembershipType] = useState("");
   const [doh, setDoh] = useState("");
-
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
-  const [ImageUrl,setImageUrl] = useState();
+  const [ImageUrl, setImageUrl] = useState();
 
 
   //assign-callbacks-state
@@ -71,7 +71,15 @@ const AddTicketOnCallRequests = ({
     repersentativeNumber: "",
   });
 
-  
+  const titleClass =
+    membershipType.toLocaleLowerCase() === "warrenty"
+      ? "membership_card_title_warrenty"
+      : membershipType.toLocaleLowerCase() === "platinum"
+        ? "membership_card_title_platinum"
+        : membershipType.toLocaleLowerCase() === "gold"
+          ? "membership_card_title_gold"
+          : "membership_card_title_silver";
+
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -285,7 +293,8 @@ const AddTicketOnCallRequests = ({
         enggPhoto: getEnggState.EnggPhoto,
         repersentativeName: getEnggState.RepresentativeName,
         repersentativeNumber: getEnggState.RepresentativeNumber,
-        enggRating: getEnggState?.avgRatingValue
+        enggRating: getEnggState?.avgRatingValue,
+        enggLocation: getEnggState.enggLocation,
       });
     }
   }, [getEnggState]);
@@ -325,7 +334,7 @@ const AddTicketOnCallRequests = ({
           jon,
           date,
           time,
-          typeOfIssue.label,
+          typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label,
           dtext,
           reName,
           reNumber
@@ -344,7 +353,8 @@ const AddTicketOnCallRequests = ({
               engDetails?.enggName,
               engDetails.enggJon,
               reName,
-              reNumber
+              reNumber,
+              typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
             )
           );
           closeModal();
@@ -358,7 +368,7 @@ const AddTicketOnCallRequests = ({
           jon,
           date,
           time,
-          typeOfIssue.label,
+          typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label,
           dtext,
           reName,
           reNumber,
@@ -379,7 +389,8 @@ const AddTicketOnCallRequests = ({
                 date,
                 message,
                 engDetails?.enggName,
-                engDetails.enggJon
+                engDetails.enggJon,
+                typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
               )
             );
             closeModal();
@@ -434,27 +445,27 @@ const AddTicketOnCallRequests = ({
 
 
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
-const fetchImageUrl = async (key) => {
-  try {
-    const response = await getImagesFromS3Bucket(`${key}`);
-    return response.data.url;
-  } catch (error) {
-    console.log("error while fecthing the engg Images from S3 bucket ", error);
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`${key}`);
+      return response.data.url;
+    } catch (error) {
+      console.log("error while fecthing the engg Images from S3 bucket ", error);
+    }
   }
- }
 
 
- useEffect(() => {
-  const fetchImage = async () => {
-    const url = await fetchImageUrl(engDetails.enggPhoto);
-    console.log("this is consoling my url ", url);
-    setImageUrl(url);
-  };
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await fetchImageUrl(engDetails.enggPhoto);
+      console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
     fetchImage();
-}, [engDetails]);
+  }, [engDetails]);
 
 
-console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails)
 
 
 
@@ -549,8 +560,7 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                       </div>
                     )}
                   </div>
-
-                  <div className="row">
+                  {typeOfIssue.label !== "Other" && <div className="row">
                     <div className="col25">
                       <label>TYPE OF ISSUE:</label>
                     </div>
@@ -573,7 +583,21 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                         flag={flag}
                       />
                     </div>
-                  </div>
+                  </div>}
+                  {typeOfIssue.label === "Other" && <div className="row">
+                    <div className="col25">
+                      <label>Type of Issue:</label>
+                    </div>
+
+                    <div className="col75 col75-jon">
+                      <input
+                        onChange={(e) => setOtherIssue(e.target.value)}
+                        type="text"
+                        placeholder="Enter Your Issue"
+                        value={otherIssue}
+                      />
+                    </div>
+                  </div>}
 
                   <div className="row">
                     <div className="col25">
@@ -619,7 +643,7 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                     </div>
                     {membershipType ? (
                       <div className="membership-form-col2">
-                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                        <p className={`${titleClass}`}> {membershipType}</p>
                       </div>
                     ) : (
                       <div className="membership-form-col22">
@@ -725,12 +749,12 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                             //   alt="lift"
                             // />
                             <img style={{
-                                width: "90px",
-                                height: "90px",
-                                objectFit: "cover",
-                                objectPosition: "center",
-                                borderRadius: "2px",
-                              }}
+                              width: "90px",
+                              height: "90px",
+                              objectFit: "cover",
+                              objectPosition: "center",
+                              borderRadius: "2px",
+                            }}
                               // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               src={ImageUrl}
                               alt="lift"
@@ -824,7 +848,7 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                       </div>
 
                       <div>
-                        {/* {getEnggState ? (
+                        {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -833,15 +857,10 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                               className="col-elevator25"
                               style={{ width: "30%" }}
                             >
-                              <label>LOCATION:</label>
+                              <label>LOCATION: </label>
                             </div>
-                            <div className="col-elevator75">
-                              <input
-                                type="text"
-                                autoComplete="off"
-                                name="name"
-                                value={engDetails.enggLocation}
-                              />
+                            <div className="col-elevator75 modalLocation">
+                              {engDetails.enggLocation}
                             </div>
                           </div>
                         ) : (
@@ -850,7 +869,7 @@ console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
                             height="20px"
                             marginBottom="10px"
                           />
-                        )} */}
+                        )}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">

@@ -37,17 +37,17 @@ app.use("/api/admin", AdminRoutes);
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
 
-  
 
 
-  //API aws s3 bucket to get the images.... from s3 bucket  ------------------------------------------------------------
-app.get('/api/getImagesDataFromS3Bucket',async (req,res) => {
+
+//API aws s3 bucket to get the images.... from s3 bucket  ------------------------------------------------------------
+app.get('/api/getImagesDataFromS3Bucket', async (req, res) => {
   try {
     const fileKey = req.query.key
     const signedUrl = await getObjectURL(fileKey);
     res.status(200).json({ url: signedUrl });
   } catch (error) {
-    res.status(500).json({message:"Internal sever error while fetching images"});
+    res.status(500).json({ message: "Internal sever error while fetching images" });
   }
 });
 //------------------------------------------------------------------------------------------------------------

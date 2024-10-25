@@ -630,13 +630,13 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
     const callbackHistory = await assignCallback
       .find({ JobOrderNumber, ServiceProcess: "completed" })
       .select(
-        "ServiceEnggId JobOrderNumber callbackId Message ServiceProcess Date"
+        "ServiceEnggId JobOrderNumber callbackId TypeOfIssue ServiceProcess Date"
       );
 
     const serviceRequestHistory = await assignService
       .find({ JobOrderNumber, ServiceProcess: "completed" })
       .select(
-        "ServiceEnggId JobOrderNumber RequestId Message ServiceProcess Date"
+        "ServiceEnggId JobOrderNumber RequestId TypeOfIssue ServiceProcess Date"
       );
 
     const combinedHistory = [...callbackHistory, ...serviceRequestHistory];
@@ -657,8 +657,10 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
         const id = entry.callbackId || entry.RequestId;
         const paymentDetails = await ReportTable.find({ serviceId: id });
         // console.log('-------------------------------->',paymentDetails[0].paymentDetils);
+        // console.log("entry.TypeOfIssue", entry.TypeOfIssue)
         return {
           ...entry._doc,
+          Message: entry.TypeOfIssue + " issue was resolved",
           enggName: enggNameMap[entry.ServiceEnggId],
           paymentDetails:
             paymentDetails && paymentDetails.length > 0
@@ -672,6 +674,9 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
       })
     );
 
+    return res.status(200).json({
+      enrichedHistory
+    })
     // console.log('-------------------------------->', enrichedHistory)
 
     const latestDateEntry = enrichedHistory.filter(
@@ -857,8 +862,8 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
 
 const convertTo12HourFormat = (time24) => {
   let [hours, minutes] = time24.split(":");
-  hours = parseInt(hours, 10); 
-  const ampm = time24.split(":")[0]  >= 12 ? "PM" : "AM";
+  hours = parseInt(hours, 10);
+  const ampm = time24.split(":")[0] >= 12 ? "PM" : "AM";
   hours = hours % 12 || 12;
 
   return `${hours}:${minutes} ${ampm}`;
@@ -866,9 +871,9 @@ const convertTo12HourFormat = (time24) => {
 
 
 const convertTo12HourFormatScheduleService = (time24) => {
-  let [hours, minutes] = time24.split(":");  
-  hours = parseInt(hours, 10); 
-  const caluclatedHour = parseInt(time24.split(":")[0]) 
+  let [hours, minutes] = time24.split(":");
+  hours = parseInt(hours, 10);
+  const caluclatedHour = parseInt(time24.split(":")[0])
   let ampm;
   if (caluclatedHour >= 9 && caluclatedHour <= 12) {
     ampm = "AM";
@@ -952,16 +957,16 @@ module.exports.getCurrentScheduleService = async (req, res) => {
 
 
     // Handle case if no records are found
-if (!latestRecord && combineData.length === 0) {
-  return res.status(200).json({
-    status: "complete",
-    message: "Schedule Your Service",
-    time: null,
-    date: null,
-    liveTracking: false,
-    rating: false,
-  });
-}
+    if (!latestRecord && combineData.length === 0) {
+      return res.status(200).json({
+        status: "complete",
+        message: "Schedule Your Service",
+        time: null,
+        date: null,
+        liveTracking: false,
+        rating: false,
+      });
+    }
 
     if (!ratingAvailable && combineData.length === 0) {
       return res.status(200).json({
@@ -1012,7 +1017,7 @@ if (!latestRecord && combineData.length === 0) {
       res.status(200).json({
         status: "success",
         message:
-          currentDate === data[0][0].Date ? `Service Today at ${convertTo12HourFormatScheduleService(data[0][0].Slot[0].split("-")[0])}`: currentDate > data[0][0].Date? "Service Expired": "Service Booked",time:
+          currentDate === data[0][0].Date ? `Service Today at ${convertTo12HourFormatScheduleService(data[0][0].Slot[0].split("-")[0])}` : currentDate > data[0][0].Date ? "Service Expired" : "Service Booked", time:
           currentDate > data[0][0].Date ? "(Awaiting Cancelation)" : convertTo12HourFormat(data[0][0].Slot[0].split("-")[0]) + "-" + convertTo12HourFormat(data[0][0].Slot[0].split("-")[1]),
         date: data[0][0].Date,
         trackingId: data[0][0]?.callbackId || data[0][0]?.RequestId,

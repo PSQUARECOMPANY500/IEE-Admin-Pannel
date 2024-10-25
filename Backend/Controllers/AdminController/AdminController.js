@@ -563,6 +563,12 @@ module.exports.getEnggDetail = async (req, res) => {
       EnggId,
     });
 
+    if (!enggDetail) {
+      return res.status(404).json({
+        message: "No services Engg found for the specified Service Engineer ID",
+      });
+    }
+
     const averageRating = await EnggRating.aggregate([
       {
         $match: { ServiceEnggId: EnggId }
@@ -576,14 +582,31 @@ module.exports.getEnggDetail = async (req, res) => {
     ]);
 
     const avgRatingValue = averageRating.length > 0 ? averageRating[0].avgRating : null;
+    const date = new Date().toLocaleDateString();
+    const isAvailable = await EnggAttendanceServiceRecord.find({ ServiceEnggId: EnggId, Date: date })
 
-    if (!enggDetail) {
-      return res.status(404).json({
-        message: "No services Engg found for the specified Service Engineer ID",
-      });
+    let location
+    if (isAvailable) {
+
+      const engineerCoordinates = await EngineerLocation.findOne(
+        { AttendanceCreatedDate: date, ServiceEnggId: EnggId },
+        { 'currentLocation.coordinates': 1 }
+      );
+
+      const currentCoordinate = engineerCoordinates?.currentLocation?.coordinates[engineerCoordinates.currentLocation?.coordinates?.length - 1];
+      const coordinatesString = `${currentCoordinate?.origin.split(",")[0]},${currentCoordinate?.origin.split(",")[1]}`;
+
+
+      // console.log("EnggId", EnggId)
+      const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${coordinatesString}&origins=${coordinatesString}&key=${process.env.Google_Distance_Matrix}`);
+
+      const responseData = await googleApiResponse.json();
+      location = responseData
     }
-    const responseResult = { ...enggDetail._doc, avgRatingValue };
-    console.log(responseResult);
+
+
+    const responseResult = { ...enggDetail._doc, avgRatingValue, enggLocation: location.destination_addresses[0] || "--" };
+
     res.status(200).json({
       message: "servicesc Engg retrieved by ID successfully",
       enggDetail: responseResult,
@@ -657,6 +680,7 @@ module.exports.assignCallbacks = async (req, res) => {
       Date,
       Message,
       ServiceProcess,
+      TypeOfIssue,
     } = req.body;
 
     let callback;
@@ -682,6 +706,7 @@ module.exports.assignCallbacks = async (req, res) => {
           Date,
           Message,
           ServiceProcess,
+          TypeOfIssue
         },
         {
           new: true,
@@ -698,6 +723,7 @@ module.exports.assignCallbacks = async (req, res) => {
         Date,
         Message,
         ServiceProcess,
+        TypeOfIssue
       });
     }
     // console.log("***",callback._id)
@@ -733,6 +759,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
       ServiceProcess,
       RepresentativeName,
       RepresentativeNumber,
+      TypeOfIssue
     } = req.body;
 
     let callback;
@@ -761,6 +788,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
           RepresentativeName,
           RepresentativeNumber,
           RepresentativeNumber,
+          TypeOfIssue
         },
         {
           new: true,
@@ -778,6 +806,7 @@ module.exports.AssignServiceRequests = async (req, res) => {
         ServiceProcess,
         RepresentativeName,
         RepresentativeNumber,
+        TypeOfIssue
       });
     }
     await getAllServiceRequest.findOneAndUpdate(
@@ -881,46 +910,45 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
   try {
     const { callbackId } = req.params;
 
-    const clientCallbacksDetails = await getAllCalbacks.findOne({
-      callbackId,
-    });
+    // Fetch the callback details
+    const clientCallbacksDetails = await getAllCalbacks.findOne({ callbackId });
 
-
-    // console.log("HE",clientCallbacksDetails)
-
+    // Return 404 if no details are found
     if (!clientCallbacksDetails) {
-      res.status(404).json({
-        message: "no data found with this callback id",
+      return res.status(404).json({
+        message: "No data found with this callback ID",
       });
     }
 
-    const clientDetail = await clientDetailSchema.findOne({
-      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
-    });
-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
+    const jobOrderNumber = clientCallbacksDetails.JobOrderNumber;
 
-    const allCallBacks = await assignCallback.find({
-      JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
-      ServiceProcess: "completed",
-    });
+    // Parallel database queries
+    const [clientDetail, allCallBacks] = await Promise.all([
+      clientDetailSchema.findOne({ JobOrderNumber: jobOrderNumber }),
+      assignCallback.find({
+        JobOrderNumber: jobOrderNumber,
+        ServiceProcess: "completed",
+      }),
+    ]);
 
     const callbackClientdetails = {
       ...clientCallbacksDetails._doc,
-      clientDetail: clientDetail,
+      clientDetail,
     };
 
-    res.status(200).json({
-      message: "all detal fetched successfully",
+    return res.status(200).json({
+      message: "All details fetched successfully",
       callback: callbackClientdetails,
       allCallBacks,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: "intenal server error",
+    console.error("Error fetching callback details:", error);
+    return res.status(500).json({
+      error: "Internal server error",
     });
   }
 };
+
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Function to handle get Request detail By RequestId
@@ -4262,10 +4290,16 @@ module.exports.FindEngineerSOS = async (req, res) => {
 
     const AllSosrequests = await SoSRequestsTable.find();
     const Sosrequest = AllSosrequests.find((request) => request._id.toString() === SOSID)
+    if (!Sosrequest) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot find the request"
+      });
+    }
     const engineers = await ServiceEnggBasicSchema.find();
     const todayDate = new Date();
 
-    let [month, day, year] = todayDate.toLocaleDateString().split('/').map(num => num.padStart(2, '0'));
+    let [day, month, year] = todayDate.toLocaleDateString().split('/').map(num => num.padStart(2, '0'));
     let formattedDate = `${day}/${month}/${year}`;
 
     const engineersCheckedIn = await EnggAttendanceServiceRecord.find({
@@ -4273,6 +4307,7 @@ module.exports.FindEngineerSOS = async (req, res) => {
       "Check_Out.time": { $exists: false },
       Date: formattedDate,
     });
+
     if (!engineersCheckedIn || engineersCheckedIn.length === 0) {
       return res.status(400).json({
         success: false,
@@ -4322,7 +4357,7 @@ module.exports.FindEngineerSOS = async (req, res) => {
     }
     const formattedCoordinates = creatingDestinationCoordinates(locations)
 
-    const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`);
+    const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Google_Distance_Matrix}`);
 
     if (googleApiResponse.ok) {
       const googleApiData = await googleApiResponse.json();
@@ -4377,7 +4412,8 @@ module.exports.FindEngineerSOS = async (req, res) => {
 
       return res.status(200).json({
         success: false,
-        message: "No Engineer available at moment"
+        message: "No Engineer available at moment",
+        googleApiResponse
       });
     } else {
       console.error(`Google API request failed with status: ${googleApiResponse.status}`);
@@ -4403,13 +4439,7 @@ module.exports.assignSoSRequest = async (req, res) => {
         message: "All values are required"
       });
     }
-    const engineerDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
-    if (!engineerDetail) {
-      return res.status(400).json({
-        success: false,
-        message: "Engineer not found"
-      });
-    }
+
     const SOSRequest = await SoSRequestsTable.findByIdAndUpdate(
       { _id: SoSId },
       {
@@ -4427,7 +4457,13 @@ module.exports.assignSoSRequest = async (req, res) => {
         message: "Cannot find the request"
       });
     }
-
+    const engineerDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
+    if (!engineerDetail) {
+      return res.status(400).json({
+        success: false,
+        message: "Engineer not found"
+      });
+    }
     return res.status(200).json({
       success: true,
       message: "SOS request assigned successfully",

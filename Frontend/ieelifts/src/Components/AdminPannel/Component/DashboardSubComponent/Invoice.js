@@ -34,7 +34,7 @@ const Invoice = ({ serviceId }) => {
   });
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchImageUrl = async () => {
       try {
         const response = await getImagesFromS3Bucket(AdminReportData?.PaymentDetails);
@@ -42,11 +42,11 @@ const Invoice = ({ serviceId }) => {
         return response.data.url;
       } catch (error) {
         console.log("Error while fetching the image from S3 bucket:", error);
-        return null; 
+        return null;
       }
     };
-     if (AdminReportData.PaymentDetails) {
-      fetchImageUrl(); 
+    if (AdminReportData?.PaymentDetails) {
+      fetchImageUrl();
     }
   }, [AdminReportData?.PaymentDetails]);
 
@@ -55,58 +55,58 @@ const Invoice = ({ serviceId }) => {
     // const url = `${config.documentUrl}/ReportPdf/${AdminReportData.PaymentDetails}`;
     // const url = imageUrls;
 
-    window.open(imageUrls,"_blank");
+    window.open(imageUrls, "_blank");
   };
 
   return (
     <div className="McRoom">
-    <div className="Invoice Yello_Scrollbar">
-     {sparePartData&& <h5>Spare Parts Changed</h5>}
-      <div className="InvoiceTable">
-        {sparePartData?.map((item) => (
-          <div className="InvoiceTableRow">
-            <h5>
-              1.Type{" "}
-              <span>
-                {item?.questionResponse?.sparePartDetail?.sparePartsname}
-              </span>
-            </h5>
-            <h5>
-              Part Break{" "}
-              <span>
-                {item?.questionResponse?.sparePartDetail?.subsparePartspartname}
-              </span>
-            </h5>
+      <div className="Invoice Yello_Scrollbar">
+        {sparePartData && <h5>Spare Parts Changed</h5>}
+        <div className="InvoiceTable">
+          {sparePartData?.map((item) => (
+            <div className="InvoiceTableRow">
+              <h5>
+                1.Type{" "}
+                <span>
+                  {item?.questionResponse?.sparePartDetail?.sparePartsname}
+                </span>
+              </h5>
+              <h5>
+                Part Break{" "}
+                <span>
+                  {item?.questionResponse?.sparePartDetail?.subsparePartspartname}
+                </span>
+              </h5>
+            </div>
+          ))}
+        </div>
+        {sparePartData && <div className="InvoiceFooter">
+          <div className="InvoiceFooterL">
+            <div className="InvoiceFooterRow">
+              <h5>Payment Mode</h5>
+              <h5>{AdminReportData?.PaymentMode}</h5>
+            </div>
+            <div className="InvoiceFooterRow">
+              <h5> Total Payment: </h5>
+              <h5> Rs. {totalAmount}/-</h5>
+            </div>
           </div>
-        ))}
+          <div className="InvoiceFooterR">
+            <BsFiletypePdf
+              style={{
+                fontWeight: '800',
+                fontSize: "24px",
+                color:
+                  AdminReportData?.PaymentDetails.length > 0
+                    ? "#f8ac1d"
+                    : "#444444",
+                cursor: "pointer",
+              }}
+              onClick={openIt}
+            />
+          </div>
+        </div>}
       </div>
-      {sparePartData&& <div className="InvoiceFooter">
-        <div className="InvoiceFooterL">
-          <div className="InvoiceFooterRow">
-            <h5>Payment Mode</h5>
-            <h5>{AdminReportData.PaymentMode}</h5>
-          </div>
-          <div className="InvoiceFooterRow">
-            <h5> Total Payment: </h5>
-            <h5> Rs. {totalAmount}/-</h5>
-          </div>
-        </div>
-        <div className="InvoiceFooterR">
-          <BsFiletypePdf
-            style={{
-              fontWeight: '800',
-              fontSize: "24px",
-              color:
-                AdminReportData.PaymentDetails.length > 0
-                  ? "#f8ac1d"
-                  : "#444444",
-              cursor: "pointer",
-            }}
-            onClick={openIt}
-          />
-        </div>
-      </div>}
-    </div>
     </div>
   );
 };

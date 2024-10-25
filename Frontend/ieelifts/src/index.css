@@ -121,7 +121,7 @@ code {
 }
 
 .membership_card_expand_non {
-  height: 17vh;
+  /* height: 17vh; */
   margin: 1rem;
 }
 
@@ -209,19 +209,19 @@ code {
 }
 
 .membership_card_title_warrenty {
-  color: #0f351d;
+  color: #0f351d !important;
 }
 
 .membership_card_title_platinum {
-  color: #ff7f00;
+  color: #ff7f00 !important;
 }
 
 .membership_card_title_gold {
-  color: #f8ac1d;
+  color: #f8ac1d !important;
 }
 
 .membership_card_title_silver {
-  color: #8e8e8e;
+  color: #8e8e8e !important;
 }
 
 .membership_card_revenue {
@@ -284,7 +284,7 @@ code {
 }
 
 .membership_card_expiring_expanded {
-  height: 41rem;
+  /* height: 41rem; */
   width: 40%;
 }
 
@@ -293,7 +293,8 @@ code {
 }
 
 .membership_card_scrollable_height {
-  height: 40rem;
+  min-height: 67vh;
+  height: 67vh;
 }
 
 .membership_card_expiring-title {
@@ -556,7 +557,6 @@ code {
   margin: 0rem;
   grid-column: span 1;
   grid-row: span 4;
-  height: 85vh;
   transition: border 1s ease;
 
 }
@@ -606,6 +606,7 @@ code {
 
 .expansion_labels {
   margin-top: 1rem;
+  height: 100%;
 }
 
 .after_expansion_labels {
@@ -689,8 +690,9 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 25%;
+  /* margin-top: 25%; */
   color: #444444;
+  height: 71.8vh;
 }
 
 .headingCenter {
@@ -724,7 +726,8 @@ code {
   flex-direction: column;
   justify-content: space-between;
   /* align-items: center; */
-  height: 40rem;
+  min-height: 70vh;
+  /* height: 67vh; */
   width: 50%;
   margin-top: 1rem;
 }
@@ -794,8 +797,9 @@ code {
 }
 
 .historyContainer {
-  height: 20rem;
   overflow-y: scroll;
+  min-height: 13vh;
+  height: 30vh;
   padding-right: 0.5rem;
 }
 
@@ -904,11 +908,11 @@ code {
 }
 
 .callsContainer {
-  height: 20rem;
-  max-height: 22rem;
   /* background-color: lightsalmon; */
   overflow-y: scroll;
   padding-right: 0.5rem;
+  min-height: 10vh;
+  height: 40vh;
 }
 
 .callMissed {
@@ -1268,14 +1272,10 @@ code {
 
 
 .notificationmembershipwrapper {
-  /* background-color: saddlebrown; */
-  /* height: 14.5vh; */
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
-  margin-top: -2rem;
-  padding-top: -1rem;
 }
 
 
@@ -3842,7 +3842,7 @@ input:-webkit-autofill {
   }
 
   .col75 input[type="text"] {
-    width: 100% !important;
+    /* width: 100% !important; */
     padding: 0.48rem !important;
     border-radius: 4px;
     resize: vertical;
@@ -3944,6 +3944,8 @@ input:-webkit-autofill {
   .col-elevator75 input {
     font-size: 0.7rem !important;
   }
+
+
 
   .col-elevator25 label {
     font-size: 0.72rem !important;
@@ -4175,11 +4177,6 @@ input:-webkit-autofill {
   }
 
 
-  .membership_card_expand {
-    height: 80vh;
-  }
-
-
   .membershipCards_expand {
     margin-top: 5rem;
   }
@@ -4283,13 +4280,6 @@ input:-webkit-autofill {
 
   }
 
-  .historyContainer {
-    height: 12rem;
-    overflow-y: scroll;
-    padding-right: 0.5rem;
-  }
-
-
 
 }
 
@@ -4392,6 +4382,11 @@ input:-webkit-autofill {
     height: 39vh;
   }
 
+  .expandCardName {
+    font-size: 0.6rem;
+    width: 90px;
+  }
+
   .membership_card_scrollable {
     height: 19rem;
     max-height: 12rem;
@@ -4431,22 +4426,26 @@ input:-webkit-autofill {
   }
 
   .historyContainer {
-    height: 7rem;
     font-size: smaller;
+    height: 20vh;
   }
 
 
 
   .clients {
-    height: 26rem;
+    /* height: 26rem; */
+    /* min-height: 65vh; */
     max-width: 30rem;
     width: 50%;
     margin-top: 0.2rem;
   }
 
   .callsContainer {
-    height: 8.5rem;
     padding-right: 0.5rem;
+  }
+
+  .notificationmembershipwrapper {
+    margin-bottom: 1.8rem;
   }
 
   .chevronDownMembership {
@@ -4472,6 +4471,10 @@ input:-webkit-autofill {
     margin-top: -6rem;
   }
 
+  .notificationmembershipwrapper {
+    margin-bottom: 1.5rem;
+  }
+
   .offerButtonContainer {
     margin-bottom: 4.4rem;
     height: 1rem;
@@ -4485,19 +4488,19 @@ input:-webkit-autofill {
   }
 
   .historyContainer {
-    height: 13rem;
     font-size: smaller;
+    height: 35vh;
   }
 
   .clients {
-    height: 30rem;
+    /* height: 30rem; */
+    /* min-height: 75vh; */
     max-width: 30rem;
     width: 50%;
     margin-top: 0.2rem;
   }
 
   .callsContainer {
-    height: 10rem;
     padding-right: 0.5rem;
     margin-top: 1rem;
   }
@@ -4511,8 +4514,8 @@ input:-webkit-autofill {
   }
 
   .membership_card_scrollable_height {
-    height: 40rem;
-    max-height: 27rem;
+    min-height: 65vh;
+    max-width: 30rem;
   }
 
 }
