@@ -868,6 +868,7 @@ module.exports.EnggOnFirstHalfBreak = async (req, res) => {
       });
 
       if (result) {
+         console.log(result)
         if (result?.First_halfs_time && result?.First_halfe_time) {
           return res.status(200).json({
             status: "Warning",
@@ -2104,7 +2105,267 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------
+//Paras Code Starts 10/26/2024
 
+//put request
+module.exports.putEnggBreakDetails = async(req,res) => { 
+  try{
+    const {ServiceEnggId} = req.body;
+    if(ServiceEnggId){
+      const date = new Date().toLocaleDateString("en-GB");
+
+      const time = new Date().toLocaleTimeString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+
+      const result  = await EnggAttendanceServiceRecord.findOne({
+        ServiceEnggId,
+        Date: date,
+      })
+      console.log(result, "put record values");
+      if(result){
+      if(time<"12:00:00")
+      {
+        //will save in firsthalf break
+        if(result?.First_halfs_time && result?.First_halfe_time){
+          return res.status(200).json({
+            status: "Warning",
+            message: "You've already taken/finished your Break",
+          });
+        }
+        
+          let updatedTime;
+          if(result.First_halfs_time)
+          {
+            updatedTime = {First_halfe_time: time};
+          }
+          else{
+            updatedTime = {First_halfs_time: time};
+          }
+           const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
+            ServiceEnggId,
+            Date: date,
+          },updatedTime,{new:true});
+
+          if (updatedRecord?.First_halfe_time) {
+            return res.status(200).json({
+              status: "stop",
+              message: "Break Ended Successfully",
+            });
+          }
+  
+          return res.status(200).json({
+            status: "success",
+            message: "Your operation is successfull",
+          });
+        }
+
+      else if(time>="12:00:00" && time<"16:00:00"){
+        let updatedTime;
+        //will save in lunch break
+        if(result?.First_halfs_time && !result?.First_halfe_time){
+          updatedTime = {First_halfe_time: time}
+          await EnggAttendanceServiceRecord.findOneAndUpdate({
+            ServiceEnggId,
+            Date: date,
+          },updatedTime,{new:true});
+          return res.status(200).json({message:"Stopped Previous Break"})
+        }
+        if(result?.Lunch_breaks_time && result?.Lunch_breake_time){
+          return res.status(200).json({
+            status: "Warning",
+            message: "You've already taken/finished your Break",
+          });
+        }        
+          if(result.Lunch_breaks_time)
+          {
+            updatedTime = {Lunch_breake_time: time};
+          }
+          else{
+            updatedTime = {Lunch_breaks_time: time};
+          }
+          const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
+            ServiceEnggId,
+            Date: date,
+          },updatedTime,{new:true});
+
+          if (updatedRecord?.Lunch_breake_time){ 
+            return res.status(200).json({
+              status: "stop",
+              message: "Break Ended Successfully",
+            });
+          }
+  
+          return res.status(200).json({
+            status: "success",
+            message: "Your operation is successfull",
+          });
+      }
+      else{
+        //will save in second half break
+     
+          if(result?.First_halfs_time && !result?.First_halfe_time){
+            updatedTime = {First_halfe_time: time}
+            await EnggAttendanceServiceRecord.findOneAndUpdate({
+              ServiceEnggId,
+              Date: date,
+            },updatedTime,{new:true});
+            return res.status(200).json({message:"Stopped Previous Break"})
+          }
+          else if(result?.Lunch_breaks_time && !result?.Lunch_breake_time){
+            updatedTime = {Lunch_breake_time: time}
+            await EnggAttendanceServiceRecord.findOneAndUpdate({
+              ServiceEnggId,
+              Date: date,
+            },updatedTime,{new:true});
+            return res.status(200).json({message:"Stopped Previous Break"})
+          }
+         
+        if(result?.Second_halfs_time && result?.Second_halfe_time){
+          return res.status(200).json({
+            status: "Warning",
+            message: "You've already taken/finished your Break",
+          });
+        }
+          let updatedTime;
+          if(result.Second_halfs_time)
+          {
+            updatedTime = {Second_halfe_time: time};
+          }
+          else{
+            updatedTime = {Second_halfs_time: time};
+          }
+          const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
+            ServiceEnggId,
+            Date: date,
+          },updatedTime,{new:true});
+
+          if (updatedRecord?.First_halfe_time) {
+            return res.status(200).json({
+              status: "stop",
+              message: "Break Ended Successfully",
+            });
+          }
+  
+          return res.status(200).json({
+            status: "success",
+            message: "Your operation is successfull",
+          });
+      }
+    }
+    else{
+      return res.status(400).json({
+        status: "error",
+        message: "Employee not Detected",
+      });
+    }
+  }
+  else
+  {
+    return res
+      .status(500)
+      .json({ error: "ServiceId not found / Try to login again !" });
+  }
+}
+  catch(error){
+    console.log(error);
+    return res.status(500).json({
+      error: "Internal server error while updating status in report",
+    });
+  }
+}
+module.exports.getEnggBreakDetails = async(req,res) => {
+  try{
+    const {ServiceEnggId} = req.params;
+    if(ServiceEnggId){
+      const date = new Date().toLocaleDateString("en-GB")
+      const result = await EnggAttendanceServiceRecord.findOne({
+        ServiceEnggId,
+        Date: date,
+      });
+      let values=[];
+      if (result) {
+        console.log(result,"get request")
+        // For first half
+        if (!result.First_halfs_time && !result.First_halfe_time) {
+          values.push({ play:false, message: "15 min" });
+        }
+        else if (result.First_halfs_time && result.First_halfe_time) {
+          const remaintime = calculateTwotimedifference(
+            result.First_halfs_time,
+            result.First_halfe_time,
+            15
+          );
+         values.push({ play: false, message: remaintime + " min" });
+        }
+        else {
+          const remaintime = calculateTimedifference(
+            result.First_halfs_time,
+            15
+          );
+         values.push({ play: true, message: remaintime + " min" });
+        }
+
+        // for Lunch break
+        if(result.Lunch_breaks_time && result.Lunch_breake_time){
+          const remaintime = calculateTwotimedifference(
+            result.Lunch_breaks_time,
+            result.Lunch_breake_time,
+            15
+          );
+          console.log(remaintime, "remaining timwe")
+         values.push({ play: false, message: remaintime + " min" });
+        }
+        else if(result.Lunch_breaks_time && !result.Lunch_breake_time){
+          const remaintime = calculateTimedifference(
+            result.Lunch_breaks_time,
+            15
+          );
+         values.push({ play: true, message: remaintime + " min" });
+        }
+        else {
+          values.push({ play: false, message: "30 min" });
+        }
+
+        // for Second half
+        if(result.Second_halfs_time && result.Second_halfe_time) {
+          const remaintime = calculateTwotimedifference(
+            result.Second_halfs_time,
+            result.Second_halfe_time,
+            15
+          );
+         values.push({ play: false, message: remaintime + " min" });
+        }
+        else if(result.Second_halfs_time && !result.Second_halfe_time){
+          const remaintime = calculateTimedifference(
+            result.Second_halfs_time,
+            15
+          );
+         values.push({ play: true, message: remaintime + " min" });
+        }
+        else {
+          values.push({ play: false, message: "15 min" });
+        }
+        return res.status(200).json({ status: "success", values });
+      } 
+      else{
+        return res.status(400).json({ status: "error", message: "reeesult not found" });
+      }
+  }
+else{
+  return res.status(400).json({ status: "error", message: "Invalid ServiceEnggId" });
+}} catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Internal server error ! Contact Developer." });
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------
 //==================================================================
 //==================================================================
 
@@ -2121,6 +2382,7 @@ module.exports.EnggFirsthalfinfo = async (req, res) => {
       });
 
       if (result) {
+        console.log(result,"get request")
         if (!result.First_halfs_time && !result.First_halfe_time) {
           return res.status(200).json({ status: "success", message: "15 min" });
         }
@@ -2218,6 +2480,7 @@ module.exports.EnggLunchBreakinfo = async (req, res) => {
         Date: date,
       });
       if (result) {
+        console.log(result,"Engg lunch break data")
         if (!result.Lunch_breaks_time && !result.Lunch_breake_time) {
           return res.status(200).json({ status: "success", message: "30 min" });
         }

@@ -169,6 +169,10 @@ const checkOutAttendance = async (req, res, next) => {
         .status(403)
         .json({ status: "Error", message: "Engg not CheckedIN" });
     }
+    if((checksum?.First_halfs_time && !checksum?.First_halfe_time)|| (checksum?.Lunch_breaks_time && !checksum?.Lunch_breake_time) || (checksum?.Second_halfs_time && !checksum?.Second_halfe_time))
+    {
+      return res.status(403).json({ message: "Engg is in Break can't Checkout" });
+    }
     if (checksum?.Check_Out?.time) {
       return res.status(403).json({ message: "Engg already CheckedOUT" });
     }
@@ -208,6 +212,7 @@ const checkInorOutAttendance = async (req, res, next) => {
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
     }
+    console.log("yeh hua")
   }
 };
 
@@ -225,8 +230,8 @@ router.post(
 router.put(
   "/enggCheckOut/:ServiceEnggId",
   // checkClientDeviceLogins,
-  // checkOutAttendance,
-  uploadImg,
+  checkOutAttendance,
+  // uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
 
@@ -344,6 +349,20 @@ router.get(
 //jai ho baba pankaj ji maharaj ki, Garibo wale pankaj baba ki, ludhiyane wale baba ki.....
 
 // 31/03/2024
+//=================================================================================
+//By Paras 27/10/2024
+router.get(
+  "/getEnggBreakDetails/:ServiceEnggId",
+  checkClientDeviceLogins,
+  serviceEnggContoller.getEnggBreakDetails
+);
+router.put(
+  "/putEnggBreakDetails",
+  checkClientDeviceLogins,
+  checkInorOutAttendance,
+  serviceEnggContoller.putEnggBreakDetails
+);
+//===================================================================================
 router.get(
   "/getfirsthalftime/:ServiceEnggId",
   checkClientDeviceLogins,
@@ -361,6 +380,8 @@ router.get(
   checkClientDeviceLogins,
   serviceEnggContoller.EnggLunchBreakinfo
 );
+
+
 
 router.put(
   "/enggOnFirstHalfBreak",
