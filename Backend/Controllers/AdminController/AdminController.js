@@ -1346,7 +1346,6 @@ module.exports.fetchEnggAttendance = async (req, res) => {
           return response;
         })
       );
-
       //console.log(attendanceData)
 
       return res.status(200).json({

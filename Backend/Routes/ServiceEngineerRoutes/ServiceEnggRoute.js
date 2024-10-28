@@ -205,7 +205,7 @@ const checkInorOutAttendance = async (req, res, next) => {
       return res
         .status(403)
         .json({
-          status: "checkedout",
+          status: "Error",
           message: "Break is not applicable after CheckedOut",
         });
     }
@@ -229,9 +229,9 @@ router.post(
 );
 router.put(
   "/enggCheckOut/:ServiceEnggId",
-  // checkClientDeviceLogins,
+  checkClientDeviceLogins,
   checkOutAttendance,
-  // uploadImg,
+  uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
 
@@ -353,56 +353,54 @@ router.get(
 //By Paras 27/10/2024
 router.get(
   "/getEnggBreakDetails/:ServiceEnggId",
-  checkClientDeviceLogins,
+  // checkClientDeviceLogins,
   serviceEnggContoller.getEnggBreakDetails
 );
 router.put(
-  "/putEnggBreakDetails",
+  "/startAndEndBreakDetails",
   checkClientDeviceLogins,
   checkInorOutAttendance,
-  serviceEnggContoller.putEnggBreakDetails
+  serviceEnggContoller.putEnggBreakDetails 
 );
 //===================================================================================
-router.get(
-  "/getfirsthalftime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggFirsthalfinfo
-);
+// router.get(
+//   "/getfirsthalftime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggFirsthalfinfo
+// );  
 
-router.get(
-  "/getsecondhalftime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggSecondhalfinfo
-);
+// router.get(   
+//   "/getsecondhalftime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggSecondhalfinfo
+// );
 
-router.get(
-  "/getLunchBreaktime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggLunchBreakinfo
-);
+// router.get(
+//   "/getLunchBreaktime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggLunchBreakinfo
+// );
 
+// router.put(
+//   "/enggOnFirstHalfBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnFirstHalfBreak
+// );
 
+// router.put(
+//   "/enggOnSecondHalfBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnSecondHalfBreak
+// );
 
-router.put(
-  "/enggOnFirstHalfBreak",
-  checkClientDeviceLogins,
-  checkInorOutAttendance,
-  serviceEnggContoller.EnggOnFirstHalfBreak
-);
-
-router.put(
-  "/enggOnSecondHalfBreak",
-  checkClientDeviceLogins,
-  checkInorOutAttendance,
-  serviceEnggContoller.EnggOnSecondHalfBreak
-);
-
-router.put(
-  "/enggOnLunchBreak",
-  checkClientDeviceLogins,
-  checkInorOutAttendance,
-  serviceEnggContoller.EnggOnLunchBreak
-);
+// router.put(
+//   "/enggOnLunchBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnLunchBreak
+// );
 
 //emit on 01/05/2024 ---
 
