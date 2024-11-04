@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { fetchEngDetails } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
 import "../../../../Assets/Engeeniers.css";
@@ -15,7 +15,14 @@ const EngeeniersSubCard = (props) => {
   const [singleClickTimeout, setSingleClickTimeout] = useState(null);
   const [isDoubleClick, setIsDoubleClick] = useState(false);
   const [isActive, setIsActive] = useState(null);
-  const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick, checkLengthAndDispalyName } = props;
+  const {
+    isFirst,
+    setIsFirst,
+    isSecond,
+    setIsSecond,
+    handleEnggNameDoubleClick,
+    checkLengthAndDispalyName,
+  } = props;
   const [allSearchEngrs, setAllSearchEngrs] = useState(null);
 
   const [allEngData, setAllEngData] = useState('');
@@ -32,12 +39,11 @@ const EngeeniersSubCard = (props) => {
 
   const dispatch = useDispatch();
   const engData = useSelector((state) => {
-    return state?.AdminRootReducer?.reducerfetchengdetails
+    return state?.AdminRootReducer?.reducerfetchengdetails;
   });
 
-
   const searchValue = useSelector((state) => {
-    return state?.AdminRootReducer?.EngineerSearchHandler?.SearchEngineers
+    return state?.AdminRootReducer?.EngineerSearchHandler?.SearchEngineers;
   });
 
 
@@ -114,56 +120,77 @@ useEffect(() => {
       } else {
         setIsFirst(true);
         setIsActive(index);
-        (!isFirst && scrollFun())
+        !isFirst && scrollFun();
       }
       setSingleClickTimeout(null);
     }, 200);
 
     setSingleClickTimeout(timeout);
     // setIsActive(index);
-  }
+  };
   const scrollFun = () => {
     if (!scrollRef.current) {
-      return
+      return;
     }
     setTimeout(() => {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-    }, [100])
-  }
+      scrollRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }, [100]);
+  };
 
-  const handleDoubleClick = (index, EnggId, EnggName, EnggPhoto, AvailableCash, enggObjectId, lastname, spare) => {
+  const handleDoubleClick = (
+    index,
+    EnggId,
+    EnggName,
+    EnggPhoto,
+    AvailableCash,
+    enggObjectId,
+    lastname,
+    spare
+  ) => {
+
     setIsDoubleClick(true);
     clearTimeout(singleClickTimeout);
     setSingleClickTimeout(null);
     setIsSecond(true);
-    handleEnggNameDoubleClick(EnggId, EnggName, EnggPhoto, AvailableCash, enggObjectId, lastname, spare);
+    handleEnggNameDoubleClick(
+      EnggId,
+      EnggName,
+      EnggPhoto,
+      AvailableCash,
+      enggObjectId,
+      lastname,
+      spare
+    );
   };
-
 
   const SerachEngrs = (searchValue) => {
     if (!searchValue) {
       return engData?.engdetails?.combinedData;
     }
     return engData?.engdetails?.combinedData?.filter((value) => {
-      return value?.EnggName?.toLowerCase().includes(searchValue?.toLowerCase()) || value?.EnggId?.toLowerCase().includes(searchValue?.toLowerCase());
-    })
-
-  }
+      return (
+        value?.EnggName?.toLowerCase().includes(searchValue?.toLowerCase()) ||
+        value?.EnggId?.toLowerCase().includes(searchValue?.toLowerCase())
+      );
+    });
+  };
 
   useEffect(() => {
     const result = SerachEngrs(searchValue);
-    setAllSearchEngrs(result)
-  }, [searchValue])
-
+    setAllSearchEngrs(result);
+  }, [searchValue]);
 
   useEffect(() => {
     if (allSearchEngrs) {
-      setAllEngData(allSearchEngrs)
+      setAllEngData(allSearchEngrs);
     } else {
-      setAllEngData(engData?.engdetails?.combinedData)
+      setAllEngData(engData?.engdetails?.combinedData);
     }
-  }, [allSearchEngrs, engData])
-
+  }, [allSearchEngrs, engData]);
 
   return (
     <div className="EngeeniersSubCard" style={{ cursor: "pointer", display: isSecond && 'none' }}>

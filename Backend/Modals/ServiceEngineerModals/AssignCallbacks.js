@@ -31,16 +31,20 @@ const AssignService = new Schema(
     },
     Message: {
       type: String,
-      default:''
+      default: ''
     },
     ServiceProcess: {
       type: String,
-      enum: ["onGoing", "completed", "InCompleted","cancelled","dead"],
+      enum: ["onGoing", "completed", "InCompleted", "cancelled", "dead"],
       default: "InCompleted",
     },
     cancelDescription: {
       type: String,
     },
+    TypeOfIssue: {
+      type: String,
+      default: "",
+    }
   },
   {
     timestamps: true,

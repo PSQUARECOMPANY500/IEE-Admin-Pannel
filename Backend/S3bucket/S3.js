@@ -1,5 +1,5 @@
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { S3Client, GetObjectCommand,PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, GetObjectCommand, PutObjectCommand } = require("@aws-sdk/client-s3");
 
 const s3Client = new S3Client({
   region: "ap-south-1",
@@ -11,12 +11,12 @@ const s3Client = new S3Client({
 
 
 module.exports.getObjectURL = async (key) => {
-    const command = new GetObjectCommand({
-        Bucket:"ieelifts.in",
-        Key:key
-    });
-    const url = getSignedUrl(s3Client,command)
-    return url;
+  const command = new GetObjectCommand({
+    Bucket: "ieelifts.in",
+    Key: key
+  });
+  const url = getSignedUrl(s3Client, command)
+  return url;
 }
 
 

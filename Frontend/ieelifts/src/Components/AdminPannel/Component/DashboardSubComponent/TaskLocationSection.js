@@ -24,7 +24,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
 
 import RepotImage from "./RepotImage";
-import WalkthroughWrapper from "../../../../Walkthrough/WalkthroughWrapper";
 
 const TaskLocationSection = forwardRef((props, ref) => {
   const dropdownRef = useRef(null);
@@ -123,10 +122,16 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   const toggleTickets = () => {
     setTicket(true);
+    setReportData();
+    setHandleServiceSelection(
+      Array(currentDateServiceRequest?.length).fill(false)
+    );
     setSrvice(false);
   };
   const toogleService = () => {
     setSrvice(true);
+    setReportData();
+    setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
     setTicket(false);
   };
 

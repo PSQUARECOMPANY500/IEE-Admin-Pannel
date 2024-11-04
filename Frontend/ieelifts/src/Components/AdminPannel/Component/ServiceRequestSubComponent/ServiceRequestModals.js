@@ -57,7 +57,7 @@ const ServiceRequestModals = ({
 
   const [time, setTime] = useState('')
 
-  const [ImageUrl,setImageUrl] = useState();
+  const [ImageUrl, setImageUrl] = useState();
 
 
 
@@ -181,7 +181,8 @@ const ServiceRequestModals = ({
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
         enggPhoto: getEnggState.EnggPhoto,
-        enggRating: getEnggState?.avgRatingValue
+        enggRating: getEnggState?.avgRatingValue,
+        enggLocation: getEnggState.enggLocation,
       });
     }
   }, [getEnggState]);
@@ -415,29 +416,29 @@ const ServiceRequestModals = ({
     const response = await cancelServiceRequestOrCallback(RequestId)
     toast.success(response.message);
   };
-  
 
-   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
-   const fetchImageUrl = async (key) => {
+
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
     try {
       const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
       console.log("error while fecthing the engg Images from S3 bucket ", error);
     }
-   }
-  
-  
-   useEffect(() => {
+  }
+
+
+  useEffect(() => {
     const fetchImage = async () => {
       const url = await fetchImageUrl(engDetails.enggPhoto);
       // console.log("this is consoling my url ", url);
       setImageUrl(url);
     };
-      fetchImage();
+    fetchImage();
   }, [engDetails]);
-  
-  
+
+
   // console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
 
 
@@ -753,7 +754,7 @@ const ServiceRequestModals = ({
                       </div>
 
                       <div>
-                        {/* {getEnggState ? (
+                        {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -762,20 +763,15 @@ const ServiceRequestModals = ({
                               className="col-elevator25"
                               style={{ width: "30%" }}
                             >
-                              <label>LOCATION:</label>
+                              <label>LOCATION: </label>
                             </div>
-                            <div className="col-elevator75">
-                              <input
-                                type="text"
-                                autoComplete="off"
-                                name="name"
-                                value={engDetails.enggLocation}
-                              />
+                            <div className="col-elevator75 modalLocation">
+                              {engDetails.enggLocation}
                             </div>
                           </div>
                         ) : (
                           <SkeltonLoader width="200px" height="20px" marginBottom='10px' />
-                        )} */}
+                        )}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">

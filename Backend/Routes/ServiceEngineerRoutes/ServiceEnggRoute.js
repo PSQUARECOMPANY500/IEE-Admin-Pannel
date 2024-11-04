@@ -10,19 +10,22 @@ const {s3} = require('../../Multer/EnggAttachmentUpload')
 
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
 
-const { verifyEnggToken, EnggCheckoutOrNot} = require("../../Middleware/ServiceEnggAuthMiddleware");
+const {
+  verifyEnggToken,
+  EnggCheckoutOrNot,
+} = require("../../Middleware/ServiceEnggAuthMiddleware");
 
 const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller/ServiceEnggController");
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const clientContoller = require("../../Controllers/ClientController/ClientController");
 
-const {uploaded} = require("../../Multer/EnggAttachmentUpload");
+const { uploaded } = require("../../Multer/EnggAttachmentUpload");
 
-
-
-const {uploadReportAttachment,reportPdf} = require("../../Multer/ReportAttachmentUploads");
+const {
+  uploadReportAttachment,
+  reportPdf,
+} = require("../../Multer/ReportAttachmentUploads");
 const checkClientDeviceLogins = require("../../Middleware/CheckLoginDeviceVerify");
-
 
 //-------------------------------------- All Post Requests -------------------------------
 // router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
@@ -64,13 +67,17 @@ router.post(
 router.post("/loginEngg", serviceEnggContoller.loginEngg);
 
 //location service
-router.post("/createEnggLocation",checkClientDeviceLogins, serviceEnggContoller.createEnggLocation);  
-
+router.post(
+  "/createEnggLocation",
+  checkClientDeviceLogins,
+  serviceEnggContoller.createEnggLocation
+);
 
 router.post(
-  "/createEnggLocationOnAttendance",checkClientDeviceLogins,
-  serviceEnggContoller.CreateEnggLocationOnAttendance               // todo : : so apply middleware
-);  
+  "/createEnggLocationOnAttendance",
+  checkClientDeviceLogins,
+  serviceEnggContoller.CreateEnggLocationOnAttendance // todo : : so apply middleware
+);
 
 //------------------------------------- All Get Requests -----------------------------------------
 // router.get("/getAllCallbacks/:ServiceEnggId", verifyEnggToken, serviceEnggContoller.getAssignCallbacks);
@@ -89,7 +96,6 @@ router.get(
 );
 router.get("/getServiceEngg/:EnggId", serviceEnggContoller.getEnggDetail);
 
-
 // router.get(
 //   "/getEngScheduleData/:ServiceEnggId",checkClientDeviceLogins,
 //   serviceEnggContoller.getEngScheduleData
@@ -98,9 +104,6 @@ router.get(
   "/getEngScheduleData/:ServiceEnggId",
   serviceEnggContoller.getEngScheduleData
 );
-
-
-
 
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
 
@@ -206,6 +209,7 @@ const checkOutAttendance = async (req, res, next) => {
       ServiceEnggId: Id,
       Date: date,
     });
+
     if (!checksum?.Check_In?.time) {
       return res
         .status(403)
@@ -218,18 +222,14 @@ const checkOutAttendance = async (req, res, next) => {
   }
 };
 
-
-
 const checkInorOutAttendance = async (req, res, next) => {
-
   let ServiceEnggId;
 
   if (!req.body || Object.keys(req.body).length === 0) {
-      ({ServiceEnggId}  = req.query);
+    ({ ServiceEnggId } = req.query);
   } else {
-    ({ServiceEnggId} = req.body);
+    ({ ServiceEnggId } = req.body);
   }
-
 
   if (ServiceEnggId) {
     const date = new Date().toLocaleDateString("en-GB");
@@ -246,7 +246,10 @@ const checkInorOutAttendance = async (req, res, next) => {
     if (checkIn?.Check_In?.time && checkIn?.Check_Out?.time) {
       return res
         .status(403)
-        .json({ status:"checkedout",message: "Break is not applicable after CheckedOut" });
+        .json({
+          status: "checkedout",
+          message: "Break is not applicable after CheckedOut",
+        });
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
@@ -287,7 +290,10 @@ router.get(
   "/EnggReportQuestionFetch",
   serviceEnggContoller.EnggReportQuestionFetch
 );
-router.get("/fetchEnggAttendance/:ServiceEnggId/:selectedDate",adminContoller.fetchEnggAttendance);
+router.get(
+  "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
+  adminContoller.fetchEnggAttendance
+);
 router.get(
   "/EnggCheckInCheckOutDetals/:ServiceEnggId",
   serviceEnggContoller.EnggCheckInCheckOutDetals
@@ -307,18 +313,20 @@ router.post(
 ); // todo - change the route name
 // router.post("/pankaj", serviceEnggContoller.testingApi);
 
-
-
 router.get("/getEngineerLeveCount", serviceEnggContoller.getEngineerLeveCount);
 
 router.get("/getEngineerLeaves", serviceEnggContoller.getEngineerLeaves);
 // --- by preet 15/03/2024 ---
 router.get(
-  "/getAssignCalbackDetailForEnggApp/:callbackId",checkClientDeviceLogins,checkInorOutAttendance,
+  "/getAssignCalbackDetailForEnggApp/:callbackId",
+  checkClientDeviceLogins,
+  checkInorOutAttendance,
   serviceEnggContoller.AssignCallbackDataForEnggAppByCallbackId
 );
 router.get(
-  "/getAssignServiceRequestDetailForEnggApp/:RequestId",checkClientDeviceLogins,checkInorOutAttendance,
+  "/getAssignServiceRequestDetailForEnggApp/:RequestId",
+  checkClientDeviceLogins,
+  checkInorOutAttendance,
   serviceEnggContoller.AssignServiceRequestDataForEnggAppByServiceId
 );
 
@@ -335,7 +343,8 @@ router.get("/getSparePart", serviceEnggContoller.getAllSparePartdetails);
 //----by preet 22/03/2024 ---
 
 router.post(
-  "/generateReport",checkClientDeviceLogins,
+  "/generateReport",
+  checkClientDeviceLogins,
   uploadReportAttachment.fields([
     {
       name: "photoss",
@@ -363,7 +372,8 @@ router.get(
 // --by Preet 31/03/2024 ------------
 //route to handle update paymanet details and update spare part request also.
 router.post(
-  "/upadatePaymentDetails", reportPdf.fields([
+  "/upadatePaymentDetails",
+  reportPdf.fields([
     {
       name: "report",
       maxCount: 1,
@@ -371,13 +381,6 @@ router.post(
   ]),
   serviceEnggContoller.UpdatePaymentDetilsAndSparePartRequested
 );
-
-
-
-
-
-
-
 
 // --by Preet 05/04/2024 ------------
 router.get(
@@ -388,15 +391,13 @@ router.get(
 //=================================================================================
 //=================================================================================
 
-// Api to get information of the breaks -- dhan dhan shri shri satguru pankaj  ji maharaj ki jai ho , 
-  //jai ho baba pankaj ji maharaj ki, Garibo wale pankaj baba ki, ludhiyane wale baba ki.....
-
-
-
+// Api to get information of the breaks -- dhan dhan shri shri satguru pankaj  ji maharaj ki jai ho ,
+//jai ho baba pankaj ji maharaj ki, Garibo wale pankaj baba ki, ludhiyane wale baba ki.....
 
 // 31/03/2024
 router.get(
-  "/getfirsthalftime/:ServiceEnggId",checkClientDeviceLogins,
+  "/getfirsthalftime/:ServiceEnggId",
+  checkClientDeviceLogins,
   serviceEnggContoller.EnggFirsthalfinfo
 );
 
@@ -440,62 +441,49 @@ router.put(
 //   serviceEnggContoller.clientPayment
 // );
 
-router.post(
-  "/paymentLink",
-  serviceEnggContoller.paymentLink
-);
+router.post("/paymentLink", serviceEnggContoller.paymentLink);
 
-router.post(
-  "/verifyPaymentLink",
-  serviceEnggContoller.verifyPaymentLink
-);
+router.post("/verifyPaymentLink", serviceEnggContoller.verifyPaymentLink);
 
-router.post(
-  "/generatePaymentQr",
-  serviceEnggContoller.generatePaymentQr
-);
+router.post("/generatePaymentQr", serviceEnggContoller.generatePaymentQr);
 
-router.post(
-  "/getPaymentStatus",
-  serviceEnggContoller.getPaymentStatus
-);
+router.post("/getPaymentStatus", serviceEnggContoller.getPaymentStatus);
 
-router.post(
-  "/resendPaymentLink",
-  serviceEnggContoller.resendPaymentLink
-);
+router.post("/resendPaymentLink", serviceEnggContoller.resendPaymentLink);
 
-router.post(
-  "/updatePaymentStatus",
-  serviceEnggContoller.updatePaymentStatus
-);
+router.post("/updatePaymentStatus", serviceEnggContoller.updatePaymentStatus);
 //=================================================================================//=================================================================================
 
-
-
-router.post("/updateTrackerInformations", serviceEnggContoller.handleTrackerPostionClientApp);
-
+router.post(
+  "/updateTrackerInformations",
+  serviceEnggContoller.handleTrackerPostionClientApp
+);
 
 router.post("/canclePaymentLink", serviceEnggContoller.canclePaymentLink);
 
+router.post(
+  "/registerFirebaseToken",
+  clientContoller.firebaseTokenForPushNotificationPurpose
+);
 
+router.get(
+  "/getNotFullfillPreviousService/:ServiceEnggId",
+  serviceEnggContoller.getAllClientPreviousService
+);
 
-router.post('/registerFirebaseToken', clientContoller.firebaseTokenForPushNotificationPurpose);
+router.post("/loginWithOTP", serviceEnggContoller.serviceEnggLoginWithOtp);
 
-
-
-router.get('/getNotFullfillPreviousService/:ServiceEnggId', serviceEnggContoller.getAllClientPreviousService)
-
-
-router.post('/loginWithOTP',serviceEnggContoller.serviceEnggLoginWithOtp);
-
-router.post('/verifyEnggOTPWhileLoging', serviceEnggContoller.verifyEnggOTPWhileLogingWithMobileDevice);
-
+router.post(
+  "/verifyEnggOTPWhileLoging",
+  serviceEnggContoller.verifyEnggOTPWhileLogingWithMobileDevice
+);
 
 //route to get engg coordinates
 
-router.get('/getEnggCoordinates/:ServiceEnggId',serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap);
-
+router.get(
+  "/getEnggCoordinates/:ServiceEnggId",
+  serviceEnggContoller.getEnggLocationCoordiantesToShowThePathOnMap
+);
 
 module.exports = router;
  

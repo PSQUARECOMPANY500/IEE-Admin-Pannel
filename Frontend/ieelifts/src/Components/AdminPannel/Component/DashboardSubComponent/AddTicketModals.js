@@ -58,7 +58,7 @@ const AddTicketModals = ({
 
   // console.log('engDate', engDate)
 
-  const [ImageUrl,setImageUrl] = useState();
+  const [ImageUrl, setImageUrl] = useState();
 
 
   const [engDetails, setEngDetails] = useState({
@@ -77,6 +77,16 @@ const AddTicketModals = ({
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [message, setMessage] = useState("");
   const [fetchedDate, setfetchedDate] = useState("");
+
+  // Color for the memberaship
+  const titleClass =
+    membershipType.toLocaleLowerCase() === "warrenty"
+      ? "membership_card_title_warrenty"
+      : membershipType.toLocaleLowerCase() === "platinum"
+        ? "membership_card_title_platinum"
+        : membershipType.toLocaleLowerCase() === "gold"
+          ? "membership_card_title_gold"
+          : "membership_card_title_silver";
 
   //slots logic here ends-------------------------------------------------
   // use use selector select to select the service engg state
@@ -165,7 +175,8 @@ const AddTicketModals = ({
         enggPhone: getEnggState.PhoneNumber,
         enggAddress: getEnggState.EnggAddress,
         enggPhoto: getEnggState.EnggPhoto,
-        enggRating: getEnggState?.avgRatingValue
+        enggRating: getEnggState?.avgRatingValue,
+        enggLocation: getEnggState.enggLocation,
       });
     }
   }, [getEnggState]);
@@ -294,7 +305,7 @@ const AddTicketModals = ({
   });
 
   const filteredSlots = timeSlots
-    .slice(timeSlots.length - filterTime.length)
+    .slice(timeSlots?.length - filterTime?.length)
     .filter((slot, i) => {
       const engg = bookedDateForEngg?.find(
         (engg) => engg.ServiceEnggId === selectedEnggId[0]
@@ -402,20 +413,20 @@ const AddTicketModals = ({
     } catch (error) {
       console.log("error while fecthing the engg Images from S3 bucket ", error);
     }
-   }
-  
-  
-   useEffect(() => {
+  }
+
+
+  useEffect(() => {
     const fetchImage = async () => {
       // console.log("this is engg photo &&&&&&&&&&&&&&&&&&&&&&&& ", engDetails.enggPhoto)
       const url = await fetchImageUrl(engDetails.enggPhoto);
       console.log("this is consoling my url ", url);
       setImageUrl(url);
     };
-      fetchImage();
+    fetchImage();
   }, [engDetails]);
-  
-  
+
+
   console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
 
 
@@ -561,7 +572,7 @@ const AddTicketModals = ({
                     </div>
                     {membershipType ? (
                       <div className="membership-form-col2">
-                        <p style={{ color: "#F8AC1D" }}> {membershipType}</p>
+                        <p className={`${titleClass}`}> {membershipType}</p>
                       </div>
                     ) : (
                       <div className="membership-form-col22">
@@ -757,7 +768,7 @@ const AddTicketModals = ({
                       </div>
 
                       <div>
-                        {/* {getEnggState ? (
+                        {getEnggState ? (
                           <div
                             className="elevator-detail-row"
                             style={{ marginTop: "10px" }}
@@ -766,15 +777,10 @@ const AddTicketModals = ({
                               className="col-elevator25"
                               style={{ width: "30%" }}
                             >
-                              <label>LOCATION:</label>
+                              <label>LOCATION: </label>
                             </div>
-                            <div className="col-elevator75">
-                              <input
-                                type="text"
-                                name="name"
-                                value={engDetails.enggLocation}
-                                autoComplete="off"
-                              />
+                            <div className="col-elevator75 modalLocation">
+                              {engDetails.enggLocation}
                             </div>
                           </div>
                         ) : (
@@ -783,7 +789,7 @@ const AddTicketModals = ({
                             height="20px"
                             marginBottom="10px"
                           />
-                        )} */}
+                        )}
 
                         {getEnggState ? (
                           <div className="elevator-detail-row">

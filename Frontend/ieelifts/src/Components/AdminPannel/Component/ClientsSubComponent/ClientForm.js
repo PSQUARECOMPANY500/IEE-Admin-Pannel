@@ -39,18 +39,20 @@ const ClientForm = () => {
   const [valforDimention, setValForDimention] = useState();
   const [Flevel, setFLevel] = useState([]);
   const [toggle, setToggle] = useState(true);
-  const [validate, setValidate] = useState(false); //validation for dimensions
+  const [validate, setValidate] = useState(false);
   const [reset, makeReset] = useState(0);
   const [validateNextBtn, setValidateNextBtn] = useState();
-  const [prevData, setPrevData] = useState(false);
-
+  const [prevData, setPrevData] = useState("");
+  const clientModalOperation = useSelector(
+    (state) => state.AdminRootReducer.openAddClientModalReducer.isModalOpen
+  );
   const { jon } = allFormData.clientFormDetails;
-  // useEffect(() => {
-  //   document.body.style.overflow = "hidden";
-  //   return () => {
-  //     document.body.style.overflow = "scroll";
-  //   };
-  // }, []);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "scroll";
+    };
+  }, []);
   //  const [triggerFunction, setTriggerFunction]=useState(false);
   let triggerFunction = 0;
   //handler
@@ -92,25 +94,26 @@ const ClientForm = () => {
   const handleNextPage = () => {
     changeInData(false);
     setToggle(false);
+
     const { clientFormDetails, clientArchitect, clientSalesManDetails } =
       allFormData;
 
     const formData = new FormData();
     formData.append(
       "signedQuotation",
-      allFormData.clientMembershipDocument?.signedQuotation
+      allFormData.clientMembershipDocument.signedQuotation
     );
     formData.append(
       "paymentForm",
-      allFormData.clientMembershipDocument?.paymentForm
+      allFormData.clientMembershipDocument.paymentForm
     );
     formData.append(
       "salesOrder",
-      allFormData.clientMembershipDocument?.salesOrder
+      allFormData.clientMembershipDocument.salesOrder
     );
     formData.append(
       "chequeForm",
-      allFormData.clientMembershipDocument?.chequeForm
+      allFormData.clientMembershipDocument.chequeForm
     );
 
     formData.append("clientFormDetails", JSON.stringify(clientFormDetails));
@@ -120,17 +123,24 @@ const ClientForm = () => {
     );
     formData.append("clientArchitect", JSON.stringify(clientArchitect));
 
-    if (prevData) {
+    if (prevData !== "") {
       dispatch(RegisterClientDataAction(formData));
     } else {
       dispatch(RegisterClientDataAction(formData));
+      setPrevData(jon)
     }
-    closeModal();
-    dispatch(closeClientModalAction());
   };
+
+  console.log("prevData", prevData)
   //-----------------------------------------------------
   const handlePreviousPage = () => {
     setToggle(true);
+    if (jon) {
+      fetchData(prevData)
+    }
+    else {
+      handleReset()
+    }
   };
   const closeModal = () => {
     setAllFormData({
@@ -219,92 +229,41 @@ const ClientForm = () => {
     triggerFunction++;
   };
   //----------------------------------------------------------------
-  // function validateClientForm(allFormData) {
-  //   const {
-  //     clientFormDetails,
-  //     clientSalesManDetails,
-  //     clientMembershipDocument,
-  //   } = allFormData;
-  //   const { signedQuotation, paymentForm, salesOrder } =
-  //     clientMembershipDocument;
-  //   const {
-  //     jon,
-  //     userName,
-  //     phoneNumber,
-  //     alternativeNumber,
-  //     email,
-  //     referenceName,
-  //     sourceOfLead,
-  //     dateOfHandover,
-  //     address,
-  //     pincode,
-  //     state,
-  //     district,
-  //     city,
-  //   } = clientFormDetails;
-  //   const {
-  //     finalPrice,
-  //     quotatedPrice,
-  //     discountInRupees,
-  //     discountInPercentage,
-  //     discountAmount,
-  //     finalAmount,
-  //   } = clientSalesManDetails;
-  // if (
-  //   !jon ||
-  //   !userName ||
-  //   !phoneNumber ||
-  //   !alternativeNumber ||
-  //   !email ||
-  //   !dateOfHandover ||
-  //   !address ||
-  //   !pincode ||
-  //   !state ||
-  //   !district ||
-  //   !city
-  // ) {
-  //   return false;
-  // }
-  // if (sourceOfLead === "Reference") {
-  //   if (!referenceName) {
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
-  // if (!signedQuotation || !paymentForm || !salesOrder) {
-  //   return false;
-  // }
-  //   if (
-  //     !finalPrice ||
-  //     !quotatedPrice ||
-  //     !discountInRupees ||
-  //     !discountInPercentage ||
-  //     !discountAmount ||
-  //     !finalAmount
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
+  function validateClientForm(allFormData) {
+    const {
+      clientFormDetails,
+    } = allFormData;
+    const {
+      jon,
+      userName,
+      phoneNumber,
+      address,
+    } = clientFormDetails;
+
+    if (
+      !jon ||
+      !userName ||
+      !phoneNumber ||
+      !address
+    ) {
+      return false;
+    }
+    return true;
+  }
 
   //-------------------------------------------------------------------------
-  // useEffect(() => {
-  // const val = validateClientForm(allFormData);
-  // setValidateNextBtn(val);
-  // }, [allFormData]);
+  useEffect(() => {
+    const val = validateClientForm(allFormData);
+    setValidateNextBtn(val);
+  }, [allFormData]);
   //-------------------------------------------------------------------------
 
   const fetchData = async (jon) => {
     try {
-
+      console.log("Fetching data", jon)
       const data = await getDataBasedOnJon(jon);
       dispatch(putDataBasedOnJon(data));
-      console.log(data);
 
-      if (data.success === false) {
-        handleReset(jon)
-      }
       if (data?.response) {
         const clientFormDetails = data?.response.clientFormDetails;
 
@@ -338,49 +297,39 @@ const ClientForm = () => {
       });
     }
   };
-
-  const debouncedFetchData = useCallback(debounce(fetchData, 1000), []);
+  // useEffect(() => {
+  //   fetchData(jon);
+  // }, [jon]);
+  const debouncedFetchData = useCallback(debounce(fetchData, 2000), []);
   useEffect(() => {
     if (jon) {
       debouncedFetchData(jon);
     }
   }, [jon, debouncedFetchData]);
-
   //------------------------------------------------------------------------
-  console.log(allFormData)
-  const handleReset = (value) => {
-    if (value !== undefined) {
-      setAllFormData({
-        clientFormDetails: { jon: value },
-        clientSalesManDetails: {},
-        clientMembershipDocument: {},
-        clientArchitect: {},
-      });
-    }
-    else {
-      setAllFormData({
-        clientFormDetails: {},
-        clientSalesManDetails: {},
-        clientMembershipDocument: {},
-        clientArchitect: {},
-      });
-      dispatch(updateClientFormUsingPagination());
-      dispatch(putDataBasedOnJon());
-      dispatch(RegisterClientDataAction());
-    };
-    makeReset((prev) => {
-      return prev + 1;
+  const handleReset = () => {
+    setAllFormData({
+      clientFormDetails: { jon: "" },
+      clientSalesManDetails: {},
+      clientMembershipDocument: {},
+      clientArchitect: {},
     });
     setClientElevatorDetails({});
     setDimentionsData({});
-  }
+    dispatch(updateClientFormUsingPagination());
+    dispatch(putDataBasedOnJon());
+    dispatch(RegisterClientDataAction());
+    makeReset((prev) => {
+      return prev + 1;
+    });
+  };
   //------------------------------------------------------------------------
   const changeInData = (state) => {
     setVisible(state);
   };
   return (
     <>
-      {(
+      {clientModalOperation && (
         <div className="add-client-wrapper" onClick={handleOverlayClick}>
           <div className="add-client-modal">
             <div className="cross-icon" style={{ cursor: "pointer" }}>
@@ -393,7 +342,6 @@ const ClientForm = () => {
                     <ClientFormDetails
                       onDataChange={handleClientFormDetails}
                       reset={reset}
-                      jon={jon}
                       initialValues={allFormData.clientFormDetails}
                     />
                     <ClientMembershipDocument
@@ -422,11 +370,10 @@ const ClientForm = () => {
                       handleAction={handleReset}
                     />
 
-                    {/* <div className={`${validateNextBtn ? "" : "disabled"}`}>  todo - infuture */}
-                    <div>
+                    <div className={`${validateNextBtn ? "" : "disabled"}`}>
                       <Clientbutton
                         value={"Next"}
-                        className={"client-form-button-yellow"} // next button in future we will just change the functionality to close the modal on next button click
+                        className={"client-form-button-yellow"}
                         handleAction={handleNextPage}
                       />
                     </div>
