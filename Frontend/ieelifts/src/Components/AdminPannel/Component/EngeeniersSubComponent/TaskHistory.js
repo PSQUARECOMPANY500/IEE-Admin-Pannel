@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { assignedEnggDetails } from "../../../../ReduxSetup/Actions/AdminActions";
+import { assignedEnggDetails, getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
+
+
 
 const TaskHistory = (props) => {
   const { engID } = props;
-  console.log(engID)
   const [serviceData, setServiceData] = useState([]);
   const [callBackData, setCallBackData] = useState([]);
   const [isLoadData, setIsLoadData] = useState(false);
+
+  const [ImageURls, setImageUrls] = useState();
+
   const dispatch = useDispatch();
   const Data = useSelector((state) => state?.AdminRootReducer?.fetchassignedEnggDetailsReducer?.EnggDetails);
 
@@ -46,13 +50,31 @@ const TaskHistory = (props) => {
   const uniqueSortedDates = Array.from(new Set(allDates)).sort((a, b) => new Date(b) - new Date(a));
 
 
+//  ------------------------- This is My OLD code ------------------------------
+  // const openIt = (reportLink) => {
+    // console.log('Open ---------------', reportLink);
+    // const url = `${config.documentUrl}/ReportPdf/${reportLink}`;
+
+    // window.open(url);
+  // };
 
 
-  const openIt = (reportLink) => {
-    const url = `${config.documentUrl}/ReportPdf/${reportLink}`;
 
-    window.open(url);
-  };
+    // Function to fetch report from S3 bucket and open it
+    const openIt = async (reportLink) => {
+      try {
+        // Fetch the report URL from S3 using the reportLink as the key
+        const response = await getImagesFromS3Bucket(reportLink);
+        const s3Url = response?.data?.url;
+        if (s3Url) {
+          window.open(s3Url, "_blank");
+        } else {
+          console.error("Failed to fetch the report URL from S3");
+        }
+      } catch (error) {
+        console.error("Error fetching the report from S3 bucket:", error);
+      }
+    };
 
 
 

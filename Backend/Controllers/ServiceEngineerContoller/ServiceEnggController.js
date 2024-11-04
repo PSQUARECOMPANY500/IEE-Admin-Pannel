@@ -1809,7 +1809,7 @@ module.exports.getServiceIdOfLatestReportByServiceEngg = async (req, res) => {
 
     const FianlData = getData?.filter((data) => data.isActive === true);
 
-    // console.log("==>", FianlData);
+    // console.log("==>", FianlData);  
 
     if (FianlData.length === 0) {
       return res
@@ -2119,7 +2119,7 @@ module.exports.EnggFirsthalfinfo = async (req, res) => {
         ServiceEnggId,
         Date: date,
       });
-
+      
       if (result) {
         if (!result.First_halfs_time && !result.First_halfe_time) {
           return res.status(200).json({ status: "success", message: "15 min" });

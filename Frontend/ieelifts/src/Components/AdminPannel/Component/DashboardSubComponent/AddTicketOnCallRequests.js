@@ -55,6 +55,8 @@ const AddTicketOnCallRequests = ({
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
+  console.log("this is todays date selected  ----------------->>>  : ", engDate);
+
   const [ImageUrl,setImageUrl] = useState();
 
 
@@ -222,6 +224,7 @@ const AddTicketOnCallRequests = ({
 
       setDate(updatedFormatedDate);
 
+
       const hours = currentDate.getHours();
       const minutes = currentDate.getMinutes();
       const seconds = currentDate.getSeconds();
@@ -311,6 +314,8 @@ const AddTicketOnCallRequests = ({
     setTypeOfIssue(selectedOption);
   };
 
+
+  //------------------------------------------------------------------------------------------------
   const handleAssignDateChange = (selectedOption) => {
     const formattedDate = selectedOption.toLocaleDateString("en-GB");
     setengDate(formattedDate);
@@ -318,6 +323,7 @@ const AddTicketOnCallRequests = ({
     dispatch(getBookedSlotsforEnggsAction(formattedDate));
   };
 
+  //------------------------------------------------------------------------------------------------
   const handleElevatorSectionDetails = async () => {
     if (requestSection) {
       dispatch(
@@ -331,7 +337,7 @@ const AddTicketOnCallRequests = ({
           reNumber
         )
       ).then((RequestId) => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && dtext && typeOfIssue.label) {
           dispatch(
             assignserviceRequestByAdmin(
               engDetails?.enggJon,
@@ -356,7 +362,7 @@ const AddTicketOnCallRequests = ({
       dispatch(
         requestCallBackByAdmin(
           jon,
-          date,
+          engDate,    //---------------------------------------------------------------------------------------------------------
           time,
           typeOfIssue.label,
           dtext,
@@ -368,7 +374,7 @@ const AddTicketOnCallRequests = ({
       )
         .then((callbackId) => {
           dispatch(updateSOSStatus(jobOrderNumber?.jon, "RaisedCallback", jobOrderNumber?._id))
-          if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date) {
+          if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && dtext && typeOfIssue.label) {
             dispatch(
               assignCallBackByAdminAction(
                 engDetails?.enggJon,

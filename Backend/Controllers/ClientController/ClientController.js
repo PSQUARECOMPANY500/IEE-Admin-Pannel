@@ -1226,6 +1226,9 @@ module.exports.checkPaymentStatusAndMakeInvoice = async (req, res) => {
     const { JobOrderNumber } = req.params;
 
     const MembershipData = await memberShipDetails.find({ JobOrderNumber });
+
+    console.log("this is membership data --->> ", MembershipData)  //......................//TODO: add condition to whether membership is not already present ............................................
+
     const Details = MembershipData[MembershipData.length - 1];
 
     if (Details.IsPaid === true) {
