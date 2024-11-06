@@ -81,11 +81,27 @@ const calculateTwotimedifference = (
   return remaintime;
 };
 
-const calculateDiffBetweentwoTime =(timetogetdiff2,timetogetdiff1) => {
+//--------------------------------------------------------------------------------------------------------------------
+//by Paras
+const calculateTwotimedifferenceinMins = (
+  timetogetdiff1,
+  timetogetdiff2,
+) => {
   const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
   const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
   const differenceInMs = time1.getTime() - time2.getTime();
   const differenceInMinutes = differenceInMs / (1000 * 60);
+
+  return Math.floor(differenceInMinutes);
+};
+
+
+const calculateDiffBetweentwoTime =(timetogetdiff1,timetogetdiff2) => {
+  const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
+  const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
+  const differenceInMs = time1.getTime() - time2.getTime();
+  const differenceInMinutes = differenceInMs / (1000 * 60);
+  console.log(differenceInMinutes,"diff time")
   return differenceInMinutes;
 };
 // ---------------------------------------------------------------------------------------------------------------------
@@ -787,7 +803,32 @@ module.exports.EnggCheckIn = async (req, res) => {
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+//by Paras
+function getCalculatedTotalHours(engData,time){
+  let firstBreakTime = 0;  
+  let lunchBreakTime = 0;
+  let secondBreakTime = 0;
+   firstBreakTime = engData.First_halfe_time?calculateDiffBetweentwoTime(engData.First_halfs_time, engData.First_halfe_time):0;
+       lunchBreakTime = engData.Lunch_breake_time?calculateDiffBetweentwoTime(engData.Lunch_breaks_time, engData.Lunch_breake_time):0;
+       secondBreakTime = engData.Second_halfe_time?calculateDiffBetweentwoTime(engData.Second_halfs_time, engData.Second_halfe_time):0;
+      let totalBreakHours;
+      totalBreakHours = Math.floor(firstBreakTime + lunchBreakTime + secondBreakTime);
+      console.log(totalBreakHours, "total break hours");
 
+      const startTime = engData.Check_In.time;
+      const checkouttime = time;
+      const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
+      const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
+      const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
+      console.log(finalTime, "final time")
+
+      const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
+      const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
+      let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
+      console.log(finalTotalTime,"final total time")
+      return finalTotalTime;
+} 
+//--------------------------------------------------------------------------------------------------------------------------------
 module.exports.EnggCheckOut = async (req, res) => {
   //console.log("req of checkout",req)
   try {
@@ -806,13 +847,9 @@ module.exports.EnggCheckOut = async (req, res) => {
       });
       const date = new Date().toLocaleDateString("en-GB");
       const engData = await EnggAttendanceServiceRecord.findOne({ServiceEnggId, Date: date})
-      const firstBreakTime = calculateDiffBetweentwoTime(engData.First_halfs_time, engData.First_halfe_time);
-      const lunchBreakTime = calculateDiffBetweentwoTime(engData.Lunch_breaks_time, engData.Lunch_breake_time);
-      const secondBreakTime = calculateDiffBetweentwoTime(engData.Second_halfs_time, engData.Second_halfe_time);
+      console.log(engData,"eng data")
+      const finalTotalTime = getCalculatedTotalHours(engData,time); //by Paras
       
-      const totalBreakHours = (firstBreakTime + lunchBreakTime + secondBreakTime);
-      const totalHours = calculateTimedifference(totalBreakHours,60)
-      console.log(totalHours, "total hours");
       const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate(
         { ServiceEnggId, Date: date },
         {
@@ -820,7 +857,7 @@ module.exports.EnggCheckOut = async (req, res) => {
             engPhoto: enggPhoto,
             time: time,
           },
-          Total_Hours: totalHours,
+          Total_Hours: finalTotalTime, //by Paras
         }
       );
       //make the logic that delete the coordinates from the EnggLocation Table "Starts" ----------------  

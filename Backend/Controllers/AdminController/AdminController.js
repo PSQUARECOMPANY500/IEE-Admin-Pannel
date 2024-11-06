@@ -1317,37 +1317,90 @@ module.exports.createServiceAdmin = async (req, res) => {
 };
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//by Paras
+const calculateDiffBetweentwoTime =(timetogetdiff1,timetogetdiff2) => {
+  const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
+  const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
+  const differenceInMs = time1.getTime() - time2.getTime();
+  const differenceInMinutes = differenceInMs / (1000 * 60);
+  console.log(differenceInMinutes,"diff time")
+  return differenceInMinutes;
+};
+function getCalculatedTotalHours(engData){
+  let firstBreakTime = 0;  
+  let lunchBreakTime = 0;
+  let secondBreakTime = 0;
+   firstBreakTime = engData?.First_halfe_time?calculateDiffBetweentwoTime(engData?.First_halfs_time, engData?.First_halfe_time):0;
+       lunchBreakTime = engData?.Lunch_breake_time?calculateDiffBetweentwoTime(engData?.Lunch_breaks_time, engData?.Lunch_breake_time):0;
+       secondBreakTime = engData?.Second_halfe_time?calculateDiffBetweentwoTime(engData?.Second_halfs_time, engData?.Second_halfe_time):0;
+      let totalBreakHours;
+      totalBreakHours = Math.floor(firstBreakTime + lunchBreakTime + secondBreakTime);
+      // console.log(totalBreakHours, "total break hours");
+      
+      // const startTime = engData.Check_In.time;
+      // const checkouttime = engData.Check_Out.time;
+      // const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
+      // const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
+      // const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
+      // console.log(finalTime, "final time")
 
+      // const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
+      // const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
+      // let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
+      // console.log(finalTotalTime,"final total time")
+      return totalBreakHours;
+} 
+//----------------------------------------------------------------------------------------------------------------
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
+   
     const { ServiceEnggId, selectedDate } = req.params;
+    console.log(ServiceEnggId, selectedDate,"eng id and date")
     // console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
       const today = new Date(selectedDate);
-
+      console.log(today.toLocaleDateString("en-GB"),"date of today");
       const dates = Array.from(
         {
           length: len,
         },
         (_, i) => {
-          const previousDay = new Date(today);
+          const previousDay = new Date(today); 
           previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
       );
+      const resp = await EnggAttendanceServiceRecord.findOne({
+        ServiceEnggId,
+        Date: today.toLocaleDateString(),
+      });
 
       const attendanceData = await Promise.all(
         dates.map(async (date) => {
           const response = await EnggAttendanceServiceRecord.findOne({
             ServiceEnggId,
             Date: date,
-          });
-          return response;
+          }).lean(); //Paras
+
+          if (response) {
+            return {
+              ...response,
+              totalBreakMins: getCalculatedTotalHours(response),
+            };
+          }
+          return response; 
         })
       );
-      //console.log(attendanceData)
 
+      //console.log(attendanceData)
+      // let val = response
+      // if(!response.Total_Hours)
+      // {
+      //   const total_hours = getCalculatedTotalHours(response);
+      //   const val = await EnggAttendanceServiceRecord.findOneAndUpdate({ServiceEnggId,
+      //     Date: date,},{Total_Hours:total_hours},{new:true});
+      // }
       return res.status(200).json({
         attendanceData,
       });
@@ -1355,7 +1408,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
 
     return res.status(500).json({
       error: "Invalid Input",
-      message: error.message,
+      message: "nhi hua",
     });
   } catch (error) {
     console.log(error);
@@ -1365,6 +1418,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     });
   }
 };
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
