@@ -17,7 +17,7 @@ const cronjob = require("./Utils/EngineerAttendence/EngineerAttendenceCronJob")
 const { getObjectURL } = require("./S3bucket/S3");
 
 const path = require("path");
-cronjob()
+// cronjob()
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

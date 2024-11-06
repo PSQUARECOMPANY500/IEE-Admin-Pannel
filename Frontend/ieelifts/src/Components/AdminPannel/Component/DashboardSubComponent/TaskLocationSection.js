@@ -84,11 +84,11 @@ const TaskLocationSection = forwardRef((props, ref) => {
   useEffect(() => {
     if (currentDateServiceRequest) {
       setHandleServiceSelection(
-        Array(currentDateServiceRequest.length).fill(false)
+        Array(currentDateServiceRequest?.length).fill(false)
       );
     }
     if (filterData) {
-      Array(filterData.length).fill(false);
+      Array(filterData?.length).fill(false);
     }
   }, [currentDateServiceRequest, filterData]);
 
@@ -109,10 +109,10 @@ const TaskLocationSection = forwardRef((props, ref) => {
 
   useEffect(() => {
     if (currentDateCallback) {
-      setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
+      setHandleCallbackSelection(Array(currentDateCallback?.length).fill(false));
     }
     if (filterData) {
-      setHandleCallbackSelection(Array(filterData.length).fill(false));
+      setHandleCallbackSelection(Array(filterData?.length).fill(false));
     }
   }, [currentDateCallback, filterData]);
 
@@ -131,7 +131,7 @@ const TaskLocationSection = forwardRef((props, ref) => {
   const toogleService = () => {
     setSrvice(true);
     setReportData();
-    setHandleCallbackSelection(Array(currentDateCallback.length).fill(false));
+    setHandleCallbackSelection(Array(currentDateCallback?.length).fill(false));
     setTicket(false);
   };
 
@@ -181,12 +181,12 @@ const TaskLocationSection = forwardRef((props, ref) => {
     });
 
     let filteredData;
-    if (statusFilter.length && engineerFilter.length) {
+    if (statusFilter?.length && engineerFilter?.length) {
       filteredData = statusData.filter((status) =>
         engineerData.some((engineer) => status._id === engineer._id)
       );
     } else {
-      filteredData = statusData.length ? statusData : engineerData;
+      filteredData = statusData?.length ? statusData : engineerData;
     }
 
     setFilterData(filteredData);

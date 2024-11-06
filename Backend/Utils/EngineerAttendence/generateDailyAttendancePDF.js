@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const htmlpdf = require("html-pdf");
 
 const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,formattedGeneratedAtDate) => {
     // Create HTML content
@@ -65,19 +66,37 @@ const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,f
     </html >
     `;
 
+    (
+        options = {
+        height: "1200px",
+        width: "850px",
+        format: "A4",
+      }),
+      
+       await htmlpdf
+          .create(htmlContent, options)
+          .toFile(
+            pdfFilePath,
+            function (err, res) {
+              // to do chage file path
+              if (err) return console.error(err);
+              console.log(res);
+            }
+          );
+
     // Create a PDF Document
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
+    // const browser = await puppeteer.launch();
+    // const page = await browser.newPage();
 
-    await page.setContent(htmlContent);
+    // await page.setContent(htmlContent);
 
-    await page.pdf({
-        path: pdfFilePath, // Use the provided pdfFilePath
-        format: 'A4',
-        printBackground: true,
-    });
+    // await page.pdf({
+    //     path: pdfFilePath, // Use the provided pdfFilePath
+    //     format: 'A4',
+    //     printBackground: true,
+    // });
 
-    await browser.close();
+    // await browser.close();
 };
 
 module.exports = generateDailyAttendancePDF;

@@ -1,13 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
-
 const multer = require("multer");
-const multerS3 = require('multer-s3');
-const { S3Client } = require('@aws-sdk/client-s3'); 
-
-const {s3} = require('../../Multer/EnggAttachmentUpload')
-
 const EnggAttendanceServiceRecord = require("../../Modals/ServiceEngineerModals/Attendance");
 
 const {
@@ -107,66 +100,29 @@ router.get(
 
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
 
-
-
-// Initialize the S3 client -------------------------------------------------------------
-
-// TODO: Above code woluld be Dynamic
-
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./public/uplodes/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
-//   },
-// });
-
-const storage = multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/uplodes/");
   },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/uplodes/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}-${Date.now()}.jpeg`);
   },
-})
+});
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
-// const storage2 = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "./public/leaveAttachment");
-//   },
-//   filename: (req, file, cb) => {
-//     const parts = file.mimetype.split("/")[1];
-//     const fileName = `leaveAttachment-${Date.now()}.${parts}`;
-//     cb(null, fileName);
-//   },
-// });
-
-
-const storage2 = multerS3({
-  s3: s3,
-  bucket: 'ieelifts.in',
-  metadata:(req, file, cb) => {
-    cb(null, { fieldName: file.fieldname });
+const storage2 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/leaveAttachment");
   },
-  key: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1]; // Get file extension
-    cb(null, `public/leaveAttachment/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
+  filename: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1];
+    const fileName = `leaveAttachment-${Date.now()}.${parts}`;
+    cb(null, fileName);
   },
-})
-
-
+});
 const upload2 = multer({ storage: storage2 });
 const upload = multer({ storage: storage });
-
-
-
 
 const uploadImg = upload.fields([
   {
@@ -178,8 +134,6 @@ const uploadImg = upload.fields([
     maxCount: 1,
   },
 ]);
-
-
 
 const checkInAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
@@ -215,6 +169,10 @@ const checkOutAttendance = async (req, res, next) => {
         .status(403)
         .json({ status: "Error", message: "Engg not CheckedIN" });
     }
+    if((checksum?.First_halfs_time && !checksum?.First_halfe_time)|| (checksum?.Lunch_breaks_time && !checksum?.Lunch_breake_time) || (checksum?.Second_halfs_time && !checksum?.Second_halfe_time))
+    {
+      return res.status(403).json({ message: "Engg is in Break can't Checkout" });
+    }
     if (checksum?.Check_Out?.time) {
       return res.status(403).json({ message: "Engg already CheckedOUT" });
     }
@@ -247,22 +205,21 @@ const checkInorOutAttendance = async (req, res, next) => {
       return res
         .status(403)
         .json({
-          status: "checkedout",
+          status: "Error",
           message: "Break is not applicable after CheckedOut",
         });
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
     }
+    console.log("yeh hua")
   }
 };
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
 
-router.get("/getTime",checkClientDeviceLogins, serviceEnggContoller.EnggTime);
-
-// --------------------------------  Engg check in data ----------------------------------------------------
+router.get("/getTime", checkClientDeviceLogins, serviceEnggContoller.EnggTime);
 router.post(
   "/enggCheckIn/:ServiceEnggId",
   checkClientDeviceLogins,
@@ -272,14 +229,11 @@ router.post(
 );
 router.put(
   "/enggCheckOut/:ServiceEnggId",
-  // checkClientDeviceLogins,
-  // checkOutAttendance,
+  checkClientDeviceLogins,
+  checkOutAttendance,
   uploadImg,
   serviceEnggContoller.EnggCheckOut
 );
-// --------------------------------  Engg check out data ----------------------------------------------------
-
-
 
 router.get("/enggLeaveRecord", serviceEnggContoller.enggLeaveRecord);
 router.post("/generateOtpForClient", serviceEnggContoller.generateOtpForClient);
@@ -294,6 +248,9 @@ router.get(
   "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
   adminContoller.fetchEnggAttendance
 );
+
+
+
 router.get(
   "/EnggCheckInCheckOutDetals/:ServiceEnggId",
   serviceEnggContoller.EnggCheckInCheckOutDetals
@@ -395,44 +352,58 @@ router.get(
 //jai ho baba pankaj ji maharaj ki, Garibo wale pankaj baba ki, ludhiyane wale baba ki.....
 
 // 31/03/2024
+//=================================================================================
+//By Paras 27/10/2024
 router.get(
-  "/getfirsthalftime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggFirsthalfinfo
+  "/getEnggBreakDetails/:ServiceEnggId",
+  // checkClientDeviceLogins,
+  serviceEnggContoller.getEnggBreakDetails
 );
-
-router.get(
-  "/getsecondhalftime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggSecondhalfinfo
-);
-
-router.get(
-  "/getLunchBreaktime/:ServiceEnggId",
-  checkClientDeviceLogins,
-  serviceEnggContoller.EnggLunchBreakinfo
-);
-
 router.put(
-  "/enggOnFirstHalfBreak",
+  "/startAndEndBreakDetails",
   checkClientDeviceLogins,
   checkInorOutAttendance,
-  serviceEnggContoller.EnggOnFirstHalfBreak
+  serviceEnggContoller.putEnggBreakDetails 
 );
+//===================================================================================
+// router.get(
+//   "/getfirsthalftime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggFirsthalfinfo
+// );  
 
-router.put(
-  "/enggOnSecondHalfBreak",
-  checkClientDeviceLogins,
-  checkInorOutAttendance,
-  serviceEnggContoller.EnggOnSecondHalfBreak
-);
+// router.get(   
+//   "/getsecondhalftime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggSecondhalfinfo
+// );
 
-router.put(
-  "/enggOnLunchBreak",
-  checkClientDeviceLogins,
-  checkInorOutAttendance,
-  serviceEnggContoller.EnggOnLunchBreak
-);
+// router.get(
+//   "/getLunchBreaktime/:ServiceEnggId",
+//   checkClientDeviceLogins,
+//   serviceEnggContoller.EnggLunchBreakinfo
+// );
+
+// router.put(
+//   "/enggOnFirstHalfBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnFirstHalfBreak
+// );
+
+// router.put(
+//   "/enggOnSecondHalfBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnSecondHalfBreak
+// );
+
+// router.put(
+//   "/enggOnLunchBreak",
+//   checkClientDeviceLogins,
+//   checkInorOutAttendance,
+//   serviceEnggContoller.EnggOnLunchBreak
+// );
 
 //emit on 01/05/2024 ---
 
@@ -486,5 +457,3 @@ router.get(
 );
 
 module.exports = router;
- 
- 

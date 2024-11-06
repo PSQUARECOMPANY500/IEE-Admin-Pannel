@@ -66,7 +66,7 @@ const getS3Image = async (key) => {
     }
 }
 
-async function generateEngineerAttendance() {
+const generateEngineerAttendance = async () => {
     try {
         // Getting engineer details
         const EngineerIDs = await ServiceEnggBasicSchema.find().select("EnggId EnggName EnggLastName");
@@ -119,6 +119,10 @@ async function generateEngineerAttendance() {
         const pdfFilePath = path.join(__dirname, '../../public/EngineerDailyAttendanceFolder', 'EngineerAttendance.pdf');
         // Add 1 day to the original Date object for generating at date
 
+        console.error("todayAttendances",todayAttendances)
+
+        console.log("this is  today date ",todayDate)
+        console.log("this is originaml date ", originalDate)
 
         await generateDailyAttendancePDF(EngineerData, todayDate, pdfFilePath, originalDate);
     } catch (error) {
