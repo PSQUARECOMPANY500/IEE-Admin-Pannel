@@ -50,9 +50,9 @@ const { generateToken } = require("../../Middleware/ClientAuthMiddleware");
 
 const assignCallback = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
 
-const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel")
+const SoSRequestsTable = require("../../Modals/SOSModels/SoSRequestModel");
 
-const EngineerLocation = require("../../Modals/LocationModel/EnggLocationSchema")
+const EngineerLocation = require("../../Modals/LocationModel/EnggLocationSchema");
 
 const mongoose = require("mongoose");
 
@@ -63,7 +63,7 @@ const TodoSchema = require("../../Modals/TodoModel/TodoSchema");
 const moment = require("moment");
 const clientRegistration = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
 
-const registerWithMobileNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema")
+const registerWithMobileNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema");
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,7 +71,9 @@ const registerWithMobileNumber = require("../../Modals/ClientDetailModals/Regist
 
 module.exports.getEnggCrouserData = async (req, res) => {
   try {
-    const EnggDetail = await ServiceEnggData.find({}).select("EnggId EnggRole EnggName EnggRole EnggLastName PhoneNumber EnggAddress EnggPhoto AvailableCash ActiveDevice");
+    const EnggDetail = await ServiceEnggData.find({}).select(
+      "EnggId EnggRole EnggName EnggRole EnggLastName PhoneNumber EnggAddress EnggPhoto AvailableCash ActiveDevice"
+    );
     const currentDate = new Date();
 
     // console.log("current date crouser ",currentDate.toLocaleDateString("en-GB"));
@@ -79,8 +81,11 @@ module.exports.getEnggCrouserData = async (req, res) => {
     const BasicDetail = await Promise.all(
       EnggDetail.map(async (item) => {
         // console.log("this is data inside the service Engg crouser>>>>>>>> ",item);
-       //fetch data engg break time
-        const enggBreakTimining = await EnggAttendanceServiceRecord.find({ServiceEnggId:item.EnggId , Date:currentDate.toLocaleDateString("en-GB")})
+        //fetch data engg break time
+        const enggBreakTimining = await EnggAttendanceServiceRecord.find({
+          ServiceEnggId: item.EnggId,
+          Date: currentDate.toLocaleDateString("en-GB"),
+        });
         const enggRating = await EnggRating.find({
           ServiceEnggId: item.EnggId,
         });
@@ -105,20 +110,18 @@ module.exports.getEnggCrouserData = async (req, res) => {
 
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
-          .map((data) => (
+          .map((data) =>
             // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
-            {
+            ({
               ServiceEnggId: data.ServiceEnggId,
               serviceId: data.callbackId ? data.callbackId : data.RequestId,
-              type: data.callbackId ? "Callback" : "Service",
+              type: data.callbackId ? "Calback" : "Service",
               JobOrderNumber: data.JobOrderNumber,
               Slot: data.Slot,
               Date: data.Date,
               TaskStatus: data.ServiceProcess,
-            }));
-
-
-
+            })
+          );
 
         const filteredServiceAssignments = mainDetails.filter((item) => {
           return item.Date === currentDate.toLocaleDateString("en-GB");
@@ -151,12 +154,10 @@ module.exports.getEnggCrouserData = async (req, res) => {
           ServiceEnggPic: item.EnggPhoto,
           averageRating,
           filteredServiceAssignmentsWithClientName,
-          enggBreakTimining
+          enggBreakTimining,
         };
       })
     );
-
-
 
     res.status(200).json({
       BasicDetailForCrouser: BasicDetail.filter((item) => !item.error),
@@ -168,7 +169,6 @@ module.exports.getEnggCrouserData = async (req, res) => {
     });
   }
 };
-
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -278,7 +278,7 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
           RequestId: item.RequestId,
         });
         if (ServiceRequestdetail.isCancelled) {
-          return
+          return;
         }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
@@ -286,7 +286,6 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         const clientDetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
         });
-
 
         const engRating = await EnggRating.findOne({
           ServiceId: item.RequestId,
@@ -325,9 +324,11 @@ module.exports.getCurrentDateAssignServiceRequest = async (req, res) => {
         };
       })
     );
-    const clearUndefined = serviceRequestDetail.filter((item) => item !== undefined);
+    const clearUndefined = serviceRequestDetail.filter(
+      (item) => item !== undefined
+    );
     return res.status(200).json({
-      serviceRequestDetail: clearUndefined
+      serviceRequestDetail: clearUndefined,
     });
   } catch (error) {
     console.log("get assign service request", error);
@@ -360,14 +361,13 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
           callbackId: item.callbackId,
         });
         if (callbackdetail?.isCancelled) {
-          return
+          return;
         }
         const enggDetail = await ServiceEnggData.findOne({
           EnggId: item.ServiceEnggId,
         });
         const clientdetail = await clientDetailSchema.findOne({
           JobOrderNumber: item.JobOrderNumber,
-
         });
 
         const rating = await EnggRating.findOne({
@@ -410,8 +410,10 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         };
       })
     );
-    console.log(callbackWithDetails)
-    const clearUndefined = callbackWithDetails.filter((item) => item !== undefined);
+    console.log(callbackWithDetails);
+    const clearUndefined = callbackWithDetails.filter(
+      (item) => item !== undefined
+    );
     return res.status(200).json({
       callbackWithDetails: clearUndefined,
     });
@@ -422,7 +424,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
     });
   }
 };
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -477,7 +478,9 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
     const allotAChecklistIds = assignServicerequest.map(
       (request) => request.AllotAChecklist
     );
-    const allEngId = assignServicerequest.map((request) => request.ServiceEnggId)
+    const allEngId = assignServicerequest.map(
+      (request) => request.ServiceEnggId
+    );
 
     const uniqueJobOrderNumbers = Array.from(new Set(jobOrderNumbers));
     const uniqueAllotAChecklistIds = Array.from(new Set(allotAChecklistIds));
@@ -499,9 +502,9 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
 
     const EngineerDetails = await ServiceEnggData.find({
       EnggId: {
-        $in: uniqueAllEngId
-      }
-    })
+        $in: uniqueAllEngId,
+      },
+    });
 
     // Create a map for quick access to client and checklist details
     const clientMap = {};
@@ -516,30 +519,31 @@ module.exports.getAllAssignServiceRequest = async (req, res) => {
 
     const enggMap = {};
     EngineerDetails.forEach((engg) => {
-      enggMap[engg.EnggId] = engg.EnggPhoto
-    })
+      enggMap[engg.EnggId] = engg.EnggPhoto;
+    });
 
     // Combine assign service requests with client and checklist details
     const clientdetailsEmbeded = await Promise.all(
       assignServicerequest.map(async (request) => {
         let checkRequest = await getAllServiceRequest.findOne({
-          RequestId: request.RequestId
+          RequestId: request.RequestId,
         });
         if (checkRequest?.isCancelled) {
-          return
-        }
-        else {
+          return;
+        } else {
           return {
             ...request._doc,
             clientDetail: clientMap[request.JobOrderNumber] || null,
             checklistDetail: checklistMap[request.AllotAChecklist] || null,
-            EnggPicture: enggMap[request.ServiceEnggId] || null
-          }
+            EnggPicture: enggMap[request.ServiceEnggId] || null,
+          };
         }
       })
     );
 
-    const clearUndefined = clientdetailsEmbeded.filter((item) => item !== undefined);
+    const clearUndefined = clientdetailsEmbeded.filter(
+      (item) => item !== undefined
+    );
 
     res.status(200).json({
       message: "Fetch All Assign Service Request successfully",
@@ -726,10 +730,6 @@ module.exports.AssignServiceRequests = async (req, res) => {
       RequestId,
     });
 
-
-
-
-
     if (existingCallback) {
       callback = await AssignSecheduleRequest.findOneAndUpdate(
         {
@@ -869,7 +869,6 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientCallbacksDetails = await getAllCalbacks.findOne({
       callbackId,
     });
-
 
     // console.log("HE",clientCallbacksDetails)
 
@@ -1259,7 +1258,9 @@ module.exports.loginServiceAdmin = async (req, res) => {
     const { AdminId, Password, Role } = req.body;
     const Admin = await serviceAdmin.findOne({ AdminId });
     if (Admin.Role !== Role) {
-      return res.status(401).json({ status: "error", message: "permission denied" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "permission denied" });
     }
 
     if (!Admin || Admin.Password !== Password) {
@@ -1272,7 +1273,7 @@ module.exports.loginServiceAdmin = async (req, res) => {
       Phone: Admin.Phone,
       Role: Admin.Role,
       AdminId: Admin.AdminId,
-      ProfilePhoto: Admin.ProfilePhoto
+      ProfilePhoto: Admin.ProfilePhoto,
     });
 
     res.status(200).json({
@@ -1318,55 +1319,71 @@ module.exports.createServiceAdmin = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //by Paras
-const calculateDiffBetweentwoTime =(timetogetdiff1,timetogetdiff2) => {
+const calculateDiffBetweentwoTime = (timetogetdiff1, timetogetdiff2) => {
   const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
   const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
   const differenceInMs = time1.getTime() - time2.getTime();
   const differenceInMinutes = differenceInMs / (1000 * 60);
-  console.log(differenceInMinutes,"diff time")
+  console.log(differenceInMinutes, "diff time");
   return differenceInMinutes;
 };
-function getCalculatedTotalHours(engData){
-  let firstBreakTime = 0;  
+function getCalculatedTotalHours(engData) {
+  let firstBreakTime = 0;
   let lunchBreakTime = 0;
   let secondBreakTime = 0;
-   firstBreakTime = engData?.First_halfe_time?calculateDiffBetweentwoTime(engData?.First_halfs_time, engData?.First_halfe_time):0;
-       lunchBreakTime = engData?.Lunch_breake_time?calculateDiffBetweentwoTime(engData?.Lunch_breaks_time, engData?.Lunch_breake_time):0;
-       secondBreakTime = engData?.Second_halfe_time?calculateDiffBetweentwoTime(engData?.Second_halfs_time, engData?.Second_halfe_time):0;
-      let totalBreakHours;
-      totalBreakHours = Math.floor(firstBreakTime + lunchBreakTime + secondBreakTime);
-      // console.log(totalBreakHours, "total break hours");
-      
-      // const startTime = engData.Check_In.time;
-      // const checkouttime = engData.Check_Out.time;
-      // const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
-      // const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
-      // const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
-      // console.log(finalTime, "final time")
+  firstBreakTime = engData?.First_halfe_time
+    ? calculateDiffBetweentwoTime(
+        engData?.First_halfs_time,
+        engData?.First_halfe_time
+      )
+    : 0;
+  lunchBreakTime = engData?.Lunch_breake_time
+    ? calculateDiffBetweentwoTime(
+        engData?.Lunch_breaks_time,
+        engData?.Lunch_breake_time
+      )
+    : 0;
+  secondBreakTime = engData?.Second_halfe_time
+    ? calculateDiffBetweentwoTime(
+        engData?.Second_halfs_time,
+        engData?.Second_halfe_time
+      )
+    : 0;
+  let totalBreakHours;
+  totalBreakHours = Math.floor(
+    firstBreakTime + lunchBreakTime + secondBreakTime
+  );
+  // console.log(totalBreakHours, "total break hours");
 
-      // const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
-      // const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
-      // let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
-      // console.log(finalTotalTime,"final total time")
-      return totalBreakHours;
-} 
+  // const startTime = engData.Check_In.time;
+  // const checkouttime = engData.Check_Out.time;
+  // const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
+  // const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
+  // const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
+  // console.log(finalTime, "final time")
+
+  // const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
+  // const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
+  // let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
+  // console.log(finalTotalTime,"final total time")
+  return totalBreakHours;
+}
 //----------------------------------------------------------------------------------------------------------------
 module.exports.fetchEnggAttendance = async (req, res) => {
   try {
-   
     const { ServiceEnggId, selectedDate } = req.params;
-    console.log(ServiceEnggId, selectedDate,"eng id and date")
+    console.log(ServiceEnggId, selectedDate, "eng id and date");
     // console.log("ServiceEnggId", ServiceEnggId);
     if (ServiceEnggId) {
       const len = 5;
       const today = new Date(selectedDate);
-      console.log(today.toLocaleDateString("en-GB"),"date of today");
+      console.log(today.toLocaleDateString("en-GB"), "date of today");
       const dates = Array.from(
         {
           length: len,
         },
         (_, i) => {
-          const previousDay = new Date(today); 
+          const previousDay = new Date(today);
           previousDay.setDate(today.getDate() - 2 + i);
           return previousDay.toLocaleDateString("en-GB");
         }
@@ -1389,7 +1406,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
               totalBreakMins: getCalculatedTotalHours(response),
             };
           }
-          return response; 
+          return response;
         })
       );
 
@@ -1418,7 +1435,6 @@ module.exports.fetchEnggAttendance = async (req, res) => {
     });
   }
 };
-
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1705,10 +1721,10 @@ module.exports.filterClient = async (req, res) => {
         membershipData && membershipData.length > 0
           ? membershipData
           : elevatorData && elevatorData.length > 0
-            ? elevatorData
-            : locationData && locationData.length
-              ? locationData
-              : [];
+          ? elevatorData
+          : locationData && locationData.length
+          ? locationData
+          : [];
     }
     let sortType, sortcondition;
     if (sortFilter && sortFilter.length) {
@@ -2065,7 +2081,7 @@ module.exports.createMemberShipOnTable = async (req, res) => {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 module.exports.GetMembershipPrice = async (req, res) => {
   try {
-  } catch (error) { }
+  } catch (error) {}
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2835,7 +2851,7 @@ module.exports.fetchReportForAdmin = async (req, res) => {
           (question.questionResponse.isResolved &&
             question.questionResponse.sparePartDetail.sparePartsType !== "" &&
             question.questionResponse.sparePartDetail.subsparePartspartid !==
-            "") ||
+              "") ||
           (question.questionResponse.isResolved &&
             question.questionResponse.SparePartDescription !== "") ||
           !question.questionResponse.isResolved
@@ -2910,7 +2926,8 @@ module.exports.fetchReportForAdmin = async (req, res) => {
 
 //post client form controller
 module.exports.postElevatorForm = async (req, res) => {
-  const { clientFormDetails, clientSalesManDetails, clientArchitect } = req.body;
+  const { clientFormDetails, clientSalesManDetails, clientArchitect } =
+    req.body;
 
   try {
     const { jon } = JSON.parse(clientFormDetails);
@@ -2985,18 +3002,21 @@ module.exports.postElevatorForm = async (req, res) => {
       ProfileImage:
         "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
     });
- 
 
     // upadte the ionformation also in "registerWithNumber"  ----------------
-    const checkExistingClientOrNot = await registerWithMobileNumber.findOne({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
-    console.log("login ---------------------- save data", checkExistingClientOrNot);
-    if(!checkExistingClientOrNot){
-      await registerWithMobileNumber.create({PhoneNumber:elevatorFormSchema.clientFormDetails.phoneNumber});
+    const checkExistingClientOrNot = await registerWithMobileNumber.findOne({
+      PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
+    });
+    console.log(
+      "login ---------------------- save data",
+      checkExistingClientOrNot
+    );
+    if (!checkExistingClientOrNot) {
+      await registerWithMobileNumber.create({
+        PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
+      });
     }
     //-----------------------------------------------------------------------
-
-
-
 
     res.status(200).json({ msg: "data submit successfully" });
   } catch (err) {
@@ -3036,7 +3056,9 @@ module.exports.putElevatorForm = async (req, res) => {
 
 module.exports.getNotification = async (req, res) => {
   try {
-    const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+    const now = new Date()
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
 
     console.log("this is notification todays data ", now);
 
@@ -3337,8 +3359,8 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         EnggPhoto: formData?.profilePhoto
           ? formData?.profilePhoto[0]?.filename
           : EnggDataChecker.EnggPhoto
-            ? EnggDataChecker.EnggPhoto
-            : "",
+          ? EnggDataChecker.EnggPhoto
+          : "",
         DateOfBirth: bodyData.dateOfBirth,
         Email: bodyData.email,
         PinCode: bodyData.pinCode,
@@ -3357,28 +3379,28 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AddharPhoto: formData?.addharPhoto
           ? formData?.addharPhoto[0]?.filename
           : EnggDataChecker.AddharPhoto
-            ? EnggDataChecker.AddharPhoto
-            : "",
+          ? EnggDataChecker.AddharPhoto
+          : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
           ? formData?.drivingLicensePhoto[0]?.filename
           : EnggDataChecker.DrivingLicensePhoto
-            ? EnggDataChecker.DrivingLicensePhoto
-            : "",
+          ? EnggDataChecker.DrivingLicensePhoto
+          : "",
         PancardPhoto: formData?.pancardPhoto
           ? formData?.pancardPhoto[0]?.filename
           : EnggDataChecker.PancardPhoto
-            ? EnggDataChecker.PancardPhoto
-            : "",
+          ? EnggDataChecker.PancardPhoto
+          : "",
         QualificationPhoto: formData?.qualificationPhoto
           ? formData?.qualificationPhoto[0]?.filename
           : EnggDataChecker.QualificationPhoto
-            ? EnggDataChecker.QualificationPhoto
-            : "",
+          ? EnggDataChecker.QualificationPhoto
+          : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
           ? formData?.additionalCoursePhoto[0]?.filename
           : EnggDataChecker.AdditionalCoursePhoto
-            ? EnggDataChecker.AdditionalCoursePhoto
-            : "",
+          ? EnggDataChecker.AdditionalCoursePhoto
+          : "",
         DurationOfJob: bodyData.jobDuration,
         CompanyName: bodyData.companyName,
         JobTitle: bodyData.jobTitle,
@@ -3466,8 +3488,6 @@ module.exports.getCheckInCheckOut = async (req, res) => {
   }
 };
 
-
-
 module.exports.getClientCallbackByJON = async (req, res) => {
   try {
     const { JobOrderNumber } = req.params;
@@ -3497,7 +3517,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3509,7 +3529,7 @@ module.exports.getClientCallbackByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3569,7 +3589,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3581,7 +3601,7 @@ module.exports.getClientServiceHistoryByJON = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(
@@ -3833,7 +3853,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
               question.questionResponse.sparePartDetail.subsparePartspartid !==
-              "") ||
+                "") ||
             (question.questionResponse.isResolved &&
               question.questionResponse.SparePartDescription !== "") ||
             !question.questionResponse.isResolved
@@ -3845,7 +3865,7 @@ module.exports.getEnggSparePartRevenueData = async (req, res) => {
               !element.questionResponse.isSparePartRequest &&
               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
               element.questionResponse.sparePartDetail.subsparePartspartid !==
-              "" &&
+                "" &&
               element.questionResponse.isResolved
             ) {
               SparePartsChanged.push(element.questionResponse.sparePartDetail);
@@ -4155,9 +4175,10 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
     const serviceStarted = await ReportTable.findOne({ serviceId });
 
     if (serviceStarted) {
-      return res
-        .status(200)
-        .json({ status: "error", message: "Service is Service is already started" });
+      return res.status(200).json({
+        status: "error",
+        message: "Service is Service is already started",
+      });
     }
 
     const [cancelCallbacks, cancelService] = await Promise.all([
@@ -4198,12 +4219,10 @@ module.exports.cancelServiceRequestOrCallback = async (req, res) => {
     }
 
     return res.status(400).json({ message: "Service not found" });
-
   } catch (error) {
     console.log("Error in cancelServiceRequestOrCallback:", error);
   }
 };
-
 
 //--------------------------------------------------------------------------------------------------------------------------
 // ----------------------------------{armaan-dev}---------------------------
@@ -4214,10 +4233,9 @@ module.exports.getSoSRequests = async (req, res) => {
     limit = parseInt(limit);
     const skip = (page - 1) * limit;
 
-
     const [SoSCalls, totalSoSCalls] = await Promise.all([
       SoSRequestsTable.find().skip(skip).limit(limit),
-      SoSRequestsTable.countDocuments()
+      SoSRequestsTable.countDocuments(),
     ]);
     const totalPage = Math.ceil(totalSoSCalls / limit);
 
@@ -4225,16 +4243,16 @@ module.exports.getSoSRequests = async (req, res) => {
       message: "All SOS requests fetched successfully",
       SoSCalls,
       totalPage,
-      success: true
+      success: true,
     });
   } catch (error) {
     res.status(400).json({
       message: "Error in fetching data",
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
-}
+};
 module.exports.changeStatusSoS = async (req, res) => {
   try {
     const { jon, status, _id } = req.body;
@@ -4242,7 +4260,7 @@ module.exports.changeStatusSoS = async (req, res) => {
     if (!jon || !status) {
       return res.status(400).json({
         success: false,
-        message: "All values are required"
+        message: "All values are required",
       });
     }
 
@@ -4250,20 +4268,21 @@ module.exports.changeStatusSoS = async (req, res) => {
     if (!SOSRequest) {
       return res.status(400).json({
         success: false,
-        message: "Cannot find the request"
+        message: "Cannot find the request",
       });
     }
-
 
     SOSRequest.status = status;
     SOSRequest.isDead = true;
     await SOSRequest.save();
 
-    const clientCount = await clientDetailSchema.findOne({ JobOrderNumber: jon });
+    const clientCount = await clientDetailSchema.findOne({
+      JobOrderNumber: jon,
+    });
     if (!clientCount) {
       return res.status(400).json({
         success: false,
-        message: "Cannot find the client"
+        message: "Cannot find the client",
       });
     }
 
@@ -4274,24 +4293,25 @@ module.exports.changeStatusSoS = async (req, res) => {
       success: true,
       message: "Status has been updated successfully",
       id: _id,
-      status
+      status,
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Internal server error: " + error.message
+      message: "Internal server error: " + error.message,
     });
   }
 };
 
 function creatingDestinationCoordinates(locations) {
-  const engineerCoordinates = locations.map(location => location.currentLocation.coordinates);
+  const engineerCoordinates = locations.map(
+    (location) => location.currentLocation.coordinates
+  );
   const formattedCoordinates = engineerCoordinates
-    .map(coord => `${coord[0]},${coord[1]}`)
-    .join('|');
+    .map((coord) => `${coord[0]},${coord[1]}`)
+    .join("|");
 
-  return formattedCoordinates
+  return formattedCoordinates;
 }
 
 module.exports.FindEngineerSOS = async (req, res) => {
@@ -4299,11 +4319,16 @@ module.exports.FindEngineerSOS = async (req, res) => {
     const { slot, SOSID } = req.query;
 
     const AllSosrequests = await SoSRequestsTable.find();
-    const Sosrequest = AllSosrequests.find((request) => request._id.toString() === SOSID)
+    const Sosrequest = AllSosrequests.find(
+      (request) => request._id.toString() === SOSID
+    );
     const engineers = await ServiceEnggBasicSchema.find();
     const todayDate = new Date();
 
-    let [month, day, year] = todayDate.toLocaleDateString().split('/').map(num => num.padStart(2, '0'));
+    let [month, day, year] = todayDate
+      .toLocaleDateString()
+      .split("/")
+      .map((num) => num.padStart(2, "0"));
     let formattedDate = `${day}/${month}/${year}`;
 
     const engineersCheckedIn = await EnggAttendanceServiceRecord.find({
@@ -4317,40 +4342,55 @@ module.exports.FindEngineerSOS = async (req, res) => {
         message: "No Engineer Check-In",
       });
     }
-    const checkedInEnggIds = engineersCheckedIn.map(engineer => engineer.ServiceEnggId);
+    const checkedInEnggIds = engineersCheckedIn.map(
+      (engineer) => engineer.ServiceEnggId
+    );
 
     const todayCallBack = await assignCallback.find({
       Date: formattedDate,
       Slot: slot,
-      ServiceEnggId: { $in: checkedInEnggIds }
+      ServiceEnggId: { $in: checkedInEnggIds },
     });
 
     const todayService = await AssignSecheduleRequest.find({
       Date: formattedDate,
       Slot: slot,
-      ServiceEnggId: { $in: checkedInEnggIds }
+      ServiceEnggId: { $in: checkedInEnggIds },
     });
 
     const todaySOS = AllSosrequests.filter((request) => {
-      return request.date.toString() === todayDate.toLocaleDateString() && request.assignEngineerDetails.EnggId !== ""
-    })
+      return (
+        request.date.toString() === todayDate.toLocaleDateString() &&
+        request.assignEngineerDetails.EnggId !== ""
+      );
+    });
 
     const assignedEnggIds = [
-      ...todayCallBack.map(callback => callback.ServiceEnggId),
-      ...todayService.map(service => service.ServiceEnggId),
-      ...todaySOS.map(service => service.assignEngineerDetails.EnggId)
+      ...todayCallBack.map((callback) => callback.ServiceEnggId),
+      ...todayService.map((service) => service.ServiceEnggId),
+      ...todaySOS.map((service) => service.assignEngineerDetails.EnggId),
     ];
 
-    let freeEngineers = engineers.filter(engineer => !assignedEnggIds.includes(engineer.EnggId) && checkedInEnggIds.includes(engineer.EnggId));
-    let freeEngineersIds = freeEngineers.map(engineer => engineer.EnggId);
+    let freeEngineers = engineers.filter(
+      (engineer) =>
+        !assignedEnggIds.includes(engineer.EnggId) &&
+        checkedInEnggIds.includes(engineer.EnggId)
+    );
+    let freeEngineersIds = freeEngineers.map((engineer) => engineer.EnggId);
 
-    let [month1, day1, year1] = todayDate.toLocaleDateString().split('/')
+    let [month1, day1, year1] = todayDate.toLocaleDateString().split("/");
     formattedDate = `${day1}/${month1}/${year1}`;
 
-    const EngineerLocations = await EngineerLocation.find({ AttendanceCreatedDate: formattedDate });
-    const locations = EngineerLocations.filter(location => freeEngineersIds.includes(location.ServiceEnggId));
+    const EngineerLocations = await EngineerLocation.find({
+      AttendanceCreatedDate: formattedDate,
+    });
+    const locations = EngineerLocations.filter((location) =>
+      freeEngineersIds.includes(location.ServiceEnggId)
+    );
 
-    const ClientCoordinates = await clientRegistration.findOne({ JobOrderNumber: Sosrequest.jon });
+    const ClientCoordinates = await clientRegistration.findOne({
+      JobOrderNumber: Sosrequest.jon,
+    });
 
     if (!ClientCoordinates || !ClientCoordinates.ClientCoordinates) {
       return res.status(400).json({
@@ -4358,16 +4398,20 @@ module.exports.FindEngineerSOS = async (req, res) => {
         message: "Client coordinates not found.",
       });
     }
-    const formattedCoordinates = creatingDestinationCoordinates(locations)
+    const formattedCoordinates = creatingDestinationCoordinates(locations);
 
-    const googleApiResponse = await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`);
+    const googleApiResponse = await fetch(
+      `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${formattedCoordinates}&origins=${ClientCoordinates.ClientCoordinates.longitude},${ClientCoordinates.ClientCoordinates.latitude}&key=${process.env.Googgle_Distance_Matrix}`
+    );
 
     if (googleApiResponse.ok) {
       const googleApiData = await googleApiResponse.json();
 
       const EngineersAvailable = await Promise.all(
         locations.map(async (location, index) => {
-          const engineer = engineers.find(engineer => engineer.EnggId === location.ServiceEnggId);
+          const engineer = engineers.find(
+            (engineer) => engineer.EnggId === location.ServiceEnggId
+          );
           const element = googleApiData.rows[0].elements[index];
           if (element && element.duration) {
             return {
@@ -4379,46 +4423,48 @@ module.exports.FindEngineerSOS = async (req, res) => {
         })
       );
 
-      const filteredEngineers = EngineersAvailable
-        .filter(engineer => engineer)
-        .sort((a, b) => {
-          const convertToMinutes = (duration) => {
-            const parts = duration.split(' ');
-            let totalMinutes = 0;
-            for (let i = 0; i < parts.length; i += 2) {
-              const value = parseInt(parts[i], 10);
-              const unit = parts[i + 1];
+      const filteredEngineers = EngineersAvailable.filter(
+        (engineer) => engineer
+      ).sort((a, b) => {
+        const convertToMinutes = (duration) => {
+          const parts = duration.split(" ");
+          let totalMinutes = 0;
+          for (let i = 0; i < parts.length; i += 2) {
+            const value = parseInt(parts[i], 10);
+            const unit = parts[i + 1];
 
-              if (unit.includes('hour')) {
-                totalMinutes += value * 60;
-              } else if (unit.includes('min')) {
-                totalMinutes += value;
-              }
+            if (unit.includes("hour")) {
+              totalMinutes += value * 60;
+            } else if (unit.includes("min")) {
+              totalMinutes += value;
             }
+          }
 
-            return totalMinutes;
-          };
+          return totalMinutes;
+        };
 
-          const minutesA = convertToMinutes(a.duration);
-          const minutesB = convertToMinutes(b.duration);
+        const minutesA = convertToMinutes(a.duration);
+        const minutesB = convertToMinutes(b.duration);
 
-          return minutesA - minutesB;
-        });
+        return minutesA - minutesB;
+      });
 
       if (filteredEngineers.length) {
         return res.status(200).json({
           success: true,
           EngineersAvailable: filteredEngineers,
-          message: "All available engineers"
+          message: "All available engineers",
         });
       }
 
       return res.status(200).json({
         success: false,
-        message: "No Engineer available at moment"
+        message: "No Engineer available at moment",
       });
     } else {
-      console.error(`Google API request failed with status: ${googleApiResponse.status}`);
+      console.error(
+        `Google API request failed with status: ${googleApiResponse.status}`
+      );
       return res.status(500).json({
         success: false,
         message: `Google API request failed with status: ${googleApiResponse.status}`,
@@ -4438,14 +4484,14 @@ module.exports.assignSoSRequest = async (req, res) => {
     if (!SoSId || !EnggId) {
       return res.status(400).json({
         success: false,
-        message: "All values are required"
+        message: "All values are required",
       });
     }
     const engineerDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
     if (!engineerDetail) {
       return res.status(400).json({
         success: false,
-        message: "Engineer not found"
+        message: "Engineer not found",
       });
     }
     const SOSRequest = await SoSRequestsTable.findByIdAndUpdate(
@@ -4453,16 +4499,16 @@ module.exports.assignSoSRequest = async (req, res) => {
       {
         assignEngineerDetails: {
           EnggId,
-          EnggName: engineerDetail.EnggName
+          EnggName: engineerDetail.EnggName,
         },
-        status: "Assigned"
+        status: "Assigned",
       }
     );
 
     if (!SOSRequest) {
       return res.status(400).json({
         success: false,
-        message: "Cannot find the request"
+        message: "Cannot find the request",
       });
     }
 
@@ -4470,7 +4516,7 @@ module.exports.assignSoSRequest = async (req, res) => {
       success: true,
       message: "SOS request assigned successfully",
       SoSId,
-      name: engineerDetail.EnggName
+      name: engineerDetail.EnggName,
     });
   } catch (error) {
     return res.status(500).json({
@@ -4480,9 +4526,6 @@ module.exports.assignSoSRequest = async (req, res) => {
   }
 };
 
-
-
-
 // ----------------------------------{armaan-dev}---------------------------
 //--------------------------------------------------------------------------------------------------------------------------
 
@@ -4490,81 +4533,48 @@ module.exports.assignSoSRequest = async (req, res) => {
 
 // get engg cordinates on the basics of date and its EnggID to show in map modal
 
-module.exports.getEnggCoorinatesToShowOnMapModal = async (req,res) => {
+module.exports.getEnggCoorinatesToShowOnMapModal = async (req, res) => {
   try {
-
-    const {ServiceEnggId } = req.params;
+    const { ServiceEnggId } = req.params;
     const { AttendanceCreatedDate } = req.query;
 
-    const ModifyAttendanceCreatedDate = AttendanceCreatedDate.replace(/^0+/, '').replace(/\/0+/, '/');  //this code is used to eleminate the leading Zero's
+    const ModifyAttendanceCreatedDate = AttendanceCreatedDate.replace(
+      /^0+/,
+      ""
+    ).replace(/\/0+/, "/"); //this code is used to eleminate the leading Zero's
 
-
-    const engineerCoordinates = await EngineerLocation.findOne({ServiceEnggId, AttendanceCreatedDate:ModifyAttendanceCreatedDate});
+    const engineerCoordinates = await EngineerLocation.findOne({
+      ServiceEnggId,
+      AttendanceCreatedDate: ModifyAttendanceCreatedDate,
+    });
     if (!engineerCoordinates) {
-      return res.status(200).json({message: "Engineer coordinates not found for the given date and ID."});
+      return res.status(200).json({
+        message: "Engineer coordinates not found for the given date and ID.",
+      });
     }
 
-    let coordinatesToSend = []
-    const coordinates = engineerCoordinates &&  engineerCoordinates.currentLocation && engineerCoordinates.currentLocation.coordinates.map((item)=> {
-      let coordinate = item?.origin?.split(",")
-      let lat = parseFloat(coordinate[0])
-      let lng = parseFloat(coordinate[1])
-      coordinatesToSend.push({ lat, lng })
-   })
-    
-    
-    res.status(200).json({coordinates:coordinatesToSend})
+    let coordinatesToSend = [];
+    const coordinates =
+      engineerCoordinates &&
+      engineerCoordinates.currentLocation &&
+      engineerCoordinates.currentLocation.coordinates.map((item) => {
+        let coordinate = item?.origin?.split(",");
+        let lat = parseFloat(coordinate[0]);
+        let lng = parseFloat(coordinate[1]);
+        coordinatesToSend.push({ lat, lng });
+      });
 
+    res.status(200).json({ coordinates: coordinatesToSend });
   } catch (error) {
-    console.log("this is eror while fetching the Engg Coordinates to show ohn modal ", error)
-    return res.status(500).json({message: "Internal server error: " + error.message,});
+    console.log(
+      "this is eror while fetching the Engg Coordinates to show ohn modal ",
+      error
+    );
+    return res
+      .status(500)
+      .json({ message: "Internal server error: " + error.message });
   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
 
 // api for putting the memberships
 
@@ -4665,6 +4675,6 @@ module.exports.clientMembership = async () => {
       "1912108",
     ];
 
-    array.forEach(async (job) => { });
-  } catch (error) { }
+    array.forEach(async (job) => {});
+  } catch (error) {}
 };
