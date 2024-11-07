@@ -6,6 +6,8 @@ import MessageBox from "./MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 import config from "../../../../config";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
+
 const ServiceEnggDataOnCrousel = ({
   item,
   index,
@@ -18,18 +20,19 @@ const ServiceEnggDataOnCrousel = ({
     "(min-width: 769px) and (max-width: 1280px)"
   );
 
-  // console.log("============================================================_+_+_+_+_+_+_+_+_+_+",item);
+  // console.log(
+  //   "============================================================_+_+_+_+_+_+_+_+_+_+",
+  //   item?.enggBreakTimining[0]
+  // );
 
   const dropdownClickRef = useRef();
   const MessageBoxRef = useRef(null);
   const [showMessage, setShowMessage] = useState([false]);
+
+  const [ImageUrl, setImageUrl] = useState();
+
   const renderArray = [];
   const renderArrayon = [];
-
-
-  // console.log("this is a dropdown ", renderArray);
-  // console.log("this is a dropdown ", renderArrayon);
-
 
   const handleMessageBoxClose = () => {
     setShowMessage(false);
@@ -74,6 +77,32 @@ const ServiceEnggDataOnCrousel = ({
 
   useClickOutside(dropdownClickRef, handleOutsideClick);
 
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(`${key}`);
+      // console.log("this is response for Engg id ", response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.log(
+        "error while fecthing the engg Images from S3 bucket ",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const url = await fetchImageUrl(item?.ServiceEnggPic);
+      // console.log("this is consoling my url ", url);
+      setImageUrl(url);
+    };
+
+    // if (item?.ServiceEnggPic) {
+    fetchImage();
+    // }
+  }, [item]);
+
   return (
     <div
       className="main-crouser"
@@ -91,11 +120,9 @@ const ServiceEnggDataOnCrousel = ({
     >
       <div className="second-carusel">
         <div className="basic-info">
-          <img
-            src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`}
-            alt="img"
-            className="basic-info-profile"
-          />
+          {/* <img src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`} alt="img" className="basic-info-profile" /> */}
+          <img src={ImageUrl} alt="img" className="basic-info-profile" />
+
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>
             <span className="star-icon">
@@ -111,7 +138,7 @@ const ServiceEnggDataOnCrousel = ({
           style={{ display: "flex" }}
         >
           {item?.enggBreakTimining[0]?.First_halfs_time &&
-            !item?.enggBreakTimining[0]?.First_halfe_time ? (
+          !item?.enggBreakTimining[0]?.First_halfe_time ? (
             <p className="serviceEnggCrouserBadges">Morning Break</p>
           ) : item?.enggBreakTimining[0]?.Lunch_breaks_time &&
             !item?.enggBreakTimining[0]?.Lunch_breake_time ? (
@@ -166,13 +193,19 @@ const ServiceEnggDataOnCrousel = ({
             <div className="hover-icon-service">
               <div className="dropdown">
                 <span>
-                  {renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
+                  {renderArray[0]?.ClientName >= 10
+                    ? renderArray[0]?.ClientName
+                    : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
                 </span>
                 <span>{renderArray[0]?.type}</span>
                 <div className="dropdown-menu dropdown1-menu">
                   <div className="drop-parent">
                     <div className="upper-sec">
-                      <p>{renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}</p>
+                      <p>
+                        {renderArray[0]?.ClientName.length <= 20
+                          ? renderArray[0]?.ClientName
+                          : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
+                      </p>
                       <p>{renderArray[0]?.type}</p>
                       <div className="horizontal-row-container">
                         <span className="horizontal-row"></span>
@@ -180,13 +213,15 @@ const ServiceEnggDataOnCrousel = ({
                     </div>
                     <div className="lower-sec">
                       <p style={{ display: "flex" }}>
-                        <p>JON :</p>
+                        <p>JON : </p>
                         <p>{renderArray[0].JobOrderNumber}</p>
                       </p>
                       <p style={{ display: "flex" }}>
-                        <p>No :</p>
+                        <p>No : </p>
                         <p>
-                          {renderArray[0]?.ClientName >= 10 ? renderArray[0]?.ClientName : `${renderArray[0]?.ClientName.slice(0, 10)}...`}
+                          {renderArray[0]?.ClientNumber >= 10
+                            ? renderArray[0]?.ClientNumber
+                            : `${renderArray[0]?.ClientNumber.slice(0, 10)}...`}
                         </p>
                       </p>
                       <p style={{ display: "flex" }}>
@@ -205,8 +240,7 @@ const ServiceEnggDataOnCrousel = ({
                   <span className="dropdown2-text">
                     {renderArray[1].ClientName?.split(" ")[0]}
                   </span>
-                  <span>{renderArray[1]?.type}</span>
-
+                  <span>{renderArray[0]?.type}</span>
                   <div className="dropdown-menu dropdown2-menu">
                     <div className="drop-parent">
                       <div className="upper-sec">
@@ -215,7 +249,7 @@ const ServiceEnggDataOnCrousel = ({
                             ? renderArray[1]?.ClientName
                             : `${renderArray[1]?.ClientName.slice(0, 10)}...`}
                         </p>
-                        <p>{renderArray[1]?.type}</p>
+                        <p>{renderArray[0]?.type}</p>
                         <div className="horizontal-row-container">
                           <span className="horizontal-row"></span>
                         </div>
@@ -259,7 +293,7 @@ const ServiceEnggDataOnCrousel = ({
               {item.filteredServiceAssignmentsWithClientName.length != 0 ? (
                 item.filteredServiceAssignmentsWithClientName.map(
                   (itemData, dataIndex) => (
-                    console.log("this is item data ", itemData),
+                    // console.log("this is item data ", itemData),
                     <React.Fragment key={dataIndex}>
                       <div className="task-main-div">
                         <div className="dot-name">
@@ -270,15 +304,15 @@ const ServiceEnggDataOnCrousel = ({
                           )}
                           <div className="taskmain-info">
                             <p>
-                              {itemData?.ClientName >= 10
+                              {itemData?.ClientName.length <= 20
                                 ? itemData?.ClientName
                                 : `${itemData?.ClientName.slice(0, 10)}...`}
                             </p>
-                            <p>{itemData.JobOrderNumber}</p>
+                            <p>JON:{itemData.JobOrderNumber}</p>
                           </div>
                         </div>
                         <div className="taskmain-info">
-                          <p>{itemData?.type}</p>
+                          <p>{renderArray[0]?.type}</p>
                         </div>
                       </div>
                       <span className="horizontal-row2"></span>

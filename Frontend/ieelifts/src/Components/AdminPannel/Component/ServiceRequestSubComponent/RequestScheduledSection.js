@@ -106,6 +106,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             <button
               className="service-request-section-button"
               onClick={showRequestTable}
+              id="RequestTable"
               style={{
                 background: handleRequestScheduledTable ? "#FEF3DE" : "#ffffff",
                 color: handleRequestScheduledTable ? "#F8AC1D" : "#1D1D1D",
@@ -116,6 +117,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
             <button
               className="service-request-section-button"
               onClick={showScheduledTable}
+              id="ScheduledTable"
               style={{
                 background: handleRequestScheduledTable ? "#ffffff" : "#FEF3DE",
                 color: handleRequestScheduledTable ? "#1D1D1D" : "#F8AC1D",
@@ -152,7 +154,7 @@ const RequestScheduledSection = ({ setRenderTicket }) => {
                       placeholder="Search anything"
                       className={`search-input ${searchText.length > 0 && "inputSearchWritten"
                         }`}
-                        autoComplete="off"
+                      autoComplete="off"
                       onChange={(e) => {
                         setSearchText(e.target.value);
                       }}

@@ -223,10 +223,10 @@ const ClientDropDown = ({
                     })
                   : selectedOption}
               </span>
-            ) : selectedIcon.length >= 2 ? (
+            ) : selectedIcon?.length >= 2 ? (
               ""
             ) : id === 0 ? (
-              selectedIcon.length > 0 ? (
+              selectedIcon?.length > 0 ? (
                 selectedIcon.map((data) => data.type)
               ) : (
                 "Message"

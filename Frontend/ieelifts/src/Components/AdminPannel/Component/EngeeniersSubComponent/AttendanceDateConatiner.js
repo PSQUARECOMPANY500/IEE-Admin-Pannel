@@ -119,11 +119,15 @@ const AttendanceDateConatiner = ({ date, engID }) => {
     const formattedHour =
       normalizedHour < 10 ? `0${normalizedHour}` : normalizedHour;
 
-    return `${formattedHour}:${
-      minutes < 10 ? "0" + minutes : minutes
-    } ${period}`;
+    return {
+      time: `${formattedHour}:${minutes < 10 ? "0" + minutes : minutes} `,
+      period: period,
+    };
   }
-
+  function valuessoftime(times) {
+    const { timess, period } = convertTo12HourFormat(times);
+    return period;
+  }
   const renderDates = () => {
     const renderedDates = [];
     for (let i = 0; i < 5; i++) {
@@ -178,11 +182,22 @@ const AttendanceDateConatiner = ({ date, engID }) => {
               <h5>
                 {attendance &&
                 attendance[i]?.Check_In &&
-                attendance[i]?.Check_In?.time
-                  ? convertTo12HourFormat(
-                      attendance[i].Check_In.time.substring(0, 5)
-                    )
-                  : "--"}
+                attendance[i]?.Check_In?.time ? (
+                  <>
+                    {
+                      convertTo12HourFormat(
+                        attendance[i].Check_In.time.substring(0, 5)
+                      ).time
+                    }
+                    <span style={{ fontSize: "10px" }}>
+                      {valuessoftime(
+                        attendance[i].Check_In.time.substring(0, 5)
+                      )}
+                    </span>
+                  </>
+                ) : (
+                  "--"
+                )}
               </h5>
               {/* By Paras bug fix ended*/}
               <h5>Check In</h5>
@@ -193,11 +208,22 @@ const AttendanceDateConatiner = ({ date, engID }) => {
               <h5>
                 {attendance &&
                 attendance[i]?.Check_Out &&
-                attendance[i]?.Check_Out?.time
-                  ? convertTo12HourFormat(
-                      attendance[i].Check_Out.time.substring(0, 5)
-                    )
-                  : "--"}
+                attendance[i]?.Check_Out?.time ? (
+                  <>
+                    {
+                      convertTo12HourFormat(
+                        attendance[i].Check_Out.time.substring(0, 5)
+                      ).time
+                    }
+                    <span style={{ fontSize: "10px" }}>
+                      {valuessoftime(
+                        attendance[i].Check_Out.time.substring(0, 5)
+                      )}
+                    </span>
+                  </>
+                ) : (
+                  "--"
+                )}
               </h5>
               {/* By Paras bug fix ended*/}
               <h5>Check out</h5>

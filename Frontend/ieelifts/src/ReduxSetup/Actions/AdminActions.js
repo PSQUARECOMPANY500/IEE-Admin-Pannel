@@ -2,7 +2,6 @@ import axios from "axios";
 import config from "../../config";
 
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 // all the type constants
@@ -143,6 +142,7 @@ export const RegistrationEnggDetails = async (formData) => {
         },
       }
     );
+    console.log("this is m,y response is asmin action ", response);
     return response;
   } catch (error) {
     console.log("error while fetching data", error);
@@ -387,7 +387,8 @@ export const assignserviceRequestByAdmin = (
   name,
   enggJon,
   RepresentativeName,
-  RepresentativeNumber
+  RepresentativeNumber,
+  TypeOfIssue
 ) => {
   return async (dispatch) => {
     try {
@@ -403,6 +404,7 @@ export const assignserviceRequestByAdmin = (
           Message,
           RepresentativeName,
           RepresentativeNumber,
+          TypeOfIssue,
         }
       );
 
@@ -416,7 +418,12 @@ export const assignserviceRequestByAdmin = (
         payload: response.data,
       });
 
-      toast.success("Assign Request successfully");
+      toast.success("Assigned Service Request Successfully", {
+        style: {
+          whiteSpace: "nowrap",
+          maxWidth: "fit-content",
+        },
+      }); //by Paras
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
@@ -455,7 +462,8 @@ export const assignCallBackByAdminAction = (
   Date,
   Message,
   name,
-  enggJon
+  enggJon,
+  TypeOfIssue
 ) => {
   return async (dispatch) => {
     try {
@@ -469,6 +477,7 @@ export const assignCallBackByAdminAction = (
           Slot,
           Date,
           Message,
+          TypeOfIssue,
         }
       );
 
@@ -482,7 +491,12 @@ export const assignCallBackByAdminAction = (
         type: ASSIGN_CALLBACK_BY_ADMIN,
         payload: response.data,
       });
-      toast.success("Assign callback successfully");
+      toast.success("Assigned Callback Request Successfully", {
+        style: {
+          whiteSpace: "nowrap",
+          maxWidth: "fit-content",
+        },
+      }); //done by paras
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
@@ -2061,5 +2075,19 @@ export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
     };
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
+  }
+};
+
+//------------------------------------------------------------------------------------------------------------------------------------
+// custom action to handle the images get from S3 bucket through API
+
+export const getImagesFromS3Bucket = async (key) => {
+  try {
+    const response = await axios.get(
+      `https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`
+    );
+    return response;
+  } catch (error) {
+    console.error("Error while fetching images from S3 bucket:", error);
   }
 };

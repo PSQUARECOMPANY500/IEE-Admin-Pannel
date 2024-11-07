@@ -26,8 +26,11 @@ import {
   openAddClientModalAction,
   engSearchHandler
 } from "../../ReduxSetup/Actions/AdminActions";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import CollectCashModal from "../AdminPannel/Component/DashboardSubComponent/CollectCashModal";
 import CancelNotificationSection from "../AdminPannel/Component/DashboardSubComponent/CancelNotificationSection";
+import WalkthroughWrapper from "../../Walkthrough/WalkthroughWrapper";
 
 const useClickOutside = (ref, handler) => {
   useEffect(() => {
@@ -210,11 +213,11 @@ const TopBar = (props) => {
   const handleNotfication = () => {
     setShowNotification((prevState) => !prevState);
   };
-
+  
   const handlecancelledNotfication = () => {
     setShowCancelledNotification((prevState) => !prevState);
   };
-
+  
   // collect cash
   const handleCollectCash = () => {
     setCollectCash((prevState) => !prevState)
@@ -232,36 +235,34 @@ const TopBar = (props) => {
   //   setCollectCash(false);
   // }, []);
 
-  useClickOutsidenotification(notificationClickRef, handleOutsideClicknotification);
-  useClickOutsidenotification(CancelledRequestNotificationRef, handleOutsideCancelledClicknotification);
+  useClickOutsidenotification(notificationClickRef,handleOutsideClicknotification);
+  useClickOutsidenotification(CancelledRequestNotificationRef,handleOutsideCancelledClicknotification);
 
   // collect cash
   // useClickOutsidecollectcash(
   //   collectCashClickRef,
-
+   
   //   handleClickOutsidecollectcash
   // );
 
   // eng  search code by aayush
-  const engSearch = (value) => {
+  const engSearch=(value)=>{
     dispatch(engSearchHandler(value));
   }
 
-  useEffect(() => {
-    engSearch(engSearchValue || null)
-  }, [engSearchValue, engSearch])
+  useEffect(()=>{
+   engSearch(engSearchValue || null)
+  },[engSearchValue,engSearch])
 
   return (
     <div className="top-bar">
+      {/* <WalkthroughWrapper index={1} top={"17"} left={"15"}> */}
       <div
-        // className="left-side-heading"
         className={props.isOpen ? "left-side-heading left-side-heading-open" : "left-side-heading left-side-heading-close"}
-      // style={{
-      //   marginLeft: props.isOpen ? "0%" : "-9.5rem",
-      // }}
       >
         <p>{props.heading}</p>
       </div>
+      {/* </WalkthroughWrapper> */}
 
       <div className="right-side-icons">
         {/* <div>
@@ -291,8 +292,9 @@ const TopBar = (props) => {
                 type="text"
                 placeholder="Search clients"
                 autoComplete="off"
-                className={`search-input ${searchValue.length > 0 && "inputSearchWritten"
-                  }`}
+                className={`search-input ${
+                  searchValue.length > 0 && "inputSearchWritten"
+                }`}
                 value={searchValue || ""}
                 onChange={handleSearchChange}
               />
@@ -304,16 +306,17 @@ const TopBar = (props) => {
           </span>
         ) : (
           <>
-            <span className="top-icon" style={{ display: location.pathname === '/Engeeniers' ? 'flex' : 'none' }}>
+            <span className="top-icon"  style={{display:location.pathname==='/Engeeniers'?'flex':'none'}}>
               <div className="search-box">
                 <input
                   type="text"
                   placeholder="Search anything"
-                  autoComplete="off"
-                  className={`search-input ${engSearchValue.length > 0 && "inputSearchWritten"
-                    }`}
+                    autoComplete="off"
+                  className={`search-input ${
+                    engSearchValue.length > 0 && "inputSearchWritten"
+                  }`}
                   value={engSearchValue || ""}
-                  onChange={(e) => setEngSearchValue(e.target.value)}
+                  onChange={(e)=>setEngSearchValue(e.target.value)}
                 />
 
                 <i className="search-btn ">
@@ -326,7 +329,7 @@ const TopBar = (props) => {
         )}
 
         {location.pathname === "/Memberships" && (
-          <div className="top-icon" onClick={toggleGrid}>
+          <div className="top-icon" onClick={toggleGrid} id="MembershipViewChange">
             {isGrid ? <CiGrid41 /> : <TbListTree />}
           </div>
         )}
@@ -346,42 +349,42 @@ const TopBar = (props) => {
               {showTicketFilter && <ClientFilterDropdown />}
             </div>
 
-            <div className="top-icon" onClick={clienttoggleGrid}>
+            <div className="top-icon" onClick={clienttoggleGrid} id="ClientViewChange">
               {!clientIsGrid ? <TbListTree /> : <CiGrid41 />}
             </div>
           </>
         )}
 
-        {/*----------------- created by Raj------------------------------- */}
+{/*----------------- created by Raj------------------------------- */}
         {location.pathname === "/Engeeniers" && (
-          <div style={{ display: "flex" }} ref={collectCashClickRef}>
-            <span
-              className="top-icon-bell"
-              onClick={handleCollectCash}
-              ref={collectCashRef}
-            >
-              <img src={moneyIcon} />
-            </span>
-            {collectCash && <CollectCashModal onClose={handleCollectCash} />}
-          </div>
+        <div style={{ display: "flex" }} ref={collectCashClickRef}>
+          <span
+            className="top-icon-bell"
+            onClick={handleCollectCash}
+            ref={collectCashRef}
+          >
+            <img src={moneyIcon} />
+          </span>
+          {collectCash && <CollectCashModal onClose={handleCollectCash} />}
+        </div>
         )}
 
 
-        {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
+{/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
         {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
           <div style={{ display: "flex" }} ref={CancelledRequestNotificationRef}>
-            <span className="top-icon-bell" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     {/*TODO:  uncommented */}
+            <span className="top-icon-bell" id="cancelNotification" onClick={handlecancelledNotfication} ref={CancellednotificationRef}>     {/*TODO:  uncommented */}
               <ImNotification className="iconColor" />{" "}
             </span>
-            <div className="dot"></div>
+           <div className="dot"></div>
+          
+          {showCancelledNotification && <CancelNotificationSection />}
+        </div>)}
 
-            {showCancelledNotification && <CancelNotificationSection />}
-          </div>)}
-
-        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (
+        {location.pathname !== "/ErectionEngeeniers" && location.pathname !== "/ErectionDashboard" && (                                       
           <div style={{ display: "flex" }} ref={notificationClickRef}>
-            <span className="top-icon-bell" onClick={handleNotfication} ref={notificationRef}>
+            <span className="top-icon-bell" id="notification" onClick={handleNotfication} ref={notificationRef}>
               <HiOutlineBell className="iconColor" />{" "}
             </span>
             <div className="dot"></div>
@@ -391,11 +394,11 @@ const TopBar = (props) => {
               </div>
             )}
 
-            {showNotification && <NotificationSection />}
-          </div>)}
+          {showNotification && <NotificationSection />}
+        </div> )}
 
 
-        {/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
+{/* ---------------------------------------------------------------------------------------------------------------------------------------------------- */}
 
 
 
@@ -413,7 +416,7 @@ const TopBar = (props) => {
     </div>
   );
 
-
+  
 };
 
 export default TopBar;

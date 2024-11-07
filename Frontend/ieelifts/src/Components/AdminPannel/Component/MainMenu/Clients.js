@@ -120,6 +120,7 @@ const Clients = () => {
     } else {
       dataToRender = clients;
     }
+
     if (layout === "grid") {
       return (
         <ClientCardView
@@ -145,7 +146,9 @@ const Clients = () => {
   return (
     <div className="main-container">
       {clientModalOperation && <ClientForm />}
-      {renderClientView()}
+      <div id="ClientView">
+        {renderClientView()}
+      </div>
     </div>
   );
 };

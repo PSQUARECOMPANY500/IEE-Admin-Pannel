@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import EnggLocation from "../DashboardSubComponent/EnggLocationSection/EnggLocation";
 import Arrow from "../../../../Assets/Images/arrow.png";
-import { getCheckInCheckOuts } from "../../../../ReduxSetup/Actions/AdminActions";
+import { getCheckInCheckOuts, getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 import config from "../../../../config";
 import EnggLocationHistoryModal from "../DashboardSubComponent/EnggLocationSection/EnggLocationHistoryModal";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
-  // console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", engID, selectedDateIndex);
 
   const [isCliked, setIsCliked] = useState(false);
   const [isCliked2, setIsCliked2] = useState(false);
@@ -18,7 +17,12 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
   const [isArrowVisible, setIsArrowVisible] = useState(false);
   const [checkInCheckOutData, setCheckInCheckOutData] = useState([]);
 
-  // console.log("planttt",checkInCheckOutData)
+  const [ImagesUrls , setImageUrls] = useState([]);
+
+  console.log("---------->>>>>>>>>>> ye kheti hai teri nazar ---------->>>>>>>> ",ImagesUrls)
+
+  console.log("tri isq me jogi hona ---------------->>>>>>>>>> ", checkInCheckOutData)
+
 
   const handleImage = () => {
     setIsCliked(!isCliked);
@@ -67,17 +71,111 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
     setIsArrowVisible(false);
   }
 
-  useEffect(() => {
-    const getData = async () => {
-      const getCheckInOut = await getCheckInCheckOuts(
-        engID,
-        selectedDateIndex
-      );
-      setCheckInCheckOutData(getCheckInOut);
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const getCheckInOut = await getCheckInCheckOuts(
+  //       engID,
+  //       selectedDateIndex                                      TODO:May be Un-Comment Later...............
+  //     );
+  //     setCheckInCheckOutData(getCheckInOut);
+  //   };
 
-    getData();
-  }, []);
+  //   getData();
+  // }, []);
+
+
+//------------------- S3 bucket Get Data ------------------------------------------------------------------------------------
+// useEffect(()=>{
+//   const fetchImageUrl = async (key) => {
+//     try {
+//       const response = await getImagesFromS3Bucket(`${images[0]}`);
+//       setImageUrls(response.data.url);
+//       return response.data.url;
+//     } catch (error) {
+//       console.log("Error while fetching the image from S3 bucket:", error);
+//       return null; 
+//     }
+//   };
+//   if (images && images.length > 0) {
+//     fetchImageUrl(); 
+//   }
+// }, [images]);
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------
+
+// useEffect(() => {
+//   const getImages = async () => {
+//     const engineers = checkInCheckOutData?.Check_In?.engPhoto|| [];
+//     const urlPromises = engineers.map(engineer => fetchImageUrl(engineer.EnggPhoto));
+    
+//     try {
+//       const urls = await Promise.all(urlPromises);
+//       const urlMap = engineers.reduce((acc, engineer, index) => {
+//         acc[engineer.EnggId] = urls[index]; 
+//         return acc;
+//       }, {});      
+//       setImageUrls(urlMap); 
+//     } catch (error) {
+//       console.error("Error fetching image URLs", error);
+//     }
+//   };
+
+//   if (engData?.engdetails?.combinedData) {
+//     getImages();
+//   }
+// }, [engData]);
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------- S3 bucket Get Data -----------------------------------------------------------------------------------
+
+  const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(key);
+      setImageUrls(response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.log("Error while fetching the image from S3 bucket:", error);
+      return null; 
+    }
+  };
+
+
+
+
+useEffect(() => {
+  const getData = async () => {
+    try {
+      const getCheckInOut = await getCheckInCheckOuts(engID, selectedDateIndex);
+      setCheckInCheckOutData(getCheckInOut);
+
+      // Fetch images from S3 using the engPhoto keys
+      const imagesToFetch = [
+        getCheckInOut?.Check_In?.engPhoto.split(" ")[0],
+        getCheckInOut?.Check_In?.engPhoto.split(" ")[1],
+        getCheckInOut?.Check_Out?.engPhoto.split(" ")[0],
+        getCheckInOut?.Check_Out?.engPhoto.split(" ")[1],
+      ];
+
+      const urlPromises = imagesToFetch.map((imageKey) => imageKey && fetchImageUrl(imageKey));
+
+      const fetchedUrls = await Promise.all(urlPromises);
+      setImageUrls({
+        checkInImage1: fetchedUrls[0] || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
+        checkInImage2: fetchedUrls[1] || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
+        checkOutImage1: fetchedUrls[2] || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
+        checkOutImage2: fetchedUrls[3] || "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg",
+      });
+    } catch (error) {
+      console.error("Error fetching data and images: ", error);
+    }
+  };
+
+  getData();
+}, [engID, selectedDateIndex]);
+
+
+
 
   return (
     <div className="engeeniersattendancecard-main">
@@ -102,9 +200,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
           }
         >
           <img
-            src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0] ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]}` : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-            }
+            src={ImagesUrls.checkInImage1}
           ></img>
         </div>
         <div
@@ -118,12 +214,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
 
           <img
-            src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                }`
-                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-            }
+            src={ImagesUrls.checkInImage2}
           ></img>
         </div>
         <button>Check Out</button>
@@ -138,12 +229,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
 
 
           <img
-            src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[0]
-                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[0]
-                }`
-                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-            }
+             src={ImagesUrls.checkOutImage1}
           ></img>
         </div>
         <div
@@ -156,12 +242,7 @@ const EngeeniersAttendanceCard = ({ onClose, engID, selectedDateIndex }) => {
         >
 
           <img
-            src={
-              checkInCheckOutData?.Check_In?.engPhoto.split(" ")[1]
-                ? `${config.documentUrl}/uplodes/${checkInCheckOutData?.Check_Out?.engPhoto.split(" ")[1]
-                }`
-                : "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-            }
+            src={ImagesUrls.checkOutImage2}
           ></img>
 
         </div>

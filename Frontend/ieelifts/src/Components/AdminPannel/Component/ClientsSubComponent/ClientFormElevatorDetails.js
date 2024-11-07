@@ -149,7 +149,7 @@ const ClientFormElevatorDetails = ({
     }
     changeInData(false);
   };
-  const handleNumberOfOpenings = (openings, prevData) => {
+  const handleNumberOfOpenings = (openings) => {
     setDegree({
       nintyDegreeLeft: "",
       nintyDegreeRight: "",
@@ -439,19 +439,18 @@ const ClientFormElevatorDetails = ({
         )}
 
         <div
-          className={`dimention-btn ${!visible ? "hide" : ""} ${
-            elevatorDetails.numberOfOpenings === 3 || elevatorDetails.numberOfOpenings === "3"&&
-            Object.values(degree).filter((val) => val !== "").length === 2
+          className={`dimention-btn ${!visible ? "hide" : ""} ${elevatorDetails.numberOfOpenings === 3 || elevatorDetails.numberOfOpenings === "3" &&
+              Object.values(degree).filter((val) => val !== "").length === 2
               ? ""
               : elevatorDetails.numberOfOpenings === 2 || elevatorDetails.numberOfOpenings === "2" &&
                 Object.values(degree).filter((val) => val !== "").length >= 1
-              ? ""
-              : "disabled"
-          }`}
+                ? ""
+                : "disabled"
+            }`}
           onClick={handleOnClick}
         >
           Select Openings{" "}
-          <img src="generateicon.png" alt="icon" className="generateIcon"/>
+          <img src="generateicon.png" alt="icon" className="generateIcon" />
         </div>
         <div className="text-area-container">
           <textarea

@@ -1,5 +1,5 @@
 import React from 'react'
-import  { useState } from 'react'
+import { useState } from 'react'
 import Attendance from "./Attendance"
 import Ratings from "./Ratings"
 import TaskHistory from "./TaskHistory"
@@ -43,10 +43,10 @@ const EngData = () => {
                     <FaRegFileAlt className='Icon_Color' />
                 </div>
                 <div className='ODetailsColumn'>
-                    <h5 onClick={() => setCurrentComponent('c1')}>Task History</h5>
-                    <h5 onClick={() => setCurrentComponent('c2')}>Attendence</h5>
-                    <h5 onClick={() => setCurrentComponent('c3')}>Rating</h5>
-                    <h5 onClick={() => setCurrentComponent('c4')}>Spare parts</h5>
+                    <h5 onClick={() => setCurrentComponent('c1')} id='Task'>Task History</h5>
+                    <h5 onClick={() => setCurrentComponent('c2')} id='Attendence'>Attendence</h5>
+                    <h5 onClick={() => setCurrentComponent('c3')} id='Rating'>Rating</h5>
+                    <h5 onClick={() => setCurrentComponent('c4')} id='Spare'>Spare parts</h5>
                 </div>
                 <div className='ODetails'>
                     {renderSelectedComponent()}

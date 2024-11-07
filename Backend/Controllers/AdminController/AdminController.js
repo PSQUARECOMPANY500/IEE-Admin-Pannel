@@ -110,7 +110,7 @@ module.exports.getEnggCrouserData = async (req, res) => {
             {
               ServiceEnggId: data.ServiceEnggId,
               serviceId: data.callbackId ? data.callbackId : data.RequestId,
-              type: data.callbackId ? "Calback" : "Service",
+              type: data.callbackId ? "Callback" : "Service",
               JobOrderNumber: data.JobOrderNumber,
               Slot: data.Slot,
               Date: data.Date,

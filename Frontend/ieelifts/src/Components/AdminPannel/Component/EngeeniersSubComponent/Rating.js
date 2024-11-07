@@ -13,6 +13,7 @@ const Rating = (engID) => {
   const [enggRatingData, setEnggRatingData] = useState([]);
   const [questionDetails, setQuestionDetails] = useState();
   const [ratingClientName, setRatingClientName] = useState();
+  const [isSmall,setIsSmall]=useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -30,6 +31,23 @@ const Rating = (engID) => {
     setRatingClientName(clientName)
   }
 
+
+  useEffect(()=>{
+    const checkScreenSize=()=>{
+        if(window.innerWidth<1370){
+          setIsSmall(true)
+        }else{
+          setIsSmall(false)
+        }
+      
+    }
+ checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return ()=>{
+      window.removeEventListener('resize', checkScreenSize);
+    }
+  })
+
   return (
     <div className="ratings">
       <div
@@ -41,7 +59,7 @@ const Rating = (engID) => {
           <div
             className="rating-sub-card-container Yello_Scrollbar"
             style={{
-              gridTemplateColumns: isClick ? "1fr 1fr" : "1fr 1fr 1fr 1fr",
+              gridTemplateColumns: isClick ? "1fr 1fr" :isSmall? "1fr 1fr 1fr": "1fr 1fr 1fr 1fr",
             }}
           >
             {enggRatingData?.rating?.map((item) => (
