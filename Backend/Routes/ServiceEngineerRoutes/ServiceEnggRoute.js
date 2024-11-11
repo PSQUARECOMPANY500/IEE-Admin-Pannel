@@ -12,13 +12,14 @@ const serviceEnggContoller = require("../../Controllers/ServiceEngineerContoller
 const adminContoller = require("../../Controllers/AdminController/AdminController");
 const clientContoller = require("../../Controllers/ClientController/ClientController");
 
-const { uploaded } = require("../../Multer/EnggAttachmentUpload");
+const { uploaded, s3 } = require("../../Multer/EnggAttachmentUpload");
 
 const {
   uploadReportAttachment,
   reportPdf,
 } = require("../../Multer/ReportAttachmentUploads");
 const checkClientDeviceLogins = require("../../Middleware/CheckLoginDeviceVerify");
+const multerS3 = require("multer-s3");
 
 //-------------------------------------- All Post Requests -------------------------------
 // router.post("/registerServiceEngg", serviceEnggContoller.RegisterServiceEngg); // to-do in future -> Delete this route and Controller and Schema as well
@@ -111,16 +112,30 @@ const storage = multer.diskStorage({
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
-const storage2 = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/leaveAttachment");
+// const storage2 = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/leaveAttachment");
+//   },
+//   filename: (req, file, cb) => {
+//     const parts = file.mimetype.split("/")[1];
+//     const fileName = `leaveAttachment-${Date.now()}.${parts}`;
+//     cb(null, fileName);
+//   },
+// });
+
+const storage2 = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
   },
-  filename: (req, file, cb) => {
-    const parts = file.mimetype.split("/")[1];
-    const fileName = `leaveAttachment-${Date.now()}.${parts}`;
-    cb(null, fileName);
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `public/leaveAttachment/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
   },
-});
+})
+
+
 const upload2 = multer({ storage: storage2 });
 const upload = multer({ storage: storage });
 
