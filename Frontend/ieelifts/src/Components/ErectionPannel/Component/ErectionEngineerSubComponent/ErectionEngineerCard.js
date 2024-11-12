@@ -13,7 +13,7 @@ import { sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatAction
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import ErectionEngeeniersSubCard from "./ErectionEngineerSubCard";
 import backArrow from "../../../../Assets/Images/backArrow.png";
-
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 const EngeeniersCard = () => {
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
@@ -46,6 +46,7 @@ const EngeeniersCard = () => {
   const [file, setFile] = useState(false);
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
+  const [ImageURL, setImageURL] = useState();
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -85,6 +86,22 @@ const EngeeniersCard = () => {
       return null;
     }
   });
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      try {
+        const response = await getImagesFromS3Bucket(`${currentengImg}`);
+        setImageURL(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log(
+          "error while fecthing the engg Images from S3 bucket ",
+          error
+        );
+      }
+    };
+
+    fetchImageUrl();
+  }, [currentengImg]);
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -158,7 +175,10 @@ const EngeeniersCard = () => {
 
         <div className="SingleEng" style={{ display: isSecond && "block" }}>
           <div className="SubSingleEng">
-            <div className="PDetails">
+            <div
+              className="PDetails"
+              style={{ justifyContent: "start", gap: "1rem" }} // Paras
+            >
               <div style={{ cursor: "pointer" }}>
                 <img
                   src={backArrow}
@@ -168,7 +188,7 @@ const EngeeniersCard = () => {
               </div>
               <div className="SubPDetails">
                 <div className="Pimg">
-                  <img src={currentengImg} alt="eng persnol image" />
+                  <img src={ImageURL} alt="eng persnol image" />
                 </div>
                 <h1>
                   Name:<span>{currentEngName}</span>

@@ -39,7 +39,10 @@ const Dashboard = () => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  console.log("dashboard pit area ##########################",AdminReportData?.AdminReportData?.ReportImages?.photo);
+  console.log(
+    "dashboard pit area ##########################",
+    AdminReportData?.AdminReportData?.ReportImages?.photo
+  );
 
   const cancelRequestByEngg = useSelector(
     (state) =>
@@ -72,37 +75,36 @@ const Dashboard = () => {
   return (
     <>
       <div ref={ref2} className={`main-container`}>
-
-    
         {cancelRequestByEngg?.isCallback && cancelRequestByEngg?.callbackId && (
-          
-     
           <AddTicketModals
-            closeModal={() => dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))}
+            closeModal={() =>
+              dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))
+            }
             callbackId={cancelRequestByEngg.callbackId}
             callbackIdtoPassed={cancelRequestByEngg.callbackId}
-            setRenderTicket={setRenderTicket}  
+            setRenderTicket={setRenderTicket}
             setTicketUpdate={setTicketUpdate}
             enggId={cancelRequestByEngg.EnggId}
             isAssigned={false}
             isNotification={true}
-          />                                                                                                              
+          />
         )}
-
+      
         {!cancelRequestByEngg?.isCallback &&
           cancelRequestByEngg?.callbackId && (
             <ServiceRequestModals
-              closeModal={() => dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))}
+              closeModal={() =>
+                dispatch(cancelEnggServiceRequestFormShiftingAction("", "", ""))
+              }
               RequestId={cancelRequestByEngg.callbackId}
               RequestIdtoPassed={cancelRequestByEngg.callbackId}
-              setRenderTicket={setRenderTicket}             
+              setRenderTicket={setRenderTicket}
               enggId={cancelRequestByEngg.EnggId}
               setTicketUpdate={setTicketUpdate}
               isAssigned={false}
               isNotification={true}
             />
           )}
-
         {reportOpen && <RepotImage images={images} />}
         <div style={{ width: "100%", marginTop: "6%" }}>
           <ServiceEnggCrousel ticketUpdate={ticketUpdate} />

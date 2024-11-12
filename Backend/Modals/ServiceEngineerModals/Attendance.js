@@ -60,7 +60,9 @@ const EnggAttendanceRecord = new Schema({
     Second_halfe_time: {
         type: String,
     },
-
+    Total_Hours:{
+        type:String, // by Paras
+    }
 
 });
 

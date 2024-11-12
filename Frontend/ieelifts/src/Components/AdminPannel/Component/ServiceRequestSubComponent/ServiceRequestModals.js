@@ -470,8 +470,6 @@ const ServiceRequestModals = ({
                 </div>
               </div>
 
-
-
               <div className="req-client-information-section">
                 <form className="req-client-form">
                   {/* one row strats */}

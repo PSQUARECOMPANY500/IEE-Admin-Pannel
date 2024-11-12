@@ -5,7 +5,10 @@ import SingleSetDropdown from "./DropdownCollection/SingleSetDropdown";
 import MultiSelectDropdown from "./DropdownCollection/MultiSelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchAllClientDetailAction, updateSOSStatus } from "../../../../ReduxSetup/Actions/AdminActions";
+import {
+  fetchAllClientDetailAction,
+  updateSOSStatus,
+} from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchChecklistAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { fetchEnggDetailAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import { assignCallBackByAdminAction } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -22,7 +25,7 @@ import ReactDatePickers from "./DropdownCollection/ReactDatePickers";
 import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
 
-import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const AddTicketOnCallRequests = ({
   closeModal,
@@ -31,7 +34,7 @@ const AddTicketOnCallRequests = ({
   requestSection,
   setTicketUpdate,
   SOSStatusUpdate,
-  jobOrderNumber
+  jobOrderNumber,
 }) => {
   const dispatch = useDispatch();
 
@@ -46,7 +49,7 @@ const AddTicketOnCallRequests = ({
   const [address, setaddress] = useState(""); //-api
   const [ModelType, setModelType] = useState("");
   const [typeOfIssue, setTypeOfIssue] = useState(""); //-done
-  const [otherIssue, setOtherIssue] = useState("")
+  const [otherIssue, setOtherIssue] = useState("");
   const [time, setTime] = useState(""); //-done
   const [date, setDate] = useState(""); //-done
   const [dtext, setdtext] = useState(""); //-done
@@ -55,10 +58,12 @@ const AddTicketOnCallRequests = ({
   const [timer, setTimer] = useState(null);
   const [engDate, setengDate] = useState("");
 
-  console.log("this is todays date selected  ----------------->>>  : ", engDate);
+  console.log(
+    "this is todays date selected  ----------------->>>  : ",
+    engDate
+  );
 
   const [ImageUrl, setImageUrl] = useState();
-
 
   //assign-callbacks-state
   const [engDetails, setEngDetails] = useState({
@@ -77,11 +82,10 @@ const AddTicketOnCallRequests = ({
     membershipType.toLocaleLowerCase() === "warrenty"
       ? "membership_card_title_warrenty"
       : membershipType.toLocaleLowerCase() === "platinum"
-        ? "membership_card_title_platinum"
-        : membershipType.toLocaleLowerCase() === "gold"
-          ? "membership_card_title_gold"
-          : "membership_card_title_silver";
-
+      ? "membership_card_title_platinum"
+      : membershipType.toLocaleLowerCase() === "gold"
+      ? "membership_card_title_gold"
+      : "membership_card_title_silver";
 
   const [ClickListOnSelect, setClickListOnSelect] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -94,7 +98,7 @@ const AddTicketOnCallRequests = ({
     if (jobOrderNumber?.jon) {
       setJon(jobOrderNumber.jon);
     }
-  }, [SOSStatusUpdate?.success])
+  }, [SOSStatusUpdate?.success]);
 
   const timeSlots = [
     {
@@ -223,7 +227,7 @@ const AddTicketOnCallRequests = ({
       setnumber(clientDetails.PhoneNumber);
       setaddress(clientDetails.Address);
       setModelType(clientDetails.ModelType);
-      setMembershipType(clientDetails.MembershipType);
+      setMembershipType(clientDetails.MembershipType.toUpperCase());
       setDoh(clientDetails.DateOfHandover);
 
       const currentDate = new Date();
@@ -232,11 +236,10 @@ const AddTicketOnCallRequests = ({
 
       setDate(updatedFormatedDate);
 
-
       const hours = currentDate.getHours();
       const minutes = currentDate.getMinutes();
       const seconds = currentDate.getSeconds();
-      const formattedTime = `${hours}:${minutes}:${seconds}`;
+      const formattedTime = `${hours}:${minutes}`;
       setTime(formattedTime);
     } else {
       setname("");
@@ -323,7 +326,6 @@ const AddTicketOnCallRequests = ({
     setTypeOfIssue(selectedOption);
   };
 
-
   //------------------------------------------------------------------------------------------------
   const handleAssignDateChange = (selectedOption) => {
     const formattedDate = selectedOption.toLocaleDateString("en-GB");
@@ -346,7 +348,14 @@ const AddTicketOnCallRequests = ({
           reNumber
         )
       ).then((RequestId) => {
-        if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && dtext && typeOfIssue.label) {
+        if (
+          engDetails.enggJon &&
+          ClickListOnSelect &&
+          selectedSlot &&
+          date &&
+          dtext &&
+          typeOfIssue.label
+        ) {
           dispatch(
             assignserviceRequestByAdmin(
               engDetails?.enggJon,
@@ -372,7 +381,7 @@ const AddTicketOnCallRequests = ({
       dispatch(
         requestCallBackByAdmin(
           jon,
-          engDate,    //---------------------------------------------------------------------------------------------------------
+          engDate, //---------------------------------------------------------------------------------------------------------
           time,
           typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label,
           dtext,
@@ -381,29 +390,43 @@ const AddTicketOnCallRequests = ({
           jobOrderNumber?._id,
           jobOrderNumber?.status
         )
-      )
-        .then((callbackId) => {
-          dispatch(updateSOSStatus(jobOrderNumber?.jon, "RaisedCallback", jobOrderNumber?._id))
-          if (engDetails.enggJon && ClickListOnSelect && selectedSlot && date && dtext && typeOfIssue.label) {
-            dispatch(
-              assignCallBackByAdminAction(
-                engDetails?.enggJon,
-                jon,
-                callbackId,
-                ClickListOnSelect.value,
-                selectedSlot,
-                date,
-                message,
-                engDetails?.enggName,
-                engDetails.enggJon,
-                typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
-              )
-            );
-            closeModal();
-          } else {
-            toast.error("Please fill all the fields");
-          }
-        });
+      ).then((callbackId) => {
+        dispatch(
+          updateSOSStatus(
+            jobOrderNumber?.jon,
+            "RaisedCallback",
+            jobOrderNumber?._id
+          )
+        );
+        if (
+          engDetails.enggJon &&
+          ClickListOnSelect &&
+          selectedSlot &&
+          date &&
+          dtext &&
+          typeOfIssue.label
+        ) {
+          dispatch(
+            assignCallBackByAdminAction(
+              engDetails?.enggJon,
+              jon,
+              callbackId,
+              ClickListOnSelect.value,
+              selectedSlot,
+              date,
+              message,
+              engDetails?.enggName,
+              engDetails.enggJon,
+              typeOfIssue.label === "Other" ? otherIssue : typeOfIssue.label
+            )
+          );
+          closeModal();
+        } else {
+          //done
+
+          toast.error("Please fill all the fields");
+        }
+      });
     }
     if (setRenderTicket !== undefined) {
       setRenderTicket((prev) => !prev);
@@ -411,7 +434,6 @@ const AddTicketOnCallRequests = ({
         setTicketUpdate((prev) => !prev);
       }
     }
-
   };
 
   const handlleValidation = (e) => {
@@ -449,17 +471,18 @@ const AddTicketOnCallRequests = ({
     }
   }, [window.innerWidth]);
 
-
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
   const fetchImageUrl = async (key) => {
     try {
       const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
-      console.log("error while fecthing the engg Images from S3 bucket ", error);
+      console.log(
+        "error while fecthing the engg Images from S3 bucket ",
+        error
+      );
     }
-  }
-
+  };
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -470,10 +493,7 @@ const AddTicketOnCallRequests = ({
     fetchImage();
   }, [engDetails]);
 
-
-  console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails)
-
-
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails);
 
   return (
     <>
@@ -566,44 +586,48 @@ const AddTicketOnCallRequests = ({
                       </div>
                     )}
                   </div>
-                  {typeOfIssue.label !== "Other" && <div className="row">
-                    <div className="col25">
-                      <label>TYPE OF ISSUE:</label>
-                    </div>
+                  {typeOfIssue.label !== "Other" && (
+                    <div className="row">
+                      <div className="col25">
+                        <label>TYPE OF ISSUE:</label>
+                      </div>
 
-                    <div className="col75 col75-typeOfIssue">
-                      <SingleSetDropdown
-                        padding="8px"
-                        width="220px"
-                        className="dropdown-chnages"
-                        placeholder={"Type Of Issue"}
-                        Details={[
-                          { _id: 1, checklistName: "Door" },
-                          { _id: 2, checklistName: "Light" },
-                          { _id: 3, checklistName: "Fan" },
-                          { _id: 4, checklistName: "Buttons" },
-                          { _id: 5, checklistName: "Lift" },
-                          { _id: 6, checklistName: "Other" },
-                        ]}
-                        onStateChange={handleTypeOfIssue}
-                        flag={flag}
-                      />
+                      <div className="col75 col75-typeOfIssue">
+                        <SingleSetDropdown
+                          padding="8px"
+                          width="220px"
+                          className="dropdown-chnages"
+                          placeholder={"Type Of Issue"}
+                          Details={[
+                            { _id: 1, checklistName: "Door" },
+                            { _id: 2, checklistName: "Light" },
+                            { _id: 3, checklistName: "Fan" },
+                            { _id: 4, checklistName: "Buttons" },
+                            { _id: 5, checklistName: "Lift" },
+                            { _id: 6, checklistName: "Other" },
+                          ]}
+                          onStateChange={handleTypeOfIssue}
+                          flag={flag}
+                        />
+                      </div>
                     </div>
-                  </div>}
-                  {typeOfIssue.label === "Other" && <div className="row">
-                    <div className="col25">
-                      <label>Type of Issue:</label>
-                    </div>
+                  )}
+                  {typeOfIssue.label === "Other" && (
+                    <div className="row">
+                      <div className="col25">
+                        <label>Type of Issue:</label>
+                      </div>
 
-                    <div className="col75 col75-jon">
-                      <input
-                        onChange={(e) => setOtherIssue(e.target.value)}
-                        type="text"
-                        placeholder="Enter Your Issue"
-                        value={otherIssue}
-                      />
+                      <div className="col75 col75-jon">
+                        <input
+                          onChange={(e) => setOtherIssue(e.target.value)}
+                          type="text"
+                          placeholder="Enter Your Issue"
+                          value={otherIssue}
+                        />
+                      </div>
                     </div>
-                  </div>}
+                  )}
 
                   <div className="row">
                     <div className="col25">
@@ -754,13 +778,14 @@ const AddTicketOnCallRequests = ({
                             //   src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                             //   alt="lift"
                             // />
-                            <img style={{
-                              width: "90px",
-                              height: "90px",
-                              objectFit: "cover",
-                              objectPosition: "center",
-                              borderRadius: "2px",
-                            }}
+                            <img
+                              style={{
+                                width: "90px",
+                                height: "90px",
+                                objectFit: "cover",
+                                objectPosition: "center",
+                                borderRadius: "2px",
+                              }}
                               // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
                               src={ImageUrl}
                               alt="lift"
@@ -1016,12 +1041,12 @@ const AddTicketOnCallRequests = ({
 
                   <div className="footer-section" style={{ width: "80%" }}>
                     <div className="buttons">
-                      <button className={`edit-button`}>Edit</button>
+                      <button className={`edit-button`}>EDIT</button>
                       <button
                         className="assign-button"
                         onClick={handleElevatorSectionDetails}
                       >
-                        Assign
+                        ASSIGN
                       </button>
                     </div>
                   </div>

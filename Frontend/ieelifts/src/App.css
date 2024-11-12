@@ -31,9 +31,7 @@ body::-webkit-scrollbar-thumb {
 
 .small-screen {
   display: none;
-
 }
-
 
 @media only screen and (max-width: 1024px) {
   .large-screen {
@@ -47,7 +45,6 @@ body::-webkit-scrollbar-thumb {
     justify-content: center;
   }
 }
-
 
 .main-container {
   width: 100%;
@@ -118,7 +115,6 @@ main {
   transition: all 0.5s ease;
 }
 
-
 .logo-image-open {
   width: 100px;
 }
@@ -137,8 +133,6 @@ main {
   transition: all 0.5s ease;
 }
 
-
-
 .logo {
   margin-top: 1.3rem;
   transition: all 0.5s ease;
@@ -147,7 +141,6 @@ main {
 .logo-open {
   margin-left: -6.5rem;
 }
-
 
 .logo-close {
   margin-left: -2.3rem;
@@ -160,7 +153,6 @@ main {
   margin-bottom: 1.8rem;
   margin-left: 5rem;
 }
-
 
 .bars-open {
   margin-left: 3.1rem;
@@ -493,15 +485,14 @@ span::after {
 .todo_table_top h2 {
   margin-left: 2rem;
   font-weight: 500;
-  color: #1D1D1D;
+  color: #1d1d1d;
   font-size: 1.5rem;
-
 }
 
 .todo_table_top button {
   width: 123px;
   height: 45px;
-  background: #F8AC1D 0% 0% no-repeat padding-box;
+  background: #f8ac1d 0% 0% no-repeat padding-box;
   border-radius: 5px;
   border: none;
   font-size: 1rem;
@@ -535,8 +526,8 @@ span::after {
 .todo-card {
   width: 46rem;
   height: 22rem;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 2px 4px 10px #99886B66;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 2px 4px 10px #99886b66;
   border-radius: 10px;
   overflow-y: hidden;
   margin-bottom: 3rem;
@@ -559,7 +550,7 @@ span::after {
 .todo-number-of-task {
   height: 2.3rem;
   width: 2.3rem;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+  background: #ffffff 0% 0% no-repeat padding-box;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -570,7 +561,7 @@ span::after {
 .todo-card-header-child-one {
   margin-left: 1.2rem;
   font: 1.2rem Poppins;
-  color: #FFFDF8;
+  color: #fffdf8;
   font-weight: 500;
 }
 
@@ -586,7 +577,7 @@ span::after {
 }
 
 .todo-card-body::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .single-todo-task {
@@ -619,7 +610,7 @@ span::after {
 }
 
 .todo-upcoming {
-  background: #0758B4 0% 0% no-repeat padding-box !important;
+  background: #0758b4 0% 0% no-repeat padding-box !important;
 }
 
 .todo-data-sub {
@@ -629,9 +620,9 @@ span::after {
 .todo-urgent-badge {
   width: 98px;
   height: 28px;
-  background: #C10000 0% 0% no-repeat padding-box;
+  background: #c10000 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  color: #FFFDF8;
+  color: #fffdf8;
   font-size: 0.75rem;
   display: flex;
   justify-content: center;
@@ -666,14 +657,14 @@ span::after {
 .todo_table_top h2 {
   margin-left: 2rem;
   font-weight: 500;
-  color: #1D1D1D;
+  color: #1d1d1d;
   font-size: 1.5rem;
 }
 
 .todo_table_top button {
   width: 123px;
   height: 45px;
-  background: #F8AC1D 0% 0% no-repeat padding-box;
+  background: #f8ac1d 0% 0% no-repeat padding-box;
   border-radius: 5px;
   border: none;
   font-size: 1rem;
@@ -694,7 +685,7 @@ span::after {
 }
 
 .Todocalendar {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   /* width: 100%; */
@@ -703,7 +694,7 @@ span::after {
   display: block;
   height: 62vh;
   width: 55vw;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   overflow-x: hidden;
   overflow-y: hidden;
 }
@@ -713,12 +704,12 @@ span::after {
   width: 100%;
   position: relative;
   display: grid;
-  padding: .5rem .5rem;
+  padding: 0.5rem 0.5rem;
   grid-template-columns: 30% 70%;
 }
 
 .Todo-header {
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   border-bottom: none;
   padding: 1rem;
   text-align: center;
@@ -742,7 +733,7 @@ span::after {
 }
 
 #monthYear {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 #aprevBtn,
@@ -751,7 +742,7 @@ span::after {
   border: none;
   color: #343434;
   cursor: pointer;
-  font-size: .6rem;
+  font-size: 0.6rem;
 }
 
 /* .todoaday {
@@ -765,13 +756,11 @@ width: 144px;
 } */
 
 .aday:hover {
-  background-color: #FEF3DE;
-  color: #F8AC1D;
+  background-color: #fef3de;
+  color: #f8ac1d;
 }
 
-
 .days-header-todo {
-
   font-weight: bold;
   width: 100%;
   /* padding-left: 1.2rem; */
@@ -840,7 +829,6 @@ width: 144px;
   padding: 10px 16px;
 }
 
-
 .TodoformWrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -849,14 +837,14 @@ width: 144px;
 }
 
 .calendar-summary {
-  background-color: #FFF9EF;
+  background-color: #fff9ef;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   overflow: hidden;
 }
 
 .calendar-summary-heading {
-  background-color: #FEF3DE;
+  background-color: #fef3de;
   color: #444444;
   text-align: center;
   padding: 0.8rem;
@@ -873,12 +861,10 @@ width: 144px;
   font-size: 0.9rem;
   font-weight: 500;
   justify-content: space-between;
-
-
 }
 
 .calendar-schedules-dot {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
   height: 1rem;
   width: 1rem;
   border-radius: 50%;
@@ -910,7 +896,7 @@ width: 144px;
   display: flex;
   width: 220px;
   height: 35px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+  background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: inset 1px 2px 3px #00000029, 0px 3px 6px #00000029;
   border-radius: 5px;
   justify-content: space-between;
@@ -921,7 +907,7 @@ width: 144px;
 }
 
 .day-week-active {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .day-button {
@@ -955,7 +941,6 @@ width: 144px;
   justify-content: center;
   align-items: center;
   margin-left: 2rem;
-
 }
 
 .calendar-summary-border {
@@ -1002,7 +987,7 @@ width: 144px;
 }
 
 .all-task-container::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .addTask-main {
@@ -1041,7 +1026,7 @@ width: 144px;
 }
 
 .task-content::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .create-task {
@@ -1057,7 +1042,7 @@ width: 144px;
   height: 43px;
   outline: none;
   border-radius: 10px;
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   padding: 0px 1rem;
   background-color: transparent;
 }
@@ -1074,7 +1059,7 @@ width: 144px;
   margin-bottom: 1rem;
   height: 43px;
   border-radius: 10px;
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   padding: 0px 0.7rem;
 }
 
@@ -1120,7 +1105,7 @@ width: 144px;
 }
 
 .todo- {
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   border-radius: 10px;
   outline: none;
   height: 2rem;
@@ -1128,7 +1113,6 @@ width: 144px;
   padding: 1.3rem 1rem;
   cursor: pointer;
 }
-
 
 .todo-dropdown-icon-container {
   margin-left: -2rem;
@@ -1157,13 +1141,13 @@ width: 144px;
   z-index: 10;
 }
 
-.todo-option-container>ul {
+.todo-option-container > ul {
   list-style-type: none;
   opacity: 0.54;
   font-size: 1rem;
 }
 
-.todo-option-container>ul>li {
+.todo-option-container > ul > li {
   cursor: pointer;
 }
 
@@ -1201,7 +1185,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .time-component-container {
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   border-radius: 10px;
   width: 91%;
   display: flex;
@@ -1230,7 +1214,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .time-selector {
   display: flex;
   width: 11rem;
-  background-color: #FFF9EF;
+  background-color: #fff9ef;
   padding: 0.6rem 0.8rem;
   border-radius: 10px;
   position: absolute;
@@ -1247,14 +1231,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   outline: none;
   width: 2.2rem;
   height: 2rem;
-  border: 1px solid #F8AC1D;
+  border: 1px solid #f8ac1d;
   border-radius: 3px;
   padding: 0.5rem;
   text-align: center;
 }
 
 .time-selector-icon {
-  color: #F8AC1D;
+  color: #f8ac1d;
   font-size: 1.2rem;
   cursor: pointer;
 }
@@ -1282,8 +1266,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 }
 
 .meridiem-active {
-  background: transparent linear-gradient(128deg, #F8AC1D 0%, #F5EEE1 100%) 0% 0% no-repeat padding-box;
-  box-shadow: 0px 0px 5px #F8AC1D;
+  background: transparent linear-gradient(128deg, #f8ac1d 0%, #f5eee1 100%) 0%
+    0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #f8ac1d;
   border-radius: 3px;
   color: white;
   padding: 0.3rem;
@@ -1352,7 +1337,7 @@ input::-webkit-inner-spin-button {
 
 .user-info-open {
   width: 14.5rem;
-  pointer-events: 'auto';
+  pointer-events: "auto";
   padding-left: 0.3rem;
 }
 
@@ -1365,7 +1350,6 @@ input::-webkit-inner-spin-button {
 /* -----------------ToDO components-------- -------------------------- */
 
 .sub_todo_view {
-
   height: 80vh;
   width: 81vw;
   margin-top: 8rem;
@@ -1394,15 +1378,14 @@ input::-webkit-inner-spin-button {
 .todo_table_top h2 {
   margin-left: 2rem;
   font-weight: 500;
-  color: #1D1D1D;
+  color: #1d1d1d;
   font-size: 1.5rem;
-
 }
 
 .todo_table_top button {
   width: 123px;
   height: 45px;
-  background: #F8AC1D 0% 0% no-repeat padding-box;
+  background: #f8ac1d 0% 0% no-repeat padding-box;
   border-radius: 5px;
   border: none;
   font-size: 1rem;
@@ -1424,7 +1407,7 @@ input::-webkit-inner-spin-button {
 }
 
 .Todocalendar {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -1432,33 +1415,32 @@ input::-webkit-inner-spin-button {
   display: block;
   width: 55vw;
 
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   overflow-x: auto;
 }
 
 .Todocalendar-week {
-
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
   display: block;
   width: 55vw;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 65vh;
 }
 
 .Todocalendar-day {
-  margin-top: .8rem;
+  margin-top: 0.8rem;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 1;
   display: block;
   width: 55vw;
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -1468,9 +1450,8 @@ input::-webkit-inner-spin-button {
   width: 100%;
   position: relative;
   display: grid;
-  padding: .5rem .5rem;
+  padding: 0.5rem 0.5rem;
   grid-template-columns: 30% 70%;
-
 }
 
 .todoStatus {
@@ -1501,13 +1482,13 @@ input::-webkit-inner-spin-button {
 }
 
 .Todo-header {
-  background-color: #FFFBF4;
+  background-color: #fffbf4;
   border-bottom: none;
   padding: 1rem;
 }
 
 #monthYear {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 #aprevBtn,
@@ -1516,7 +1497,7 @@ input::-webkit-inner-spin-button {
   border: none;
   color: #343434;
   cursor: pointer;
-  font-size: .6rem;
+  font-size: 0.6rem;
 }
 
 .todoaday {
@@ -1530,7 +1511,7 @@ input::-webkit-inner-spin-button {
 }
 
 .todo-dropdown-input {
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   border-radius: 10px;
   outline: none;
   height: 2rem;
@@ -1545,7 +1526,7 @@ input:-webkit-autofill {
 }
 
 .current {
-  border: 1px solid #F8AC1D;
+  border: 1px solid #f8ac1d;
 }
 
 .tasks-container {
@@ -1578,8 +1559,8 @@ input:-webkit-autofill {
 }
 
 .aday:hover {
-  background-color: #FEF3DE;
-  color: #F8AC1D;
+  background-color: #fef3de;
+  color: #f8ac1d;
 }
 
 .days-header-todo {
@@ -1638,11 +1619,9 @@ input:-webkit-autofill {
   height: 43px;
   outline: none;
   border-radius: 10px;
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   padding: 0px 1rem;
   background-color: transparent;
-
-
 }
 
 #cars {
@@ -1653,13 +1632,13 @@ input:-webkit-autofill {
   margin-bottom: 1rem;
   height: 43px;
   border-radius: 10px;
-  border: 1px solid #8E8E8E;
+  border: 1px solid #8e8e8e;
   padding: 0px 0.7rem;
   background-color: transparent;
 }
 
 .addtask-bottom button {
-  background: #F8AC1D 0% 0% no-repeat padding-box;
+  background: #f8ac1d 0% 0% no-repeat padding-box;
   border-radius: 5px;
   border: none;
   margin-top: 1rem;
@@ -1700,7 +1679,6 @@ input:-webkit-autofill {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-
 
 .calendar-box {
   text-align: center;
@@ -1847,14 +1825,14 @@ input:-webkit-autofill {
 }
 
 .calendar-summary {
-  background-color: #FFF9EF;
+  background-color: #fff9ef;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   overflow: hidden;
 }
 
 .calendar-summary-heading {
-  background-color: #FEF3DE;
+  background-color: #fef3de;
   color: #444444;
   text-align: center;
   padding: 0.8rem;
@@ -1874,7 +1852,7 @@ input:-webkit-autofill {
 }
 
 .calendar-schedules-dot {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
   height: 1rem;
   width: 1rem;
   border-radius: 50%;
@@ -1906,7 +1884,7 @@ input:-webkit-autofill {
   display: flex;
   width: 220px;
   height: 35px;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+  background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: inset 1px 2px 3px #00000029, 0px 3px 6px #00000029;
   border-radius: 5px;
   justify-content: space-between;
@@ -1993,7 +1971,7 @@ input:-webkit-autofill {
 }
 
 .all-task-container::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .TodoformWrapper {
@@ -2019,17 +1997,15 @@ input:-webkit-autofill {
   justify-content: space-between;
 }
 
-
 .TodoDates-inner {
   display: flex;
   padding: 3px 14px;
   gap: 5px;
   color: #444444;
-  border: 1px solid #7070702E;
+  border: 1px solid #7070702e;
   font-size: 13px;
   align-items: center;
   justify-content: space-between;
-
 }
 
 .week-day-row-container {
@@ -2049,7 +2025,7 @@ input:-webkit-autofill {
 }
 
 .todo-week-month {
-  color: #8E8E8E;
+  color: #8e8e8e;
   font-size: 0.8rem;
   text-align: center;
 }
@@ -2071,18 +2047,17 @@ input:-webkit-autofill {
 }
 
 .todo-task-badge {
-  background-color: #FEF3DE;
-  border-left: 2px solid #F8AC1D;
+  background-color: #fef3de;
+  border-left: 2px solid #f8ac1d;
   height: 80%;
   margin-left: 1.8rem;
   padding-right: 2rem;
   padding-left: 0.3rem;
   position: relative;
   cursor: pointer;
-
 }
 
-.todo-task-badge:hover>.badge-popup {
+.todo-task-badge:hover > .badge-popup {
   display: block;
 }
 
@@ -2108,7 +2083,7 @@ input:-webkit-autofill {
   position: relative;
 }
 
-.todo-task-parent:hover>.badge-popup {
+.todo-task-parent:hover > .badge-popup {
   display: block;
 }
 
@@ -2128,18 +2103,17 @@ input:-webkit-autofill {
   width: 8rem;
   font-size: 1rem;
   text-align: center;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 3px 6px #0000001C;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #0000001c;
   border: 1px solid #70707080;
   display: none;
   z-index: 2;
   top: -170%;
   cursor: pointer;
-
 }
 
 .badge-deleteIcon {
-  color: #D6D3CD;
+  color: #d6d3cd;
 }
 
 .badge-deleteIcon:hover {
@@ -2147,11 +2121,11 @@ input:-webkit-autofill {
 }
 
 .badge-icon {
-  color: #D6D3CD;
+  color: #d6d3cd;
 }
 
 .badge-icon:hover {
-  color: #F8AC1D;
+  color: #f8ac1d;
 }
 
 .badge-popup::after {
@@ -2167,12 +2141,12 @@ input:-webkit-autofill {
 
 .todo-task-badge-task {
   font-size: 0.7rem;
-  color: #F8AC1D;
+  color: #f8ac1d;
 }
 
 .todo-task-badge-time {
   font-size: 0.6rem;
-  color: #0F351D;
+  color: #0f351d;
 }
 
 .todo-task-badge-dot {
@@ -2186,15 +2160,15 @@ input:-webkit-autofill {
 }
 
 .todo-task-badge-dot-yellow {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .todo-task-badge-dot-green {
-  background-color: #46A70A;
+  background-color: #46a70a;
 }
 
 .todo-task-badge-dot-red {
-  background-color: #C10000;
+  background-color: #c10000;
 }
 
 .todo-completed-check {
@@ -2203,7 +2177,7 @@ input:-webkit-autofill {
 }
 
 .task-completed {
-  color: #46A70A !important;
+  color: #46a70a !important;
 }
 
 .custom-hr {
@@ -2246,7 +2220,7 @@ input:-webkit-autofill {
 }
 
 .highlight {
-  background-color: #F8AC1D80;
+  background-color: #f8ac1d80;
 }
 
 .week-date-container {
@@ -2307,7 +2281,7 @@ input:-webkit-autofill {
 }
 
 .time-slots::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .badge-container {
@@ -2449,7 +2423,7 @@ input:-webkit-autofill {
 }
 
 .user-leaves {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
 .user-leave-hide {
@@ -2459,9 +2433,6 @@ input:-webkit-autofill {
 .user-leaves-show {
   display: block;
 }
-
-
-
 
 .sub-menue-link p {
   padding: 5px 50px;
@@ -2477,7 +2448,6 @@ input:-webkit-autofill {
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   padding: 0;
-
 }
 
 .ineer-menue {
@@ -2562,7 +2532,6 @@ input:-webkit-autofill {
   margin-left: -9.5rem;
 }
 
-
 .right-side-icons {
   color: #191919;
   font-size: 26px;
@@ -2619,7 +2588,9 @@ input:-webkit-autofill {
 
 .filter-icon {
   height: 45px;
-  width: 45px;
+  width: 77px;
+  display: flex;
+  gap: 0.5rem;
   font-size: 1.2rem;
   cursor: pointer;
   box-shadow: 1px 2px 5px #00000029;
@@ -2628,8 +2599,6 @@ input:-webkit-autofill {
 .search-box {
   cursor: pointer;
 }
-
-
 
 /* .filter-top-icon {
   padding: 2px 6px;
@@ -3006,7 +2975,6 @@ footer a:hover {
 .main-crouser:hover {
   box-shadow: 1px 2px 5px #f8ac1d80 !important;
   border-color: solid #f8ac1d80 !important;
-
 }
 
 .slick-slider .slick-track {
@@ -3034,8 +3002,6 @@ footer a:hover {
   border-radius: 50%;
   object-fit: cover;
   object-position: center;
-
-
 }
 
 .message-icon {
@@ -3055,9 +3021,9 @@ footer a:hover {
 /* badges on engg crouser ---------- */
 .message-icon .serviceEnggCrouserBadges {
   margin-right: 10px;
-  background-color: #FEF3DE;
+  background-color: #fef3de;
   font-size: 10px;
-  color: #F8AC1D;
+  color: #f8ac1d;
   padding: 2px 4px 2px 4px;
   height: -moz-fit-content;
   height: fit-content;
@@ -3074,7 +3040,7 @@ footer a:hover {
 .mic-icon,
 .send-icon,
 .main-file-icon {
-  font-size: 1rem, ;
+  font-size: 1rem;
 }
 
 .message-dot {
@@ -3247,7 +3213,6 @@ footer a:hover {
   width: 100%;
   margin-top: 10px;
   letter-spacing: 0px;
-
 }
 
 .hover-icon-service span {
@@ -3331,13 +3296,11 @@ footer a:hover {
   cursor: pointer;
   margin-top: -2rem;
   margin-right: 1rem;
-
 }
 
 .dropdown3-menu {
-  left: -12.7rem;
+  left: -13.7rem;
   margin-top: -2.5rem;
-
 }
 
 .dropdown-menu {
@@ -3380,16 +3343,14 @@ footer a:hover {
   height: auto;
   overflow: hidden;
   z-index: 99999;
-
 }
 
 .dropdown1-menu {
   width: 166px;
   background-color: white;
-
 }
 
-.dropdown2:hover .dropdown-menu {
+.dropdown2 .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   opacity: 1;
   visibility: visible;
@@ -3405,27 +3366,23 @@ footer a:hover {
   background: white;
 }
 
-
-
-
 .dropdown3:hover .dropdown-menu {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   /* background: white; */
   opacity: 1;
   visibility: visible;
   top: 75%;
+  right: 0;
   margin-left: 2rem;
   /* transition: all 0.5s, background 2s 0.5s linear; */
   border-radius: 10px;
   /* width: 225px; */
-
   height: auto;
 }
 
 .dropdown3-menu {
-  width: 225px;
+  width: 250px;
   background-color: white;
-
 }
 
 .pie-chart-detail:hover .dropdown-menu {
@@ -3446,16 +3403,11 @@ footer a:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   /* background-color: red; */
   /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
   border-radius: 10px;
-
 }
-
-
-
-
 
 .lower-sec {
   justify-content: flex-start;
@@ -3464,7 +3416,6 @@ footer a:hover {
   align-items: flex-start;
   width: 100%;
 }
-
 
 .upper-sec {
   position: relative;
@@ -3564,17 +3515,17 @@ footer a:hover {
 
 .task-main-div {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  width: 100%;
   margin-top: 5px;
 }
 
 .tasks-heading {
   position: relative;
   top: 11px;
-  left: 50px;
-  font-size: 22px;
+
+  font-size: 18px;
   font-weight: 700;
   margin-bottom: 20px;
 }
@@ -3624,7 +3575,6 @@ footer a:hover {
 
 .tasks-section {
   width: 33%;
-
 }
 
 .tasks-section-on-kanban {
@@ -3688,7 +3638,6 @@ footer a:hover {
   overflow-x: hidden;
   scroll-behavior: smooth;
   animation: changeText 0.7s linear forwards;
-
 }
 
 /* set scroll behaviour  */
@@ -3891,7 +3840,7 @@ footer a:hover {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  color: #f8ac1d;
+  color: #191919;
   font-weight: 500;
   font-size: 16px;
   margin-left: 0px;
@@ -3930,7 +3879,6 @@ footer a:hover {
   height: 320px;
   width: 100%;
   border-radius: 10px;
-
 
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
@@ -4327,7 +4275,7 @@ footer a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 2.5rem
+  height: 2.5rem;
 }
 
 .icon-align-div {
@@ -4388,11 +4336,11 @@ footer a:hover {
   opacity: 0;
 }
 
-.checkbox.style-c input:checked~.checkbox__checkmark {
+.checkbox.style-c input:checked ~ .checkbox__checkmark {
   background-color: #ffffff;
 }
 
-.checkbox.style-c input:checked~.checkbox__checkmark:after {
+.checkbox.style-c input:checked ~ .checkbox__checkmark:after {
   opacity: 1;
 }
 
@@ -4400,7 +4348,7 @@ footer a:hover {
   /* background-color: #eee; */
 /* }  */
 
-.checkbox.style-c:hover input:checked~.checkbox__checkmark {
+.checkbox.style-c:hover input:checked ~ .checkbox__checkmark {
   background-color: #ffffff;
 }
 
@@ -4504,7 +4452,6 @@ footer a:hover {
   top: 0;
   margin-left: -115px;
   z-index: 99999;
-
 }
 
 .search-icon-filter,
@@ -4646,7 +4593,6 @@ footer a:hover {
   width: 100px;
   margin-left: 27px;
   padding: 7px 0px;
-
 }
 
 .filter-icons {
@@ -4676,7 +4622,7 @@ footer a:hover {
 }
 
 .filter-lists::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 /* .listing-filter {} */
@@ -4942,7 +4888,6 @@ footer a:hover {
   color: #444444;
 }
 
-
 .innerMembershipPopup-btn {
   display: flex;
   width: 18vw;
@@ -5029,7 +4974,6 @@ footer a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
 }
 
 .engeeniersattendancecard-main {
@@ -5209,8 +5153,6 @@ footer a:hover {
   border: 1px solid #c1c1c180;
 }
 
-
-
 /*------------------- EditEngineerDeatils page css--------------------- */
 
 .engineer-modal-wrapper {
@@ -5225,7 +5167,6 @@ footer a:hover {
   width: 100%;
   text-transform: capitalize;
 }
-
 
 .engineer-modal-container {
   /* top: 9%; */
@@ -5712,7 +5653,11 @@ footer a:hover {
   border: 1px solid #f8ac1d;
 }
 
-.req-client-information-section .req-client-form .row .col75 select[type="text"]:focus {
+.req-client-information-section
+  .req-client-form
+  .row
+  .col75
+  select[type="text"]:focus {
   border: 1px solid #f8ac1d;
   outline: none;
 }
@@ -5859,7 +5804,6 @@ footer a:hover {
   display: flex;
   gap: 16px;
   width: 100%;
-
 }
 
 .engg-form {
@@ -6028,10 +5972,9 @@ footer a:hover {
   color: #343434;
 }
 
-
 .cancelRequest {
-  background: #F88379;
-  color: #CC0000;
+  background: #f88379;
+  color: #cc0000;
 }
 
 /* ticket section status button propety changes dynamically ends*/
@@ -6189,7 +6132,6 @@ element.style {
   width: 50px !important;
   height: 50px !important;
   text-align: center !important;
-
 }
 
 .react-calendar__month-view__days .react-calendar__tile abbr {
@@ -6197,7 +6139,6 @@ element.style {
   width: 50px !important;
   height: 50px !important;
 }
-
 
 .react-calendar__year-view__months__month abbr:hover {
   padding: 20px;
@@ -6762,7 +6703,6 @@ element.style {
 
 .activeNotification {
   color: #f8ac1d;
-
 }
 
 .notification-bg-line {
@@ -6772,7 +6712,6 @@ element.style {
   position: absolute;
   transition: 0.5s ease;
   z-index: 9999;
-
 }
 
 .child-notification-div {
@@ -6838,7 +6777,6 @@ element.style {
   cursor: pointer;
   transition: 0.1s;
   transform: scale(1.0001);
-
 }
 
 .user-notification-message {
@@ -7396,7 +7334,6 @@ element.style {
 .tasks-heading-on-no-task {
   position: relative;
   top: 11px;
-  left: 30px;
   margin-bottom: 1.2rem;
   font-size: 1.1rem;
 }
@@ -7469,7 +7406,7 @@ element.style {
   padding: 0.1rem;
 }
 
-.RedIsue>h5 {
+.RedIsue > h5 {
   white-space: nowrap;
   font-size: 0.8rem;
   font-family: "Poppins";
@@ -7686,7 +7623,6 @@ element.style {
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .single-card {
@@ -7785,21 +7721,15 @@ element.style {
 }
 
 .CarTopShift {
-
   width: 100%;
   max-height: 90vh;
   overflow-y: scroll;
   box-sizing: border-box;
-
-
 }
 
-
 .CardShiftCards {
-
   width: 100%;
   position: relative;
-
 }
 
 .IssueNotResolved {
@@ -7922,7 +7852,7 @@ element.style {
   font-size: 0.9rem;
 }
 
-.Amount>h5:nth-child(2) {
+.Amount > h5:nth-child(2) {
   text-align: left;
   /* font: normal normal medium 14px/21px Poppins; */
   font-weight: 500;
@@ -8068,7 +7998,7 @@ element.style {
   font-size: 0.6rem;
 }
 
-.RatingButton>button:nth-child(2) {
+.RatingButton > button:nth-child(2) {
   padding: 0rem 0.8rem;
   border: 1px solid #f8ac1d;
   opacity: 1;
@@ -8302,15 +8232,15 @@ element.style {
   font-weight: 400;
 }
 
-.service-card-bottom>h5:nth-child(1) {
+.service-card-bottom > h5:nth-child(1) {
   color: #389300;
 }
 
-.service-card-bottom>h5:nth-child(2) {
+.service-card-bottom > h5:nth-child(2) {
   color: #c10000;
 }
 
-.service-card-bottom>h5:nth-child(3) {
+.service-card-bottom > h5:nth-child(3) {
   color: #444444;
   font-weight: 600;
 }
@@ -8583,7 +8513,6 @@ element.style {
   left: 0%;
   height: 100%;
   width: 100%;
-
 }
 
 .add-engg-modal {
@@ -8883,8 +8812,8 @@ element.style {
   font-size: 15px;
   font-weight: 700;
   padding: 12px 50px;
-  transition: background .1s ease-in-out;
-  transition-delay: .1s
+  transition: background 0.1s ease-in-out;
+  transition-delay: 0.1s;
 }
 
 .buttoncssTricks:hover {
@@ -8893,8 +8822,6 @@ element.style {
 }
 
 /* --------------------------------------------------- */
-
-
 
 /* CSS */
 .button-69,
@@ -9514,9 +9441,7 @@ element.style {
   }
 }
 
-
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
-
   .tasks-section {
     width: 35%;
   }
@@ -9558,7 +9483,7 @@ element.style {
     font-size: 25px;
     color: #343434;
     height: 36px;
-    width: 36px;
+    width: 77px;
     cursor: pointer;
   }
 
@@ -9662,7 +9587,6 @@ element.style {
     margin-bottom: 1.4rem;
   }
 
-
   .CarouselButtons {
     width: 90%;
   }
@@ -9744,9 +9668,6 @@ element.style {
       rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     border-radius: 4px;
     background-color: #fff;
-
-
-
   }
 
   /* -------------------------------------------------------------------------------------add eng modal responsive here----------------------------------------------------------- */
@@ -9773,7 +9694,6 @@ element.style {
   .cross-icon {
     right: 4px;
   }
-
 }
 
 /* 
@@ -9805,7 +9725,8 @@ element.style {
   display: none;
 }
 
-a[href^="http://maps.google.com/maps"] {
+a[href^="http://maps.google.com/maps"]
+{
   display: none !important;
 }
 
@@ -9822,7 +9743,7 @@ a[href^="http://maps.google.com/maps"] {
   display: none;
 }
 
-.gm-style>div>div>a>div>img {
+.gm-style > div > div > a > div > img {
   display: none;
 }
 
@@ -9845,8 +9766,10 @@ a[href^="http://maps.google.com/maps"] {
 .department-main-div .department-name-div {
   padding: 12px;
   border-radius: 10px;
-  background: radial-gradient(rgb(244, 242, 242) 30%,
-      rgba(216, 210, 210, 0.587));
+  background: radial-gradient(
+    rgb(244, 242, 242) 30%,
+    rgba(216, 210, 210, 0.587)
+  );
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   filter: opacity(1);
@@ -9917,9 +9840,6 @@ a[href^="http://maps.google.com/maps"] {
   padding: 0px 9px;
 }
 
-
-
-
 .css-y7kf8-placeholder {
   grid-area: 1 / 1 / 2 / 3;
   color: rgb(128, 128, 128);
@@ -9963,16 +9883,16 @@ a[href^="http://maps.google.com/maps"] {
   margin-bottom: 4rem;
 }
 
-.service-history-heading>h6 {
+.service-history-heading > h6 {
   display: flex;
   align-items: center;
   font-size: 1.1rem;
-  color: #1D1D1D;
+  color: #1d1d1d;
   font-weight: 500;
 }
 
 .service-icon-color {
-  color: #FAC665;
+  color: #fac665;
   font-size: 1.5rem;
 }
 
@@ -10005,11 +9925,10 @@ a[href^="http://maps.google.com/maps"] {
   display: grid;
   grid-template-columns: repeat(5, 2.4fr);
   margin-top: 1rem;
-
 }
 
 .service-history-client-heading {
-  color: #8E8E8E;
+  color: #8e8e8e;
   font-size: 1rem;
 }
 
@@ -10064,11 +9983,9 @@ a[href^="http://maps.google.com/maps"] {
 }
 
 .pdfIcon {
-  color: #F40F02;
+  color: #f40f02;
   cursor: pointer;
 }
-
-
 
 /* client form responsive brekpoint min width 769 or max width 1550px  by raj  */
 
@@ -10077,7 +9994,6 @@ a[href^="http://maps.google.com/maps"] {
     font-weight: 500;
     font-size: 0.8rem;
   }
-
 
   .client-salesman-details {
     padding: 1rem 2rem 0 2rem !important;
@@ -10100,7 +10016,7 @@ a[href^="http://maps.google.com/maps"] {
     z-index: 10;
   }
 
-  .option-container>ul {
+  .option-container > ul {
     list-style-type: none;
     opacity: 0.54;
     font-size: 0.8rem !important;
@@ -10149,12 +10065,10 @@ a[href^="http://maps.google.com/maps"] {
     display: grid;
     grid-template-rows: 1fr 1fr;
     width: 38% !important;
-
   }
 
   .client-form-right-container {
     width: 100% !important;
-
   }
 
   .client-form-container {
@@ -10268,19 +10182,15 @@ a[href^="http://maps.google.com/maps"] {
   font-weight: 400;
 }
 
-
 .no-rating {
   font-size: 1rem;
 }
 
-
 /* --------------------------client form responsive by raj end------------------------------------------------------------------------------- */
-
 
 /*----------------------------------------------------------------------------- media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
 
 @media only screen and (min-width: 769px) and (max-width: 1550px) {
-
   .top-bar {
     height: 60px;
     padding-left: 15.5rem;
@@ -10296,7 +10206,7 @@ a[href^="http://maps.google.com/maps"] {
 
   .user-info-open {
     width: 13rem;
-    pointer-events: 'auto';
+    pointer-events: "auto";
     padding-left: 0.5rem;
   }
 
@@ -10320,8 +10230,6 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 1.08rem;
   }
 
-
-
   .logo-image-open {
     width: 90px;
   }
@@ -10329,7 +10237,6 @@ a[href^="http://maps.google.com/maps"] {
   .logo-image-close {
     width: 54px;
   }
-
 
   .ineer-menue img {
     height: 45px;
@@ -10367,10 +10274,8 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   .dropdown1-menu {
-
     margin-top: 1.2rem;
   }
-
 
   /* .dropdown-menu {
     width: 150px;
@@ -10422,24 +10327,20 @@ a[href^="http://maps.google.com/maps"] {
     margin-top: -3rem;
     position: absolute;
     width: 87%;
-
   }
 
   .skill-box .skill-bar-ontask {
-
     margin-top: -0.7rem;
     position: absolute;
     width: 90%;
-
   }
 
   .logo-open-heading {
-    font-size: 1rem
+    font-size: 1rem;
   }
 
   .logo-close-heading {
     font-size: 0.7rem;
-
   }
 
   .sub-menu {
@@ -10448,7 +10349,6 @@ a[href^="http://maps.google.com/maps"] {
 
   .engg-profile {
     font-size: 0.7rem;
-
   }
 
   .basic-info-profile {
@@ -10457,7 +10357,6 @@ a[href^="http://maps.google.com/maps"] {
     object-fit: cover;
     object-position: center;
   }
-
 
   .EngChatBox-Dash {
     width: 15rem;
@@ -10500,12 +10399,10 @@ a[href^="http://maps.google.com/maps"] {
 
   .dropdown1-menu {
     width: 130px;
-
   }
 
   .dropdown2-menu {
     width: 130px;
-
   }
 
   .dropdown3-menu {
@@ -10514,7 +10411,6 @@ a[href^="http://maps.google.com/maps"] {
 
   .upper-sec p:first-child {
     font-size: 11px;
-
   }
 
   .ticket-card-bottom h5,
@@ -10522,21 +10418,17 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.7rem;
   }
 
-
   .task-description-section {
     gap: 0.8rem;
   }
 
-
   .ticket-section-heading span:nth-child(1) {
     color: #191919;
     font-size: 1rem;
-
   }
 
   .dropdown-content-filter {
     margin-top: 3.2rem;
-
   }
 
   .kanban-button-location {
@@ -10569,10 +10461,8 @@ a[href^="http://maps.google.com/maps"] {
     font-size: 0.8rem;
   }
 
-
   .hover-icon-service {
     font-size: 0.65rem;
-
   }
 
   .McRoomCard {
@@ -10586,7 +10476,6 @@ a[href^="http://maps.google.com/maps"] {
 
   .CarTopShift {
     max-height: 90vh;
-
   }
 
   .RatingContainer {
@@ -10610,9 +10499,7 @@ a[href^="http://maps.google.com/maps"] {
 
   .McRoom {
     padding-top: 0.1rem;
-
   }
-
 
   .table-skeletron {
     width: 72.5vw;
@@ -10632,20 +10519,13 @@ a[href^="http://maps.google.com/maps"] {
     padding-top: 0.7rem;
   }
 
-
   .req-elevator-details {
     height: 25%;
-
-
   }
 
   .modal-container {
     height: 97vh;
   }
-
-
-
-
 
   .req-elevator-section-right {
     height: 70%;
@@ -10658,7 +10538,6 @@ a[href^="http://maps.google.com/maps"] {
     gap: 1rem;
   }
 
-
   .add-engg-modal {
     height: 95%;
     width: 78%;
@@ -10670,16 +10549,9 @@ a[href^="http://maps.google.com/maps"] {
   }
 
   /* ------------------------------------------end all forms respopnsive by aayush--------------------------------------------------------------------------------------------- */
-
 }
 
-
-
 @media only screen and (min-width: 1371px) and (max-width: 1550px) {
-
-
-
-
   .req-client-section {
     height: 40%;
   }
@@ -10687,7 +10559,6 @@ a[href^="http://maps.google.com/maps"] {
   .req-elevator-section {
     height: 60%;
   }
-
 
   /* .buttons {
     margin-top: 5rem;
@@ -10699,15 +10570,12 @@ a[href^="http://maps.google.com/maps"] {
 
   .req-elevator-section {
     height: 55%;
-
   }
 
   .req-client-section {
     height: 45%;
     padding-top: 0.7rem;
-
   }
-
 
   .req-elevator-section-right {
     height: 100%;
@@ -10720,7 +10588,6 @@ a[href^="http://maps.google.com/maps"] {
     align-items: flex-end;
     /* justify-content: flex-end; */
   }
-
 
   .add-client-modal {
     height: 85%;
@@ -10746,17 +10613,10 @@ a[href^="http://maps.google.com/maps"] {
 
   .add-client-modal {
     height: 95%;
-
   }
-
-
 }
 
 /*----------------------------------------------------------------------------- end of media query for final responsive ness here by aayush malviya 26-07-2024 -------------------------------------------------------------------------------------- */
-
-
-
-
 
 .sparePartContainer {
   height: 100%;
@@ -10771,7 +10631,6 @@ a[href^="http://maps.google.com/maps"] {
   font-size: 16px;
   color: #343434;
   font-weight: 500;
-
 }
 
 .sunSparePartHeading {
@@ -10793,9 +10652,8 @@ a[href^="http://maps.google.com/maps"] {
   overflow-y: auto;
 }
 
-
 .sparePartNames::-webkit-scrollbar-thumb {
-  background-color: #F8AC1D;
+  background-color: #f8ac1d;
 }
 
 .sparePartNames:hover::-webkit-scrollbar {
@@ -10805,8 +10663,6 @@ a[href^="http://maps.google.com/maps"] {
 .sparePartNames::-webkit-scrollbar {
   width: 0px;
 }
-
-
 
 .spartpartnameswithParts {
   display: flex;

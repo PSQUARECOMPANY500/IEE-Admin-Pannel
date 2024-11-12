@@ -21,7 +21,7 @@ import SkeltonLoader from "../../../CommonComponenets/SkeltonLoader";
 import config from "../../../../config";
 import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientActions";
 
-import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
 // import { FaHourglassEnd } from "react-icons/fa";
 
@@ -41,7 +41,6 @@ const AddTicketModals = ({
 
   const [selectedEnggId, setSelectedEnggId] = useState([]);
   // console.log('selectedEnggId',selectedEnggId[0])
-
   //  manage use states for the input fields
   const [jon, setJon] = useState("");
   const [name, setName] = useState("");
@@ -59,7 +58,6 @@ const AddTicketModals = ({
   // console.log('engDate', engDate)
 
   const [ImageUrl, setImageUrl] = useState();
-
 
   const [engDetails, setEngDetails] = useState({
     enggJon: "",
@@ -83,10 +81,10 @@ const AddTicketModals = ({
     membershipType.toLocaleLowerCase() === "warrenty"
       ? "membership_card_title_warrenty"
       : membershipType.toLocaleLowerCase() === "platinum"
-        ? "membership_card_title_platinum"
-        : membershipType.toLocaleLowerCase() === "gold"
-          ? "membership_card_title_gold"
-          : "membership_card_title_silver";
+      ? "membership_card_title_platinum"
+      : membershipType.toLocaleLowerCase() === "gold"
+      ? "membership_card_title_gold"
+      : "membership_card_title_silver";
 
   //slots logic here ends-------------------------------------------------
   // use use selector select to select the service engg state
@@ -388,6 +386,7 @@ const AddTicketModals = ({
       setTicketUpdate((prev) => !prev);
     } else {
       console.log("not valid input");
+      
       toast.error("Please fill all the fields");
     }
   };
@@ -404,17 +403,18 @@ const AddTicketModals = ({
     toast.success(response.message);
   };
 
-
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
   const fetchImageUrl = async (key) => {
     try {
       const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
-      console.log("error while fecthing the engg Images from S3 bucket ", error);
+      console.log(
+        "error while fecthing the engg Images from S3 bucket ",
+        error
+      );
     }
-  }
-
+  };
 
   useEffect(() => {
     const fetchImage = async () => {
@@ -426,20 +426,16 @@ const AddTicketModals = ({
     fetchImage();
   }, [engDetails]);
 
-
-  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl)
-
-
-
-
+  console.log("tarif teri kro !!!!!!!!!!!!!!!!", ImageUrl);
 
   return (
     <>
       <div className={`modal-wrapper`} onClick={closeModal}></div>
 
       <div
-        className={`modal-container ${showTicketModal ? "active" : ""} ${isNotification ? "notification-modal" : ""
-          }`}
+        className={`modal-container ${showTicketModal ? "active" : ""} ${
+          isNotification ? "notification-modal" : ""
+        }`}
       >
         <div className="child-modal-container">
           <div className="sub-child-modal-container">
@@ -665,7 +661,7 @@ const AddTicketModals = ({
 
                       <div className="engg-photo-section">
                         <div>
-                          {getEnggState ? (
+                          {getEnggState ? ( 
                             <img
                               style={{
                                 width: "90px",
@@ -982,17 +978,18 @@ const AddTicketModals = ({
                       {/* ------------------------------- cancel button functionality --------------------------- */}
 
                       <button
-                        className={`edit-button ${editchange && `edit-button-onClick`
-                          }`}
+                        className={`edit-button ${
+                          editchange && `edit-button-onClick`
+                        }`}
                         onClick={handleEditSection}
                       >
-                        Edit
+                        EDIT
                       </button>
                       <button
                         className="assign-button"
                         onClick={handleElevatorSectionDetails}
                       >
-                        Assign
+                        ASSIGN
                       </button>
                     </div>
                   </div>

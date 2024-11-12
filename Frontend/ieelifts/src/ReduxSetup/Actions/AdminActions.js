@@ -144,8 +144,6 @@ export const RegistrationEnggDetails = async (formData) => {
     );
     console.log("this is m,y response is asmin action ", response);
     return response;
-
-
   } catch (error) {
     console.log("error while fetching data", error);
   }
@@ -406,7 +404,7 @@ export const assignserviceRequestByAdmin = (
           Message,
           RepresentativeName,
           RepresentativeNumber,
-          TypeOfIssue
+          TypeOfIssue,
         }
       );
 
@@ -420,7 +418,12 @@ export const assignserviceRequestByAdmin = (
         payload: response.data,
       });
 
-      toast.success("Assign Request successfully");
+      toast.success("Assigned Service Request Successfully", {
+        style: {
+          whiteSpace: "nowrap",
+          maxWidth: "fit-content",
+        },
+      }); //by Paras
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
@@ -474,7 +477,7 @@ export const assignCallBackByAdminAction = (
           Slot,
           Date,
           Message,
-          TypeOfIssue
+          TypeOfIssue,
         }
       );
 
@@ -488,7 +491,12 @@ export const assignCallBackByAdminAction = (
         type: ASSIGN_CALLBACK_BY_ADMIN,
         payload: response.data,
       });
-      toast.success("Assign callback successfully");
+      toast.success("Assigned Callback Request Successfully", {
+        style: {
+          whiteSpace: "nowrap",
+          maxWidth: "fit-content",
+        },
+      }); //done by paras
     } catch (error) {
       console.log("error while fetching Eng_details", error);
     }
@@ -634,7 +642,9 @@ export const requestAssignCallbackDetail = (callbackId) => {
 export const EnggLocationDetailsFetch = (/* {ServiceEnggId} */) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggLocationDetail`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggLocationDetail`
+      );
 
       dispatch({
         type: GET_ENGG_LOCATION_DETAILS,
@@ -827,7 +837,9 @@ export const getClientMembershipDetails = (jobOrderNumber) => {
 export const getClients = (page) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${config.apiUrl}/admin/AllClients?limit=16&page=${page}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/AllClients?limit=16&page=${page}`
+      );
 
       dispatch({
         type: GET_ALL_CLIENTS,
@@ -2053,33 +2065,27 @@ export const getEnggLocationCoordinatesAction = (enggId) => {
 export const getEnggCoordinatesForMapModalAction = (enggId, date) => {
   try {
     return async (dispatch) => {
-      const response = await axios.get(`${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`);
+      const response = await axios.get(
+        `${config.apiUrl}/admin/getEnggCoorinatesToShowOnMapModal/${enggId}?AttendanceCreatedDate=${date}`
+      );
       dispatch({
         type: GET_ENGG_COORDINATES_FOR_MAP_MODAL,
         payload: response.data,
-      })
-    }
+      });
+    };
   } catch (error) {
     console.log("error while geting the Engg coordinates", error);
   }
-}
-
-
-
-
-
-
-
-
-
-
+};
 
 //------------------------------------------------------------------------------------------------------------------------------------
 // custom action to handle the images get from S3 bucket through API
 
 export const getImagesFromS3Bucket = async (key) => {
   try {
-    const response = await axios.get(`https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`);
+    const response = await axios.get(
+      `https://ieelifts.in/api/getImagesDataFromS3Bucket?key=${key}`
+    );
     return response;
   } catch (error) {
     console.error("Error while fetching images from S3 bucket:", error);

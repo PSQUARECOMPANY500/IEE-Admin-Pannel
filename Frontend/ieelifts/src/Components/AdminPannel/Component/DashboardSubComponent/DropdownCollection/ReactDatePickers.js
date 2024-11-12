@@ -23,14 +23,13 @@ const ReactDatePickers = ({
       currentDate.getFullYear(),
       currentDate.getMonth(),
       day
-    )
+    );
     setSelectedDate(newSelectedDate);
     OnDateChange(newSelectedDate);
     dateInputRef.current.value = newSelectedDate.toLocaleDateString("en-GB");
     calendarRef.current.style.display = "none";
     renderCalendar();
   };
-
 
   function isPastDate(date) {
     const today = new Date();
@@ -91,26 +90,19 @@ const ReactDatePickers = ({
     for (let day = 1; day <= lastDay.getDate(); day++) {
       createDayElement(day);
     }
-    // const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-    // const daysHeader = document.createElement("div");
-    // daysHeader.classList.add("date-picker-days-header");
+    const daysHeader = document.createElement("div");
+    daysHeader.classList.add("date-picker-days-header");
 
-    // daysOfWeek.forEach((dayOfWeek) => {
-    //   const dayHeader = document.createElement("div");
-    //   dayHeader.textContent = dayOfWeek;
-    //   daysHeader.appendChild(dayHeader);
-    // });
+    daysOfWeek.forEach((dayOfWeek) => {
+      const dayHeader = document.createElement("div");
+      dayHeader.textContent = dayOfWeek;
+      daysHeader.appendChild(dayHeader);
+    });
 
-    // calendarRef.current.appendChild(daysHeader);
-
-
-
-
+    calendarRef.current.appendChild(daysHeader);
   };
-
-
-
 
   const handlePrevClick = () => {
     setCurrentDate((prevDate) => {
@@ -150,10 +142,8 @@ const ReactDatePickers = ({
     calendarRef.current.style.left = inputRect.left + "px";
   };
 
-
   useEffect(() => {
     renderCalendar();
-
   }, [currentDate, selectedDate]);
 
   useEffect(() => {
@@ -170,11 +160,11 @@ const ReactDatePickers = ({
         type="text"
         readOnly={true}
         id="dateInput"
-        placeholder={isAssigned ? fetchedDate : "Select a date"}
+        placeholder={isAssigned ? fetchedDate : "Select date"}
         ref={dateInputRef}
         onClick={handleDateInputClick}
         autoComplete="off"
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
       />
       {
         <div className="calendar" id="calendar" ref={calendarRef}>
@@ -189,7 +179,12 @@ const ReactDatePickers = ({
               <FaChevronRight />
             </button>
           </div>
-          <div className="days" id="daysContainer" ref={daysContainerRef} style={{ marginTop: '1rem' }}></div>
+          <div
+            className="days"
+            id="daysContainer"
+            ref={daysContainerRef}
+            style={{ marginTop: "2rem" }}
+          ></div>
         </div>
       }
     </div>

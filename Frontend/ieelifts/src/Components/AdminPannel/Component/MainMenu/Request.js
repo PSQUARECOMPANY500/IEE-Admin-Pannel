@@ -12,8 +12,7 @@ import config from "../../../../config";
 import { getAllAssignServiceRequestAction } from "../../../../ReduxSetup/Actions/AdminActions";
 import ServiceRequestModals from "../ServiceRequestSubComponent/ServiceRequestModals";
 
-import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
-
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
 const Request = () => {
   const dispatch = useDispatch();
@@ -28,8 +27,10 @@ const Request = () => {
 
   const [imageUrls, setImageUrls] = useState({});
 
-  console.log("this is request services 0000000000000000000 marne talak rage gi ",imageUrls )
-
+  console.log(
+    "this is request services 0000000000000000000 marne talak rage gi ",
+    imageUrls
+  );
 
   const openModal = (modalNumber, requestId, EnggId) => {
     // Use the appropriate modal number to open the corresponding modal
@@ -53,8 +54,6 @@ const Request = () => {
     }
   });
 
-
-
   useEffect(() => {
     dispatch(getAllAssignServiceRequestAction());
   }, [dispatch]);
@@ -77,7 +76,7 @@ const Request = () => {
     time: value?.Slot,
     jobNumber: value?.JobOrderNumber,
     jobType: value?.checklistDetail?.checklistName,
-    profilepic: value?.EnggPicture
+    profilepic: value?.EnggPicture,
   }));
 
   const data = [...requestDetail];
@@ -122,18 +121,19 @@ const Request = () => {
     }, 1000);
   }, [renderTicket]);
 
-
-   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
-   const fetchImageUrl = async (key) => {
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+  const fetchImageUrl = async (key) => {
     try {
       const response = await getImagesFromS3Bucket(`${key}`);
       return response.data.url;
     } catch (error) {
-      console.log("error while fecthing the engg Images from S3 bucket ", error);
+      console.log(
+        "error while fecthing the engg Images from S3 bucket ",
+        error
+      );
     }
-   }
-  
-  
+  };
+
   //  useEffect(() => {
   //   const fetchImage = async () => {
   //     const url = await fetchImageUrl(engDetails.enggPhoto);
@@ -142,32 +142,31 @@ const Request = () => {
   //   };
   //     fetchImage();
   // }, [engDetails]);
-  
 
   useEffect(() => {
     const getImages = async () => {
       const engineers = getAssignRequests || [];
-      const urlPromises = engineers.map(engineer => fetchImageUrl(engineer.EnggPicture));
+      const urlPromises = engineers.map((engineer) =>
+        fetchImageUrl(engineer.EnggPicture)
+      );
       try {
         const urls = await Promise.all(urlPromises);
         const urlMap = engineers.reduce((acc, engineer, index) => {
-          acc[engineer.ServiceEnggId] = urls[index]; 
+          acc[engineer.ServiceEnggId] = urls[index];
           return acc;
-        }, {});      
-        setImageUrls(urlMap); 
+        }, {});
+        setImageUrls(urlMap);
       } catch (error) {
         console.error("Error fetching image URLs", error);
       }
     };
-  
-    if(getAssignRequests){
+
+    if (getAssignRequests) {
       getImages();
     }
-
-   
   }, []);
-  
-//------------------------------------------------------------------------------------------------------------------------
+
+  //------------------------------------------------------------------------------------------------------------------------
 
   return (
     <>
@@ -182,13 +181,15 @@ const Request = () => {
                 value={date}
               />
             </div>
-
+            
             <div className="event-detail-section">
               <div className="request-detail">
                 <div className="date-swap-icon">
                   <div className="swap-icons">
                     <FaAngleLeft onClick={() => handleDateChange(-1)} />
-                    <p style={{ width: "30%" }}>{`${date.toDateString().slice(0, 3)},${date.toDateString().slice(3)}`}</p>
+                    <p style={{ width: "30%" }}>{`${date
+                      .toDateString()
+                      .slice(0, 3)},${date.toDateString().slice(3)}`}</p>
                     <FaAngleRight onClick={() => handleDateChange(1)} />
                   </div>
                 </div>
@@ -238,7 +239,7 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                      src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId]}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
@@ -252,7 +253,7 @@ const Request = () => {
                                     </div>
                                     <div className="image-border-collapse2">
                                       <img
-                                       src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId]}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
@@ -323,7 +324,7 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                      src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId]}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
