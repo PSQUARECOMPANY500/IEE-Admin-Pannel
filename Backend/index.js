@@ -10,6 +10,7 @@ const router = require("./Routes/ServiceEngineerRoutes/ServiceEnggRoute");
 const clientRoutes = require("./Routes/ClientRoutes/ClientRoutes");
 const AdminRoutes = require("./Routes/AdminRoutes/AdminRoute");
 const chatRoute = require("./Routes/ChatRoute/ChatRoute");
+const ErectionRoute = require("./Routes/ErectionRoutes/ErectionRoutes")
 const { watchNotifications } = require("./Notification/notification");
 const cronjob = require("./Utils/EngineerAttendence/EngineerAttendenceCronJob")
 
@@ -36,6 +37,10 @@ app.use("/api/admin", AdminRoutes);
 
 // ------------chatRoute-------------
 app.use("/api/chat", chatRoute);
+
+//-------ErectionEngg--------------------
+
+app.use("/api/apierection",ErectionRoute)
 
 
 

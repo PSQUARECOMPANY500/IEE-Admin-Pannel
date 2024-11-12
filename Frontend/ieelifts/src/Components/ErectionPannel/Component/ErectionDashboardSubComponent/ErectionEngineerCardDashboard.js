@@ -4,14 +4,16 @@ import MessageBox from "../../../AdminPannel/Component/DashboardSubComponent/Mes
 import { useMediaQuery } from "@react-hook/media-query";
 
 
-const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
+
+const ServiceEnggDataOnCrousel = ({ item, index, len ,ImagesUrls}) => {
     const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
+
+    // console.log("this is erection data --------------->>>>>>>>>> ] " , item)
 
 
     const dropdownClickRef = useRef();
     const MessageBoxRef = useRef(null);
     const [showMessage, setShowMessage] = useState([false]);
-
 
     const handleMessageBoxClose = () => {
         setShowMessage(false);
@@ -41,7 +43,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
         }));
     };
 
-    const statusBorder = item.status === "Working" ? "erectionEngineerStatusWorking" : item.status === "On-break" ? "erectionEngineerStatusBreak" : "erectionEngineerStatusLeave"
+    const statusBorder = item?.status === "Working" ? "erectionEngineerStatusWorking" : item?.status === "On-break" ? "erectionEngineerStatusBreak" : "erectionEngineerStatusLeave"
 
     const handleOutsideClick = useCallback(() => {
         setShowMessage(false);
@@ -49,14 +51,21 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
 
     useClickOutside(dropdownClickRef, handleOutsideClick);
 
+
+
+
+
+
+
+
+
     // onClick = {() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}
     return (
         <div className={"enginerCardHover"}>
             <div className="erectionEngineerDetails">
                 <div className="basic-info">
                     <img
-                        src={item.EnggPhoto}    
-                        alt="img"
+                        src={ImagesUrls} alt="img"
                         style={{
                             height: "50px",
                             width: "50px",
@@ -65,9 +74,9 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                         }}
                     />
                     <div className="erectionEnggprofile">
-                        <span>{item.EnggName}</span>
+                        <span>{item?.EnggName}</span>
                         <span className={`star-icon ${statusBorder}`}>
-                            {item.status}
+                            {item?.status}
                         </span>
                     </div>
                 </div>
@@ -76,7 +85,7 @@ const ServiceEnggDataOnCrousel = ({ item, index, len }) => {
                     <span onClick={() => handleMesageBox(index)} >
                         <TbMessage2 className="message-box-crouser" />
                     </span>
-                    {/* <div className="message-dot"></div> */}
+                    {/* <div className="message-dot"></div> */} 
                     {showMessage[index] && (
                         <div
                             ref={MessageBoxRef}

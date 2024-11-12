@@ -1,14 +1,22 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Engineers } from "../../DummyData/ErectionEngineerData"
 import messageIcon from '../../../../Assets/Images/message-square_curved.png';
+import { useDispatch, useSelector } from "react-redux";
+import { getErectionEnggForErectionPannelAction } from "../.../../../../../ReduxSetup/Actions/ErectionEnggAction"
+// import { getImagesFromS3Bucket } from "../../../ReduxSetup/Actions/AdminActions";
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
+
 
 const EngeeniersSubCard = (props) => {
+    const dispatch =  useDispatch();
 
     const [singleClickTimeout, setSingleClickTimeout] = useState(null);
     const [isDoubleClick, setIsDoubleClick] = useState(false);
     const [isActive, setIsActive] = useState(null);
     const { isFirst, setIsFirst, isSecond, setIsSecond, handleEnggNameDoubleClick } = props;
+
+    const [ImageUrls,setImageUrls] = useState([])
 
     const engData = Engineers;
 
@@ -46,15 +54,43 @@ const EngeeniersSubCard = (props) => {
         console.log(EnggName);
     };
 
+    useEffect(()=>{
+    dispatch(getErectionEnggForErectionPannelAction());
+    },[dispatch]);
+
+    const erectionEngg = useSelector((state) => state?.ErectionRootReducer?.getErectionEnggForErectionPannelReducer?.ErectionEnggDetails)
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$   999999999999999999 " ,erectionEngg)
+
+
+
+    //-------------------- S3 bucket Get Data -----------------------------------------------------------------------------------
+
+const fetchImageUrl = async (key) => {
+    try {
+      const response = await getImagesFromS3Bucket(key);
+      setImageUrls(response.data.url);
+      return response.data.url;
+    } catch (error) {
+      console.log("Error while fetching the image from S3 bucket:", error);
+      return null; 
+    }
+  };
+  
+  
+  const urlPromises = erectionEngg && erectionEngg?.map(async (imageKey) => imageKey && await fetchImageUrl(imageKey?.EnggPhoto));
+  
+
+
+
 
     return (
         <div className="erectionEngineerParent" style={{ cursor: "pointer", display: isSecond && 'none' }}>
             <div className="erectionEngCardContainer" style={{ gridTemplateColumns: isFirst && '1fr 1fr' }}  >
-                {engData && engData.map((e, index) => (
+                {erectionEngg && erectionEngg.map((e, index) => (
                     <div className="erectionEngCards" onDoubleClick={() => handleDoubleClick(index, e.EnggId, e.EnggName, e.EnggPhoto)} onClick={() => handleSingleClick(index)} style={{ boxShadow: isActive === index ? '1px 2px 5px #F8AC1D80' : '2px 4px 10px #00000029' }}>
                         <div className="erectionEngCardsDetails">
                             <div className="erectionEngineerPicParent">
-                                <img className="erectionEngineerPic " src={e.EnggPhoto} />
+                                <img className="erectionEngineerPic " src={ImageUrls} />
                             </div>
                             <div className="erectionEningeerDetailsContainer">
                                 <div className="erectionEngDetail">
