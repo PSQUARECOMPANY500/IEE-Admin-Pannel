@@ -71,7 +71,10 @@ const registerWithMobileNumber = require("../../Modals/ClientDetailModals/Regist
 
 module.exports.getEnggCrouserData = async (req, res) => {
   try {
-    const EnggDetail = await ServiceEnggData.find({}).select(
+    const EnggDetail = await ServiceEnggData.find({
+      EnggRole: "siteengineer",
+    }).select(
+      //added find condition by Paras
       "EnggId EnggRole EnggName EnggRole EnggLastName PhoneNumber EnggAddress EnggPhoto AvailableCash ActiveDevice"
     );
     const currentDate = new Date();
