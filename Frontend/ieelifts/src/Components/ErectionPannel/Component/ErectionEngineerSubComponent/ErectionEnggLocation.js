@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {EnggLocationDetailsFetch,onClickPinCart,getEnggLocationCoordinatesAction} from "../../../../ReduxSetup/Actions/AdminActions";
-
+import {
+  EnggLocationDetailsFetch,
+  onClickPinCart,
+  getEnggLocationCoordinatesAction,
+} from "../../../../ReduxSetup/Actions/AdminActions";
 
 import {
   GoogleMap,
@@ -22,15 +25,16 @@ const ErectionEnggLocation = () => {
       ?.enggLocatioDetails;
   });
 
-  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0].currentLocation.coordinates[0].origin.split(","));
-  // console.log("set engg valid coordinates",enggLocationDetails && enggLocationDetails[0]?.currentLocation?.coordinates);
-
-
   const enggServiceID = useSelector(
     (state) =>
       state.AdminRootReducer?.onClickEnggCartEnggLocationReducer?.enggLocation
   );
 
+  console.log("***********************************************", enggServiceID);
+  console.log(
+    "////////////////////////////////////////////////",
+    enggLocationDetails
+  );
 
   const MapCoordinates = useSelector(
     (state) =>
@@ -38,11 +42,12 @@ const ErectionEnggLocation = () => {
         ?.coordinates
   );
 
-  // console.log("this is map coordinaets-----", MapCoordinates);
 
-  const IEELifts = { lat: 30.71424661365234, lng: 76.696212667490 };
+
+  const IEELifts = { lat: 30.71424661365234, lng: 76.69621266749 };
   const [center, setCenter] = useState({
-    lat: 30.71424661365234,lng: 76.696212667490
+    lat: 30.71424661365234,
+    lng: 76.69621266749,
   });
 
   const [mainOpen, setMainOpen] = useState(false);
@@ -51,12 +56,8 @@ const ErectionEnggLocation = () => {
   const [state, setState] = useState(0);
 
   const [map, setMap] = useState(null);
-// console.log("this is map console----->>*************************** ", map);
-
 
   const [directions, setDirections] = useState([]);
-
-  // console.log("this is consosle the direction 999999  ", directions);
 
   const enggMarkerSymbol = {
     path: window.google?.maps?.SymbolPath?.CIRCLE,
@@ -87,33 +88,32 @@ const ErectionEnggLocation = () => {
 
   useEffect(() => {
     if (enggServiceID) {
-      // console.log("ths id is inside the useEfefct", enggServiceID);
       dispatch(getEnggLocationCoordinatesAction(enggServiceID)); // get the corrdinates from the engg database to path on map
     } else {
       dispatch(getEnggLocationCoordinatesAction()); // get the corrdinates from the engg database to path on map
     }
   }, [dispatch, enggServiceID]);
 
-
-
-
-
-
   const calculateDirection = async () => {
     if (MapCoordinates && MapCoordinates.length > 1) {
       const directionService = new window.google.maps.DirectionsService();
 
       // Ensure waypoints are formatted correctly
-      const waypoints = MapCoordinates.slice(1, -1).reduce((acc, point, index) => {
-        
-        if(index % Math.ceil(MapCoordinates.length / 23) === 0 && index !== 0) {
-          acc.push({
-            location: { lat: point.lat, lng: point.lng },
-          });
-        }
-        return acc;
-      },[]);
-      
+      const waypoints = MapCoordinates.slice(1, -1).reduce(
+        (acc, point, index) => {
+          if (
+            index % Math.ceil(MapCoordinates.length / 23) === 0 &&
+            index !== 0
+          ) {
+            acc.push({
+              location: { lat: point.lat, lng: point.lng },
+            });
+          }
+          return acc;
+        },
+        []
+      );
+
       const request = {
         origin: { lat: MapCoordinates[0].lat, lng: MapCoordinates[0].lng }, // Starting point
         destination: {
@@ -141,10 +141,6 @@ const ErectionEnggLocation = () => {
   useEffect(() => {
     calculateDirection();
   }, [MapCoordinates]);
-
-
-
-
 
   useEffect(() => {
     const fetchData = () => {
@@ -178,8 +174,12 @@ const ErectionEnggLocation = () => {
         if (data.ServiceEnggId === enggServiceID) {
           // const lat = parseFloat(data.currentLocation.coordinates[0]);
           // const lng = parseFloat(data.currentLocation.coordinates[1]);
-          const lat = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[0]);
-          const lng = parseFloat(data.currentLocation.coordinates[0].origin?.split(",")[1]);
+          const lat = parseFloat(
+            data.currentLocation.coordinates[0].origin?.split(",")[0]
+          );
+          const lng = parseFloat(
+            data.currentLocation.coordinates[0].origin?.split(",")[1]
+          );
           setCenter({ lat, lng });
         }
       });
@@ -347,310 +347,308 @@ const ErectionEnggLocation = () => {
   //   },
   // ];
 
-
-//   const mapStyles = [
-//     {
-//         "featureType": "administrative",
-//         "elementType": "labels",
-//         "stylers": [
-//             {
-//                 "visibility": "simplified"
-//             },
-//             {
-//                 "color": "#c8b671"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "administrative.province",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "color": "#958456"
-//             },
-//             {
-//                 "saturation": "0"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "administrative.locality",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "color": "#9b8958"
-//             },
-//             {
-//                 "saturation": "0"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "administrative.neighborhood",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "color": "#9b8958"
-//             },
-//             {
-//                 "saturation": "0"
-//             },
-//             {
-//                 "lightness": "35"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "landscape",
-//         "elementType": "geometry",
-//         "stylers": [
-//             {
-//                 "color": "#faf2d6"
-//             },
-//             {
-//                 "lightness": "82"
-//             },
-//             {
-//                 "saturation": "100"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi",
-//         "elementType": "labels",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.attraction",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "color": "#ff0000"
-//             },
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.business",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.government",
-//         "elementType": "all",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.medical",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.park",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "color": "#b3edaf"
-//             },
-//             {
-//                 "lightness": "20"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.place_of_worship",
-//         "elementType": "all",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.school",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "poi.sports_complex",
-//         "elementType": "all",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             },
-//             {
-//                 "color": "#ff0000"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road",
-//         "elementType": "geometry.stroke",
-//         "stylers": [
-//             {
-//                 "color": "#fbf3ac"
-//             },
-//             {
-//                 "saturation": "-60"
-//             },
-//             {
-//                 "lightness": "-21"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.highway",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "color": "#f6eebb"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.highway",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "saturation": "0"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.highway",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.highway.controlled_access",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.arterial",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "color": "#9b8958"
-//             },
-//             {
-//                 "saturation": "0"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.arterial",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.local",
-//         "elementType": "labels.text.fill",
-//         "stylers": [
-//             {
-//                 "color": "#9b8958"
-//             },
-//             {
-//                 "saturation": "0"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "road.local",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "transit",
-//         "elementType": "labels",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "transit",
-//         "elementType": "labels.icon",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "water",
-//         "elementType": "geometry.fill",
-//         "stylers": [
-//             {
-//                 "hue": "#00acff"
-//             },
-//             {
-//                 "saturation": "10"
-//             },
-//             {
-//                 "lightness": "32"
-//             }
-//         ]
-//     },
-//     {
-//         "featureType": "water",
-//         "elementType": "labels",
-//         "stylers": [
-//             {
-//                 "visibility": "off"
-//             }
-//         ]
-//     }
-// ]
-
+  //   const mapStyles = [
+  //     {
+  //         "featureType": "administrative",
+  //         "elementType": "labels",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "simplified"
+  //             },
+  //             {
+  //                 "color": "#c8b671"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "administrative.province",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#958456"
+  //             },
+  //             {
+  //                 "saturation": "0"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "administrative.locality",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#9b8958"
+  //             },
+  //             {
+  //                 "saturation": "0"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "administrative.neighborhood",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#9b8958"
+  //             },
+  //             {
+  //                 "saturation": "0"
+  //             },
+  //             {
+  //                 "lightness": "35"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "landscape",
+  //         "elementType": "geometry",
+  //         "stylers": [
+  //             {
+  //                 "color": "#faf2d6"
+  //             },
+  //             {
+  //                 "lightness": "82"
+  //             },
+  //             {
+  //                 "saturation": "100"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi",
+  //         "elementType": "labels",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.attraction",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#ff0000"
+  //             },
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.business",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.government",
+  //         "elementType": "all",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.medical",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.park",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#b3edaf"
+  //             },
+  //             {
+  //                 "lightness": "20"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.place_of_worship",
+  //         "elementType": "all",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.school",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "poi.sports_complex",
+  //         "elementType": "all",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             },
+  //             {
+  //                 "color": "#ff0000"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road",
+  //         "elementType": "geometry.stroke",
+  //         "stylers": [
+  //             {
+  //                 "color": "#fbf3ac"
+  //             },
+  //             {
+  //                 "saturation": "-60"
+  //             },
+  //             {
+  //                 "lightness": "-21"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.highway",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#f6eebb"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.highway",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "saturation": "0"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.highway",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.highway.controlled_access",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.arterial",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#9b8958"
+  //             },
+  //             {
+  //                 "saturation": "0"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.arterial",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.local",
+  //         "elementType": "labels.text.fill",
+  //         "stylers": [
+  //             {
+  //                 "color": "#9b8958"
+  //             },
+  //             {
+  //                 "saturation": "0"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "road.local",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "transit",
+  //         "elementType": "labels",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "transit",
+  //         "elementType": "labels.icon",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "water",
+  //         "elementType": "geometry.fill",
+  //         "stylers": [
+  //             {
+  //                 "hue": "#00acff"
+  //             },
+  //             {
+  //                 "saturation": "10"
+  //             },
+  //             {
+  //                 "lightness": "32"
+  //             }
+  //         ]
+  //     },
+  //     {
+  //         "featureType": "water",
+  //         "elementType": "labels",
+  //         "stylers": [
+  //             {
+  //                 "visibility": "off"
+  //             }
+  //         ]
+  //     }
+  // ]
 
   return (
     <GoogleMap
@@ -688,8 +686,12 @@ const ErectionEnggLocation = () => {
           // const lastLatitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
           // console.log("this is last lattitude -->>  ", lastLatitude);
 
-          const latitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[0]);
-          const longitude = parseFloat(coordinates[coordinates.length - 1].origin?.split(",")[1]);
+          const latitude = parseFloat(
+            coordinates[coordinates.length - 1].origin?.split(",")[0]
+          );
+          const longitude = parseFloat(
+            coordinates[coordinates.length - 1].origin?.split(",")[1]
+          );
 
           const position = { lat: latitude, lng: longitude };
           const engId = data.ServiceEnggId;
