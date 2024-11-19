@@ -5,7 +5,7 @@ import { useMediaQuery } from "@react-hook/media-query";
 
 
 
-const ServiceEnggDataOnCrousel = ({ item, index, len ,ImagesUrls}) => {
+const ErectionEngineerCardDashboard = ({ item, index, len ,ImagesUrls}) => {
     const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
 
     // console.log("this is erection data --------------->>>>>>>>>> ] " , item)
@@ -105,4 +105,4 @@ const ServiceEnggDataOnCrousel = ({ item, index, len ,ImagesUrls}) => {
     );
 };
 
-export default ServiceEnggDataOnCrousel;
+export default ErectionEngineerCardDashboard;
