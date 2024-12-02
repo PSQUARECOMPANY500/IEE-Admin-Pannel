@@ -8,6 +8,7 @@ const ReactDatePickers = ({
   fetchedDate,
   OnDateChange,
   editchange,
+  className,
 }) => {
   const daysContainerRef = useRef(null);
   // const prevBtnRef = useRef(null);
@@ -165,6 +166,7 @@ const ReactDatePickers = ({
         onClick={handleDateInputClick}
         autoComplete="off"
         style={{ cursor: "pointer" }}
+        className={className}
       />
       {
         <div className="calendar" id="calendar" ref={calendarRef}>

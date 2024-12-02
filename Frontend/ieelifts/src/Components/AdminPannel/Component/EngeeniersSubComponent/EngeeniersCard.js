@@ -12,7 +12,10 @@ import { MdSend } from "react-icons/md";
 import { MdOutlineMic } from "react-icons/md";
 import { MdOutlineAttachFile } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { createChatActions, sendChatMessageAction } from "../../../../ReduxSetup/Actions/ChatActions";
+import {
+  createChatActions,
+  sendChatMessageAction,
+} from "../../../../ReduxSetup/Actions/ChatActions";
 import { getSenderMessagesAction } from "../../../../ReduxSetup/Actions/ChatActions";
 import { getEnggPersonalChatMessages } from "../../../../ReduxSetup/Actions/ChatActions";
 import Rating from "./Rating";
@@ -21,10 +24,6 @@ import config from "../../../../config";
 
 import { jwtDecode } from "jwt-decode";
 
-
-
-
-
 import { BsArrowLeft } from "react-icons/bs";
 import "../../../../Assets/Engeeniers.css";
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
@@ -32,11 +31,11 @@ import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActio
 const EngeeniersCard = () => {
   const navigate = useNavigate();
 
-  const adminID = localStorage.getItem("adminData")
+  const adminID = localStorage.getItem("adminData");
 
   const decodeAdmin = jwtDecode(adminID);
 
-// console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
+  // console.log("abjhi shwk ha  shek mera dosty", decodeAdmin.user._id)
 
   const [currentComponent, setCurrentComponent] = useState();
   const [isFirst, setIsFirst] = useState(false);
@@ -57,9 +56,7 @@ const EngeeniersCard = () => {
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [allMessages, setAllMessages] = useState([]);
 
-  const [ImageURL,setImageURL] = useState();
-
-
+  const [ImageURL, setImageURL] = useState();
 
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
@@ -77,20 +74,27 @@ const EngeeniersCard = () => {
   }, []);
 
   function checkLengthAndDispalyName(name) {
-    if (name.length > 13) {
-      return name.slice(0, 13) + "..."
+    if (name.length > 9) {
+      return name.slice(0, 10) + "...";
     }
-    return name
+    return name;
   }
 
-
-  const handleEnggNameDoubleClick = (engId, engName, engImg, engCash, enggObjectId, lastname, sparePartsCount) => {
-    setEnggObjectId(enggObjectId)
+  const handleEnggNameDoubleClick = (
+    engId,
+    engName,
+    engImg,
+    engCash,
+    enggObjectId,
+    lastname,
+    sparePartsCount
+  ) => {
+    setEnggObjectId(enggObjectId);
     setEngID(engId);
     setCurrentEngName(checkLengthAndDispalyName(engName + " " + lastname));
     setCurrentEngImg(engImg);
     setCurrentEngCash(engCash);
-    setsparePartsCount(sparePartsCount)
+    setsparePartsCount(sparePartsCount);
   };
   // Render the selected component
   const renderSelectedComponent = () => {
@@ -115,7 +119,6 @@ const EngeeniersCard = () => {
   const messageBodyRef = useRef(null);
   const [messageData, setMessageData] = useState("");
   // console.log("}}}}}}}}}}}}}}}}}}}}}}}}}}}}", messageData);
-
 
   const [socketConnected, setSocketConnected] = useState(false);
   const [file, setFile] = useState(false);
@@ -155,7 +158,6 @@ const EngeeniersCard = () => {
 
   // console.log("this is all chat crteatedddddddddddd", chatCreated);
 
-
   const getMessages = useSelector((state) => {
     scroll();
     if (
@@ -163,7 +165,8 @@ const EngeeniersCard = () => {
       state.ChatRootReducer.getEnggPersonalMessagesReducer &&
       state.ChatRootReducer.getEnggPersonalMessagesReducer.messages
     ) {
-      return state.ChatRootReducer.getEnggPersonalMessagesReducer.messages.messageModel;
+      return state.ChatRootReducer.getEnggPersonalMessagesReducer.messages
+        .messageModel;
     } else {
       return null;
     }
@@ -175,13 +178,15 @@ const EngeeniersCard = () => {
   useEffect(() => {
     const fetchIntiakMessages = async () => {
       setIsLoadingMessages(true);
-      const FinalMessages = await getMessages && getMessages?.map((data) => {
-        return {
-          chatId: data.ChatId,
-          Content: data.Content,
-          Sender: data.Sender[0],
-        };
-      });
+      const FinalMessages =
+        (await getMessages) &&
+        getMessages?.map((data) => {
+          return {
+            chatId: data.ChatId,
+            Content: data.Content,
+            Sender: data.Sender[0],
+          };
+        });
 
       setAllMessages(FinalMessages);
       setIsLoadingMessages(false);
@@ -191,15 +196,14 @@ const EngeeniersCard = () => {
     scroll();
   }, [getMessages]);
 
-
-
   useEffect(() => {
     setAllMessages([]);
     setIsLoadingMessages(true);
     console.log("_____________________________", engID);
-    enggObjectId && dispatch(createChatActions(enggObjectId, decodeAdmin.user._id)); //TODO: - in future the id is dynamic as come from login user
+    enggObjectId &&
+      dispatch(createChatActions(enggObjectId, decodeAdmin.user._id)); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id && engID) {
-      dispatch(getEnggPersonalChatMessages(engID))
+      dispatch(getEnggPersonalChatMessages(engID));
     }
     // Cleanup function
     return () => {
@@ -210,9 +214,6 @@ const EngeeniersCard = () => {
       }
     };
   }, [dispatch, chatCreated?._id, engID]);
-
-
-
 
   const setHeight = (elem) => {
     const style = window.getComputedStyle(elem, null);
@@ -237,16 +238,20 @@ const EngeeniersCard = () => {
   };
 
   const handleSendMessage = async () => {
-    if (chatCreated?._id){
-    // console.log("lllllllllllllllllll", messageData)
-    // console.log("oooooooooooooooooo", chatCreated?._id)
-    const myNewMessage = await sendChatMessageAction(decodeAdmin.user._id, messageData, chatCreated?._id, "");   //TODO: it shoul be dynamically created  
+    if (chatCreated?._id) {
+      // console.log("lllllllllllllllllll", messageData)
+      // console.log("oooooooooooooooooo", chatCreated?._id)
+      const myNewMessage = await sendChatMessageAction(
+        decodeAdmin.user._id,
+        messageData,
+        chatCreated?._id,
+        ""
+      ); //TODO: it shoul be dynamically created
 
-    // console.log("333333333333333333333333", myNewMessage)
-
+      // console.log("333333333333333333333333", myNewMessage)
     }
     setMessageData("");
-    dispatch(getEnggPersonalChatMessages(engID))
+    dispatch(getEnggPersonalChatMessages(engID));
 
     if (textareaRef.current) {
       textareaRef.current.value = "";
@@ -255,7 +260,7 @@ const EngeeniersCard = () => {
 
     setTimeout(() => {
       if (chatCreated?._id && engID) {
-        dispatch(getEnggPersonalChatMessages(engID))
+        dispatch(getEnggPersonalChatMessages(engID));
       }
     }, 400);
   };
@@ -266,12 +271,9 @@ const EngeeniersCard = () => {
 
   useEffect(() => {
     if (engID) {
-
-      dispatch(getEnggPersonalChatMessages(engID))
+      dispatch(getEnggPersonalChatMessages(engID));
     }
-  }, [])
-
-
+  }, []);
 
   const handleCurrentComponent = (c, m) => {
     setCurrentComponent(c);
@@ -280,7 +282,7 @@ const EngeeniersCard = () => {
 
   const navigateOneStepBack = () => {
     // <EngeeniersSubCard />
-    setIsSecond(false)
+    setIsSecond(false);
     // console.log("true engg design")
     // console.log("{{{{{", onBackPress);
   };
@@ -292,38 +294,35 @@ const EngeeniersCard = () => {
       } else {
         setMediumScreen(false);
       }
-    }
+    };
 
-    window.addEventListener('resize', checkScreenSie);
+    window.addEventListener("resize", checkScreenSie);
 
     return () => {
-      window.removeEventListener('resize', checkScreenSie);
-    }
-  })
+      window.removeEventListener("resize", checkScreenSie);
+    };
+  });
 
-  
   //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
- useEffect(() => {
-  const fetchImageUrl = async () => {
-    try {
-      const response = await getImagesFromS3Bucket(`${currentengImg}`);
-      setImageURL(response.data.url);
-      return response.data.url;
-    } catch (error) {
-      console.log("error while fecthing the engg Images from S3 bucket ", error);
-    }
-   }
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      try {
+        const response = await getImagesFromS3Bucket(`${currentengImg}`);
+        setImageURL(response.data.url);
+        return response.data.url;
+      } catch (error) {
+        console.log(
+          "error while fecthing the engg Images from S3 bucket ",
+          error
+        );
+      }
+    };
 
-   fetchImageUrl()
+    fetchImageUrl();
+  }, [currentengImg]);
 
- },[currentengImg])
- 
+  //------------------------------------------------------------------------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-  
   return (
     <>
       {onBackPress ? (
@@ -339,10 +338,14 @@ const EngeeniersCard = () => {
         <div
           className="EngeeniersCard"
           style={{
-            gridTemplateColumns: isFirst || isSecond ? mediumScreen ? "2fr 0.8fr" : "2fr 1fr" : "1fr",
+            gridTemplateColumns:
+              isFirst || isSecond
+                ? mediumScreen
+                  ? "2fr 0.8fr"
+                  : "2fr 1fr"
+                : "1fr",
             gridTemplateAreas: isSecond && "'SingleEng'",
-            gridGap: isFirst ? '0.5rem' : 0,
-
+            gridGap: isFirst ? "0.5rem" : 0,
           }}
         >
           <EngeeniersSubCard
@@ -367,10 +370,7 @@ const EngeeniersCard = () => {
 
                   <div className="Pimg">
                     {/* <img src={currentengImg} alt="eng persnol image" /> */}
-                    <img
-                      src={ImageURL}
-                      alt="eng persnol image"
-                    />
+                    <img src={ImageURL} alt="eng persnol image" />
                     {/* <img
                       src={
                         currentengImg?.length === 0
@@ -412,8 +412,8 @@ const EngeeniersCard = () => {
                 <h5
                   onClick={() => handleCurrentComponent("c2", 25.5)}
                   style={{ color: borderMergin === 17 && "#F8AC1DAD" }}
-
-                  id="Attendence">
+                  id="Attendence"
+                >
                   Attendance
                 </h5>
                 <h5
@@ -457,19 +457,33 @@ const EngeeniersCard = () => {
               </div>
               <div className="EngChatMsg">
                 <div className="SubEngChatMsg Yello_Scrollbar">
-
                   {allMessages && allMessages?.length >= 0 ? (
                     allMessages?.map((item, index) => {
-                      console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", item.Sender);
+                      console.log(
+                        "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",
+                        item.Sender
+                      );
                       const senderId = decodeAdmin.user._id;
-                      const isCurrentUser = item.Sender === senderId;                   //TODO: - in future the id is dynamic as come from login user
+                      const isCurrentUser = item.Sender === senderId; //TODO: - in future the id is dynamic as come from login user
                       return (
-                        <div className={isCurrentUser ? "engchatmsg-sender-side" : ".engchatmsg-reciver-side"}>
-                          <div className={isCurrentUser ? "engchatmsg-sender-message" : "engchatmsg-reciver-message"}>
+                        <div
+                          className={
+                            isCurrentUser
+                              ? "engchatmsg-sender-side"
+                              : ".engchatmsg-reciver-side"
+                          }
+                        >
+                          <div
+                            className={
+                              isCurrentUser
+                                ? "engchatmsg-sender-message"
+                                : "engchatmsg-reciver-message"
+                            }
+                          >
                             <p>{item.Content}</p>
                           </div>
                         </div>
-                      )
+                      );
                     })
                   ) : (
                     <div className="skelton-in-message">
@@ -478,12 +492,7 @@ const EngeeniersCard = () => {
                         <p>No Message Yet</p>
                       </div>
                     </div>
-
                   )}
-
-
-
-
                 </div>
               </div>
 
@@ -499,18 +508,7 @@ const EngeeniersCard = () => {
                   //   </div>
                   // </div> */}
 
-
               {/* -------------------------------------------------------engg chat section ends---------------------------------------------------------------------------- */}
-
-
-
-
-
-
-
-
-
-
 
               <div className="agdam-eng-card">
                 <div className="eng-card-message-text">

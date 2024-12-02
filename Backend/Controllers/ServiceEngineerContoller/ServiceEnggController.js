@@ -1,4 +1,4 @@
-const moment = require("moment")
+const moment = require("moment");
 const ServiceEnggBasicSchema = require("../../Modals/ServiceEngineerModals/ServiceEngineerDetailSchema");
 
 const callbackAssigntoEngg = require("../../Modals/ServiceEngineerModals/AssignCallbacks");
@@ -41,7 +41,7 @@ const sparePartRequestTable = require("../../Modals/SpearParts/SparePartRequestM
 
 const memberShipTable = require("../../Modals/MemebershipModal/MembershipsSchema");
 
-const engglocationmodels = require("../../Modals/LocationModel/EnggLocationSchema")
+const engglocationmodels = require("../../Modals/LocationModel/EnggLocationSchema");
 
 const Razorpay = require("razorpay");
 
@@ -83,10 +83,7 @@ const calculateTwotimedifference = (
 
 //--------------------------------------------------------------------------------------------------------------------
 //by Paras
-const calculateTwotimedifferenceinMins = (
-  timetogetdiff1,
-  timetogetdiff2,
-) => {
+const calculateTwotimedifferenceinMins = (timetogetdiff1, timetogetdiff2) => {
   const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
   const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
   const differenceInMs = time1.getTime() - time2.getTime();
@@ -95,13 +92,12 @@ const calculateTwotimedifferenceinMins = (
   return Math.floor(differenceInMinutes);
 };
 
-
-const calculateDiffBetweentwoTime =(timetogetdiff1,timetogetdiff2) => {
+const calculateDiffBetweentwoTime = (timetogetdiff1, timetogetdiff2) => {
   const time1 = new Date(`2024-03-12T${timetogetdiff2}`);
   const time2 = new Date(`2024-03-12T${timetogetdiff1}`);
   const differenceInMs = time1.getTime() - time2.getTime();
   const differenceInMinutes = differenceInMs / (1000 * 60);
-  console.log(differenceInMinutes,"diff time")
+  console.log(differenceInMinutes, "diff time");
   return differenceInMinutes;
 };
 // ---------------------------------------------------------------------------------------------------------------------
@@ -155,15 +151,18 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
     const bodyData = req.body;
-
+    console.log(bodyData, "Body Data");
     const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
-      PhoneNumber: bodyData.mobileNumber,
+      $and: [
+        { PhoneNumber: bodyData.mobileNumber },
+        { EnggId: bodyData.EnggId },
+      ],
     });
 
     if (EnggAlreadyExist.length > 0) {
       return res
         .status(200)
-        .json({ message: "Engg is Already Exist with this Mobile Number" });
+        .json({ message: "Engg Already Exist with this Mobile Number or ID" });
     }
 
     const enggData = await ServiceEnggBasicSchema.create({
@@ -329,9 +328,10 @@ module.exports.getAssignedServices = async (req, res) => {
 //function to handle (all the Engg detail as per engg Id)
 
 module.exports.getEnggDetail = async (req, res) => {
+  console.log("chlrahai");
   try {
     const { EnggId } = req.params;
-
+    console.log("EnggId--", EnggId);
     const enggDetail = await ServiceEnggBasicSchema.findOne({ EnggId });
 
     if (!enggDetail) {
@@ -439,11 +439,14 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
     console.log("location latitude and langitude", latitude, longitude);
 
     if (ServiceEnggId && latitude && longitude) {
-      const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+      const AttendanceCreatedDate = new Date()
+        .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+        .split(",")[0];
 
-
-
-      const response = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate });
+      const response = await EnggLocationModel.findOne({
+        ServiceEnggId,
+        AttendanceCreatedDate,
+      });
 
       // console.log("++++++----------", response.currentLocation.coordinates);
 
@@ -451,18 +454,19 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
         let coordinate;
         coordinate = {
           origin: `${latitude},${longitude}`,
-        }
-        response.currentLocation.coordinates.push(coordinate)
+        };
+        response.currentLocation.coordinates.push(coordinate);
         await response.save();
       } else {
         await EnggLocationModel.create({
-          ServiceEnggId, currentLocation: {
+          ServiceEnggId,
+          currentLocation: {
             type: "Point",
             coordinates: {
               origin: `${latitude},${longitude}`,
             },
           },
-        })
+        });
       }
 
       res
@@ -482,40 +486,52 @@ module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
 };
 
 //-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
-module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req, res) => {
+module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (
+  req,
+  res
+) => {
   try {
     const { ServiceEnggId } = req.params;
 
-    const AttendanceCreatedDate = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+    const AttendanceCreatedDate = new Date()
+      .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+      .split(",")[0];
 
-
-    const coordinatesResponse = await EnggLocationModel.findOne({ ServiceEnggId, AttendanceCreatedDate })
+    const coordinatesResponse = await EnggLocationModel.findOne({
+      ServiceEnggId,
+      AttendanceCreatedDate,
+    });
 
     // console.log("console the coordinates ---->>> " ,coordinatesResponse);
 
     if (!coordinatesResponse) {
-      return res.status(200).json({ message: "No location found for the specified Service Engineer ID and date" });
+      return res.status(200).json({
+        message:
+          "No location found for the specified Service Engineer ID and date",
+      });
     }
 
-    let coordinatesToSend = []
-    const coordinates = coordinatesResponse && coordinatesResponse.currentLocation && coordinatesResponse.currentLocation.coordinates.map((item) => {
-      let coordinate = item?.origin?.split(",")
-      // console.log("this is corrdibatyes found", coordinate)
-      let lat = parseFloat(coordinate[0])
-      let lng = parseFloat(coordinate[1])
-      coordinatesToSend.push({ lat, lng })
-    })
+    let coordinatesToSend = [];
+    const coordinates =
+      coordinatesResponse &&
+      coordinatesResponse.currentLocation &&
+      coordinatesResponse.currentLocation.coordinates.map((item) => {
+        let coordinate = item?.origin?.split(",");
+        // console.log("this is corrdibatyes found", coordinate)
+        let lat = parseFloat(coordinate[0]);
+        let lng = parseFloat(coordinate[1]);
+        coordinatesToSend.push({ lat, lng });
+      });
 
-
-    res.status(200).json({ coordinates: coordinatesToSend })
-
+    res.status(200).json({ coordinates: coordinatesToSend });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal server error while fetching the cordinates" });
+    res
+      .status(500)
+      .json({ error: "Internal server error while fetching the cordinates" });
   }
 };
 //-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
-
 
 // module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
 //   //this is the api to update current locations(real time )
@@ -566,11 +582,6 @@ module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (req, res) =
 // };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
 
 module.exports.getEnggLocationDetail = async (req, res) => {
   try {
@@ -804,30 +815,54 @@ module.exports.EnggCheckIn = async (req, res) => {
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 //by Paras
-function getCalculatedTotalHours(engData,time){
-  let firstBreakTime = 0;  
+function getCalculatedTotalHours(engData, time) {
+  let firstBreakTime = 0;
   let lunchBreakTime = 0;
   let secondBreakTime = 0;
-   firstBreakTime = engData.First_halfe_time?calculateDiffBetweentwoTime(engData.First_halfs_time, engData.First_halfe_time):0;
-       lunchBreakTime = engData.Lunch_breake_time?calculateDiffBetweentwoTime(engData.Lunch_breaks_time, engData.Lunch_breake_time):0;
-       secondBreakTime = engData.Second_halfe_time?calculateDiffBetweentwoTime(engData.Second_halfs_time, engData.Second_halfe_time):0;
-      let totalBreakHours;
-      totalBreakHours = Math.floor(firstBreakTime + lunchBreakTime + secondBreakTime);
-      console.log(totalBreakHours, "total break hours");
+  firstBreakTime = engData.First_halfe_time
+    ? calculateDiffBetweentwoTime(
+        engData.First_halfs_time,
+        engData.First_halfe_time
+      )
+    : 0;
+  lunchBreakTime = engData.Lunch_breake_time
+    ? calculateDiffBetweentwoTime(
+        engData.Lunch_breaks_time,
+        engData.Lunch_breake_time
+      )
+    : 0;
+  secondBreakTime = engData.Second_halfe_time
+    ? calculateDiffBetweentwoTime(
+        engData.Second_halfs_time,
+        engData.Second_halfe_time
+      )
+    : 0;
+  let totalBreakHours;
+  totalBreakHours = Math.floor(
+    firstBreakTime + lunchBreakTime + secondBreakTime
+  );
+  console.log(totalBreakHours, "total break hours");
 
-      const startTime = engData.Check_In.time;
-      const checkouttime = time;
-      const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
-      const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
-      const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
-      console.log(finalTime, "final time")
+  const startTime = engData.Check_In.time;
+  const checkouttime = time;
+  const finalTimeinMins = calculateTwotimedifferenceinMins(
+    startTime,
+    checkouttime
+  );
+  const hoursOfFinalTime = Math.floor(finalTimeinMins / 60);
+  const finalTime = `${hoursOfFinalTime}:${
+    finalTimeinMins - hoursOfFinalTime * 60
+  }`;
+  console.log(finalTime, "final time");
 
-      const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
-      const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
-      let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
-      console.log(finalTotalTime,"final total time")
-      return finalTotalTime;
-} 
+  const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
+  const totalWorkHours = Math.floor(totalWorkHoursinMins / 60);
+  let finalTotalTime = `${totalWorkHours}:${
+    totalWorkHoursinMins - totalWorkHours * 60
+  }`;
+  console.log(finalTotalTime, "final total time");
+  return finalTotalTime;
+}
 //--------------------------------------------------------------------------------------------------------------------------------
 module.exports.EnggCheckOut = async (req, res) => {
   //console.log("req of checkout",req)
@@ -846,10 +881,13 @@ module.exports.EnggCheckOut = async (req, res) => {
         hour12: false,
       });
       const date = new Date().toLocaleDateString("en-GB");
-      const engData = await EnggAttendanceServiceRecord.findOne({ServiceEnggId, Date: date})
-      console.log(engData,"eng data")
-      const finalTotalTime = getCalculatedTotalHours(engData,time); //by Paras
-      
+      const engData = await EnggAttendanceServiceRecord.findOne({
+        ServiceEnggId,
+        Date: date,
+      });
+      console.log(engData, "eng data");
+      const finalTotalTime = getCalculatedTotalHours(engData, time); //by Paras
+
       const CheckIn = await EnggAttendanceServiceRecord.findOneAndUpdate(
         { ServiceEnggId, Date: date },
         {
@@ -860,26 +898,47 @@ module.exports.EnggCheckOut = async (req, res) => {
           Total_Hours: finalTotalTime, //by Paras
         }
       );
-      //make the logic that delete the coordinates from the EnggLocation Table "Starts" ----------------  
-      const now = new Date().toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" }).split(',')[0];
+      //make the logic that delete the coordinates from the EnggLocation Table "Starts" ----------------
+      const now = new Date()
+        .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
+        .split(",")[0];
 
-      const EnggCoordinates = await engglocationmodels.findOne({ ServiceEnggId: ServiceEnggId, AttendanceCreatedDate: now });
+      const EnggCoordinates = await engglocationmodels.findOne({
+        ServiceEnggId: ServiceEnggId,
+        AttendanceCreatedDate: now,
+      });
 
       const keepIndexes = [];
       if (EnggCoordinates) {
+        const waypoints = EnggCoordinates.currentLocation.coordinates
+          .slice(1, -1)
+          .reduce((acc, point, index) => {
+            if (
+              index %
+                Math.ceil(
+                  EnggCoordinates.currentLocation.coordinates.length / 23
+                ) ===
+                0 &&
+              index !== 0
+            ) {
+              keepIndexes.push(index + 1);
+            }
+            return acc;
+          }, []);
 
-        const waypoints = EnggCoordinates.currentLocation.coordinates.slice(1, -1).reduce((acc, point, index) => {
-
-          if (index % Math.ceil(EnggCoordinates.currentLocation.coordinates.length / 23) === 0 && index !== 0) {
-            keepIndexes.push(index + 1);
-          }
-          return acc;
-        }, []);
-
-        const filteredconditions = EnggCoordinates.currentLocation.coordinates.filter((_, index) => {
-          return index === 0 || index === EnggCoordinates.currentLocation.coordinates.length - 1 || keepIndexes.includes(index)
-        })
-        await engglocationmodels.updateOne({ ServiceEnggId: ServiceEnggId, AttendanceCreatedDate: now }, { $set: { 'currentLocation.coordinates': filteredconditions } })
+        const filteredconditions =
+          EnggCoordinates.currentLocation.coordinates.filter((_, index) => {
+            return (
+              index === 0 ||
+              index ===
+                EnggCoordinates.currentLocation.coordinates.length - 1 ||
+              keepIndexes.includes(index)
+            );
+          });
+        await engglocationmodels.updateOne(
+          { ServiceEnggId: ServiceEnggId, AttendanceCreatedDate: now },
+          { $set: { "currentLocation.coordinates": filteredconditions } }
+        );
       }
 
       //make the logic that delete the coordinates from the EnggLocation Table "Ends" ------------------
@@ -1318,8 +1377,10 @@ const caluclateCheckInCheckOutStatus = (attendanceTime, caltime) => {
 module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
   try {
     const Id = req.params.ServiceEnggId;
+
     if (Id) {
       const date = new Date().toLocaleDateString("en-GB");
+
       const time = new Date().toLocaleTimeString("en-GB");
       const response = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId: Id,
@@ -1329,13 +1390,13 @@ module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
       let Check_In_status;
       let Check_Out_status;
       // const timeresdposne = calculateEarlyLate('9:00:00');
-      if (response.Check_In.time) {
+      if (response?.Check_In?.time) {
         Check_In_status = caluclateCheckInCheckOutStatus(
           response.Check_In.time,
           ["08:45:00", "09:15:00"]
         );
       }
-      if (response.Check_Out.time) {
+      if (response?.Check_Out?.time) {
         Check_Out_status = caluclateCheckInCheckOutStatus(
           response.Check_Out.time,
           ["17:15:00", "17:45:00"]
@@ -1348,9 +1409,9 @@ module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
       // console.log("Reponse for checkout", response.Check_Out.time)
 
       return res.status(200).json({
-        Check_In: response.Check_In.time,
+        Check_In: response?.Check_In?.time,
         Check_In_status,
-        Check_Out: response.Check_Out.time,
+        Check_Out: response?.Check_Out?.time,
         Check_Out_status,
       });
     }
@@ -1702,14 +1763,14 @@ module.exports.getAllEngDetails = async (req, res) => {
           ServiceEnggId: eng.EnggId,
           Date: moment(Date.now()).format("DD/MM/YYYY"),
           "Check_In.time": { $exists: true, $ne: null },
-          "Check_Out.time": { $exists: false }
+          "Check_Out.time": { $exists: false },
         });
 
         return {
           ...eng.toObject(),
           engLeaveRecord: currentLeaveRecord,
           Spare: spareParts.length || 0,
-          isCheckedIn: enggCheckIn.length ? true : false
+          isCheckedIn: enggCheckIn.length ? true : false,
         };
       })
     );
@@ -1751,7 +1812,7 @@ module.exports.getFinalReportDetails = async (req, res) => {
         (question.questionResponse.isResolved &&
           question.questionResponse.sparePartDetail.sparePartsType !== "" &&
           question.questionResponse.sparePartDetail.subsparePartspartid !==
-          "") ||
+            "") ||
         (question.questionResponse.isResolved &&
           question.questionResponse.SparePartDescription !== "") ||
         !question.questionResponse.isResolved
@@ -2014,7 +2075,6 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
         SubSparePartName: item.sparePartDetail.subsparePartspartname,
       }));
 
-
     const checkitItCallback = await clientRequestImidiateVisit.findOne({
       callbackId: serviceId,
     });
@@ -2043,7 +2103,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
             : "",
           //update spare part information in callback table
           sparePartDetails: sparePartRequestedByEngg,
-          previousServiceId: serviceId
+          previousServiceId: serviceId,
         });
       }
       if (checkitItService) {
@@ -2057,7 +2117,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
             : "",
           //update spare part information in service table
           sparePartDetails: sparePartRequestedByEngg,
-          previousServiceId: serviceId
+          previousServiceId: serviceId,
         });
       }
     }
@@ -2161,7 +2221,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
 //put request
 module.exports.putEnggBreakDetails = async (req, res) => {
   try {
-    console.log("req recieved")
+    console.log("req recieved");
     const { ServiceEnggId } = req.body;
     if (ServiceEnggId) {
       const date = new Date().toLocaleDateString("en-GB");
@@ -2177,8 +2237,8 @@ module.exports.putEnggBreakDetails = async (req, res) => {
       const result = await EnggAttendanceServiceRecord.findOne({
         ServiceEnggId,
         Date: date,
-      })
-      
+      });
+
       console.log(result, "put record values");
       if (result) {
         if (time < "12:00:00") {
@@ -2193,49 +2253,56 @@ module.exports.putEnggBreakDetails = async (req, res) => {
           let updatedTime;
           if (result.First_halfs_time) {
             updatedTime = { First_halfe_time: time };
-          }
-          else {
+          } else {
             updatedTime = { First_halfs_time: time };
           }
-          const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
-            ServiceEnggId,
-            Date: date,
-          }, updatedTime, { new: true });
+          const updatedRecord =
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime,
+              { new: true }
+            );
 
           if (updatedRecord?.First_halfe_time) {
             return res.status(200).json({
               status: "stop",
               message: "Break Ended Successfully",
-              data:{
-                "first": false,
-                "lunch":false,
-                "second":false
-              }
+              data: {
+                first: false,
+                lunch: false,
+                second: false,
+              },
             });
           }
 
           return res.status(200).json({
             status: "success",
             message: "Break Started Successfully",
-            data:{
-              "first": true,
-              "lunch":false,
-              "second":false
-            }
+            data: {
+              first: true,
+              lunch: false,
+              second: false,
+            },
           });
-        }
-
-        else if (time >= "12:00:00" && time < "16:00:00") {
+        } else if (time >= "12:00:00" && time < "16:00:00") {
           let updatedTime;
           //will save in lunch break
           if (result?.First_halfs_time && !result?.First_halfe_time) {
-            updatedTime = { First_halfe_time: time }
-            await EnggAttendanceServiceRecord.findOneAndUpdate({
-              ServiceEnggId,
-              Date: date,
-            }, updatedTime, { new: true });
-            return res.status(200).json({  status: "stop",
-              message: "Break Ended Successfully", })
+            updatedTime = { First_halfe_time: time };
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime,
+              { new: true }
+            );
+            return res
+              .status(200)
+              .json({ status: "stop", message: "Break Ended Successfully" });
           }
           if (result?.Lunch_breaks_time && result?.Lunch_breake_time) {
             return res.status(200).json({
@@ -2245,14 +2312,18 @@ module.exports.putEnggBreakDetails = async (req, res) => {
           }
           if (result.Lunch_breaks_time) {
             updatedTime = { Lunch_breake_time: time };
-          }
-          else {
+          } else {
             updatedTime = { Lunch_breaks_time: time };
           }
-          const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
-            ServiceEnggId,
-            Date: date,
-          }, updatedTime, { new: true });
+          const updatedRecord =
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime,
+              { new: true }
+            );
 
           if (updatedRecord?.Lunch_breake_time) {
             return res.status(200).json({
@@ -2264,32 +2335,41 @@ module.exports.putEnggBreakDetails = async (req, res) => {
           return res.status(200).json({
             status: "success",
             message: "Break Started Successfully",
-            data:{
-              "first": false,
-              "lunch":true,
-              "second":false
-            }
+            data: {
+              first: false,
+              lunch: true,
+              second: false,
+            },
           });
-        }
-        else {
+        } else {
           //will save in second half break
           let updatedTime2;
           if (result?.First_halfs_time && !result?.First_halfe_time) {
-            updatedTime2 = { First_halfe_time: time }
-            await EnggAttendanceServiceRecord.findOneAndUpdate({
-              ServiceEnggId,
-              Date: date,
-            }, updatedTime2, { new: true });
-            return res.status(200).json({ status:"stop",message: "Stopped Previous Break" })
-          }
-          else if (result?.Lunch_breaks_time && !result?.Lunch_breake_time) {
-            updatedTime2 = { Lunch_breake_time: time }
-            await EnggAttendanceServiceRecord.findOneAndUpdate({
-              ServiceEnggId,
-              Date: date,
-            }, updatedTime2, { new: true });
-            return res.status(200).json({  status: "stop",
-              message: "Break Ended Successfully", })
+            updatedTime2 = { First_halfe_time: time };
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime2,
+              { new: true }
+            );
+            return res
+              .status(200)
+              .json({ status: "stop", message: "Stopped Previous Break" });
+          } else if (result?.Lunch_breaks_time && !result?.Lunch_breake_time) {
+            updatedTime2 = { Lunch_breake_time: time };
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime2,
+              { new: true }
+            );
+            return res
+              .status(200)
+              .json({ status: "stop", message: "Break Ended Successfully" });
           }
 
           if (result?.Second_halfs_time && result?.Second_halfe_time) {
@@ -2301,14 +2381,18 @@ module.exports.putEnggBreakDetails = async (req, res) => {
           let updatedTime;
           if (result.Second_halfs_time) {
             updatedTime = { Second_halfe_time: time };
-          }
-          else {
+          } else {
             updatedTime = { Second_halfs_time: time };
           }
-          const updatedRecord = await EnggAttendanceServiceRecord.findOneAndUpdate({
-            ServiceEnggId,
-            Date: date,
-          }, updatedTime, { new: true });
+          const updatedRecord =
+            await EnggAttendanceServiceRecord.findOneAndUpdate(
+              {
+                ServiceEnggId,
+                Date: date,
+              },
+              updatedTime,
+              { new: true }
+            );
 
           if (updatedRecord?.Second_halfe_time) {
             return res.status(200).json({
@@ -2320,66 +2404,61 @@ module.exports.putEnggBreakDetails = async (req, res) => {
           return res.status(200).json({
             status: "success",
             message: "Break Started Successfully",
-            data:{
-              "first": false,
-              "lunch":false,
-              "second":true
-            }
+            data: {
+              first: false,
+              lunch: false,
+              second: true,
+            },
           });
         }
-      }
-      else {
+      } else {
         return res.status(400).json({
           status: "error",
           message: "Employee not Detected",
         });
       }
-    }
-    else {
+    } else {
       return res
         .status(500)
         .json({ error: "ServiceId not found / Try to login again !" });
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
     return res.status(500).json({
       error: "Internal server error while updating status in report",
     });
   }
-}
+};
 module.exports.getEnggBreakDetails = async (req, res) => {
   try {
-    console.log(req.params, "Params")
+    console.log(req.params, "Params");
     const { ServiceEnggId } = req.params;
     if (ServiceEnggId) {
-      const date = new Date().toLocaleDateString("en-GB")
-      console.log(date, "date", ServiceEnggId)
-        const result = await EnggAttendanceServiceRecord.findOne({
-          ServiceEnggId,
-          Date: date,
-        });
-      
-      console.log(result, "get request")
+      const date = new Date().toLocaleDateString("en-GB");
+      console.log(date, "date", ServiceEnggId);
+      const result = await EnggAttendanceServiceRecord.findOne({
+        ServiceEnggId,
+        Date: date,
+      });
+
+      console.log(result, "get request");
       let values = {
-        "FirstBreak": {},
-        "LunchBreak": {},
-        "SecondBreak": {},
+        FirstBreak: {},
+        LunchBreak: {},
+        SecondBreak: {},
       };
       if (result) {
         // For first half
         if (!result.First_halfs_time && !result.First_halfe_time) {
           values.FirstBreak = { play: false, time: "15" };
-        }
-        else if (result.First_halfs_time && result.First_halfe_time) {
+        } else if (result.First_halfs_time && result.First_halfe_time) {
           const remaintime = calculateTwotimedifference(
             result.First_halfs_time,
             result.First_halfe_time,
             15
           );
           values.FirstBreak = { play: false, time: remaintime };
-        }
-        else {
+        } else {
           const remaintime = calculateTimedifference(
             result.First_halfs_time,
             15
@@ -2394,17 +2473,15 @@ module.exports.getEnggBreakDetails = async (req, res) => {
             result.Lunch_breake_time,
             30
           );
-          console.log(remaintime, "remaining timwe")
+          console.log(remaintime, "remaining timwe");
           values.LunchBreak = { play: false, time: remaintime };
-        }
-        else if (result.Lunch_breaks_time && !result.Lunch_breake_time) {
+        } else if (result.Lunch_breaks_time && !result.Lunch_breake_time) {
           const remaintime = calculateTimedifference(
             result.Lunch_breaks_time,
             30
           );
           values.LunchBreak = { play: true, time: remaintime };
-        }
-        else {
+        } else {
           values.LunchBreak = { play: false, time: "30" };
         }
 
@@ -2416,37 +2493,37 @@ module.exports.getEnggBreakDetails = async (req, res) => {
             15
           );
           values.SecondBreak = { play: false, time: remaintime };
-        }
-        else if (result.Second_halfs_time && !result.Second_halfe_time) {
+        } else if (result.Second_halfs_time && !result.Second_halfe_time) {
           const remaintime = calculateTimedifference(
             result.Second_halfs_time,
             15
           );
           values.SecondBreak = { play: true, time: remaintime };
-        }
-        else {
+        } else {
           values.SecondBreak = { play: false, time: "15" };
         }
         return res.status(200).json({ status: "success", data: values });
-      }
-      else {
+      } else {
         values = {
-          "FirstBreak": {
+          FirstBreak: {
             play: false,
-            time: "0"
-          }, "LunchBreak": {
+            time: "0",
+          },
+          LunchBreak: {
             play: false,
-            time: "0"
-          }, "SecondBreak": {
+            time: "0",
+          },
+          SecondBreak: {
             play: false,
-            time: "0"
-          }
-        }
+            time: "0",
+          },
+        };
         return res.status(200).json({ status: "success", data: values });
       }
-    }
-    else {
-      return res.status(400).json({ status: "error", message: "Invalid ServiceEnggId" });
+    } else {
+      return res
+        .status(400)
+        .json({ status: "error", message: "Invalid ServiceEnggId" });
     }
   } catch (error) {
     console.log(error, "Error of catch");
@@ -2454,7 +2531,7 @@ module.exports.getEnggBreakDetails = async (req, res) => {
       .status(500)
       .json({ error: "Internal server error ! Contact Developer." });
   }
-}
+};
 //--------------------------------------------------------------------------------------------------------------------------------
 //==================================================================
 //==================================================================

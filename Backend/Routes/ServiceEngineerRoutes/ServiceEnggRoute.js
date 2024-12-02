@@ -169,9 +169,14 @@ const checkOutAttendance = async (req, res, next) => {
         .status(403)
         .json({ status: "Error", message: "Engg not CheckedIN" });
     }
-    if((checksum?.First_halfs_time && !checksum?.First_halfe_time)|| (checksum?.Lunch_breaks_time && !checksum?.Lunch_breake_time) || (checksum?.Second_halfs_time && !checksum?.Second_halfe_time))
-    {
-      return res.status(403).json({ message: "Engg is in Break can't Checkout" });
+    if (
+      (checksum?.First_halfs_time && !checksum?.First_halfe_time) ||
+      (checksum?.Lunch_breaks_time && !checksum?.Lunch_breake_time) ||
+      (checksum?.Second_halfs_time && !checksum?.Second_halfe_time)
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Engg is in Break can't Checkout" });
     }
     if (checksum?.Check_Out?.time) {
       return res.status(403).json({ message: "Engg already CheckedOUT" });
@@ -202,17 +207,15 @@ const checkInorOutAttendance = async (req, res, next) => {
       });
     }
     if (checkIn?.Check_In?.time && checkIn?.Check_Out?.time) {
-      return res
-        .status(403)
-        .json({
-          status: "Error",
-          message: "Break is not applicable after CheckedOut",
-        });
+      return res.status(403).json({
+        status: "Error",
+        message: "Break is not applicable after CheckedOut",
+      });
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();
     }
-    console.log("yeh hua")
+    console.log("yeh hua");
   }
 };
 
@@ -248,8 +251,6 @@ router.get(
   "/fetchEnggAttendance/:ServiceEnggId/:selectedDate",
   adminContoller.fetchEnggAttendance
 );
-
-
 
 router.get(
   "/EnggCheckInCheckOutDetals/:ServiceEnggId",
@@ -363,16 +364,16 @@ router.put(
   "/startAndEndBreakDetails",
   checkClientDeviceLogins,
   checkInorOutAttendance,
-  serviceEnggContoller.putEnggBreakDetails 
+  serviceEnggContoller.putEnggBreakDetails
 );
 //===================================================================================
 // router.get(
 //   "/getfirsthalftime/:ServiceEnggId",
 //   checkClientDeviceLogins,
 //   serviceEnggContoller.EnggFirsthalfinfo
-// );  
+// );
 
-// router.get(   
+// router.get(
 //   "/getsecondhalftime/:ServiceEnggId",
 //   checkClientDeviceLogins,
 //   serviceEnggContoller.EnggSecondhalfinfo

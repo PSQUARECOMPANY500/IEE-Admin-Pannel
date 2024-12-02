@@ -9,10 +9,7 @@ import moment from "moment";
 import callbackicon from "../../../../../src/Assets/Images/NotificationIcons/callback.png";
 import sparePrtReqwuestIcon from "../../../../../src/Assets/Images/NotificationIcons/repair.png";
 
-
-
-import attendance from "../../../../../src/Assets/Images/NotificationIcons/calendar.png";  //TODO:
-
+import attendance from "../../../../../src/Assets/Images/NotificationIcons/calendar.png"; //TODO:
 
 import messageIcon from "../../../../../src/Assets/Images/NotificationIcons/messageIcon.png";
 
@@ -21,9 +18,7 @@ import leaveIcon from "../../../../../src/Assets/Images/NotificationIcons/leaveI
 
 import rating from "../../../../../src/Assets/Images/NotificationIcons/rating.png";
 
-
-
-const NotificationSection = ({cancelNotification}) => {
+const NotificationSection = ({ cancelNotification }) => {
   const dispatch = useDispatch();
   const [lengthCount, setLengthCount] = useState({
     All: 0,
@@ -111,7 +106,7 @@ const NotificationSection = ({cancelNotification}) => {
       setSelectedCategory(category);
       setMoveLeft(5);
       setMoveWidth(15);
-    } else if (category === "Enginner") {
+    } else if (category === "Engineer") {
       setNotifications(Enggnotificationdata);
       setSelectedCategory(category);
       setMoveLeft(35);
@@ -130,10 +125,8 @@ const NotificationSection = ({cancelNotification}) => {
       Enginner: caluclateNumberOfNotification(Enggnotificationdata)?.length,
       Client: caluclateNumberOfNotification(Clientnotificationdata)?.length,
     });
-  }, [combineNotifications,Enggnotificationdata,Clientnotificationdata]);
+  }, [combineNotifications, Enggnotificationdata, Clientnotificationdata]);
 
-
- 
   const timeCalucalte = (time) => {
     const sortedTime = time.slice(11, 19);
     const specificTime = moment(sortedTime, "HH:mm:ss");
@@ -142,7 +135,6 @@ const NotificationSection = ({cancelNotification}) => {
 
     return difference + " hours ago";
   };
-
 
   const generateMessage = (notification) => {
     if (notification?.data?.callbackId && notification?.data?.Slot) {
@@ -201,7 +193,7 @@ const NotificationSection = ({cancelNotification}) => {
     }
 
     if (notification?.data?.Hot) {
-      return { 
+      return {
         title: "Referal",
         message: `This ${notification?.data?.jobOrderNumber} has requested a referal for ${notification?.data?.Name} from ${notification?.data?.City}.`,
         time: timeCalucalte(notification?.time),
@@ -221,22 +213,24 @@ const NotificationSection = ({cancelNotification}) => {
       };
     }
 
-    if(notification?.data?.Questions && notification?.data?.Rating && notification?.data?.Description){
-      return{
+    if (
+      notification?.data?.Questions &&
+      notification?.data?.Rating &&
+      notification?.data?.Description
+    ) {
+      return {
         title: "Rating",
         message: `${notification?.data?.JobOrderNumber} give ${notification?.data?.Rating} out of 5 to ${notification?.data?.ServiceEnggId} .`,
         time: timeCalucalte(notification?.time),
         imageIcon: rating,
-      }
+      };
     }
-
   };
 
   const filteredNotifications = notification
     ?.map((notification) => generateMessage(notification))
     ?.filter((data) => data !== null);
 
-  
   return (
     <div className="parent-Notification-div">
       <div className="child-notification-div">
@@ -262,7 +256,7 @@ const NotificationSection = ({cancelNotification}) => {
               }`}
               onClick={() => handleNotificationData("Enginner")}
             >
-              <p>Enginner</p>
+              <p>Engineer</p>
               <p>{(lengthCount && lengthCount.Enginner) || 0}</p>
             </div>
             <div
@@ -282,9 +276,7 @@ const NotificationSection = ({cancelNotification}) => {
         </div>
 
         <div className="notification-archives">
-          <NotificationSlides
-            notifications={filteredNotifications}
-          />
+          <NotificationSlides notifications={filteredNotifications} />
         </div>
       </div>
     </div>

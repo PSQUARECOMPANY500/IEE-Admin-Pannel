@@ -3,13 +3,13 @@ const Schema = mongoose.Schema;
 
 const EnggBasicDetail = new Schema(
   {
-    EnggId: {            
+    EnggId: {
       type: String,
     },
-    AlternativeNumber: {  
+    AlternativeNumber: {
       type: String,
     },
-    EnggRole:{
+    EnggRole: {
       type: String,
       // required: true,
     },
@@ -26,6 +26,7 @@ const EnggBasicDetail = new Schema(
     },
     PhoneNumber: {
       type: String,
+
       // required: true,
     },
     EnggAddress: {
@@ -41,7 +42,7 @@ const EnggBasicDetail = new Schema(
       // required: true,
     },
     Email: {
-      type: String
+      type: String,
     },
     PinCode: {
       type: String,
@@ -132,15 +133,15 @@ const EnggBasicDetail = new Schema(
     },
     AvailableCash: {
       type: Number,
-      default:0
+      default: 0,
     },
-    ActiveDevice:{
-      type:String,
-      default:""
+    ActiveDevice: {
+      type: String,
+      default: "",
     },
-    firebaseToken:{
-      type:String
-    }
+    firebaseToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -152,13 +153,9 @@ EnggBasicDetail.pre("save", function (next) {
   if (!this.EnggPassword) {
     // this.EnggId = Math.floor(100000 + Math.random() * 900000).toString();
     this.EnggPassword = Math.floor(100000 + Math.random() * 900000).toString();
-
   }
   next();
 });
-
-
-
 
 const ServiceEnggBasicInfo = mongoose.model(
   "ServiceEnggBasicDetails",

@@ -237,7 +237,7 @@ const EngeeniersSubCard = (props) => {
                       )}
                     </div>
                     <div className="table-item">ID</div>
-                    <div className="table-item">{e.EnggId}</div>
+                    <div className="table-item">{checkLengthAndDispalyName(e.EnggId)}</div>
                     <div className="table-item">LEAVES</div>
                     <div className="table-item">
                       {e.engLeaveRecord ? e.engLeaveRecord.UsedLeave : 0}
