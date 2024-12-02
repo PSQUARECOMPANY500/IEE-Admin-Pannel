@@ -1373,6 +1373,7 @@ function getCalculatedTotalHours(engData) {
 }
 //----------------------------------------------------------------------------------------------------------------
 module.exports.fetchEnggAttendance = async (req, res) => {
+  console.log("working");
   try {
     const { ServiceEnggId, selectedDate } = req.params;
     console.log(ServiceEnggId, selectedDate, "eng id and date");

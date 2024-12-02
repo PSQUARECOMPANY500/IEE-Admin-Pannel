@@ -12,6 +12,7 @@ import { RegistrationEnggDetails } from "../../../../ReduxSetup/Actions/AdminAct
 
 import toast, { Toaster } from "react-hot-toast";
 import AttendanceCalendar from "./AttendanceCalendar";
+import EngModalCalendar from "./EngModalCalendar";
 
 const AddEnggModal = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ const AddEnggModal = () => {
   const fileInputRef5 = useRef(null);
 
   const [showWorkExperience, setShowWorkExperience] = useState(false);
-
+  const [calenderPop, setCalenderPop] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -82,7 +83,6 @@ const AddEnggModal = () => {
 
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [error, setError] = useState("");
- 
 
   // useEffect(() => {
   //   document.body.style.overflow = "hidden";
@@ -324,7 +324,10 @@ const AddEnggModal = () => {
 
     const response = await RegistrationEnggDetails(formData);
 
-    console.log("this is console to check the stsatus ---------------------->>>>>>>>>>????????? ", response);
+    console.log(
+      "this is console to check the stsatus ---------------------->>>>>>>>>>????????? ",
+      response
+    );
 
     if (response.status === 200) {
       toast.error(response.data.message);
@@ -589,26 +592,47 @@ const AddEnggModal = () => {
                           }
                         }}
                       />
-
-                      <input
-                        id="dateOfBirthInput"
-                        type="text"
-                        placeholder="Date of Birth"
-                        autoComplete="off"
-                        required
-                        value={dateOfBirth}
-                        onChange={(e) => {
-                          setDateOfBirth(e.target.value);
-                          if (e.target.value.trim() !== "") {
-                            document
-                              .getElementById("dateOfBirthInput")
-                              .classList.remove("errorBorder");
-                          }
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          position: "relative",
+                          width: "50%",
                         }}
-                       
-                      />
+                      >
+                        <input
+                          id="dateOfBirthInput"
+                          type="text"
+                          placeholder="Date of Birth"
+                          autoComplete="off"
+                          required
+                          value={dateOfBirth}
+                          onClick={() => setCalenderPop(!calenderPop)}
+                          style={{
+                            width: "100%", // Take up remaining space
+                          }}
+                        />
+                        <img
+                          src="calendarIcon.png" // Example calendar icon
+                          alt="Calendar Icon"
+                          onClick={() => setCalenderPop(!calenderPop)} // Clicking image also toggles calendar
+                          style={{
+                            width: "15px",
+                            height: "15px",
+                            position: "absolute",
+                            right: "10px", // Align to the right inside the container
+                            cursor: "pointer",
+                          }}
+                        />
+                        {calenderPop && (
+                          <EngModalCalendar
+                            setTodayDate={setDateOfBirth}
+                            toggleModal={setCalenderPop}
+                          />
+                        )}
+                      </div>
                     </div>
-                
+
                     {/*------------------------ engg id and alternative number section starts  -------------------------*/}
                     <div className="PersonalDetailInput">
                       <input
@@ -1283,7 +1307,11 @@ const AddEnggModal = () => {
               {/* ----------------------------------------------------------- Work experience Section starts ---------------------------------------------------------------------------- */}
 
               <div className="addEnggButtons">
-                <button className="button-69-cancel" role="button">
+                <button
+                  className="button-69-cancel"
+                  role="button"
+                  onClick={closeModal}
+                >
                   Cancel
                 </button>
                 <button

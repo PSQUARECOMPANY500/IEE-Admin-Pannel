@@ -11,6 +11,7 @@ import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActio
 import { editEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
 import toast from "react-hot-toast";
 import config from "../../../../config";
+import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
 
 const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const [role, setRole] = useState("");
 
   const [profilePhoto, setProfilePhoto] = useState("");
-  console.log("8888888888888888888", profilePhoto.length)
+  console.log("8888888888888888888", profilePhoto.length);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -163,8 +164,10 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
         setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
         setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
 
-        console.log("vvvvvvvvvvvvvvvvvvv", getEnggBasicData.enggDetails.EnggPhoto.length)
-
+        console.log(
+          "vvvvvvvvvvvvvvvvvvv",
+          getEnggBasicData.enggDetails.EnggPhoto.length
+        );
       }
     };
 
@@ -227,9 +230,6 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
       label: "Erection Engineer",
     },
   ];
-
-
-
 
   const getSortedData = (qualification) => {
     return QualificationData.filter((item) => qualification === item.value).map(
@@ -429,7 +429,7 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
       // }
     };
 
-    checkRequiredFields();
+    // checkRequiredFields();
     const formData = new FormData();
     formData.append("profilePhoto", profilePhoto);
     formData.append("firstName", firstName);
@@ -470,7 +470,7 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
 
     if (editEnggPersonal?.status === true) {
       toast.success("Engineer Edited successfully");
-      setOpenForm(false)
+      setOpenForm(false);
     }
   };
   return (
@@ -582,23 +582,10 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
                         }
                       }}
                     />
-
-                    <input
-                      disabled={!editchange}
-                      id="dateOfBirthInput"
-                      autoComplete="off"
-                      type="text"
-                      placeholder="Date of Birth"
-                      value={dateOfBirth}
-                      onChange={(e) => {
-                        setDateOfBirth(e.target.value);
-                        if (e.target.value.trim() !== "") {
-                          document
-                            .getElementById("dateOfBirthInput")
-                            .classList.remove("errorBorder");
-                        }
-                      }}
-                    />
+                    
+                    
+      
+                    
                   </div>
 
                   {/*------------------------ engg id and alternative number section starts  -------------------------*/}
@@ -664,8 +651,6 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
                         onClick={() => handleClick(4)}
                         style={{ outline: "none" }}
                       >
-
-
                         {editchange ? (
                           <AddEnggAttachment
                             width="100%"
@@ -675,8 +660,6 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
                             onRoleChange={onRoleChange}
                             value={role}
                           />
-
-
                         ) : (
                           <AddEnggAttachment
                             width="100%"
