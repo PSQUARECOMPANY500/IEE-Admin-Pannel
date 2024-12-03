@@ -674,9 +674,7 @@ module.exports.fetchClientServiceHistory = async (req, res) => {
       })
     );
 
-    return res.status(200).json({
-      enrichedHistory
-    })
+   
     // console.log('-------------------------------->', enrichedHistory)
 
     const latestDateEntry = enrichedHistory.filter(

@@ -152,14 +152,19 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
     const formData = req.files;
     const bodyData = req.body;
     console.log(bodyData, "Body Data");
-    const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
-      $and: [
-        { PhoneNumber: bodyData.mobileNumber },
-        { EnggId: bodyData.EnggId },
-      ],
-    });
 
-    if (EnggAlreadyExist.length > 0) {
+    console.log("mobileNumber",bodyData.mobileNumber, "Engg id ", bodyData.EnggId)
+
+    const EnggAlreadyExist = await ServiceEnggBasicSchema.find({
+        $or: [
+          { PhoneNumber: bodyData.mobileNumber },
+          { EnggId: bodyData.EnggId },
+        ],
+      });
+
+    console.log("Engg already exist console ", EnggAlreadyExist)
+
+    if (EnggAlreadyExist) {
       return res
         .status(200)
         .json({ message: "Engg Already Exist with this Mobile Number or ID" });
@@ -174,7 +179,7 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       PhoneNumber: bodyData.mobileNumber,
       EnggAddress: bodyData.address,
       EnggPhoto: formData?.profilePhoto
-        ? formData?.profilePhoto[0]?.filename
+        ? formData?.profilePhoto[0]?.key
         : "",
       DateOfBirth: bodyData.dateOfBirth,
       Email: bodyData.email,
@@ -192,19 +197,19 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
       AccountNumber: bodyData.accountNumber,
       IFSCcode: bodyData.IFSCcode,
       AddharPhoto: formData?.addharPhoto
-        ? formData?.addharPhoto[0]?.filename
+        ? formData?.addharPhoto[0]?.key
         : "",
       DrivingLicensePhoto: formData?.drivingLicensePhoto
-        ? formData?.drivingLicensePhoto[0]?.filename
+        ? formData?.drivingLicensePhoto[0]?.key
         : "",
       PancardPhoto: formData?.pancardPhoto
-        ? formData?.pancardPhoto[0]?.filename
+        ? formData?.pancardPhoto[0]?.key
         : "",
       QualificationPhoto: formData?.qualificationPhoto
-        ? formData?.qualificationPhoto[0]?.filename
+        ? formData?.qualificationPhoto[0]?.key
         : "",
       AdditionalCoursePhoto: formData?.additionalCoursePhoto
-        ? formData?.additionalCoursePhoto[0]?.filename
+        ? formData?.additionalCoursePhoto[0]?.key
         : "",
       DurationOfJob: bodyData.jobDuration,
       CompanyName: bodyData.companyName,
@@ -782,8 +787,8 @@ module.exports.EnggCheckIn = async (req, res) => {
   try {
     const ServiceEnggId = req.params.ServiceEnggId;
     const images = req.files;
-    const frontimagename = images?.frontimage[0].filename;
-    const backimagename = images?.backimage[0].filename;
+    const frontimagename = images?.frontimage[0].key;
+    const backimagename = images?.backimage[0].key;
     const { IsAttendance } = req.body;
     if (IsAttendance && ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;
@@ -870,8 +875,8 @@ module.exports.EnggCheckOut = async (req, res) => {
   //console.log("req of checkout",req)
   try {
     const images = req.files;
-    const frontimagename = images?.frontimage[0].filename;
-    const backimagename = images?.backimage[0].filename;
+    const frontimagename = images?.frontimage[0].key;
+    const backimagename = images?.backimage[0].key;
     const ServiceEnggId = req.params.ServiceEnggId;
     if (ServiceEnggId) {
       const enggPhoto = frontimagename + " " + backimagename;
@@ -1158,12 +1163,8 @@ module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } = req.body;
 
-    // console.log("preert000000000000--------------", req.files.document[0].filename);
-    // return ;
-    // return;
-
-    console.log("this is Iqbal kurashi ", req.files )
-      console.log("this is Iqbal kurashi ", req.body )
+    // console.log("this is Iqbal kurashi ", req.files )
+      // console.log("this is Iqbal kurashi ", req.body )
 
 
     let document,
@@ -1571,17 +1572,17 @@ module.exports.GenerateReportByEngg = async (req, res) => {
     const file = req.files;
     let ReportData;
 
-    console.log(reqs);
+    // console.log(reqs);
 
     // console.log("20",req.body)
-    // console.log("21",req.files)
+    console.log("21",req.files)
 
     const serviceExist = await ReportInfoModel.findOne({
       serviceId: reqs.serviceId,
     });
     const QuestionResponse = JSON.parse(reqs.questionsDetails);
 
-    const photoFileNames = file.photoss.map((file) => file.filename);
+    const photoFileNames = file.photoss.map((file) => file.key);
     const uploaddata = [
       {
         subCategoriesPhotosId: reqs.subCategoriesphotos?.subCategoriesPhotosId,
@@ -1998,7 +1999,7 @@ module.exports.UpdatePaymentDetilsAndSparePartRequested = async (req, res) => {
         { $inc: { AvailableCash: JSON.parse(paymentdata).Total_Amount } }
       );
     }
-    const paymentPDF = req.files.report[0].filename;
+    const paymentPDF = req.files.report[0].key;
 
     ReportData.paymentDetils = paymentPDF;
     ReportData.isVerify = true;
