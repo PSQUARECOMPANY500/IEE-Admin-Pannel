@@ -28,6 +28,11 @@ import { BsArrowLeft } from "react-icons/bs";
 import "../../../../Assets/Engeeniers.css";
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import { FaFileDownload } from "react-icons/fa";
+
+import DownloadEnggAttendanceForm  from "../EngeeniersSubComponent/DownloadEnggAttendanceForm"
+import dummypng from "../../../../Assets/Images/dummy_image.png"
+
 const EngeeniersCard = () => {
   const navigate = useNavigate();
 
@@ -41,6 +46,12 @@ const EngeeniersCard = () => {
   const [isFirst, setIsFirst] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
+  const [openEnggAttendancePopUp,setopenEnggAttendancePopUp] = useState(false);
+
+
+
+
+
   const [isSecond, setIsSecond] = useState(false);
   const [borderMergin, setBorderMargin] = useState(0);
   const [engID, setEngID] = useState(null);
@@ -58,6 +69,8 @@ const EngeeniersCard = () => {
 
   const [ImageURL, setImageURL] = useState();
 
+  console.log("this is image URL ------>>>>   <<<<-------- ",ImageURL)
+
   const formRef = useRef();
   const handleClickOutsideModal = (event) => {
     if (formRef.current && !formRef.current.contains(event.target)) {
@@ -74,7 +87,7 @@ const EngeeniersCard = () => {
   }, []);
 
   function checkLengthAndDispalyName(name) {
-    if (name.length > 9) {
+    if (name?.length > 9) {
       return name.slice(0, 10) + "...";
     }
     return name;
@@ -138,6 +151,7 @@ const EngeeniersCard = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setopenEnggAttendancePopUp(false);
   };
 
   useEffect(() => {
@@ -199,7 +213,6 @@ const EngeeniersCard = () => {
   useEffect(() => {
     setAllMessages([]);
     setIsLoadingMessages(true);
-    console.log("_____________________________", engID);
     enggObjectId &&
       dispatch(createChatActions(enggObjectId, decodeAdmin.user._id)); //TODO: - in future the id is dynamic as come from login user
     if (chatCreated?._id && engID) {
@@ -370,7 +383,7 @@ const EngeeniersCard = () => {
 
                   <div className="Pimg">
                     {/* <img src={currentengImg} alt="eng persnol image" /> */}
-                    <img src={ImageURL} alt="eng persnol image" />
+                    <img src={ImageURL || dummypng } alt="eng persnol image" />
                     {/* <img
                       src={
                         currentengImg?.length === 0
@@ -394,10 +407,21 @@ const EngeeniersCard = () => {
                 <h1 className="ooo">
                   Cash In Hand: <span>{currentengCash}</span>
                 </h1>
+
+                {/* ------------------------------------  open pop up that brings the month name ----------------------- ------------- */}
+
+                <FaFileDownload className="Icon_Color"
+                onClick={() => setopenEnggAttendancePopUp(true)}
+                />
+                {/* ------------------------------------  open pop up that brings the month name ----------------------- ------------- */}
+
+
                 <FaRegFileAlt
                   className="Icon_Color"
                   onClick={() => setOpenModal(true)}
                 />
+
+              
               </div>
               <div className="ODetailsColumn">
                 <h5
@@ -564,6 +588,13 @@ const EngeeniersCard = () => {
         <div className="engineer-modal-wrapper">
           <div className="engineer-modal-container" ref={formRef}>
             <EditEngineerDetails engID={engID} onClose={handleCloseModal} />
+          </div>
+        </div>
+      )}
+      {openEnggAttendancePopUp && (
+        <div className="engineer-modal-wrapper">
+          <div className="engineer-modal-container" ref={formRef}>
+            <DownloadEnggAttendanceForm engID={engID} onClose={handleCloseModal} />
           </div>
         </div>
       )}

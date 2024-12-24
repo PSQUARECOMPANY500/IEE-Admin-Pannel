@@ -56,6 +56,9 @@ const EngineerLocation = require("../../Modals/LocationModel/EnggLocationSchema"
 
 const mongoose = require("mongoose");
 
+const path = require('path');
+
+
 const nodemailer = require("nodemailer");
 const Notification = require("../../Modals/NotificationModal/notificationModal");
 const { response } = require("express");
@@ -64,6 +67,8 @@ const moment = require("moment");
 const clientRegistration = require("../../Modals/ClientDetailModals/RegisterClientDetailSchema");
 
 const registerWithMobileNumber = require("../../Modals/ClientDetailModals/RegisterClientWithNumberSchema");
+
+const generateDailyAttendancePDF = require("../../Utils/EngineerAttendence/generateDailyAttendancePDF")
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -79,11 +84,9 @@ module.exports.getEnggCrouserData = async (req, res) => {
     );
     const currentDate = new Date();
 
-    // console.log("current date crouser ",currentDate.toLocaleDateString("en-GB"));
 
     const BasicDetail = await Promise.all(
       EnggDetail.map(async (item) => {
-        // console.log("this is data inside the service Engg crouser>>>>>>>> ",item);
         //fetch data engg break time
         const enggBreakTimining = await EnggAttendanceServiceRecord.find({
           ServiceEnggId: item.EnggId,
@@ -114,7 +117,6 @@ module.exports.getEnggCrouserData = async (req, res) => {
         const mainDetails = serviceAssignments
           .concat(assignScheduleRequests)
           .map((data) =>
-            // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", data),
             ({
               ServiceEnggId: data.ServiceEnggId,
               serviceId: data.callbackId ? data.callbackId : data.RequestId,
@@ -220,7 +222,6 @@ module.exports.getBookedSlotsForParticularEngg = async (req, res) => {
 
     const combinedData = [...assignCallbackDate, ...assignRequestDate];
 
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",combinedData);
 
     // Grouping slots by ServiceEnggId
     const slotsByEnggId = {};
@@ -357,7 +358,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         message: "no callback for today's",
       });
     }
-    // console.log("currentDetailCallback", currentDetailCallback);
     const callbackWithDetails = await Promise.all(
       currentDetailCallback.map(async (item) => {
         const callbackdetail = await getAllCalbacks.findOne({
@@ -397,7 +397,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
           ? callbackdetail.RepresentativeNumber
           : null;
         const engRating = rating?.Rating;
-        console.log("================engRating", engRating);
         return {
           ...item._doc,
           enggName,
@@ -413,7 +412,6 @@ module.exports.getCurrentDateAssignCallback = async (req, res) => {
         };
       })
     );
-    console.log(callbackWithDetails);
     const clearUndefined = callbackWithDetails.filter(
       (item) => item !== undefined
     );
@@ -658,7 +656,6 @@ module.exports.assignCallbacks = async (req, res) => {
       callbackId,
     });
 
-    console.log("]]]]]", existingCallback);
 
     if (existingCallback) {
       // Update existing data
@@ -692,7 +689,6 @@ module.exports.assignCallbacks = async (req, res) => {
         ServiceProcess,
       });
     }
-    // console.log("***",callback._id)
     const populatedCallback = await ServiceAssigntoEngg.findById(callback._id)
       .populate("AllotAChecklist")
       .exec();
@@ -873,7 +869,6 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
       callbackId,
     });
 
-    // console.log("HE",clientCallbacksDetails)
 
     if (!clientCallbacksDetails) {
       res.status(404).json({
@@ -884,7 +879,6 @@ module.exports.getCallbackDetailByCallbackId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
     });
-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
 
     const allCallBacks = await assignCallback.find({
       JobOrderNumber: clientCallbacksDetails.JobOrderNumber,
@@ -918,7 +912,6 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
     const clientRequestDetails = await getAllServiceRequest.findOne({
       RequestId,
     });
-    // console.log("clientRequestDetails",clientRequestDetails)
     if (!clientRequestDetails) {
       res.status(404).json({
         message: "no data found with this Request id",
@@ -928,7 +921,6 @@ module.exports.getRequestDetailByRequestId = async (req, res) => {
     const clientDetail = await clientDetailSchema.findOne({
       JobOrderNumber: clientRequestDetails.JobOrderNumber,
     });
-    // console.log("HE",clientCallbacksDetails.JobOrderNumber)
 
     const RequestClientdetails = {
       ...clientRequestDetails._doc,
@@ -1356,19 +1348,7 @@ function getCalculatedTotalHours(engData) {
   totalBreakHours = Math.floor(
     firstBreakTime + lunchBreakTime + secondBreakTime
   );
-  // console.log(totalBreakHours, "total break hours");
 
-  // const startTime = engData.Check_In.time;
-  // const checkouttime = engData.Check_Out.time;
-  // const finalTimeinMins = calculateTwotimedifferenceinMins(startTime,checkouttime);
-  // const hoursOfFinalTime = Math.floor(finalTimeinMins/60);
-  // const finalTime = `${hoursOfFinalTime}:${finalTimeinMins - (hoursOfFinalTime*60)}`
-  // console.log(finalTime, "final time")
-
-  // const totalWorkHoursinMins = finalTimeinMins - totalBreakHours;
-  // const totalWorkHours = Math.floor(totalWorkHoursinMins/60);
-  // let finalTotalTime= `${totalWorkHours}:${totalWorkHoursinMins - (totalWorkHours*60)}`
-  // console.log(finalTotalTime,"final total time")
   return totalBreakHours;
 }
 //----------------------------------------------------------------------------------------------------------------
@@ -1414,14 +1394,7 @@ module.exports.fetchEnggAttendance = async (req, res) => {
         })
       );
 
-      //console.log(attendanceData)
-      // let val = response
-      // if(!response.Total_Hours)
-      // {
-      //   const total_hours = getCalculatedTotalHours(response);
-      //   const val = await EnggAttendanceServiceRecord.findOneAndUpdate({ServiceEnggId,
-      //     Date: date,},{Total_Hours:total_hours},{new:true});
-      // }
+   
       return res.status(200).json({
         attendanceData,
       });
@@ -1635,7 +1608,6 @@ module.exports.filterClient = async (req, res) => {
             client.MembershipType &&
             client.MembershipType.toLowerCase() === condition.toLowerCase()
         );
-        console.log(membership);
         if (membershipData && membershipData.length) {
           membershipData = [...membershipData, ...membership];
         } else {
@@ -2985,12 +2957,12 @@ module.exports.postElevatorForm = async (req, res) => {
     });
 
     await elevatorFormSchema.save();
-    console.log({
-      JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
-      name: clientFormDetails.userName,
-      PhoneNumber: clientFormDetails.phoneNumber,
-      Address: clientFormDetails.address,
-    });
+    // console.log({
+    //   JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
+    //   name: clientFormDetails.userName,
+    //   PhoneNumber: clientFormDetails.phoneNumber,
+    //   Address: clientFormDetails.address,
+    // });
 
     await clientDetailSchema.create({
       JobOrderNumber: elevatorFormSchema.clientFormDetails.jon,
@@ -3011,10 +2983,10 @@ module.exports.postElevatorForm = async (req, res) => {
     const checkExistingClientOrNot = await registerWithMobileNumber.findOne({
       PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
     });
-    console.log(
-      "login ---------------------- save data",
-      checkExistingClientOrNot
-    );
+    // console.log(
+    //   "login ---------------------- save data",
+    //   checkExistingClientOrNot
+    // );
     if (!checkExistingClientOrNot) {
       await registerWithMobileNumber.create({
         PhoneNumber: elevatorFormSchema.clientFormDetails.phoneNumber,
@@ -3038,7 +3010,6 @@ module.exports.putElevatorForm = async (req, res) => {
     const newData = req.body;
     const JON = req.body.JON;
     delete newData.JON;
-    console.log(newData.stops);
     const updatedData = await ElevatorFormSchema.findOneAndUpdate(
       { "clientFormDetails.jon": JON },
       { elevatorDetails: newData },
@@ -3063,11 +3034,7 @@ module.exports.getNotification = async (req, res) => {
     const now = new Date()
       .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
       .split(",")[0];
-
-    console.log("this is notification todays data ", now);
-
     const response = await Notification.find({ Date: now });
-    // console.log("response", response);
     if (response) {
       return res.status(200).json({ status: "success", response: response });
     }
@@ -3078,85 +3045,7 @@ module.exports.getNotification = async (req, res) => {
   }
 };
 
-// by aayush for rating admin=================================
-
-//-----------------------------------------------------------------------
-// by armaan regarding 3rd step in client submision form
-
-// module.exports.updatElevatorDimensions = async (req, res) => {
-//   try {
-//     const files = req.files;
-//     const { JON } = req.body;
-//     const first = req.body.data[0];
-//     const second = req.body.data[1];
-
-//     const data = await ElevatorFormSchema.findOne({ 'clientFormDetails.jon': JON });
-//     if (!data) {
-//       return res.status(404).json({ error: 'Data not found' });
-//     }
-//     let Data = data;
-//     // Data.dimensions.pitPoint.levelName = first.pitPoint.levelName;
-//     // console.log((first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined);
-//     if (((Data.dimensions.pitPoint.levelName) === undefined) && first.pitPoint) {
-//       console.log(1);
-//       Data.dimensions.pitPoint = first.pitPoint;
-//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
-//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
-//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
-
-//       Data.dimensions.floors[0] = second.floors[0];
-//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
-//     }
-//     else if (first.pitPoint && (first.pitPoint.levelName === Data.dimensions.pitPoint.levelName)) {
-//       console.log(2);
-//       Data.dimensions.pitPoint = first.pitPoint;
-//       Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].originalname;
-//       Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].originalname;
-//       Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].originalname;
-
-//       Data.dimensions.floors[0] = second.floors[0];
-//       Data.dimensions.floors[0].sitePhotos = files[3].originalname;
-//     }
-//     else if (first.topPoint && (first.topPoint.levelName === Data.dimensions.topPoint.levelName && second === undefined) || Data.dimensions.topPoint.levelName === undefined) {
-//       console.log(3);
-//       Data.dimensions.topPoint = first.topPoint;
-//       console.log(Data);
-//       Data.dimensions.topPoint.sitePhotos.floorFront = files[0].originalname;
-//       Data.dimensions.topPoint.sitePhotos.bottomToTopImages = files[1].originalname;
-//       Data.dimensions.topPoint.sitePhotos.overheadImages = files[2].originalname;
-//     }
-//     else if (second.topPoint && (second.topPoint.levelName === Data.dimensions.topPoint.levelName)) {
-//       console.log(4);
-//       Data.topPoint = second.topPoint;
-//       Data.topPoint.sitePhotos.floorFront = files[1].originalname;
-//       Data.topPoint.sitePhotos.bottomToTopImages = files[2].originalname;
-//       Data.topPoint.sitePhotos.overheadImages = files[3].originalname;
-
-//       if (Data.floors.find(floor => floor.levelName === first.levelName)){
-
-//       }
-//       Data.floors[Data.floors.length() - 1] = second;
-//       Data.floors[Data.floors.length() - 1].sitePhotos = files[0].originalname;
-//     }
-//     // else {
-//     //   Data.floors.find(floor => floor.levelName === first.levelName) = first;
-//     //   Data.floors.find(floor => floor.levelName === first.levelName).sitePhotos = files[0].originalname;
-//     //   Data.floors.find(second => floor.levelName === second.levelName) = second;
-//     //   Data.floors.find(second => floor.levelName === second.levelName).sitePhotos = files[1].originalname;
-//     // }
-
-//     Data.save();
-
-//     res.status(200).json({ success: true, Data });
-
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       error: "Internal server error",
-//       message: err.message
-//     })
-//   }
-// }
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
 function updateFormData(formData, fieldName, url) {
   const parts = fieldName.replace(/\]/g, "").split("[");
@@ -3211,20 +3100,9 @@ module.exports.updatElevatorDimensions = async (req, res) => {
     Data.dimensions.pitPoint = pitPoint;
     Data.dimensions.floors = floors;
 
-    // Data.dimensions.pitPoint.sitePhotos.pitImage = files[0].filename;
-    // Data.dimensions.pitPoint.sitePhotos.bottomToTopImages = files[1].filename;
-    // Data.dimensions.pitPoint.sitePhotos.basementFrontImages = files[2].filename;
-
-    // Data.dimensions.topPoint.sitePhotos.floorFront =
-    //   files[files.length - 3].filename;
-    // Data.dimensions.topPoint.sitePhotos.bottomToTopImages =
-    //   files[files.length - 2].filename;
-    // Data.dimensions.topPoint.sitePhotos.overheadImages =
-    //   files[files.length - 1].filename;
 
     let i = 0;
     let data = Data.dimensions;
-    console.log(files);
     files.forEach((file, index) => {
       updateFormData(data, file.fieldname, file.filename);
     });
@@ -3361,7 +3239,7 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         PhoneNumber: bodyData.mobileNumber,
         EnggAddress: bodyData.address,
         EnggPhoto: formData?.profilePhoto
-          ? formData?.profilePhoto[0]?.filename
+          ? formData?.profilePhoto[0]?.key
           : EnggDataChecker.EnggPhoto
           ? EnggDataChecker.EnggPhoto
           : "",
@@ -3381,27 +3259,27 @@ module.exports.editEnggDetailsForm = async (req, res) => {
         AccountNumber: bodyData.accountNumber,
         IFSCcode: bodyData.IFSCcode,
         AddharPhoto: formData?.addharPhoto
-          ? formData?.addharPhoto[0]?.filename
+          ? formData?.addharPhoto[0]?.key
           : EnggDataChecker.AddharPhoto
           ? EnggDataChecker.AddharPhoto
           : "",
         DrivingLicensePhoto: formData?.drivingLicensePhoto
-          ? formData?.drivingLicensePhoto[0]?.filename
+          ? formData?.drivingLicensePhoto[0]?.key
           : EnggDataChecker.DrivingLicensePhoto
           ? EnggDataChecker.DrivingLicensePhoto
           : "",
         PancardPhoto: formData?.pancardPhoto
-          ? formData?.pancardPhoto[0]?.filename
+          ? formData?.pancardPhoto[0]?.key
           : EnggDataChecker.PancardPhoto
           ? EnggDataChecker.PancardPhoto
           : "",
         QualificationPhoto: formData?.qualificationPhoto
-          ? formData?.qualificationPhoto[0]?.filename
+          ? formData?.qualificationPhoto[0]?.key
           : EnggDataChecker.QualificationPhoto
           ? EnggDataChecker.QualificationPhoto
           : "",
         AdditionalCoursePhoto: formData?.additionalCoursePhoto
-          ? formData?.additionalCoursePhoto[0]?.filename
+          ? formData?.additionalCoursePhoto[0]?.key
           : EnggDataChecker.AdditionalCoursePhoto
           ? EnggDataChecker.AdditionalCoursePhoto
           : "",
@@ -3416,7 +3294,6 @@ module.exports.editEnggDetailsForm = async (req, res) => {
       }
     );
 
-    // console.log("abiiiiiii",EnggData)
 
     if (!EnggData) {
       return res.status(404).json({ message: "This JON is not found" });
@@ -3426,7 +3303,6 @@ module.exports.editEnggDetailsForm = async (req, res) => {
       .status(200)
       .json({ status: true, message: "Engg Profile updated Succesfully" });
 
-    // console.log("dooooooooooo", EnggData);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -3509,14 +3385,14 @@ module.exports.getClientCallbackByJON = async (req, res) => {
         const checklistName = await ChecklistModal.findById(
           item.AllotAChecklist
         ).select("checklistName");
-
-        const ReportDetails = await ReportTable.find({
+         const ReportDetails = await ReportTable.find({
           serviceId: item.callbackId,
         });
 
+
         const SparePartsChanged = [];
 
-        const filteredData = ReportDetails[0].questionsDetails.filter(
+        const filteredData = ReportDetails[0]?.questionsDetails?.filter(
           (question) =>
             (question.questionResponse.isResolved &&
               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
@@ -3553,6 +3429,21 @@ module.exports.getClientCallbackByJON = async (req, res) => {
       })
     );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     res.status(200).json({
       callbackHistory,
     });
@@ -3563,6 +3454,11 @@ module.exports.getClientCallbackByJON = async (req, res) => {
     });
   }
 };
+
+
+
+
+
 
 module.exports.getClientServiceHistoryByJON = async (req, res) => {
   try {
@@ -3646,7 +3542,6 @@ module.exports.getEnggRatingById = async (req, res) => {
 
     const ratingData = await EnggRating.find({ ServiceEnggId });
 
-    // console.log("jjjjjjj", ratingData);
 
     const rating = await Promise.all(
       ratingData.map(async (item) => {
@@ -3680,7 +3575,6 @@ module.exports.getEnggRatingById = async (req, res) => {
       ? (totalRatings / ratingData.length).toFixed(1)
       : 0;
 
-    // console.log("rating",rating)
 
     res.status(200).json({ rating, averageRating });
   } catch (error) {
@@ -3835,64 +3729,172 @@ module.exports.getTodoById = async (req, res) => {
 
 // Api to handle get Revenue under SparePart Details in EnggSection in frontend
 
-module.exports.getEnggSparePartRevenueData = async (req, res) => {
+// module.exports. getEnggSparePartRevenueData = async (req, res) => {
+//   try {
+//     const { EnggId } = req.params;
+
+//     const sparePartData = await ReportTable.find({ EnggId, isVerify: true });
+
+    
+
+//     if (sparePartData.length === 0) {
+//       return res.status(200).json({ message: "no Spare part data Present" });
+//     }
+//     const SparePartsChanged = [];
+
+//     const sparePartRevenueData = await Promise.all(
+//       sparePartData.map(async (item) => {
+//         const ClientName = await clientDetailSchema
+//           .findOne({ JobOrderNumber: item.JobOrderNumber })
+//           .select("JobOrderNumber name");
+
+//         const filteredData = sparePartData[0].questionsDetails.filter(
+//           (question) =>
+//             (question.questionResponse.isResolved &&
+//               question.questionResponse.sparePartDetail.sparePartsType !== "" &&
+//               question.questionResponse.sparePartDetail.subsparePartspartid !== "") ||
+//             (question.questionResponse.isResolved &&
+//               question.questionResponse.SparePartDescription !== "") ||
+//             !question.questionResponse.isResolved
+//         );
+
+//         console.log("this is filtered data ------------->>>>>  ", filteredData);
+
+        
+//         filteredData &&
+//           filteredData.forEach((element) => {
+//             if (
+//               !element.questionResponse.isSparePartRequest &&
+//               element.questionResponse.sparePartDetail.sparePartsType !== "" &&
+//               element.questionResponse.sparePartDetail.subsparePartspartid !==
+//                 "" &&
+//               element.questionResponse.isResolved
+//             ) {
+//               SparePartsChanged.push(element.questionResponse.sparePartDetail);
+//             }
+//           });
+
+
+//         return {
+//           ClientName,
+//           Date: item.Date,
+//           paymentMode: item.paymentMode,
+//           SparePartsChanged,
+//         };
+//       })
+//     );
+
+//     res.status(200).json({ sparePartRevenueData });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({
+//       error: "Internal server error getSparePartRevenueData",
+//     });
+//   }
+// };
+
+module.exports.getEnggSparePartRevenueData = async (req,res) => {
   try {
     const { EnggId } = req.params;
 
-    const sparePartData = await ReportTable.find({ EnggId, isVerify: true });
-
-    if (sparePartData.length === 0) {
-      return res.status(200).json({ message: "no Spare part data Present" });
-    }
-    const SparePartsChanged = [];
-
-    const sparePartRevenueData = await Promise.all(
-      sparePartData.map(async (item) => {
-        const ClientName = await clientDetailSchema
-          .findOne({ JobOrderNumber: item.JobOrderNumber })
-          .select("JobOrderNumber name");
-
-        const filteredData = sparePartData[0].questionsDetails.filter(
-          (question) =>
-            (question.questionResponse.isResolved &&
-              question.questionResponse.sparePartDetail.sparePartsType !== "" &&
-              question.questionResponse.sparePartDetail.subsparePartspartid !==
-                "") ||
-            (question.questionResponse.isResolved &&
-              question.questionResponse.SparePartDescription !== "") ||
-            !question.questionResponse.isResolved
-        );
-
-        filteredData &&
-          filteredData.forEach((element) => {
-            if (
-              !element.questionResponse.isSparePartRequest &&
-              element.questionResponse.sparePartDetail.sparePartsType !== "" &&
-              element.questionResponse.sparePartDetail.subsparePartspartid !==
-                "" &&
-              element.questionResponse.isResolved
-            ) {
-              SparePartsChanged.push(element.questionResponse.sparePartDetail);
+    const sparePartRevenueData = await ReportTable.aggregate(
+      [
+        {
+          $match: {
+            EnggId:`${EnggId}`,isVerify:true
+          }
+        },
+          {
+            $lookup: {
+              from: "registerclientjondetails",
+              localField: "JobOrderNumber",
+              foreignField: "JobOrderNumber",
+              as: "clientDetails"
             }
-          });
-
-        return {
-          ClientName,
-          Date: item.Date,
-          paymentMode: item.paymentMode,
-          SparePartsChanged,
-        };
-      })
-    );
+          },
+        {
+          $unwind: {
+            path: "$clientDetails",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $addFields: {
+            filterQuestion:{
+              $filter:{
+                input:"$questionsDetails",
+                as:"question",
+                cond:{
+                    $or: [
+                        {
+                          $and: [
+                            { $eq: ["$$question.questionResponse.isResolved", true] },
+                            { $ne: ["$$question.questionResponse.sparePartDetail.sparePartsType", ""] },
+                            { $ne: ["$$question.questionResponse.sparePartDetail.subsparePartspartid", ""] },
+                          ],
+                        },
+                        {
+                          $and: [
+                            { $eq: ["$$question.questionResponse.isResolved", true] },
+                            { $ne: ["$$question.questionResponse.SparePartDescription", ""] },
+                          ],
+                        },
+                      ],
+                }
+              }
+            }
+          }
+        },
+        {
+          $addFields: {
+            SparePartChanged:{
+              $map:{
+                input:{
+                  $filter:{
+                    input:"$filterQuestion",
+                    as:"question",
+                    cond:{
+                        $and: [
+                            { $eq: ["$$question.questionResponse.isSparePartRequest", false] },
+                            { $ne: ["$$question.questionResponse.sparePartDetail.sparePartsType", ""] },
+                            { $ne: ["$$question.questionResponse.sparePartDetail.subsparePartspartid", ""] },
+                            { $eq: ["$$question.questionResponse.isResolved", true] },
+                          ],
+                    }
+                  }
+                },
+                as:"sparePart",
+                in: "$$sparePart.questionResponse.sparePartDetail",
+              }
+            }
+          }
+        },
+        {
+          $project: {
+            ClientName:"$clientDetails.name",
+            JobOrderNumber:"$JobOrderNumber",
+            Date:"$Date",
+            paymentMode:"$paymentMode",
+            SparePartChanged:1
+          }
+        }
+      ]
+    )
+    
+    if (sparePartRevenueData.length === 0) {
+      return res.status(200).json({ message: "No spare part data present" });
+    }
 
     res.status(200).json({ sparePartRevenueData });
+    
   } catch (error) {
-    console.log(error);
+    console.log(err);
     return res.status(500).json({
-      error: "Internal server error getSparePartRevenueData",
+      error: "Internal server error while fetching the task",
     });
   }
-};
+}
+
 
 //-----------------------------------------------------------------------------------------------------------------
 
@@ -4001,13 +4003,7 @@ module.exports.upgradClientMembership = async (req, res) => {
     const { JobOrderNumber, PricePaid, Duration, StartDate, MembershipType } =
       req.body;
 
-    // console.log("this is request dot body ",req);
-    console.log("this is", req.files);
-
     const clientExist = await clientDetailSchema.findOne({ JobOrderNumber });
-
-    console.log("clientExist", clientExist);
-    console.log("clientExist", JobOrderNumber);
 
     if (!clientExist) {
       return res.status(400).json({ message: "Client not found" });
@@ -4096,7 +4092,6 @@ module.exports.putEngineerAttendence = async (req, res) => {
           };
 
           await EnggAttendanceServiceRecord.create(checkInData);
-          console.log(checkInData);
         }
       })
     );
@@ -4129,13 +4124,7 @@ module.exports.updateStatusOfCancelServiceAndCallbackRequest = async (
     const cancelService = await AssignSecheduleRequest.findOne({
       RequestId: serviceId,
     });
-
-    // console.log("////////////////////////////////////////",cancelCallbacks)
-    // console.log("----------------------------------------",cancelService)
-
-    // if(!cancelCallbacks && !cancelService){
-    //   return res.status(400).json({ message: "Service not found" });
-    // }
+  
 
     if (cancelCallbacks) {
       await ServiceAssigntoEngg.findOneAndUpdate(
@@ -4579,6 +4568,101 @@ module.exports.getEnggCoorinatesToShowOnMapModal = async (req, res) => {
       .json({ message: "Internal server error: " + error.message });
   }
 };
+
+
+
+
+//---------------------------------------------- get EnggAttendance Details by monthly wise with correcsponding engg -----------------------------------------------
+
+
+module.exports.getEnggMonthlyAttendanceAsPerEnggId = async (req,res) => {
+  try {
+    
+    const { ServiceEnggId, month, year } = req.params;
+
+    const todayDate = new Date().toLocaleDateString("en-Us", { timeZone: "Asia/Kolkata" });
+
+  const pdfFilePath = path.join(__dirname, '../../public/EngineerDailyAttendanceFolder', 'EngineerAttendance.pdf');
+
+
+    // const formattedMonth = month.padStart(2, '0'); 
+
+    const pipeline =  [
+      {
+        $match: {
+          ServiceEnggId:ServiceEnggId
+        }
+      },
+      {
+        $addFields: {
+          parseDate:{
+            $dateFromString:{
+              dateString:"$Date",
+              format:"%d/%m/%Y"
+            }
+          }
+        }
+      },
+      {
+        $match: {
+          $expr:{
+            $and:[
+              {$eq:[{$month:"$parseDate"}, parseInt(month)]},
+              {$eq:[{$year:"$parseDate"}, parseInt(year)]}
+            ]
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "serviceenggbasicdetails",
+          localField: "ServiceEnggId",
+          foreignField: "EnggId",
+          as: "engineerDetails"
+        }
+      },
+       {
+        $unset: "parseDate"
+      },
+      {
+        $project: {
+         ServiceEnggId: 1,
+          Date: 1,
+          Check_In: 1,
+          Check_Out: 1,
+          engineerDetails: {
+            EnggName: 1
+          }
+        }
+      }
+    ]
+
+    const record = await EnggAttendanceServiceRecord.aggregate(pipeline);
+
+   if (!record.length) {
+      return res.status(404).json({ message: "No records found for this engineer in the given month" });
+  }
+
+  // await generateDailyAttendancePDF(record,todayDate, pdfFilePath)
+
+  res.status(200).json({ message:"records found",EngineerData:record});
+
+
+  } catch (error) {
+    console.log("this is error while fetching get Engg Monthly Attendance As Per EnggId " , error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error: " + error.message });
+  }
+}
+
+  //------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 // api for putting the memberships
 

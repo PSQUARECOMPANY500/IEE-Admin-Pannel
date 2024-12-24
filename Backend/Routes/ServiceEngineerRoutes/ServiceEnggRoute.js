@@ -101,14 +101,25 @@ router.get(
 
 router.get("/getAllEngDetails", serviceEnggContoller.getAllEngDetails);
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/uplodes/");
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "./public/uplodes/");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+//   },
+// });
+const storage = multerS3({
+  s3: s3,
+  bucket: 'ieelifts.in',
+  metadata:(req, file, cb) => {
+    cb(null, { fieldName: file.fieldname });
   },
-  filename: (req, file, cb) => {
-    cb(null, `${file.originalname}-${Date.now()}.jpeg`);
+  key: (req, file, cb) => {
+    const parts = file.mimetype.split("/")[1]; // Get file extension
+    cb(null, `/public/uplodes/${file.originalname}-${Date.now()}.${parts}`); // Define file name in S3
   },
-});
+})
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -150,10 +161,14 @@ const uploadImg = upload.fields([
   },
 ]);
 
+//-----------------------------------------------------------------------------------------------
+
 const checkInAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
   if (Id) {
     const date = new Date().toLocaleDateString("en-GB");
+
+    // console.log("Checking the date ---------->>>>> : " + date);
 
     const checksum = await EnggAttendanceServiceRecord.findOne({
       ServiceEnggId: Id,
@@ -168,6 +183,8 @@ const checkInAttendance = async (req, res, next) => {
     return res.status(400).json({ message: "ServiceEnggId is required" });
   }
 };
+
+//-----------------------------------------------------------------------------------------------
 
 const checkOutAttendance = async (req, res, next) => {
   const Id = req.params.ServiceEnggId;
@@ -200,6 +217,8 @@ const checkOutAttendance = async (req, res, next) => {
   }
 };
 
+//---------------------------------------------------------------------------------------------------
+
 const checkInorOutAttendance = async (req, res, next) => {
   let ServiceEnggId;
 
@@ -225,7 +244,7 @@ const checkInorOutAttendance = async (req, res, next) => {
       return res.status(403).json({
         status: "Error",
         message: "Break is not applicable after CheckedOut",
-      });
+      }); 
     }
     if (checkIn?.Check_In?.time && !checkIn?.Check_Out?.time) {
       next();

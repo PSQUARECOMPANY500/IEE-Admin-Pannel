@@ -33,6 +33,7 @@ const AddEnggModal = () => {
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  console.log("this is date of birth ", dateOfBirth);
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -324,10 +325,10 @@ const AddEnggModal = () => {
 
     const response = await RegistrationEnggDetails(formData);
 
-    console.log(
-      "this is console to check the stsatus ---------------------->>>>>>>>>>????????? ",
-      response
-    );
+    // console.log(
+    //   "this is console to check the stsatus ---------------------->>>>>>>>>>????????? ",
+    //   response
+    // );
 
     if (response.status === 200) {
       toast.error(response.data.message);
@@ -420,8 +421,26 @@ const AddEnggModal = () => {
       if (nonNumericPattern.test(input)) {
         setAddharCardNumber(input);
       }
-    }
+    // } else if (e.target.name === "dateOfBirthInput" ){
+    //     const input = e.target.value;
+    //     console.log("this is date ", input);
+    //     const pattren = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/
+    //     if(pattren.test(input)) {
+    //       setDateOfBirth(input);
+    // }
+  }
   };
+
+
+  const handleDateOfBirth = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
+
+    setDateOfBirth(value);
+  };
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -602,6 +621,27 @@ const AddEnggModal = () => {
                       >
                         <input
                           id="dateOfBirthInput"
+                          name="dateOfBirthInput"
+                          type="text"
+                          placeholder="dd/mm/yyyy"
+                          autoComplete="off"
+                          required
+                          value={dateOfBirth}
+                          onChange={(e) => {
+                            // setMobileNumber(e.target.value);
+                            handleDateOfBirth(e);
+                            if (e.target.value.trim() !== "") {
+                              document
+                                .getElementById("dateOfBirthInput")
+                                .classList.remove("errorBorder");
+                            }
+                          }}  
+                          style={{
+                            width: "100%", // Take up remaining space
+                          }}                      
+                        />
+                        {/* <input
+                          id="dateOfBirthInput"
                           type="text"
                           placeholder="Date of Birth"
                           autoComplete="off"
@@ -611,8 +651,8 @@ const AddEnggModal = () => {
                           style={{
                             width: "100%", // Take up remaining space
                           }}
-                        />
-                        <img
+                        /> */}
+                        {/* <img
                           src="calendarIcon.png" // Example calendar icon
                           alt="Calendar Icon"
                           onClick={() => setCalenderPop(!calenderPop)} // Clicking image also toggles calendar
@@ -623,13 +663,13 @@ const AddEnggModal = () => {
                             right: "10px", // Align to the right inside the container
                             cursor: "pointer",
                           }}
-                        />
-                        {calenderPop && (
-                          <EngModalCalendar
+                        /> */}
+                        {/* {calenderPop && ( */}
+                          {/* <EngModalCalendar
                             setTodayDate={setDateOfBirth}
                             toggleModal={setCalenderPop}
                           />
-                        )}
+                        )} */}
                       </div>
                     </div>
 

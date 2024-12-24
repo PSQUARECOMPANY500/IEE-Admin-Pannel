@@ -37,14 +37,17 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/workspace/frontend
+            cd /home/ubuntu/workspace/frontend || exit 1
+
+            # Save any local changes to the stash
+            git stash push -m "Saving local changes before deployment"
             
-            
-            # Reset any changes and pull latest code
-            git fetch origin main
-            git merge origin/main
+            # Ensure repository is up to date
+            git reset --hard origin/main
             git pull origin main
 
+            # Apply stashed changes if any
+            git stash apply || echo "No stashed changes to apply"
 
             # Install dependencies locally
             /home/ubuntu/.nvm/versions/node/v21.7.1/bin/npm install

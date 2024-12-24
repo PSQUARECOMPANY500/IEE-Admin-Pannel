@@ -14,6 +14,8 @@ import ServiceRequestModals from "../ServiceRequestSubComponent/ServiceRequestMo
 
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import dummyImage from "../../../../Assets/Images/dummy_image.png"; 
+
 const Request = () => {
   const dispatch = useDispatch();
 
@@ -239,7 +241,7 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                        src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId] || dummyImage}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
@@ -253,7 +255,7 @@ const Request = () => {
                                     </div>
                                     <div className="image-border-collapse2">
                                       <img
-                                        src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId] || dummyImage}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
@@ -324,7 +326,7 @@ const Request = () => {
                                   >
                                     <div className="image-border-collapse">
                                       <img
-                                        src={imageUrls[EnggId]}
+                                        src={imageUrls[EnggId] || dummyImage}
                                         // src={
                                         //   value?.profilepic === null
                                         //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"

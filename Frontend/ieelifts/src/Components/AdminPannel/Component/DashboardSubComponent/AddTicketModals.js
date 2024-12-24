@@ -23,6 +23,9 @@ import { requestCallBackByAdmin } from "../../../../ReduxSetup/Actions/ClientAct
 
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import dummyImage from "../../../../Assets/Images/dummy_image.png"
+
+
 // import { FaHourglassEnd } from "react-icons/fa";
 
 const AddTicketModals = ({
@@ -671,7 +674,7 @@ const AddTicketModals = ({
                                 borderRadius: "2px",
                               }}
                               // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
-                              src={ImageUrl}
+                              src={ImageUrl || dummyImage}
                               alt="lift"
                             />
                           ) : (

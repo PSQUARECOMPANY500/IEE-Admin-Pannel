@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import config from "../../../../config";
 import ReactDatePickers from "../DashboardSubComponent/DropdownCollection/ReactDatePickers";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
+
 const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const dispatch = useDispatch();
   const divRef = useRef([]);
@@ -37,7 +39,13 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
   const [role, setRole] = useState("");
 
   const [profilePhoto, setProfilePhoto] = useState("");
-  console.log("8888888888888888888", profilePhoto.length);
+  console.log("8888888888888888888", profilePhoto);
+
+const [ImageUrl, setImageUrl] = useState("");
+
+const [changedImage, setChangedImage] = useState("");
+
+
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -112,7 +120,7 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
 
       if (getEnggBasicData && getEnggBasicData.enggDetails !== undefined) {
         setFirstName(getEnggBasicData.enggDetails.EnggName);
-        // setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto)
+        setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto)
         setLastName(getEnggBasicData.enggDetails.EnggLastName);
         setAdditionalCourse(getEnggBasicData.enggDetails.AdditionalCourse);
         setMobileNumber(getEnggBasicData.enggDetails.PhoneNumber);
@@ -157,17 +165,8 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
         setEngPancardData(getEnggBasicData.enggDetails.PancardPhoto);
         setEngDrivingData(getEnggBasicData.enggDetails.DrivingLicensePhoto);
         setQualificationPhoto(getEnggBasicData.enggDetails.QualificationPhoto);
-        setEngAdditionalPhoto(
-          getEnggBasicData.enggDetails.AdditionalCoursePhoto
-        );
-
-        setProfilePhoto(getEnggBasicData.enggDetails.EnggPhoto);
+        setEngAdditionalPhoto(getEnggBasicData.enggDetails.AdditionalCoursePhoto);
         setAlternativeNumber(getEnggBasicData.enggDetails.AlternativeNumber);
-
-        console.log(
-          "vvvvvvvvvvvvvvvvvvv",
-          getEnggBasicData.enggDetails.EnggPhoto.length
-        );
       }
     };
 
@@ -431,7 +430,7 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
 
     // checkRequiredFields();
     const formData = new FormData();
-    formData.append("profilePhoto", profilePhoto);
+    formData.append("profilePhoto", changedImage);
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
     formData.append("mobileNumber", mobileNumber);
@@ -473,6 +472,46 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
       setOpenForm(false);
     }
   };
+
+
+  const handleDateOfBirth = (e) => {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+
+    if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + "/" + value.slice(5, 9);
+
+    setDateOfBirth(value);
+  };
+
+
+  //-------------------------------------    logic to get images forme the S3 bucket through API   ---------------------------------------------
+    const fetchImageUrl = async (key) => {
+      try {
+        const response = await getImagesFromS3Bucket(`${key}`);
+        console.log("this is image response --------->>>> ", response)
+        return response.data.url;
+      } catch (error) {
+        console.log(
+          "error while fecthing the engg Images from S3 bucket ",
+          error
+        );
+      }
+    };
+  
+    useEffect(() => {
+      const fetchImage = async () => {
+        const url = await fetchImageUrl(profilePhoto);
+        console.log("this is consoling my url ", url);
+        setImageUrl(url);
+      };
+      fetchImage();
+    }, [engID,profilePhoto]);
+
+//-----------------------------------------------------------------------------------------------    
+
+
+
+
   return (
     <div className="" onClick={closeModal}>
       <div className="" ref={mainDivRef} onClick={(e) => e.stopPropagation()}>
@@ -508,19 +547,26 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
                       border: "none",
                     }}
                     src={
-                      profilePhoto.length === 0
-                        ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-                        : `${config.documentUrl}/EnggAttachments/${profilePhoto}`
+                      changedImage
+                        ? URL.createObjectURL(changedImage)
+                        : ImageUrl
                     }
+                    // src={URL.createObjectURL(profilePhoto)}
+                    // src={ImageUrl}
+                    // src={
+                    //   profilePhoto.length === 0
+                    //     ? "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                    //     : `${config.documentUrl}/EnggAttachments/${profilePhoto}`
+                    // }
                   ></img>
 
                   <input
                     id="profilePhoto"
                     type="file"
-                    name="fields[]"
+                    name="profilePhoto"
                     autoComplete="off"
                     onChange={(e) => {
-                      setProfilePhoto(e.target.files[0]);
+                      setChangedImage(e.target.files[0]);
                       if (e.target.value.trim() !== "") {
                         document
                           .getElementById("firstNameInput")
@@ -582,6 +628,38 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
                         }
                       }}
                     />
+                    
+                    <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          position: "relative",
+                          width: "50%",
+                        }}
+                      >
+                        <input
+                          disabled={!editchange}
+                          id="dateOfBirthInput"
+                          name="dateOfBirthInput"
+                          type="text"
+                          placeholder="dd/mm/yyyy"
+                          autoComplete="off"
+                          required
+                          value={dateOfBirth}
+                          onChange={(e) => {
+                            // setMobileNumber(e.target.value);
+                            handleDateOfBirth(e);
+                            if (e.target.value.trim() !== "") {
+                              document
+                                .getElementById("dateOfBirthInput")
+                                .classList.remove("errorBorder");
+                            }
+                          }}  
+                          style={{
+                            width: "100%", // Take up remaining space
+                          }}                      
+                        />
+                        </div>
                     
                     
       
@@ -1290,13 +1368,13 @@ const AddEngineerForm = ({ engID, onClose, setOpenForm }) => {
               <button
                 onClick={handleEditSection}
                 style={{ background: editchange ? "#F8AC1D" : "#fff" }}
-                classname="button-69-cancel"
+                className="button-69-cancel"
                 role="button"
               >
                 Edit
               </button>
               <button
-                classname="button-69"
+                className="button-69"
                 role="button"
                 onClick={(e) => handleSaveEnggProfileData(e)}
                 disabled={!editchange}

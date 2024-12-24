@@ -58,7 +58,7 @@ const ErectionDashboard = () => {
 //--------------------------------------------------------------------************************
 
 
-  const [ImagesUrls, setImageUrls] = useState([]);
+  // const [ImagesUrls, setImageUrls] = useState([]);
   useEffect(() => {
     dispatch(getErectionEnggForErectionPannelAction());
   }, [dispatch]);
@@ -69,28 +69,6 @@ const ErectionDashboard = () => {
         ?.ErectionEnggDetails
   );
 
-  console.log(
-    "erection engg is length ********************************  ",
-    erectionEnggers
-  );
-
-  //-------------------- S3 bucket Get Data -----------------------------------------------------------------------------------
-
-  const fetchImageUrl = async (key) => {
-    try {
-      const response = await getImagesFromS3Bucket(key);
-      setImageUrls(response.data.url);
-      return response.data.url;
-    } catch (error) {
-      console.log("Error while fetching the image from S3 bucket:", error);
-      return null;
-    }
-  };
-
-  erectionEnggers &&
-    erectionEnggers?.map(
-      async (imageKey) => imageKey && (await fetchImageUrl(imageKey?.EnggPhoto))
-    );
 
   var settings = {
     dots: false,
@@ -191,7 +169,7 @@ const ErectionDashboard = () => {
                 item={Engineer}
                 index={index}
                 len={Engineer.length}
-                ImagesUrls={ImagesUrls}
+                // ImagesUrls={ImagesUrls}
                 setClick={setClick}
                 setOnClick={setOnClick}
                 isHover={true}

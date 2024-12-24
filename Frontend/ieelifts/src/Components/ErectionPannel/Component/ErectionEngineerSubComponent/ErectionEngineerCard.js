@@ -20,12 +20,15 @@ const EngeeniersCard = () => {
   const [isSecond, setIsSecond] = useState(false);
   const [borderMergin, setBorderMargin] = useState(0);
   const [engID, setEngID] = useState(null);
+
   const [currentEngName, setCurrentEngName] = useState(null);
+
+
   const [currentengImg, setCurrentEngImg] = useState(null);
 
   const handleEnggNameDoubleClick = (engId, engName, engImg, lastname) => {
     setEngID(engId);
-    setCurrentEngName(engName + " " + lastname);
+    setCurrentEngName(engName);
     setCurrentEngImg(engImg);
   };
   // Render the selected component
@@ -47,6 +50,9 @@ const EngeeniersCard = () => {
   const [textareaHeight, setTextareaHeight] = useState();
   const [swapIcon, setSwapIcon] = useState(true);
   const [ImageURL, setImageURL] = useState();
+
+
+  console.log("this is image url;", ImageURL)
 
   const scroll = () => {
     if (messageBodyRef.current) {
@@ -90,7 +96,13 @@ const EngeeniersCard = () => {
     const fetchImageUrl = async () => {
       try {
         const response = await getImagesFromS3Bucket(`${currentengImg}`);
-        setImageURL(response.data.url);
+
+        if(response && response.data && response.data.url){
+          setImageURL(response.data.url);
+        }else{
+          setImageURL("https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png");
+        }
+
         return response.data.url;
       } catch (error) {
         console.log(
@@ -194,7 +206,7 @@ const EngeeniersCard = () => {
                   Name:<span>{currentEngName}</span>
                 </h1>
               </div>
-
+``
               <h1>
                 ID: <span>{engID}</span>
               </h1>

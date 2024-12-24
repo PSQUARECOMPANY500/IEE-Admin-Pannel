@@ -24,7 +24,7 @@ const Dashboard = () => {
     return state?.AdminRootReducer?.ReportCrouserHandlerReducer;
   });
 
-  console.log("R", R);
+  // console.log("R this is my R", R);
 
   const [renderTicket, setRenderTicket] = useState(true);
   useEffect(() => {
@@ -33,16 +33,16 @@ const Dashboard = () => {
     }, 1000);
   }, [renderTicket, dispatch]);
 
-  const [ShowTicketModal1, setShowTicketModal1] = useState(false);
+  // const [ShowTicketModal1, setShowTicketModal1] = useState(false);
 
   const AdminReportData = useSelector((state) => {
     return state?.AdminRootReducer?.getAdminReportDataReducer;
   });
 
-  console.log(
-    "dashboard pit area ##########################",
-    AdminReportData?.AdminReportData?.ReportImages?.photo
-  );
+  // console.log(
+  //   "dashboard pit area ##########################",
+  //   AdminReportData?.AdminReportData?.ReportImages[0]?.photo
+  // );
 
   const cancelRequestByEngg = useSelector(
     (state) =>
@@ -68,7 +68,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setImages(AdminReportData?.AdminReportData?.ReportImages[R.Index]?.photo);
+    setImages(AdminReportData?.AdminReportData?.ReportImages[0]?.photo);
     setReportOpen(R.IsOpen);
   }, [R]);
 

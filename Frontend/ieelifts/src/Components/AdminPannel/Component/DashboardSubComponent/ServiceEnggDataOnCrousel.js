@@ -7,7 +7,7 @@ import { useMediaQuery } from "@react-hook/media-query";
 import config from "../../../../config";
 
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
-
+import dummy_image  from "../../../../Assets/Images/dummy_image.png"
 const ServiceEnggDataOnCrousel = ({
   item,
   index,
@@ -121,7 +121,7 @@ const ServiceEnggDataOnCrousel = ({
       <div className="second-carusel">
         <div className="basic-info">
           {/* <img src={`${config.documentUrl}/EnggAttachments/${item.ServiceEnggPic}`} alt="img" className="basic-info-profile" /> */}
-          <img src={ImageUrl} alt="img" className="basic-info-profile" />
+          <img src={ImageUrl || dummy_image} alt="img" className="basic-info-profile" />
 
           <div className="engg-profile">
             <span>{item.ServiceEnggName}</span>

@@ -27,6 +27,8 @@ import config from "../../../../config";
 
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions";
 
+import dummyImage from "../../../../Assets/Images/dummy_image.png"
+
 const AddTicketOnCallRequests = ({
   closeModal,
   showTicketModal,
@@ -493,7 +495,7 @@ const AddTicketOnCallRequests = ({
     fetchImage();
   }, [engDetails]);
 
-  console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails);
+  // console.log("tarif teri kro !!!!!!!!!!!!!!!!", engDetails);
 
   return (
     <>
@@ -787,7 +789,7 @@ const AddTicketOnCallRequests = ({
                                 borderRadius: "2px",
                               }}
                               // src={`${config.documentUrl}/EnggAttachments/${engDetails.enggPhoto}`}
-                              src={ImageUrl}
+                              src={ImageUrl || dummyImage}
                               alt="lift"
                             />
                           ) : (

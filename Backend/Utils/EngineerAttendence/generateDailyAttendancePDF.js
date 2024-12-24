@@ -2,7 +2,10 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const htmlpdf = require("html-pdf");
 
-const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,formattedGeneratedAtDate) => {
+const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath) => {
+
+    console.log("this is generating Engg Attendance >>>> <<<<... ", EngineerData[0].engineerDetails[0].EnggName)
+// const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,formattedGeneratedAtDate) => {
     // Create HTML content
     const htmlContent = `
     <!DOCTYPE html>
@@ -23,41 +26,24 @@ const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,f
     </head>
     <body>
         <h1>Engineer Attendance Report</h1>
-        <h2>Date: ${todayDate}</h2>
-        <h2>Generated At:  ${formattedGeneratedAtDate} 12:00 A.M.</h2>
+        <h2>ServiceEnggId: ${EngineerData[0].ServiceEnggId}</h2>
+        <h2>EnggName: ${EngineerData[0].engineerDetails[0].EnggName}</h2>
+        <h2>Today's Date: ${todayDate}</h2>
+
         <table>
             <tr>
-                <th>Engineer ID</th>
-                <th>Engineer Name</th>
                 <th>Check-In Time</th>
                 <th>Check-Out Time</th>
-                <th>Total Working Hours</th>
-                <th>Check-In Images</th>
-                <th>Check-Out Images</th>
+                <th>Date</th>
+                
+                
             </tr>
             ${EngineerData.map(engineer => `
                 <tr>
-                    <td>${engineer.engineerId}</td>
-                    <td>${engineer.engineerName}</td>
-                    <td>${engineer.checkInTime}</td>
-                    <td>${engineer.checkOutTime}</td>
-                    <td>${engineer.totalWorkingHours}</td>
-                   ${engineer.checkInFrontImage !== "--" && engineer.checkInBackImage !== "--"
-            ? `<td>
-        <a href=${engineer.checkInFrontImage} target="_blank"><-> Front</a>
-        <br/>
-        <a href=${engineer.checkInBackImage} target="_blank"><-> Back</a>
-        </td>`
-            : "<td>--</td>"}
-        
-        ${engineer.checkOutFrontImage !== "--" && engineer.checkOutBackImage !== "--"
-            ? `<td>
-        <a href=${engineer.checkOutFrontImage} target="_blank"><-> Front</a>
-        <br/>
-        <a href=${engineer.checkOutBackImage} target="_blank"><-> Back</a>
-    </td>`
-            : "<td>--</td>"}
-
+                    <td>${engineer.Check_In?.time}</td>
+                    <td>${engineer.Check_Out?.time}</td>
+                    <td>${engineer?.Date}</td>
+                  
                 </tr>
             `).join('')
         }
@@ -67,7 +53,7 @@ const generateDailyAttendancePDF = async (EngineerData, todayDate, pdfFilePath,f
     `;
 
     (
-        options = {
+        options = { 
         height: "1200px",
         width: "850px",
         format: "A4",

@@ -347,7 +347,7 @@ router.put(
       maxCount: 1,
     },
   ]),
-  adminContoller.editEnggDetailsForm            //
+  adminContoller.editEnggDetailsForm            
 );
 
 router.post("/registerNewMembershipData", adminContoller.postMembershipData)
@@ -388,6 +388,15 @@ router.get('/getEnggCoorinatesToShowOnMapModal/:ServiceEnggId', adminContoller.g
 
 // Get eningeer attendence 
 // router.get('/getEngineerAttendence', adminContoller.getEngineerAttendance)
+
+
+// route to get engg Attendance record per month
+
+router.get('/getEngineerAttendanceByMonth/:ServiceEnggId/:month/:year', adminContoller.getEnggMonthlyAttendanceAsPerEnggId)
+
+
+
+
 
 module.exports = router;
 

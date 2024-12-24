@@ -26,6 +26,9 @@ import config from "../../../../config";
 
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
 
+import dummyImage from "../../../../Assets/Images/dummy_image.png"
+
+
 
 const ServiceRequestModals = ({
   closeModal,
@@ -680,7 +683,7 @@ const ServiceRequestModals = ({
                             <img
                               style={{ width: "90px", height: "90px", objectFit: 'cover', objectPosition: "center", borderRadius: '2px' }}
                               // src={engDetails.enggPhoto}
-                              src={ImageUrl}
+                              src={ImageUrl || dummyImage}
                               alt="lift"
                             />
                           ) : (

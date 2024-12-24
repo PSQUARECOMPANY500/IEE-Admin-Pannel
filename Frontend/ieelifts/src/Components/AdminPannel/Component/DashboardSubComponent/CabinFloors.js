@@ -12,13 +12,16 @@ const CabinFloors = ({ serviceId }) => {
   const [adminReportData, setAdminReportData] = useState("");
   const [images, setImages] = useState();
 
+  console.log("this is images while first set ", images)
+
   const [imageUrls, setImageUrls] = useState({});
 
+  console.log("this is images console url's ", imageUrls)
 
 
 
   
-  const [showReportImage, setShowReportImage] = useState(false);
+  // const [showReportImage, setShowReportImage] = useState(false);   
   const dispatch = useDispatch();
 
   const AdminReportData = useSelector((state) => {
@@ -27,11 +30,11 @@ const CabinFloors = ({ serviceId }) => {
 
   // console.log(
   //   "cabin-floors",
-  //   AdminReportData?.AdminReportData?.ReportImages[1]?.photo
+  //   AdminReportData?.AdminReportData?.ReportImages[0]?.photo
   // );
 
   useEffect(() => {
-    setImages(AdminReportData?.AdminReportData?.ReportImages[1]?.photo);
+    setImages(AdminReportData?.AdminReportData?.ReportImages[0]?.photo);
     setAdminReportData(
       AdminReportData?.AdminReportData?.finalReportedData?.CabinFloors
     );
@@ -48,7 +51,8 @@ const CabinFloors = ({ serviceId }) => {
     const fetchImageUrl = async (key) => {
       try {
         const response = await getImagesFromS3Bucket(`${images[0]}`);
-        setImageUrls(response.data.url);
+        // console.log("this is response of the images ---------->>>>> --------------->>>>>>>> ---------->>>>> ------->>>>>>> ", response)
+        setImageUrls(response?.data?.url);
         return response.data.url;
       } catch (error) {
         console.log("Error while fetching the image from S3 bucket:", error);

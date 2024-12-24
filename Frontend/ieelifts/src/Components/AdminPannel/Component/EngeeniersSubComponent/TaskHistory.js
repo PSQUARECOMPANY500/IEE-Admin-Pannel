@@ -86,7 +86,7 @@ const TaskHistory = (props) => {
           <h5>Services</h5>
           <h5>Callbacks</h5>
         </div>
-        <div className="AllTask Yello_Scrollbar" style={{overflow:'hidden'}}>
+        <div className="AllTask Yello_Scrollbar" style={{overflowX:'hidden'}}>
           <div className="ServicContainer">
             {uniqueSortedDates.map((date) => (
               <div key={date} className="Services">

@@ -101,52 +101,6 @@ const calculateDiffBetweentwoTime = (timetogetdiff1, timetogetdiff2) => {
   return differenceInMinutes;
 };
 // ---------------------------------------------------------------------------------------------------------------------
-// [function to Register service Engg By SuperAdmin] {superadmin : TODO , in future}
-// module.exports.RegisterServiceEngg = async (req, res) => {
-//   try {
-//     // Extract user data from the request body
-//     const {
-//       EnggId,
-//       EnggPassword,
-//       EnggName,
-//       PhoneNumber,
-//       EnggAddress,
-//       EnggPhoto,
-//     } = req.body;
-
-//     const ExistingServiceEngg = await ServiceEnggBasicSchema.findOne({
-//       EnggId,
-//     });
-//     if (ExistingServiceEngg) {
-//       return res
-//         .status(400)
-//         .json({ error: "This Service Engineer ID already exists" });
-//     }
-
-//     // Create a new instance of the model with the user data
-//     const newUser = await ServiceEnggBasicSchema.create({
-//       EnggId,
-//       EnggPassword,
-//       EnggName,
-//       PhoneNumber,
-//       EnggAddress,
-//       EnggPhoto,
-//     });
-//     // Respond with the saved user data
-//     res
-//       .status(201)
-//       .json({ message: "service Engg Register Succesfully", user: newUser });
-//   } catch (error) {
-//     // Check for duplicate key error (unique constraint violation)
-//     //console.log(error)
-//     if (error.code === 11000) {
-//       res.status(400).json({ error: "Duplicate key error" });
-//     } else {
-//       res.status(500).json({ error: "Internal server error" });
-//     }
-//   }
-// };
-//===========\\=\\\\\\\\\\\====\=\=\=\==\=\=\=\=\=\=\=
 module.exports.RegisterServiceEngg2 = async (req, res) => {
   try {
     const formData = req.files;
@@ -164,7 +118,7 @@ module.exports.RegisterServiceEngg2 = async (req, res) => {
 
     console.log("Engg already exist console ", EnggAlreadyExist)
 
-    if (EnggAlreadyExist) {
+    if (EnggAlreadyExist.length > 0) {
       return res
         .status(200)
         .json({ message: "Engg Already Exist with this Mobile Number or ID" });
@@ -538,55 +492,6 @@ module.exports.getEnggLocationCoordiantesToShowThePathOnMap = async (
       .json({ error: "Internal server error while fetching the cordinates" });
   }
 };
-//-------------\\\\\\\\\\\\\\\\\\\\\-------------------\\\\\\\\\\\\\\\\\\\\\\----------------------------------------------------------------------------
-
-// module.exports.CreateEnggLocationOnAttendance = async (req, res) => {
-//   //this is the api to update current locations(real time )
-//   try {
-//     /* Attendances logic hear */
-//     const { ServiceEnggId, latitude, longitude } = req.body;
-
-//     // console.log("enngglocation serviceid ",ServiceEnggId,"latitude ",latitude,"longitute ",longitude);
-
-//     if (ServiceEnggId && latitude && longitude) {
-//       const AttendanceCreatedDate = new Date()
-//         .toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })
-//         .split(",")[0];
-//       const response = await EnggLocationModel.findOneAndUpdate(
-//         { ServiceEnggId, AttendanceCreatedDate },
-//         {
-//           currentLocation: {
-//             type: "Point",
-//             coordinates: [latitude, longitude],
-//           },
-//         }
-//       );
-//       //console.log(response)
-//       if (!response) {
-//         await EnggLocationModel.create({
-//           ServiceEnggId,
-//           //mark Attandance Logic here
-//           currentLocation: {
-//             type: "Point",
-//             coordinates: [latitude, longitude],
-//           },
-//         });
-//       }
-//       res
-//         .status(200)
-//         .json({ message: "Attendance marked and Location connection started" });
-//     } else {
-//       res.status(400).json({
-//         message: "400 Bad Request",
-//       });
-//     }
-//   } catch (error) {
-//     //console.log(error);
-//     res
-//       .status(500)
-//       .json({ error: "Internal server error in Location creation" });
-//   }
-// };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -962,210 +867,11 @@ module.exports.EnggCheckOut = async (req, res) => {
 };
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
-
-// module.exports.EnggOnFirstHalfBreak = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.body;
-
-//     if (ServiceEnggId) {
-//       const time = new Date().toLocaleTimeString("en-IN", {
-//         timeZone: "Asia/Kolkata",
-//         hour: "2-digit",
-//         minute: "2-digit",
-//         second: "2-digit",
-//         hour12: false,
-//       });
-
-//       const date = new Date().toLocaleDateString("en-GB");
-
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-
-//       if (result) {
-//         console.log(result)
-//         if (result?.First_halfs_time && result?.First_halfe_time) {
-//           return res.status(200).json({
-//             status: "Warning",
-//             message: "You've already taken/finished your Break",
-//           });
-//         }
-//         let updateinfo = "";
-//         result?.First_halfs_time
-//           ? (updateinfo = { First_halfe_time: time })
-//           : (updateinfo = { First_halfs_time: time });
-
-//         const updatedRecord =
-//           await EnggAttendanceServiceRecord.findOneAndUpdate(
-//             {
-//               ServiceEnggId,
-//               Date: date,
-//             },
-//             updateinfo,
-//             { new: true }
-//           );
-//         if (updatedRecord?.First_halfe_time) {
-//           return res.status(200).json({
-//             status: "stop",
-//             message: "Break Ended Successfully",
-//           });
-//         }
-
-//         return res.status(200).json({
-//           status: "success",
-//           message: "Your operation is successfull",
-//         });
-//       }
-//     }
-//     return res
-//       .status(500)
-//       .json({ error: "ServiceId not found / Try to login again !" });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       error: "Internal server error in First_half ! contact Developer !",
-//     });
-//   }
-// };
-
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-
-// module.exports.EnggOnSecondHalfBreak = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.body;
-//     // console.log("ServiceEnggId get in backend = ", ServiceEnggId);
-//     if (ServiceEnggId) {
-//       const time = new Date().toLocaleTimeString("en-IN", {
-//         timeZone: "Asia/Kolkata",
-//         hour: "2-digit",
-//         minute: "2-digit",
-//         second: "2-digit",
-//         hour12: false,
-//       });
-
-//       const date = new Date().toLocaleDateString("en-GB");
-
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-
-//       if (result) {
-//         if (result?.Second_halfs_time && result?.Second_halfe_time) {
-//           return res.status(200).json({
-//             status: "Warning",
-//             message: "You've already taken/finished your Break",
-//           });
-//         }
-//         let update = "";
-//         result?.Second_halfs_time
-//           ? (update = { Second_halfe_time: time })
-//           : (update = { Second_halfs_time: time });
-
-//         const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
-//           {
-//             ServiceEnggId,
-//             Date: date,
-//           },
-//           update,
-//           { new: true }
-//         );
-//         if (Break?.Second_halfe_time) {
-//           return res.status(200).json({
-//             status: "stop",
-//             message: "Your operation stopped successfull",
-//           });
-//         }
-//         return res.status(200).json({
-//           status: "success",
-//           message: "Your operation is successfull",
-//         });
-//       }
-//     }
-//     return res
-//       .status(500)
-//       .json({ error: "ServiceId not found / Try to login again !" });
-//   } catch (error) {
-//     return res.status(500).json({
-//       error: "Internal server error in Second_half ! contact developer",
-//     });
-//   }
-// };
-
-//-------------------------------------------------------------------------------------------------------------------------------------------------
-
-// module.exports.EnggOnLunchBreak = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.body;
-
-//     if (ServiceEnggId) {
-//       const time = new Date().toLocaleTimeString("en-IN", {
-//         timeZone: "Asia/Kolkata",
-//         hour: "2-digit",
-//         minute: "2-digit",
-//         second: "2-digit",
-//         hour12: false,
-//       });
-
-//       const date = new Date().toLocaleDateString("en-GB");
-
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-
-//       if (result) {
-//         if (result?.Lunch_breaks_time && result?.Lunch_breake_time) {
-//           return res.status(200).json({
-//             status: "Warning",
-//             message: "You've already taken/finished your Lunch Break",
-//           });
-//         }
-//         let update = "";
-//         result?.Lunch_breaks_time
-//           ? (update = { Lunch_breake_time: time })
-//           : (update = { Lunch_breaks_time: time });
-
-//         const Break = await EnggAttendanceServiceRecord.findOneAndUpdate(
-//           {
-//             ServiceEnggId,
-//             Date: date,
-//           },
-//           update,
-//           { new: true }
-//         );
-//         if (Break?.Lunch_breake_time) {
-//           return res.status(200).json({
-//             status: "stop",
-//             message: "Your operation stopped successfull",
-//           });
-//         }
-//         return res.status(200).json({
-//           status: "success",
-//           message: "Your operation is successfull",
-//         });
-//       }
-//     }
-//     return res
-//       .status(500)
-//       .json({ error: "ServiceId not found / Try to login again !" });
-//   } catch (error) {
-//     console.error(error);
-//     return res
-//       .status(500)
-//       .json({ error: "Internal server error in Break ! contact developer" });
-//   }
-// };
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 // changes by armaan
 module.exports.enggLeaveServiceRequest = async (req, res) => {
   try {
     const { ServiceEnggId, TypeOfLeave, From, To, Leave_Reason } = req.body;
-
-    // console.log("this is Iqbal kurashi ", req.files )
-      // console.log("this is Iqbal kurashi ", req.body )
-
 
     let document,
       response = null;
@@ -1383,55 +1089,82 @@ const caluclateCheckInCheckOutStatus = (attendanceTime, caltime) => {
   }
 };
 
-module.exports.EnggCheckInCheckOutDetals = async (req, res) => {
+
+// ------------------------------------------------------------------------------------------------------------------------------
+
+module.exports.EnggCheckInCheckOutDetals = async (req,res) => {
   try {
     const Id = req.params.ServiceEnggId;
 
-    if (Id) {
-      const date = new Date().toLocaleDateString("en-GB");
+    const today = new Date();
+    today.setDate(today.getDate() - 1); 
+    
+    const Todaysdate = new Date().toLocaleDateString("en-GB");
+    const previousDate = today.toLocaleDateString("en-GB"); 
 
-      const time = new Date().toLocaleTimeString("en-GB");
-      const response = await EnggAttendanceServiceRecord.findOne({
-        ServiceEnggId: Id,
-        Date: date,
-      });
 
-      let Check_In_status;
-      let Check_Out_status;
-      // const timeresdposne = calculateEarlyLate('9:00:00');
-      if (response?.Check_In?.time) {
-        Check_In_status = caluclateCheckInCheckOutStatus(
-          response.Check_In.time,
-          ["08:45:00", "09:15:00"]
-        );
-      }
-      if (response?.Check_Out?.time) {
-        Check_Out_status = caluclateCheckInCheckOutStatus(
-          response.Check_Out.time,
-          ["17:15:00", "17:45:00"]
-        );
-      }
-
-      // console.log("this is the time ",timeresdposne  );
-
-      // console.log("Reponse for checkin", response.Check_In.time)
-      // console.log("Reponse for checkout", response.Check_Out.time)
-
-      return res.status(200).json({
-        Check_In: response?.Check_In?.time,
-        Check_In_status,
-        Check_Out: response?.Check_Out?.time,
-        Check_Out_status,
-      });
+    if(!Id){
+      res.status(404).json("please provide the service Engg Id");
     }
-    return res.status(500).json({ error: "ServiceEnggId Not Found" });
+
+    // -------------------------------------- optimize the code -------------------------------------------------------
+    const getAttendanceDetails = async (date) => {
+      return await EnggAttendanceServiceRecord.findOne({ ServiceEnggId: Id, Date: date });
+    };
+
+    const calculateStatus = (attendanceRecord) => {
+      let Check_In_status, Check_Out_status;
+
+      if (attendanceRecord?.Check_In?.time) {
+        Check_In_status = caluclateCheckInCheckOutStatus(attendanceRecord.Check_In.time, ["08:45:00", "09:15:00"]);
+      }
+      if (attendanceRecord?.Check_Out?.time) {
+        Check_Out_status = caluclateCheckInCheckOutStatus(attendanceRecord.Check_Out.time, ["17:15:00", "17:45:00"]);
+      }
+
+      return { Check_In: attendanceRecord?.Check_In?.time, Check_In_status, Check_Out: attendanceRecord?.Check_Out?.time, Check_Out_status };
+    };
+
+
+    const Todaysresponse = await getAttendanceDetails(Todaysdate);
+    const previousDateresponse = await getAttendanceDetails(previousDate);
+
+    // console.log("previous data response ------------->>>>>> ", previousDateresponse);
+    // console.log("Todaysresponse data response ------------->>>>>> ", Todaysresponse);
+
+    if(Todaysresponse){
+      return res.status(200).json(calculateStatus(Todaysresponse));
+    }
+
+    if(!Todaysresponse){
+
+      const currentTime = new Date();
+      const isBefore7AM = currentTime.getHours() < 7;
+
+      console.log("concept of 7AM is supported ------------------------------>>>>>>>>>>>>>> ", isBefore7AM);
+
+      //setup the condition day start from 07:AM
+
+        if(previousDateresponse && !previousDateresponse.Check_Out.time && isBefore7AM){
+          const result = calculateStatus(previousDateresponse);
+          return res.status(200).json(result);
+        }else{
+          return res.status(200).json({message:"no attendance found last response"})
+        }
+    }
+
+  
   } catch (error) {
     console.error(error);
     return res
-      .status(500)
-      .json({ error: "Internal server error in EnggCheckInCheckOutDetals" });
+    .status(500)
+    .json({ error: "Internal server error in EnggCheckInCheckOutDetals" });
   }
-};
+}
+
+// ------------------------------------------------------------------------------------------------------------------------------
+
+
 //-----------------------------------------------------------------{Amit-Features(aX13) Ends}--------------------------------------------------------------------------------
 
 //-----------------------------------------------------------------{preet dev section starts}--------------------------------------------------------------------------------
@@ -1696,56 +1429,6 @@ module.exports.getEngineerLeveCount = async (req, res) => {
   }
 };
 
-// {armaan}--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-//-----------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
-
-// // @route name-getAllEngDetails
-// // @route type-private
-// // @route work-get eng details leave rating etc....
-
-// module.exports.getAllEngDetails = async (req, res) => {
-//   try {
-//     const ServiceEnggId = req.params.ServiceEnggId;
-//     const engDetails = await ServiceEnggBasicSchema.find().select(
-//       "-EnggPassword"
-//     );
-//     const engRatings = await engineerRating
-//       .find({})
-//       .select("Rating ServiceEnggId");
-
-//     // const engLeaveRecord=await  EnggLeaveServiceRecord.find({IsApproved:"Approved"});
-
-//     const combinedData = engDetails.map((eng) => {
-//       const engineerRatings = engRatings.filter(
-//         (rating) => rating.ServiceEnggId === eng.EnggId
-//       );
-//       let sum = 0;
-//       engineerRatings.forEach((elem) => {
-//         sum = sum + elem.Rating;
-//       });
-//       const averageRating =
-//         engineerRatings.length > 0 ? sum / engineerRatings.length : 0;
-//       // const engleaveRecord = engLeaveRecord.filter(leave => leave.ServiceEnggId === eng.EnggId);
-//       return {
-//         ...eng.toObject(),
-//         averageRating,
-//         // engleaveRecord
-//       };
-//     });
-
-//     res.status(200).json({ combinedData });
-//   } catch (error) {
-//     return res.status(500).json({
-//       error: "Internal server error in get service eng details",
-//     });
-//   }
-// };
-
-//-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
-
-//-------------------------------------------------------------------------------------------------------------getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
 // @route name-getAllEngDetails
 // @route type-private
@@ -1754,13 +1437,13 @@ module.exports.getEngineerLeveCount = async (req, res) => {
 module.exports.getAllEngDetails = async (req, res) => {
   try {
     const engDetails = await ServiceEnggBasicSchema.find().select(
-      "-EnggPassword"
-    );
+      "AvailableCash EnggId EnggLastName EnggName EnggPhoto EnggRole Spare isCheckedIn"
+    );   
 
     const combinedData = await Promise.all(
       engDetails.map(async (eng) => {
         const spareParts = await sparePartRequestTable.find({
-          EnggId: eng.EnggId,
+          EnggId: eng.EnggId, 
           isApproved: true,
           isApplied: true,
         });
@@ -1793,7 +1476,7 @@ module.exports.getAllEngDetails = async (req, res) => {
   }
 };
 
-//-------------------------------------------------------------------------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------end of getAllEngDetails api create by aayush for Eng page for gettting details of eng data leave rating and other details of eng----------------------------------------------------------------------------------------------------------------------------------------
 
 //Date => 28/03/2024
 
@@ -2545,158 +2228,6 @@ module.exports.getEnggBreakDetails = async (req, res) => {
 //==================================================================
 //==================================================================
 
-//pankaj code starts 03/31/2024
-
-// module.exports.EnggFirsthalfinfo = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.params;
-//     if (ServiceEnggId) {
-//       const date = new Date().toLocaleDateString("en-GB");
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-
-//       if (result) {
-//         console.log(result, "get request")
-//         if (!result.First_halfs_time && !result.First_halfe_time) {
-//           return res.status(200).json({ status: "success", message: "15 min" });
-//         }
-//         if (result.First_halfs_time && result.First_halfe_time) {
-//           const remaintime = calculateTwotimedifference(
-//             result.First_halfs_time,
-//             result.First_halfe_time,
-//             15
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "success", message: remaintime + " min" });
-//         }
-//         if (result.First_halfs_time && !result.First_halfe_time) {
-//           const remaintime = calculateTimedifference(
-//             result.First_halfs_time,
-//             15
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "play", message: remaintime + " min" });
-//         }
-//       } else {
-//         return res.status(200).json({ status: "success", message: "0 min" });
-//       }
-//     } else {
-//       return res
-//         .status(500)
-//         .json({ error: "ServiceEnggId Id not found ! try to login again!" });
-//     }
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ error: "Internal server error ! Contact Developer." });
-//   }
-// };
-
-// module.exports.EnggSecondhalfinfo = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.params;
-
-//     if (ServiceEnggId) {
-//       const date = new Date().toLocaleDateString("en-GB");
-//       // console.log("date = ", date);
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-//       if (result) {
-//         if (!result.Second_halfs_time && !result.Second_halfe_time) {
-//           return res.status(200).json({ status: "success", message: "15 min" });
-//         }
-//         if (result.Second_halfs_time && result.Second_halfe_time) {
-//           const remaintime = calculateTwotimedifference(
-//             result.Second_halfs_time,
-//             result.Second_halfe_time,
-//             15
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "success", message: remaintime + " min" });
-//         }
-//         if (result.Second_halfs_time && !result.Second_halfe_time) {
-//           const remaintime = calculateTimedifference(
-//             result.Second_halfs_time,
-//             15
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "play", message: remaintime + " min" });
-//         }
-//       } else {
-//         return res.status(200).json({ status: "success", message: "0 min" });
-//       }
-//     } else {
-//       return res
-//         .status(500)
-//         .json({ error: "ServiceEnggId Id not found ! try to login again!" });
-//     }
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ error: "Internal server error ! Contact Developer." });
-//   }
-// };
-
-// module.exports.EnggLunchBreakinfo = async (req, res) => {
-//   try {
-//     const { ServiceEnggId } = req.params;
-//     if (ServiceEnggId) {
-//       const date = new Date().toLocaleDateString("en-GB");
-//       // console.log("date = ", date);
-//       const result = await EnggAttendanceServiceRecord.findOne({
-//         ServiceEnggId,
-//         Date: date,
-//       });
-//       if (result) {
-//         console.log(result, "Engg lunch break data")
-//         if (!result.Lunch_breaks_time && !result.Lunch_breake_time) {
-//           return res.status(200).json({ status: "success", message: "30 min" });
-//         }
-//         if (result.Lunch_breaks_time && result.Lunch_breake_time) {
-//           const remaintime = calculateTwotimedifference(
-//             result.Lunch_breaks_time,
-//             result.Lunch_breake_time,
-//             30
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "success", message: remaintime + " min" });
-//         }
-//         if (result.Lunch_breaks_time && !result.Lunch_breake_time) {
-//           const remaintime = calculateTimedifference(
-//             result.Lunch_breaks_time,
-//             30
-//           );
-//           return res
-//             .status(200)
-//             .json({ status: "play", message: remaintime + " min" });
-//         }
-//       } else {
-//         return res.status(200).json({ status: "success", message: "0 min" });
-//       }
-//     } else {
-//       return res
-//         .status(500)
-//         .json({ error: "ServiceEnggId Id not found ! try to login again!" });
-//     }
-//   } catch (error) {
-//     return res
-//       .status(500)
-//       .json({ error: "Internal server error ! Contact Developer." });
-//   }
-// };
-
-//==================================================================
-//==================================================================
-
 module.exports.getReportDataForFinalSubmmitPage = async (req, res) => {
   try {
     const { serviceId } = req.params;
@@ -2862,9 +2393,17 @@ module.exports.verifyPaymentLink = async (req, res) => {
   try {
     const { razorpayLink } = req.body;
 
+    console.log("pankaj mirat ", razorpayLink)
+
     if (!razorpayLink) {
       return res.status(400).json({ message: "razorpayLink is required." });
     }
+
+    console.log({
+      key_id: process.env.key_id,
+      key_secret: process.env.key_secret,
+    })
+
     const instance = new Razorpay({
       key_id: process.env.key_id,
       key_secret: process.env.key_secret,
@@ -2874,15 +2413,18 @@ module.exports.verifyPaymentLink = async (req, res) => {
     if (!response) {
       return res.status(404).json({ message: "Payment link not found." });
     }
+
+
     return res.status(200).json({ response });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "Internal server error in verifyPaymentLink! Contact Developer.",
       error: error,
     });
   }
 };
-//Done, Touch this api at your own risk.
+//Done, Touch this api at your own risk.`
 module.exports.generatePaymentQr = async (req, res) => {
   try {
     const { amount, JobOrderNumber, serviceId } = req.body;
@@ -3327,22 +2869,6 @@ module.exports.getAllClientPreviousService = async (req, res) => {
 module.exports.serviceEnggLoginWithOtp = async (req, res) => {
   try {
     const { EnggId, PhoneNumber } = req.body;
-
-    // const date = new Date();
-    // const options = {
-    //   timeZone: "Asia/Kolkata",
-    //   year: "numeric",
-    //   month: "2-digit",
-    //   day: "2-digit",
-    //   hour: "2-digit",
-    //   minute: "2-digit",
-    //   second: "2-digit",
-    // };
-    // const formatter = new Intl.DateTimeFormat("en-US", options);
-    // const indiaTime = formatter.format(date);
-
-    // console.log("^^^^^^^^^^^^^^^^^^^^^^", indiaTime);
-
     const Engineer = await ServiceEnggBasicSchema.findOne({
       EnggId,
       PhoneNumber,
@@ -3351,25 +2877,6 @@ module.exports.serviceEnggLoginWithOtp = async (req, res) => {
     if (!Engineer) {
       return res.status(200).json({ message: "Phone Number is not matched" });
     }
-
-    // const accountSid = process.env.TwlioSID;
-    // const authToken = process.env.TwlioSECRET;
-
-    // const client = twilio('ACd76c05e5041feb16a75f7a90a5de143a', 'a31167b09e8e7f1e6dc1450dc284f1db');
-
-    // client.messages.create({
-    //     body: 'Hello from twilio-node',
-    //     to: '+12345678901', // Text your number
-    //     from: '+12345678901', // From a valid Twilio number
-    //   })
-    //   .then((message) => console.log(message.sid));
-
-    // const message = await client.messages.create({
-    //   body: 'You have an appointment with Owl, Inc. on Friday, November 3 at 4:00 PM. Reply C to confirm.',
-    //   from:'+12512783329',
-    //   to: '+917889141836'
-    // });
-    // console.log(message.sid);
 
     const otp = Math.floor(1000 + Math.random() * 9000);
     // Save OTP details to the database
@@ -3432,7 +2939,6 @@ module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req, res) => {
       ServiceEnggId,
     });
 
-    console.log("@@@@@@@@@@@@@@@@@", useOTPVerificationRecords);
 
     if (useOTPVerificationRecords.length <= 0) {
       return res.status(404).json({
@@ -3456,7 +2962,6 @@ module.exports.verifyEnggOTPWhileLogingWithMobileDevice = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // console.log("##########################",expiresAt);
   } catch (error) {
     console.log("this is the error", error);
     res.status(500).json({ message: "errro while Verifying with OTP" });

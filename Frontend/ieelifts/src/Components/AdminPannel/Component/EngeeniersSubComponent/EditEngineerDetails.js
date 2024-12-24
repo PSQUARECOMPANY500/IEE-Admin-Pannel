@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import details from "../../../../Assets/Images/details.svg";
 import card from "../../../../Assets/Images/card.svg";
-import expand from "../../../../Assets/Images/expand.svg";
 import drivers from "../../../../Assets/Images/drivers.svg";
 import { IoCloseOutline } from "react-icons/io5";
 import AddEngineerForm from "./AddEngineerForm";
 import { fetchEnggPersonalData } from "../../../../ReduxSetup/Actions/AdminActions";
-import config from "../../../../config";
-
+  
 import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
 
 

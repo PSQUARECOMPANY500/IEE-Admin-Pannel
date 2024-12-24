@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 
 const Rating = () => {
   const [adminRating, setAdminRating] = useState()
+
+  
   const [rating, setRating] = useState([]);
+
+  console.log("set rating --------->>> <<< >>> <<<<  >>>> ----->> ", adminRating)
   
 
 
@@ -14,17 +18,21 @@ const Rating = () => {
     return state?.AdminRootReducer?.getAdminReportDataReducer
   });
 
-  console.log("AdminReportData0000000000000000", AdminReportData);
 
   const ratingValue = AdminReportData?.AdminReportData?.Rating?.Rating || 0
+
+
   useEffect(() => {
-    console.log(AdminReportData?.AdminReportData?.Rating)
-    setAdminRating(AdminReportData?.AdminReportData?.Rating)
+    if(AdminReportData){
+      setAdminRating(AdminReportData.AdminReportData.Rating)
+    }
+
   }, [AdminReportData])
 
   useEffect(() => {
     setRating(Array(5).fill(ratingValue))
   }, [ratingValue])
+
 
 
 
@@ -44,8 +52,26 @@ const Rating = () => {
           </div>
 
           <div className="RatingButton">
-            <button className={adminRating?.Questions?.Question1?'active-button':''}> yes</button>
-            <button className={!(adminRating?.Questions?.Question1)?'active-button':''}>No</button>
+            {/* <button className={adminRating?.Questions?.Question1 ? 'active-button':''}> yes</button> */}
+            {/* <button className={!(adminRating?.Questions?.Question1)? 'active-button':''}>No</button> */}
+            <button
+              style={{
+                background: adminRating?.Questions?.Question1
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                background: !adminRating?.Questions?.Question1
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              No
+            </button>
           </div>
         </div>
 
@@ -54,32 +80,105 @@ const Rating = () => {
             <h5>Was the service agent wearing clean cloths ?</h5>
           </div>
           <div className="RatingButton">
-          <button className={adminRating?.Questions?.Question2?'active-button':''}> yes</button>
-            <button className={!(adminRating?.Questions?.Question2)?'active-button':''}>No</button>
+          {/* <button className={adminRating?.Questions?.Question2?'active-button':''}> yes</button> */}
+            {/* <button className={!(adminRating?.Questions?.Question2)?'active-button':''}>No</button> */}
+            <button
+              style={{
+                background: adminRating?.Questions?.Question2
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                background: !adminRating?.Questions?.Question2
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              No
+            </button>
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Was the service agent professional ?</h5>
           <div className="RatingButton">
-          <button className={adminRating?.Questions?.Question3?'active-button':''}> yes</button>
-            <button className={!(adminRating?.Questions?.Question3)?'active-button':''}>No</button>
+          {/* <button className={adminRating?.Questions?.Question3 ?'active-button':''}> yes</button> */}
+            {/* <button className={!(adminRating?.Questions?.Question3)?'active-button':''}>No</button> */}
+            <button
+              style={{
+                background: adminRating?.Questions?.Question3
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                background: !adminRating?.Questions?.Question3
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              No
+            </button>
+
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Were all the issues resolved ?</h5>
           <div className="RatingButton">
-          <button className={adminRating?.Questions?.Question4?'active-button':''}> yes</button>
-            <button className={!(adminRating?.Questions?.Question4)?'active-button':''}>No</button>
+          {/* <button className={adminRating?.Questions?.Question4?'active-button':''}> yes</button> */}
+            {/* <button className={!(adminRating?.Questions?.Question4)?'active-button':''}>No</button> */}
+            <button
+              style={{
+                background: adminRating?.Questions?.Question4
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                background: !adminRating?.Questions?.Question4
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              No
+            </button>
           </div>
         </div>
 
         <div className="RatingContainerRow">
           <h5>Would you recommend us ?</h5>
           <div className="RatingButton">
-          <button className={adminRating?.Questions?.Question5?'active-button':''}> yes</button>
-            <button className={!(adminRating?.Questions?.Question5)?'active-button':''}>No</button>
+          {/* <button className={adminRating?.Questions?.Question5?'active-button':''}> yes</button> */}
+            {/* <button className={!(adminRating?.Questions?.Question5)?'active-button':''}>No</button> */}
+            <button
+              style={{
+                background: adminRating?.Questions?.Question5
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              Yes
+            </button>
+            <button
+              style={{
+                background: !adminRating?.Questions?.Question5
+                  ? "#F8AC1D"
+                  : "transparent",
+              }}
+            >
+              No
+            </button>
           </div>
         </div>
       </div> </>:<p>No Rating Here.</p>}

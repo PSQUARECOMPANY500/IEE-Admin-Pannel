@@ -44,12 +44,12 @@ const ClientElevatorDetails = ({ selectedClient }) => {
     [true, false],
   ];
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "scroll";
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.body.style.overflow = "hidden";
+  //   return () => {
+  //     document.body.style.overflow = "scroll";
+  //   };
+  // }, []);
 
   const handleNextPage = () => {
     setToggle(false);

@@ -8798,9 +8798,12 @@ element.style {
   height: 5vh;
   width: 30;
   position: absolute;
-  bottom: 3%;
+  bottom: 6%;
   right: 5%;
 }
+
+
+
 
 /* ---------------------edit engg form------------------------------ */
 
@@ -8831,7 +8834,7 @@ element.style {
   border-style: none;
   color: #444444;
   cursor: pointer;
-  display: inline-block;
+  display: inline-block;  
   font-size: 1rem;
   font-weight: 500;
   padding: 0.8rem 2.5rem;
@@ -10672,3 +10675,33 @@ a[href^="http://maps.google.com/maps"]
   width: 90%;
   margin-top: 8px;
 }
+
+
+
+
+
+
+
+/* -------------------------- css get Engginer Attendance starts---------------- */
+.attendancepopup-main-heading{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 1rem;
+  gap: 16px;
+}
+.attendancepopup-heading{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 1rem;
+  gap: 16px;
+  justify-content: center;
+}
+
+.attendancepopup-heading:hover{
+  color: #f8ac1d;
+}
+/* -------------------------- css get Engginer Attendance Ends ---------------- */
+
+

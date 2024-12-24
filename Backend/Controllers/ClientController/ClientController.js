@@ -1478,7 +1478,7 @@ module.exports.updateClientProfile = async (req, res) => {
         {
           name,
           PhoneNumber: phone,
-          ProfileImage: profile[0].filename,
+          ProfileImage: profile[0].key,
           Password: password,
           emailAddress,
         }

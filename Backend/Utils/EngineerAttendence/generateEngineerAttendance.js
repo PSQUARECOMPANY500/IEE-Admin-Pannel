@@ -125,6 +125,7 @@ const generateEngineerAttendance = async () => {
         console.log("this is originaml date ", originalDate)
 
         await generateDailyAttendancePDF(EngineerData, todayDate, pdfFilePath, originalDate);
+        
     } catch (error) {
         console.error(error);
         return error.message

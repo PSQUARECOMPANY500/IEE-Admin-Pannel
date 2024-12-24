@@ -22,6 +22,8 @@ const EngeeniersSubCard = (props) => {
 
   const [ImageUrls, setImageUrls] = useState([]);
 
+  // console.log("this is man --------------------------------->>>>>>> ", ImageUrls)
+
   const engData = Engineers;
 
   const handleSingleClick = (index) => {
@@ -66,17 +68,12 @@ const EngeeniersSubCard = (props) => {
         ?.ErectionEnggDetails
   );
 
-  console.log(
-    "$$$$$$$$$$$$$$$$$$$$$$$$$$$   999999999999999999 ",
-    erectionEngg
-  );
 
   //-------------------- S3 bucket Get Data -----------------------------------------------------------------------------------
 
   const fetchImageUrl = async (key) => {
     try {
       const response = await getImagesFromS3Bucket(key);
-      setImageUrls(response.data.url);
       return response.data.url;
     } catch (error) {
       console.log("Error while fetching the image from S3 bucket:", error);
@@ -84,11 +81,35 @@ const EngeeniersSubCard = (props) => {
     }
   };
 
-  const urlPromises =
-    erectionEngg &&
-    erectionEngg?.map(
-      async (imageKey) => imageKey && (await fetchImageUrl(imageKey?.EnggPhoto))
-    );
+
+
+  useEffect(() => {
+    const getImages = async () => {
+      const engineers = erectionEngg || [];
+      const urlPromises = engineers.map((engineer) =>
+        fetchImageUrl(engineer.EnggPhoto)
+      );
+
+      try {
+        const urls = await Promise.all(urlPromises);
+        const urlMap = engineers.reduce((acc, engineer, index) => {
+          acc[engineer.EnggId] = urls[index];
+          return acc;
+        }, {});
+        setImageUrls(urlMap);
+      } catch (error) {
+        console.error("Error fetching image URLs", error);
+      }
+    };
+
+      getImages();
+    
+  }, [erectionEngg]);
+
+
+  //----------------------------------------------------------------------------------------------------------------------
+
+
 
   return (
     <div
@@ -116,7 +137,10 @@ const EngeeniersSubCard = (props) => {
             >
               <div className="erectionEngCardsDetails">
                 <div className="erectionEngineerPicParent">
-                  <img className="erectionEngineerPic " src={ImageUrls} />
+                  <img className="erectionEngineerPic "  src={
+                      ImageUrls[e.EnggId] ||
+                      "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+                    } />
                 </div>
                 <div className="erectionEningeerDetailsContainer">
                   <div className="erectionEngDetail">

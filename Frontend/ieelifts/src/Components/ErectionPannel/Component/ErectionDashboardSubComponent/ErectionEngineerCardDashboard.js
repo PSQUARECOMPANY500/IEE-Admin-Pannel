@@ -3,17 +3,20 @@ import { TbMessage2 } from "react-icons/tb";
 import MessageBox from "../../../AdminPannel/Component/DashboardSubComponent/MessageBox";
 import { useMediaQuery } from "@react-hook/media-query";
 
+import { getImagesFromS3Bucket } from "../../../../ReduxSetup/Actions/AdminActions"
 
 
-const ErectionEngineerCardDashboard = ({ item, index, len ,ImagesUrls}) => {
+
+const ErectionEngineerCardDashboard = ({ item, index, len}) => {
     const smallLaptopSizes = useMediaQuery('(min-width: 769px) and (max-width: 1280px)');
 
-    // console.log("this is erection data --------------->>>>>>>>>> ] " , item)
+    // console.log("this is erection data --------------->>>>>>>>>> ] " , item?.EnggPhoto)
 
 
     const dropdownClickRef = useRef();
     const MessageBoxRef = useRef(null);
     const [showMessage, setShowMessage] = useState([false]);
+    const [ImageUrl, setImageUrl] = useState();
 
     const handleMessageBoxClose = () => {
         setShowMessage(false);
@@ -52,12 +55,34 @@ const ErectionEngineerCardDashboard = ({ item, index, len ,ImagesUrls}) => {
     useClickOutside(dropdownClickRef, handleOutsideClick);
 
 
+    //------------------------------------------------------------------------------------------------------------------------------
 
+    const fetchImageUrl = async (key) => {
+        try {
+          const response = await getImagesFromS3Bucket(`${key}`);
+          // console.log("this is response for Engg id ", response.data.url);
+          return response.data.url;
+        } catch (error) {
+          console.log(
+            "error while fecthing the engg Images from S3 bucket ",
+            error
+          );
+        }
+      };
 
+    useEffect(() => {
+        const fetchImage = async () => {
+          const url = await fetchImageUrl(item?.EnggPhoto);
+          // console.log("this is consoling my url ", url);
+          setImageUrl(url || "https://www.pngitem.com/pimgs/m/581-5813504_avatar-dummy-png-transparent-png.png");
+        };
+    
+        // if (item?.ServiceEnggPic) {
+        fetchImage();
+        // }
+      }, [item]);
 
-
-
-
+//------------------------------------------------------------------------------------------------------------------------------------
 
     // onClick = {() => { setClick(item.ServiceEnggId); setOnClick((prev) => !prev) }}
     return (
@@ -65,7 +90,7 @@ const ErectionEngineerCardDashboard = ({ item, index, len ,ImagesUrls}) => {
             <div className="erectionEngineerDetails">
                 <div className="basic-info">
                     <img
-                        src={ImagesUrls} alt="img"
+                        src={ImageUrl} alt="img"
                         style={{
                             height: "50px",
                             width: "50px",

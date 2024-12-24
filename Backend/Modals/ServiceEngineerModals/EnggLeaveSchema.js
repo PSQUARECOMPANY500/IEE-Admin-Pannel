@@ -41,7 +41,6 @@ const EnggLeaveRecord = new Schema({
     },
     Leave_Reason: {
         type: String,
-        required: true,
     },
     Document: {
         type: String,

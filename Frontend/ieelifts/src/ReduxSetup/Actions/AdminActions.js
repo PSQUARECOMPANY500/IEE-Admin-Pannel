@@ -1968,7 +1968,7 @@ export const updateSOSStatus = (jon, status, _id, enggName) => {
         return;
       }
 
-      const response = await axios.put(
+      const response = await axios.put( 
         `${config.apiUrl}/admin/changeStatusSoS`,
         {
           jon,
@@ -2091,3 +2091,31 @@ export const getImagesFromS3Bucket = async (key) => {
     console.error("Error while fetching images from S3 bucket:", error);
   }
 };
+
+
+
+
+
+
+//------------------------------------------------------------------------------------------------------------------
+//custom action to handle get engg Attendance pdf.
+
+export const getEnggAttendancePdf = async (enggId, date) => {
+  console.log("this is data ::::: enggId: and date " + enggId, date);
+  try {
+    const response = await axios.get(`${config.apiUrl}/admin/getEngineerAttendanceByMonth/${enggId}/${date}`)
+    return response;
+  } catch (error) {
+    console.log("Error while fetching : " ,{error});
+  }
+}
+
+//------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
